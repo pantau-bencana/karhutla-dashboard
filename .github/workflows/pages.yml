@@ -1,0 +1,70 @@
+# Deploy situs statis ke GitHub Pages.
+# Source Pages repositori ini adalah GitHub Actions.
+# Push ke main dan workflow_dispatch men-deploy ke
+# https://rixaga.github.io/karhutla-dashboard/
+# Pull request hanya membangun dan memeriksa prefiks aset; tidak men-deploy.
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  pull_request:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Install
+        run: npm ci
+
+      - name: Check and build
+        env:
+          VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: npm run check && npm run build
+
+      - name: Verify Pages paths and public config
+        run: node scripts/verify-pages-build.mjs "${{ steps.pages.outputs.base_path }}"
+
+      - name: Upload Pages artifact
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

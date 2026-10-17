@@ -1,0 +1,339 @@
+tanggal,waktu,lintang,bujur,provinsi,kabupaten,satelit,kepercayaan,frp,kecerahan,keterangan
+2026-10-01,0135,1.4399,102.0843,Riau,Bengkalis,Suomi-NPP,low,6,311,DATA CONTOH — bukan data operasional
+2026-10-01,0210,0.2759,101.8105,Riau,Pelalawan,NOAA-20,nominal,9,314,DATA CONTOH — bukan data operasional
+2026-10-01,0530,2.0136,100.8305,Riau,Rokan Hilir,Terra,high,24,329,DATA CONTOH — bukan data operasional
+2026-10-01,0625,0.7918,102.0651,Riau,Siak,Aqua,high,27,332,DATA CONTOH — bukan data operasional
+2026-10-02,1430,-0.3382,103.1802,Riau,Indragiri Hilir,Suomi-NPP,high,30,335,DATA CONTOH — bukan data operasional
+2026-10-02,1550,1.5377,102.0103,Riau,Bengkalis,NOAA-20,low,21,326,DATA CONTOH — bukan data operasional
+2026-10-02,1705,0.367,101.8576,Riau,Pelalawan,Terra,nominal,24,329,DATA CONTOH — bukan data operasional
+2026-10-02,1840,2.104,100.8394,Riau,Rokan Hilir,Aqua,high,39,344,DATA CONTOH — bukan data operasional
+2026-10-02,0135,0.7429,101.9759,Riau,Siak,Suomi-NPP,high,42,347,DATA CONTOH — bukan data operasional
+2026-10-03,0210,-0.2514,103.2072,Riau,Indragiri Hilir,NOAA-20,high,45,350,DATA CONTOH — bukan data operasional
+2026-10-03,0530,1.4389,102.122,Riau,Bengkalis,Terra,low,8,313,DATA CONTOH — bukan data operasional
+2026-10-03,0625,0.3094,101.8203,Riau,Pelalawan,Aqua,nominal,11,316,DATA CONTOH — bukan data operasional
+2026-10-03,1430,1.9904,100.8456,Riau,Rokan Hilir,Suomi-NPP,high,26,331,DATA CONTOH — bukan data operasional
+2026-10-03,1550,0.8379,101.9811,Riau,Siak,NOAA-20,high,29,334,DATA CONTOH — bukan data operasional
+2026-10-03,1705,-0.3741,103.1362,Riau,Indragiri Hilir,Terra,high,32,337,DATA CONTOH — bukan data operasional
+2026-10-04,1840,1.5373,102.0014,Riau,Bengkalis,Aqua,low,23,328,DATA CONTOH — bukan data operasional
+2026-10-04,0135,0.3484,101.8787,Riau,Pelalawan,Suomi-NPP,nominal,26,331,DATA CONTOH — bukan data operasional
+2026-10-04,0210,2.1101,100.8144,Riau,Rokan Hilir,NOAA-20,high,41,346,DATA CONTOH — bukan data operasional
+2026-10-04,0530,0.7939,102.0112,Riau,Siak,Terra,high,44,349,DATA CONTOH — bukan data operasional
+2026-10-04,0625,-0.2515,103.2132,Riau,Indragiri Hilir,Aqua,high,19,324,DATA CONTOH — bukan data operasional
+2026-10-04,1430,1.501,102.087,Riau,Bengkalis,Suomi-NPP,low,10,315,DATA CONTOH — bukan data operasional
+2026-10-04,1550,0.4257,101.8339,Riau,Pelalawan,NOAA-20,nominal,13,318,DATA CONTOH — bukan data operasional
+2026-10-05,1705,2.0404,100.7719,Riau,Rokan Hilir,Terra,high,28,333,DATA CONTOH — bukan data operasional
+2026-10-05,1840,0.7459,101.948,Riau,Siak,Aqua,high,31,336,DATA CONTOH — bukan data operasional
+2026-10-05,0135,-0.3643,103.2304,Riau,Indragiri Hilir,Suomi-NPP,high,34,339,DATA CONTOH — bukan data operasional
+2026-10-05,0210,1.4698,102.0469,Riau,Bengkalis,NOAA-20,low,25,330,DATA CONTOH — bukan data operasional
+2026-10-05,0530,0.3212,101.836,Riau,Pelalawan,Terra,nominal,28,333,DATA CONTOH — bukan data operasional
+2026-10-05,0625,2.0406,100.914,Riau,Rokan Hilir,Aqua,high,43,348,DATA CONTOH — bukan data operasional
+2026-10-05,1430,0.8607,102.0648,Riau,Siak,Suomi-NPP,high,18,323,DATA CONTOH — bukan data operasional
+2026-10-05,1550,-0.3129,103.2375,Riau,Indragiri Hilir,NOAA-20,high,21,326,DATA CONTOH — bukan data operasional
+2026-10-06,1705,1.4321,102.0577,Riau,Bengkalis,Terra,low,12,317,DATA CONTOH — bukan data operasional
+2026-10-06,1840,0.3891,101.8086,Riau,Pelalawan,Aqua,nominal,15,320,DATA CONTOH — bukan data operasional
+2026-10-06,0135,2.0089,100.813,Riau,Rokan Hilir,Suomi-NPP,high,30,335,DATA CONTOH — bukan data operasional
+2026-10-06,0210,0.7205,101.9408,Riau,Siak,NOAA-20,high,33,338,DATA CONTOH — bukan data operasional
+2026-10-06,0530,-0.31,103.1032,Riau,Indragiri Hilir,Terra,high,36,341,DATA CONTOH — bukan data operasional
+2026-10-06,0625,1.4443,102.046,Riau,Bengkalis,Aqua,low,27,332,DATA CONTOH — bukan data operasional
+2026-10-06,1430,0.3557,101.7954,Riau,Pelalawan,Suomi-NPP,nominal,30,335,DATA CONTOH — bukan data operasional
+2026-10-06,1550,1.993,100.8494,Riau,Rokan Hilir,NOAA-20,high,45,350,DATA CONTOH — bukan data operasional
+2026-10-06,1705,0.8509,101.9527,Riau,Siak,Terra,high,20,325,DATA CONTOH — bukan data operasional
+2026-10-07,1840,-0.3179,103.1018,Riau,Indragiri Hilir,Aqua,high,23,328,DATA CONTOH — bukan data operasional
+2026-10-07,0135,1.5192,102.0838,Riau,Bengkalis,Suomi-NPP,low,14,319,DATA CONTOH — bukan data operasional
+2026-10-07,0210,0.3995,101.8452,Riau,Pelalawan,NOAA-20,nominal,17,322,DATA CONTOH — bukan data operasional
+2026-10-07,0530,2.0483,100.7801,Riau,Rokan Hilir,Terra,high,32,337,DATA CONTOH — bukan data operasional
+2026-10-07,0625,0.7338,102.0506,Riau,Siak,Aqua,high,35,340,DATA CONTOH — bukan data operasional
+2026-10-07,1430,-0.2894,103.1433,Riau,Indragiri Hilir,Suomi-NPP,high,38,343,DATA CONTOH — bukan data operasional
+2026-10-07,1550,1.4112,102.1315,Riau,Bengkalis,NOAA-20,low,29,334,DATA CONTOH — bukan data operasional
+2026-10-07,1705,0.2941,101.8959,Riau,Pelalawan,Terra,nominal,32,337,DATA CONTOH — bukan data operasional
+2026-10-07,1840,2.0286,100.9044,Riau,Rokan Hilir,Aqua,high,19,324,DATA CONTOH — bukan data operasional
+2026-10-07,0135,0.76,102.0286,Riau,Siak,Suomi-NPP,high,22,327,DATA CONTOH — bukan data operasional
+2026-10-08,0210,-0.2449,103.1933,Riau,Indragiri Hilir,NOAA-20,high,25,330,DATA CONTOH — bukan data operasional
+2026-10-08,0530,1.5631,102.0938,Riau,Bengkalis,Terra,low,16,321,DATA CONTOH — bukan data operasional
+2026-10-08,0625,0.3543,101.836,Riau,Pelalawan,Aqua,nominal,19,324,DATA CONTOH — bukan data operasional
+2026-10-08,1430,2.1202,100.8073,Riau,Rokan Hilir,Suomi-NPP,high,34,339,DATA CONTOH — bukan data operasional
+2026-10-08,1550,0.8342,102.0377,Riau,Siak,NOAA-20,high,37,342,DATA CONTOH — bukan data operasional
+2026-10-08,1705,-0.3076,103.1141,Riau,Indragiri Hilir,Terra,high,40,345,DATA CONTOH — bukan data operasional
+2026-10-08,1840,1.5146,102.0088,Riau,Bengkalis,Aqua,low,31,336,DATA CONTOH — bukan data operasional
+2026-10-08,0135,0.3196,101.837,Riau,Pelalawan,Suomi-NPP,nominal,6,311,DATA CONTOH — bukan data operasional
+2026-10-08,0210,2.0305,100.905,Riau,Rokan Hilir,NOAA-20,high,21,326,DATA CONTOH — bukan data operasional
+2026-10-08,0530,0.7464,102.046,Riau,Siak,Terra,high,24,329,DATA CONTOH — bukan data operasional
+2026-10-08,0625,-0.3363,103.1767,Riau,Indragiri Hilir,Aqua,high,27,332,DATA CONTOH — bukan data operasional
+2026-10-08,1430,1.5577,102.0202,Riau,Bengkalis,Suomi-NPP,low,18,323,DATA CONTOH — bukan data operasional
+2026-10-09,1550,0.3008,101.806,Riau,Pelalawan,NOAA-20,nominal,21,326,DATA CONTOH — bukan data operasional
+2026-10-09,1705,2.0386,100.8842,Riau,Rokan Hilir,Terra,high,36,341,DATA CONTOH — bukan data operasional
+2026-10-09,1840,0.8334,102.0959,Riau,Siak,Aqua,high,39,344,DATA CONTOH — bukan data operasional
+2026-10-09,0135,-0.3111,103.1442,Riau,Indragiri Hilir,Suomi-NPP,high,42,347,DATA CONTOH — bukan data operasional
+2026-10-09,0210,1.543,102.0804,Riau,Bengkalis,NOAA-20,low,33,338,DATA CONTOH — bukan data operasional
+2026-10-09,0530,0.4008,101.9212,Riau,Pelalawan,Terra,nominal,8,313,DATA CONTOH — bukan data operasional
+2026-10-09,0625,2.1198,100.8386,Riau,Rokan Hilir,Aqua,high,23,328,DATA CONTOH — bukan data operasional
+2026-10-09,1430,0.7222,102.0544,Riau,Siak,Suomi-NPP,high,26,331,DATA CONTOH — bukan data operasional
+2026-10-09,1550,-0.2769,103.1481,Riau,Indragiri Hilir,NOAA-20,high,29,334,DATA CONTOH — bukan data operasional
+2026-10-09,1705,1.5091,102.1479,Riau,Bengkalis,Terra,low,20,325,DATA CONTOH — bukan data operasional
+2026-10-09,1840,0.3241,101.8811,Riau,Pelalawan,Aqua,nominal,23,328,DATA CONTOH — bukan data operasional
+2026-10-10,0135,2.1198,100.8483,Riau,Rokan Hilir,Suomi-NPP,high,38,343,DATA CONTOH — bukan data operasional
+2026-10-10,0210,0.8523,102.005,Riau,Siak,NOAA-20,high,41,346,DATA CONTOH — bukan data operasional
+2026-10-10,0530,-0.3708,103.1175,Riau,Indragiri Hilir,Terra,high,44,349,DATA CONTOH — bukan data operasional
+2026-10-10,0625,1.5342,102.043,Riau,Bengkalis,Aqua,low,7,312,DATA CONTOH — bukan data operasional
+2026-10-10,1430,0.2793,101.8037,Riau,Pelalawan,Suomi-NPP,nominal,10,315,DATA CONTOH — bukan data operasional
+2026-10-10,1550,1.9713,100.8899,Riau,Rokan Hilir,NOAA-20,high,25,330,DATA CONTOH — bukan data operasional
+2026-10-10,1705,0.746,101.9822,Riau,Siak,Terra,high,28,333,DATA CONTOH — bukan data operasional
+2026-10-10,1840,-0.2992,103.1198,Riau,Indragiri Hilir,Aqua,high,31,336,DATA CONTOH — bukan data operasional
+2026-10-10,0135,1.4366,102.1167,Riau,Bengkalis,Suomi-NPP,low,22,327,DATA CONTOH — bukan data operasional
+2026-10-11,0210,0.3089,101.7902,Riau,Pelalawan,NOAA-20,nominal,25,330,DATA CONTOH — bukan data operasional
+2026-10-11,0530,2.0019,100.8159,Riau,Rokan Hilir,Terra,high,40,345,DATA CONTOH — bukan data operasional
+2026-10-11,0625,0.7369,101.9746,Riau,Siak,Aqua,high,43,348,DATA CONTOH — bukan data operasional
+2026-10-11,1430,-0.2568,103.2215,Riau,Indragiri Hilir,Suomi-NPP,high,18,323,DATA CONTOH — bukan data operasional
+2026-10-11,1550,1.4699,102.11,Riau,Bengkalis,NOAA-20,low,9,314,DATA CONTOH — bukan data operasional
+2026-10-11,1705,0.365,101.8929,Riau,Pelalawan,Terra,nominal,12,317,DATA CONTOH — bukan data operasional
+2026-10-11,1840,2.0296,100.8934,Riau,Rokan Hilir,Aqua,high,27,332,DATA CONTOH — bukan data operasional
+2026-10-11,0135,0.7142,101.962,Riau,Siak,Suomi-NPP,high,30,335,DATA CONTOH — bukan data operasional
+2026-10-12,0210,-0.2856,103.0881,Riau,Indragiri Hilir,NOAA-20,high,33,338,DATA CONTOH — bukan data operasional
+2026-10-12,0530,1.4811,102.1393,Riau,Bengkalis,Terra,low,24,329,DATA CONTOH — bukan data operasional
+2026-10-12,0625,0.3951,101.8495,Riau,Pelalawan,Aqua,nominal,27,332,DATA CONTOH — bukan data operasional
+2026-10-12,1430,2.129,100.9032,Riau,Rokan Hilir,Suomi-NPP,high,42,347,DATA CONTOH — bukan data operasional
+2026-10-12,1550,0.855,102.0154,Riau,Siak,NOAA-20,high,45,350,DATA CONTOH — bukan data operasional
+2026-10-12,1705,-0.3642,103.1933,Riau,Indragiri Hilir,Terra,high,20,325,DATA CONTOH — bukan data operasional
+2026-10-12,1840,1.4441,102.1059,Riau,Bengkalis,Aqua,low,11,316,DATA CONTOH — bukan data operasional
+2026-10-12,0135,0.3162,101.9291,Riau,Pelalawan,Suomi-NPP,nominal,14,319,DATA CONTOH — bukan data operasional
+2026-10-12,0210,2.0455,100.9167,Riau,Rokan Hilir,NOAA-20,high,29,334,DATA CONTOH — bukan data operasional
+2026-10-12,0530,0.833,102.0524,Riau,Siak,Terra,high,32,337,DATA CONTOH — bukan data operasional
+2026-10-13,0625,-0.3903,103.1868,Riau,Indragiri Hilir,Aqua,high,35,340,DATA CONTOH — bukan data operasional
+2026-10-13,1430,1.4158,102.1336,Riau,Bengkalis,Suomi-NPP,low,26,331,DATA CONTOH — bukan data operasional
+2026-10-13,1550,0.4104,101.9201,Riau,Pelalawan,NOAA-20,nominal,29,334,DATA CONTOH — bukan data operasional
+2026-10-13,1705,1.9844,100.91,Riau,Rokan Hilir,Terra,high,44,349,DATA CONTOH — bukan data operasional
+2026-10-13,1840,0.812,102.0094,Riau,Siak,Aqua,high,19,324,DATA CONTOH — bukan data operasional
+2026-10-13,0135,-0.3163,103.2184,Riau,Indragiri Hilir,Suomi-NPP,high,22,327,DATA CONTOH — bukan data operasional
+2026-10-13,0210,1.5524,102.0888,Riau,Bengkalis,NOAA-20,low,13,318,DATA CONTOH — bukan data operasional
+2026-10-13,0530,0.2701,101.9147,Riau,Pelalawan,Terra,nominal,16,321,DATA CONTOH — bukan data operasional
+2026-10-13,0625,2.0158,100.8216,Riau,Rokan Hilir,Aqua,high,31,336,DATA CONTOH — bukan data operasional
+2026-10-13,1430,0.7222,102.0802,Riau,Siak,Suomi-NPP,high,34,339,DATA CONTOH — bukan data operasional
+2026-10-13,1550,-0.2673,103.23,Riau,Indragiri Hilir,NOAA-20,high,37,342,DATA CONTOH — bukan data operasional
+2026-10-13,1705,1.5379,102.0051,Riau,Bengkalis,Terra,low,28,333,DATA CONTOH — bukan data operasional
+2026-10-13,1840,0.2859,101.7987,Riau,Pelalawan,Aqua,nominal,31,336,DATA CONTOH — bukan data operasional
+2026-10-14,0135,2.0764,100.901,Riau,Rokan Hilir,Suomi-NPP,high,18,323,DATA CONTOH — bukan data operasional
+2026-10-14,0210,0.7501,101.9692,Riau,Siak,NOAA-20,high,21,326,DATA CONTOH — bukan data operasional
+2026-10-14,0530,-0.26,103.198,Riau,Indragiri Hilir,Terra,high,24,329,DATA CONTOH — bukan data operasional
+2026-10-14,0625,1.5606,102.0546,Riau,Bengkalis,Aqua,low,15,320,DATA CONTOH — bukan data operasional
+2026-10-14,1430,0.3856,101.7825,Riau,Pelalawan,Suomi-NPP,nominal,18,323,DATA CONTOH — bukan data operasional
+2026-10-14,1550,2.022,100.7974,Riau,Rokan Hilir,NOAA-20,high,33,338,DATA CONTOH — bukan data operasional
+2026-10-14,1705,0.8595,102.0375,Riau,Siak,Terra,high,36,341,DATA CONTOH — bukan data operasional
+2026-10-14,1840,-0.3367,103.127,Riau,Indragiri Hilir,Aqua,high,39,344,DATA CONTOH — bukan data operasional
+2026-10-14,0135,1.4436,102.0808,Riau,Bengkalis,Suomi-NPP,low,30,335,DATA CONTOH — bukan data operasional
+2026-10-14,0210,0.3256,101.8879,Riau,Pelalawan,NOAA-20,nominal,33,338,DATA CONTOH — bukan data operasional
+2026-10-14,0530,2.1181,100.924,Riau,Rokan Hilir,Terra,high,20,325,DATA CONTOH — bukan data operasional
+2026-10-14,0625,0.7348,101.9787,Riau,Siak,Aqua,high,23,328,DATA CONTOH — bukan data operasional
+2026-10-15,1430,-0.2446,103.1951,Riau,Indragiri Hilir,Suomi-NPP,high,26,331,DATA CONTOH — bukan data operasional
+2026-10-15,1550,1.5486,102.0381,Riau,Bengkalis,NOAA-20,low,17,322,DATA CONTOH — bukan data operasional
+2026-10-15,1705,0.275,101.8334,Riau,Pelalawan,Terra,nominal,20,325,DATA CONTOH — bukan data operasional
+2026-10-15,1840,2.0815,100.8965,Riau,Rokan Hilir,Aqua,high,35,340,DATA CONTOH — bukan data operasional
+2026-10-15,0135,0.8214,101.9797,Riau,Siak,Suomi-NPP,high,38,343,DATA CONTOH — bukan data operasional
+2026-10-15,0210,-0.2599,103.2268,Riau,Indragiri Hilir,NOAA-20,high,41,346,DATA CONTOH — bukan data operasional
+2026-10-15,0530,1.4632,102.139,Riau,Bengkalis,Terra,low,32,337,DATA CONTOH — bukan data operasional
+2026-10-15,0625,0.3696,101.8095,Riau,Pelalawan,Aqua,nominal,7,312,DATA CONTOH — bukan data operasional
+2026-10-15,1430,2.1022,100.8594,Riau,Rokan Hilir,Suomi-NPP,high,22,327,DATA CONTOH — bukan data operasional
+2026-10-15,1550,0.7169,102.0088,Riau,Siak,NOAA-20,high,25,330,DATA CONTOH — bukan data operasional
+2026-10-15,1705,-0.3264,103.1142,Riau,Indragiri Hilir,Terra,high,28,333,DATA CONTOH — bukan data operasional
+2026-10-16,1840,1.454,102.0567,Riau,Bengkalis,Aqua,low,19,324,DATA CONTOH — bukan data operasional
+2026-10-16,0135,0.4148,101.8647,Riau,Pelalawan,Suomi-NPP,nominal,22,327,DATA CONTOH — bukan data operasional
+2026-10-16,0210,2.1033,100.7914,Riau,Rokan Hilir,NOAA-20,high,37,342,DATA CONTOH — bukan data operasional
+2026-10-16,0530,0.8021,102.0186,Riau,Siak,Terra,high,40,345,DATA CONTOH — bukan data operasional
+2026-10-16,0625,-0.3326,103.2184,Riau,Indragiri Hilir,Aqua,high,43,348,DATA CONTOH — bukan data operasional
+2026-10-16,1430,1.4245,102.0177,Riau,Bengkalis,Suomi-NPP,low,6,311,DATA CONTOH — bukan data operasional
+2026-10-16,1550,0.2998,101.926,Riau,Pelalawan,NOAA-20,nominal,9,314,DATA CONTOH — bukan data operasional
+2026-10-16,1705,2.0097,100.7977,Riau,Rokan Hilir,Terra,high,24,329,DATA CONTOH — bukan data operasional
+2026-10-16,1840,0.7639,101.9856,Riau,Siak,Aqua,high,27,332,DATA CONTOH — bukan data operasional
+2026-10-01,0135,-2.7534,114.2351,Kalimantan Tengah,Pulang Pisau,Suomi-NPP,low,6,311,DATA CONTOH — bukan data operasional
+2026-10-01,0210,-2.0748,114.2981,Kalimantan Tengah,Kapuas,NOAA-20,nominal,9,314,DATA CONTOH — bukan data operasional
+2026-10-02,0530,-1.8785,113.4091,Kalimantan Tengah,Katingan,Terra,high,24,329,DATA CONTOH — bukan data operasional
+2026-10-02,0625,-2.459,112.8898,Kalimantan Tengah,Kotawaringin Timur,Aqua,high,27,332,DATA CONTOH — bukan data operasional
+2026-10-03,1430,-2.7009,114.2281,Kalimantan Tengah,Pulang Pisau,Suomi-NPP,high,30,335,DATA CONTOH — bukan data operasional
+2026-10-03,1550,-2.2293,114.3227,Kalimantan Tengah,Kapuas,NOAA-20,low,21,326,DATA CONTOH — bukan data operasional
+2026-10-03,1705,-1.9364,113.4515,Kalimantan Tengah,Katingan,Terra,nominal,24,329,DATA CONTOH — bukan data operasional
+2026-10-04,1840,-2.3689,112.9842,Kalimantan Tengah,Kotawaringin Timur,Aqua,high,39,344,DATA CONTOH — bukan data operasional
+2026-10-04,0135,-2.6404,114.2213,Kalimantan Tengah,Pulang Pisau,Suomi-NPP,high,42,347,DATA CONTOH — bukan data operasional
+2026-10-04,0210,-2.2098,114.4158,Kalimantan Tengah,Kapuas,NOAA-20,high,45,350,DATA CONTOH — bukan data operasional
+2026-10-05,0530,-1.9206,113.4269,Kalimantan Tengah,Katingan,Terra,low,8,313,DATA CONTOH — bukan data operasional
+2026-10-05,0625,-2.3307,113.0074,Kalimantan Tengah,Kotawaringin Timur,Aqua,nominal,11,316,DATA CONTOH — bukan data operasional
+2026-10-05,1430,-2.7005,114.1787,Kalimantan Tengah,Pulang Pisau,Suomi-NPP,high,26,331,DATA CONTOH — bukan data operasional
+2026-10-05,1550,-2.1253,114.2802,Kalimantan Tengah,Kapuas,NOAA-20,high,29,334,DATA CONTOH — bukan data operasional
+2026-10-06,1705,-1.9122,113.4671,Kalimantan Tengah,Katingan,Terra,high,32,337,DATA CONTOH — bukan data operasional
+2026-10-06,1840,-2.4027,113.0091,Kalimantan Tengah,Kotawaringin Timur,Aqua,low,23,328,DATA CONTOH — bukan data operasional
+2026-10-06,0135,-2.7121,114.1979,Kalimantan Tengah,Pulang Pisau,Suomi-NPP,nominal,26,331,DATA CONTOH — bukan data operasional
+2026-10-06,0210,-2.0705,114.273,Kalimantan Tengah,Kapuas,NOAA-20,high,41,346,DATA CONTOH — bukan data operasional
+2026-10-07,0530,-1.8603,113.3874,Kalimantan Tengah,Katingan,Terra,high,44,349,DATA CONTOH — bukan data operasional
+2026-10-07,0625,-2.4798,112.8717,Kalimantan Tengah,Kotawaringin Timur,Aqua,high,19,324,DATA CONTOH — bukan data operasional
+2026-10-07,1430,-2.6083,114.1628,Kalimantan Tengah,Pulang Pisau,Suomi-NPP,low,10,315,DATA CONTOH — bukan data operasional
+2026-10-07,1550,-2.2092,114.303,Kalimantan Tengah,Kapuas,NOAA-20,nominal,13,318,DATA CONTOH — bukan data operasional
+2026-10-07,1705,-1.9452,113.4733,Kalimantan Tengah,Katingan,Terra,high,28,333,DATA CONTOH — bukan data operasional
+2026-10-08,1840,-2.3626,112.9547,Kalimantan Tengah,Kotawaringin Timur,Aqua,high,31,336,DATA CONTOH — bukan data operasional
+2026-10-08,0135,-2.6577,114.2121,Kalimantan Tengah,Pulang Pisau,Suomi-NPP,high,34,339,DATA CONTOH — bukan data operasional
+2026-10-08,0210,-2.1321,114.4104,Kalimantan Tengah,Kapuas,NOAA-20,low,25,330,DATA CONTOH — bukan data operasional
+2026-10-08,0530,-1.944,113.3887,Kalimantan Tengah,Katingan,Terra,nominal,28,333,DATA CONTOH — bukan data operasional
+2026-10-08,0625,-2.4117,113.0222,Kalimantan Tengah,Kotawaringin Timur,Aqua,high,43,348,DATA CONTOH — bukan data operasional
+2026-10-09,1430,-2.6318,114.1739,Kalimantan Tengah,Pulang Pisau,Suomi-NPP,high,18,323,DATA CONTOH — bukan data operasional
+2026-10-09,1550,-2.1992,114.3016,Kalimantan Tengah,Kapuas,NOAA-20,high,21,326,DATA CONTOH — bukan data operasional
+2026-10-09,1705,-1.9597,113.3632,Kalimantan Tengah,Katingan,Terra,low,12,317,DATA CONTOH — bukan data operasional
+2026-10-09,1840,-2.4698,113.0263,Kalimantan Tengah,Kotawaringin Timur,Aqua,nominal,15,320,DATA CONTOH — bukan data operasional
+2026-10-10,0135,-2.662,114.2531,Kalimantan Tengah,Pulang Pisau,Suomi-NPP,high,30,335,DATA CONTOH — bukan data operasional
+2026-10-10,0210,-2.1933,114.2957,Kalimantan Tengah,Kapuas,NOAA-20,high,33,338,DATA CONTOH — bukan data operasional
+2026-10-10,0530,-1.8747,113.399,Kalimantan Tengah,Katingan,Terra,high,36,341,DATA CONTOH — bukan data operasional
+2026-10-10,0625,-2.4226,112.9789,Kalimantan Tengah,Kotawaringin Timur,Aqua,low,27,332,DATA CONTOH — bukan data operasional
+2026-10-11,1430,-2.6367,114.2051,Kalimantan Tengah,Pulang Pisau,Suomi-NPP,nominal,30,335,DATA CONTOH — bukan data operasional
+2026-10-11,1550,-2.0918,114.421,Kalimantan Tengah,Kapuas,NOAA-20,high,45,350,DATA CONTOH — bukan data operasional
+2026-10-11,1705,-1.8367,113.3362,Kalimantan Tengah,Katingan,Terra,high,20,325,DATA CONTOH — bukan data operasional
+2026-10-12,1840,-2.389,112.8869,Kalimantan Tengah,Kotawaringin Timur,Aqua,high,23,328,DATA CONTOH — bukan data operasional
+2026-10-12,0135,-2.7212,114.2931,Kalimantan Tengah,Pulang Pisau,Suomi-NPP,low,14,319,DATA CONTOH — bukan data operasional
+2026-10-12,0210,-2.1309,114.3966,Kalimantan Tengah,Kapuas,NOAA-20,nominal,17,322,DATA CONTOH — bukan data operasional
+2026-10-12,0530,-1.8358,113.3948,Kalimantan Tengah,Katingan,Terra,high,32,337,DATA CONTOH — bukan data operasional
+2026-10-13,0625,-2.4773,112.9494,Kalimantan Tengah,Kotawaringin Timur,Aqua,high,35,340,DATA CONTOH — bukan data operasional
+2026-10-13,1430,-2.7558,114.2988,Kalimantan Tengah,Pulang Pisau,Suomi-NPP,high,38,343,DATA CONTOH — bukan data operasional
+2026-10-13,1550,-2.1915,114.3726,Kalimantan Tengah,Kapuas,NOAA-20,low,29,334,DATA CONTOH — bukan data operasional
+2026-10-13,1705,-1.9156,113.3625,Kalimantan Tengah,Katingan,Terra,nominal,32,337,DATA CONTOH — bukan data operasional
+2026-10-13,1840,-2.4387,112.9042,Kalimantan Tengah,Kotawaringin Timur,Aqua,high,19,324,DATA CONTOH — bukan data operasional
+2026-10-14,0135,-2.7436,114.1617,Kalimantan Tengah,Pulang Pisau,Suomi-NPP,high,22,327,DATA CONTOH — bukan data operasional
+2026-10-14,0210,-2.2073,114.3377,Kalimantan Tengah,Kapuas,NOAA-20,high,25,330,DATA CONTOH — bukan data operasional
+2026-10-14,0530,-1.8305,113.3459,Kalimantan Tengah,Katingan,Terra,low,16,321,DATA CONTOH — bukan data operasional
+2026-10-14,0625,-2.3629,112.9963,Kalimantan Tengah,Kotawaringin Timur,Aqua,nominal,19,324,DATA CONTOH — bukan data operasional
+2026-10-15,1430,-2.6439,114.155,Kalimantan Tengah,Pulang Pisau,Suomi-NPP,high,34,339,DATA CONTOH — bukan data operasional
+2026-10-15,1550,-2.1804,114.3047,Kalimantan Tengah,Kapuas,NOAA-20,high,37,342,DATA CONTOH — bukan data operasional
+2026-10-15,1705,-1.885,113.4787,Kalimantan Tengah,Katingan,Terra,high,40,345,DATA CONTOH — bukan data operasional
+2026-10-16,1840,-2.4693,112.9335,Kalimantan Tengah,Kotawaringin Timur,Aqua,low,31,336,DATA CONTOH — bukan data operasional
+2026-10-16,0135,-2.7546,114.2812,Kalimantan Tengah,Pulang Pisau,Suomi-NPP,nominal,6,311,DATA CONTOH — bukan data operasional
+2026-10-16,0210,-2.138,114.4251,Kalimantan Tengah,Kapuas,NOAA-20,high,21,326,DATA CONTOH — bukan data operasional
+2026-10-01,0135,-3.1485,105.4228,Sumatera Selatan,Ogan Komering Ilir,Suomi-NPP,low,6,311,DATA CONTOH — bukan data operasional
+2026-10-02,0210,-2.4057,104.4356,Sumatera Selatan,Banyuasin,NOAA-20,nominal,9,314,DATA CONTOH — bukan data operasional
+2026-10-02,0530,-2.827,103.8114,Sumatera Selatan,Musi Banyuasin,Terra,high,24,329,DATA CONTOH — bukan data operasional
+2026-10-03,0625,-3.3099,104.6036,Sumatera Selatan,Ogan Ilir,Aqua,high,27,332,DATA CONTOH — bukan data operasional
+2026-10-03,1430,-3.2175,105.3981,Sumatera Selatan,Ogan Komering Ilir,Suomi-NPP,high,30,335,DATA CONTOH — bukan data operasional
+2026-10-04,1550,-2.4731,104.4204,Sumatera Selatan,Banyuasin,NOAA-20,low,21,326,DATA CONTOH — bukan data operasional
+2026-10-04,1705,-2.683,103.8725,Sumatera Selatan,Musi Banyuasin,Terra,nominal,24,329,DATA CONTOH — bukan data operasional
+2026-10-05,1840,-3.2642,104.6534,Sumatera Selatan,Ogan Ilir,Aqua,high,39,344,DATA CONTOH — bukan data operasional
+2026-10-05,0135,-3.1282,105.3094,Sumatera Selatan,Ogan Komering Ilir,Suomi-NPP,high,42,347,DATA CONTOH — bukan data operasional
+2026-10-05,0210,-2.4743,104.509,Sumatera Selatan,Banyuasin,NOAA-20,high,45,350,DATA CONTOH — bukan data operasional
+2026-10-06,0530,-2.6789,103.8987,Sumatera Selatan,Musi Banyuasin,Terra,low,8,313,DATA CONTOH — bukan data operasional
+2026-10-06,0625,-3.2729,104.7261,Sumatera Selatan,Ogan Ilir,Aqua,nominal,11,316,DATA CONTOH — bukan data operasional
+2026-10-06,1430,-3.2119,105.3283,Sumatera Selatan,Ogan Komering Ilir,Suomi-NPP,high,26,331,DATA CONTOH — bukan data operasional
+2026-10-07,1550,-2.3844,104.4254,Sumatera Selatan,Banyuasin,NOAA-20,high,29,334,DATA CONTOH — bukan data operasional
+2026-10-07,1705,-2.7462,103.89,Sumatera Selatan,Musi Banyuasin,Terra,high,32,337,DATA CONTOH — bukan data operasional
+2026-10-07,1840,-3.2658,104.6382,Sumatera Selatan,Ogan Ilir,Aqua,low,23,328,DATA CONTOH — bukan data operasional
+2026-10-08,0135,-3.2089,105.2761,Sumatera Selatan,Ogan Komering Ilir,Suomi-NPP,nominal,26,331,DATA CONTOH — bukan data operasional
+2026-10-08,0210,-2.4018,104.5661,Sumatera Selatan,Banyuasin,NOAA-20,high,41,346,DATA CONTOH — bukan data operasional
+2026-10-08,0530,-2.6885,103.8492,Sumatera Selatan,Musi Banyuasin,Terra,high,44,349,DATA CONTOH — bukan data operasional
+2026-10-08,0625,-3.2099,104.6016,Sumatera Selatan,Ogan Ilir,Aqua,high,19,324,DATA CONTOH — bukan data operasional
+2026-10-09,1430,-3.2795,105.3157,Sumatera Selatan,Ogan Komering Ilir,Suomi-NPP,low,10,315,DATA CONTOH — bukan data operasional
+2026-10-09,1550,-2.4085,104.4448,Sumatera Selatan,Banyuasin,NOAA-20,nominal,13,318,DATA CONTOH — bukan data operasional
+2026-10-09,1705,-2.7423,103.9061,Sumatera Selatan,Musi Banyuasin,Terra,high,28,333,DATA CONTOH — bukan data operasional
+2026-10-10,1840,-3.2868,104.655,Sumatera Selatan,Ogan Ilir,Aqua,high,31,336,DATA CONTOH — bukan data operasional
+2026-10-10,0135,-3.1348,105.2858,Sumatera Selatan,Ogan Komering Ilir,Suomi-NPP,high,34,339,DATA CONTOH — bukan data operasional
+2026-10-10,0210,-2.3807,104.5598,Sumatera Selatan,Banyuasin,NOAA-20,low,25,330,DATA CONTOH — bukan data operasional
+2026-10-11,0530,-2.7389,103.8386,Sumatera Selatan,Musi Banyuasin,Terra,nominal,28,333,DATA CONTOH — bukan data operasional
+2026-10-11,0625,-3.273,104.6342,Sumatera Selatan,Ogan Ilir,Aqua,high,43,348,DATA CONTOH — bukan data operasional
+2026-10-11,1430,-3.2389,105.3954,Sumatera Selatan,Ogan Komering Ilir,Suomi-NPP,high,18,323,DATA CONTOH — bukan data operasional
+2026-10-12,1550,-2.4596,104.5124,Sumatera Selatan,Banyuasin,NOAA-20,high,21,326,DATA CONTOH — bukan data operasional
+2026-10-12,1705,-2.6932,103.9287,Sumatera Selatan,Musi Banyuasin,Terra,low,12,317,DATA CONTOH — bukan data operasional
+2026-10-12,1840,-3.2415,104.5986,Sumatera Selatan,Ogan Ilir,Aqua,nominal,15,320,DATA CONTOH — bukan data operasional
+2026-10-12,0135,-3.1446,105.3374,Sumatera Selatan,Ogan Komering Ilir,Suomi-NPP,high,30,335,DATA CONTOH — bukan data operasional
+2026-10-13,0210,-2.4308,104.5508,Sumatera Selatan,Banyuasin,NOAA-20,high,33,338,DATA CONTOH — bukan data operasional
+2026-10-13,0530,-2.7333,103.8781,Sumatera Selatan,Musi Banyuasin,Terra,high,36,341,DATA CONTOH — bukan data operasional
+2026-10-13,0625,-3.3121,104.6754,Sumatera Selatan,Ogan Ilir,Aqua,low,27,332,DATA CONTOH — bukan data operasional
+2026-10-13,1430,-3.1411,105.3122,Sumatera Selatan,Ogan Komering Ilir,Suomi-NPP,nominal,30,335,DATA CONTOH — bukan data operasional
+2026-10-14,1550,-2.4424,104.5455,Sumatera Selatan,Banyuasin,NOAA-20,high,45,350,DATA CONTOH — bukan data operasional
+2026-10-14,1705,-2.7826,103.813,Sumatera Selatan,Musi Banyuasin,Terra,high,20,325,DATA CONTOH — bukan data operasional
+2026-10-14,1840,-3.1825,104.6312,Sumatera Selatan,Ogan Ilir,Aqua,high,23,328,DATA CONTOH — bukan data operasional
+2026-10-15,0135,-3.2719,105.3498,Sumatera Selatan,Ogan Komering Ilir,Suomi-NPP,low,14,319,DATA CONTOH — bukan data operasional
+2026-10-15,0210,-2.4187,104.5206,Sumatera Selatan,Banyuasin,NOAA-20,nominal,17,322,DATA CONTOH — bukan data operasional
+2026-10-15,0530,-2.8169,103.7993,Sumatera Selatan,Musi Banyuasin,Terra,high,32,337,DATA CONTOH — bukan data operasional
+2026-10-16,0625,-3.2149,104.667,Sumatera Selatan,Ogan Ilir,Aqua,high,35,340,DATA CONTOH — bukan data operasional
+2026-10-16,1430,-3.2762,105.3039,Sumatera Selatan,Ogan Komering Ilir,Suomi-NPP,high,38,343,DATA CONTOH — bukan data operasional
+2026-10-16,1550,-2.4362,104.5724,Sumatera Selatan,Banyuasin,NOAA-20,low,29,334,DATA CONTOH — bukan data operasional
+2026-10-01,0135,-1.6793,110.46,Kalimantan Barat,Ketapang,Suomi-NPP,low,6,311,DATA CONTOH — bukan data operasional
+2026-10-02,0210,-0.0757,109.4145,Kalimantan Barat,Kubu Raya,NOAA-20,nominal,9,314,DATA CONTOH — bukan data operasional
+2026-10-03,0530,0.1829,110.5873,Kalimantan Barat,Sanggau,Terra,high,24,329,DATA CONTOH — bukan data operasional
+2026-10-04,0625,0.0874,111.5214,Kalimantan Barat,Sintang,Aqua,high,27,332,DATA CONTOH — bukan data operasional
+2026-10-04,1430,-1.7538,110.4653,Kalimantan Barat,Ketapang,Suomi-NPP,high,30,335,DATA CONTOH — bukan data operasional
+2026-10-05,1550,-0.1147,109.44,Kalimantan Barat,Kubu Raya,NOAA-20,low,21,326,DATA CONTOH — bukan data operasional
+2026-10-05,1705,0.1036,110.5267,Kalimantan Barat,Sanggau,Terra,nominal,24,329,DATA CONTOH — bukan data operasional
+2026-10-06,1840,0.0395,111.5316,Kalimantan Barat,Sintang,Aqua,high,39,344,DATA CONTOH — bukan data operasional
+2026-10-06,0135,-1.7551,110.3519,Kalimantan Barat,Ketapang,Suomi-NPP,high,42,347,DATA CONTOH — bukan data operasional
+2026-10-07,0210,-0.0908,109.4964,Kalimantan Barat,Kubu Raya,NOAA-20,high,45,350,DATA CONTOH — bukan data operasional
+2026-10-07,0530,0.1713,110.514,Kalimantan Barat,Sanggau,Terra,low,8,313,DATA CONTOH — bukan data operasional
+2026-10-08,0625,0.1488,111.4348,Kalimantan Barat,Sintang,Aqua,nominal,11,316,DATA CONTOH — bukan data operasional
+2026-10-08,1430,-1.6716,110.4762,Kalimantan Barat,Ketapang,Suomi-NPP,high,26,331,DATA CONTOH — bukan data operasional
+2026-10-09,1550,-0.1684,109.5203,Kalimantan Barat,Kubu Raya,NOAA-20,high,29,334,DATA CONTOH — bukan data operasional
+2026-10-10,1705,0.1861,110.582,Kalimantan Barat,Sanggau,Terra,high,32,337,DATA CONTOH — bukan data operasional
+2026-10-11,1840,0.1337,111.4287,Kalimantan Barat,Sintang,Aqua,low,23,328,DATA CONTOH — bukan data operasional
+2026-10-11,0135,-1.7771,110.4649,Kalimantan Barat,Ketapang,Suomi-NPP,nominal,26,331,DATA CONTOH — bukan data operasional
+2026-10-12,0210,-0.0676,109.4764,Kalimantan Barat,Kubu Raya,NOAA-20,high,41,346,DATA CONTOH — bukan data operasional
+2026-10-12,0530,0.084,110.5843,Kalimantan Barat,Sanggau,Terra,high,44,349,DATA CONTOH — bukan data operasional
+2026-10-13,0625,0.0308,111.4903,Kalimantan Barat,Sintang,Aqua,high,19,324,DATA CONTOH — bukan data operasional
+2026-10-14,1430,-1.7214,110.4404,Kalimantan Barat,Ketapang,Suomi-NPP,low,10,315,DATA CONTOH — bukan data operasional
+2026-10-14,1550,-0.0767,109.442,Kalimantan Barat,Kubu Raya,NOAA-20,nominal,13,318,DATA CONTOH — bukan data operasional
+2026-10-15,1705,0.1478,110.5476,Kalimantan Barat,Sanggau,Terra,high,28,333,DATA CONTOH — bukan data operasional
+2026-10-16,1840,0.0496,111.4212,Kalimantan Barat,Sintang,Aqua,high,31,336,DATA CONTOH — bukan data operasional
+2026-10-01,0135,-1.6351,103.6801,Jambi,Muaro Jambi,Suomi-NPP,low,6,311,DATA CONTOH — bukan data operasional
+2026-10-02,0210,-1.1323,103.9099,Jambi,Tanjung Jabung Timur,NOAA-20,nominal,9,314,DATA CONTOH — bukan data operasional
+2026-10-03,0530,-0.7614,103.4745,Jambi,Tanjung Jabung Barat,Terra,high,24,329,DATA CONTOH — bukan data operasional
+2026-10-04,0625,-2.2756,102.6916,Jambi,Sarolangun,Aqua,high,27,332,DATA CONTOH — bukan data operasional
+2026-10-05,1430,-1.5432,103.6005,Jambi,Muaro Jambi,Suomi-NPP,high,30,335,DATA CONTOH — bukan data operasional
+2026-10-05,1550,-1.2181,103.9285,Jambi,Tanjung Jabung Timur,NOAA-20,low,21,326,DATA CONTOH — bukan data operasional
+2026-10-06,1705,-0.8293,103.3739,Jambi,Tanjung Jabung Barat,Terra,nominal,24,329,DATA CONTOH — bukan data operasional
+2026-10-06,1840,-2.3332,102.7767,Jambi,Sarolangun,Aqua,high,39,344,DATA CONTOH — bukan data operasional
+2026-10-07,0135,-1.5977,103.6726,Jambi,Muaro Jambi,Suomi-NPP,high,42,347,DATA CONTOH — bukan data operasional
+2026-10-08,0210,-1.1909,103.9309,Jambi,Tanjung Jabung Timur,NOAA-20,high,45,350,DATA CONTOH — bukan data operasional
+2026-10-08,0530,-0.8623,103.3286,Jambi,Tanjung Jabung Barat,Terra,low,8,313,DATA CONTOH — bukan data operasional
+2026-10-09,0625,-2.2248,102.728,Jambi,Sarolangun,Aqua,nominal,11,316,DATA CONTOH — bukan data operasional
+2026-10-10,1430,-1.5499,103.6351,Jambi,Muaro Jambi,Suomi-NPP,high,26,331,DATA CONTOH — bukan data operasional
+2026-10-11,1550,-1.2147,103.9053,Jambi,Tanjung Jabung Timur,NOAA-20,high,29,334,DATA CONTOH — bukan data operasional
+2026-10-12,1705,-0.8119,103.3318,Jambi,Tanjung Jabung Barat,Terra,high,32,337,DATA CONTOH — bukan data operasional
+2026-10-12,1840,-2.2555,102.7477,Jambi,Sarolangun,Aqua,low,23,328,DATA CONTOH — bukan data operasional
+2026-10-13,0135,-1.6441,103.6183,Jambi,Muaro Jambi,Suomi-NPP,nominal,26,331,DATA CONTOH — bukan data operasional
+2026-10-13,0210,-1.1881,103.9469,Jambi,Tanjung Jabung Timur,NOAA-20,high,41,346,DATA CONTOH — bukan data operasional
+2026-10-14,0530,-0.8548,103.3396,Jambi,Tanjung Jabung Barat,Terra,high,44,349,DATA CONTOH — bukan data operasional
+2026-10-15,0625,-2.2292,102.667,Jambi,Sarolangun,Aqua,high,19,324,DATA CONTOH — bukan data operasional
+2026-10-16,1430,-1.5288,103.5944,Jambi,Muaro Jambi,Suomi-NPP,low,10,315,DATA CONTOH — bukan data operasional
+2026-10-03,0135,-3.2814,114.973,Kalimantan Selatan,Banjar,Suomi-NPP,low,6,311,DATA CONTOH — bukan data operasional
+2026-10-05,0210,-3.7905,114.7219,Kalimantan Selatan,Tanah Laut,NOAA-20,nominal,9,314,DATA CONTOH — bukan data operasional
+2026-10-07,0530,-3.0049,114.6856,Kalimantan Selatan,Barito Kuala,Terra,high,24,329,DATA CONTOH — bukan data operasional
+2026-10-08,0625,-2.8783,115.0947,Kalimantan Selatan,Tapin,Aqua,high,27,332,DATA CONTOH — bukan data operasional
+2026-10-11,1430,-3.2742,114.8305,Kalimantan Selatan,Banjar,Suomi-NPP,high,30,335,DATA CONTOH — bukan data operasional
+2026-10-13,1550,-3.8761,114.741,Kalimantan Selatan,Tanah Laut,NOAA-20,low,21,326,DATA CONTOH — bukan data operasional
+2026-10-16,1705,-3.0895,114.73,Kalimantan Selatan,Barito Kuala,Terra,nominal,24,329,DATA CONTOH — bukan data operasional
+2026-10-01,0135,-0.4408,116.9824,Kalimantan Timur,Kutai Kartanegara,Suomi-NPP,low,6,311,DATA CONTOH — bukan data operasional
+2026-10-02,0210,0.5556,117.4668,Kalimantan Timur,Kutai Timur,NOAA-20,nominal,9,314,DATA CONTOH — bukan data operasional
+2026-10-03,0530,2.1254,117.3895,Kalimantan Timur,Berau,Terra,high,24,329,DATA CONTOH — bukan data operasional
+2026-10-03,0625,-0.4946,116.9882,Kalimantan Timur,Kutai Kartanegara,Aqua,high,27,332,DATA CONTOH — bukan data operasional
+2026-10-04,1430,0.5586,117.5108,Kalimantan Timur,Kutai Timur,Suomi-NPP,high,30,335,DATA CONTOH — bukan data operasional
+2026-10-05,1550,2.0713,117.5107,Kalimantan Timur,Berau,NOAA-20,low,21,326,DATA CONTOH — bukan data operasional
+2026-10-05,1705,-0.448,116.9967,Kalimantan Timur,Kutai Kartanegara,Terra,nominal,24,329,DATA CONTOH — bukan data operasional
+2026-10-06,1840,0.5834,117.5571,Kalimantan Timur,Kutai Timur,Aqua,high,39,344,DATA CONTOH — bukan data operasional
+2026-10-06,0135,1.9845,117.4133,Kalimantan Timur,Berau,Suomi-NPP,high,42,347,DATA CONTOH — bukan data operasional
+2026-10-07,0210,-0.5035,116.9938,Kalimantan Timur,Kutai Kartanegara,NOAA-20,high,45,350,DATA CONTOH — bukan data operasional
+2026-10-08,0530,0.4416,117.4416,Kalimantan Timur,Kutai Timur,Terra,low,8,313,DATA CONTOH — bukan data operasional
+2026-10-08,0625,2.1158,117.4259,Kalimantan Timur,Berau,Aqua,nominal,11,316,DATA CONTOH — bukan data operasional
+2026-10-09,1430,-0.4988,117.0386,Kalimantan Timur,Kutai Kartanegara,Suomi-NPP,high,26,331,DATA CONTOH — bukan data operasional
+2026-10-09,1550,0.5635,117.5077,Kalimantan Timur,Kutai Timur,NOAA-20,high,29,334,DATA CONTOH — bukan data operasional
+2026-10-10,1705,1.9764,117.514,Kalimantan Timur,Berau,Terra,high,32,337,DATA CONTOH — bukan data operasional
+2026-10-11,1840,-0.4088,116.9239,Kalimantan Timur,Kutai Kartanegara,Aqua,low,23,328,DATA CONTOH — bukan data operasional
+2026-10-12,0135,0.4651,117.5498,Kalimantan Timur,Kutai Timur,Suomi-NPP,nominal,26,331,DATA CONTOH — bukan data operasional
+2026-10-12,0210,1.9952,117.5286,Kalimantan Timur,Berau,NOAA-20,high,41,346,DATA CONTOH — bukan data operasional
+2026-10-13,0530,-0.4765,117.0291,Kalimantan Timur,Kutai Kartanegara,Terra,high,44,349,DATA CONTOH — bukan data operasional
+2026-10-13,0625,0.4771,117.5884,Kalimantan Timur,Kutai Timur,Aqua,high,19,324,DATA CONTOH — bukan data operasional
+2026-10-14,1430,2.0733,117.4534,Kalimantan Timur,Berau,Suomi-NPP,low,10,315,DATA CONTOH — bukan data operasional
+2026-10-15,1550,-0.4091,116.9493,Kalimantan Timur,Kutai Kartanegara,NOAA-20,nominal,13,318,DATA CONTOH — bukan data operasional
+2026-10-16,1705,0.4479,117.5142,Kalimantan Timur,Kutai Timur,Terra,high,28,333,DATA CONTOH — bukan data operasional
+2026-10-02,0135,2.0789,99.7787,Sumatera Utara,Labuhanbatu,Suomi-NPP,low,6,311,DATA CONTOH — bukan data operasional
+2026-10-05,0210,1.4117,99.2326,Sumatera Utara,Tapanuli Selatan,NOAA-20,nominal,9,314,DATA CONTOH — bukan data operasional
+2026-10-08,0530,2.154,99.87,Sumatera Utara,Labuhanbatu,Terra,high,24,329,DATA CONTOH — bukan data operasional
+2026-10-12,0625,1.5133,99.1508,Sumatera Utara,Tapanuli Selatan,Aqua,high,27,332,DATA CONTOH — bukan data operasional
+2026-10-15,1430,2.1101,99.758,Sumatera Utara,Labuhanbatu,Suomi-NPP,high,30,335,DATA CONTOH — bukan data operasional
+2026-10-01,0135,-9.5913,120.2845,Nusa Tenggara Timur,Sumba Timur,Suomi-NPP,low,6,311,DATA CONTOH — bukan data operasional
+2026-10-03,0210,-8.6654,122.2687,Nusa Tenggara Timur,Sikka,NOAA-20,nominal,9,314,DATA CONTOH — bukan data operasional
+2026-10-04,0530,-8.5193,120.4407,Nusa Tenggara Timur,Manggarai,Terra,high,24,329,DATA CONTOH — bukan data operasional
+2026-10-06,0625,-9.7157,120.2737,Nusa Tenggara Timur,Sumba Timur,Aqua,high,27,332,DATA CONTOH — bukan data operasional
+2026-10-07,1430,-8.6516,122.2647,Nusa Tenggara Timur,Sikka,Suomi-NPP,high,30,335,DATA CONTOH — bukan data operasional
+2026-10-09,1550,-8.598,120.5306,Nusa Tenggara Timur,Manggarai,NOAA-20,low,21,326,DATA CONTOH — bukan data operasional
+2026-10-10,1705,-9.6738,120.3317,Nusa Tenggara Timur,Sumba Timur,Terra,nominal,24,329,DATA CONTOH — bukan data operasional
+2026-10-12,1840,-8.6547,122.1679,Nusa Tenggara Timur,Sikka,Aqua,high,39,344,DATA CONTOH — bukan data operasional
+2026-10-14,0135,-8.498,120.4482,Nusa Tenggara Timur,Manggarai,Suomi-NPP,high,42,347,DATA CONTOH — bukan data operasional
+2026-10-15,0210,-9.7075,120.2255,Nusa Tenggara Timur,Sumba Timur,NOAA-20,high,45,350,DATA CONTOH — bukan data operasional
