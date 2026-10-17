@@ -61,6 +61,7 @@ function provinceNames(priority, hotspots, bmkg) {
   for (const row of hotspots ?? []) if (row.provinsi) names.add(row.provinsi);
   for (const row of bmkg ?? []) if (row.provinsi) names.add(row.provinsi);
   names.delete("Lainnya");
+  names.delete("Belum terpetakan");
   return [...names];
 }
 

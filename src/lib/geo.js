@@ -65,6 +65,15 @@ function dist2(lat1, lon1, lat2, lon2) {
   return x * x + y * y;
 }
 
+export function provinceCenters(names) {
+  const want = names ? new Set(names) : null;
+  return BOXES.filter((box) => !want || want.has(box.name)).map((box) => ({
+    name: box.name,
+    lat: box.lat,
+    lon: box.lon,
+  }));
+}
+
 export function assignProvince(lat, lon) {
   const latitude = Number(lat);
   const longitude = Number(lon);

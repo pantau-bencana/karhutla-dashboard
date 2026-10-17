@@ -4,7 +4,12 @@ import { deriveDashboard, defaultRange } from "../src/lib/derive.js";
 import { areaContains, assignProvince, INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../src/lib/geo.js";
 import { looksLikeCsv, parseCsv } from "../src/lib/csv.js";
 import { fetchCsv, loadAll, redactFirmsUrl } from "../src/lib/loadData.js";
-import { parseRoute } from "../src/lib/route.js";
+import { GLOSSARY } from "../src/lib/glossary.js";
+import { HAZARDS } from "../src/lib/hazards.js";
+import { ispuFromPm25 } from "../src/lib/ispuEstimate.js";
+import { parseLocation, parseRoute } from "../src/lib/route.js";
+import { karhutlaRankingPlan } from "../src/lib/ranking.js";
+import { REFRESH_CRON, nextScheduledRun } from "../src/lib/schedule.js";
 import { monitoringSources } from "../src/lib/sourceStatus.js";
 import { levelFromThresholds, statusProvinsi } from "../src/lib/warning.js";
 
@@ -56,7 +61,11 @@ for (const dataset of config.datasets) {
 }
 
 async function readFiles(url) {
-  return { ok: true, status: 200, text: async () => readFileSync(url, "utf8") };
+  const textUrl = String(url);
+  if (textUrl.includes("data/live/") || textUrl.includes("data/static/")) {
+    return { ok: false, status: 404, text: async () => "missing" };
+  }
+  return { ok: true, status: 200, text: async () => readFileSync(textUrl, "utf8") };
 }
 
 const loaded = await loadAll(config, { resolveUrl: (url) => url, fetchImpl: readFiles });
@@ -156,10 +165,10 @@ const liveHotspot = live.find((feed) => feed.id === "hotspot");
 assert.equal(liveHotspot.status, "berhasil");
 assert.equal(liveHotspot.contoh, false);
 assert.equal(liveHotspot.rows.length, 3);
-assert.equal(liveHotspot.rows[0].provinsi, "Riau");
-assert.equal(liveHotspot.rows[1].provinsi, "Kalimantan Tengah");
+assert.equal(liveHotspot.rows[0].provinsi, "Belum terpetakan");
+assert.equal(liveHotspot.rows[1].provinsi, "Belum terpetakan");
 assert.equal(liveHotspot.rows[1].kelasKepercayaan, "tinggi");
-assert.equal(liveHotspot.rows[2].provinsi, "Lainnya");
+assert.equal(liveHotspot.rows[2].provinsi, "Belum terpetakan");
 assert.equal(liveHotspot.urlTampil.includes("SECRETKEY123"), false);
 assert.match(liveHotspot.urlTampil, /\*\*\*/);
 
@@ -216,12 +225,14 @@ for (const edge of ["north", "east"]) {
   assert.ok(margin >= 1 && margin <= 4, `${edge} ${margin}`);
 }
 
-assert.equal(parseRoute(""), "dashboard");
-assert.equal(parseRoute("#/"), "dashboard");
+assert.equal(parseRoute(""), "ringkasan");
+assert.equal(parseRoute("#/"), "ringkasan");
 assert.equal(parseRoute("#/logika"), "logika");
 assert.equal(parseRoute("#/logika/"), "logika");
 assert.equal(parseRoute("#/LOGIKA?x=1"), "logika");
-assert.equal(parseRoute("#/lain"), "dashboard");
+assert.equal(parseRoute("#/lain"), "ringkasan");
+assert.equal(parseRoute("#/banjir"), "ringkasan");
+assert.equal(parseRoute("#/glosarium/ispu"), "glosarium");
 
 const described = monitoringSources({ config, feeds: loaded });
 assert.equal(described.find((row) => row.id === "firms-api").status, "belum terhubung");
@@ -270,13 +281,35 @@ assert.equal(mapSource.includes("setView([-2.2, 118]"), false);
 assert.equal(mapSource.includes("INDONESIA_FRAME"), true);
 assert.equal(mapSource.includes("fitBounds"), true);
 const logicSource = readFileSync("src/components/LogicPage.jsx", "utf8");
-assert.equal(logicSource.includes("Kembali ke dashboard"), true);
+assert.equal(logicSource.includes("Kembali ke ringkasan"), true);
+assert.equal(logicSource.includes("Sumber Data → Validasi"), true);
 assert.equal(logicSource.includes("mapKey"), false);
 assert.equal(logicSource.includes("rencana pengembangan"), true);
 assert.match(readFileSync("src/components/SiteHeader.jsx", "utf8"), /Logika Pemantauan/);
+assert.match(readFileSync("src/components/SiteHeader.jsx", "utf8"), /Glosarium/);
+assert.match(readFileSync("src/components/SiteHeader.jsx", "utf8"), /Ringkasan/);
 assert.equal(readFileSync("index.html", "utf8").includes('href="./favicon.svg"'), true);
 const viteSource = readFileSync("vite.config.js", "utf8");
 assert.match(viteSource, /function siteBase/);
 assert.match(viteSource, /return "\.\/"/);
+
+assert.equal(ispuFromPm25(31.4), 70);
+assert.equal(ispuFromPm25(15.5), 50);
+assert.equal(REFRESH_CRON, "0 */3 * * *");
+assert.match(nextScheduledRun(new Date("2026-10-17T16:30:00.000Z")), /^2026-10-17T18:00:00/);
+const workflow = readFileSync(".github/workflows/refresh-data.yml", "utf8");
+assert.match(workflow, /0 \*\/3 \* \* \*/);
+assert.match(workflow, /FIRMS_MAP_KEY/);
+assert.equal(workflow.includes("eyJ"), false);
+assert.equal(karhutlaRankingPlan().dapatDisusun, false);
+assert.equal(karhutlaRankingPlan().status.includes("menunggu data resmi BMKG"), true);
+const glossaryIds = new Set(GLOSSARY.map((item) => item.id));
+for (const id of ["ispu", "fwi", "fdrs", "ffmc", "dmc", "dc", "isi", "bui", "irbi", "inarisk", "bnpb", "bmkg", "klh", "firms", "viirs", "modis", "nrt", "confidence", "hotspot", "spartan", "sipongi", "cams", "pm", "wib", "dasarian", "snapshot", "statis", "prakiraan", "observasi"]) {
+  assert.equal(glossaryIds.has(id), true, id);
+}
+assert.equal(GLOSSARY.every((item) => item.penjelasan && item.penggunaan), true);
+assert.deepEqual(HAZARDS.map((item) => item.id), ["karhutla", "banjir", "gunung-api"]);
+assert.equal(parseLocation("#/gunung-api").hazard, "gunung-api");
+assert.equal(parseLocation("#/karhutla/peta").page, "peta");
 
 console.log("Pemeriksaan prototipe lulus.");

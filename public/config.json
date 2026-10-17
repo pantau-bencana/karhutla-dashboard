@@ -10,6 +10,16 @@
     "Kalimantan Tengah",
     "Kalimantan Selatan"
   ],
+  "pembaruan": {
+    "cron": "0 */3 * * *",
+    "intervalJam": 3,
+    "cekManifestMenit": 15,
+    "zona": "Asia/Jakarta"
+  },
+  "bmkg": {
+    "arsipCitra": false,
+    "atribusi": "Sumber: BMKG"
+  },
   "firms": {
     "mapKey": "",
     "sumber": "VIIRS_SNPP_NRT",

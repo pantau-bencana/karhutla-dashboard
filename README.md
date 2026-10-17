@@ -30,7 +30,13 @@ npm run build
 npm run preview
 ```
 
-Di header ada dua halaman. **Dashboard** adalah peta dan angka. **Logika Pemantauan** (`#/logika`) menjelaskan alur data, ambang status, dan apakah tiap sumber masih contoh atau sudah tersambung. Rute memakai hash, bukan path `/logika`, supaya tetap benar saat GitHub Pages menyajikan situs dari subfolder repositori.
+Header memuat tab bahaya **Karhutla**, **Banjir**, dan **Gunung Api**, lalu halaman **Ringkasan**, **Peta dan Data**, **Logika Pemantauan**, **Sumber Data**, dan **Glosarium**. Karhutla yang diisi. Banjir dan Gunung Api menampilkan status **Belum terhubung / menunggu data** tanpa angka buatan. Rute memakai hash (`#/`, `#/karhutla/peta`, `#/logika`, `#/glosarium/ispu`) supaya tetap benar di subfolder GitHub Pages.
+
+GitHub Actions mengambil sumber publik tiap 3 jam (cron `0 */3 * * *` UTC, yaitu 07.00, 10.00, 13.00, 16.00, 19.00, 22.00, 01.00, dan 04.00 WIB) lewat [`.github/workflows/refresh-data.yml`](.github/workflows/refresh-data.yml). Hasilnya disimpan di `data/live/` bersama manifes. Situs membaca snapshot itu lebih dulu, lalu berkas contoh bila snapshot tidak ada. Header menampilkan waktu ambil dan jadwal berikutnya dalam WIB.
+
+Alur: sumber → pengambilan terjadwal → snapshot → dasbor → status peringatan dini (prototipe, bukan peringatan resmi).
+
+Secret FIRMS, bila dipakai, hanya di **Settings → Secrets and variables → Actions** dengan nama `FIRMS_MAP_KEY`. Daftarkan kunci sendiri di <https://firms.modaps.eosdis.nasa.gov/api/map_key/>. Jangan menempelkan kunci di obrolan, berkas, atau commit. Tanpa secret, build tetap jalan dan hotspot berstatus **Belum terhubung** dengan data contoh.
 
 `npm run preview` membuka `http://127.0.0.1:4173`. Setara dengan itu:
 
@@ -108,9 +114,11 @@ Titik panas bisa diambil langsung dari API area FIRMS bila `firms.mapKey` diisi.
 
 **Kunci di situs statis bisa dibaca siapa saja** yang membuka `config.json`. Anggap kunci itu publik. Jangan memakai kunci yang juga dipakai sistem internal lain. Kuota FIRMS (sekitar 5.000 transaksi per 10 menit) terpakai bersama oleh setiap pengunjung dasbor. Panel metadata menyembunyikan kunci di tautan yang ditampilkan, tetapi berkas config tetap utuh.
 
-CSV FIRMS tidak memuat nama provinsi. Prototipe menebak provinsi dari kotak batas kasar di `src/lib/geo.js`. Itu bukan batas administrasi resmi; titik di dekat perbatasan bisa salah provinsi. Untuk data operasional yang lebih rapi, unduh CSV FIRMS, tambahkan kolom `provinsi`, unggah ke Sheets, dan biarkan `mapKey` kosong.
+CSV FIRMS tidak memuat nama provinsi. Dasbor tidak menebak provinsi dari kotak koordinat. Baris tanpa nama wilayah menjadi **Belum terpetakan**. Kotak di `src/lib/geo.js` bukan batas administrasi.
 
-Jika kunci kosong, permintaan gagal, atau peramban menolak karena CORS, dasbor memakai `csvUrl` hotspot dan menjelaskan kegagalan itu di pita peringatan serta di metadata.
+Kunci pada `config.json` tidak dipakai untuk situs publik. Pengambilan FIRMS yang sah berjalan di Actions dengan secret `FIRMS_MAP_KEY`, lalu menulis CSV tanpa kunci. Jika secret kosong, dasbor memakai CSV contoh dan tidak menyebut FIRMS tersambung.
+
+Prakiraan BMKG yang tersambung berhorizon **3 hari** untuk satu kelurahan ibu kota tiap provinsi prioritas. Atribusi: **Sumber: BMKG**. Citra SPARTAN, dasarian, asap, dan potensi cuaca ekstrem hanya ditautkan. Izin integrasi yang lebih luas diurus lewat <https://ptsp.bmkg.go.id/>.
 
 ## Cara status dihitung
 
