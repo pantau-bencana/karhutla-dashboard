@@ -1,8 +1,8 @@
 # Deploy situs statis ke GitHub Pages.
 # Source Pages repositori ini adalah GitHub Actions.
-# Push ke main dan workflow_dispatch men-deploy ke
+# Hanya push ke main (dan workflow_dispatch pada main) yang mengunggah artefak dan men-deploy.
+# Pull request, termasuk cabang cursor/*, hanya membangun dan memeriksa. Job deploy dilewati.
 # https://rixaga.github.io/karhutla-dashboard/
-# Pull request hanya membangun dan memeriksa prefiks aset; tidak men-deploy.
 name: Deploy GitHub Pages
 
 on:
@@ -17,7 +17,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: ${{ github.ref == 'refs/heads/main' && 'pages' || format('pages-preview-{0}', github.ref) }}
   cancel-in-progress: false
 
 jobs:

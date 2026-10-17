@@ -8,6 +8,7 @@ import { GLOSSARY } from "../src/lib/glossary.js";
 import { HAZARDS } from "../src/lib/hazards.js";
 import { ispuFromPm25 } from "../src/lib/ispuEstimate.js";
 import { parseLocation, parseRoute } from "../src/lib/route.js";
+import { countHotspots, filterHotspotWindow } from "../src/lib/hotspotWindow.js";
 import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { REFRESH_CRON, nextScheduledRun } from "../src/lib/schedule.js";
 import { monitoringSources } from "../src/lib/sourceStatus.js";
@@ -311,5 +312,25 @@ assert.equal(GLOSSARY.every((item) => item.penjelasan && item.penggunaan), true)
 assert.deepEqual(HAZARDS.map((item) => item.id), ["karhutla", "banjir", "gunung-api"]);
 assert.equal(parseLocation("#/gunung-api").hazard, "gunung-api");
 assert.equal(parseLocation("#/karhutla/peta").page, "peta");
+const summarySource = readFileSync("src/components/SummaryPage.jsx", "utf8");
+assert.equal(summarySource.includes("points={[]}"), false);
+assert.match(summarySource, /hotspot = deteksi satelit, bukan kebakaran terkonfirmasi/);
+assert.match(summarySource, /Prakiraan kondisi \(pembanding, bukan resmi\)|ForecastPanel/);
+const forecastSource = readFileSync("src/components/ForecastPanel.jsx", "utf8");
+assert.match(forecastSource, /Buka Peta FWI\/Peringatan Karhutla BMKG/);
+assert.match(forecastSource, /target="_blank" rel="noopener noreferrer"/);
+assert.match(forecastSource, /https:\/\/www\.bmkg\.go\.id\/cuaca\/karhutla\/fwi/);
+assert.match(forecastSource, /https:\/\/gis\.bmkg\.go\.id\/portal\/dataapi/);
+assert.equal(forecastSource.includes("<img"), false);
+const pagesWorkflow = readFileSync(".github/workflows/pages.yml", "utf8");
+assert.match(pagesWorkflow, /github\.event_name != 'pull_request' && github\.ref == 'refs\/heads\/main'/);
+const windowed = filterHotspotWindow([
+  { tanggal: "2026-10-17", waktu: "1200", satelit: "N", kelasKepercayaan: "nominal", provinsi: "Riau" },
+  { tanggal: "2026-10-16", waktu: "1200", satelit: "N", kelasKepercayaan: "tinggi", provinsi: "Aceh" },
+  { tanggal: "2026-10-17", waktu: "1800", satelit: "N20", kelasKepercayaan: "rendah", provinsi: "Riau" },
+], { hours: 24, provinces: ["Riau"] });
+assert.equal(windowed.rows.length, 2);
+assert.equal(countHotspots(windowed.rows).sensor.N, 1);
+assert.equal(countHotspots(windowed.rows).sensor.N20, 1);
 
 console.log("Pemeriksaan prototipe lulus.");

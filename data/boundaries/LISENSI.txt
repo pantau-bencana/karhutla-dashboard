@@ -1,0 +1,17 @@
+idn-adm2.geojson
+  Produk: geoBoundaries gbOpen, Indonesia ADM2 (simplified)
+  Tahun yang diwakili: 2020. Jumlah fitur pada berkas ini: 519 kabupaten/kota.
+  Lisensi: Creative Commons Attribution 3.0 IGO (CC BY 3.0 IGO)
+  Sumber data: Badan Pusat Statistik (BPS), World Food Programme, OCHA ROAP
+  Unduhan: https://www.geoboundaries.org/api/current/gbOpen/IDN/ADM2/
+  Berkas ini dipakai untuk menentukan kabupaten/kota sebuah titik dengan point-in-polygon.
+  Kotak koordinat hanya menyaring poligon yang tidak mungkin memuat titik. Penetapan akhir adalah poligon.
+
+idn-adm1.geojson
+  Produk: geoBoundaries gbOpen, Indonesia ADM1 (simplified)
+  34 provinsi, nama sumber berbahasa Inggris, sebelum pemekaran Papua.
+  Lisensi: Open Data Commons Open Database License 1.0 (ODbL)
+  Dipakai hanya untuk memberi nama provinsi pada poligon kabupaten. Geometri provinsi tidak ditampilkan di dasbor.
+  Nama Indonesia pada CSV adalah terjemahan nama geoBoundaries, bukan penetapan Kemendagri yang baru.
+
+Bukan batas resmi BIG/Kemendagri terkini. Papua hasil pemekaran 2022 tidak terpisah pada lapisan ini.

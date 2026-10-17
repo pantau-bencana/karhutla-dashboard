@@ -1,13 +1,26 @@
+import { useState } from "react";
 import { HotspotMap } from "./HotspotMap.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
+import { ForecastPanel } from "./ForecastPanel.jsx";
 import { Term } from "./Term.jsx";
 import { formatAngka, formatWib } from "../lib/format.js";
+import { countHotspots, filterHotspotWindow } from "../lib/hotspotWindow.js";
 import { pageHref } from "../lib/route.js";
 import { karhutlaRankingPlan } from "../lib/ranking.js";
 import { decorateSources } from "../lib/sourceCatalog.js";
 
+const WINDOWS = [
+  [24, "24 jam"],
+  [48, "48 jam"],
+  [168, "7 hari"],
+];
+
 export function SummaryPage({ config, feeds, manifest }) {
   const hotspot = feeds.find((feed) => feed.id === "hotspot");
+  const hotspotPeta = feeds.find((feed) => feed.id === "hotspot_peta");
+  const [hours, setHours] = useState(24);
+  const [provinceFilter, setProvinceFilter] = useState("semua");
+  const priority = config?.provinsiPrioritas ?? [];
   const irbi = feeds.find((feed) => feed.id === "irbi");
   const dibi = feeds.find((feed) => feed.id === "dibi_karhutla");
   const cap = feeds.find((feed) => feed.id === "bmkg_cap");
@@ -20,6 +33,14 @@ export function SummaryPage({ config, feeds, manifest }) {
     return bag;
   }, {});
   const realTrend = hotspot && !hotspot.contoh && hotspot.asal === "snapshot" && hotspot.rows?.length;
+  const mapSource = hotspotPeta?.rows?.length ? hotspotPeta : hotspot;
+  const mapPoints = !sampleHotspot && mapSource && !mapSource.contoh ? mapSource.rows : [];
+  const selectedProvinces = provinceFilter === "prioritas" ? priority : provinceFilter === "semua" ? null : [provinceFilter];
+  const windowed = filterHotspotWindow(mapPoints, { hours, provinces: selectedProvinces });
+  const tally = countHotspots(windowed.rows);
+  const meta = hotspotPeta?.petaMeta;
+  const weather = feeds.find((feed) => feed.id === "fdrs_pembanding");
+  const fwiGwis = feeds.find((feed) => feed.id === "fwi_gwis_pembanding");
 
   return (
     <main className="wrap main">
@@ -48,25 +69,68 @@ export function SummaryPage({ config, feeds, manifest }) {
             <h2>
               Peta <Term id="hotspot">hotspot</Term>
             </h2>
-            <p>
-              {sampleHotspot
-                ? "Hotspot resmi belum tersambung. Titik pada data contoh tidak digambar di halaman ini."
-                : "Deteksi satelit pada snapshot terakhir. Bukan kebakaran terkonfirmasi."}
-            </p>
+            <p>hotspot = deteksi satelit, bukan kebakaran terkonfirmasi</p>
           </div>
         </header>
         {sampleHotspot ? (
           <div className="logic-body">
             <p>
-              Peta contoh ada di <a href={pageHref("peta")}>Peta dan Data</a>, dengan label Data contoh. Tanpa secret
-              FIRMS_MAP_KEY, status sumber ini Belum terhubung.
+              Hotspot resmi belum tersambung. Titik pada data contoh tidak digambar di halaman ini. Peta contoh ada di{" "}
+              <a href={pageHref("peta")}>Peta dan Data</a>.
             </p>
             <DatasetTiming feed={hotspot} />
           </div>
         ) : (
-          <HotspotMap points={[]} frame="indonesia" />
+          <div className="logic-body">
+            <p>
+              Sumber: NASA FIRMS{meta?.sumber ? ` (${meta.sumber})` : ""}. Kotak permintaan {meta?.bbox || "94.4,-11.5,141.6,6.5"},
+              {" "}
+              {meta?.permintaan_hari || 5} hari pada berkas penuh ({formatAngka(meta?.baris_berkas)} baris, sensor{" "}
+              {meta ? Object.entries(meta.sensor_berkas || {}).map(([name, count]) => `${name} ${formatAngka(count)}`).join(", ") : "—"}
+              ). Peta ini memakai titik di dalam batas kabupaten
+              {meta ? ` (${formatAngka(meta.di_darat)} di darat, ${formatAngka(meta.di_luar_poligon)} di luar poligon tidak digambar)` : ""}.
+              Duplikat yang dibuang: {formatAngka(meta?.duplikat_dibuang ?? 0)}.
+            </p>
+            <DatasetTiming feed={hotspot} />
+            {hotspot?.fetchedAt || manifest?.datasets?.hotspot?.fetched_at ? (
+              <p className="fine">Diambil {formatWib(hotspot?.fetchedAt || manifest?.datasets?.hotspot?.fetched_at)}. Waktu data {formatWib(hotspot?.observedAt || manifest?.datasets?.hotspot?.observed_at)}.</p>
+            ) : null}
+            <div className="province-filter" role="group" aria-label="Jendela waktu hotspot">
+              {WINDOWS.map(([value, label]) => (
+                <button key={value} type="button" aria-pressed={hours === value} onClick={() => setHours(value)}>
+                  {label}
+                </button>
+              ))}
+            </div>
+            <div className="province-filter" role="group" aria-label="Provinsi prioritas">
+              <button type="button" aria-pressed={provinceFilter === "semua"} onClick={() => setProvinceFilter("semua")}>
+                Semua
+              </button>
+              <button type="button" aria-pressed={provinceFilter === "prioritas"} onClick={() => setProvinceFilter("prioritas")}>
+                Enam prioritas
+              </button>
+              {priority.map((name) => (
+                <button key={name} type="button" aria-pressed={provinceFilter === name} onClick={() => setProvinceFilter(name)}>
+                  {name}
+                </button>
+              ))}
+            </div>
+            <p className="fine">
+              {WINDOWS.find(([value]) => value === hours)?.[1]} sampai deteksi terbaru: {formatAngka(tally.jumlah)} titik.
+              Sensor {Object.entries(tally.sensor).map(([name, count]) => `${name} ${formatAngka(count)}`).join(", ") || "—"}.
+              Kepercayaan tinggi {formatAngka(tally.kepercayaan.tinggi || 0)}, nominal {formatAngka(tally.kepercayaan.nominal || 0)}, rendah {formatAngka(tally.kepercayaan.rendah || 0)}.
+              Kelompok warna pada zoom kecil adalah kumpulan deteksi, bukan satu kebakaran.
+            </p>
+            <HotspotMap points={windowed.rows} frame="indonesia" />
+          </div>
         )}
       </section>
+
+      <ForecastPanel
+        provinces={priority}
+        weatherRows={weather?.contoh ? [] : weather?.rows}
+        fwiRows={fwiGwis?.contoh ? [] : fwiGwis?.rows}
+      />
 
       <section className="card">
         <header className="card-head">

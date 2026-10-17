@@ -49,6 +49,87 @@ function usableCoordinate(lat, lon) {
   return Number.isFinite(lat) && Number.isFinite(lon) && lat >= -85 && lat <= 85 && lon >= -180 && lon <= 180;
 }
 
+function clusterCell(zoom, count) {
+  if (count <= 600) return 0;
+  if (zoom >= 9 && count <= 4000) return 0;
+  if (zoom >= 9) return 0.05;
+  if (zoom >= 7) return 0.18;
+  if (zoom >= 5) return 0.45;
+  return 1.1;
+}
+
+function heatColor(count) {
+  if (count >= 80) return "#7f1d1d";
+  if (count >= 30) return "#b42318";
+  if (count >= 10) return "#c2410c";
+  return "#ca8a04";
+}
+
+function drawHotspots(map, layer, points) {
+  layer.clearLayers();
+  const renderer = map._hotRenderer || (map._hotRenderer = L.canvas({ padding: 0.15 }));
+  const cell = clusterCell(map.getZoom() || 4, points.length);
+  const latlngs = [];
+  const addPoint = (point) => {
+    const lat = Number(point.lintang);
+    const lon = Number(point.bujur);
+    if (!usableCoordinate(lat, lon)) return;
+    const color = COLORS[point.kelasKepercayaan] ?? COLORS.nominal;
+    const radius = point.kelasKepercayaan === "tinggi" ? 7 : point.kelasKepercayaan === "rendah" ? 5 : 6;
+    const marker = L.circleMarker([lat, lon], {
+      renderer,
+      radius,
+      color: "#1c1915",
+      weight: 1,
+      fillColor: color,
+      fillOpacity: 0.9,
+    });
+    marker.bindPopup(popupHtml(point));
+    marker.addTo(layer);
+    latlngs.push([lat, lon]);
+  };
+  if (!cell) {
+    for (const point of points) addPoint(point);
+    return latlngs;
+  }
+  const groups = new Map();
+  for (const point of points) {
+    const lat = Number(point.lintang);
+    const lon = Number(point.bujur);
+    if (!usableCoordinate(lat, lon)) continue;
+    const key = `${Math.floor(lon / cell)}:${Math.floor(lat / cell)}`;
+    const group = groups.get(key) ?? { lat: 0, lon: 0, count: 0, point: null };
+    group.lat += lat;
+    group.lon += lon;
+    group.count += 1;
+    group.point = point;
+    groups.set(key, group);
+  }
+  for (const group of groups.values()) {
+    const lat = group.lat / group.count;
+    const lon = group.lon / group.count;
+    if (group.count === 1) {
+      addPoint(group.point);
+      continue;
+    }
+    const marker = L.circleMarker([lat, lon], {
+      renderer,
+      radius: Math.min(22, 6 + Math.sqrt(group.count)),
+      color: "#1c1915",
+      weight: 1,
+      fillColor: heatColor(group.count),
+      fillOpacity: 0.75,
+    });
+    marker.bindTooltip(`${group.count} deteksi satelit`, { direction: "top" });
+    marker.on("click", () => {
+      map.setView([lat, lon], Math.min((map.getZoom() || 4) + 2, 12));
+    });
+    marker.addTo(layer);
+    latlngs.push([lat, lon]);
+  }
+  return latlngs;
+}
+
 function indonesiaBounds() {
   return L.latLngBounds(
     [INDONESIA_FRAME.south, INDONESIA_FRAME.west],
@@ -136,6 +217,8 @@ export function HotspotMap({ points, frame = "indonesia", active = true, mapApi 
   const layerRef = useRef(null);
   const modeRef = useRef("indonesia");
   const latlngsRef = useRef([]);
+  const pointsRef = useRef(points ?? []);
+  const drawRef = useRef(() => {});
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return undefined;
@@ -156,6 +239,12 @@ export function HotspotMap({ points, frame = "indonesia", active = true, mapApi 
     }).addTo(map);
     layerRef.current = L.layerGroup().addTo(map);
     mapRef.current = map;
+    const redraw = () => {
+      if (!layerRef.current || !mapRef.current) return;
+      latlngsRef.current = drawHotspots(mapRef.current, layerRef.current, pointsRef.current ?? []);
+    };
+    drawRef.current = redraw;
+    map.on("zoomend", redraw);
 
     let sizeKey = "";
     const onResize = () => {
@@ -189,28 +278,8 @@ export function HotspotMap({ points, frame = "indonesia", active = true, mapApi 
   }, [mapApi]);
 
   useEffect(() => {
-    const layer = layerRef.current;
-    if (!layer) return;
-    layer.clearLayers();
-    const latlngs = [];
-    for (const point of points) {
-      const lat = Number(point.lintang);
-      const lon = Number(point.bujur);
-      if (!usableCoordinate(lat, lon)) continue;
-      const color = COLORS[point.kelasKepercayaan] ?? COLORS.nominal;
-      const radius = point.kelasKepercayaan === "tinggi" ? 7 : point.kelasKepercayaan === "rendah" ? 5 : 6;
-      const marker = L.circleMarker([lat, lon], {
-        radius,
-        color: "#1c1915",
-        weight: 1,
-        fillColor: color,
-        fillOpacity: 0.9,
-      });
-      marker.bindPopup(popupHtml(point));
-      marker.addTo(layer);
-      latlngs.push([lat, lon]);
-    }
-    latlngsRef.current = latlngs;
+    pointsRef.current = points ?? [];
+    drawRef.current();
   }, [points]);
 
   useEffect(() => {
@@ -230,6 +299,7 @@ export function HotspotMap({ points, frame = "indonesia", active = true, mapApi 
       if (!mapReady(map)) return;
       if (frame === "points" && latlngsRef.current.length) framePoints(map, latlngsRef.current, modeRef);
       else frameIndonesia(map, modeRef);
+      drawRef.current();
     };
     apply();
     return () => {

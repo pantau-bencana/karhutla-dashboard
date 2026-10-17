@@ -1,0 +1,25 @@
+{
+  "sumber": "NASA FIRMS VIIRS_SNPP_NRT",
+  "bbox": "94.4,-11.5,141.6,6.5",
+  "permintaan_hari": 5,
+  "baris_berkas": 36642,
+  "sensor_berkas": {
+    "N": 36642
+  },
+  "duplikat_dibuang": 0,
+  "di_luar_poligon": 3790,
+  "di_darat": 32852,
+  "tanggal_mulai": "2026-10-13",
+  "tanggal_selesai": "2026-10-17",
+  "jam_24_sensor": {
+    "N": 8422
+  },
+  "jam_24_kepercayaan": {
+    "nominal": 8082,
+    "tinggi": 218,
+    "rendah": 122
+  },
+  "jam_24_jumlah": 8422,
+  "catatan": "Hotspot = deteksi satelit, bukan kebakaran terkonfirmasi. Peta Ringkasan hanya memuat titik di dalam poligon kabupaten.",
+  "batas": "geoBoundaries gbOpen Indonesia ADM2 (2020, CC BY 3.0 IGO) dan ADM1 (ODbL) untuk nama provinsi."
+}

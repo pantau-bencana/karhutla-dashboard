@@ -185,6 +185,15 @@ function normalizePembandingCuaca(raw) {
   };
 }
 
+function normalizeFwiGwis(raw) {
+  return {
+    tanggal: String(raw.tanggal ?? "").slice(0, 10),
+    provinsi: raw.provinsi || "—",
+    kabupaten: raw.kabupaten || "",
+    fwi: num(raw.fwi),
+  };
+}
+
 const NORMALIZERS = {
   hotspot: (raw, contoh) => normalizeHotspotRow(raw, { contoh }),
   sipongi: (raw) => normalizeSipongi(raw),
@@ -404,6 +413,47 @@ export async function loadAll(config, deps = {}) {
     if (snapshot) feeds.push(snapshot);
   }
 
+  const peta = await loadOptionalCsv(
+    { id: "hotspot_peta", nama: "Peta hotspot darat", csvUrl: "data/live/hotspot-peta.csv" },
+    (raw) => normalizeHotspotRow(raw, { contoh: false }),
+    fetchImpl,
+    resolveUrl,
+  );
+  if (peta) {
+    try {
+      const metaUrl = resolveUrl("data/live/hotspot-peta-meta.json");
+      const response = await fetchImpl(metaUrl);
+      if (response.ok) peta.petaMeta = await response.json();
+    } catch {
+      peta.petaMeta = null;
+    }
+    feeds.push(peta);
+  }
+  const fwi = await loadOptionalCsv(
+    { id: "fwi_gwis_pembanding", nama: "FWI GWIS", csvUrl: "data/live/fwi_gwis_pembanding.csv" },
+    normalizeFwiGwis,
+    fetchImpl,
+    resolveUrl,
+  );
+  if (fwi && !feeds.some((feed) => feed.id === "fwi_gwis_pembanding")) feeds.push(fwi);
+
   feeds.manifest = manifest;
   return feeds;
+}
+
+async function loadOptionalCsv(dataset, normalizer, fetchImpl, resolveUrl) {
+  try {
+    const records = await fetchCsv(resolveUrl(dataset.csvUrl), fetchImpl);
+    const rows = records.map((raw) => normalizer(raw)).filter(Boolean);
+    if (!rows.length) return null;
+    return blankFeed(dataset, {
+      status: "berhasil",
+      contoh: false,
+      error: "",
+      rows,
+      asal: "snapshot",
+    });
+  } catch {
+    return null;
+  }
 }

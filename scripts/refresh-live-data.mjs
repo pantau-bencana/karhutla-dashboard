@@ -4,6 +4,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { flattenBmkgForecast, bmkgForecastUrl, BMKG_LOCATIONS, BMKG_DOCS_URL } from "../src/lib/bmkgForecast.js";
 import { firmsAreaUrl, redactSecret } from "../src/lib/firms.js";
+import { writeHotspotMap } from "./build-hotspot-map.mjs";
 import { provinceCenters } from "../src/lib/geo.js";
 import { ispuFromPm25 } from "../src/lib/ispuEstimate.js";
 import { REFRESH_CRON, REFRESH_INTERVAL_HOURS, nextScheduledRun } from "../src/lib/schedule.js";
@@ -630,6 +631,13 @@ async function main() {
     } catch (error) {
       datasets.hotspot = keepPrevious(hotspotEntry, previousEntry(previous, "hotspot"), error.message);
     }
+  }
+
+  try {
+    const mapMeta = writeHotspotMap();
+    if (mapMeta) console.log(`Peta hotspot darat: ${mapMeta.di_darat} titik, 24 jam ${mapMeta.jam_24_jumlah}.`);
+  } catch (error) {
+    console.log(`Peta hotspot darat tidak diperbarui: ${redactSecret(error.message, firmsKey)}`);
   }
 
   datasets.irbi = staticIrbi(previousEntry(previous, "irbi"));
