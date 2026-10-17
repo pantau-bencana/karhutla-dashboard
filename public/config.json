@@ -1,0 +1,77 @@
+{
+  "judul": "Dashboard Peringatan Dini Karhutla Nasional",
+  "instansi": "Dit. PD BNPB",
+  "catatan": "Prototipe internal Dit. PD BNPB. Jangan dipublikasikan tanpa persetujuan.",
+  "provinsiPrioritas": [
+    "Riau",
+    "Jambi",
+    "Sumatera Selatan",
+    "Kalimantan Barat",
+    "Kalimantan Tengah",
+    "Kalimantan Selatan"
+  ],
+  "firms": {
+    "mapKey": "",
+    "sumber": "VIIRS_SNPP_NRT",
+    "area": "95,-11,141,6",
+    "rentangHari": 7,
+    "catatan": "MAP_KEY yang ditulis di config situs statis dapat dibaca siapa saja yang membuka situs. Jangan memakai kunci yang dipakai sistem lain. Jika mapKey kosong, atau permintaan FIRMS gagal, dasbor memakai csvUrl dataset hotspot."
+  },
+  "peringatan": {
+    "hotspot": { "waspada": 8, "siaga": 20, "awas": 45 },
+    "fwi": { "waspada": 6, "siaga": 13, "awas": 21 },
+    "catatan": "Status provinsi memakai level yang lebih tinggi antara jumlah titik panas pada rentang tanggal terpilih dan FWI maksimum (FDRS) pada rentang yang sama. Ambang ini ilustratif untuk jendela sekitar 7 hari dan dapat diubah di config.json. Bukan ambang resmi BNPB atau BMKG."
+  },
+  "datasets": [
+    {
+      "id": "hotspot",
+      "nama": "Titik panas (hotspot)",
+      "instansi": "NASA FIRMS (VIIRS/MODIS)",
+      "csvUrl": "data/sample/hotspot.csv",
+      "frekuensi": "Harian, dekat waktu nyata (beberapa kali sehari)",
+      "lisensi": "Berkas contoh. Data FIRMS tunduk pada ketentuan NASA FIRMS. Jangan menganggap baris contoh sebagai deteksi sungguhan.",
+      "terakhirDiperbarui": "2026-10-16",
+      "contoh": true
+    },
+    {
+      "id": "sipongi",
+      "nama": "Rekap hotspot dan luas terbakar SiPongi",
+      "instansi": "Kementerian Kehutanan — SiPongi",
+      "csvUrl": "data/sample/sipongi.csv",
+      "frekuensi": "Harian",
+      "lisensi": "Berkas contoh. SiPongi historis dioperasikan di lingkungan KLHK; angka di sini bukan rekap resmi.",
+      "terakhirDiperbarui": "2026-10-16",
+      "contoh": true
+    },
+    {
+      "id": "irbi",
+      "nama": "Indeks Risiko Bencana Indonesia (karhutla)",
+      "instansi": "BNPB — InaRISK / IRBI",
+      "csvUrl": "data/sample/irbi.csv",
+      "frekuensi": "Tahunan",
+      "lisensi": "Berkas contoh untuk ilustrasi kelas risiko per kabupaten. Bukan keluaran resmi IRBI.",
+      "terakhirDiperbarui": "2025-12-01",
+      "contoh": true
+    },
+    {
+      "id": "bmkg",
+      "nama": "Cuaca, hujan, dan FDRS",
+      "instansi": "BMKG",
+      "csvUrl": "data/sample/bmkg.csv",
+      "frekuensi": "Harian",
+      "lisensi": "Berkas contoh. Kelas FDRS pada prototipe diselaraskan dengan ambang config, bukan tabel resmi BMKG.",
+      "terakhirDiperbarui": "2026-10-16",
+      "contoh": true
+    },
+    {
+      "id": "ispu",
+      "nama": "Indeks Standar Pencemar Udara",
+      "instansi": "Kementerian Lingkungan Hidup (ISPU)",
+      "csvUrl": "data/sample/ispu.csv",
+      "frekuensi": "Harian",
+      "lisensi": "Berkas contoh. Kategori ISPU mengikuti rentang umum (Baik hingga Berbahaya); angkanya bukan pengukuran stasiun.",
+      "terakhirDiperbarui": "2026-10-16",
+      "contoh": true
+    }
+  ]
+}

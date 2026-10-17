@@ -1,0 +1,145 @@
+tanggal,provinsi,kota,ispu,kategori,parameter_dominan,pm25,keterangan
+2026-10-01,Riau,Pekanbaru,72,Sedang,PM2.5,30.2,DATA CONTOH — bukan data operasional
+2026-10-02,Riau,Pekanbaru,80,Sedang,PM2.5,33.6,DATA CONTOH — bukan data operasional
+2026-10-03,Riau,Pekanbaru,88,Sedang,PM2.5,37,DATA CONTOH — bukan data operasional
+2026-10-04,Riau,Pekanbaru,96,Sedang,PM2.5,40.3,DATA CONTOH — bukan data operasional
+2026-10-05,Riau,Pekanbaru,104,Tidak Sehat,PM2.5,43.7,DATA CONTOH — bukan data operasional
+2026-10-06,Riau,Pekanbaru,112,Tidak Sehat,PM2.5,47,DATA CONTOH — bukan data operasional
+2026-10-07,Riau,Pekanbaru,120,Tidak Sehat,PM2.5,50.4,DATA CONTOH — bukan data operasional
+2026-10-08,Riau,Pekanbaru,136,Tidak Sehat,PM2.5,57.1,DATA CONTOH — bukan data operasional
+2026-10-09,Riau,Pekanbaru,128,Tidak Sehat,PM2.5,53.8,DATA CONTOH — bukan data operasional
+2026-10-10,Riau,Pekanbaru,112,Tidak Sehat,PM2.5,47,DATA CONTOH — bukan data operasional
+2026-10-11,Riau,Pekanbaru,104,Tidak Sehat,PM2.5,43.7,DATA CONTOH — bukan data operasional
+2026-10-12,Riau,Pekanbaru,120,Tidak Sehat,PM2.5,50.4,DATA CONTOH — bukan data operasional
+2026-10-13,Riau,Pekanbaru,144,Tidak Sehat,PM2.5,60.5,DATA CONTOH — bukan data operasional
+2026-10-14,Riau,Pekanbaru,136,Tidak Sehat,PM2.5,57.1,DATA CONTOH — bukan data operasional
+2026-10-15,Riau,Pekanbaru,128,Tidak Sehat,PM2.5,53.8,DATA CONTOH — bukan data operasional
+2026-10-16,Riau,Pekanbaru,112,Tidak Sehat,PM2.5,47,DATA CONTOH — bukan data operasional
+2026-10-01,Kalimantan Tengah,Palangka Raya,72,Sedang,PM2.5,30.2,DATA CONTOH — bukan data operasional
+2026-10-02,Kalimantan Tengah,Palangka Raya,72,Sedang,PM2.5,30.2,DATA CONTOH — bukan data operasional
+2026-10-03,Kalimantan Tengah,Palangka Raya,84,Sedang,PM2.5,35.3,DATA CONTOH — bukan data operasional
+2026-10-04,Kalimantan Tengah,Palangka Raya,84,Sedang,PM2.5,35.3,DATA CONTOH — bukan data operasional
+2026-10-05,Kalimantan Tengah,Palangka Raya,96,Sedang,PM2.5,40.3,DATA CONTOH — bukan data operasional
+2026-10-06,Kalimantan Tengah,Palangka Raya,96,Sedang,PM2.5,40.3,DATA CONTOH — bukan data operasional
+2026-10-07,Kalimantan Tengah,Palangka Raya,108,Tidak Sehat,PM2.5,45.4,DATA CONTOH — bukan data operasional
+2026-10-08,Kalimantan Tengah,Palangka Raya,108,Tidak Sehat,PM2.5,45.4,DATA CONTOH — bukan data operasional
+2026-10-09,Kalimantan Tengah,Palangka Raya,96,Sedang,PM2.5,40.3,DATA CONTOH — bukan data operasional
+2026-10-10,Kalimantan Tengah,Palangka Raya,96,Sedang,PM2.5,40.3,DATA CONTOH — bukan data operasional
+2026-10-11,Kalimantan Tengah,Palangka Raya,84,Sedang,PM2.5,35.3,DATA CONTOH — bukan data operasional
+2026-10-12,Kalimantan Tengah,Palangka Raya,96,Sedang,PM2.5,40.3,DATA CONTOH — bukan data operasional
+2026-10-13,Kalimantan Tengah,Palangka Raya,108,Tidak Sehat,PM2.5,45.4,DATA CONTOH — bukan data operasional
+2026-10-14,Kalimantan Tengah,Palangka Raya,96,Sedang,PM2.5,40.3,DATA CONTOH — bukan data operasional
+2026-10-15,Kalimantan Tengah,Palangka Raya,84,Sedang,PM2.5,35.3,DATA CONTOH — bukan data operasional
+2026-10-16,Kalimantan Tengah,Palangka Raya,84,Sedang,PM2.5,35.3,DATA CONTOH — bukan data operasional
+2026-10-01,Sumatera Selatan,Palembang,43,Baik,PM10,18.1,DATA CONTOH — bukan data operasional
+2026-10-02,Sumatera Selatan,Palembang,51,Sedang,PM2.5,21.4,DATA CONTOH — bukan data operasional
+2026-10-03,Sumatera Selatan,Palembang,51,Sedang,PM2.5,21.4,DATA CONTOH — bukan data operasional
+2026-10-04,Sumatera Selatan,Palembang,51,Sedang,PM2.5,21.4,DATA CONTOH — bukan data operasional
+2026-10-05,Sumatera Selatan,Palembang,59,Sedang,PM2.5,24.8,DATA CONTOH — bukan data operasional
+2026-10-06,Sumatera Selatan,Palembang,59,Sedang,PM2.5,24.8,DATA CONTOH — bukan data operasional
+2026-10-07,Sumatera Selatan,Palembang,59,Sedang,PM2.5,24.8,DATA CONTOH — bukan data operasional
+2026-10-08,Sumatera Selatan,Palembang,67,Sedang,PM2.5,28.1,DATA CONTOH — bukan data operasional
+2026-10-09,Sumatera Selatan,Palembang,59,Sedang,PM2.5,24.8,DATA CONTOH — bukan data operasional
+2026-10-10,Sumatera Selatan,Palembang,59,Sedang,PM2.5,24.8,DATA CONTOH — bukan data operasional
+2026-10-11,Sumatera Selatan,Palembang,59,Sedang,PM2.5,24.8,DATA CONTOH — bukan data operasional
+2026-10-12,Sumatera Selatan,Palembang,67,Sedang,PM2.5,28.1,DATA CONTOH — bukan data operasional
+2026-10-13,Sumatera Selatan,Palembang,67,Sedang,PM2.5,28.1,DATA CONTOH — bukan data operasional
+2026-10-14,Sumatera Selatan,Palembang,59,Sedang,PM2.5,24.8,DATA CONTOH — bukan data operasional
+2026-10-15,Sumatera Selatan,Palembang,59,Sedang,PM2.5,24.8,DATA CONTOH — bukan data operasional
+2026-10-16,Sumatera Selatan,Palembang,59,Sedang,PM2.5,24.8,DATA CONTOH — bukan data operasional
+2026-10-01,Kalimantan Barat,Pontianak,37,Baik,PM10,15.5,DATA CONTOH — bukan data operasional
+2026-10-02,Kalimantan Barat,Pontianak,37,Baik,PM10,15.5,DATA CONTOH — bukan data operasional
+2026-10-03,Kalimantan Barat,Pontianak,37,Baik,PM10,15.5,DATA CONTOH — bukan data operasional
+2026-10-04,Kalimantan Barat,Pontianak,44,Baik,PM10,18.5,DATA CONTOH — bukan data operasional
+2026-10-05,Kalimantan Barat,Pontianak,44,Baik,PM10,18.5,DATA CONTOH — bukan data operasional
+2026-10-06,Kalimantan Barat,Pontianak,44,Baik,PM10,18.5,DATA CONTOH — bukan data operasional
+2026-10-07,Kalimantan Barat,Pontianak,44,Baik,PM10,18.5,DATA CONTOH — bukan data operasional
+2026-10-08,Kalimantan Barat,Pontianak,44,Baik,PM10,18.5,DATA CONTOH — bukan data operasional
+2026-10-09,Kalimantan Barat,Pontianak,37,Baik,PM10,15.5,DATA CONTOH — bukan data operasional
+2026-10-10,Kalimantan Barat,Pontianak,37,Baik,PM10,15.5,DATA CONTOH — bukan data operasional
+2026-10-11,Kalimantan Barat,Pontianak,44,Baik,PM10,18.5,DATA CONTOH — bukan data operasional
+2026-10-12,Kalimantan Barat,Pontianak,44,Baik,PM10,18.5,DATA CONTOH — bukan data operasional
+2026-10-13,Kalimantan Barat,Pontianak,37,Baik,PM10,15.5,DATA CONTOH — bukan data operasional
+2026-10-14,Kalimantan Barat,Pontianak,44,Baik,PM10,18.5,DATA CONTOH — bukan data operasional
+2026-10-15,Kalimantan Barat,Pontianak,37,Baik,PM10,15.5,DATA CONTOH — bukan data operasional
+2026-10-16,Kalimantan Barat,Pontianak,37,Baik,PM10,15.5,DATA CONTOH — bukan data operasional
+2026-10-01,Jambi,Jambi,39,Baik,PM10,16.4,DATA CONTOH — bukan data operasional
+2026-10-02,Jambi,Jambi,39,Baik,PM10,16.4,DATA CONTOH — bukan data operasional
+2026-10-03,Jambi,Jambi,39,Baik,PM10,16.4,DATA CONTOH — bukan data operasional
+2026-10-04,Jambi,Jambi,39,Baik,PM10,16.4,DATA CONTOH — bukan data operasional
+2026-10-05,Jambi,Jambi,46,Baik,PM10,19.3,DATA CONTOH — bukan data operasional
+2026-10-06,Jambi,Jambi,46,Baik,PM10,19.3,DATA CONTOH — bukan data operasional
+2026-10-07,Jambi,Jambi,39,Baik,PM10,16.4,DATA CONTOH — bukan data operasional
+2026-10-08,Jambi,Jambi,46,Baik,PM10,19.3,DATA CONTOH — bukan data operasional
+2026-10-09,Jambi,Jambi,39,Baik,PM10,16.4,DATA CONTOH — bukan data operasional
+2026-10-10,Jambi,Jambi,39,Baik,PM10,16.4,DATA CONTOH — bukan data operasional
+2026-10-11,Jambi,Jambi,39,Baik,PM10,16.4,DATA CONTOH — bukan data operasional
+2026-10-12,Jambi,Jambi,46,Baik,PM10,19.3,DATA CONTOH — bukan data operasional
+2026-10-13,Jambi,Jambi,46,Baik,PM10,19.3,DATA CONTOH — bukan data operasional
+2026-10-14,Jambi,Jambi,39,Baik,PM10,16.4,DATA CONTOH — bukan data operasional
+2026-10-15,Jambi,Jambi,39,Baik,PM10,16.4,DATA CONTOH — bukan data operasional
+2026-10-16,Jambi,Jambi,39,Baik,PM10,16.4,DATA CONTOH — bukan data operasional
+2026-10-01,Kalimantan Selatan,Banjarmasin,22,Baik,PM10,9.2,DATA CONTOH — bukan data operasional
+2026-10-02,Kalimantan Selatan,Banjarmasin,22,Baik,PM10,9.2,DATA CONTOH — bukan data operasional
+2026-10-03,Kalimantan Selatan,Banjarmasin,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-04,Kalimantan Selatan,Banjarmasin,22,Baik,PM10,9.2,DATA CONTOH — bukan data operasional
+2026-10-05,Kalimantan Selatan,Banjarmasin,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-06,Kalimantan Selatan,Banjarmasin,22,Baik,PM10,9.2,DATA CONTOH — bukan data operasional
+2026-10-07,Kalimantan Selatan,Banjarmasin,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-08,Kalimantan Selatan,Banjarmasin,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-09,Kalimantan Selatan,Banjarmasin,22,Baik,PM10,9.2,DATA CONTOH — bukan data operasional
+2026-10-10,Kalimantan Selatan,Banjarmasin,22,Baik,PM10,9.2,DATA CONTOH — bukan data operasional
+2026-10-11,Kalimantan Selatan,Banjarmasin,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-12,Kalimantan Selatan,Banjarmasin,22,Baik,PM10,9.2,DATA CONTOH — bukan data operasional
+2026-10-13,Kalimantan Selatan,Banjarmasin,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-14,Kalimantan Selatan,Banjarmasin,22,Baik,PM10,9.2,DATA CONTOH — bukan data operasional
+2026-10-15,Kalimantan Selatan,Banjarmasin,22,Baik,PM10,9.2,DATA CONTOH — bukan data operasional
+2026-10-16,Kalimantan Selatan,Banjarmasin,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-01,Kalimantan Timur,Samarinda,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-02,Kalimantan Timur,Samarinda,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-03,Kalimantan Timur,Samarinda,50,Baik,PM10,21,DATA CONTOH — bukan data operasional
+2026-10-04,Kalimantan Timur,Samarinda,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-05,Kalimantan Timur,Samarinda,50,Baik,PM10,21,DATA CONTOH — bukan data operasional
+2026-10-06,Kalimantan Timur,Samarinda,50,Baik,PM10,21,DATA CONTOH — bukan data operasional
+2026-10-07,Kalimantan Timur,Samarinda,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-08,Kalimantan Timur,Samarinda,50,Baik,PM10,21,DATA CONTOH — bukan data operasional
+2026-10-09,Kalimantan Timur,Samarinda,50,Baik,PM10,21,DATA CONTOH — bukan data operasional
+2026-10-10,Kalimantan Timur,Samarinda,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-11,Kalimantan Timur,Samarinda,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-12,Kalimantan Timur,Samarinda,50,Baik,PM10,21,DATA CONTOH — bukan data operasional
+2026-10-13,Kalimantan Timur,Samarinda,50,Baik,PM10,21,DATA CONTOH — bukan data operasional
+2026-10-14,Kalimantan Timur,Samarinda,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-15,Kalimantan Timur,Samarinda,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-16,Kalimantan Timur,Samarinda,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-01,Sumatera Utara,Medan,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-02,Sumatera Utara,Medan,33,Baik,PM10,13.9,DATA CONTOH — bukan data operasional
+2026-10-03,Sumatera Utara,Medan,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-04,Sumatera Utara,Medan,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-05,Sumatera Utara,Medan,33,Baik,PM10,13.9,DATA CONTOH — bukan data operasional
+2026-10-06,Sumatera Utara,Medan,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-07,Sumatera Utara,Medan,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-08,Sumatera Utara,Medan,33,Baik,PM10,13.9,DATA CONTOH — bukan data operasional
+2026-10-09,Sumatera Utara,Medan,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-10,Sumatera Utara,Medan,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-11,Sumatera Utara,Medan,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-12,Sumatera Utara,Medan,33,Baik,PM10,13.9,DATA CONTOH — bukan data operasional
+2026-10-13,Sumatera Utara,Medan,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-14,Sumatera Utara,Medan,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-15,Sumatera Utara,Medan,33,Baik,PM10,13.9,DATA CONTOH — bukan data operasional
+2026-10-16,Sumatera Utara,Medan,28,Baik,PM10,11.8,DATA CONTOH — bukan data operasional
+2026-10-01,Nusa Tenggara Timur,Kupang,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-02,Nusa Tenggara Timur,Kupang,36,Baik,PM10,15.1,DATA CONTOH — bukan data operasional
+2026-10-03,Nusa Tenggara Timur,Kupang,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-04,Nusa Tenggara Timur,Kupang,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-05,Nusa Tenggara Timur,Kupang,36,Baik,PM10,15.1,DATA CONTOH — bukan data operasional
+2026-10-06,Nusa Tenggara Timur,Kupang,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-07,Nusa Tenggara Timur,Kupang,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-08,Nusa Tenggara Timur,Kupang,36,Baik,PM10,15.1,DATA CONTOH — bukan data operasional
+2026-10-09,Nusa Tenggara Timur,Kupang,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-10,Nusa Tenggara Timur,Kupang,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-11,Nusa Tenggara Timur,Kupang,36,Baik,PM10,15.1,DATA CONTOH — bukan data operasional
+2026-10-12,Nusa Tenggara Timur,Kupang,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-13,Nusa Tenggara Timur,Kupang,36,Baik,PM10,15.1,DATA CONTOH — bukan data operasional
+2026-10-14,Nusa Tenggara Timur,Kupang,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-15,Nusa Tenggara Timur,Kupang,42,Baik,PM10,17.6,DATA CONTOH — bukan data operasional
+2026-10-16,Nusa Tenggara Timur,Kupang,36,Baik,PM10,15.1,DATA CONTOH — bukan data operasional
