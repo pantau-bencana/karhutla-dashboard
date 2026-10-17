@@ -149,18 +149,17 @@ Header bahasa Indonesia pada berkas contoh, atau header FIRMS bahasa Inggris unt
 
 ## GitHub Pages
 
-Workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml) memasang dependensi, menjalankan `npm run check`, membangun `dist`, lalu — hanya untuk push ke `main` — mengunggah artefak Pages. Workflow ini **tidak** mengaktifkan Pages dan **tidak** mengubah visibilitas repositori.
+Repositori ini publik. **Settings → Pages → Source** sudah **GitHub Actions**. Workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml) berjalan pada push ke `main` dan lewat **workflow_dispatch**. Job itu memakai `actions/configure-pages`, `actions/upload-pages-artifact`, dan `actions/deploy-pages`.
 
-Untuk menyalakannya (lakukan sendiri, setelah ada persetujuan publikasi):
+Setelah pull request ini digabung ke `main`, situs terbit di:
 
-1. Di repositori GitHub: **Settings → Pages**.
-2. **Build and deployment → Source**: pilih **GitHub Actions**.
-3. Gabungkan perubahan ke `main`, atau jalankan workflow **Deploy GitHub Pages** secara manual.
-4. Alamat proyek biasanya `https://<pemilik>.github.io/karhutla-dashboard/`.
+<https://rixaga.github.io/karhutla-dashboard/>
 
-`vite.config.js` memakai `base: './'` supaya jalur CSS, JS, config, dan CSV relatif. Itu cocok untuk Pages proyek (bukan hanya situs di akar domain).
+`configure-pages` memberi `base_path` (untuk repositori ini `/karhutla-dashboard`). Build Actions memakai prefiks itu untuk CSS dan JS. `config.json` serta CSV contoh tetap jalur relatif (`data/sample/...`, tanpa garis miring di depan) supaya ikut terbaca di subfolder itu. Pembangunan lokal tanpa variabel itu memakai jalur relatif yang sama-sama benar.
 
-Repositori **privat**: GitHub Pages untuk repo privat memerlukan paket berbayar (GitHub Pro, Team, atau Enterprise). Repo publik bisa memakai Pages gratis, tetapi prototipe ini tidak boleh dijadikan publik tanpa persetujuan. `noindex` di HTML hanya isyarat untuk perayap, bukan pengunci akses.
+Tidak ada rahasia di repositori. `firms.mapKey` di `public/config.json` kosong. Jangan mengisi kunci sungguhan lalu meng-commit: berkas itu ikut terbit dan bisa dibaca siapa saja. `npm run check` gagal jika kunci itu tidak kosong.
+
+Pull request hanya membangun dan memeriksa hasilnya. Deploy tidak berjalan sebelum perubahan ada di `main`.
 
 ## Keterbatasan
 

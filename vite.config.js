@@ -35,8 +35,17 @@ function dataMiddleware() {
   };
 }
 
+// GitHub Actions sets VITE_BASE_PATH from actions/configure-pages (for this
+// repo, "/karhutla-dashboard"). A relative base still works locally and on
+// Pages; the explicit prefix is what the project site serves.
+function siteBase() {
+  const raw = String(process.env.VITE_BASE_PATH ?? "").trim();
+  if (!raw || raw === "/") return "./";
+  return raw.endsWith("/") ? raw : `${raw}/`;
+}
+
 export default defineConfig({
-  base: "./",
+  base: siteBase(),
   plugins: [
     react(),
     {

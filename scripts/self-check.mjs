@@ -45,6 +45,7 @@ assert.equal(
 
 const config = JSON.parse(readFileSync("public/config.json", "utf8"));
 assert.equal(config.catatan, DISCLAIMER);
+assert.equal(String(config.firms?.mapKey ?? "").trim(), "", "Jangan commit MAP_KEY FIRMS");
 assert.deepEqual(
   config.datasets.map((dataset) => dataset.id),
   ["hotspot", "sipongi", "irbi", "bmkg", "ispu"],
@@ -274,6 +275,8 @@ assert.equal(logicSource.includes("mapKey"), false);
 assert.equal(logicSource.includes("rencana pengembangan"), true);
 assert.match(readFileSync("src/components/SiteHeader.jsx", "utf8"), /Logika Pemantauan/);
 assert.equal(readFileSync("index.html", "utf8").includes('href="./favicon.svg"'), true);
-assert.equal(readFileSync("vite.config.js", "utf8").includes('base: "./"'), true);
+const viteSource = readFileSync("vite.config.js", "utf8");
+assert.match(viteSource, /function siteBase/);
+assert.match(viteSource, /return "\.\/"/);
 
 console.log("Pemeriksaan prototipe lulus.");
