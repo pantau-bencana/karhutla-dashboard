@@ -30,6 +30,8 @@ npm run build
 npm run preview
 ```
 
+Di header ada dua halaman. **Dashboard** adalah peta dan angka. **Logika Pemantauan** (`#/logika`) menjelaskan alur data, ambang status, dan apakah tiap sumber masih contoh atau sudah tersambung. Rute memakai hash, bukan path `/logika`, supaya tetap benar saat GitHub Pages menyajikan situs dari subfolder repositori.
+
 `npm run preview` membuka `http://127.0.0.1:4173`. Setara dengan itu:
 
 ```bash
@@ -168,7 +170,7 @@ Repositori **privat**: GitHub Pages untuk repo privat memerlukan paket berbayar 
 - Jendela `firms.rentangHari` tidak sama dengan filter tanggal di layar. Memilih tanggal di luar data yang kembali membuat peta kosong.
 - Tebakan provinsi untuk CSV FIRMS memakai kotak kasar, bukan shapefile resmi.
 - Ambang peringatan, kelas FDRS contoh, dan angka IRBI/SiPongi/ISPU/cuaca contoh bersifat ilustratif.
-- Peta dasar OpenStreetMap butuh internet dan tunduk pada [kebijakan petak OSM](https://operations.osmfoundation.org/policies/tiles/). Pemakaian operasional yang ramai sebaiknya memakai server petak sendiri.
+- Peta dasar OpenStreetMap butuh internet dan tunduk pada [kebijakan petak OSM](https://operations.osmfoundation.org/policies/tiles/). Pemakaian operasional yang ramai sebaiknya memakai server petak sendiri. Zoom keluar dibatasi pada bingkai Indonesia; tombol "Tampilkan seluruh Indonesia" mengembalikan tampilan nasional.
 - Tidak ada login, jejak audit, atau penyimpanan di server.
 
 ## Berkas penting
