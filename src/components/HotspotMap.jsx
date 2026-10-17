@@ -54,9 +54,13 @@ export function HotspotMap({ points }) {
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return undefined;
     const map = L.map(containerRef.current, {
+      center: [-2.2, 118],
+      zoom: 5,
       scrollWheelZoom: true,
       zoomControl: true,
-    }).setView([-2.2, 118], 5);
+      zoomAnimation: false,
+      fadeAnimation: false,
+    });
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 18,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -93,9 +97,18 @@ export function HotspotMap({ points }) {
       marker.addTo(layer);
       latlngs.push([lat, lon]);
     }
+    let cancelled = false;
+    let tries = 0;
     const place = () => {
-      map.stop();
+      if (cancelled) return;
       map.invalidateSize({ pan: false, animate: false });
+      const size = map.getSize();
+      if ((size.x < 80 || size.y < 80) && tries < 20) {
+        tries += 1;
+        window.requestAnimationFrame(place);
+        return;
+      }
+      map.stop();
       if (latlngs.length === 0) {
         map.setView([-2.2, 118], 5, { animate: false });
       } else if (latlngs.length === 1) {
@@ -106,7 +119,9 @@ export function HotspotMap({ points }) {
       if (map.getZoom() < 4) map.setView([-2.2, 118], 5, { animate: false });
     };
     place();
-    window.requestAnimationFrame(place);
+    return () => {
+      cancelled = true;
+    };
   }, [points]);
 
   return <div ref={containerRef} className="map-canvas" role="region" aria-label="Peta sebaran titik panas" />;
