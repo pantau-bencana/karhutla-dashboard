@@ -1,6 +1,16 @@
-import { pageHref } from "../lib/route.js";
+import { HAZARDS } from "../lib/hazards.js";
+import { formatWib } from "../lib/format.js";
+import { hazardHref, pageHref } from "../lib/route.js";
 
-export function SiteHeader({ eyebrow, title, subtitle, loadedAt, loading, onReload, page, showReload }) {
+const PAGES = [
+  ["ringkasan", "Ringkasan"],
+  ["peta", "Peta dan Data"],
+  ["logika", "Logika Pemantauan"],
+  ["sumber", "Sumber Data"],
+  ["glosarium", "Glosarium"],
+];
+
+export function SiteHeader({ eyebrow, title, subtitle, manifest, onReload, loading, page, hazard }) {
   return (
     <header className="site-header">
       <div className="stripe" aria-hidden="true" />
@@ -22,22 +32,27 @@ export function SiteHeader({ eyebrow, title, subtitle, loadedAt, loading, onRelo
           </div>
         </div>
         <div className="header-side">
-          <nav className="site-nav" aria-label="Halaman">
-            <a href={pageHref("dashboard")} aria-current={page === "dashboard" ? "page" : undefined}>
-              Dashboard
-            </a>
-            <a href={pageHref("logika")} aria-current={page === "logika" ? "page" : undefined}>
-              Logika Pemantauan
-            </a>
+          <nav className="hazard-tabs" aria-label="Bahaya">
+            {HAZARDS.map((item) => (
+              <a key={item.id} href={hazardHref(item.id)} aria-current={hazard === item.id ? "page" : undefined}>
+                {item.nama}
+              </a>
+            ))}
           </nav>
-          {showReload ? (
-            <div className="header-actions">
-              {loadedAt ? <p>Dimuat {loadedAt}</p> : null}
-              <button type="button" className="button" onClick={onReload} disabled={loading}>
-                {loading ? "Memuat…" : "Muat ulang"}
-              </button>
-            </div>
-          ) : null}
+          <nav className="site-nav" aria-label="Halaman">
+            {PAGES.map(([id, label]) => (
+              <a key={id} href={pageHref(id, hazard)} aria-current={page === id ? "page" : undefined}>
+                {label}
+              </a>
+            ))}
+          </nav>
+          <div className="header-actions">
+            <p>Terakhir diperbarui {manifest?.generated_at ? formatWib(manifest.generated_at) : "belum ada snapshot"}</p>
+            <p>Pembaruan berikutnya {manifest?.next_run ? formatWib(manifest.next_run) : "lihat jadwal 3 jam"}</p>
+            <button type="button" className="button" onClick={onReload} disabled={loading}>
+              {loading ? "Memuat…" : "Muat ulang"}
+            </button>
+          </div>
         </div>
       </div>
     </header>

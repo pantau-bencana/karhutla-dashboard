@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1 --port 4173",
     "check": "node scripts/self-check.mjs",
+    "refresh-data": "node scripts/refresh-live-data.mjs",
     "generate-sample": "node scripts/generate-sample.mjs"
   },
   "dependencies": {

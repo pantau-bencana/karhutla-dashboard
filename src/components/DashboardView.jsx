@@ -1,4 +1,6 @@
 import { useRef, useState } from "react";
+import { ExtraLayers, LayerBar, WilayahDetail } from "./ExtraLayers.jsx";
+import { DatasetTiming } from "./DatasetTiming.jsx";
 import { HotspotMap } from "./HotspotMap.jsx";
 import { TrendCharts } from "./TrendCharts.jsx";
 import { defaultRange } from "../lib/derive.js";
@@ -62,6 +64,7 @@ export function DashboardView({
 
 function DashboardBody({ active, config, feeds, loading, province, setProvince, from, setFrom, to, setTo, view }) {
   const mapApi = useRef(null);
+  const [layer, setLayer] = useState("hotspot");
   const filterKey = `${province}|${from}|${to}`;
   const [seenFilter, setSeenFilter] = useState(filterKey);
   const [lockIndonesia, setLockIndonesia] = useState(true);
@@ -111,8 +114,8 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
         <div className="banner sample" role="status">
           <strong>Data contoh sedang ditampilkan.</strong>
           <p>
-            {samples.map((feed) => feed.nama).join(", ")} bukan data operasional. Sambungkan tautan CSV Google
-            Sheets di <code>public/config.json</code>, lalu set <code>contoh</code> menjadi false.
+            {samples.map((feed) => feed.nama).join(", ")} bukan data operasional. Snapshot resmi, bila ada, tampil
+            terpisah dan tidak memakai angka contoh ini.
           </p>
         </div>
       )}
@@ -168,14 +171,17 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           </button>
         </div>
       </section>
+      <LayerBar layer={layer} setLayer={setLayer} />
+      <WilayahDetail province={province} from={from} to={to} layer={layer} />
+      {layer !== "hotspot" ? <ExtraLayers layer={layer} view={view} feeds={feeds} province={province} /> : null}
 
-      {view.rangeInvalid ? (
+      {layer === "hotspot" && view.rangeInvalid ? (
         <p className="banner error" role="alert">
           Tanggal awal lebih besar dari tanggal akhir. Perbaiki rentang untuk melihat angka.
         </p>
       ) : null}
 
-      <section className="cards" aria-label="Ringkasan">
+      {layer === "hotspot" ? <section className="cards" aria-label="Ringkasan">
         <article className="card metric">
           <p className="metric-label">Titik panas</p>
           <p className="metric-value">{formatAngka(view.summary.hotspot)}</p>
@@ -200,8 +206,9 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
               : "Tidak ada data ISPU pada rentang ini"}
           </p>
         </article>
-      </section>
+      </section> : null}
 
+      {layer === "hotspot" ? <>
       <section className="split">
         <article className="card map-card">
           <header className="card-head">
@@ -246,8 +253,8 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
         <article className="card">
           <header className="card-head">
             <div>
-              <h2>Status peringatan dini</h2>
-              <p>Level lebih tinggi antara jumlah titik panas dan FWI maksimum pada rentang tanggal.</p>
+              <h2>Indikator prototipe</h2>
+              <p>Level lebih tinggi antara jumlah titik panas dan FWI maksimum. Bukan peringatan resmi.</p>
             </div>
           </header>
           <div className="table-wrap">
@@ -322,7 +329,11 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           <header className="card-head">
             <div>
               <h2>IRBI kabupaten</h2>
-              <p>Indeks tahunan, tidak mengikuti filter tanggal. Angka contoh bukan keluaran InaRISK.</p>
+              <p>
+                {feeds.find((feed) => feed.id === "irbi")?.contoh
+                  ? "Indeks tahunan pada berkas contoh, bukan keluaran buku IRBI."
+                  : "IRBI 2025 dari buku resmi. Tidak mengikuti filter tanggal."}
+              </p>
             </div>
           </header>
           <SimpleTable
@@ -354,12 +365,13 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           />
         </article>
       </section>
+      </> : null}
 
       <section className="card sources-panel" aria-labelledby="metadata-heading">
         <header className="card-head">
           <div>
             <h2 id="metadata-heading">Metadata sumber</h2>
-            <p>Setiap dataset dibaca di peramban dari tautan pada config.json. Tidak ada server aplikasi.</p>
+            <p>Waktu ambil dan waktu data mengikuti snapshot atau berkas contoh. Tidak ada server aplikasi.</p>
           </div>
         </header>
         <div className={`callout ${keySet ? "callout-hot" : ""}`}>
@@ -411,6 +423,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
                   </div>
                 </dl>
                 {feed.error ? <p className="error-text">{feed.error}</p> : null}
+                <DatasetTiming feed={feed} />
                 {feed.lisensi ? <p className="fine">{feed.lisensi}</p> : null}
               </li>
             ))}

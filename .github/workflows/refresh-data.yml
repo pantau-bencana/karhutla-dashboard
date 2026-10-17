@@ -1,0 +1,95 @@
+# Mengambil sumber publik di sisi server, lalu menyimpan CSV/JSON tanpa secret.
+# Jadwal UTC: menit 0 setiap 3 jam. Ubah cron di bawah ini bila perlu.
+# WIB (UTC+7): 07.00, 10.00, 13.00, 16.00, 19.00, 22.00, 01.00, 04.00.
+# String cron harus sama dengan REFRESH_CRON di src/lib/schedule.js.
+# Push dari GITHUB_TOKEN tidak memicu workflow Pages lain, jadi deploy dilakukan di sini
+# hanya bila isi data berubah dan cabangnya main.
+name: Perbarui data
+
+on:
+  schedule:
+    - cron: "0 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Ambil data publik
+        env:
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+        run: node scripts/refresh-live-data.mjs
+
+      - name: Commit bila isi data berubah
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/live data/static
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Tidak ada perubahan data."
+          else
+            git commit -m "Perbarui snapshot data karhutla"
+            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Pages
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Build
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        env:
+          VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: npm run check && npm run build
+
+      - name: Verify Pages paths and public config
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        run: node scripts/verify-pages-build.mjs "${{ steps.pages.outputs.base_path }}"
+
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && needs.refresh.outputs.changed == 'true'
+    needs: refresh
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

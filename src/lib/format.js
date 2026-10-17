@@ -46,6 +46,31 @@ export function formatWaktu(raw) {
   return text;
 }
 
+export function formatWib(value) {
+  if (!value) return "—";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return String(value);
+  const formatted = new Intl.DateTimeFormat("id-ID", {
+    timeZone: "Asia/Jakarta",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).format(date);
+  return `${formatted} WIB`;
+}
+
+export function formatUsia(ms) {
+  if (!Number.isFinite(ms) || ms < 0) return "—";
+  const minutes = Math.floor(ms / 60000);
+  if (minutes < 60) return `${Math.max(1, minutes)} menit`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 48) return `${hours} jam`;
+  return `${Math.floor(hours / 24)} hari`;
+}
+
 export function formatAmbang(thresholds) {
   if (!thresholds) return "";
   const part = (label, rule) =>

@@ -1,38 +1,50 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DashboardView } from "./components/DashboardView.jsx";
 import { Footer } from "./components/Footer.jsx";
+import { GlossaryPage } from "./components/GlossaryPage.jsx";
+import { HazardPlaceholder } from "./components/HazardPlaceholder.jsx";
 import { LogicPage } from "./components/LogicPage.jsx";
 import { SiteHeader } from "./components/SiteHeader.jsx";
+import { SourcesPage } from "./components/SourcesPage.jsx";
+import { SummaryPage } from "./components/SummaryPage.jsx";
 import { defaultRange, deriveDashboard } from "./lib/derive.js";
+import { hazardById } from "./lib/hazards.js";
 import { loadAll } from "./lib/loadData.js";
-import { parseRoute } from "./lib/route.js";
+import { parseLocation } from "./lib/route.js";
+import { MANIFEST_POLL_MINUTES, nextScheduledRun } from "./lib/schedule.js";
 
 const DEFAULT_TITLE = "Dashboard Peringatan Dini Karhutla Nasional";
 
-function usePage() {
-  const [page, setPage] = useState(() => parseRoute(window.location.hash));
+function useLocation() {
+  const initial = parseLocation(window.location.hash);
+  const hazardRef = useRef(initial.hazard);
+  const [location, setLocation] = useState(initial);
   useEffect(() => {
-    const sync = () => setPage(parseRoute(window.location.hash));
+    const sync = () => {
+      const next = parseLocation(window.location.hash);
+      if (next.page !== "glosarium") hazardRef.current = next.hazard;
+      setLocation({ ...next, hazard: next.page === "glosarium" ? hazardRef.current : next.hazard });
+    };
     window.addEventListener("hashchange", sync);
     return () => window.removeEventListener("hashchange", sync);
   }, []);
-  return page;
+  return location;
 }
 
 export function App() {
-  const page = usePage();
+  const location = useLocation();
+  const { page, hazard } = location;
   const [config, setConfig] = useState(null);
   const [configError, setConfigError] = useState("");
   const [feeds, setFeeds] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [loadedAt, setLoadedAt] = useState("");
+  const datesReady = useRef(false);
   const [province, setProvince] = useState("");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-  const datesReady = useRef(false);
 
-  async function reload() {
-    setLoading(true);
+  async function reload({ quiet = false } = {}) {
+    if (!quiet) setLoading(true);
     setConfigError("");
     try {
       const response = await fetch(new URL("config.json", document.baseURI).href, { cache: "no-store" });
@@ -53,11 +65,10 @@ export function App() {
         setTo(range.to);
         datesReady.current = true;
       }
-      setLoadedAt(new Intl.DateTimeFormat("id-ID", { dateStyle: "medium", timeStyle: "short" }).format(new Date()));
     } catch (error) {
       setConfigError(error.message || "Gagal memuat konfigurasi.");
     } finally {
-      setLoading(false);
+      if (!quiet) setLoading(false);
     }
   }
 
@@ -66,10 +77,23 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    const title = config?.judul || DEFAULT_TITLE;
-    document.title = page === "logika" ? `Logika Pemantauan — ${title}` : title;
+    const minutes = Number(config?.pembaruan?.cekManifestMenit) || MANIFEST_POLL_MINUTES;
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === "hidden") return;
+      reload({ quiet: true });
+    }, minutes * 60 * 1000);
+    return () => window.clearInterval(timer);
+  }, [config?.pembaruan?.cekManifestMenit]);
+
+  useEffect(() => {
+    const hazardName = hazardById(hazard).nama;
+    const pageName = { ringkasan: "Ringkasan", peta: "Peta dan Data", logika: "Logika Pemantauan", sumber: "Sumber Data", glosarium: "Glosarium" }[page] || "Ringkasan";
+    document.title = `${pageName} ${hazardName} — ${config?.judul || DEFAULT_TITLE}`;
+  }, [page, hazard, config]);
+
+  useEffect(() => {
     window.scrollTo(0, 0);
-  }, [page, config]);
+  }, [page, hazard]);
 
   const view = useMemo(() => {
     if (!config) return null;
@@ -87,36 +111,44 @@ export function App() {
     });
   }, [config, feeds, province, from, to]);
 
-  const dashboardTitle = config?.judul || DEFAULT_TITLE;
-  const headerTitle = page === "logika" ? "Logika Pemantauan" : dashboardTitle;
-  const headerSubtitle =
-    page === "logika"
-      ? "Cara prototipe membaca data hotspot, mengolahnya, lalu menampilkannya di dasbor."
-      : "Prototipe internal untuk memantau kebakaran hutan dan lahan: titik panas, bahaya cuaca kebakaran, dan mutu udara.";
+  const manifest = feeds.manifest || null;
+  const clock = manifest || { next_run: nextScheduledRun() };
+  const built = hazardById(hazard).siap && page !== "glosarium";
+  const title = page === "glosarium" ? "Glosarium" : `${hazardById(hazard).nama}`;
+  const subtitle =
+    page === "glosarium"
+      ? "Singkatan dan istilah pada dasbor."
+      : hazard === "karhutla"
+        ? "Prototipe pemantauan kebakaran hutan dan lahan. Bukan peringatan resmi."
+        : hazardById(hazard).status;
 
   return (
     <>
       <SiteHeader
         eyebrow={config?.instansi || "Dit. PD BNPB"}
-        title={headerTitle}
-        subtitle={headerSubtitle}
-        loadedAt={loadedAt}
+        title={title}
+        subtitle={subtitle}
+        manifest={clock}
+        onReload={() => reload()}
         loading={loading}
-        onReload={reload}
         page={page}
-        showReload={page === "dashboard"}
+        hazard={hazard}
       />
-      <div hidden={page !== "dashboard"}>
-        {configError && !config ? (
-          <main className="wrap main">
-            <div className="banner error" role="alert">
-              <strong>Konfigurasi tidak termuat.</strong>
-              <p>{configError}</p>
-            </div>
-          </main>
+      {page === "glosarium" ? <GlossaryPage /> : null}
+      {!built && page !== "glosarium" ? <HazardPlaceholder hazardId={hazard} /> : null}
+      {built && page === "ringkasan" ? (
+        configError && !config ? (
+          <ConfigError message={configError} />
+        ) : (
+          <SummaryPage config={config} feeds={feeds} manifest={manifest} />
+        )
+      ) : null}
+      {built && page === "peta" ? (
+        configError && !config ? (
+          <ConfigError message={configError} />
         ) : (
           <DashboardView
-            active={page === "dashboard"}
+            active
             config={config}
             feeds={feeds}
             loading={loading}
@@ -128,10 +160,22 @@ export function App() {
             setTo={setTo}
             view={view}
           />
-        )}
-      </div>
-      {page === "logika" ? <LogicPage config={config} feeds={feeds} configError={configError} /> : null}
+        )
+      ) : null}
+      {built && page === "logika" ? <LogicPage config={config} /> : null}
+      {built && page === "sumber" ? <SourcesPage manifest={manifest} /> : null}
       <Footer />
     </>
+  );
+}
+
+function ConfigError({ message }) {
+  return (
+    <main className="wrap main">
+      <div className="banner error" role="alert">
+        <strong>Konfigurasi tidak termuat.</strong>
+        <p>{message}</p>
+      </div>
+    </main>
   );
 }

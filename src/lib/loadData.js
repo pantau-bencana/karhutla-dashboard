@@ -1,5 +1,5 @@
 import { looksLikeCsv, parseCsv } from "./csv.js";
-import { assignProvince } from "./geo.js";
+import { REFRESH_INTERVAL_HOURS } from "./schedule.js";
 import { kategoriIspu, kelasKepercayaan } from "./warning.js";
 
 export function num(value) {
@@ -63,8 +63,7 @@ function blankFeed(dataset, extra) {
 export function normalizeHotspotRow(raw, { contoh = false } = {}) {
   const lintang = num(raw.lintang ?? raw.latitude);
   const bujur = num(raw.bujur ?? raw.longitude);
-  let provinsi = String(raw.provinsi ?? raw.province ?? "").trim();
-  if (!provinsi && lintang != null && bujur != null) provinsi = assignProvince(lintang, bujur);
+  const provinsi = String(raw.provinsi ?? raw.province ?? "").trim() || "Belum terpetakan";
   const kepercayaan = raw.kepercayaan ?? raw.confidence ?? "";
   const keterangan = raw.keterangan ?? "";
   return {
@@ -132,13 +131,137 @@ function normalizeIspu(raw) {
   };
 }
 
+function normalizePrakiraan(raw) {
+  return {
+    tanggal: String(raw.tanggal ?? "").slice(0, 10),
+    waktuLokal: raw.waktu_lokal || "",
+    provinsi: raw.provinsi || "—",
+    kotkab: raw.kotkab || "",
+    kecamatan: raw.kecamatan || "",
+    desa: raw.desa || "",
+    adm4: raw.adm4 || "",
+    suhu: num(raw.suhu_c),
+    kelembapan: num(raw.kelembapan_pct),
+    curahHujan: num(raw.curah_hujan_tp),
+    anginKmj: num(raw.kec_angin_kmj),
+    arahAngin: raw.arah_angin || "",
+    cuaca: raw.cuaca || "",
+    analysisUtc: raw.analysis_utc || "",
+  };
+}
+
+function normalizeCap(raw) {
+  return {
+    id: raw.id || "",
+    judul: raw.judul || "",
+    kejadian: raw.kejadian || "",
+    tingkat: raw.tingkat || "",
+    mulai: raw.mulai || "",
+    berakhir: raw.berakhir || "",
+    wilayah: raw.wilayah || "",
+    url: raw.url || "",
+  };
+}
+
+function normalizeDibi(raw) {
+  return {
+    tahun: String(raw.tahun ?? ""),
+    jenis: raw.jenis || "",
+    jumlah: num(raw.jumlah),
+    cakupan: raw.cakupan || "Nasional",
+    keterangan: raw.keterangan || "",
+  };
+}
+
+function normalizePembandingCuaca(raw) {
+  return {
+    tanggal: String(raw.tanggal ?? "").slice(0, 10),
+    provinsi: raw.provinsi || "—",
+    curahHujan: num(raw.curah_hujan_mm),
+    suhu: num(raw.suhu_c),
+    kelembapan: num(raw.kelembapan_pct),
+    anginKmj: num(raw.kec_angin_kmj),
+    hariTanpaHujan: num(raw.hari_tanpa_hujan),
+  };
+}
+
 const NORMALIZERS = {
   hotspot: (raw, contoh) => normalizeHotspotRow(raw, { contoh }),
   sipongi: (raw) => normalizeSipongi(raw),
   irbi: (raw) => normalizeIrbi(raw),
   bmkg: (raw) => normalizeBmkg(raw),
   ispu: (raw) => normalizeIspu(raw),
+  bmkg_prakiraan: (raw) => normalizePrakiraan(raw),
+  fdrs_pembanding: (raw) => normalizePembandingCuaca(raw),
+  ispu_pembanding: (raw) => normalizeIspu(raw),
+  bmkg_cap: (raw) => normalizeCap(raw),
+  dibi_karhutla: (raw) => normalizeDibi(raw),
 };
+
+function metaFromEntry(entry) {
+  if (!entry) return {};
+  return {
+    updateType: entry.update_type || "",
+    mode: entry.mode || "snapshot",
+    fetchedAt: entry.fetched_at || "",
+    observedAt: entry.observed_at || "",
+    observedLabel: entry.observed_label || "",
+    sourceUpdatedAt: entry.source_updated_at || entry.observed_at || "",
+    expectedMaxAgeHours: entry.expected_max_age_hours,
+    scheduleIntervalHours: entry.schedule_interval_hours || REFRESH_INTERVAL_HOURS,
+    sumber: entry.source || "",
+    lisensi: entry.license || "",
+    frekuensi: entry.frequency || "",
+    recordCount: entry.record_count,
+    method: entry.method || "",
+    provider: entry.provider || "",
+    officialUrl: entry.official_url || entry.url || "",
+    limitation: entry.limitation || "",
+    access: entry.access || "",
+    fungsi: entry.fungsi || "",
+    comparesTo: entry.compares_to || "",
+    urlTampil: entry.url || "",
+    ...(entry.nama ? { nama: entry.nama } : {}),
+    ...(entry.instansi ? { instansi: entry.instansi } : {}),
+  };
+}
+
+function sampleTiming(dataset, rows) {
+  const dates = (rows ?? []).map((row) => row.tanggal).filter(Boolean).sort();
+  const years = (rows ?? []).map((row) => String(row.tahun ?? "")).filter(Boolean).sort();
+  let observedAt = "";
+  let observedLabel = "Tidak ada cap waktu pada berkas contoh.";
+  let maxAge = 24 * 14;
+  if (dates.length) {
+    observedAt = `${dates.at(-1)}T16:59:00.000Z`;
+    observedLabel = dates[0] === dates.at(-1) ? `${dates.at(-1)} (berkas contoh)` : `${dates[0]} – ${dates.at(-1)} (berkas contoh)`;
+  } else if (years.length) {
+    observedAt = `${years.at(-1)}-12-31T17:00:00.000Z`;
+    observedLabel = `Tahun ${years.at(-1)} pada berkas contoh`;
+    maxAge = 24 * 30 * 18;
+  }
+  return {
+    updateType: "Contoh",
+    mode: "contoh",
+    fetchedAt: "",
+    observedAt,
+    observedLabel,
+    sourceUpdatedAt: observedAt,
+    expectedMaxAgeHours: maxAge,
+    scheduleIntervalHours: REFRESH_INTERVAL_HOURS,
+    limitation: dataset.lisensi || "",
+  };
+}
+
+async function readManifest(resolveUrl, fetchImpl) {
+  try {
+    const response = await fetchImpl(resolveUrl("data/live/manifest.json"), { cache: "no-store" });
+    if (!response?.ok) return null;
+    return JSON.parse(await response.text());
+  } catch {
+    return null;
+  }
+}
 
 async function readDataset(dataset, fetchImpl, resolveUrl) {
   const url = resolveUrl(dataset.csvUrl);
@@ -198,6 +321,30 @@ async function loadHotspot(dataset, config, fetchImpl, resolveUrl) {
   }
 }
 
+async function trySnapshot(dataset, entry, fetchImpl, resolveUrl) {
+  if (!entry?.file || (entry.status !== "ok" && !entry.kept_previous)) return null;
+  try {
+    const rows = await readDataset({ ...dataset, csvUrl: entry.file, contoh: false }, fetchImpl, resolveUrl);
+    const meta = metaFromEntry(entry);
+    return blankFeed(dataset, {
+      ...meta,
+      status: entry.status === "ok" ? "berhasil" : "usang",
+      contoh: false,
+      asal: "snapshot",
+      error: entry.status === "ok" ? "" : entry.error || "Menampilkan snapshot terakhir.",
+      rows,
+      urlTampil: meta.urlTampil || dataset.csvUrl,
+    });
+  } catch {
+    return null;
+  }
+}
+
+function withSampleClock(feed, dataset) {
+  if (!feed?.contoh || feed.updateType) return feed;
+  return { ...feed, ...sampleTiming(dataset, feed.rows) };
+}
+
 export async function loadAll(config, deps = {}) {
   const fetchImpl = deps.fetchImpl ?? globalThis.fetch;
   const resolveUrl =
@@ -206,8 +353,9 @@ export async function loadAll(config, deps = {}) {
       if (/^https?:\/\//i.test(url)) return url;
       return new URL(url, document.baseURI).href;
     });
+  const manifest = deps.manifest === undefined ? await readManifest(resolveUrl, fetchImpl) : deps.manifest;
   const datasets = Array.isArray(config?.datasets) ? config.datasets : [];
-  return Promise.all(
+  const feeds = await Promise.all(
     datasets.map(async (dataset) => {
       if (!dataset?.id) {
         return blankFeed(
@@ -215,18 +363,47 @@ export async function loadAll(config, deps = {}) {
           { error: "Dataset di config.json tidak memiliki id." },
         );
       }
-      if (dataset.id === "hotspot") return loadHotspot(dataset, config, fetchImpl, resolveUrl);
+      const snapshot = await trySnapshot(dataset, manifest?.datasets?.[dataset.id], fetchImpl, resolveUrl);
+      if (snapshot) return snapshot;
+      if (dataset.id === "hotspot") {
+        return withSampleClock(await loadHotspot(dataset, config, fetchImpl, resolveUrl), dataset);
+      }
       try {
         const rows = await readDataset(dataset, fetchImpl, resolveUrl);
-        return blankFeed(dataset, {
-          status: dataset.contoh ? "contoh" : "berhasil",
-          error: "",
-          rows,
-          asal: "csv",
-        });
+        return withSampleClock(
+          blankFeed(dataset, {
+            status: dataset.contoh ? "contoh" : "berhasil",
+            error: "",
+            rows,
+            asal: "csv",
+          }),
+          dataset,
+        );
       } catch (error) {
         return blankFeed(dataset, { status: "gagal", error: error.message, rows: [] });
       }
     }),
   );
+
+  for (const id of ["bmkg_prakiraan", "fdrs_pembanding", "ispu_pembanding", "bmkg_cap", "dibi_karhutla"]) {
+    const entry = manifest?.datasets?.[id];
+    if (!entry?.file) continue;
+    const snapshot = await trySnapshot(
+      {
+        id,
+        nama: entry.nama || id,
+        instansi: entry.instansi || "",
+        csvUrl: entry.file,
+        frekuensi: entry.frequency || "",
+        lisensi: entry.license || "",
+      },
+      entry,
+      fetchImpl,
+      resolveUrl,
+    );
+    if (snapshot) feeds.push(snapshot);
+  }
+
+  feeds.manifest = manifest;
+  return feeds;
 }

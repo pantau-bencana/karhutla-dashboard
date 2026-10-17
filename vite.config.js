@@ -26,7 +26,12 @@ function dataMiddleware() {
         next();
         return;
       }
-      res.setHeader("Content-Type", "text/csv; charset=utf-8");
+      const type = resolved.endsWith(".json")
+        ? "application/json; charset=utf-8"
+        : resolved.endsWith(".png")
+          ? "image/png"
+          : "text/csv; charset=utf-8";
+      res.setHeader("Content-Type", type);
       res.setHeader("Cache-Control", "no-cache");
       createReadStream(resolved).pipe(res);
     } catch {
