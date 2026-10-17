@@ -314,17 +314,21 @@ a.button {
 .map-card { overflow: hidden; }
 
 .map-canvas {
-  height: 520px;
+  height: 320px;
   width: 100%;
   margin-top: 12px;
   background: #d7d0c3;
 }
 
 .leaflet-container {
-  height: 100%;
   width: 100%;
   font-family: inherit;
   background: #d7d0c3;
+}
+
+.map-canvas.leaflet-container {
+  height: 320px;
+  max-height: 320px;
 }
 
 .map-note, .empty { padding: 0 14px 14px; }
@@ -561,10 +565,13 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   .header-inner { align-items: flex-start; flex-direction: column; }
   .header-side, .site-nav, .header-actions, .map-tools { align-items: flex-start; text-align: left; justify-content: flex-start; }
   .cards { grid-template-columns: 1fr 1fr; }
-  .map-canvas { height: 420px; }
+  .map-canvas,
+  .map-canvas.leaflet-container { height: 240px; max-height: 240px; }
 }
 
 @media (max-width: 640px) {
   .cards { grid-template-columns: 1fr; }
   .wrap { width: min(1280px, calc(100% - 20px)); }
+  .map-canvas,
+  .map-canvas.leaflet-container { height: 180px; max-height: 180px; }
 }

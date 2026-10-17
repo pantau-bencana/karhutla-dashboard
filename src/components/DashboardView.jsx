@@ -233,7 +233,11 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           {hotspotFeed?.status === "gagal" ? (
             <p className="empty">Peta tidak diisi karena sumber titik panas gagal: {hotspotFeed.error}</p>
           ) : null}
-          <HotspotMap points={view.points} frame={mapFrame} active={active} mapApi={mapApi} />
+          {active ? (
+            <HotspotMap points={view.points} frame={mapFrame} mapApi={mapApi} />
+          ) : (
+            <div className="map-canvas" aria-hidden="true" />
+          )}
           {!view.points.length && hotspotFeed?.status !== "gagal" ? (
             <p className="map-note">Tidak ada titik pada cakupan ini. Peta tetap menampilkan wilayah Indonesia.</p>
           ) : null}

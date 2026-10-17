@@ -26,8 +26,9 @@ export const INDONESIA_FRAME = Object.freeze({
   east: 141.6,
 });
 
-// Ruang geser di luar bingkai. Cukup agar pulau terluar tidak menempel tepi,
-// tetapi tidak membuka wilayah yang jauh dari Indonesia.
+// Acuan ruang di luar bingkai. Geser peta yang dipakai lebih ketat daripada
+// kotak ini: hanya sedikit lebih luas dari tampilan yang sudah memuat seluruh
+// Indonesia, supaya pulau terluar tidak keluar dari layar.
 export const INDONESIA_PAN_LIMIT = Object.freeze({
   south: -12.8,
   west: 92.2,

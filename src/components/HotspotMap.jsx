@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
-import { INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../lib/geo.js";
+import { INDONESIA_FRAME } from "../lib/geo.js";
 import { formatAngka, formatTanggal, formatWaktu } from "../lib/format.js";
 
 const COLORS = {
@@ -9,7 +9,7 @@ const COLORS = {
   rendah: "#ca8a04",
 };
 
-const PADDING = [32, 32];
+const PADDING = [20, 20];
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -56,16 +56,15 @@ function indonesiaBounds() {
   );
 }
 
-function panBounds() {
-  return L.latLngBounds(
-    [INDONESIA_PAN_LIMIT.south, INDONESIA_PAN_LIMIT.west],
-    [INDONESIA_PAN_LIMIT.north, INDONESIA_PAN_LIMIT.east],
-  );
-}
-
 function mapReady(map) {
   const size = map?.getSize?.();
   return Boolean(size && size.x >= 80 && size.y >= 80);
+}
+
+function panEnvelope(map) {
+  // Sedikit ruang geser, lebih kecil daripada jarak bingkai ke tepi layar,
+  // supaya pulau terluar tidak keluar dari peta.
+  return map.getBounds().pad(0.012);
 }
 
 export function frameIndonesia(map, modeRef) {
@@ -75,14 +74,15 @@ export function frameIndonesia(map, modeRef) {
   map.setMaxBounds(null);
   map.setMinZoom(0);
   map.fitBounds(frame, { padding: PADDING, animate: false });
-  map.setMinZoom(map.getZoom());
-  map.setMaxBounds(panBounds());
+  const settled = map.getZoom();
+  map.setMinZoom(settled);
+  map.setMaxBounds(panEnvelope(map));
   if (!map.getBounds().contains(frame)) {
     map.setMaxBounds(null);
     map.setMinZoom(0);
     map.fitBounds(frame, { padding: PADDING, animate: false });
     map.setMinZoom(map.getZoom());
-    map.setMaxBounds(panBounds());
+    map.setMaxBounds(panEnvelope(map));
   }
   if (modeRef) modeRef.current = "indonesia";
   return true;
@@ -103,16 +103,30 @@ export function framePoints(map, latlngs, modeRef) {
   return true;
 }
 
+function countryEnvelope(map) {
+  const previousMin = map.getMinZoom();
+  map.setMinZoom(0);
+  const zoom = map.getBoundsZoom(indonesiaBounds(), false, L.point(20, 20));
+  map.setMinZoom(previousMin);
+  const center = indonesiaBounds().getCenter();
+  const half = map.getSize().divideBy(2);
+  const projected = map.options.crs.latLngToPoint(center, zoom);
+  const nw = map.options.crs.pointToLatLng(projected.subtract(half), zoom);
+  const se = map.options.crs.pointToLatLng(projected.add(half), zoom);
+  return L.latLngBounds(nw, se).pad(0.012);
+}
+
 function syncMinZoom(map) {
   if (!mapReady(map)) return;
   const center = map.getCenter();
   const zoom = map.getZoom();
-  map.setMaxBounds(null);
+  const envelope = countryEnvelope(map);
+  const previousMin = map.getMinZoom();
   map.setMinZoom(0);
-  const nextMin = map.getBoundsZoom(indonesiaBounds(), false, L.point(32, 32));
-  const minZoom = Number.isFinite(nextMin) ? nextMin : 0;
+  const nextMin = map.getBoundsZoom(indonesiaBounds(), false, L.point(20, 20));
+  const minZoom = Number.isFinite(nextMin) ? nextMin : previousMin;
   map.setMinZoom(minZoom);
-  map.setMaxBounds(panBounds());
+  map.setMaxBounds(envelope);
   map.setView(center, Math.max(zoom, minZoom), { animate: false });
 }
 
@@ -130,7 +144,7 @@ export function HotspotMap({ points, frame = "indonesia", active = true, mapApi 
       zoomControl: true,
       zoomAnimation: false,
       fadeAnimation: false,
-      zoomSnap: 0.25,
+      zoomSnap: 0,
       zoomDelta: 0.5,
       minZoom: 0,
       maxBoundsViscosity: 1,
