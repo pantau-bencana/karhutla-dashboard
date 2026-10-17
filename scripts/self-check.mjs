@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { deriveDashboard, defaultRange } from "../src/lib/derive.js";
-import { assignProvince } from "../src/lib/geo.js";
+import { areaContains, assignProvince, INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../src/lib/geo.js";
 import { looksLikeCsv, parseCsv } from "../src/lib/csv.js";
 import { fetchCsv, loadAll, redactFirmsUrl } from "../src/lib/loadData.js";
+import { parseRoute } from "../src/lib/route.js";
+import { monitoringSources } from "../src/lib/sourceStatus.js";
 import { levelFromThresholds, statusProvinsi } from "../src/lib/warning.js";
 
 const DISCLAIMER = "Prototipe internal Dit. PD BNPB. Jangan dipublikasikan tanpa persetujuan.";
@@ -200,5 +202,78 @@ await assert.rejects(
 for (const file of ["README.md", "src/components/Footer.jsx", "public/config.json"]) {
   assert.equal(readFileSync(file, "utf8").includes(DISCLAIMER), true, file);
 }
+
+const firmsArea = { west: 95, south: -11, east: 141, north: 6 };
+assert.equal(areaContains(INDONESIA_FRAME, firmsArea), true);
+assert.equal(areaContains(INDONESIA_PAN_LIMIT, INDONESIA_FRAME), true);
+for (const edge of ["south", "west"]) {
+  const margin = INDONESIA_FRAME[edge] - INDONESIA_PAN_LIMIT[edge];
+  assert.ok(margin >= 1 && margin <= 4, `${edge} ${margin}`);
+}
+for (const edge of ["north", "east"]) {
+  const margin = INDONESIA_PAN_LIMIT[edge] - INDONESIA_FRAME[edge];
+  assert.ok(margin >= 1 && margin <= 4, `${edge} ${margin}`);
+}
+
+assert.equal(parseRoute(""), "dashboard");
+assert.equal(parseRoute("#/"), "dashboard");
+assert.equal(parseRoute("#/logika"), "logika");
+assert.equal(parseRoute("#/logika/"), "logika");
+assert.equal(parseRoute("#/LOGIKA?x=1"), "logika");
+assert.equal(parseRoute("#/lain"), "dashboard");
+
+const described = monitoringSources({ config, feeds: loaded });
+assert.equal(described.find((row) => row.id === "firms-api").status, "belum terhubung");
+assert.equal(described.find((row) => row.id === "hotspot").status, "contoh");
+for (const id of ["sipongi", "irbi", "bmkg", "ispu"]) {
+  assert.equal(described.find((row) => row.id === id).status, "contoh", id);
+  assert.equal(described.find((row) => row.id === id).tautan, "", id);
+}
+assert.equal(JSON.stringify(described).includes("mapKey"), false);
+assert.match(described.find((row) => row.id === "firms-api").catatan, /tidak menampilkan nilainya/i);
+
+const describedLive = monitoringSources({ config: liveConfig, feeds: live });
+assert.equal(describedLive.find((row) => row.id === "firms-api").status, "aktif");
+assert.equal(JSON.stringify(describedLive).includes("SECRETKEY123"), false);
+assert.equal(describedLive.find((row) => row.id === "hotspot").status, "contoh");
+assert.match(describedLive.find((row) => row.id === "hotspot").catatan, /tidak sedang mengisi peta/i);
+
+const describedFallback = monitoringSources({ config: liveConfig, feeds: fallback });
+assert.equal(describedFallback.find((row) => row.id === "firms-api").status, "belum terhubung");
+assert.match(describedFallback.find((row) => row.id === "hotspot").catatan, /FIRMS gagal|cadangan/i);
+
+const configured = monitoringSources({
+  config: {
+    firms: { mapKey: "" },
+    datasets: [
+      {
+        id: "sipongi",
+        nama: "SiPongi",
+        instansi: "Kementerian Kehutanan — SiPongi",
+        csvUrl: "https://example.com/sipongi.csv",
+        contoh: false,
+      },
+    ],
+  },
+  feeds: [{ id: "sipongi", status: "berhasil", contoh: false, asal: "csv" }],
+});
+assert.equal(configured.find((row) => row.id === "sipongi").status, "CSV yang dikonfigurasi");
+assert.equal(configured.find((row) => row.id === "sipongi").tautan, "https://example.com/sipongi.csv");
+
+const offline = monitoringSources({ config: null, feeds: [] });
+assert.equal(offline[0].status, "belum terhubung");
+assert.equal(JSON.stringify(offline).includes("mapKey"), false);
+
+const mapSource = readFileSync("src/components/HotspotMap.jsx", "utf8");
+assert.equal(mapSource.includes("setView([-2.2, 118]"), false);
+assert.equal(mapSource.includes("INDONESIA_FRAME"), true);
+assert.equal(mapSource.includes("fitBounds"), true);
+const logicSource = readFileSync("src/components/LogicPage.jsx", "utf8");
+assert.equal(logicSource.includes("Kembali ke dashboard"), true);
+assert.equal(logicSource.includes("mapKey"), false);
+assert.equal(logicSource.includes("rencana pengembangan"), true);
+assert.match(readFileSync("src/components/SiteHeader.jsx", "utf8"), /Logika Pemantauan/);
+assert.equal(readFileSync("index.html", "utf8").includes('href="./favicon.svg"'), true);
+assert.equal(readFileSync("vite.config.js", "utf8").includes('base: "./"'), true);
 
 console.log("Pemeriksaan prototipe lulus.");

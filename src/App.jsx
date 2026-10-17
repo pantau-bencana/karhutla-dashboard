@@ -1,10 +1,26 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DashboardView } from "./components/DashboardView.jsx";
 import { Footer } from "./components/Footer.jsx";
+import { LogicPage } from "./components/LogicPage.jsx";
+import { SiteHeader } from "./components/SiteHeader.jsx";
 import { defaultRange, deriveDashboard } from "./lib/derive.js";
 import { loadAll } from "./lib/loadData.js";
+import { parseRoute } from "./lib/route.js";
+
+const DEFAULT_TITLE = "Dashboard Peringatan Dini Karhutla Nasional";
+
+function usePage() {
+  const [page, setPage] = useState(() => parseRoute(window.location.hash));
+  useEffect(() => {
+    const sync = () => setPage(parseRoute(window.location.hash));
+    window.addEventListener("hashchange", sync);
+    return () => window.removeEventListener("hashchange", sync);
+  }, []);
+  return page;
+}
 
 export function App() {
+  const page = usePage();
   const [config, setConfig] = useState(null);
   const [configError, setConfigError] = useState("");
   const [feeds, setFeeds] = useState([]);
@@ -49,6 +65,12 @@ export function App() {
     reload();
   }, []);
 
+  useEffect(() => {
+    const title = config?.judul || DEFAULT_TITLE;
+    document.title = page === "logika" ? `Logika Pemantauan — ${title}` : title;
+    window.scrollTo(0, 0);
+  }, [page, config]);
+
   const view = useMemo(() => {
     if (!config) return null;
     const byId = (id) => feeds.find((feed) => feed.id === id)?.rows ?? [];
@@ -65,45 +87,50 @@ export function App() {
     });
   }, [config, feeds, province, from, to]);
 
-  if (configError && !config) {
-    return (
-      <>
-        <header className="site-header">
-          <div className="stripe" aria-hidden="true" />
-          <div className="wrap header-inner">
-            <div>
-              <p className="eyebrow">Dit. PD BNPB</p>
-              <h1>Dashboard Peringatan Dini Karhutla Nasional</h1>
-            </div>
-          </div>
-        </header>
-        <main className="wrap main">
-          <div className="banner error" role="alert">
-            <strong>Konfigurasi tidak termuat.</strong>
-            <p>{configError}</p>
-          </div>
-        </main>
-        <Footer />
-      </>
-    );
-  }
+  const dashboardTitle = config?.judul || DEFAULT_TITLE;
+  const headerTitle = page === "logika" ? "Logika Pemantauan" : dashboardTitle;
+  const headerSubtitle =
+    page === "logika"
+      ? "Cara prototipe membaca data hotspot, mengolahnya, lalu menampilkannya di dasbor."
+      : "Prototipe internal untuk memantau kebakaran hutan dan lahan: titik panas, bahaya cuaca kebakaran, dan mutu udara.";
 
   return (
     <>
-      <DashboardView
-        config={config}
-        feeds={feeds}
-        loading={loading}
+      <SiteHeader
+        eyebrow={config?.instansi || "Dit. PD BNPB"}
+        title={headerTitle}
+        subtitle={headerSubtitle}
         loadedAt={loadedAt}
-        province={province}
-        setProvince={setProvince}
-        from={from}
-        setFrom={setFrom}
-        to={to}
-        setTo={setTo}
+        loading={loading}
         onReload={reload}
-        view={view}
+        page={page}
+        showReload={page === "dashboard"}
       />
+      <div hidden={page !== "dashboard"}>
+        {configError && !config ? (
+          <main className="wrap main">
+            <div className="banner error" role="alert">
+              <strong>Konfigurasi tidak termuat.</strong>
+              <p>{configError}</p>
+            </div>
+          </main>
+        ) : (
+          <DashboardView
+            active={page === "dashboard"}
+            config={config}
+            feeds={feeds}
+            loading={loading}
+            province={province}
+            setProvince={setProvince}
+            from={from}
+            setFrom={setFrom}
+            to={to}
+            setTo={setTo}
+            view={view}
+          />
+        )}
+      </div>
+      {page === "logika" ? <LogicPage config={config} feeds={feeds} configError={configError} /> : null}
       <Footer />
     </>
   );

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
+import { INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../lib/geo.js";
 import { formatAngka, formatTanggal, formatWaktu } from "../lib/format.js";
 
 const COLORS = {
@@ -7,6 +8,8 @@ const COLORS = {
   nominal: "#c2410c",
   rendah: "#ca8a04",
 };
+
+const PADDING = [32, 32];
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -46,20 +49,92 @@ function usableCoordinate(lat, lon) {
   return Number.isFinite(lat) && Number.isFinite(lon) && lat >= -85 && lat <= 85 && lon >= -180 && lon <= 180;
 }
 
-export function HotspotMap({ points }) {
+function indonesiaBounds() {
+  return L.latLngBounds(
+    [INDONESIA_FRAME.south, INDONESIA_FRAME.west],
+    [INDONESIA_FRAME.north, INDONESIA_FRAME.east],
+  );
+}
+
+function panBounds() {
+  return L.latLngBounds(
+    [INDONESIA_PAN_LIMIT.south, INDONESIA_PAN_LIMIT.west],
+    [INDONESIA_PAN_LIMIT.north, INDONESIA_PAN_LIMIT.east],
+  );
+}
+
+function mapReady(map) {
+  const size = map?.getSize?.();
+  return Boolean(size && size.x >= 80 && size.y >= 80);
+}
+
+export function frameIndonesia(map, modeRef) {
+  if (!mapReady(map)) return false;
+  const frame = indonesiaBounds();
+  map.stop();
+  map.setMaxBounds(null);
+  map.setMinZoom(0);
+  map.fitBounds(frame, { padding: PADDING, animate: false });
+  map.setMinZoom(map.getZoom());
+  map.setMaxBounds(panBounds());
+  if (!map.getBounds().contains(frame)) {
+    map.setMaxBounds(null);
+    map.setMinZoom(0);
+    map.fitBounds(frame, { padding: PADDING, animate: false });
+    map.setMinZoom(map.getZoom());
+    map.setMaxBounds(panBounds());
+  }
+  if (modeRef) modeRef.current = "indonesia";
+  return true;
+}
+
+export function framePoints(map, latlngs, modeRef) {
+  if (!mapReady(map)) return false;
+  const usable = (latlngs ?? []).filter((pair) => usableCoordinate(pair?.[0], pair?.[1]));
+  if (!usable.length) return frameIndonesia(map, modeRef);
+  map.stop();
+  if (usable.length === 1) {
+    const zoom = Math.min(8, Math.max(map.getMinZoom() || 0, 7));
+    map.setView(usable[0], zoom, { animate: false });
+  } else {
+    map.fitBounds(usable, { padding: PADDING, maxZoom: 8, animate: false });
+  }
+  if (modeRef) modeRef.current = "points";
+  return true;
+}
+
+function syncMinZoom(map) {
+  if (!mapReady(map)) return;
+  const center = map.getCenter();
+  const zoom = map.getZoom();
+  map.setMaxBounds(null);
+  map.setMinZoom(0);
+  const nextMin = map.getBoundsZoom(indonesiaBounds(), false, L.point(32, 32));
+  const minZoom = Number.isFinite(nextMin) ? nextMin : 0;
+  map.setMinZoom(minZoom);
+  map.setMaxBounds(panBounds());
+  map.setView(center, Math.max(zoom, minZoom), { animate: false });
+}
+
+export function HotspotMap({ points, frame = "indonesia", active = true, mapApi }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const layerRef = useRef(null);
+  const modeRef = useRef("indonesia");
+  const latlngsRef = useRef([]);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return undefined;
     const map = L.map(containerRef.current, {
-      center: [-2.2, 118],
-      zoom: 5,
       scrollWheelZoom: true,
       zoomControl: true,
       zoomAnimation: false,
       fadeAnimation: false,
+      zoomSnap: 0.25,
+      zoomDelta: 0.5,
+      minZoom: 0,
+      maxBoundsViscosity: 1,
+      worldCopyJump: false,
     });
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 18,
@@ -67,17 +142,41 @@ export function HotspotMap({ points }) {
     }).addTo(map);
     layerRef.current = L.layerGroup().addTo(map);
     mapRef.current = map;
+
+    let sizeKey = "";
+    const onResize = () => {
+      const size = map.getSize();
+      const key = `${Math.round(size.x)}x${Math.round(size.y)}`;
+      if (!key || key === sizeKey) return;
+      sizeKey = key;
+      if (modeRef.current === "points") syncMinZoom(map);
+      else frameIndonesia(map, modeRef);
+    };
+    map.on("resize", onResize);
+    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(onResize) : null;
+    observer?.observe(containerRef.current);
+
+    if (mapApi) {
+      mapApi.current = {
+        showIndonesia() {
+          modeRef.current = "indonesia";
+          frameIndonesia(mapRef.current, modeRef);
+        },
+      };
+    }
+
     return () => {
+      observer?.disconnect();
+      if (mapApi) mapApi.current = null;
       map.remove();
       mapRef.current = null;
       layerRef.current = null;
     };
-  }, []);
+  }, [mapApi]);
 
   useEffect(() => {
-    const map = mapRef.current;
     const layer = layerRef.current;
-    if (!map || !layer) return;
+    if (!layer) return;
     layer.clearLayers();
     const latlngs = [];
     for (const point of points) {
@@ -97,32 +196,32 @@ export function HotspotMap({ points }) {
       marker.addTo(layer);
       latlngs.push([lat, lon]);
     }
+    latlngsRef.current = latlngs;
+  }, [points]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !active) return undefined;
     let cancelled = false;
     let tries = 0;
-    const place = () => {
-      if (cancelled) return;
+    const apply = () => {
+      if (cancelled || !mapRef.current) return;
       map.invalidateSize({ pan: false, animate: false });
       const size = map.getSize();
       if ((size.x < 80 || size.y < 80) && tries < 20) {
         tries += 1;
-        window.requestAnimationFrame(place);
+        window.requestAnimationFrame(apply);
         return;
       }
-      map.stop();
-      if (latlngs.length === 0) {
-        map.setView([-2.2, 118], 5, { animate: false });
-      } else if (latlngs.length === 1) {
-        map.setView(latlngs[0], 7, { animate: false });
-      } else {
-        map.fitBounds(latlngs, { padding: [28, 28], maxZoom: 7, animate: false });
-      }
-      if (map.getZoom() < 4) map.setView([-2.2, 118], 5, { animate: false });
+      if (!mapReady(map)) return;
+      if (frame === "points" && latlngsRef.current.length) framePoints(map, latlngsRef.current, modeRef);
+      else frameIndonesia(map, modeRef);
     };
-    place();
+    apply();
     return () => {
       cancelled = true;
     };
-  }, [points]);
+  }, [frame, points, active]);
 
   return <div ref={containerRef} className="map-canvas" role="region" aria-label="Peta sebaran titik panas" />;
 }

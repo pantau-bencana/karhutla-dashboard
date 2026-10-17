@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { HotspotMap } from "./HotspotMap.jsx";
 import { TrendCharts } from "./TrendCharts.jsx";
 import { defaultRange } from "../lib/derive.js";
@@ -20,76 +21,60 @@ function ispuTone(kategori) {
 }
 
 export function DashboardView({
+  active = true,
   config,
   feeds,
   loading,
-  loadedAt,
   province,
   setProvince,
   from,
   setFrom,
   to,
   setTo,
-  onReload,
   view,
 }) {
+  if (!config || !view) {
+    return (
+      <main className="wrap">
+        <p className="loading" role="status">
+          Memuat konfigurasi dan data…
+        </p>
+      </main>
+    );
+  }
+
   return (
-    <>
-      <header className="site-header">
-        <div className="stripe" aria-hidden="true" />
-        <div className="wrap header-inner">
-          <div className="brand">
-            <span className="mark" aria-hidden="true">
-              <svg viewBox="0 0 32 32" width="36" height="36">
-                <rect width="32" height="32" rx="7" fill="#e8b931" />
-                <path
-                  fill="#143028"
-                  d="M16 5c2 4 2 6-1 8 3 0 6 2 6 6a7 7 0 1 1-14 0c0-3 2-5 4-6-1 2-1 3 1 4-2-3-1-7 4-12z"
-                />
-              </svg>
-            </span>
-            <div>
-              <p className="eyebrow">{config?.instansi || "Dit. PD BNPB"}</p>
-              <h1>{config?.judul || "Dashboard Peringatan Dini Karhutla Nasional"}</h1>
-              <p className="subtitle">
-                Prototipe internal untuk memantau kebakaran hutan dan lahan: titik panas, bahaya cuaca kebakaran, dan
-                mutu udara.
-              </p>
-            </div>
-          </div>
-          <div className="header-actions">
-            {loadedAt ? <p>Dimuat {loadedAt}</p> : null}
-            <button type="button" className="button" onClick={onReload} disabled={loading}>
-              {loading ? "Memuat…" : "Muat ulang"}
-            </button>
-          </div>
-        </div>
-      </header>
-      {config && view ? (
-        <DashboardBody
-          config={config}
-          feeds={feeds}
-          loading={loading}
-          province={province}
-          setProvince={setProvince}
-          from={from}
-          setFrom={setFrom}
-          to={to}
-          setTo={setTo}
-          view={view}
-        />
-      ) : (
-        <main className="wrap">
-          <p className="loading" role="status">
-            Memuat konfigurasi dan data…
-          </p>
-        </main>
-      )}
-    </>
+    <DashboardBody
+      active={active}
+      config={config}
+      feeds={feeds}
+      loading={loading}
+      province={province}
+      setProvince={setProvince}
+      from={from}
+      setFrom={setFrom}
+      to={to}
+      setTo={setTo}
+      view={view}
+    />
   );
 }
 
-function DashboardBody({ config, feeds, loading, province, setProvince, from, setFrom, to, setTo, view }) {
+function DashboardBody({ active, config, feeds, loading, province, setProvince, from, setFrom, to, setTo, view }) {
+  const mapApi = useRef(null);
+  const filterKey = `${province}|${from}|${to}`;
+  const [seenFilter, setSeenFilter] = useState(filterKey);
+  const [lockIndonesia, setLockIndonesia] = useState(true);
+  if (filterKey !== seenFilter) {
+    setSeenFilter(filterKey);
+    setLockIndonesia(false);
+  }
+  const mapFrame = lockIndonesia ? "indonesia" : "points";
+
+  function showIndonesia() {
+    setLockIndonesia(true);
+    mapApi.current?.showIndonesia();
+  }
   const hotspotFeed = feeds.find((feed) => feed.id === "hotspot");
   const samples = feeds.filter((feed) => feed.contoh && feed.status !== "gagal");
   const failures = feeds.filter((feed) => feed.status === "gagal");
@@ -228,22 +213,27 @@ function DashboardBody({ config, feeds, loading, province, setProvince, from, se
                 {hotspotFeed?.asal === "firms" ? " · NASA FIRMS" : ""}
               </p>
             </div>
-            <ul className="legend">
-              <li>
-                <i className="swatch tinggi" /> Tinggi
-              </li>
-              <li>
-                <i className="swatch nominal" /> Nominal
-              </li>
-              <li>
-                <i className="swatch rendah" /> Rendah
-              </li>
-            </ul>
+            <div className="map-tools">
+              <ul className="legend">
+                <li>
+                  <i className="swatch tinggi" /> Tinggi
+                </li>
+                <li>
+                  <i className="swatch nominal" /> Nominal
+                </li>
+                <li>
+                  <i className="swatch rendah" /> Rendah
+                </li>
+              </ul>
+              <button type="button" className="button ghost" onClick={showIndonesia}>
+                Tampilkan seluruh Indonesia
+              </button>
+            </div>
           </header>
           {hotspotFeed?.status === "gagal" ? (
             <p className="empty">Peta tidak diisi karena sumber titik panas gagal: {hotspotFeed.error}</p>
           ) : null}
-          <HotspotMap points={view.points} />
+          <HotspotMap points={view.points} frame={mapFrame} active={active} mapApi={mapApi} />
           {!view.points.length && hotspotFeed?.status !== "gagal" ? (
             <p className="map-note">Tidak ada titik pada cakupan ini. Peta tetap menampilkan wilayah Indonesia.</p>
           ) : null}

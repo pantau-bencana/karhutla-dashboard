@@ -15,6 +15,35 @@ export function shortName(name) {
   return SINGKATAN[name] ?? name;
 }
 
+// Bingkai tampilan peta, sedikit lebih luas dari ujung daratan yang umum
+// disebut (sekitar Pulau Rondo, Pulau Ndana, Pulau Breueh, dan perbatasan
+// Merauke). Dipakai hanya untuk posisi awal dan batas zoom. Bukan batas
+// administrasi resmi, dan tidak menggeser koordinat titik.
+export const INDONESIA_FRAME = Object.freeze({
+  south: -11.5,
+  west: 94.4,
+  north: 6.5,
+  east: 141.6,
+});
+
+// Ruang geser di luar bingkai. Cukup agar pulau terluar tidak menempel tepi,
+// tetapi tidak membuka wilayah yang jauh dari Indonesia.
+export const INDONESIA_PAN_LIMIT = Object.freeze({
+  south: -12.8,
+  west: 92.2,
+  north: 8.0,
+  east: 143.0,
+});
+
+export function areaContains(outer, inner) {
+  return (
+    outer.south <= inner.south &&
+    outer.north >= inner.north &&
+    outer.west <= inner.west &&
+    outer.east >= inner.east
+  );
+}
+
 // Kotak kasar untuk CSV FIRMS yang tidak memuat nama provinsi.
 // Bukan batas administrasi resmi. Titik di dekat perbatasan bisa keliru.
 const BOXES = [
