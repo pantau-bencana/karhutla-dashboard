@@ -91,7 +91,7 @@ export function DashboardView({
 
 function DashboardBody({ config, feeds, loading, province, setProvince, from, setFrom, to, setTo, view }) {
   const hotspotFeed = feeds.find((feed) => feed.id === "hotspot");
-  const samples = feeds.filter((feed) => feed.contoh);
+  const samples = feeds.filter((feed) => feed.contoh && feed.status !== "gagal");
   const failures = feeds.filter((feed) => feed.status === "gagal");
   const fallbacks = feeds.filter((feed) => feed.status === "cadangan");
   const keySet = Boolean(String(config.firms?.mapKey ?? "").trim());
@@ -102,6 +102,22 @@ function DashboardBody({ config, feeds, loading, province, setProvince, from, se
     const range = defaultRange(hotspotFeed?.rows ?? [], 7);
     setFrom(range.from);
     setTo(range.to);
+  }
+
+  function latestDay() {
+    const range = defaultRange(hotspotFeed?.rows ?? [], 1);
+    setFrom(range.to);
+    setTo(range.to);
+  }
+
+  function updateFrom(value) {
+    setFrom(value);
+    if (value && to && value > to) setTo(value);
+  }
+
+  function updateTo(value) {
+    setTo(value);
+    if (value && from && value < from) setFrom(value);
   }
 
   return (
@@ -153,12 +169,15 @@ function DashboardBody({ config, feeds, loading, province, setProvince, from, se
         <div className="date-filter">
           <label>
             Dari
-            <input type="date" value={from} max={to || undefined} onChange={(event) => setFrom(event.target.value)} />
+            <input type="date" value={from} onChange={(event) => updateFrom(event.target.value)} />
           </label>
           <label>
             Sampai
-            <input type="date" value={to} min={from || undefined} onChange={(event) => setTo(event.target.value)} />
+            <input type="date" value={to} onChange={(event) => updateTo(event.target.value)} />
           </label>
+          <button type="button" className="button ghost" onClick={latestDay}>
+            Hari terakhir
+          </button>
           <button type="button" className="button ghost" onClick={resetDates}>
             7 hari terakhir
           </button>

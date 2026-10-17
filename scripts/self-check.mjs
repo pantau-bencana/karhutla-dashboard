@@ -116,6 +116,20 @@ assert.equal(riau.summary.hotspot, 72);
 assert.equal(riau.warnings.length, 1);
 assert.ok(riau.irbiRows.every((row) => row.provinsi === "Riau"));
 
+const oneDay = deriveDashboard({
+  hotspots: hotspot.rows,
+  ispu: loaded.find((feed) => feed.id === "ispu").rows,
+  bmkg: loaded.find((feed) => feed.id === "bmkg").rows,
+  sipongi: [],
+  irbi: [],
+  province: "",
+  from: "2026-10-16",
+  to: "2026-10-16",
+  config,
+});
+assert.equal(oneDay.summary.hotspot, 19);
+assert.equal(oneDay.summary.ispuTerkini.ispu, 112);
+
 const firmsCsv = [
   "latitude,longitude,bright_ti4,scan,track,acq_date,acq_time,satellite,confidence,version,bright_ti5,frp,daynight",
   "1.50,102.10,330.2,0.4,0.4,2026-10-16,1430,N,high,2.0NRT,290.1,12.5,D",
