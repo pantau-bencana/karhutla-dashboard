@@ -1,0 +1,221 @@
+{
+ "total": {
+  "pages": "40-57",
+  "rows": 514,
+  "max_no": 514,
+  "missing_no": [],
+  "dup_no": [],
+  "dup_names": [],
+  "kelas": {
+   "TINGGI": 169,
+   "SEDANG": 345
+  },
+  "min": 39.43,
+  "max": 278.51,
+  "sorted_desc": true,
+  "unparsed": [],
+  "provinsi_count": 38
+ },
+ "banjir": {
+  "pages": "212-229",
+  "rows": 510,
+  "max_no": 510,
+  "missing_no": [],
+  "dup_no": [],
+  "dup_names": [],
+  "kelas": {
+   "TINGGI": 282,
+   "SEDANG": 221,
+   "RENDAH": 7
+  },
+  "min": 3.42,
+  "max": 27.57,
+  "sorted_desc": true,
+  "unparsed": [],
+  "provinsi_count": 38
+ },
+ "gempabumi": {
+  "pages": "230-247",
+  "rows": 514,
+  "max_no": 514,
+  "missing_no": [],
+  "dup_no": [],
+  "dup_names": [],
+  "kelas": {
+   "TINGGI": 336,
+   "SEDANG": 34,
+   "RENDAH": 144
+  },
+  "min": 0.67,
+  "max": 36.0,
+  "sorted_desc": true,
+  "unparsed": [],
+  "provinsi_count": 38
+ },
+ "tsunami": {
+  "pages": "248-259",
+  "rows": 274,
+  "max_no": 274,
+  "missing_no": [],
+  "dup_no": [],
+  "dup_names": [],
+  "kelas": {
+   "TINGGI": 206,
+   "SEDANG": 19,
+   "RENDAH": 49
+  },
+  "min": 0.6,
+  "max": 36.0,
+  "sorted_desc": false,
+  "unparsed": [],
+  "provinsi_count": 32
+ },
+ "letusan_gunung_api": {
+  "pages": "260-265",
+  "rows": 132,
+  "max_no": 132,
+  "missing_no": [],
+  "dup_no": [],
+  "dup_names": [],
+  "kelas": {
+   "TINGGI": 79,
+   "SEDANG": 22,
+   "RENDAH": 31
+  },
+  "min": 0.6,
+  "max": 29.23,
+  "sorted_desc": true,
+  "unparsed": [],
+  "provinsi_count": 19
+ },
+ "banjir_bandang": {
+  "pages": "266-281",
+  "rows": 420,
+  "max_no": 420,
+  "missing_no": [],
+  "dup_no": [],
+  "dup_names": [],
+  "kelas": {
+   "TINGGI": 4,
+   "SEDANG": 315,
+   "RENDAH": 101
+  },
+  "min": 0.78,
+  "max": 20.0,
+  "sorted_desc": true,
+  "unparsed": [],
+  "provinsi_count": 37
+ },
+ "gelombang_ekstrem_abrasi": {
+  "pages": "282-293",
+  "rows": 322,
+  "max_no": 322,
+  "missing_no": [],
+  "dup_no": [],
+  "dup_names": [],
+  "kelas": {
+   "TINGGI": 241,
+   "SEDANG": 57,
+   "RENDAH": 24
+  },
+  "min": 0.54,
+  "max": 36.0,
+  "sorted_desc": true,
+  "unparsed": [],
+  "provinsi_count": 37
+ },
+ "karhutla": {
+  "pages": "294-309",
+  "rows": 467,
+  "max_no": 467,
+  "missing_no": [],
+  "dup_no": [],
+  "dup_names": [],
+  "kelas": {
+   "TINGGI": 380,
+   "SEDANG": 77,
+   "RENDAH": 10
+  },
+  "min": 1.71,
+  "max": 25.2,
+  "sorted_desc": true,
+  "unparsed": [],
+  "provinsi_count": 37
+ },
+ "tanah_longsor": {
+  "pages": "310-325",
+  "rows": 455,
+  "max_no": 455,
+  "missing_no": [],
+  "dup_no": [],
+  "dup_names": [],
+  "kelas": {
+   "TINGGI": 369,
+   "SEDANG": 52,
+   "RENDAH": 34
+  },
+  "min": 1.0,
+  "max": 33.0,
+  "sorted_desc": true,
+  "unparsed": [],
+  "provinsi_count": 37
+ },
+ "kekeringan": {
+  "pages": "326-343",
+  "rows": 514,
+  "max_no": 514,
+  "missing_no": [],
+  "dup_no": [],
+  "dup_names": [],
+  "kelas": {
+   "TINGGI": 375,
+   "SEDANG": 107,
+   "RENDAH": 32
+  },
+  "min": 0.91,
+  "max": 30.55,
+  "sorted_desc": true,
+  "unparsed": [],
+  "provinsi_count": 38
+ },
+ "likuefaksi": {
+  "pages": "344-357",
+  "rows": 381,
+  "max_no": 381,
+  "missing_no": [],
+  "dup_no": [],
+  "dup_names": [],
+  "kelas": {
+   "TINGGI": 314,
+   "SEDANG": 40,
+   "RENDAH": 27
+  },
+  "min": 0.69,
+  "max": 34.8,
+  "sorted_desc": true,
+  "unparsed": [],
+  "provinsi_count": 32
+ },
+ "cuaca_ekstrem": {
+  "pages": "358-375",
+  "rows": 514,
+  "max_no": 514,
+  "missing_no": [],
+  "dup_no": [],
+  "dup_names": [],
+  "kelas": {
+   "TINGGI": 185,
+   "SEDANG": 276,
+   "RENDAH": 53
+  },
+  "min": 1.6,
+  "max": 24.0,
+  "sorted_desc": true,
+  "unparsed": [],
+  "provinsi_count": 38
+ },
+ "provinsi": {
+  "rows": 38,
+  "narrative_class_found": 22
+ }
+}
