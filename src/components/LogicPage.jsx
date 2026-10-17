@@ -1,3 +1,4 @@
+import { PROTOTYPE_LABEL } from "../lib/attentionPrototype.js";
 import { formatAmbang } from "../lib/format.js";
 import { pageHref } from "../lib/route.js";
 import { Term } from "./Term.jsx";
@@ -19,8 +20,8 @@ const ROWS = [
   ["IRBI 2025", "Membandingkan risiko tahunan.", "Skor buku, tidak mengikuti tanggal.", "Konteks tahunan, bukan urutan 14 hari.", "Halaman 294–307. Komponen yang tidak ada di buku dikosongkan."],
   ["Asap", "Sebaran asap terpantau.", "Halaman dan citra resmi.", "Tidak menjadi alasan perhatian.", "Tautan saja – menunggu izin BMKG. Arsip citra mati. Tidak ada gambar buatan."],
   ["FDRS", "Kemudahan terbakar menurut BMKG.", "Citra SPARTAN hingga H+7 sesuai produk BMKG.", "Belum menjadi alasan perhatian.", "Tidak didigitasi. Bukan 10 atau 14 hari. FWI pada indikator prototipe masih contoh."],
-  ["Hujan", "Konteks basah atau kering.", "API 3 hari memuat nilai tp, bukan peluang persen. Dasarian hanya tautan.", "Tidak dipakai untuk menebak titik api.", "Produk dasarian, curah hujan tinggi, dan narasi sepekan tidak dikorek."],
-  ["Angin", "Arah dan kecepatan jangka pendek.", "wd dan ws pada prakiraan 3 hari, km/jam menurut dokumentasi BMKG.", "Bukan penentu asal kebakaran.", "Satu kelurahan per provinsi prioritas. Vektor satelit hanya tautan."],
+  ["Hujan", "Konteks basah atau kering.", "API 3 hari memuat nilai tp, bukan peluang persen. Dasarian hanya tautan.", "Tidak dipakai untuk menebak titik api.", "Produk dasarian, curah hujan tinggi, dan narasi sepekan tidak dikorek. Pembanding 14 hari terpisah dan tidak menjadi peluang BMKG."],
+  ["Angin", "Arah dan kecepatan jangka pendek.", "wd dan ws pada prakiraan 3 hari, km/jam menurut dokumentasi BMKG.", "Bukan penentu asal kebakaran.", "Satu kelurahan per provinsi prioritas. Vektor satelit hanya tautan. Angin 14 hari pada titik wakil hanya pembanding."],
   ["Kualitas Udara (ISPU)", "Dampak asap pada mutu udara di lokasi stasiun.", "Nilai stasiun, bukan seluruh kabupaten. Bukan bukti tunggal asal karhutla.", "Tidak masuk daftar perhatian.", "Tanpa API resmi: belum terhubung. Hanya Hari Ini dan Historis. Tidak ada prediksi. CAMS tidak ditampilkan di lapisan ini."],
 ];
 
@@ -53,6 +54,16 @@ export function LogicPage({ config }) {
             (FDRS/potensi karhutla per kab/kota). Horizon yang benar-benar ada pada API adalah 3 hari, dan pada citra
             SPARTAN hingga H+7 sesuai produk BMKG. Bobot, ambang, dan periode belum disepakati, jadi peringkat tidak
             diisi.
+          </p>
+          <p>
+            <strong>{PROTOTYPE_LABEL}.</strong> Daftar pada Ringkasan, bila cuplikan ada, hanya mengurutkan kabupaten
+            prioritas yang punya titik wakil Satu Data dan baris IRBI 2025. Periode adalah 14 tanggal prakiraan
+            Open-Meteo pada zona Asia/Jakarta. Hari kering adalah precipitation_sum di bawah 1 mm. Kabupaten dengan
+            kurang dari 12 hari berharga angka keluar. Urutan: kelas IRBI (bobot Tinggi 2, Sedang 1, Rendah 0), lalu
+            hari kering terbanyak, lalu jumlah hujan terkecil, lalu indeks IRBI terbesar. Peluang hujan, angin
+            maksimum, dan FWI GWIS tidak mengubah urutan. FWI GWIS berhenti pada hari yang layanan isi, biasanya lebih
+            pendek dari 14 hari. Jumlah kejadian DIBI dan peta inaRISK tidak masuk bobot. Hasilnya bukan level
+            Normal, Waspada, Siaga, atau Awas.
           </p>
         </div>
       </section>
