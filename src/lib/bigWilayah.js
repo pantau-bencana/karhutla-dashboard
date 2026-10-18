@@ -1,5 +1,7 @@
 export const DESA_UNIDENTIFIED = "Wilayah desa belum teridentifikasi";
 export const WILAYAH_UNAVAILABLE = "Identifikasi wilayah BIG tidak tersedia";
+export const FILTER_INCOMPLETE =
+  "Penyaringan wilayah dan batas Indonesia pada pembaruan ini tidak lengkap karena layanan BIG tidak tersedia. Titik FIRMS tetap ditampilkan. Nama wilayah yang kosong tidak ditebak.";
 export const BIG_SOURCE_LABEL = "BIG – Batas Administrasi Desa/Kelurahan";
 export const BIG_SERVICE = "https://kspservices.big.go.id/satupeta/rest/services/PUBLIK/BATAS_WILAYAH/MapServer";
 export const BIG_DESA_LAYER = 4;

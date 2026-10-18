@@ -678,6 +678,7 @@ async function fetchFirms() {
     droppedOutsideIndonesia: annotated.stats.droppedOutside,
     invalidCoordinates: invalid,
     wilayahGagal: annotated.stats.gagal,
+    bigFilterIncomplete: annotated.stats.gagal > 0,
     wilayahDesa: annotated.stats.desa,
     wilayahTanpaDesa: annotated.stats.tanpaDesa,
   };
@@ -970,6 +971,7 @@ async function main() {
       hotspotEntry.dropped_outside_indonesia = result.droppedOutsideIndonesia;
       hotspotEntry.invalid_coordinates = result.invalidCoordinates;
       hotspotEntry.wilayah_gagal = result.wilayahGagal;
+      hotspotEntry.big_filter_incomplete = result.bigFilterIncomplete;
       hotspotEntry.wilayah_desa = result.wilayahDesa;
       hotspotEntry.wilayah_tanpa_desa = result.wilayahTanpaDesa;
       hotspotEntry.boundary = BIG_SOURCE_LABEL;
