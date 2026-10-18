@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ExtraLayers, LayerBar, WilayahDetail } from "./ExtraLayers.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { HotspotBoard } from "./HotspotBoard.jsx";
+import { HotspotAccordion } from "./HotspotAccordion.jsx";
 import { TrendCharts } from "./TrendCharts.jsx";
 import { defaultRange } from "../lib/derive.js";
 import { hotspotSourceLabel } from "../lib/freshness.js";
@@ -59,7 +60,6 @@ export function DashboardView({
 
 function DashboardBody({ active, config, feeds, loading, province, setProvince, from, setFrom, to, setTo, view, freshness }) {
   const [layer, setLayer] = useState("hotspot");
-  const [provinceSort, setProvinceSort] = useState("nama");
   const hotspotFeed = feeds.find((feed) => feed.id === "hotspot");
   const visibleFeeds = layer === "ispu" ? feeds.filter((feed) => feed.id !== "ispu" && feed.id !== "ispu_pembanding") : feeds;
   const samples = visibleFeeds.filter((feed) => feed.contoh && feed.status !== "gagal");
@@ -215,9 +215,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
       </section>
 
       <ProvinceCounts
-        rows={view.provinsiDeteksi}
-        sort={provinceSort}
-        setSort={setProvinceSort}
+        points={view.points}
         from={from}
         to={to}
         sumber={hotspotSourceLabel(hotspotFeed, config.firms?.sumber)}
@@ -334,45 +332,28 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
   );
 }
 
-function ProvinceCounts({ rows, sort, setSort, from, to, sumber, summary }) {
-  const ordered = [...(rows ?? [])].sort((a, b) => {
-    if (sort === "jumlah" && b.jumlah !== a.jumlah) return b.jumlah - a.jumlah;
-    return a.provinsi.localeCompare(b.provinsi, "id");
-  });
+function ProvinceCounts({ points, from, to, sumber, summary }) {
   return (
     <section className="card">
       <header className="card-head">
         <div>
           <h2>Jumlah deteksi hotspot (bukan status)</h2>
           <p>
-            Pengamatan pada periode {from || "—"} sampai {to || "—"}. Satelit: {sumber || "—"}. Rendah{" "}
-            {formatAngka(summary?.rendah || 0)}, nominal {formatAngka(summary?.nominal || 0)}, tinggi{" "}
-            {formatAngka(summary?.tinggi || 0)}.
+            Periode {from || "—"}–{to || "—"}. Bukan status operasional.
             {summary?.belumTerverifikasi
-              ? ` ${formatAngka(summary.belumTerverifikasi)} titik belum terverifikasi wilayah dan tidak masuk tabel ini.`
+              ? ` ${formatAngka(summary.belumTerverifikasi)} titik belum terverifikasi wilayah.`
               : ""}
           </p>
         </div>
       </header>
-      <div className="province-filter" role="group" aria-label="Urutan tabel provinsi">
-        <button type="button" aria-pressed={sort === "nama"} onClick={() => setSort("nama")}>
-          Urut nama
-        </button>
-        <button type="button" aria-pressed={sort === "jumlah"} onClick={() => setSort("jumlah")}>
-          Urut jumlah
-        </button>
-      </div>
-      <SimpleTable
-        empty="Tidak ada provinsi pada cakupan ini."
-        head={["Provinsi", "Jumlah", "Rendah", "Nominal", "Tinggi"]}
-        rows={ordered.map((row) => [
-          row.provinsi,
-          formatAngka(row.jumlah),
-          formatAngka(row.rendah),
-          formatAngka(row.nominal),
-          formatAngka(row.tinggi),
-        ])}
-      />
+      <details className="read-help">
+        <summary>Cara membaca</summary>
+        <p>
+          Satelit: {sumber || "—"}. Urutan provinsi mengikuti jumlah titik, dari yang terbanyak. Angka berwarna adalah
+          confidence deteksi satelit: rendah, nominal (sedang), dan tinggi. Bukan tingkat bahaya.
+        </p>
+      </details>
+      <HotspotAccordion points={points} />
     </section>
   );
 }

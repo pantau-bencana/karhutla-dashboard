@@ -14,7 +14,7 @@ Periksa tiap halaman. Untuk setiap butir tulis SUDAH, SEBAGIAN, atau BELUM, plus
 - Status jujur: sumber yang gagal atau hanya tautan tidak ditulis seolah tersambung.
 - Data contoh tidak disajikan sebagai data resmi.
 - IRBI 2025 hanya konteks jangka panjang, judulnya "Konteks risiko jangka panjang (IRBI 2025)", di bagian bawah, urutan nama, bukan urutan prioritas 14 hari.
-- Tidak ada tabel status provinsi dan tidak ada kata status operasional pada jumlah hotspot. Tabel yang diharapkan: "Jumlah deteksi hotspot (bukan status)".
+- Tidak ada tabel status provinsi dan tidak ada kata status operasional pada jumlah hotspot. Yang diharapkan: judul "Jumlah deteksi hotspot (bukan status)", plus daftar provinsi yang tertutup. Tiap baris memuat nama, jumlah titik, dan chip rendah/nominal/tinggi. Membuka provinsi menampilkan kecamatan. Ada "Cari provinsi" dan "Cara membaca".
 - FDRS resmi menulis "menunggu data resmi BMKG". Nilai contoh FWI tidak ditampilkan. Panel 14 hari Open-Meteo, bila ada, berlabel pembanding model, bukan prakiraan BMKG, dan header kartunya memuat "Pembanding, bukan produk BMKG/KLHK".
 - Judul peramban: Prototipe Pemantauan Karhutla.
 - Di atas peta hotspot ada "Lintasan satelit terakhir" dalam WIB. Data yang lintasannya lebih lama dari sekitar 8 jam, atau yang melewati jadwal berikutnya lebih dari 1 jam, ditandai tertunda. Jam pembaruan yang sudah lewat tidak ditampilkan.
@@ -80,6 +80,7 @@ Perubahan ini ada pada commit `4cf72fb`. Yang diubah:
 - Aturan kesegaran: lintasan terakhir ditampilkan dalam WIB di atas peta. Tanda tertunda bila lintasan lebih lama dari sekitar 8 jam, atau bila waktu sekarang melewati `next_run` lebih dari 1 jam. `next_run` yang sudah lewat disembunyikan. Label cuplikan: "VIIRS S-NPP NRT (snapshot ±3 jam)".
 - Titik yang pencarian wilayahnya gagal tidak masuk hitungan provinsi atau kabupaten. Halaman menulis "N titik belum terverifikasi wilayah".
 - Ringkasan wilayah bawaan adalah kecamatan, dengan pilihan kabupaten dan desa. Kalimat cakupan: "nama desa tersedia untuk N dari M titik".
+- Daftar hotspot di Ringkasan dan di Peta dan Data dikelompokkan per provinsi, tertutup sampai dibuka, urut jumlah titik. Kecamatan memuat kab/kota dan kode. Desa yang teridentifikasi ada di dalam kecamatan. Teks panjang ada di "Cara membaca". Labelnya tetap "Confidence deteksi satelit".
 - IRBI berjudul "Konteks risiko jangka panjang (IRBI 2025)", urutan nama, di bagian bawah.
 - Di samping warna keyakinan ada kalimat "keyakinan deteksi, bukan intensitas atau bahaya".
 - Header kartu pembanding memuat "Pembanding, bukan produk BMKG/KLHK". Panel hujan 14 hari disebut pembanding model, bukan prakiraan BMKG. Pita galat dan pita data tertunda menempel atau menimpa peta.

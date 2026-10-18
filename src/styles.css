@@ -677,6 +677,78 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   .map-canvas.hotspot-map.leaflet-container { height: 420px; max-height: 420px; }
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.read-help {
+  margin: 8px 0 12px;
+}
+
+.read-help summary {
+  cursor: pointer;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.hotspot-acc { display: grid; gap: 6px; }
+.acc-search { max-width: 280px; }
+.acc-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 14px;
+}
+.acc-block { border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+.acc-children { display: grid; gap: 4px; padding: 0 8px 8px 18px; }
+.acc-row {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) auto auto;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.acc-row.is-selected { background: #fde68a; }
+.acc-kec { background: #fbf8f1; }
+.acc-desa { background: transparent; }
+.acc-name { min-width: 0; font-weight: 700; }
+.acc-name small {
+  display: block;
+  font-weight: 500;
+  color: var(--muted);
+}
+.acc-total { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.acc-caret { color: var(--muted); }
+.conf-chips { display: flex; gap: 4px; }
+.conf-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.7rem;
+  padding: 1px 6px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.conf-chip.conf-nominal { color: #1c1915; }
+
 @media (max-width: 640px) {
   .cards { grid-template-columns: 1fr; }
   .wrap { width: min(1280px, calc(100% - 20px)); }
@@ -684,4 +756,12 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   .map-canvas.leaflet-container { height: 180px; max-height: 180px; }
   .map-canvas.hotspot-map,
   .map-canvas.hotspot-map.leaflet-container { height: 320px; max-height: 320px; }
+  .acc-row { grid-template-columns: 16px minmax(0, 1fr) auto; }
+  .conf-chips { grid-column: 2 / -1; }
+}
+
+@media (max-width: 390px) {
+  .wrap { width: min(1280px, calc(100% - 16px)); }
+  .acc-row { padding: 8px 6px; gap: 6px; }
+  .acc-children { padding-left: 8px; }
 }
