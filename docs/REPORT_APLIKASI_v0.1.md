@@ -18,7 +18,7 @@ Karhutla yang siap dibuka:
 - **Sumber Data.** Daftar sumber, status, dan tautan.
 - **Glosarium.** Istilah yang dipakai dasbor.
 
-Banjir menampilkan prototipe internal untuk Aceh dan Bengkulu: peta indeks risiko inaRISK (KRB 2021) dan tabel 33 kabupaten/kota dari IRBI 2025 plus kejadian DIBI 2024. Label IRBI/inaRISK tetap **Prototipe internal – menunggu izin tertulis BNPB**. Matriks nowcast memasangkan peringatan dini cuaca BMKG (0–3 jam) dengan kelas banjir IRBI 2025. Label matriks: **Prototipe internal – menunggu izin tertulis BNPB/BMKG**. Urutan baris mengikuti kode wilayah. Tidak ada skor gabungan. Status dasarian Waspada/Siaga/Awas tetap tautan, menunggu izin tertulis BMKG. Gunung Api tetap **Belum terhubung / menunggu data**, tanpa peta atau angka.
+Banjir menampilkan prototipe internal untuk Aceh dan Bengkulu: peta indeks risiko inaRISK (KRB 2021) dan tabel 33 kabupaten/kota dari IRBI 2025 plus kejadian DIBI 2024. Label IRBI/inaRISK tetap **Prototipe internal – menunggu izin tertulis BNPB**. Matriks nowcast memasangkan peringatan dini cuaca BMKG (0–3 jam) dengan kelas banjir IRBI 2025. Label matriks: **Prototipe internal – menunggu izin tertulis BNPB/BMKG**. Urutan baris mengikuti kode wilayah. Tidak ada skor gabungan. Status dasarian Waspada/Siaga/Awas diisi manual pada data/manual/bmkg-pdcht-dasarian.csv, bukan dari pengambilan otomatis. Panduannya docs/PANDUAN_ISI_DASARIAN.md. Gunung Api tetap **Belum terhubung / menunggu data**, tanpa peta atau angka.
 
 ## Sumber data
 

@@ -6,6 +6,10 @@ Dasbor statis untuk memantau kebakaran hutan dan lahan (karhutla): sebaran titik
 
 Angka dan status pada prototipe ini **bukan** peringatan dini resmi BNPB, BMKG, atau instansi sumber.
 
+## Dokumen
+
+Indeks ada di [docs/README.md](docs/README.md). Cara mengisi status dasarian Aceh dan Bengkulu ada di [docs/PANDUAN_ISI_DASARIAN.md](docs/PANDUAN_ISI_DASARIAN.md).
+
 ## Menjalankan di komputer sendiri
 
 Perlu Node.js 20 atau lebih baru.

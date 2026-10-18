@@ -11,6 +11,7 @@ name: Deploy GitHub Pages
 on:
   push:
     branches: [main]
+    # Tanpa paths-ignore. Suntingan data/manual/bmkg-pdcht-dasarian.csv di main ikut membangun dan men-deploy situs.
   workflow_dispatch:
   pull_request:
 
@@ -43,6 +44,9 @@ jobs:
 
       - name: Install
         run: npm ci
+
+      - name: Periksa isian dasarian
+        run: node scripts/validate-dasarian.mjs
 
       - name: Check and build
         env:

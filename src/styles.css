@@ -806,6 +806,18 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 }
 .nowcast-cross th { font-weight: 700; background: #f4f1ea; }
 .nowcast-links a { display: inline-block; margin: 0 12px 6px 0; }
+.dasarian-status {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+.dasarian-cell.waspada .dasarian-status { background: #f5d76e; color: #1c1915; }
+.dasarian-cell.siaga .dasarian-status { background: #ef8f3a; color: #1c1915; }
+.dasarian-cell.awas .dasarian-status { background: #c5362b; color: #fff; }
+.dasarian-cell.expired { color: #6f6a62; }
+.dasarian-cell.expired .dasarian-status { background: #e6e2d8; color: #6f6a62; }
+.dasarian-badge { font-weight: 700; }
 
 @media (max-width: 640px) {
   .cards { grid-template-columns: 1fr; }
