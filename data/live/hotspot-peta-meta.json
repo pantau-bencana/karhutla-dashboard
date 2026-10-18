@@ -2,14 +2,14 @@
   "sumber": "NASA FIRMS VIIRS_SNPP_NRT",
   "bbox_permintaan": "94.4,-11.5,141.6,6.5",
   "permintaan_hari": 5,
-  "baris_berkas": 28379,
+  "baris_berkas": 28378,
   "koordinat_tidak_valid": 0,
   "sensor_berkas": {
-    "N": 28379
+    "N": 28378
   },
   "duplikat_dibuang": 0,
   "di_luar_poligon": 0,
-  "di_darat": 28379,
+  "di_darat": 28378,
   "tanggal_mulai": "2026-10-14",
   "tanggal_selesai": "2026-10-17",
   "jam_24_sensor": {
