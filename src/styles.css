@@ -790,6 +790,22 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   text-align: left;
 }
 .flood-group th { background: #f4f1ea; text-align: left; }
+.nowcast-item { display: block; margin-bottom: 8px; }
+.nowcast-item strong { font-weight: 700; }
+.nowcast-cross { margin: 12px 0; overflow: auto; }
+.nowcast-cross table { width: 100%; min-width: 0; border-collapse: collapse; }
+.nowcast-cross th,
+.nowcast-cross td {
+  border: 1px solid #e4dfd4;
+  padding: 8px;
+  vertical-align: top;
+  text-align: left;
+  background: #f7f5f0;
+  font-weight: 500;
+  white-space: normal;
+}
+.nowcast-cross th { font-weight: 700; background: #f4f1ea; }
+.nowcast-links a { display: inline-block; margin: 0 12px 6px 0; }
 
 @media (max-width: 640px) {
   .cards { grid-template-columns: 1fr; }

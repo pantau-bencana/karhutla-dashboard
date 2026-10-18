@@ -12,17 +12,27 @@ export const INARISK_PORTAL = "https://inarisk.bnpb.go.id/";
 
 export const RAIN_RISK_MATRIX = {
   id: "hujan-ekstrem-x-risiko-banjir",
-  ready: false,
+  ready: true,
   axes: [
-    { id: "hujan", sumber: "BMKG", kelas: "Potensi Hujan Ekstrem" },
-    { id: "risiko", sumber: "IRBI 2025 / inaRISK", kelas: "risiko banjir" },
+    { id: "hujan", sumber: "BMKG", kelas: "Nowcast peringatan dini cuaca 0–3 jam" },
+    { id: "risiko", sumber: "IRBI 2025", kelas: "kelas risiko banjir" },
   ],
-  note: "Matriks hujan ekstrem × risiko banjir menyusul setelah sumber BMKG per kab/kota diverifikasi",
+  note: "Sumbu hujan adalah nowcast BMKG 0–3 jam per kabupaten/kota. Sumbu risiko adalah kelas banjir IRBI 2025 apa adanya. Bukan peringatan dasarian, bukan IBF, dan bukan prakiraan adm4. Tidak ada skor gabungan.",
 };
 
 export const FLOOD_INFO_COLUMNS = [
   { id: "wilayah", label: "Kode dan nama", detail: "BIG, edisi 2022", sortKey: "kode" },
-  { id: "irbi-banjir", label: "IRBI 2025 Banjir", detail: "Data statis. Skor, kelas, halaman.", sortKey: "banjir" },
+  { id: "irbi-banjir", label: "Kelas risiko banjir IRBI 2025", detail: "Data statis. Skor dan halaman apa adanya.", sortKey: "banjir" },
+  {
+    id: "nowcast",
+    label: "Peringatan hujan lebat BMKG aktif (0–3 jam)",
+    detail: "Nowcast CAP. Bukan dasarian dan bukan IBF.",
+  },
+  {
+    id: "dasarian",
+    label: "Status Peringatan Dini Curah Hujan Tinggi dasarian (Waspada/Siaga/Awas)",
+    detail: "Tautan saja – menunggu izin tertulis BMKG",
+  },
   { id: "irbi-multi", label: "IRBI 2025 multi-bahaya", detail: "Data statis. Kelas dan halaman. Bukan khusus banjir.", sortKey: "multi" },
   { id: "dibi", label: "Kejadian banjir 2024", detail: "Data statis. DIBI, ODC-BY.", sortKey: "dibi" },
   { id: "kajian", label: "Ringkasan kajian inaRISK", detail: "Belum terhubung" },

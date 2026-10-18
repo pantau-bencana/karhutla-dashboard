@@ -276,7 +276,7 @@ export const SOURCES = [
     updateType: "Realtime / mendekati realtime",
     expectedMaxAgeHours: 8,
     limitation:
-      "Diambil dari RSS resmi, lalu tiap berkas CAP XML. Halaman web nowcast tidak dikorek. Poligon kecamatan tidak digambar. Atribusi: Sumber: BMKG.",
+      "Diambil dari RSS resmi, lalu tiap berkas CAP XML. Halaman web nowcast tidak dikorek. Poligon tidak digambar dan tidak disimpan. Irisan dengan kabupaten/kota Aceh dan Bengkulu hanya menyimpan kode, nama, dan isi peringatan. areaDesc adalah kantor penerbit, bukan provinsi yang terdampak. Atribusi: Sumber: BMKG.",
   },
   {
     id: "chirps",
