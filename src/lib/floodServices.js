@@ -52,7 +52,7 @@ export function bigQueryUrl(layer, where, { geometry = true, offset = 0 } = {}) 
   return `${BIG_SERVICE}/${layer}/query?${params}`;
 }
 
-export function dasQueryUrl(envelope, offset) {
+export function dasQueryUrl(envelope) {
   const geometry = JSON.stringify({
     xmin: envelope.west,
     ymin: envelope.south,
@@ -65,12 +65,10 @@ export function dasQueryUrl(envelope, offset) {
     geometry,
     geometryType: "esriGeometryEnvelope",
     spatialRel: "esriSpatialRelIntersects",
-    outFields: "NAMA_DAS,KRITERIA,BPDASHL",
+    outFields: "NAMA_DAS,KRITERIA",
     returnGeometry: "true",
     outSR: "4326",
-    maxAllowableOffset: "0.05",
-    resultOffset: String(offset),
-    resultRecordCount: "1000",
+    maxAllowableOffset: "0.12",
     f: "geojson",
   });
   return `${DAS_QUERY}?${params}`;

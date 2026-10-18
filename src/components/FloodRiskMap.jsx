@@ -72,6 +72,7 @@ export function FloodRiskMap() {
   const dasRef = useRef(null);
   const tokenRef = useRef(0);
   const identifyRef = useRef(0);
+  const identifyHandler = useRef(() => {});
   const [province, setProvince] = useState("Aceh");
   const [showBahaya, setShowBahaya] = useState(false);
   const [showDas, setShowDas] = useState(false);
@@ -107,6 +108,7 @@ export function FloodRiskMap() {
       ],
       { animate: false },
     );
+    map.on("click", (event) => identifyHandler.current(event));
     mapRef.current = map;
     return () => {
       map.remove();
@@ -243,13 +245,8 @@ export function FloodRiskMap() {
         const kabupaten = await readJson(bigQueryUrl(2, `wadmpr='${province}'`), 20000);
         const box = envelopeOf(kabupaten);
         if (!box) throw new Error("extent");
-        const features = [];
-        for (let offset = 0; offset < 2000; offset += 1000) {
-          const page = await readJson(dasQueryUrl(box, offset), 20000);
-          const batch = page.features ?? [];
-          features.push(...batch);
-          if (batch.length < 1000) break;
-        }
+        const page = await readJson(dasQueryUrl(box), 20000);
+        const features = page.features ?? [];
         if (cancelled) return;
         dasRef.current = L.geoJSON(
           { type: "FeatureCollection", features },
@@ -272,9 +269,10 @@ export function FloodRiskMap() {
             },
           },
         ).addTo(map);
+        const cap = features.length >= 1000 ? " Layanan membatasi 1000 DAS pada jendela ini." : "";
         setDasNote(
           features.length
-            ? `${features.length} DAS pada jendela provinsi. Label mengikuti kolom KRITERIA.`
+            ? `${features.length} DAS pada jendela provinsi. Label mengikuti kolom KRITERIA.${cap}`
             : "Tidak ada DAS pada jendela ini.",
         );
       } catch {
@@ -286,29 +284,23 @@ export function FloodRiskMap() {
     };
   }, [showDas, province]);
 
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!map) return undefined;
-    const onClick = async (event) => {
-      const token = ++identifyRef.current;
-      setIdentify("Memeriksa nilai indeks…");
-      try {
-        const payload = await readJson(identifyUrl(event.latlng.lng, event.latlng.lat), 8000);
-        if (token !== identifyRef.current) return;
-        const reading = legendClass(payload?.value);
-        if (reading.kind === "nodata") {
-          setIdentify(NODATA_LABEL);
-          return;
-        }
-        const kelas = reading.kelas ? ` Kelas legenda: ${reading.kelas}.` : " Di luar rentang legenda 0–1,0.";
-        setIdentify(`Indeks risiko ${reading.teks}.${kelas} Bukan peringatan dini.`);
-      } catch {
-        if (token === identifyRef.current) setIdentify(IDENTIFY_FAIL);
+  identifyHandler.current = async (event) => {
+    const token = ++identifyRef.current;
+    setIdentify("Memeriksa nilai indeks…");
+    try {
+      const payload = await readJson(identifyUrl(event.latlng.lng, event.latlng.lat), 8000);
+      if (token !== identifyRef.current) return;
+      const reading = legendClass(payload?.value);
+      if (reading.kind === "nodata") {
+        setIdentify(NODATA_LABEL);
+        return;
       }
-    };
-    map.on("click", onClick);
-    return () => map.off("click", onClick);
-  }, []);
+      const kelas = reading.kelas ? ` Kelas legenda: ${reading.kelas}.` : " Di luar rentang legenda 0–1,0.";
+      setIdentify(`Indeks risiko ${reading.teks}.${kelas} Bukan peringatan dini.`);
+    } catch {
+      if (token === identifyRef.current) setIdentify(IDENTIFY_FAIL);
+    }
+  };
 
   return (
     <section className="card">
