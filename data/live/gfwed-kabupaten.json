@@ -1,0 +1,3209 @@
+{
+  "tanggal": "2026-10-14",
+  "sumber": "https://portal.nccs.nasa.gov/datashare/GlobalFWI/v2.0/fwiCalcs.GEOS-5/Default/GEOS-5/2026/FWI.GEOS-5.Daily.Default.20261014.nc variabel GEOS-5_FWI. Field, R.D., et al., Development of a Global Fire Weather Database, Natural Hazards and Earth System Sciences, 15, 1407-1423, doi:10.5194/nhess-15-1407-2015, 2015.",
+  "variabel": "GEOS-5_FWI",
+  "label": "Pembanding model NASA GFWED (GEOS-5, analisis), bukan BMKG",
+  "metode": "Rata-rata dan maksimum sel yang pusatnya jatuh di dalam kabupaten/kota.",
+  "rows": [
+    {
+      "kode": "11.01",
+      "kabupaten": "Aceh Selatan",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.02,
+      "n_sel": 2
+    },
+    {
+      "kode": "11.02",
+      "kabupaten": "Aceh Tenggara",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.04,
+      "n_sel": 5
+    },
+    {
+      "kode": "11.03",
+      "kabupaten": "Aceh Timur",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.14,
+      "fwi_maks": 0.26,
+      "n_sel": 5
+    },
+    {
+      "kode": "11.04",
+      "kabupaten": "Aceh Tengah",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.02,
+      "fwi_maks": 0.04,
+      "n_sel": 4
+    },
+    {
+      "kode": "11.05",
+      "kabupaten": "Aceh Barat",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.07,
+      "fwi_maks": 0.11,
+      "n_sel": 2
+    },
+    {
+      "kode": "11.06",
+      "kabupaten": "Aceh Besar",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.08,
+      "fwi_maks": 0.18,
+      "n_sel": 4
+    },
+    {
+      "kode": "11.07",
+      "kabupaten": "Pidie",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.03,
+      "fwi_maks": 0.09,
+      "n_sel": 3
+    },
+    {
+      "kode": "11.08",
+      "kabupaten": "Aceh Utara",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.16,
+      "fwi_maks": 0.25,
+      "n_sel": 3
+    },
+    {
+      "kode": "11.10",
+      "kabupaten": "Aceh Singkil",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.01,
+      "n_sel": 1
+    },
+    {
+      "kode": "11.11",
+      "kabupaten": "Bireuen",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.17,
+      "fwi_maks": 0.31,
+      "n_sel": 2
+    },
+    {
+      "kode": "11.12",
+      "kabupaten": "Aceh Barat Daya",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.01,
+      "n_sel": 1
+    },
+    {
+      "kode": "11.13",
+      "kabupaten": "Gayo Lues",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.03,
+      "n_sel": 8
+    },
+    {
+      "kode": "11.14",
+      "kabupaten": "Aceh Jaya",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.03,
+      "fwi_maks": 0.06,
+      "n_sel": 4
+    },
+    {
+      "kode": "11.15",
+      "kabupaten": "Nagan Raya",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.04,
+      "fwi_maks": 0.11,
+      "n_sel": 4
+    },
+    {
+      "kode": "11.16",
+      "kabupaten": "Aceh Tamiang",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.14,
+      "fwi_maks": 0.18,
+      "n_sel": 2
+    },
+    {
+      "kode": "11.17",
+      "kabupaten": "Bener Meriah",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.04,
+      "fwi_maks": 0.04,
+      "n_sel": 2
+    },
+    {
+      "kode": "11.18",
+      "kabupaten": "Pidie Jaya",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.05,
+      "fwi_maks": 0.1,
+      "n_sel": 2
+    },
+    {
+      "kode": "11.75",
+      "kabupaten": "Kota Subulussalam",
+      "provinsi": "Aceh",
+      "fwi_rata": 0.02,
+      "fwi_maks": 0.03,
+      "n_sel": 2
+    },
+    {
+      "kode": "12.02",
+      "kabupaten": "Tapanuli Utara",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.06,
+      "fwi_maks": 0.1,
+      "n_sel": 5
+    },
+    {
+      "kode": "12.03",
+      "kabupaten": "Tapanuli Selatan",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.06,
+      "fwi_maks": 0.14,
+      "n_sel": 5
+    },
+    {
+      "kode": "12.04",
+      "kabupaten": "Nias",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.06,
+      "fwi_maks": 0.09,
+      "n_sel": 2
+    },
+    {
+      "kode": "12.05",
+      "kabupaten": "Langkat",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.15,
+      "fwi_maks": 0.33,
+      "n_sel": 8
+    },
+    {
+      "kode": "12.06",
+      "kabupaten": "Karo",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.02,
+      "fwi_maks": 0.03,
+      "n_sel": 2
+    },
+    {
+      "kode": "12.07",
+      "kabupaten": "Deli Serdang",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.28,
+      "fwi_maks": 0.34,
+      "n_sel": 3
+    },
+    {
+      "kode": "12.08",
+      "kabupaten": "Simalungun",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.26,
+      "fwi_maks": 0.54,
+      "n_sel": 3
+    },
+    {
+      "kode": "12.09",
+      "kabupaten": "Asahan",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.4,
+      "fwi_maks": 0.42,
+      "n_sel": 3
+    },
+    {
+      "kode": "12.10",
+      "kabupaten": "Labuhanbatu",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.12,
+      "fwi_maks": 0.14,
+      "n_sel": 4
+    },
+    {
+      "kode": "12.11",
+      "kabupaten": "Dairi",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.01,
+      "n_sel": 2
+    },
+    {
+      "kode": "12.12",
+      "kabupaten": "Toba",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.11,
+      "fwi_maks": 0.16,
+      "n_sel": 3
+    },
+    {
+      "kode": "12.13",
+      "kabupaten": "Mandailing Natal",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.02,
+      "fwi_maks": 0.04,
+      "n_sel": 7
+    },
+    {
+      "kode": "12.14",
+      "kabupaten": "Nias Selatan",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.02,
+      "fwi_maks": 0.02,
+      "n_sel": 1
+    },
+    {
+      "kode": "12.15",
+      "kabupaten": "Pakpak Bharat",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.01,
+      "n_sel": 3
+    },
+    {
+      "kode": "12.16",
+      "kabupaten": "Humbang Hasundutan",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.03,
+      "fwi_maks": 0.04,
+      "n_sel": 2
+    },
+    {
+      "kode": "12.17",
+      "kabupaten": "Samosir",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.06,
+      "fwi_maks": 0.07,
+      "n_sel": 2
+    },
+    {
+      "kode": "12.18",
+      "kabupaten": "Serdang Bedagai",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.4,
+      "fwi_maks": 0.42,
+      "n_sel": 2
+    },
+    {
+      "kode": "12.19",
+      "kabupaten": "Batu Bara",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.44,
+      "fwi_maks": 0.44,
+      "n_sel": 1
+    },
+    {
+      "kode": "12.20",
+      "kabupaten": "Padang Lawas Utara",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.09,
+      "fwi_maks": 0.13,
+      "n_sel": 3
+    },
+    {
+      "kode": "12.21",
+      "kabupaten": "Padang Lawas",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.11,
+      "fwi_maks": 0.18,
+      "n_sel": 4
+    },
+    {
+      "kode": "12.22",
+      "kabupaten": "Labuhanbatu Selatan",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.17,
+      "fwi_maks": 0.21,
+      "n_sel": 4
+    },
+    {
+      "kode": "12.23",
+      "kabupaten": "Labuhanbatu Utara",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.22,
+      "fwi_maks": 0.31,
+      "n_sel": 3
+    },
+    {
+      "kode": "12.25",
+      "kabupaten": "Nias Barat",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.04,
+      "fwi_maks": 0.04,
+      "n_sel": 1
+    },
+    {
+      "kode": "12.72",
+      "kabupaten": "Kota Pematangsiantar",
+      "provinsi": "Sumatera Utara",
+      "fwi_rata": 0.38,
+      "fwi_maks": 0.38,
+      "n_sel": 1
+    },
+    {
+      "kode": "13.01",
+      "kabupaten": "Pesisir Selatan",
+      "provinsi": "Sumatera Barat",
+      "fwi_rata": 0.09,
+      "fwi_maks": 0.14,
+      "n_sel": 7
+    },
+    {
+      "kode": "13.02",
+      "kabupaten": "Solok",
+      "provinsi": "Sumatera Barat",
+      "fwi_rata": 0.09,
+      "fwi_maks": 0.18,
+      "n_sel": 4
+    },
+    {
+      "kode": "13.03",
+      "kabupaten": "Sijunjung",
+      "provinsi": "Sumatera Barat",
+      "fwi_rata": 0.08,
+      "fwi_maks": 0.15,
+      "n_sel": 3
+    },
+    {
+      "kode": "13.04",
+      "kabupaten": "Tanah Datar",
+      "provinsi": "Sumatera Barat",
+      "fwi_rata": 0.09,
+      "fwi_maks": 0.09,
+      "n_sel": 1
+    },
+    {
+      "kode": "13.05",
+      "kabupaten": "Padang Pariaman",
+      "provinsi": "Sumatera Barat",
+      "fwi_rata": 0.07,
+      "fwi_maks": 0.1,
+      "n_sel": 2
+    },
+    {
+      "kode": "13.06",
+      "kabupaten": "Agam",
+      "provinsi": "Sumatera Barat",
+      "fwi_rata": 0.03,
+      "fwi_maks": 0.04,
+      "n_sel": 2
+    },
+    {
+      "kode": "13.07",
+      "kabupaten": "Lima Puluh Kota",
+      "provinsi": "Sumatera Barat",
+      "fwi_rata": 0.03,
+      "fwi_maks": 0.04,
+      "n_sel": 2
+    },
+    {
+      "kode": "13.08",
+      "kabupaten": "Pasaman",
+      "provinsi": "Sumatera Barat",
+      "fwi_rata": 0.03,
+      "fwi_maks": 0.05,
+      "n_sel": 3
+    },
+    {
+      "kode": "13.09",
+      "kabupaten": "Kepulauan Mentawai",
+      "provinsi": "Sumatera Barat",
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.05,
+      "n_sel": 5
+    },
+    {
+      "kode": "13.10",
+      "kabupaten": "Dharmasraya",
+      "provinsi": "Sumatera Barat",
+      "fwi_rata": 0.43,
+      "fwi_maks": 0.88,
+      "n_sel": 4
+    },
+    {
+      "kode": "13.11",
+      "kabupaten": "Solok Selatan",
+      "provinsi": "Sumatera Barat",
+      "fwi_rata": 0.26,
+      "fwi_maks": 0.29,
+      "n_sel": 2
+    },
+    {
+      "kode": "13.12",
+      "kabupaten": "Pasaman Barat",
+      "provinsi": "Sumatera Barat",
+      "fwi_rata": 0.02,
+      "fwi_maks": 0.03,
+      "n_sel": 4
+    },
+    {
+      "kode": "13.76",
+      "kabupaten": "Kota Payakumbuh",
+      "provinsi": "Sumatera Barat",
+      "fwi_rata": 0.14,
+      "fwi_maks": 0.14,
+      "n_sel": 1
+    },
+    {
+      "kode": "14.01",
+      "kabupaten": "Kampar",
+      "provinsi": "Riau",
+      "fwi_rata": 0.11,
+      "fwi_maks": 0.19,
+      "n_sel": 11
+    },
+    {
+      "kode": "14.02",
+      "kabupaten": "Indragiri Hulu",
+      "provinsi": "Riau",
+      "fwi_rata": 0.14,
+      "fwi_maks": 0.28,
+      "n_sel": 8
+    },
+    {
+      "kode": "14.03",
+      "kabupaten": "Bengkalis",
+      "provinsi": "Riau",
+      "fwi_rata": 0.14,
+      "fwi_maks": 0.26,
+      "n_sel": 9
+    },
+    {
+      "kode": "14.04",
+      "kabupaten": "Indragiri Hilir",
+      "provinsi": "Riau",
+      "fwi_rata": 0.58,
+      "fwi_maks": 1.59,
+      "n_sel": 14
+    },
+    {
+      "kode": "14.05",
+      "kabupaten": "Pelalawan",
+      "provinsi": "Riau",
+      "fwi_rata": 0.1,
+      "fwi_maks": 0.18,
+      "n_sel": 13
+    },
+    {
+      "kode": "14.06",
+      "kabupaten": "Rokan Hulu",
+      "provinsi": "Riau",
+      "fwi_rata": 0.1,
+      "fwi_maks": 0.2,
+      "n_sel": 9
+    },
+    {
+      "kode": "14.07",
+      "kabupaten": "Rokan Hilir",
+      "provinsi": "Riau",
+      "fwi_rata": 0.13,
+      "fwi_maks": 0.21,
+      "n_sel": 9
+    },
+    {
+      "kode": "14.08",
+      "kabupaten": "Siak",
+      "provinsi": "Riau",
+      "fwi_rata": 0.09,
+      "fwi_maks": 0.18,
+      "n_sel": 7
+    },
+    {
+      "kode": "14.09",
+      "kabupaten": "Kuantan Singingi",
+      "provinsi": "Riau",
+      "fwi_rata": 0.03,
+      "fwi_maks": 0.07,
+      "n_sel": 6
+    },
+    {
+      "kode": "14.10",
+      "kabupaten": "Kepulauan Meranti",
+      "provinsi": "Riau",
+      "fwi_rata": 0.14,
+      "fwi_maks": 0.2,
+      "n_sel": 2
+    },
+    {
+      "kode": "14.71",
+      "kabupaten": "Kota Pekanbaru",
+      "provinsi": "Riau",
+      "fwi_rata": 0.23,
+      "fwi_maks": 0.23,
+      "n_sel": 1
+    },
+    {
+      "kode": "14.72",
+      "kabupaten": "Kota Dumai",
+      "provinsi": "Riau",
+      "fwi_rata": 0.16,
+      "fwi_maks": 0.19,
+      "n_sel": 2
+    },
+    {
+      "kode": "15.01",
+      "kabupaten": "Kerinci",
+      "provinsi": "Jambi",
+      "fwi_rata": 0.16,
+      "fwi_maks": 0.35,
+      "n_sel": 4
+    },
+    {
+      "kode": "15.02",
+      "kabupaten": "Merangin",
+      "provinsi": "Jambi",
+      "fwi_rata": 0.49,
+      "fwi_maks": 0.91,
+      "n_sel": 8
+    },
+    {
+      "kode": "15.03",
+      "kabupaten": "Sarolangun",
+      "provinsi": "Jambi",
+      "fwi_rata": 1.57,
+      "fwi_maks": 5.19,
+      "n_sel": 7
+    },
+    {
+      "kode": "15.04",
+      "kabupaten": "Batanghari",
+      "provinsi": "Jambi",
+      "fwi_rata": 2.25,
+      "fwi_maks": 4.86,
+      "n_sel": 6
+    },
+    {
+      "kode": "15.05",
+      "kabupaten": "Muaro Jambi",
+      "provinsi": "Jambi",
+      "fwi_rata": 4.39,
+      "fwi_maks": 7.57,
+      "n_sel": 5
+    },
+    {
+      "kode": "15.06",
+      "kabupaten": "Tanjung Jabung Barat",
+      "provinsi": "Jambi",
+      "fwi_rata": 0.49,
+      "fwi_maks": 0.74,
+      "n_sel": 7
+    },
+    {
+      "kode": "15.07",
+      "kabupaten": "Tanjung Jabung Timur",
+      "provinsi": "Jambi",
+      "fwi_rata": 3.68,
+      "fwi_maks": 7.41,
+      "n_sel": 5
+    },
+    {
+      "kode": "15.08",
+      "kabupaten": "Bungo",
+      "provinsi": "Jambi",
+      "fwi_rata": 0.65,
+      "fwi_maks": 1.32,
+      "n_sel": 6
+    },
+    {
+      "kode": "15.09",
+      "kabupaten": "Tebo",
+      "provinsi": "Jambi",
+      "fwi_rata": 0.26,
+      "fwi_maks": 0.48,
+      "n_sel": 5
+    },
+    {
+      "kode": "16.01",
+      "kabupaten": "Ogan Komering Ulu",
+      "provinsi": "Sumatera Selatan",
+      "fwi_rata": 7.72,
+      "fwi_maks": 8.17,
+      "n_sel": 3
+    },
+    {
+      "kode": "16.02",
+      "kabupaten": "Ogan Komering Ilir",
+      "provinsi": "Sumatera Selatan",
+      "fwi_rata": 14.82,
+      "fwi_maks": 22.64,
+      "n_sel": 18
+    },
+    {
+      "kode": "16.03",
+      "kabupaten": "Muara Enim",
+      "provinsi": "Sumatera Selatan",
+      "fwi_rata": 8.53,
+      "fwi_maks": 12.2,
+      "n_sel": 8
+    },
+    {
+      "kode": "16.04",
+      "kabupaten": "Lahat",
+      "provinsi": "Sumatera Selatan",
+      "fwi_rata": 5.1,
+      "fwi_maks": 9.13,
+      "n_sel": 5
+    },
+    {
+      "kode": "16.05",
+      "kabupaten": "Musi Rawas",
+      "provinsi": "Sumatera Selatan",
+      "fwi_rata": 3.46,
+      "fwi_maks": 7.73,
+      "n_sel": 7
+    },
+    {
+      "kode": "16.06",
+      "kabupaten": "Musi Banyuasin",
+      "provinsi": "Sumatera Selatan",
+      "fwi_rata": 7.79,
+      "fwi_maks": 11.16,
+      "n_sel": 15
+    },
+    {
+      "kode": "16.07",
+      "kabupaten": "Banyuasin",
+      "provinsi": "Sumatera Selatan",
+      "fwi_rata": 10,
+      "fwi_maks": 13.73,
+      "n_sel": 12
+    },
+    {
+      "kode": "16.08",
+      "kabupaten": "Ogan Komering Ulu Timur",
+      "provinsi": "Sumatera Selatan",
+      "fwi_rata": 11.45,
+      "fwi_maks": 13.54,
+      "n_sel": 3
+    },
+    {
+      "kode": "16.09",
+      "kabupaten": "Ogan Komering Ulu Selatan",
+      "provinsi": "Sumatera Selatan",
+      "fwi_rata": 7.64,
+      "fwi_maks": 13.18,
+      "n_sel": 4
+    },
+    {
+      "kode": "16.10",
+      "kabupaten": "Ogan Ilir",
+      "provinsi": "Sumatera Selatan",
+      "fwi_rata": 8.37,
+      "fwi_maks": 11.67,
+      "n_sel": 2
+    },
+    {
+      "kode": "16.11",
+      "kabupaten": "Empat Lawang",
+      "provinsi": "Sumatera Selatan",
+      "fwi_rata": 6.19,
+      "fwi_maks": 7.54,
+      "n_sel": 2
+    },
+    {
+      "kode": "16.12",
+      "kabupaten": "Penukal Abab Lematang Ilir",
+      "provinsi": "Sumatera Selatan",
+      "fwi_rata": 7.37,
+      "fwi_maks": 7.37,
+      "n_sel": 1
+    },
+    {
+      "kode": "16.13",
+      "kabupaten": "Musi Rawas Utara",
+      "provinsi": "Sumatera Selatan",
+      "fwi_rata": 1.94,
+      "fwi_maks": 3.96,
+      "n_sel": 7
+    },
+    {
+      "kode": "16.71",
+      "kabupaten": "Kota Palembang",
+      "provinsi": "Sumatera Selatan",
+      "fwi_rata": 8.32,
+      "fwi_maks": 8.32,
+      "n_sel": 1
+    },
+    {
+      "kode": "16.73",
+      "kabupaten": "Kota Lubuk Linggau",
+      "provinsi": "Sumatera Selatan",
+      "fwi_rata": 3.5,
+      "fwi_maks": 3.5,
+      "n_sel": 1
+    },
+    {
+      "kode": "17.02",
+      "kabupaten": "Rejang Lebong",
+      "provinsi": "Bengkulu",
+      "fwi_rata": 2.4,
+      "fwi_maks": 3.3,
+      "n_sel": 2
+    },
+    {
+      "kode": "17.03",
+      "kabupaten": "Bengkulu Utara",
+      "provinsi": "Bengkulu",
+      "fwi_rata": 0.21,
+      "fwi_maks": 0.33,
+      "n_sel": 5
+    },
+    {
+      "kode": "17.04",
+      "kabupaten": "Kaur",
+      "provinsi": "Bengkulu",
+      "fwi_rata": 1.34,
+      "fwi_maks": 2.24,
+      "n_sel": 3
+    },
+    {
+      "kode": "17.05",
+      "kabupaten": "Seluma",
+      "provinsi": "Bengkulu",
+      "fwi_rata": 0.44,
+      "fwi_maks": 0.46,
+      "n_sel": 3
+    },
+    {
+      "kode": "17.06",
+      "kabupaten": "Muko Muko",
+      "provinsi": "Bengkulu",
+      "fwi_rata": 0.14,
+      "fwi_maks": 0.19,
+      "n_sel": 3
+    },
+    {
+      "kode": "17.07",
+      "kabupaten": "Lebong",
+      "provinsi": "Bengkulu",
+      "fwi_rata": 0.31,
+      "fwi_maks": 0.31,
+      "n_sel": 1
+    },
+    {
+      "kode": "17.09",
+      "kabupaten": "Bengkulu Tengah",
+      "provinsi": "Bengkulu",
+      "fwi_rata": 0.94,
+      "fwi_maks": 0.94,
+      "n_sel": 1
+    },
+    {
+      "kode": "18.01",
+      "kabupaten": "Lampung Selatan",
+      "provinsi": "Lampung",
+      "fwi_rata": 18.25,
+      "fwi_maks": 27.3,
+      "n_sel": 3
+    },
+    {
+      "kode": "18.02",
+      "kabupaten": "Lampung Tengah",
+      "provinsi": "Lampung",
+      "fwi_rata": 28.54,
+      "fwi_maks": 40.11,
+      "n_sel": 5
+    },
+    {
+      "kode": "18.03",
+      "kabupaten": "Lampung Utara",
+      "provinsi": "Lampung",
+      "fwi_rata": 12.96,
+      "fwi_maks": 20.14,
+      "n_sel": 3
+    },
+    {
+      "kode": "18.04",
+      "kabupaten": "Lampung Barat",
+      "provinsi": "Lampung",
+      "fwi_rata": 2.41,
+      "fwi_maks": 4.59,
+      "n_sel": 3
+    },
+    {
+      "kode": "18.05",
+      "kabupaten": "Tulang Bawang",
+      "provinsi": "Lampung",
+      "fwi_rata": 29.16,
+      "fwi_maks": 34.52,
+      "n_sel": 3
+    },
+    {
+      "kode": "18.06",
+      "kabupaten": "Tanggamus",
+      "provinsi": "Lampung",
+      "fwi_rata": 1.66,
+      "fwi_maks": 2.96,
+      "n_sel": 2
+    },
+    {
+      "kode": "18.07",
+      "kabupaten": "Lampung Timur",
+      "provinsi": "Lampung",
+      "fwi_rata": 33.23,
+      "fwi_maks": 34.57,
+      "n_sel": 2
+    },
+    {
+      "kode": "18.08",
+      "kabupaten": "Way Kanan",
+      "provinsi": "Lampung",
+      "fwi_rata": 15.38,
+      "fwi_maks": 19.43,
+      "n_sel": 3
+    },
+    {
+      "kode": "18.09",
+      "kabupaten": "Pesawaran",
+      "provinsi": "Lampung",
+      "fwi_rata": 1.43,
+      "fwi_maks": 1.43,
+      "n_sel": 1
+    },
+    {
+      "kode": "18.10",
+      "kabupaten": "Pringsewu",
+      "provinsi": "Lampung",
+      "fwi_rata": 4.61,
+      "fwi_maks": 4.61,
+      "n_sel": 1
+    },
+    {
+      "kode": "18.11",
+      "kabupaten": "Mesuji",
+      "provinsi": "Lampung",
+      "fwi_rata": 22.37,
+      "fwi_maks": 26.47,
+      "n_sel": 2
+    },
+    {
+      "kode": "18.12",
+      "kabupaten": "Tulang Bawang Barat",
+      "provinsi": "Lampung",
+      "fwi_rata": 18.19,
+      "fwi_maks": 18.38,
+      "n_sel": 2
+    },
+    {
+      "kode": "18.13",
+      "kabupaten": "Pesisir Barat",
+      "provinsi": "Lampung",
+      "fwi_rata": 0.4,
+      "fwi_maks": 0.64,
+      "n_sel": 3
+    },
+    {
+      "kode": "19.01",
+      "kabupaten": "Bangka",
+      "provinsi": "Kepulauan Bangka Belitung",
+      "fwi_rata": 22.36,
+      "fwi_maks": 29.01,
+      "n_sel": 2
+    },
+    {
+      "kode": "19.02",
+      "kabupaten": "Belitung",
+      "provinsi": "Kepulauan Bangka Belitung",
+      "fwi_rata": 49.67,
+      "fwi_maks": 55.08,
+      "n_sel": 2
+    },
+    {
+      "kode": "19.03",
+      "kabupaten": "Bangka Selatan",
+      "provinsi": "Kepulauan Bangka Belitung",
+      "fwi_rata": 29.69,
+      "fwi_maks": 35.64,
+      "n_sel": 4
+    },
+    {
+      "kode": "19.04",
+      "kabupaten": "Bangka Tengah",
+      "provinsi": "Kepulauan Bangka Belitung",
+      "fwi_rata": 11.12,
+      "fwi_maks": 22.79,
+      "n_sel": 3
+    },
+    {
+      "kode": "19.05",
+      "kabupaten": "Bangka Barat",
+      "provinsi": "Kepulauan Bangka Belitung",
+      "fwi_rata": 10.54,
+      "fwi_maks": 11.97,
+      "n_sel": 3
+    },
+    {
+      "kode": "19.06",
+      "kabupaten": "Belitung Timur",
+      "provinsi": "Kepulauan Bangka Belitung",
+      "fwi_rata": 50.08,
+      "fwi_maks": 55.19,
+      "n_sel": 2
+    },
+    {
+      "kode": "21.02",
+      "kabupaten": "Karimun",
+      "provinsi": "Kepulauan Riau",
+      "fwi_rata": 0.66,
+      "fwi_maks": 0.66,
+      "n_sel": 1
+    },
+    {
+      "kode": "21.03",
+      "kabupaten": "Natuna",
+      "provinsi": "Kepulauan Riau",
+      "fwi_rata": 0.22,
+      "fwi_maks": 0.22,
+      "n_sel": 1
+    },
+    {
+      "kode": "21.71",
+      "kabupaten": "Kota Batam",
+      "provinsi": "Kepulauan Riau",
+      "fwi_rata": 0.49,
+      "fwi_maks": 0.49,
+      "n_sel": 1
+    },
+    {
+      "kode": "31.75",
+      "kabupaten": "Kota Adm. Jakarta Timur",
+      "provinsi": "DKI Jakarta",
+      "fwi_rata": 10.23,
+      "fwi_maks": 10.23,
+      "n_sel": 1
+    },
+    {
+      "kode": "32.01",
+      "kabupaten": "Bogor",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 1.52,
+      "fwi_maks": 3.67,
+      "n_sel": 3
+    },
+    {
+      "kode": "32.02",
+      "kabupaten": "Sukabumi",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 11.25,
+      "fwi_maks": 37.73,
+      "n_sel": 5
+    },
+    {
+      "kode": "32.03",
+      "kabupaten": "Cianjur",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 1.59,
+      "fwi_maks": 3.99,
+      "n_sel": 3
+    },
+    {
+      "kode": "32.04",
+      "kabupaten": "Bandung",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 3.63,
+      "fwi_maks": 7.07,
+      "n_sel": 3
+    },
+    {
+      "kode": "32.05",
+      "kabupaten": "Garut",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 2.22,
+      "fwi_maks": 3.79,
+      "n_sel": 3
+    },
+    {
+      "kode": "32.06",
+      "kabupaten": "Tasikmalaya",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 4.75,
+      "fwi_maks": 9.13,
+      "n_sel": 3
+    },
+    {
+      "kode": "32.07",
+      "kabupaten": "Ciamis",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 2.74,
+      "fwi_maks": 4.55,
+      "n_sel": 2
+    },
+    {
+      "kode": "32.08",
+      "kabupaten": "Kuningan",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 14.1,
+      "fwi_maks": 19.96,
+      "n_sel": 2
+    },
+    {
+      "kode": "32.09",
+      "kabupaten": "Cirebon",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 43.15,
+      "fwi_maks": 43.15,
+      "n_sel": 1
+    },
+    {
+      "kode": "32.11",
+      "kabupaten": "Sumedang",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 12.96,
+      "fwi_maks": 20.19,
+      "n_sel": 2
+    },
+    {
+      "kode": "32.12",
+      "kabupaten": "Indramayu",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 52.06,
+      "fwi_maks": 52.37,
+      "n_sel": 2
+    },
+    {
+      "kode": "32.13",
+      "kabupaten": "Subang",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 19.7,
+      "fwi_maks": 28.63,
+      "n_sel": 3
+    },
+    {
+      "kode": "32.14",
+      "kabupaten": "Purwakarta",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 13.59,
+      "fwi_maks": 13.59,
+      "n_sel": 1
+    },
+    {
+      "kode": "32.15",
+      "kabupaten": "Karawang",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 15.59,
+      "fwi_maks": 22.64,
+      "n_sel": 3
+    },
+    {
+      "kode": "32.16",
+      "kabupaten": "Bekasi",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 19.59,
+      "fwi_maks": 19.59,
+      "n_sel": 1
+    },
+    {
+      "kode": "32.17",
+      "kabupaten": "Bandung Barat",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 7.33,
+      "fwi_maks": 7.33,
+      "n_sel": 1
+    },
+    {
+      "kode": "32.18",
+      "kabupaten": "Pangandaran",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 5.28,
+      "fwi_maks": 5.28,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.01",
+      "kabupaten": "Cilacap",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 19.79,
+      "fwi_maks": 24.01,
+      "n_sel": 2
+    },
+    {
+      "kode": "33.02",
+      "kabupaten": "Banyumas",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 19.03,
+      "fwi_maks": 19.03,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.03",
+      "kabupaten": "Purbalingga",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 5.76,
+      "fwi_maks": 5.76,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.04",
+      "kabupaten": "Banjarnegara",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 13.76,
+      "fwi_maks": 22.11,
+      "n_sel": 3
+    },
+    {
+      "kode": "33.05",
+      "kabupaten": "Kebumen",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 25.87,
+      "fwi_maks": 25.87,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.06",
+      "kabupaten": "Purworejo",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 31.28,
+      "fwi_maks": 31.28,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.07",
+      "kabupaten": "Wonosobo",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 5.79,
+      "fwi_maks": 5.79,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.08",
+      "kabupaten": "Magelang",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 14.85,
+      "fwi_maks": 14.85,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.09",
+      "kabupaten": "Boyolali",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 31.36,
+      "fwi_maks": 31.36,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.10",
+      "kabupaten": "Klaten",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 35.17,
+      "fwi_maks": 35.17,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.11",
+      "kabupaten": "Sukoharjo",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 36.71,
+      "fwi_maks": 36.71,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.12",
+      "kabupaten": "Wonogiri",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 37.09,
+      "fwi_maks": 41.94,
+      "n_sel": 2
+    },
+    {
+      "kode": "33.13",
+      "kabupaten": "Karanganyar",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 30.68,
+      "fwi_maks": 30.68,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.15",
+      "kabupaten": "Grobogan",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 43.37,
+      "fwi_maks": 54.23,
+      "n_sel": 3
+    },
+    {
+      "kode": "33.16",
+      "kabupaten": "Blora",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 38.16,
+      "fwi_maks": 41.39,
+      "n_sel": 3
+    },
+    {
+      "kode": "33.17",
+      "kabupaten": "Rembang",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 33.28,
+      "fwi_maks": 38.55,
+      "n_sel": 2
+    },
+    {
+      "kode": "33.18",
+      "kabupaten": "Pati",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 48.81,
+      "fwi_maks": 48.81,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.19",
+      "kabupaten": "Kudus",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 45.02,
+      "fwi_maks": 45.02,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.21",
+      "kabupaten": "Demak",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 23.41,
+      "fwi_maks": 23.41,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.22",
+      "kabupaten": "Semarang",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 32.17,
+      "fwi_maks": 44.56,
+      "n_sel": 2
+    },
+    {
+      "kode": "33.23",
+      "kabupaten": "Temanggung",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 3.22,
+      "fwi_maks": 3.22,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.25",
+      "kabupaten": "Batang",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 27.94,
+      "fwi_maks": 27.94,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.26",
+      "kabupaten": "Pekalongan",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 9.04,
+      "fwi_maks": 9.04,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.27",
+      "kabupaten": "Pemalang",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 12.88,
+      "fwi_maks": 12.88,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.28",
+      "kabupaten": "Tegal",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 6.87,
+      "fwi_maks": 6.87,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.29",
+      "kabupaten": "Brebes",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 9.81,
+      "fwi_maks": 9.81,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.74",
+      "kabupaten": "Kota Semarang",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 45.24,
+      "fwi_maks": 45.24,
+      "n_sel": 1
+    },
+    {
+      "kode": "34.02",
+      "kabupaten": "Bantul",
+      "provinsi": "Daerah Istimewa Yogyakarta",
+      "fwi_rata": 31.88,
+      "fwi_maks": 31.88,
+      "n_sel": 1
+    },
+    {
+      "kode": "34.03",
+      "kabupaten": "Gunungkidul",
+      "provinsi": "Daerah Istimewa Yogyakarta",
+      "fwi_rata": 47.12,
+      "fwi_maks": 47.12,
+      "n_sel": 1
+    },
+    {
+      "kode": "34.04",
+      "kabupaten": "Sleman",
+      "provinsi": "Daerah Istimewa Yogyakarta",
+      "fwi_rata": 33.78,
+      "fwi_maks": 33.78,
+      "n_sel": 1
+    },
+    {
+      "kode": "35.01",
+      "kabupaten": "Pacitan",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 26.6,
+      "fwi_maks": 35.41,
+      "n_sel": 2
+    },
+    {
+      "kode": "35.02",
+      "kabupaten": "Ponorogo",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 39.67,
+      "fwi_maks": 39.67,
+      "n_sel": 1
+    },
+    {
+      "kode": "35.03",
+      "kabupaten": "Trenggalek",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 14.86,
+      "fwi_maks": 14.86,
+      "n_sel": 1
+    },
+    {
+      "kode": "35.04",
+      "kabupaten": "Tulungagung",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 33.79,
+      "fwi_maks": 47.83,
+      "n_sel": 2
+    },
+    {
+      "kode": "35.05",
+      "kabupaten": "Blitar",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 57.06,
+      "fwi_maks": 57.79,
+      "n_sel": 2
+    },
+    {
+      "kode": "35.06",
+      "kabupaten": "Kediri",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 43.22,
+      "fwi_maks": 43.22,
+      "n_sel": 1
+    },
+    {
+      "kode": "35.07",
+      "kabupaten": "Malang",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 34.01,
+      "fwi_maks": 60.11,
+      "n_sel": 4
+    },
+    {
+      "kode": "35.08",
+      "kabupaten": "Lumajang",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 27.09,
+      "fwi_maks": 32.3,
+      "n_sel": 2
+    },
+    {
+      "kode": "35.09",
+      "kabupaten": "Jember",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 37.52,
+      "fwi_maks": 47.62,
+      "n_sel": 3
+    },
+    {
+      "kode": "35.10",
+      "kabupaten": "Banyuwangi",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 19.92,
+      "fwi_maks": 40.52,
+      "n_sel": 4
+    },
+    {
+      "kode": "35.11",
+      "kabupaten": "Bondowoso",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 16.79,
+      "fwi_maks": 18.67,
+      "n_sel": 2
+    },
+    {
+      "kode": "35.12",
+      "kabupaten": "Situbondo",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 51.48,
+      "fwi_maks": 56.85,
+      "n_sel": 2
+    },
+    {
+      "kode": "35.13",
+      "kabupaten": "Probolinggo",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 37.78,
+      "fwi_maks": 44.26,
+      "n_sel": 3
+    },
+    {
+      "kode": "35.14",
+      "kabupaten": "Pasuruan",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 62.6,
+      "fwi_maks": 62.6,
+      "n_sel": 1
+    },
+    {
+      "kode": "35.15",
+      "kabupaten": "Sidoarjo",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 34.77,
+      "fwi_maks": 34.77,
+      "n_sel": 1
+    },
+    {
+      "kode": "35.16",
+      "kabupaten": "Mojokerto",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 45.75,
+      "fwi_maks": 64.99,
+      "n_sel": 2
+    },
+    {
+      "kode": "35.17",
+      "kabupaten": "Jombang",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 53.71,
+      "fwi_maks": 53.71,
+      "n_sel": 1
+    },
+    {
+      "kode": "35.18",
+      "kabupaten": "Nganjuk",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 51.96,
+      "fwi_maks": 58.42,
+      "n_sel": 2
+    },
+    {
+      "kode": "35.19",
+      "kabupaten": "Madiun",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 36.5,
+      "fwi_maks": 36.5,
+      "n_sel": 1
+    },
+    {
+      "kode": "35.21",
+      "kabupaten": "Ngawi",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 38.13,
+      "fwi_maks": 40.17,
+      "n_sel": 2
+    },
+    {
+      "kode": "35.22",
+      "kabupaten": "Bojonegoro",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 49.22,
+      "fwi_maks": 53.21,
+      "n_sel": 2
+    },
+    {
+      "kode": "35.23",
+      "kabupaten": "Tuban",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 48.41,
+      "fwi_maks": 48.5,
+      "n_sel": 2
+    },
+    {
+      "kode": "35.24",
+      "kabupaten": "Lamongan",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 56.86,
+      "fwi_maks": 56.86,
+      "n_sel": 1
+    },
+    {
+      "kode": "35.25",
+      "kabupaten": "Gresik",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 43.65,
+      "fwi_maks": 51.92,
+      "n_sel": 2
+    },
+    {
+      "kode": "35.26",
+      "kabupaten": "Bangkalan",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 46.95,
+      "fwi_maks": 52.65,
+      "n_sel": 2
+    },
+    {
+      "kode": "35.28",
+      "kabupaten": "Pamekasan",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 62.95,
+      "fwi_maks": 62.95,
+      "n_sel": 1
+    },
+    {
+      "kode": "35.29",
+      "kabupaten": "Sumenep",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 55.82,
+      "fwi_maks": 55.82,
+      "n_sel": 1
+    },
+    {
+      "kode": "36.01",
+      "kabupaten": "Pandeglang",
+      "provinsi": "Banten",
+      "fwi_rata": 5.06,
+      "fwi_maks": 13.7,
+      "n_sel": 3
+    },
+    {
+      "kode": "36.02",
+      "kabupaten": "Lebak",
+      "provinsi": "Banten",
+      "fwi_rata": 2.13,
+      "fwi_maks": 5.88,
+      "n_sel": 3
+    },
+    {
+      "kode": "36.03",
+      "kabupaten": "Tangerang",
+      "provinsi": "Banten",
+      "fwi_rata": 7.77,
+      "fwi_maks": 7.77,
+      "n_sel": 1
+    },
+    {
+      "kode": "36.04",
+      "kabupaten": "Serang",
+      "provinsi": "Banten",
+      "fwi_rata": 5.42,
+      "fwi_maks": 9.2,
+      "n_sel": 2
+    },
+    {
+      "kode": "51.01",
+      "kabupaten": "Jembrana",
+      "provinsi": "Bali",
+      "fwi_rata": 19.69,
+      "fwi_maks": 19.69,
+      "n_sel": 1
+    },
+    {
+      "kode": "51.02",
+      "kabupaten": "Tabanan",
+      "provinsi": "Bali",
+      "fwi_rata": 21.08,
+      "fwi_maks": 21.08,
+      "n_sel": 1
+    },
+    {
+      "kode": "51.04",
+      "kabupaten": "Gianyar",
+      "provinsi": "Bali",
+      "fwi_rata": 18.21,
+      "fwi_maks": 18.21,
+      "n_sel": 1
+    },
+    {
+      "kode": "51.06",
+      "kabupaten": "Bangli",
+      "provinsi": "Bali",
+      "fwi_rata": 8.17,
+      "fwi_maks": 8.17,
+      "n_sel": 1
+    },
+    {
+      "kode": "51.08",
+      "kabupaten": "Buleleng",
+      "provinsi": "Bali",
+      "fwi_rata": 3.02,
+      "fwi_maks": 3.02,
+      "n_sel": 1
+    },
+    {
+      "kode": "52.01",
+      "kabupaten": "Lombok Barat",
+      "provinsi": "Nusa Tenggara Barat",
+      "fwi_rata": 13.51,
+      "fwi_maks": 13.51,
+      "n_sel": 1
+    },
+    {
+      "kode": "52.02",
+      "kabupaten": "Lombok Tengah",
+      "provinsi": "Nusa Tenggara Barat",
+      "fwi_rata": 38.7,
+      "fwi_maks": 38.7,
+      "n_sel": 1
+    },
+    {
+      "kode": "52.03",
+      "kabupaten": "Lombok Timur",
+      "provinsi": "Nusa Tenggara Barat",
+      "fwi_rata": 28.73,
+      "fwi_maks": 28.73,
+      "n_sel": 1
+    },
+    {
+      "kode": "52.04",
+      "kabupaten": "Sumbawa",
+      "provinsi": "Nusa Tenggara Barat",
+      "fwi_rata": 24.16,
+      "fwi_maks": 53.98,
+      "n_sel": 9
+    },
+    {
+      "kode": "52.05",
+      "kabupaten": "Dompu",
+      "provinsi": "Nusa Tenggara Barat",
+      "fwi_rata": 28.79,
+      "fwi_maks": 32.17,
+      "n_sel": 3
+    },
+    {
+      "kode": "52.06",
+      "kabupaten": "Bima",
+      "provinsi": "Nusa Tenggara Barat",
+      "fwi_rata": 24.18,
+      "fwi_maks": 24.18,
+      "n_sel": 1
+    },
+    {
+      "kode": "52.07",
+      "kabupaten": "Sumbawa Barat",
+      "provinsi": "Nusa Tenggara Barat",
+      "fwi_rata": 19.5,
+      "fwi_maks": 25.44,
+      "n_sel": 3
+    },
+    {
+      "kode": "52.72",
+      "kabupaten": "Kota Bima",
+      "provinsi": "Nusa Tenggara Barat",
+      "fwi_rata": 37.55,
+      "fwi_maks": 37.55,
+      "n_sel": 1
+    },
+    {
+      "kode": "53.01",
+      "kabupaten": "Kupang",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 63.35,
+      "fwi_maks": 86.06,
+      "n_sel": 6
+    },
+    {
+      "kode": "53.02",
+      "kabupaten": "Timor Tengah Selatan",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 67.58,
+      "fwi_maks": 73.56,
+      "n_sel": 3
+    },
+    {
+      "kode": "53.03",
+      "kabupaten": "Timor Tengah Utara",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 65.58,
+      "fwi_maks": 72.02,
+      "n_sel": 3
+    },
+    {
+      "kode": "53.05",
+      "kabupaten": "Alor",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 42.78,
+      "fwi_maks": 42.78,
+      "n_sel": 1
+    },
+    {
+      "kode": "53.06",
+      "kabupaten": "Flores Timur",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 30.53,
+      "fwi_maks": 30.53,
+      "n_sel": 1
+    },
+    {
+      "kode": "53.07",
+      "kabupaten": "Sikka",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 21.96,
+      "fwi_maks": 21.96,
+      "n_sel": 1
+    },
+    {
+      "kode": "53.08",
+      "kabupaten": "Ende",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 30.59,
+      "fwi_maks": 32.84,
+      "n_sel": 3
+    },
+    {
+      "kode": "53.09",
+      "kabupaten": "Ngada",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 45.24,
+      "fwi_maks": 50.95,
+      "n_sel": 2
+    },
+    {
+      "kode": "53.10",
+      "kabupaten": "Manggarai",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 23.96,
+      "fwi_maks": 23.96,
+      "n_sel": 1
+    },
+    {
+      "kode": "53.11",
+      "kabupaten": "Sumba Timur",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 45.75,
+      "fwi_maks": 60.11,
+      "n_sel": 7
+    },
+    {
+      "kode": "53.12",
+      "kabupaten": "Sumba Barat",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 25.48,
+      "fwi_maks": 25.48,
+      "n_sel": 1
+    },
+    {
+      "kode": "53.13",
+      "kabupaten": "Lembata",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 49.94,
+      "fwi_maks": 49.94,
+      "n_sel": 1
+    },
+    {
+      "kode": "53.14",
+      "kabupaten": "Rote Ndao",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 29.63,
+      "fwi_maks": 29.63,
+      "n_sel": 1
+    },
+    {
+      "kode": "53.15",
+      "kabupaten": "Manggarai Barat",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 27.88,
+      "fwi_maks": 34.01,
+      "n_sel": 4
+    },
+    {
+      "kode": "53.16",
+      "kabupaten": "Nagekeo",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 42.98,
+      "fwi_maks": 47.52,
+      "n_sel": 2
+    },
+    {
+      "kode": "53.17",
+      "kabupaten": "Sumba Tengah",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 47.53,
+      "fwi_maks": 55.67,
+      "n_sel": 2
+    },
+    {
+      "kode": "53.18",
+      "kabupaten": "Sumba Barat Daya",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 33.1,
+      "fwi_maks": 33.96,
+      "n_sel": 2
+    },
+    {
+      "kode": "53.19",
+      "kabupaten": "Manggarai Timur",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 30.15,
+      "fwi_maks": 30.68,
+      "n_sel": 2
+    },
+    {
+      "kode": "53.21",
+      "kabupaten": "Malaka",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 37.01,
+      "fwi_maks": 37.01,
+      "n_sel": 1
+    },
+    {
+      "kode": "61.01",
+      "kabupaten": "Sambas",
+      "provinsi": "Kalimantan Barat",
+      "fwi_rata": 0.18,
+      "fwi_maks": 0.3,
+      "n_sel": 7
+    },
+    {
+      "kode": "61.02",
+      "kabupaten": "Mempawah",
+      "provinsi": "Kalimantan Barat",
+      "fwi_rata": 0.18,
+      "fwi_maks": 0.18,
+      "n_sel": 1
+    },
+    {
+      "kode": "61.03",
+      "kabupaten": "Sanggau",
+      "provinsi": "Kalimantan Barat",
+      "fwi_rata": 0.08,
+      "fwi_maks": 0.21,
+      "n_sel": 13
+    },
+    {
+      "kode": "61.04",
+      "kabupaten": "Ketapang",
+      "provinsi": "Kalimantan Barat",
+      "fwi_rata": 5.38,
+      "fwi_maks": 25.31,
+      "n_sel": 31
+    },
+    {
+      "kode": "61.05",
+      "kabupaten": "Sintang",
+      "provinsi": "Kalimantan Barat",
+      "fwi_rata": 0.16,
+      "fwi_maks": 0.49,
+      "n_sel": 21
+    },
+    {
+      "kode": "61.06",
+      "kabupaten": "Kapuas Hulu",
+      "provinsi": "Kalimantan Barat",
+      "fwi_rata": 0.04,
+      "fwi_maks": 0.19,
+      "n_sel": 34
+    },
+    {
+      "kode": "61.07",
+      "kabupaten": "Bengkayang",
+      "provinsi": "Kalimantan Barat",
+      "fwi_rata": 0.13,
+      "fwi_maks": 0.17,
+      "n_sel": 4
+    },
+    {
+      "kode": "61.08",
+      "kabupaten": "Landak",
+      "provinsi": "Kalimantan Barat",
+      "fwi_rata": 0.09,
+      "fwi_maks": 0.27,
+      "n_sel": 10
+    },
+    {
+      "kode": "61.09",
+      "kabupaten": "Sekadau",
+      "provinsi": "Kalimantan Barat",
+      "fwi_rata": 0.1,
+      "fwi_maks": 0.21,
+      "n_sel": 8
+    },
+    {
+      "kode": "61.10",
+      "kabupaten": "Melawi",
+      "provinsi": "Kalimantan Barat",
+      "fwi_rata": 0.21,
+      "fwi_maks": 0.35,
+      "n_sel": 11
+    },
+    {
+      "kode": "61.11",
+      "kabupaten": "Kayong Utara",
+      "provinsi": "Kalimantan Barat",
+      "fwi_rata": 0.35,
+      "fwi_maks": 0.66,
+      "n_sel": 4
+    },
+    {
+      "kode": "61.12",
+      "kabupaten": "Kubu Raya",
+      "provinsi": "Kalimantan Barat",
+      "fwi_rata": 0.16,
+      "fwi_maks": 0.49,
+      "n_sel": 10
+    },
+    {
+      "kode": "61.72",
+      "kabupaten": "Kota Singkawang",
+      "provinsi": "Kalimantan Barat",
+      "fwi_rata": 0.14,
+      "fwi_maks": 0.14,
+      "n_sel": 1
+    },
+    {
+      "kode": "62.01",
+      "kabupaten": "Kotawaringin Barat",
+      "provinsi": "Kalimantan Tengah",
+      "fwi_rata": 17.53,
+      "fwi_maks": 29.93,
+      "n_sel": 10
+    },
+    {
+      "kode": "62.02",
+      "kabupaten": "Kotawaringin Timur",
+      "provinsi": "Kalimantan Tengah",
+      "fwi_rata": 7.2,
+      "fwi_maks": 23.59,
+      "n_sel": 18
+    },
+    {
+      "kode": "62.03",
+      "kabupaten": "Kapuas",
+      "provinsi": "Kalimantan Tengah",
+      "fwi_rata": 6.7,
+      "fwi_maks": 26.16,
+      "n_sel": 17
+    },
+    {
+      "kode": "62.04",
+      "kabupaten": "Barito Selatan",
+      "provinsi": "Kalimantan Tengah",
+      "fwi_rata": 6.55,
+      "fwi_maks": 19.4,
+      "n_sel": 6
+    },
+    {
+      "kode": "62.05",
+      "kabupaten": "Barito Utara",
+      "provinsi": "Kalimantan Tengah",
+      "fwi_rata": 0.76,
+      "fwi_maks": 1.93,
+      "n_sel": 9
+    },
+    {
+      "kode": "62.06",
+      "kabupaten": "Katingan",
+      "provinsi": "Kalimantan Tengah",
+      "fwi_rata": 6.08,
+      "fwi_maks": 23.01,
+      "n_sel": 21
+    },
+    {
+      "kode": "62.07",
+      "kabupaten": "Seruyan",
+      "provinsi": "Kalimantan Tengah",
+      "fwi_rata": 19.15,
+      "fwi_maks": 44.01,
+      "n_sel": 16
+    },
+    {
+      "kode": "62.08",
+      "kabupaten": "Sukamara",
+      "provinsi": "Kalimantan Tengah",
+      "fwi_rata": 21.53,
+      "fwi_maks": 32.52,
+      "n_sel": 4
+    },
+    {
+      "kode": "62.09",
+      "kabupaten": "Lamandau",
+      "provinsi": "Kalimantan Tengah",
+      "fwi_rata": 3.06,
+      "fwi_maks": 17.01,
+      "n_sel": 7
+    },
+    {
+      "kode": "62.10",
+      "kabupaten": "Gunung Mas",
+      "provinsi": "Kalimantan Tengah",
+      "fwi_rata": 0.62,
+      "fwi_maks": 2.31,
+      "n_sel": 9
+    },
+    {
+      "kode": "62.11",
+      "kabupaten": "Pulang Pisau",
+      "provinsi": "Kalimantan Tengah",
+      "fwi_rata": 17.36,
+      "fwi_maks": 25.21,
+      "n_sel": 8
+    },
+    {
+      "kode": "62.12",
+      "kabupaten": "Murung Raya",
+      "provinsi": "Kalimantan Tengah",
+      "fwi_rata": 0.21,
+      "fwi_maks": 0.66,
+      "n_sel": 26
+    },
+    {
+      "kode": "62.13",
+      "kabupaten": "Barito Timur",
+      "provinsi": "Kalimantan Tengah",
+      "fwi_rata": 8.76,
+      "fwi_maks": 13.43,
+      "n_sel": 5
+    },
+    {
+      "kode": "62.71",
+      "kabupaten": "Kota Palangkaraya",
+      "provinsi": "Kalimantan Tengah",
+      "fwi_rata": 11.47,
+      "fwi_maks": 17.53,
+      "n_sel": 4
+    },
+    {
+      "kode": "63.01",
+      "kabupaten": "Tanah Laut",
+      "provinsi": "Kalimantan Selatan",
+      "fwi_rata": 38.25,
+      "fwi_maks": 48.91,
+      "n_sel": 5
+    },
+    {
+      "kode": "63.02",
+      "kabupaten": "Kotabaru",
+      "provinsi": "Kalimantan Selatan",
+      "fwi_rata": 28.23,
+      "fwi_maks": 39.97,
+      "n_sel": 10
+    },
+    {
+      "kode": "63.03",
+      "kabupaten": "Banjar",
+      "provinsi": "Kalimantan Selatan",
+      "fwi_rata": 23.44,
+      "fwi_maks": 35.25,
+      "n_sel": 5
+    },
+    {
+      "kode": "63.04",
+      "kabupaten": "Barito Kuala",
+      "provinsi": "Kalimantan Selatan",
+      "fwi_rata": 17.25,
+      "fwi_maks": 24.09,
+      "n_sel": 3
+    },
+    {
+      "kode": "63.05",
+      "kabupaten": "Tapin",
+      "provinsi": "Kalimantan Selatan",
+      "fwi_rata": 7.83,
+      "fwi_maks": 7.83,
+      "n_sel": 1
+    },
+    {
+      "kode": "63.06",
+      "kabupaten": "Hulu Sungai Selatan",
+      "provinsi": "Kalimantan Selatan",
+      "fwi_rata": 12.54,
+      "fwi_maks": 15.4,
+      "n_sel": 3
+    },
+    {
+      "kode": "63.07",
+      "kabupaten": "Hulu Sungai Tengah",
+      "provinsi": "Kalimantan Selatan",
+      "fwi_rata": 15.44,
+      "fwi_maks": 16.86,
+      "n_sel": 2
+    },
+    {
+      "kode": "63.09",
+      "kabupaten": "Tabalong",
+      "provinsi": "Kalimantan Selatan",
+      "fwi_rata": 7.9,
+      "fwi_maks": 12.8,
+      "n_sel": 3
+    },
+    {
+      "kode": "63.10",
+      "kabupaten": "Tanah Bumbu",
+      "provinsi": "Kalimantan Selatan",
+      "fwi_rata": 25.79,
+      "fwi_maks": 30.83,
+      "n_sel": 5
+    },
+    {
+      "kode": "63.11",
+      "kabupaten": "Balangan",
+      "provinsi": "Kalimantan Selatan",
+      "fwi_rata": 16.29,
+      "fwi_maks": 19.85,
+      "n_sel": 2
+    },
+    {
+      "kode": "63.72",
+      "kabupaten": "Kota Banjarbaru",
+      "provinsi": "Kalimantan Selatan",
+      "fwi_rata": 35.82,
+      "fwi_maks": 35.82,
+      "n_sel": 1
+    },
+    {
+      "kode": "64.01",
+      "kabupaten": "Paser",
+      "provinsi": "Kalimantan Timur",
+      "fwi_rata": 6.87,
+      "fwi_maks": 22.1,
+      "n_sel": 12
+    },
+    {
+      "kode": "64.02",
+      "kabupaten": "Kutai Kartanegara",
+      "provinsi": "Kalimantan Timur",
+      "fwi_rata": 0.54,
+      "fwi_maks": 1.9,
+      "n_sel": 29
+    },
+    {
+      "kode": "64.03",
+      "kabupaten": "Berau",
+      "provinsi": "Kalimantan Timur",
+      "fwi_rata": 0.36,
+      "fwi_maks": 0.8,
+      "n_sel": 22
+    },
+    {
+      "kode": "64.07",
+      "kabupaten": "Kutai Barat",
+      "provinsi": "Kalimantan Timur",
+      "fwi_rata": 0.22,
+      "fwi_maks": 0.67,
+      "n_sel": 15
+    },
+    {
+      "kode": "64.08",
+      "kabupaten": "Kutai Timur",
+      "provinsi": "Kalimantan Timur",
+      "fwi_rata": 1.05,
+      "fwi_maks": 6.16,
+      "n_sel": 34
+    },
+    {
+      "kode": "64.09",
+      "kabupaten": "Penajam Paser Utara",
+      "provinsi": "Kalimantan Timur",
+      "fwi_rata": 1.75,
+      "fwi_maks": 2.75,
+      "n_sel": 2
+    },
+    {
+      "kode": "64.11",
+      "kabupaten": "Mahakam Ulu",
+      "provinsi": "Kalimantan Timur",
+      "fwi_rata": 0.21,
+      "fwi_maks": 0.51,
+      "n_sel": 20
+    },
+    {
+      "kode": "64.71",
+      "kabupaten": "Kota Balikpapan",
+      "provinsi": "Kalimantan Timur",
+      "fwi_rata": 2.71,
+      "fwi_maks": 2.71,
+      "n_sel": 1
+    },
+    {
+      "kode": "64.72",
+      "kabupaten": "Kota Samarinda",
+      "provinsi": "Kalimantan Timur",
+      "fwi_rata": 0.82,
+      "fwi_maks": 0.82,
+      "n_sel": 1
+    },
+    {
+      "kode": "65.01",
+      "kabupaten": "Bulungan",
+      "provinsi": "Kalimantan Utara",
+      "fwi_rata": 0.29,
+      "fwi_maks": 0.45,
+      "n_sel": 12
+    },
+    {
+      "kode": "65.02",
+      "kabupaten": "Malinau",
+      "provinsi": "Kalimantan Utara",
+      "fwi_rata": 0.16,
+      "fwi_maks": 0.3,
+      "n_sel": 42
+    },
+    {
+      "kode": "65.03",
+      "kabupaten": "Nunukan",
+      "provinsi": "Kalimantan Utara",
+      "fwi_rata": 0.24,
+      "fwi_maks": 0.44,
+      "n_sel": 13
+    },
+    {
+      "kode": "65.04",
+      "kabupaten": "Tana Tidung",
+      "provinsi": "Kalimantan Utara",
+      "fwi_rata": 0.24,
+      "fwi_maks": 0.32,
+      "n_sel": 4
+    },
+    {
+      "kode": "71.01",
+      "kabupaten": "Bolaang Mongondow",
+      "provinsi": "Sulawesi Utara",
+      "fwi_rata": 32.01,
+      "fwi_maks": 37.7,
+      "n_sel": 3
+    },
+    {
+      "kode": "71.02",
+      "kabupaten": "Minahasa",
+      "provinsi": "Sulawesi Utara",
+      "fwi_rata": 21.13,
+      "fwi_maks": 21.13,
+      "n_sel": 1
+    },
+    {
+      "kode": "71.05",
+      "kabupaten": "Minahasa Selatan",
+      "provinsi": "Sulawesi Utara",
+      "fwi_rata": 20.07,
+      "fwi_maks": 22.55,
+      "n_sel": 2
+    },
+    {
+      "kode": "71.06",
+      "kabupaten": "Minahasa Utara",
+      "provinsi": "Sulawesi Utara",
+      "fwi_rata": 29.03,
+      "fwi_maks": 29.03,
+      "n_sel": 1
+    },
+    {
+      "kode": "71.07",
+      "kabupaten": "Minahasa Tenggara",
+      "provinsi": "Sulawesi Utara",
+      "fwi_rata": 41.7,
+      "fwi_maks": 41.7,
+      "n_sel": 1
+    },
+    {
+      "kode": "71.08",
+      "kabupaten": "Bolaang Mongondow Utara",
+      "provinsi": "Sulawesi Utara",
+      "fwi_rata": 41.57,
+      "fwi_maks": 41.57,
+      "n_sel": 1
+    },
+    {
+      "kode": "71.10",
+      "kabupaten": "Bolaang Mongondow Timur",
+      "provinsi": "Sulawesi Utara",
+      "fwi_rata": 28.3,
+      "fwi_maks": 28.3,
+      "n_sel": 1
+    },
+    {
+      "kode": "71.11",
+      "kabupaten": "Bolaang Mongondow Selatan",
+      "provinsi": "Sulawesi Utara",
+      "fwi_rata": 19.2,
+      "fwi_maks": 25.58,
+      "n_sel": 2
+    },
+    {
+      "kode": "72.01",
+      "kabupaten": "Banggai",
+      "provinsi": "Sulawesi Tengah",
+      "fwi_rata": 27.84,
+      "fwi_maks": 40.94,
+      "n_sel": 8
+    },
+    {
+      "kode": "72.02",
+      "kabupaten": "Poso",
+      "provinsi": "Sulawesi Tengah",
+      "fwi_rata": 8.21,
+      "fwi_maks": 13.7,
+      "n_sel": 8
+    },
+    {
+      "kode": "72.03",
+      "kabupaten": "Donggala",
+      "provinsi": "Sulawesi Tengah",
+      "fwi_rata": 4.59,
+      "fwi_maks": 9.4,
+      "n_sel": 5
+    },
+    {
+      "kode": "72.04",
+      "kabupaten": "Toli Toli",
+      "provinsi": "Sulawesi Tengah",
+      "fwi_rata": 1.28,
+      "fwi_maks": 1.62,
+      "n_sel": 4
+    },
+    {
+      "kode": "72.05",
+      "kabupaten": "Buol",
+      "provinsi": "Sulawesi Tengah",
+      "fwi_rata": 2.88,
+      "fwi_maks": 4.05,
+      "n_sel": 4
+    },
+    {
+      "kode": "72.06",
+      "kabupaten": "Morowali",
+      "provinsi": "Sulawesi Tengah",
+      "fwi_rata": 16.88,
+      "fwi_maks": 28.12,
+      "n_sel": 4
+    },
+    {
+      "kode": "72.07",
+      "kabupaten": "Banggai Kepulauan",
+      "provinsi": "Sulawesi Tengah",
+      "fwi_rata": 21.93,
+      "fwi_maks": 23.35,
+      "n_sel": 2
+    },
+    {
+      "kode": "72.08",
+      "kabupaten": "Parigi Moutong",
+      "provinsi": "Sulawesi Tengah",
+      "fwi_rata": 11.43,
+      "fwi_maks": 26.93,
+      "n_sel": 7
+    },
+    {
+      "kode": "72.09",
+      "kabupaten": "Tojo Una Una",
+      "provinsi": "Sulawesi Tengah",
+      "fwi_rata": 21.24,
+      "fwi_maks": 37.05,
+      "n_sel": 6
+    },
+    {
+      "kode": "72.10",
+      "kabupaten": "Sigi",
+      "provinsi": "Sulawesi Tengah",
+      "fwi_rata": 2.83,
+      "fwi_maks": 4.57,
+      "n_sel": 6
+    },
+    {
+      "kode": "72.12",
+      "kabupaten": "Morowali Utara",
+      "provinsi": "Sulawesi Tengah",
+      "fwi_rata": 9.13,
+      "fwi_maks": 12.47,
+      "n_sel": 8
+    },
+    {
+      "kode": "73.02",
+      "kabupaten": "Bulukumba",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 39.3,
+      "fwi_maks": 39.3,
+      "n_sel": 1
+    },
+    {
+      "kode": "73.03",
+      "kabupaten": "Bantaeng",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 47.7,
+      "fwi_maks": 47.7,
+      "n_sel": 1
+    },
+    {
+      "kode": "73.06",
+      "kabupaten": "Gowa",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 63.2,
+      "fwi_maks": 71.77,
+      "n_sel": 2
+    },
+    {
+      "kode": "73.07",
+      "kabupaten": "Sinjai",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 30.14,
+      "fwi_maks": 34.27,
+      "n_sel": 2
+    },
+    {
+      "kode": "73.08",
+      "kabupaten": "Bone",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 51.17,
+      "fwi_maks": 55.79,
+      "n_sel": 5
+    },
+    {
+      "kode": "73.09",
+      "kabupaten": "Maros",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 56.6,
+      "fwi_maks": 56.6,
+      "n_sel": 1
+    },
+    {
+      "kode": "73.10",
+      "kabupaten": "Pangkajene Dan Kepulauan",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 54.72,
+      "fwi_maks": 54.72,
+      "n_sel": 1
+    },
+    {
+      "kode": "73.11",
+      "kabupaten": "Barru",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 49.28,
+      "fwi_maks": 49.53,
+      "n_sel": 2
+    },
+    {
+      "kode": "73.12",
+      "kabupaten": "Soppeng",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 58.61,
+      "fwi_maks": 58.61,
+      "n_sel": 1
+    },
+    {
+      "kode": "73.13",
+      "kabupaten": "Wajo",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 51.89,
+      "fwi_maks": 66.06,
+      "n_sel": 4
+    },
+    {
+      "kode": "73.14",
+      "kabupaten": "Sidenreng Rappang",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 52.53,
+      "fwi_maks": 56.18,
+      "n_sel": 2
+    },
+    {
+      "kode": "73.15",
+      "kabupaten": "Pinrang",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 40.39,
+      "fwi_maks": 55.98,
+      "n_sel": 2
+    },
+    {
+      "kode": "73.16",
+      "kabupaten": "Enrekang",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 11.28,
+      "fwi_maks": 11.28,
+      "n_sel": 1
+    },
+    {
+      "kode": "73.17",
+      "kabupaten": "Luwu",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 24.48,
+      "fwi_maks": 40.7,
+      "n_sel": 4
+    },
+    {
+      "kode": "73.18",
+      "kabupaten": "Tana Toraja",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 20.46,
+      "fwi_maks": 20.47,
+      "n_sel": 2
+    },
+    {
+      "kode": "73.22",
+      "kabupaten": "Luwu Utara",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 10.08,
+      "fwi_maks": 24.27,
+      "n_sel": 6
+    },
+    {
+      "kode": "73.24",
+      "kabupaten": "Luwu Timur",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 9.39,
+      "fwi_maks": 13.59,
+      "n_sel": 7
+    },
+    {
+      "kode": "73.26",
+      "kabupaten": "Toraja Utara",
+      "provinsi": "Sulawesi Selatan",
+      "fwi_rata": 18.38,
+      "fwi_maks": 18.38,
+      "n_sel": 1
+    },
+    {
+      "kode": "74.01",
+      "kabupaten": "Kolaka",
+      "provinsi": "Sulawesi Tenggara",
+      "fwi_rata": 25.91,
+      "fwi_maks": 41.78,
+      "n_sel": 3
+    },
+    {
+      "kode": "74.02",
+      "kabupaten": "Konawe",
+      "provinsi": "Sulawesi Tenggara",
+      "fwi_rata": 20.4,
+      "fwi_maks": 29.57,
+      "n_sel": 6
+    },
+    {
+      "kode": "74.03",
+      "kabupaten": "Muna",
+      "provinsi": "Sulawesi Tenggara",
+      "fwi_rata": 47.34,
+      "fwi_maks": 54.29,
+      "n_sel": 2
+    },
+    {
+      "kode": "74.04",
+      "kabupaten": "Buton",
+      "provinsi": "Sulawesi Tenggara",
+      "fwi_rata": 35.84,
+      "fwi_maks": 42.04,
+      "n_sel": 3
+    },
+    {
+      "kode": "74.05",
+      "kabupaten": "Konawe Selatan",
+      "provinsi": "Sulawesi Tenggara",
+      "fwi_rata": 37.77,
+      "fwi_maks": 47.63,
+      "n_sel": 4
+    },
+    {
+      "kode": "74.06",
+      "kabupaten": "Bombana",
+      "provinsi": "Sulawesi Tenggara",
+      "fwi_rata": 49.04,
+      "fwi_maks": 54.26,
+      "n_sel": 3
+    },
+    {
+      "kode": "74.08",
+      "kabupaten": "Kolaka Utara",
+      "provinsi": "Sulawesi Tenggara",
+      "fwi_rata": 6.06,
+      "fwi_maks": 11.42,
+      "n_sel": 2
+    },
+    {
+      "kode": "74.09",
+      "kabupaten": "Konawe Utara",
+      "provinsi": "Sulawesi Tenggara",
+      "fwi_rata": 23.27,
+      "fwi_maks": 30.92,
+      "n_sel": 5
+    },
+    {
+      "kode": "74.10",
+      "kabupaten": "Buton Utara",
+      "provinsi": "Sulawesi Tenggara",
+      "fwi_rata": 25.12,
+      "fwi_maks": 25.12,
+      "n_sel": 1
+    },
+    {
+      "kode": "74.11",
+      "kabupaten": "Kolaka Timur",
+      "provinsi": "Sulawesi Tenggara",
+      "fwi_rata": 20.52,
+      "fwi_maks": 29.26,
+      "n_sel": 5
+    },
+    {
+      "kode": "74.12",
+      "kabupaten": "Konawe Kepulauan",
+      "provinsi": "Sulawesi Tenggara",
+      "fwi_rata": 22.35,
+      "fwi_maks": 22.35,
+      "n_sel": 1
+    },
+    {
+      "kode": "74.13",
+      "kabupaten": "Muna Barat",
+      "provinsi": "Sulawesi Tenggara",
+      "fwi_rata": 42.73,
+      "fwi_maks": 42.73,
+      "n_sel": 1
+    },
+    {
+      "kode": "74.14",
+      "kabupaten": "Buton Tengah",
+      "provinsi": "Sulawesi Tenggara",
+      "fwi_rata": 48.86,
+      "fwi_maks": 48.86,
+      "n_sel": 1
+    },
+    {
+      "kode": "74.71",
+      "kabupaten": "Kota Kendari",
+      "provinsi": "Sulawesi Tenggara",
+      "fwi_rata": 46,
+      "fwi_maks": 46,
+      "n_sel": 1
+    },
+    {
+      "kode": "75.01",
+      "kabupaten": "Gorontalo",
+      "provinsi": "Gorontalo",
+      "fwi_rata": 45.91,
+      "fwi_maks": 53.81,
+      "n_sel": 3
+    },
+    {
+      "kode": "75.02",
+      "kabupaten": "Boalemo",
+      "provinsi": "Gorontalo",
+      "fwi_rata": 35.4,
+      "fwi_maks": 42.18,
+      "n_sel": 2
+    },
+    {
+      "kode": "75.03",
+      "kabupaten": "Bone Bolango",
+      "provinsi": "Gorontalo",
+      "fwi_rata": 39.73,
+      "fwi_maks": 47.22,
+      "n_sel": 3
+    },
+    {
+      "kode": "75.04",
+      "kabupaten": "Pohuwato",
+      "provinsi": "Gorontalo",
+      "fwi_rata": 18.48,
+      "fwi_maks": 29.71,
+      "n_sel": 4
+    },
+    {
+      "kode": "75.05",
+      "kabupaten": "Gorontalo Utara",
+      "provinsi": "Gorontalo",
+      "fwi_rata": 23.19,
+      "fwi_maks": 23.19,
+      "n_sel": 1
+    },
+    {
+      "kode": "76.01",
+      "kabupaten": "Pasangkayu",
+      "provinsi": "Sulawesi Barat",
+      "fwi_rata": 2.09,
+      "fwi_maks": 2.85,
+      "n_sel": 4
+    },
+    {
+      "kode": "76.02",
+      "kabupaten": "Mamuju",
+      "provinsi": "Sulawesi Barat",
+      "fwi_rata": 3.41,
+      "fwi_maks": 6.56,
+      "n_sel": 5
+    },
+    {
+      "kode": "76.03",
+      "kabupaten": "Mamasa",
+      "provinsi": "Sulawesi Barat",
+      "fwi_rata": 6.71,
+      "fwi_maks": 14.46,
+      "n_sel": 4
+    },
+    {
+      "kode": "76.04",
+      "kabupaten": "Polewali Mandar",
+      "provinsi": "Sulawesi Barat",
+      "fwi_rata": 30.95,
+      "fwi_maks": 32.68,
+      "n_sel": 2
+    },
+    {
+      "kode": "76.05",
+      "kabupaten": "Majene",
+      "provinsi": "Sulawesi Barat",
+      "fwi_rata": 5.23,
+      "fwi_maks": 5.23,
+      "n_sel": 1
+    },
+    {
+      "kode": "76.06",
+      "kabupaten": "Mamuju Tengah",
+      "provinsi": "Sulawesi Barat",
+      "fwi_rata": 0.81,
+      "fwi_maks": 1.31,
+      "n_sel": 2
+    },
+    {
+      "kode": "81.01",
+      "kabupaten": "Maluku Tengah",
+      "provinsi": "Maluku",
+      "fwi_rata": 2.98,
+      "fwi_maks": 12.23,
+      "n_sel": 7
+    },
+    {
+      "kode": "81.03",
+      "kabupaten": "Kepulauan Tanimbar",
+      "provinsi": "Maluku",
+      "fwi_rata": 29.87,
+      "fwi_maks": 46.2,
+      "n_sel": 4
+    },
+    {
+      "kode": "81.04",
+      "kabupaten": "Buru",
+      "provinsi": "Maluku",
+      "fwi_rata": 18.15,
+      "fwi_maks": 37.78,
+      "n_sel": 5
+    },
+    {
+      "kode": "81.05",
+      "kabupaten": "Seram Bagian Timur",
+      "provinsi": "Maluku",
+      "fwi_rata": 8.95,
+      "fwi_maks": 17.02,
+      "n_sel": 7
+    },
+    {
+      "kode": "81.06",
+      "kabupaten": "Seram Bagian Barat",
+      "provinsi": "Maluku",
+      "fwi_rata": 1.84,
+      "fwi_maks": 6.64,
+      "n_sel": 5
+    },
+    {
+      "kode": "81.07",
+      "kabupaten": "Kepulauan Aru",
+      "provinsi": "Maluku",
+      "fwi_rata": 19.99,
+      "fwi_maks": 34.29,
+      "n_sel": 11
+    },
+    {
+      "kode": "81.08",
+      "kabupaten": "Maluku Barat Daya",
+      "provinsi": "Maluku",
+      "fwi_rata": 30.21,
+      "fwi_maks": 31.89,
+      "n_sel": 2
+    },
+    {
+      "kode": "81.09",
+      "kabupaten": "Buru Selatan",
+      "provinsi": "Maluku",
+      "fwi_rata": 8.66,
+      "fwi_maks": 15.83,
+      "n_sel": 4
+    },
+    {
+      "kode": "82.01",
+      "kabupaten": "Halmahera Barat",
+      "provinsi": "Maluku Utara",
+      "fwi_rata": 0.82,
+      "fwi_maks": 1.21,
+      "n_sel": 2
+    },
+    {
+      "kode": "82.02",
+      "kabupaten": "Halmahera Tengah",
+      "provinsi": "Maluku Utara",
+      "fwi_rata": 0.68,
+      "fwi_maks": 0.72,
+      "n_sel": 3
+    },
+    {
+      "kode": "82.03",
+      "kabupaten": "Halmahera Utara",
+      "provinsi": "Maluku Utara",
+      "fwi_rata": 0.7,
+      "fwi_maks": 1.19,
+      "n_sel": 4
+    },
+    {
+      "kode": "82.04",
+      "kabupaten": "Halmahera Selatan",
+      "provinsi": "Maluku Utara",
+      "fwi_rata": 1,
+      "fwi_maks": 3.66,
+      "n_sel": 8
+    },
+    {
+      "kode": "82.06",
+      "kabupaten": "Halmahera Timur",
+      "provinsi": "Maluku Utara",
+      "fwi_rata": 1.03,
+      "fwi_maks": 2.99,
+      "n_sel": 8
+    },
+    {
+      "kode": "82.07",
+      "kabupaten": "Pulau Morotai",
+      "provinsi": "Maluku Utara",
+      "fwi_rata": 0.99,
+      "fwi_maks": 1.55,
+      "n_sel": 2
+    },
+    {
+      "kode": "82.08",
+      "kabupaten": "Pulau Taliabu",
+      "provinsi": "Maluku Utara",
+      "fwi_rata": 9.18,
+      "fwi_maks": 13.7,
+      "n_sel": 3
+    },
+    {
+      "kode": "91.03",
+      "kabupaten": "Jayapura",
+      "provinsi": "Papua",
+      "fwi_rata": 0.36,
+      "fwi_maks": 0.75,
+      "n_sel": 16
+    },
+    {
+      "kode": "91.05",
+      "kabupaten": "Kepulauan Yapen",
+      "provinsi": "Papua",
+      "fwi_rata": 0.32,
+      "fwi_maks": 0.32,
+      "n_sel": 1
+    },
+    {
+      "kode": "91.06",
+      "kabupaten": "Biak Numfor",
+      "provinsi": "Papua",
+      "fwi_rata": 0.24,
+      "fwi_maks": 0.24,
+      "n_sel": 1
+    },
+    {
+      "kode": "91.10",
+      "kabupaten": "Sarmi",
+      "provinsi": "Papua",
+      "fwi_rata": 0.58,
+      "fwi_maks": 1.8,
+      "n_sel": 15
+    },
+    {
+      "kode": "91.11",
+      "kabupaten": "Keerom",
+      "provinsi": "Papua",
+      "fwi_rata": 0.51,
+      "fwi_maks": 0.82,
+      "n_sel": 9
+    },
+    {
+      "kode": "91.15",
+      "kabupaten": "Waropen",
+      "provinsi": "Papua",
+      "fwi_rata": 0.04,
+      "fwi_maks": 0.32,
+      "n_sel": 11
+    },
+    {
+      "kode": "91.19",
+      "kabupaten": "Supiori",
+      "provinsi": "Papua",
+      "fwi_rata": 0.28,
+      "fwi_maks": 0.28,
+      "n_sel": 1
+    },
+    {
+      "kode": "91.20",
+      "kabupaten": "Mamberamo Raya",
+      "provinsi": "Papua",
+      "fwi_rata": 0.67,
+      "fwi_maks": 4.12,
+      "n_sel": 30
+    },
+    {
+      "kode": "91.71",
+      "kabupaten": "Kota Jayapura",
+      "provinsi": "Papua",
+      "fwi_rata": 0.77,
+      "fwi_maks": 0.77,
+      "n_sel": 1
+    },
+    {
+      "kode": "92.02",
+      "kabupaten": "Manokwari",
+      "provinsi": "Papua Barat",
+      "fwi_rata": 0.47,
+      "fwi_maks": 0.69,
+      "n_sel": 2
+    },
+    {
+      "kode": "92.03",
+      "kabupaten": "Fak Fak",
+      "provinsi": "Papua Barat",
+      "fwi_rata": 2.51,
+      "fwi_maks": 15.7,
+      "n_sel": 10
+    },
+    {
+      "kode": "92.06",
+      "kabupaten": "Teluk Bintuni",
+      "provinsi": "Papua Barat",
+      "fwi_rata": 0.12,
+      "fwi_maks": 0.51,
+      "n_sel": 17
+    },
+    {
+      "kode": "92.07",
+      "kabupaten": "Teluk Wondama",
+      "provinsi": "Papua Barat",
+      "fwi_rata": 0.06,
+      "fwi_maks": 0.18,
+      "n_sel": 4
+    },
+    {
+      "kode": "92.08",
+      "kabupaten": "Kaimana",
+      "provinsi": "Papua Barat",
+      "fwi_rata": 1.14,
+      "fwi_maks": 9.86,
+      "n_sel": 18
+    },
+    {
+      "kode": "92.11",
+      "kabupaten": "Manokwari Selatan",
+      "provinsi": "Papua Barat",
+      "fwi_rata": 0.29,
+      "fwi_maks": 0.33,
+      "n_sel": 3
+    },
+    {
+      "kode": "92.12",
+      "kabupaten": "Pegunungan Arfak",
+      "provinsi": "Papua Barat",
+      "fwi_rata": 0.12,
+      "fwi_maks": 0.22,
+      "n_sel": 3
+    },
+    {
+      "kode": "93.01",
+      "kabupaten": "Merauke",
+      "provinsi": "Papua Selatan",
+      "fwi_rata": 20.75,
+      "fwi_maks": 41.23,
+      "n_sel": 49
+    },
+    {
+      "kode": "93.02",
+      "kabupaten": "Boven Digoel",
+      "provinsi": "Papua Selatan",
+      "fwi_rata": 4.62,
+      "fwi_maks": 10.18,
+      "n_sel": 24
+    },
+    {
+      "kode": "93.03",
+      "kabupaten": "Mappi",
+      "provinsi": "Papua Selatan",
+      "fwi_rata": 9.63,
+      "fwi_maks": 30.69,
+      "n_sel": 28
+    },
+    {
+      "kode": "93.04",
+      "kabupaten": "Asmat",
+      "provinsi": "Papua Selatan",
+      "fwi_rata": 0.88,
+      "fwi_maks": 5.92,
+      "n_sel": 27
+    },
+    {
+      "kode": "94.01",
+      "kabupaten": "Nabire",
+      "provinsi": "Papua Tengah",
+      "fwi_rata": 0.12,
+      "fwi_maks": 0.47,
+      "n_sel": 14
+    },
+    {
+      "kode": "94.02",
+      "kabupaten": "Puncak Jaya",
+      "provinsi": "Papua Tengah",
+      "fwi_rata": 0.03,
+      "fwi_maks": 0.07,
+      "n_sel": 5
+    },
+    {
+      "kode": "94.03",
+      "kabupaten": "Paniai",
+      "provinsi": "Papua Tengah",
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.02,
+      "n_sel": 5
+    },
+    {
+      "kode": "94.04",
+      "kabupaten": "Mimika",
+      "provinsi": "Papua Tengah",
+      "fwi_rata": 0.38,
+      "fwi_maks": 2.91,
+      "n_sel": 21
+    },
+    {
+      "kode": "94.05",
+      "kabupaten": "Puncak",
+      "provinsi": "Papua Tengah",
+      "fwi_rata": 0.02,
+      "fwi_maks": 0.05,
+      "n_sel": 9
+    },
+    {
+      "kode": "94.06",
+      "kabupaten": "Dogiyai",
+      "provinsi": "Papua Tengah",
+      "fwi_rata": 0.02,
+      "fwi_maks": 0.06,
+      "n_sel": 4
+    },
+    {
+      "kode": "94.07",
+      "kabupaten": "Intan Jaya",
+      "provinsi": "Papua Tengah",
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.02,
+      "n_sel": 4
+    },
+    {
+      "kode": "94.08",
+      "kabupaten": "Deiyai",
+      "provinsi": "Papua Tengah",
+      "fwi_rata": 0.04,
+      "fwi_maks": 0.11,
+      "n_sel": 3
+    },
+    {
+      "kode": "95.01",
+      "kabupaten": "Jayawijaya",
+      "provinsi": "Papua Pegunungan",
+      "fwi_rata": 0.09,
+      "fwi_maks": 0.17,
+      "n_sel": 3
+    },
+    {
+      "kode": "95.02",
+      "kabupaten": "Pegunungan Bintang",
+      "provinsi": "Papua Pegunungan",
+      "fwi_rata": 0.16,
+      "fwi_maks": 0.5,
+      "n_sel": 16
+    },
+    {
+      "kode": "95.03",
+      "kabupaten": "Yahukimo",
+      "provinsi": "Papua Pegunungan",
+      "fwi_rata": 0.16,
+      "fwi_maks": 0.61,
+      "n_sel": 17
+    },
+    {
+      "kode": "95.04",
+      "kabupaten": "Tolikara",
+      "provinsi": "Papua Pegunungan",
+      "fwi_rata": 0.05,
+      "fwi_maks": 0.08,
+      "n_sel": 3
+    },
+    {
+      "kode": "95.05",
+      "kabupaten": "Mamberamo Tengah",
+      "provinsi": "Papua Pegunungan",
+      "fwi_rata": 0.16,
+      "fwi_maks": 0.3,
+      "n_sel": 6
+    },
+    {
+      "kode": "95.06",
+      "kabupaten": "Yalimo",
+      "provinsi": "Papua Pegunungan",
+      "fwi_rata": 0.16,
+      "fwi_maks": 0.28,
+      "n_sel": 3
+    },
+    {
+      "kode": "95.07",
+      "kabupaten": "Lanny Jaya",
+      "provinsi": "Papua Pegunungan",
+      "fwi_rata": 0.02,
+      "fwi_maks": 0.03,
+      "n_sel": 2
+    },
+    {
+      "kode": "95.08",
+      "kabupaten": "Nduga",
+      "provinsi": "Papua Pegunungan",
+      "fwi_rata": 0.05,
+      "fwi_maks": 0.18,
+      "n_sel": 5
+    },
+    {
+      "kode": "96.01",
+      "kabupaten": "Sorong",
+      "provinsi": "Papua Barat Daya",
+      "fwi_rata": 0.3,
+      "fwi_maks": 0.93,
+      "n_sel": 7
+    },
+    {
+      "kode": "96.02",
+      "kabupaten": "Sorong Selatan",
+      "provinsi": "Papua Barat Daya",
+      "fwi_rata": 0.11,
+      "fwi_maks": 0.17,
+      "n_sel": 6
+    },
+    {
+      "kode": "96.03",
+      "kabupaten": "Raja Ampat",
+      "provinsi": "Papua Barat Daya",
+      "fwi_rata": 2.64,
+      "fwi_maks": 8.02,
+      "n_sel": 6
+    },
+    {
+      "kode": "96.04",
+      "kabupaten": "Tambrauw",
+      "provinsi": "Papua Barat Daya",
+      "fwi_rata": 0.07,
+      "fwi_maks": 0.36,
+      "n_sel": 14
+    },
+    {
+      "kode": "96.05",
+      "kabupaten": "Maybrat",
+      "provinsi": "Papua Barat Daya",
+      "fwi_rata": 0.03,
+      "fwi_maks": 0.08,
+      "n_sel": 6
+    }
+  ]
+}

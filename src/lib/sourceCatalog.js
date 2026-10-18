@@ -107,6 +107,20 @@ export const SOURCES = [
         expectedMaxAgeHours: 36,
         access: "API",
       },
+      {
+        id: "gfwed_kabupaten",
+        nama: "FWI GFWED per kabupaten/kota",
+        instansi: "NASA GFWED — GEOS-5",
+        provider: "NASA GFWED",
+        fungsi: "Pembanding model NASA GFWED (GEOS-5, analisis), bukan BMKG. Bukan kelas FDRS.",
+        officialUrl: "https://portal.nccs.nasa.gov/datashare/GlobalFWI/",
+        license: "Berkas publik NASA NCCS Datashare, tanpa login. Kutipan Field et al. 2015, doi:10.5194/nhess-15-1407-2015.",
+        method:
+          "Berkas harian terbaru FWI.GEOS-5.Daily.Default.YYYYMMDD.nc pada v2.0/fwiCalcs.GEOS-5/Default/GEOS-5/. Variabel GEOS-5_FWI. Sel di dalam bingkai peta Indonesia dipasangkan ke kabupaten/kota lewat kueri BIG yang dikelompokkan. Yang disimpan hanya kode, nama, dan nilai. Rata-rata dan maksimum dihitung dari sel yang pusatnya jatuh di dalam. Pemeriksaan 18 Oktober 2026: berkas terbaru bertanggal 14 Oktober 2026.",
+        updateType: "Harian, tertunda",
+        expectedMaxAgeHours: 24 * 6,
+        access: "Berkas publik",
+      },
     ],
   },
   {
