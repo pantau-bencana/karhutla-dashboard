@@ -1,5 +1,6 @@
 import { formatAmbang } from "../lib/format.js";
 import { pageHref } from "../lib/route.js";
+import { PriorityIndicators } from "./PriorityIndicators.jsx";
 import { Term } from "./Term.jsx";
 
 const FLOW = [
@@ -94,6 +95,8 @@ export function LogicPage({ config }) {
         </div>
         {thresholds ? <p className="fine logic-body">{formatAmbang(thresholds)} {thresholds.catatan}</p> : null}
       </section>
+
+      <PriorityIndicators rinci />
 
       <section className="card">
         <header className="card-head">
