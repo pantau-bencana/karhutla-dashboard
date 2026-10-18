@@ -11,14 +11,14 @@ export const PRIORITY_INDICATORS = [
     logika:
       "Dipakai untuk membaca kemudahan terbakar pada wilayah dan waktu yang tertulis di produk BMKG. Angka tidak didigitasi dan tidak ditarik dari citra. Produk citra yang tersedia hanya sampai horizon produk BMKG (hingga H+7 sesuai produk BMKG), bukan prakiraan 14 hari.",
     rincian:
-      "Yang ditautkan adalah halaman resmi. Dasbor tidak mengunduh citra SPARTAN dan tidak membaca angka dari gambar. Bila nanti ada data terstruktur, isiannya nilai atau kelas, wilayah, dan waktu berlaku atau penerbitan pada produk itu. Horizon tidak diperpanjang melewati produk BMKG.",
+      "Yang ditautkan untuk BMKG adalah halaman resmi. Dasbor tidak mengunduh citra SPARTAN dan tidak membaca angka dari gambar. Bila nanti ada data terstruktur, isiannya nilai atau kelas, wilayah, dan waktu berlaku atau penerbitan pada produk itu. Horizon tidak diperpanjang melewati produk BMKG. Overlay peta menampilkan FWI model ECMWF dari WMS GWIS untuk tanggal yang dipilih atau hari ini, hanya bila lapisan tanggal itu ada.",
     sumber: [
       { label: "BMKG SPARTAN", href: "https://spartan.bmkg.go.id/" },
       { label: "Halaman Karhutla BMKG", href: "https://www.bmkg.go.id/cuaca/karhutla" },
     ],
-    status: "Tautan saja",
+    status: "BMKG Tautan saja; pembanding GWIS tersedia sebagai overlay",
     keterbatasan:
-      "Data kabupaten/kota belum tersedia sebagai data terstruktur yang dapat diambil aplikasi. Nilai per kabupaten/kota tidak diisi.",
+      "Data kabupaten/kota BMKG belum tersedia sebagai data terstruktur yang dapat diambil aplikasi. Nilai per kabupaten/kota tidak diisi. Overlay peta adalah lapisan WMS ecmwf.fwi Copernicus EMS/JRC GWIS, pembanding visual, bukan produk BMKG/KLHK. Kelas Canadian FWI pada legenda GWIS tidak disamakan dengan kelas FWI/FDRS BMKG.",
   },
   {
     id: "ispu",

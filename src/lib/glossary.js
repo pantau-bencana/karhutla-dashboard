@@ -313,7 +313,7 @@ export const GLOSSARY = [
     penjelasan:
       "Layanan Copernicus EMS dan JRC untuk bahaya kebakaran global. Prakiraan FWI model ECMWF disajikan lewat WMS publik, terpisah dari FDRS BMKG.",
     penggunaan:
-      "Lapisan pembanding membaca angka pada titik wakil kabupaten. Horizon mengikuti tanggal yang layanan isi dan tidak disebut 14 hari. Tidak masuk urutan prototipe.",
+      "Peta Karhutla dapat menampilkan overlay WMS lapisan ecmwf.fwi untuk tanggal yang dipilih atau hari ini. Angka titik wakil tetap terpisah. Keduanya bukan FDRS BMKG dan tidak masuk urutan prototipe. Kelas pada legenda GWIS tidak dibandingkan dengan kelas BMKG.",
     rujukan: "https://gwis.jrc.ec.europa.eu/about-gwis/technical-background/fire-danger-forecast",
     rujukanLabel: "GWIS — Fire Danger Forecast",
   },

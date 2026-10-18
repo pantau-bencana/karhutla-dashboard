@@ -46,7 +46,9 @@ Tombol **Buka Peta FWI/Peringatan Karhutla BMKG** membuka situs BMKG di tab baru
 
 Panel hujan sekitar 14 hari, bila ada, adalah **pembanding model, bukan prakiraan BMKG**. Header kartu pembanding memuat **Pembanding, bukan produk BMKG/KLHK**. Nilai GWIS pada panel itu tidak disebut FDRS.
 
-Matriks **Indikator untuk Wilayah Prioritas** menyiapkan kolom yang nanti perlu diisi: FWI/FDRS, ISPU, peluang hujan lebih dari 20 mm, dan indeks kesesuaian iklim. Keempatnya saat ini **Tautan saja**. Matriks itu tidak berisi angka kabupaten.
+Pada peta hotspot ada sakelar **FWI pembanding (model ECMWF via Copernicus EMS/JRC GWIS) — Pembanding, bukan produk BMKG/KLHK**. Itu overlay WMS, bukan produk BMKG atau KLHK. Tanggal model mengikuti tanggal yang dipilih pada saringan; bila semua tanggal, tanggalnya hari ini (WIB). Legenda yang tampil adalah legenda GWIS. Kelasnya skala Canadian FWI dan tidak boleh dibandingkan dengan kelas FWI/FDRS BMKG. Bila tanggal itu tidak punya lapisan, tulisan yang muncul adalah **data belum tersedia**. Atribusi: © European Union, Copernicus EMS / JRC GWIS, plus kalimat EU Data License dari GetCapabilities.
+
+Matriks **Indikator untuk Wilayah Prioritas** menyiapkan kolom yang nanti perlu diisi: FWI/FDRS, ISPU, peluang hujan lebih dari 20 mm, dan indeks kesesuaian iklim. Baris FWI/FDRS berstatus **BMKG Tautan saja; pembanding GWIS tersedia sebagai overlay**. Tiga baris lain tetap **Tautan saja**. Matriks itu tidak berisi angka kabupaten.
 
 ## Status yang perlu dibaca apa adanya
 

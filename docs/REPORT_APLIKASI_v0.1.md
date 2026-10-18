@@ -75,6 +75,7 @@ Berkas di `.grok/skills/` mengatur bagian berikut:
 - Bila BIG tidak tersedia pada satu pembaruan, titik FIRMS tetap ada dan halaman menulis bahwa penyaringan wilayah serta batas Indonesia pada pembaruan itu tidak lengkap.
 - ISPU resmi belum terisi. OpenAQ tanpa kunci tidak menampilkan µg/m³.
 - FWI BMKG hanya tautan, sampai H+7 sesuai produk, bukan 14 hari. Panel hujan 14 hari Open-Meteo, bila ada, adalah pembanding model, bukan prakiraan BMKG. Header kartu pembanding memuat **Pembanding, bukan produk BMKG/KLHK**. Nilai GWIS tidak disebut FDRS.
+- Peta Karhutla dapat menampilkan overlay WMS `ecmwf.fwi` dari Copernicus EMS/JRC GWIS untuk tanggal yang dipilih atau hari ini. GetCapabilities menulis rentang sampai 2099 dan default 2019-01-01, tetapi tanggal tanpa piksel ditampilkan sebagai **data belum tersedia**. Pemeriksaan 18 Oktober 2026 mendapat piksel sampai 27 Oktober 2026. Kelas legenda GWIS (Canadian FWI) tidak dibandingkan dengan kelas BMKG. Raster tidak disimpan. FeatureServer FDRS `gis.bmkg.go.id` tidak dipakai. Baris matriks FWI/FDRS: **BMKG Tautan saja; pembanding GWIS tersedia sebagai overlay**.
 - Bila cuplikan hotspot gagal, dasbor tidak memakai `data/sample/hotspot.csv`. Yang tampil cuplikan terakhir beserta usianya, atau keadaan kosong dengan pita galat.
 - Titik yang pencarian BIG-nya gagal tetap di peta, tetapi tidak masuk hitungan provinsi atau kabupaten. Halaman menulis berapa titik yang belum terverifikasi.
 - Daftar 15–20 kabupaten/kota tidak disusun dari IRBI, citra, atau prakiraan terbuka.
