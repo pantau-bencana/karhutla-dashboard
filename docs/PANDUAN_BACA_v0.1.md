@@ -10,9 +10,9 @@ Tampilan awal memuat wilayah Indonesia. Tombol **Kembali ke seluruh Indonesia** 
 
 Di atas peta tertulis **Lintasan satelit terakhir** dalam WIB. Bila lintasan itu lebih lama dari sekitar 8 jam, atau jadwal pembaruan sudah lewat lebih dari satu jam, data ditandai **tertunda**. Jam pembaruan yang sudah lewat tidak ditampilkan. Cuplikan yang tersimpan dilabeli **VIIRS S-NPP NRT (snapshot ±3 jam)**.
 
-Tabel di bawah peta secara bawaan mengelompokkan deteksi menurut kecamatan. Kabupaten/kota dan desa/kelurahan bisa dipilih. Halaman juga menulis **nama desa tersedia untuk N dari M titik**. Bila layanan peta BIG tidak punya desa pada koordinat itu, baris desa tertulis **Wilayah desa belum teridentifikasi**. Kode wilayah ikut ditulis supaya dua desa yang namanya sama tidak tertukar. Memilih baris akan menggeser peta ke kelompok itu.
+Di bawah peta ada daftar provinsi yang tertutup. Tiap baris hanya memuat nama provinsi, jumlah titik, dan tiga angka berwarna: rendah, nominal (sedang), dan tinggi. Itu **confidence deteksi satelit**, bukan tingkat bahaya. Urutannya dari jumlah terbesar. Kotak **Cari provinsi** menyaring nama. Membuka provinsi menampilkan kecamatan, beserta kabupaten/kota dan kode kecamatan. Membuka kecamatan menampilkan desa yang teridentifikasi. Memilih baris menggeser peta ke kelompok itu. Penjelasan panjang ada di **Cara membaca**.
 
-Tabel **Jumlah deteksi hotspot (bukan status)** hanya menghitung titik. Tidak ada status operasional pada tabel itu. Titik yang pencarian wilayahnya gagal tidak masuk hitungan, dan halamannya menulis berapa titik yang belum terverifikasi.
+Halaman menulis **nama desa tersedia untuk N dari M titik**. Tabel **Jumlah deteksi hotspot (bukan status)** pada Peta dan Data memakai daftar yang sama. Tidak ada status operasional. Titik yang pencarian wilayahnya gagal tidak masuk hitungan, dan halamannya menulis berapa titik yang belum terverifikasi.
 
 ## Warna dan confidence
 

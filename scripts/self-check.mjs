@@ -25,6 +25,7 @@ import { annotatePoints } from "./big-wilayah.mjs";
 import { buildComparisonAttention, normalizePlaceName, PROTOTYPE_LABEL } from "../src/lib/attentionPrototype.js";
 import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
+import { buildHotspotTree } from "../src/lib/hotspotTree.js";
 import { manifestNeedsRefresh } from "./refresh-watchdog.mjs";
 import { monitoringSources } from "../src/lib/sourceStatus.js";
 const DISCLAIMER = "Prototipe internal Dit. PD BNPB. Jangan dipublikasikan tanpa persetujuan.";
@@ -533,6 +534,27 @@ assert.match(boardSource, /Lintasan satelit terakhir/);
 assert.match(boardSource, /nama desa tersedia untuk/);
 assert.match(boardSource, /titik belum terverifikasi wilayah/);
 assert.match(boardSource, /keyakinan deteksi, bukan intensitas atau bahaya/);
+assert.match(boardSource, /Cara membaca/);
+assert.match(boardSource, /HotspotAccordion/);
+assert.match(readFileSync("src/components/HotspotAccordion.jsx", "utf8"), /Cari provinsi/);
+assert.match(readFileSync("src/components/HotspotAccordion.jsx", "utf8"), /Confidence deteksi satelit/);
+const hotspotTree = buildHotspotTree([
+  { provinsi: "Jambi", kabupaten: "Tebo", kecamatan: "Tebo Tengah", kodeKecamatan: "15.09.01", desa: "Teluk Rendah", kelasKepercayaan: "tinggi", wilayahStatus: "desa" },
+  { provinsi: "Riau", kabupaten: "Siak", kecamatan: "Siak", kodeKecamatan: "14.08.01", kelasKepercayaan: "rendah", wilayahStatus: "kecamatan" },
+  { provinsi: "Riau", kabupaten: "Siak", kecamatan: "Siak", kodeKecamatan: "14.08.01", kelasKepercayaan: "nominal", wilayahStatus: "kecamatan" },
+  { provinsi: "Riau", kabupaten: "Pelalawan", kecamatan: "Bandar Petalangan", kodeKecamatan: "14.05.07", desa: "Wilayah desa belum teridentifikasi", kelasKepercayaan: "tinggi", wilayahStatus: "tanpa-desa" },
+  { provinsi: "Jambi", kabupaten: "Tebo", kecamatan: "Tebo Tengah", kodeKecamatan: "15.09.01", wilayahStatus: "gagal", kelasKepercayaan: "tinggi" },
+]);
+assert.equal(hotspotTree[0].provinsi, "Riau");
+assert.equal(hotspotTree[0].jumlah, 3);
+assert.equal(hotspotTree[0].rendah, 1);
+assert.equal(hotspotTree[0].nominal, 1);
+assert.equal(hotspotTree[0].tinggi, 1);
+assert.equal(hotspotTree[0].kecamatan[0].kecamatan, "Siak");
+assert.equal(hotspotTree[0].kecamatan[0].kabupaten, "Siak");
+assert.equal(hotspotTree[0].kecamatan[0].kodeKecamatan, "14.08.01");
+assert.equal(hotspotTree[1].kecamatan[0].desa[0].desa, "Teluk Rendah");
+assert.equal(hotspotTree[0].kecamatan.find((row) => row.kecamatan === "Bandar Petalangan").desa.length, 0);
 const dashSource = readFileSync("src/components/DashboardView.jsx", "utf8");
 assert.match(dashSource, /Jumlah deteksi hotspot \(bukan status\)/);
 assert.equal(dashSource.includes("Indikator prototipe"), false);
