@@ -48,7 +48,6 @@ export function SummaryPage({ config, feeds, manifest }) {
   const tally = countHotspots(windowed.rows);
   const meta = hotspotPeta?.petaMeta;
   const weather = feeds.find((feed) => feed.id === "fdrs_pembanding");
-  const fwiGwis = feeds.find((feed) => feed.id === "fwi_gwis_pembanding");
 
   return (
     <main className="wrap main">
