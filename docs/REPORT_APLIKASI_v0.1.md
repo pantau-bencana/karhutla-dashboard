@@ -52,9 +52,9 @@ Hanya tautan, status gagal diintegrasikan pada manifest:
 
 ## Jadwal pembaruan
 
-Workflow **Perbarui data** memakai cron `0 */3 * * *` UTC. Dalam WIB itu jatuh pada 07.00, 10.00, 13.00, 16.00, 19.00, 22.00, 01.00, dan 04.00. Halaman menampilkan **Lintasan satelit terakhir** dalam WIB. Data ditandai **tertunda** bila lintasan terakhir lebih lama dari sekitar 8 jam, atau bila waktu sekarang melewati `next_run` lebih dari 1 jam. `next_run` yang sudah lewat disembunyikan. Cuplikan hotspot dilabeli **VIIRS S-NPP NRT (snapshot ±3 jam)**.
+Workflow **Perbarui data** memakai cron `17 */3 * * *` UTC (menit 17). Dalam WIB itu jatuh pada 07.17, 10.17, 13.17, 16.17, 19.17, 22.17, 01.17, dan 04.17. Halaman menampilkan **Lintasan satelit terakhir** dalam WIB. Data ditandai **tertunda** bila lintasan terakhir lebih lama dari sekitar 8 jam, atau bila waktu sekarang melewati `next_run` lebih dari 1 jam. `next_run` yang sudah lewat disembunyikan. Cuplikan hotspot dilabeli **VIIRS S-NPP NRT (snapshot ±3 jam)**.
 
-Pada inspeksi 18 Oktober 2026, jadwal cron itu belum pernah membuat run `schedule`. Dua run yang ada sama-sama `workflow_dispatch`. Workflow-nya aktif dan berkasnya ada di `main` sejak 17 Oktober 2026 pukul 22.44 UTC. GitHub dapat menunda atau menggugurkan jadwal yang jatuh pada menit 0. Penjelasan itu dicatat di laporan penggabungan.
+Pada inspeksi 18 Oktober 2026, jadwal cron menit 0 (`0 */3 * * *`) belum pernah membuat run `schedule`. Run yang ada sama-sama `workflow_dispatch`. Workflow-nya aktif dan berkasnya ada di `main` sejak 17 Oktober 2026 pukul 22.44 UTC. GitHub dapat menunda atau menggugurkan jadwal yang jatuh pada menit 0. Karena itu cron dipindah ke menit 17. Langkah commit mengambil `origin` lalu `git pull --rebase` sebelum push, dan membuat snapshot ulang bila rebase bentrok. Log workflow mencantumkan `wilayah_gagal` dan `big_queries`.
 
 ## Skill di repositori
 

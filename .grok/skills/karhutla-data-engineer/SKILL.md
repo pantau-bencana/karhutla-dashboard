@@ -15,7 +15,9 @@ Stack this skill assumes: Vite static site, no application server. Scheduled Git
 
 ## Architecture
 
-- Cron in `refresh-data.yml` is `0 */3 * * *` UTC. Keep it equal to `REFRESH_CRON` in `src/lib/schedule.js`. Display times in WIB (Asia/Jakarta, UTC+7).
+- Cron in `refresh-data.yml` is `17 */3 * * *` UTC (minute 17). Keep it equal to `REFRESH_CRON` in `src/lib/schedule.js`. Display times in WIB (Asia/Jakarta, UTC+7): 07.17, 10.17, 13.17, 16.17, 19.17, 22.17, 01.17, and 04.17. Do not move it back to minute 0; GitHub can drop those schedules.
+- The commit step must `git fetch` and `git pull --rebase` before push, retry when the push is rejected, and regenerate the snapshot if rebase conflicts. Never force-push. Push the checked-out branch, not `main`, when the dispatch is on another branch.
+- Log `wilayah_gagal` and `big_queries` in the workflow output. `big_queries` is the BIG MapServer query count on that refresh.
 - Commit `data/live` only when material fields change (status, content hash, record count, error, observed time, file, kept_previous, mode). On failure, keep the last good file.
 - `public/config.json` datasets that the self-check owns stay the five sample ids (`hotspot`, `sipongi`, `irbi`, `bmkg`, `ispu`) with `contoh: true` until a real snapshot replaces that feed at read time. Extra feeds (forecast, comparison, CAP, DIBI) come from the manifest, not from new sample rows.
 - Secret `FIRMS_MAP_KEY` exists only as a GitHub Actions secret. Never write it to source, `public/config.json`, the bundle, logs, the manifest, or a pull request. `firms_key` in the manifest is `used` or `absent`.
