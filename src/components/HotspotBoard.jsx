@@ -1,5 +1,7 @@
-import { useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { HotspotMap } from "./HotspotMap.jsx";
+import { GwisFwiToggle } from "./GwisFwiToggle.jsx";
+import { tanggalJakarta } from "../lib/gwisFwi.js";
 import { HotspotAccordion } from "./HotspotAccordion.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { formatAngka, formatWib } from "../lib/format.js";
@@ -57,6 +59,10 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
   const [selectedKey, setSelectedKey] = useState("");
   const [selectedGroup, setSelectedGroup] = useState("");
   const [mapReveal, setMapReveal] = useState("");
+  const [fwiOn, setFwiOn] = useState(false);
+  const [fwiReady, setFwiReady] = useState(false);
+  const modelDate = tanggal || tanggalJakarta();
+  const onFwiReady = useCallback((ready) => setFwiReady(ready), []);
 
   const selectedProvinces = provinceFilter === "prioritas" ? priority : provinceFilter === "semua" ? null : [provinceFilter];
   const windowed = filterHotspotWindow(points, { hours, provinces: selectedProvinces });
@@ -163,6 +169,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
         <strong>Lintasan satelit terakhir: {observedAt ? formatWib(observedAt) : "—"}</strong>
         {freshness?.tertunda ? <span className="tag">tertunda</span> : null}
       </p>
+      <GwisFwiToggle date={modelDate} enabled={fwiOn} onEnabled={setFwiOn} onReady={onFwiReady} />
       <div className="map-toolbar">
         <button type="button" className="button" onClick={() => mapApi.current?.showIndonesia()}>Kembali ke seluruh Indonesia</button>
       </div>
@@ -177,7 +184,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
             </p>
           </div>
         ) : null}
-        <HotspotMap points={filtered} frame="indonesia" mapApi={mapApi} selectedKey={selectedKey} onSelect={choosePoint} />
+        <HotspotMap points={filtered} frame="indonesia" mapApi={mapApi} selectedKey={selectedKey} onSelect={choosePoint} fwiDate={fwiOn && fwiReady ? modelDate : ""} />
       </div>
       <HotspotAccordion points={filtered} onFocus={focusGroup} selectedKey={selectedGroup} revealKey={mapReveal} />
     </div>

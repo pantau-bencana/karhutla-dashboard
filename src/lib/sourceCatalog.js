@@ -99,9 +99,10 @@ export const SOURCES = [
         provider: "GWIS",
         fungsi: "Angka FWI pada titik wakil kabupaten. Bukan FDRS BMKG dan bukan prakiraan 14 hari.",
         officialUrl: "https://maps.effis.emergency.copernicus.eu/gwis",
-        license: "CC BY 4.0 untuk konten Uni Eropa pada situs EFFIS. Cantumkan Copernicus Emergency Management Service / JRC.",
+        license:
+          "The geodata are released under the terms and conditions of the EU Data License, available at http://ec.europa.eu/geninfo/legal_notices_en.htm. © European Union, Copernicus EMS / JRC GWIS.",
         method:
-          "GetFeatureInfo WMS lapisan ecmwf.query, format HTML, pada piksel tengah kotak 0,04 derajat di sekitar titik wakil. Horizon adalah tanggal berurutan yang layanan isi, lalu berhenti setelah dua tanggal kosong. Pemeriksaan 17 Oktober 2026 mendapat 9 hari, bukan 10 atau 14. Lapisan mf010.query hanya mencakup Eropa. Dataset musiman CEMS membutuhkan akun dan bukan deret harian ini, jadi secret CDS tidak dipasang.",
+          "Angka titik wakil: GetFeatureInfo WMS lapisan ecmwf.query, format HTML, pada piksel tengah kotak 0,04 derajat. Overlay peta: GetMap lapisan ecmwf.fwi, parameter TIME, hanya di peramban; raster tidak disimpan. GetCapabilities menulis rentang 2018-01-01/2099-12-31 dengan default 2019-01-01 dan nearestValue 0, tetapi tanggal tanpa berkas mengembalikan PNG kosong. Pemeriksaan 18 Oktober 2026: piksel ada sampai 27 Oktober 2026 dan kosong mulai 28 Oktober 2026. Lapisan mf010.query hanya mencakup Eropa. Dataset musiman CEMS membutuhkan akun, jadi secret CDS tidak dipasang.",
         updateType: "Harian",
         expectedMaxAgeHours: 36,
         access: "API",

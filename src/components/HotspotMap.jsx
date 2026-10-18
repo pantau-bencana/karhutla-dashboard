@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import { INDONESIA_FRAME } from "../lib/geo.js";
+import { GWIS_ATTRIBUTION, GWIS_CREDIT, GWIS_FWI_LAYER, GWIS_WMS } from "../lib/gwisFwi.js";
 import { formatTanggal, formatWaktu } from "../lib/format.js";
 import { clusterCellDegrees } from "../lib/hotspotWindow.js";
 import {
@@ -244,10 +245,11 @@ function desaExportUrl(bounds, width, height) {
   return `${BIG_SERVICE}/export?${params}`;
 }
 
-export function HotspotMap({ points, frame = "indonesia", active = true, mapApi, selectedKey = "", onSelect }) {
+export function HotspotMap({ points, frame = "indonesia", active = true, mapApi, selectedKey = "", onSelect, fwiDate = "" }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const layerRef = useRef(null);
+  const fwiLayerRef = useRef(null);
   const modeRef = useRef("indonesia");
   const latlngsRef = useRef([]);
   const pointsRef = useRef(points ?? []);
@@ -275,6 +277,8 @@ export function HotspotMap({ points, frame = "indonesia", active = true, mapApi,
       subdomains: "abcd",
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
     }).addTo(map);
+    map.createPane("gwisFwi");
+    map.getPane("gwisFwi").style.zIndex = 250;
     desaLayerRef.current = L.layerGroup().addTo(map);
     layerRef.current = L.layerGroup().addTo(map);
     mapRef.current = map;
@@ -335,12 +339,46 @@ export function HotspotMap({ points, frame = "indonesia", active = true, mapApi,
       observer?.disconnect();
       if (mapApi) mapApi.current = null;
       window.clearTimeout(desaTimer);
+      if (fwiLayerRef.current) {
+        map.removeLayer(fwiLayerRef.current);
+        fwiLayerRef.current = null;
+      }
       map.remove();
       mapRef.current = null;
       layerRef.current = null;
       desaLayerRef.current = null;
     };
   }, [mapApi]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return undefined;
+    if (fwiLayerRef.current) {
+      map.removeLayer(fwiLayerRef.current);
+      fwiLayerRef.current = null;
+    }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(fwiDate)) return undefined;
+    const layer = L.tileLayer.wms(GWIS_WMS, {
+      layers: GWIS_FWI_LAYER,
+      styles: "default",
+      format: "image/png",
+      transparent: true,
+      version: "1.3.0",
+      uppercase: true,
+      time: fwiDate,
+      opacity: 0.72,
+      pane: "gwisFwi",
+      attribution: `${GWIS_CREDIT}. ${GWIS_ATTRIBUTION}`,
+    });
+    layer.addTo(map);
+    fwiLayerRef.current = layer;
+    return () => {
+      if (fwiLayerRef.current) {
+        map.removeLayer(fwiLayerRef.current);
+        fwiLayerRef.current = null;
+      }
+    };
+  }, [fwiDate]);
 
   onSelectRef.current = onSelect;
   useEffect(() => {
