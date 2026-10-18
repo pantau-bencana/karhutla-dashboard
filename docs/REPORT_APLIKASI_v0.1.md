@@ -18,7 +18,7 @@ Karhutla yang siap dibuka:
 - **Sumber Data.** Daftar sumber, status, dan tautan.
 - **Glosarium.** Istilah yang dipakai dasbor.
 
-Banjir menampilkan prototipe internal untuk Aceh dan Bengkulu: peta indeks risiko inaRISK (KRB 2021) dan matriks 33 kabupaten/kota dari IRBI 2025 plus kejadian DIBI 2024. Labelnya **Prototipe internal – menunggu izin tertulis BNPB**. Bukan peringatan dini, bukan prioritas, dan bukan prakiraan. Kisi Potensi Hujan Ekstrem × risiko banjir belum dipasang. Gunung Api tetap **Belum terhubung / menunggu data**, tanpa peta atau angka.
+Banjir menampilkan prototipe internal untuk Aceh dan Bengkulu: peta indeks risiko inaRISK (KRB 2021) dan tabel 33 kabupaten/kota dari IRBI 2025 plus kejadian DIBI 2024. Label IRBI/inaRISK tetap **Prototipe internal – menunggu izin tertulis BNPB**. Matriks nowcast memasangkan peringatan dini cuaca BMKG (0–3 jam) dengan kelas banjir IRBI 2025. Label matriks: **Prototipe internal – menunggu izin tertulis BNPB/BMKG**. Urutan baris mengikuti kode wilayah. Tidak ada skor gabungan. Status dasarian Waspada/Siaga/Awas tetap tautan, menunggu izin tertulis BMKG. Gunung Api tetap **Belum terhubung / menunggu data**, tanpa peta atau angka.
 
 ## Sumber data
 
@@ -78,6 +78,7 @@ Berkas di `.grok/skills/` mengatur bagian berikut:
 - Tabel kabupaten GFWED memakai berkas harian publik `FWI.GEOS-5.Daily.Default` variabel `GEOS-5_FWI` dari NASA NCCS. Agregat adalah rata-rata dan maksimum sel yang pusatnya jatuh di dalam kabupaten/kota menurut kueri BIG. Geometri tidak disimpan. Tanggal data dan lencana tertunda mengikuti tanggal berkas. Kegagalan unduhan tidak menggagalkan pembaruan hotspot; halaman menulis **Tidak tersedia**. Bukan kelas BMKG dan bukan peringkat.
 - Peta Karhutla dapat menampilkan overlay WMS `ecmwf.fwi` dari Copernicus EMS/JRC GWIS untuk tanggal yang dipilih atau hari ini. GetCapabilities menulis rentang sampai 2099 dan default 2019-01-01, tetapi tanggal tanpa piksel ditampilkan sebagai **data belum tersedia**. Pemeriksaan 18 Oktober 2026 mendapat piksel sampai 27 Oktober 2026. Kelas legenda GWIS (Canadian FWI) tidak dibandingkan dengan kelas BMKG. Raster tidak disimpan. FeatureServer FDRS `gis.bmkg.go.id` tidak dipakai. Baris matriks FWI/FDRS: **BMKG Tautan saja; pembanding GWIS tersedia sebagai overlay**.
 - Bila cuplikan hotspot gagal, dasbor tidak memakai `data/sample/hotspot.csv`. Yang tampil cuplikan terakhir beserta usianya, atau keadaan kosong dengan pita galat.
+- Matriks banjir nowcast memakai RSS CAP BMKG. Poligon hanya dipakai di memori saat pembaruan untuk kueri `esriSpatialRelIntersects` ke layer kabupaten BIG, lalu dibuang. Berkas `data/live/bmkg-cap-kab.csv` menyimpan kode, nama, dan teks peringatan. `areaDesc` tidak dipakai sebagai provinsi terdampak. FeatureServer IBF `gis.bmkg.go.id` tidak dipanggil. Prakiraan adm4 dan Open-Meteo tidak masuk matriks ini.
 - Titik yang pencarian BIG-nya gagal tetap di peta, tetapi tidak masuk hitungan provinsi atau kabupaten. Halaman menulis berapa titik yang belum terverifikasi.
 - Daftar 15–20 kabupaten/kota tidak disusun dari IRBI, citra, atau prakiraan terbuka.
 

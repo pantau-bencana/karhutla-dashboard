@@ -28,11 +28,17 @@ Bila layanan itu gagal pada saat data diperbarui, titik satelit tetap ditampilka
 
 ## Banjir (Aceh dan Bengkulu)
 
-Modul Banjir memuat dua bahan prototipe. Keduanya berlabel **Prototipe internal – menunggu izin tertulis BNPB**.
+Modul Banjir memuat peta dan tabel jangka panjang berlabel **Prototipe internal – menunggu izin tertulis BNPB**, plus matriks nowcast berlabel **Prototipe internal – menunggu izin tertulis BNPB/BMKG**.
 
 Peta memilih Aceh atau Bengkulu. Gambarnya indeks risiko banjir inaRISK, edisi KRB 2021, piksel 100 m. Kalimat di bawah peta: **Indeks risiko banjir inaRISK BNPB, KRB 2021, piksel 100 m. Bukan peringatan dini. Bukan IRBI 2025.** Legenda resmi: 0–0,3 Rendah, 0,3–0,6 Sedang, 0,6–1,0 Tinggi. Klik peta membaca nilai pada titik itu. Bila titik di luar area yang dipetakan, tulisannya **Di luar area bahaya banjir yang dipetakan inaRISK**, bukan risiko rendah. Bila layanan tidak menjawab: **Nilai tidak tersedia (layanan BNPB tidak merespons)**. Batas provinsi dan kabupaten diminta langsung ke BIG dan tidak disimpan. Lapisan tambahan, bila dinyalakan: Klasifikasi DAS KLHK dengan label DIPULIHKAN atau DIPERTAHANKAN, dan bahaya banjir. Gagalnya layanan itu tidak mematikan Karhutla.
 
-Tabel berjudul **Konteks risiko banjir jangka panjang per kabupaten/kota (bukan prioritas, bukan prakiraan)**. Isinya 33 kabupaten/kota, urut kode wilayah BIG. IRBI 2025 banjir dan IRBI multi-bahaya adalah data statis dari buku. Kejadian banjir 2024 berasal dari DIBI (ODC-BY). Lima kabupaten/kota yang tidak ada di tabel itu ditulis **Tidak tercantum di tabel DIBI 2024**, bukan 0. Angka 0 hanya muncul bila DIBI memang menulis nol. Ringkasan kajian inaRISK bertuliskan **Belum terhubung**. Dokumen KRB hanya tautan. Angka dari tahun yang berbeda tidak digabung. Tabel ini belum kisi Potensi Hujan Ekstrem × kelas risiko banjir. Catatannya: **Matriks hujan ekstrem × risiko banjir menyusul setelah sumber BMKG per kab/kota diverifikasi**.
+Tabel berjudul **Konteks risiko banjir jangka panjang per kabupaten/kota (bukan prioritas, bukan prakiraan)**. Isinya 33 kabupaten/kota Aceh dan Bengkulu, urut kode wilayah BIG. IRBI 2025 banjir dan IRBI multi-bahaya adalah data statis dari buku. Kejadian banjir 2024 berasal dari DIBI (ODC-BY). Lima kabupaten/kota yang tidak ada di tabel itu ditulis **Tidak tercantum di tabel DIBI 2024**, bukan 0. Angka 0 hanya muncul bila DIBI memang menulis nol. Ringkasan kajian inaRISK bertuliskan **Belum terhubung**. Dokumen KRB hanya tautan. Angka dari tahun yang berbeda tidak digabung.
+
+Di tabel yang sama ada kolom **Peringatan hujan lebat BMKG aktif (0–3 jam)**. Isinya nowcast dari RSS CAP BMKG. Kabupaten yang terpotong poligon peringatan yang masih berlaku menulis **Ada**, beserta teks kejadian, masa berlaku, dan tautan berkas. Kabupaten tanpa peringatan menulis **Tidak ada peringatan aktif pada RSS pukul HH:MM WIB**. Bila cuplikan gagal diambil, tulisannya **Tidak tersedia**. Peringatan yang sudah berakhir tidak ditampilkan sebagai aktif. Di atas tabel ada kisi ringkas kelas IRBI TINGGI/SEDANG × ada atau tidaknya peringatan. Nama kabupaten di dalam sel mengikuti kode wilayah. Warna sel tidak memakai tingkat Waspada, Siaga, atau Awas.
+
+**Cara membaca.** Nowcast adalah peringatan jangka pendek, kira-kira 0–3 jam. Itu berbeda dari Peringatan Dini Curah Hujan Tinggi dasarian dan dari prakiraan berbasis dampak (IBF). Kolom ini tidak memakai prakiraan adm4 dan tidak memakai Open-Meteo. Dasar waktu dan waktu ambil cuplikan tertulis di halaman, dengan atribusi **Sumber: BMKG**.
+
+Kolom dan catatan dasarian berbunyi **Status Peringatan Dini Curah Hujan Tinggi dasarian (Waspada/Siaga/Awas): Tautan saja – menunggu izin tertulis BMKG**. Tautannya halaman peringatan dini hujan tinggi dan potensi cuaca ekstrem BMKG. Status dasarian tidak diisi dari RSS nowcast.
 
 ## Kualitas udara
 
@@ -70,7 +76,7 @@ IRBI 2025 berjudul **Konteks risiko jangka panjang (IRBI 2025)**. Tabel itu di b
 - Tidak menyatakan warna merah lebih berbahaya daripada warna hijau dalam arti operasi.
 - Tidak menyatakan satu stasiun ISPU mewakili satu kabupaten atau kota.
 - Tidak membuat prakiraan 14 hari, tidak membuat prediksi ISPU, dan tidak membuat peringkat 15–20 kabupaten dari data pembanding.
-- Tidak menetapkan prioritas banjir dan tidak membuat prakiraan banjir. Peta banjir adalah indeks risiko KRB 2021, bukan peringatan dini dan bukan IRBI 2025.
+- Tidak menetapkan prioritas banjir dan tidak membuat prakiraan banjir. Peta banjir adalah indeks risiko KRB 2021, bukan peringatan dini dan bukan IRBI 2025. Nowcast BMKG pada tabel hanya menyatakan ada atau tidaknya peringatan hujan lebat 0–3 jam. Itu bukan prakiraan banjir dan bukan status dasarian.
 - Tidak memantau gunung api. Modul itu masih menunggu data resmi.
 
 Footer yang harus tetap ada: **Prototipe internal Dit. PD BNPB. Jangan dipublikasikan tanpa persetujuan.**

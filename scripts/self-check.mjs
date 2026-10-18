@@ -27,6 +27,18 @@ import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
 import { buildHotspotTree } from "../src/lib/hotspotTree.js";
 import { FLOOD_INFO_COLUMNS, RAIN_RISK_MATRIX, buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI } from "../src/lib/floodMatrix.js";
+import {
+  DASARIAN_NOTE,
+  MATRIX_PERMISSION,
+  NOWCAST_FAIL,
+  applyNowcast,
+  clockWib,
+  nowcastAbsent,
+  nowcastCrossTab,
+  nowcastExpiredText,
+  warningActive,
+} from "../src/lib/capKab.js";
+import { assignKabupaten, capKabCsv, ringsFromXml, rowsFromFeatures, targetRings } from "./cap-kab.mjs";
 import { manifestNeedsRefresh } from "./refresh-watchdog.mjs";
 import { monitoringSources } from "../src/lib/sourceStatus.js";
 import { aggregateCells, gfwedCsv, latestDailyStamp } from "./gfwed-kabupaten.mjs";
@@ -737,16 +749,138 @@ assert.match(floodSource, /Nilai tidak tersedia \(layanan BNPB tidak merespons\)
 assert.match(floodSource, /Konteks risiko banjir jangka panjang per kabupaten\/kota \(bukan prioritas, bukan prakiraan\)/);
 assert.equal(
   RAIN_RISK_MATRIX.note,
-  "Matriks hujan ekstrem × risiko banjir menyusul setelah sumber BMKG per kab/kota diverifikasi",
+  "Sumbu hujan adalah nowcast BMKG 0–3 jam per kabupaten/kota. Sumbu risiko adalah kelas banjir IRBI 2025 apa adanya. Bukan peringatan dasarian, bukan IBF, dan bukan prakiraan adm4. Tidak ada skor gabungan.",
 );
-assert.equal(RAIN_RISK_MATRIX.ready, false);
+assert.equal(RAIN_RISK_MATRIX.ready, true);
 assert.deepEqual(
   RAIN_RISK_MATRIX.axes.map((axis) => axis.id),
   ["hujan", "risiko"],
 );
+assert.equal(
+  DASARIAN_NOTE,
+  "Status Peringatan Dini Curah Hujan Tinggi dasarian (Waspada/Siaga/Awas): Tautan saja – menunggu izin tertulis BMKG",
+);
+assert.equal(MATRIX_PERMISSION, "Prototipe internal – menunggu izin tertulis BNPB/BMKG");
+assert.equal(NOWCAST_FAIL, "Tidak tersedia");
+assert.equal(clockWib("2026-10-18T13:15:18.000Z"), "20:15");
+assert.equal(nowcastAbsent("20:15"), "Tidak ada peringatan aktif pada RSS pukul 20:15 WIB");
+assert.equal(/aman/i.test(nowcastAbsent("20:15")), false);
+assert.equal(/aman/i.test(nowcastExpiredText("20:15")), false);
+assert.equal(warningActive({ expires: "" }, new Date("2026-10-18T13:00:00Z")), false);
+assert.equal(warningActive({ expires: "2026-10-18T12:00:00Z" }, new Date("2026-10-18T13:00:00Z")), false);
+assert.equal(warningActive({ expires: "2026-10-18T22:00:00+07:00" }, new Date("2026-10-18T13:00:00Z")), true);
+const capRings = ringsFromXml("<alert><polygon>2.923,97.515 2.930,97.520 2.910,97.530</polygon></alert>");
+assert.deepEqual(capRings[0][0], [97.515, 2.923]);
+assert.deepEqual(capRings[0][3], [97.515, 2.923]);
+assert.equal(targetRings(capRings).length, 1);
+assert.equal(targetRings([[[101, 0], [101.2, 0], [101.2, 0.2], [101, 0]]]).length, 0);
+const capRows = rowsFromFeatures(
+  {
+    id: "CAH20261018004",
+    event: "Hujan Lebat dan Petir",
+    deskripsi: "khususnya di Bakongan, Kluet",
+    onset: "",
+    effective: "2026-10-18T18:00:00+07:00",
+    expires: "2026-10-18T22:00:00+07:00",
+    severity: "Moderate",
+    urgency: "Immediate",
+    certainty: "Observed",
+    url: "https://www.bmkg.go.id/alerts/nowcast/id/CAH20261018004_alert.xml",
+    areaDesc: "Kantor penerbit",
+  },
+  [
+    { attributes: { kdpkab: "11.01", wadmkk: "Aceh Selatan", wadmpr: "Aceh" } },
+    { attributes: { kdpkab: "14.01", wadmkk: "Lain", wadmpr: "Riau" } },
+  ],
+);
+assert.equal(capRows.length, 1);
+assert.equal(capRows[0].provinsi, "Aceh");
+assert.equal(capRows[0].kabupaten, "Aceh Selatan");
+assert.equal(Object.hasOwn(capRows[0], "areaDesc"), false);
+assert.equal(capRows[0].deskripsi, "khususnya di Bakongan, Kluet");
+const capCsv = capKabCsv(capRows);
+assert.match(capCsv, /^kode,kabupaten,provinsi,cap_id,event,deskripsi,onset,effective,expires,severity,urgency,certainty,url/);
+assert.equal(capCsv.includes("areaDesc"), false);
+assert.equal(parseCsv(capCsv)[0].deskripsi, "khususnya di Bakongan, Kluet");
+let capQueries = 0;
+const assigned = await assignKabupaten(
+  [
+    {
+      id: "LAMA",
+      expires: "2020-01-01T00:00:00Z",
+      rings: [[[97.5, 3.5], [97.6, 3.5], [97.6, 3.6], [97.5, 3.5]]],
+    },
+    {
+      id: "JAUH",
+      expires: "2099-01-01T00:00:00Z",
+      rings: [[[101, 0], [101.2, 0], [101.2, 0.2], [101, 0]]],
+    },
+    {
+      id: "CAH20261018004",
+      event: "Hujan Lebat dan Petir",
+      deskripsi: "khususnya di Bakongan",
+      onset: "",
+      effective: "2026-10-18T18:00:00+07:00",
+      expires: "2099-01-01T00:00:00Z",
+      severity: "Moderate",
+      urgency: "Immediate",
+      certainty: "Observed",
+      url: "https://www.bmkg.go.id/alerts/nowcast/id/CAH20261018004_alert.xml",
+      areaDesc: "Aceh",
+      rings: capRings,
+    },
+  ],
+  {
+    now: new Date("2026-10-18T13:00:00Z"),
+    query: async () => {
+      capQueries += 1;
+      return [{ attributes: { kdpkab: "11.01", wadmkk: "Aceh Selatan", wadmpr: "Aceh" } }];
+    },
+  },
+);
+assert.equal(capQueries, 1);
+assert.equal(assigned.length, 1);
+assert.equal(assigned[0].provinsi, "Aceh");
+const nowcastRows = applyNowcast(
+  floodRows,
+  [{ kode: "11.01", expires: "2099-01-01T00:00:00Z", event: "Hujan Lebat dan Petir", cap_id: "CAH", url: "https://www.bmkg.go.id/a" }],
+  { status: "ok", rss_published: "2026-10-18T13:15:18.000Z" },
+  new Date("2026-10-18T13:20:00Z"),
+);
+assert.equal(nowcastRows.find((row) => row.kode === "11.01").nowcastAda, true);
+assert.equal(nowcastRows.find((row) => row.kode === "17.06").nowcastAda, false);
+assert.equal(nowcastAbsent(nowcastRows[0].nowcastJam), "Tidak ada peringatan aktif pada RSS pukul 20:15 WIB");
+const nowcastTab = nowcastCrossTab(nowcastRows);
+assert.equal(nowcastTab.ok, true);
+const kelasAceh = nowcastRows.find((row) => row.kode === "11.01").banjirKelas;
+assert.equal(nowcastTab.cell(kelasAceh, true).some((row) => row.kode === "11.01"), true);
+assert.equal(nowcastTab.cell(kelasAceh, false).some((row) => row.kode === "11.01"), false);
+const expiredNowcast = applyNowcast(
+  floodRows,
+  [{ kode: "11.01", expires: "2026-10-18T13:00:00Z" }],
+  { status: "ok", rss_published: "2026-10-18T12:00:00Z" },
+  new Date("2026-10-18T14:00:00Z"),
+);
+assert.equal(expiredNowcast.find((row) => row.kode === "11.01").nowcastAda, false);
+assert.equal(expiredNowcast.find((row) => row.kode === "11.01").nowcastExpired, true);
+const failedTab = nowcastCrossTab(applyNowcast(floodRows, [], { status: "gagal" }));
+assert.equal(failedTab.ok, false);
+assert.equal(failedTab.cell("TINGGI", false).length, 0);
 const infoColumnIds = FLOOD_INFO_COLUMNS.map((column) => column.id);
-assert.deepEqual(infoColumnIds, ["wilayah", "irbi-banjir", "irbi-multi", "dibi", "kajian", "krb"]);
+assert.deepEqual(infoColumnIds, ["wilayah", "irbi-banjir", "nowcast", "dasarian", "irbi-multi", "dibi", "kajian", "krb"]);
 assert.equal(infoColumnIds.includes("hujan"), false);
+const capScript = readFileSync("scripts/cap-kab.mjs", "utf8");
+assert.match(capScript, /esriSpatialRelIntersects/);
+assert.match(capScript, /esriGeometryPolygon/);
+assert.match(capScript, /returnGeometry: "false"/);
+assert.equal(capScript.includes("gis.bmkg.go.id"), false);
+assert.equal(capScript.toLowerCase().includes("open-meteo"), false);
+assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /writeCapKabFiles/);
+assert.match(capScript, /bmkg-cap-kab\.csv/);
+assert.match(floodSource, /DASARIAN_NOTE/);
+assert.match(floodSource, /Cara membaca/);
+assert.match(floodSource, /Sumber: BMKG|BMKG_ATTRIBUTION/);
+assert.equal(floodSource.includes("gis.bmkg.go.id"), false);
 const hazardText = readFileSync("src/lib/hazards.js", "utf8");
 assert.match(hazardText, /kolom BANJIR/);
 assert.equal(hazardText.includes("tidak memisahkan banjir per kabupaten"), false);

@@ -9,6 +9,7 @@ import { parseFirmsCoordinate } from "./indonesia-land.mjs";
 import { BIG_EDITION_NOTE, BIG_SOURCE_LABEL, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
 import { annotatePoints, rowsToHotspotCsv } from "./big-wilayah.mjs";
 import { fetchGfwedKabupaten } from "./gfwed-kabupaten.mjs";
+import { assignKabupaten, loadCapAlerts, writeCapKabFiles } from "./cap-kab.mjs";
 import { provinceCenters } from "../src/lib/geo.js";
 import { REFRESH_CRON, REFRESH_CRON_CADANGAN, REFRESH_INTERVAL_HOURS, nextScheduledRun } from "../src/lib/schedule.js";
 import { SMOKE_IMAGE_URL, SMOKE_URL, SOURCES } from "../src/lib/sourceCatalog.js";
@@ -736,12 +737,6 @@ function staticIrbi(previous) {
   return entry;
 }
 
-function tagText(xml, tag) {
-  const match = String(xml).match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`, "i"));
-  if (!match) return "";
-  return match[1].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-}
-
 function smokeDisabledEntry() {
   const relative = "data/live/asap-arsip.json";
   const full = resolve(root, relative);
@@ -807,33 +802,30 @@ async function archiveSmoke(config, previousManifest) {
 }
 
 async function fetchCap() {
-  const indexUrl = "https://www.bmkg.go.id/alerts/nowcast/id";
-  const { text } = await getText(indexUrl, 25000);
-  const links = [
-    ...new Set(
-      [...text.matchAll(/<link>(https:\/\/www\.bmkg\.go\.id\/alerts\/nowcast\/id\/[^<\s]+_alert\.xml)<\/link>/g)].map(
-        (match) => match[1],
-      ),
-    ),
-  ];
+  const loaded = await loadCapAlerts();
   const rows = [];
   let newest = "";
-  for (const link of links) {
-    const { text: xml } = await getText(link, 20000);
-    const mulai = tagText(xml, "effective");
-    if (mulai > newest) newest = mulai;
-    const deskripsi = tagText(xml, "description");
+  for (const alert of loaded.alerts) {
+    if (alert.effective > newest) newest = alert.effective;
     rows.push({
-      id: tagText(xml, "identifier"),
-      judul: tagText(xml, "headline"),
-      kejadian: tagText(xml, "event"),
-      tingkat: tagText(xml, "severity"),
-      mulai,
-      berakhir: tagText(xml, "expires"),
-      wilayah: tagText(xml, "areaDesc") || deskripsi.slice(0, 240),
-      url: link,
+      id: alert.id,
+      judul: alert.headline,
+      kejadian: alert.event,
+      tingkat: alert.severity,
+      mulai: alert.effective,
+      berakhir: alert.expires,
+      wilayah: alert.areaDesc || alert.deskripsi.slice(0, 240),
+      url: alert.url,
     });
-    await new Promise((resolveDelay) => setTimeout(resolveDelay, 150));
+  }
+  let kabupaten = { status: "gagal", rows: [], error: "Irisan kabupaten tidak dijalankan." };
+  try {
+    const kabRows = await assignKabupaten(loaded.alerts);
+    kabupaten = { status: "ok", rows: kabRows, error: null };
+  } catch (error) {
+    kabupaten = { status: "gagal", rows: [], error: error.message };
+  } finally {
+    for (const alert of loaded.alerts) delete alert.rings;
   }
   const headers = ["id", "judul", "kejadian", "tingkat", "mulai", "berakhir", "wilayah", "url"];
   return {
@@ -843,6 +835,8 @@ async function fetchCap() {
       ? `${rows.length} peringatan pada RSS nowcast. Bukan peringatan karhutla.`
       : "RSS nowcast tidak memuat peringatan.",
     sourceUpdatedAt: newest ? new Date(newest).toISOString() : null,
+    rssPublished: loaded.rssPublished,
+    kabupaten,
   };
 }
 
@@ -1088,8 +1082,23 @@ async function main() {
     capEntry.observed_label = result.observedLabel;
     capEntry.source_updated_at = result.sourceUpdatedAt;
     writeIfChanged("data/live/bmkg-cap.csv", result.body, capEntry, previousEntry(previous, "bmkg_cap"));
+    writeCapKabFiles(liveDir, {
+      status: result.kabupaten.status,
+      rows: result.kabupaten.rows,
+      rssPublished: result.rssPublished,
+      fetchedAt: nowIso,
+      error: result.kabupaten.error,
+    });
+    console.log(`CAP kabupaten: ${result.kabupaten.status}, ${result.kabupaten.rows.length} baris.`);
   } catch (error) {
     Object.assign(capEntry, keepPrevious(capEntry, previousEntry(previous, "bmkg_cap"), error.message));
+    writeCapKabFiles(liveDir, {
+      status: "gagal",
+      rows: [],
+      rssPublished: "",
+      fetchedAt: nowIso,
+      error: error.message,
+    });
   }
   datasets.bmkg_cap = capEntry;
 

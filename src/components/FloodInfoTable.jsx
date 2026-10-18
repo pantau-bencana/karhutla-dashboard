@@ -1,4 +1,15 @@
 import { useMemo, useState } from "react";
+import {
+  BMKG_ATTRIBUTION,
+  DASARIAN_LINKS,
+  DASARIAN_NOTE,
+  NOWCAST_FAIL,
+  NOWCAST_LOADING,
+  nowcastAbsent,
+  nowcastCrossTab,
+  nowcastExpiredText,
+} from "../lib/capKab.js";
+import { formatWib } from "../lib/format.js";
 import { FLOOD_INFO_COLUMNS, RAIN_RISK_MATRIX, krbLinksFor, skorTeks, sortFloodRows } from "../lib/floodMatrix.js";
 
 const CELLS = {
@@ -21,6 +32,37 @@ const CELLS = {
         hal. {row.multiHalaman || "—"}
         {row.multiSkor ? ` · skor ${skorTeks(row.multiSkor)}` : ""}
       </small>
+    </>
+  ),
+  nowcast: (row) => {
+    if (row.nowcastStatus === "memuat") return NOWCAST_LOADING;
+    if (row.nowcastStatus !== "ok") return NOWCAST_FAIL;
+    if (row.nowcastExpired) return nowcastExpiredText(row.nowcastJam);
+    if (!row.nowcastAda) return nowcastAbsent(row.nowcastJam);
+    return (row.nowcastAlerts ?? []).map((alert) => (
+      <span key={alert.cap_id || alert.url} className="nowcast-item">
+        <strong>Ada</strong>
+        <small>{alert.event}</small>
+        <small>
+          {alert.onset ? `Onset ${formatWib(alert.onset)}. ` : ""}
+          Berlaku {formatWib(alert.effective)} sampai {formatWib(alert.expires)}
+        </small>
+        {alert.url ? (
+          <a href={alert.url} target="_blank" rel="noreferrer">
+            Berkas CAP
+          </a>
+        ) : null}
+      </span>
+    ));
+  },
+  dasarian: () => (
+    <>
+      Tautan saja
+      {DASARIAN_LINKS.map((link) => (
+        <a key={link.url} href={link.url} target="_blank" rel="noreferrer">
+          {link.nama}
+        </a>
+      ))}
     </>
   ),
   dibi: (row) => row.dibiTeks,
@@ -79,6 +121,8 @@ export function FloodInfoTable({ rows, columns = FLOOD_INFO_COLUMNS }) {
   return (
     <div className="table-wrap flood-table">
       <p className="fine">{RAIN_RISK_MATRIX.note}</p>
+      <p className="fine">{DASARIAN_NOTE}</p>
+      <p className="fine">{BMKG_ATTRIBUTION}</p>
       <table>
         <thead>
           <tr>
@@ -97,6 +141,45 @@ export function FloodInfoTable({ rows, columns = FLOOD_INFO_COLUMNS }) {
           </tr>
         </thead>
         <tbody>{body}</tbody>
+      </table>
+    </div>
+  );
+}
+
+function namaSel(rows) {
+  if (!rows.length) return "—";
+  return rows.map((row) => `${row.nama} (${row.kode})`).join(", ");
+}
+
+export function NowcastCrossTab({ rows }) {
+  const tab = nowcastCrossTab(rows);
+  if (tab.pending) return <p className="fine">{NOWCAST_LOADING}</p>;
+  if (!tab.ok) {
+    return (
+      <p className="fine">
+        {NOWCAST_FAIL}. Kisi silang tidak diisi.
+      </p>
+    );
+  }
+  return (
+    <div className="nowcast-cross">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Kelas risiko banjir IRBI 2025</th>
+            <th scope="col">Peringatan aktif</th>
+            <th scope="col">Tidak ada peringatan aktif</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tab.kelas.map((kelas) => (
+            <tr key={kelas}>
+              <th scope="row">{kelas}</th>
+              <td>{namaSel(tab.cell(kelas, true))}</td>
+              <td>{namaSel(tab.cell(kelas, false))}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );

@@ -54,8 +54,9 @@ export const GLOSSARY = [
     istilah: "CAP",
     nama: "Common Alerting Protocol",
     penjelasan:
-      "Format peringatan yang dipakai BMKG pada berkas XML nowcast. RSS resmi ada di halaman peringatan dini cuaca.",
-    penggunaan: "Butir yang sedang berlaku ditampilkan sebagai konteks cuaca, bukan sebagai peringatan karhutla. Poligon tidak digambar.",
+      "Format peringatan yang dipakai BMKG pada berkas XML nowcast. RSS resmi ada di halaman peringatan dini cuaca. Dasar waktunya sekitar 0–3 jam, berbeda dari peringatan dasarian dan dari prakiraan berbasis dampak.",
+    penggunaan:
+      "Pada modul Banjir, peringatan yang masih berlaku dipasangkan ke kabupaten/kota lewat irisan poligon dengan BIG. Yang tersimpan hanya kode, nama, dan teks peringatan. Geometri batas tidak disimpan. areaDesc adalah kantor penerbit, bukan provinsi terdampak. Peringatan yang sudah berakhir tidak ditampilkan sebagai aktif.",
     rujukan: "https://www.bmkg.go.id/alerts/nowcast/id",
     rujukanLabel: "BMKG — RSS nowcast",
   },
