@@ -60,9 +60,16 @@ function blankFeed(dataset, extra) {
   };
 }
 
+function coordinate(value) {
+  const text = String(value ?? "").trim();
+  if (!/^-?\d+(?:\.\d+)?$/.test(text)) return null;
+  const number = Number(text);
+  return Number.isFinite(number) ? number : null;
+}
+
 export function normalizeHotspotRow(raw, { contoh = false } = {}) {
-  const lintang = num(raw.lintang ?? raw.latitude);
-  const bujur = num(raw.bujur ?? raw.longitude);
+  const lintang = coordinate(raw.lintang ?? raw.latitude);
+  const bujur = coordinate(raw.bujur ?? raw.longitude);
   const provinsi = String(raw.provinsi ?? raw.province ?? "").trim() || "Belum terpetakan";
   const kepercayaan = raw.kepercayaan ?? raw.confidence ?? "";
   const keterangan = raw.keterangan ?? "";

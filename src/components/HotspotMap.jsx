@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import L from "leaflet";
 import { INDONESIA_FRAME } from "../lib/geo.js";
 import { formatAngka, formatTanggal, formatWaktu } from "../lib/format.js";
+import { clusterCellDegrees } from "../lib/hotspotWindow.js";
 
 const COLORS = {
   tinggi: "#b42318",
@@ -49,13 +50,8 @@ function usableCoordinate(lat, lon) {
   return Number.isFinite(lat) && Number.isFinite(lon) && lat >= -85 && lat <= 85 && lon >= -180 && lon <= 180;
 }
 
-function clusterCell(zoom, count) {
-  if (count <= 600) return 0;
-  if (zoom >= 9 && count <= 4000) return 0;
-  if (zoom >= 9) return 0.05;
-  if (zoom >= 7) return 0.18;
-  if (zoom >= 5) return 0.45;
-  return 1.1;
+function clusterCell(zoom) {
+  return clusterCellDegrees(zoom);
 }
 
 function heatColor(count) {
@@ -68,7 +64,7 @@ function heatColor(count) {
 function drawHotspots(map, layer, points) {
   layer.clearLayers();
   const renderer = map._hotRenderer || (map._hotRenderer = L.canvas({ padding: 0.15 }));
-  const cell = clusterCell(map.getZoom() || 4, points.length);
+  const cell = clusterCell(map.getZoom() || 4);
   const latlngs = [];
   const addPoint = (point) => {
     const lat = Number(point.lintang);
@@ -98,20 +94,33 @@ function drawHotspots(map, layer, points) {
     const lon = Number(point.bujur);
     if (!usableCoordinate(lat, lon)) continue;
     const key = `${Math.floor(lon / cell)}:${Math.floor(lat / cell)}`;
-    const group = groups.get(key) ?? { lat: 0, lon: 0, count: 0, point: null };
+    const group = groups.get(key) ?? { lat: 0, lon: 0, count: 0, members: [] };
     group.lat += lat;
     group.lon += lon;
     group.count += 1;
-    group.point = point;
+    group.members.push(point);
     groups.set(key, group);
   }
   for (const group of groups.values()) {
-    const lat = group.lat / group.count;
-    const lon = group.lon / group.count;
+    const meanLat = group.lat / group.count;
+    const meanLon = group.lon / group.count;
+    let anchor = group.members[0];
+    let best = Infinity;
+    for (const member of group.members) {
+      const lat = Number(member.lintang);
+      const lon = Number(member.bujur);
+      const distance = (lat - meanLat) ** 2 + (lon - meanLon) ** 2;
+      if (distance < best) {
+        best = distance;
+        anchor = member;
+      }
+    }
     if (group.count === 1) {
-      addPoint(group.point);
+      addPoint(anchor);
       continue;
     }
+    const lat = Number(anchor.lintang);
+    const lon = Number(anchor.bujur);
     const marker = L.circleMarker([lat, lon], {
       renderer,
       radius: Math.min(22, 6 + Math.sqrt(group.count)),

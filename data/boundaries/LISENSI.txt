@@ -15,3 +15,5 @@ idn-adm1.geojson
   Nama Indonesia pada CSV adalah terjemahan nama geoBoundaries, bukan penetapan Kemendagri yang baru.
 
 Bukan batas resmi BIG/Kemendagri terkini. Papua hasil pemekaran 2022 tidak terpisah pada lapisan ini.
+
+Sistem koordinat berkas GeoJSON adalah CRS84 (bujur lalu lintang). Untuk data ini urutan sumbu sama dengan EPSG:4326. Peta memakai ubin OpenStreetMap Web Mercator. Marker Leaflet dipasang sebagai [lintang, bujur], bukan [bujur, lintang]. Batas tidak digambar di peta, jadi tidak ada lapisan batas yang digeser terhadap ubin.

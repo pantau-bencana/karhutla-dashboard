@@ -83,12 +83,11 @@ export function SummaryPage({ config, feeds, manifest }) {
         ) : (
           <div className="logic-body">
             <p>
-              Sumber: NASA FIRMS{meta?.sumber ? ` (${meta.sumber})` : ""}. Kotak permintaan {meta?.bbox || "94.4,-11.5,141.6,6.5"},
-              {" "}
-              {meta?.permintaan_hari || 5} hari pada berkas penuh ({formatAngka(meta?.baris_berkas)} baris, sensor{" "}
+              Sumber: NASA FIRMS{meta?.sumber ? ` (${meta.sumber})` : ""}. Kotak unduhan{" "}
+              {meta?.bbox_permintaan || meta?.bbox || "94.4,-11.5,141.6,6.5"} bukan penyaring peta. Yang digambar hanya titik di dalam poligon kabupaten Indonesia,{" "}
+              {meta?.permintaan_hari || 5} hari ({formatAngka(meta?.baris_berkas)} baris berkas, sensor{" "}
               {meta ? Object.entries(meta.sensor_berkas || {}).map(([name, count]) => `${name} ${formatAngka(count)}`).join(", ") : "—"}
-              ). Peta ini memakai titik di dalam batas kabupaten
-              {meta ? ` (${formatAngka(meta.di_darat)} di darat, ${formatAngka(meta.di_luar_poligon)} di luar poligon tidak digambar)` : ""}.
+              ). {meta ? `${formatAngka(meta.di_darat)} di dalam poligon, ${formatAngka(meta.di_luar_poligon)} di luar poligon tidak digambar.` : ""}
               Duplikat yang dibuang: {formatAngka(meta?.duplikat_dibuang ?? 0)}.
             </p>
             <DatasetTiming feed={hotspot} />
@@ -119,7 +118,7 @@ export function SummaryPage({ config, feeds, manifest }) {
               {WINDOWS.find(([value]) => value === hours)?.[1]} sampai deteksi terbaru: {formatAngka(tally.jumlah)} titik.
               Sensor {Object.entries(tally.sensor).map(([name, count]) => `${name} ${formatAngka(count)}`).join(", ") || "—"}.
               Kepercayaan tinggi {formatAngka(tally.kepercayaan.tinggi || 0)}, nominal {formatAngka(tally.kepercayaan.nominal || 0)}, rendah {formatAngka(tally.kepercayaan.rendah || 0)}.
-              Kelompok warna pada zoom kecil adalah kumpulan deteksi, bukan satu kebakaran.
+              Kelompok warna pada zoom kecil adalah kumpulan deteksi dan diletakkan pada salah satu koordinat asli, bukan rata-rata. Pada zoom besar setiap titik memakai koordinat FIRMS.
             </p>
             <HotspotMap points={windowed.rows} frame="indonesia" />
           </div>

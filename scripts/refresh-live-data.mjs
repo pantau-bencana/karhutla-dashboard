@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { flattenBmkgForecast, bmkgForecastUrl, BMKG_LOCATIONS, BMKG_DOCS_URL } from "../src/lib/bmkgForecast.js";
 import { firmsAreaUrl, redactSecret } from "../src/lib/firms.js";
 import { writeHotspotMap } from "./build-hotspot-map.mjs";
+import { BOUNDARY_CRS, BOUNDARY_SOURCE, insideIndonesia, parseFirmsCoordinate } from "./indonesia-land.mjs";
 import { provinceCenters } from "../src/lib/geo.js";
 import { ispuFromPm25 } from "../src/lib/ispuEstimate.js";
 import { REFRESH_CRON, REFRESH_INTERVAL_HOURS, nextScheduledRun } from "../src/lib/schedule.js";
@@ -292,10 +293,6 @@ async function fetchOpenMeteoAir(names) {
   };
 }
 
-function inIndonesia(lat, lon) {
-  return lat >= -11.5 && lat <= 6.5 && lon >= 94.4 && lon <= 141.6;
-}
-
 async function fetchFirms() {
   const url = firmsAreaUrl(firmsKey, { days: 5 });
   let text;
@@ -312,12 +309,23 @@ async function fetchFirms() {
   const index = Object.fromEntries(header.map((name, position) => [name.trim(), position]));
   const rows = [];
   let newest = "";
+  let before = 0;
+  let invalid = 0;
+  let outside = 0;
   for (const line of lines.slice(1)) {
     if (!line.trim()) continue;
     const cells = line.split(",");
-    const lat = Number(cells[index.latitude]);
-    const lon = Number(cells[index.longitude]);
-    if (!inIndonesia(lat, lon)) continue;
+    before += 1;
+    const lat = parseFirmsCoordinate(cells[index.latitude]);
+    const lon = parseFirmsCoordinate(cells[index.longitude]);
+    if (!lat || !lon || Math.abs(lat.value) > 90 || Math.abs(lon.value) > 180) {
+      invalid += 1;
+      continue;
+    }
+    if (!insideIndonesia(lon.value, lat.value)) {
+      outside += 1;
+      continue;
+    }
     const tanggal = cells[index.acq_date] || "";
     const waktu = cells[index.acq_time] || "";
     const iso = tanggal && waktu ? `${tanggal}T${String(waktu).padStart(4, "0").slice(0, 2)}:${String(waktu).padStart(4, "0").slice(2, 4)}:00.000Z` : "";
@@ -325,24 +333,28 @@ async function fetchFirms() {
     rows.push({
       tanggal,
       waktu,
-      lintang: lat,
-      bujur: lon,
+      lintang: lat.text,
+      bujur: lon.text,
       provinsi: "Belum terpetakan",
       kabupaten: "",
       satelit: cells[index.satellite] || "",
       kepercayaan: cells[index.confidence] || "",
       frp: cells[index.frp] || "",
       kecerahan: cells[index.bright_ti4] || "",
-      keterangan: "NASA FIRMS VIIRS Suomi-NPP. Bukan kebakaran terkonfirmasi. Kabupaten tidak diisi karena batas administrasi resmi belum dipasang.",
+      keterangan: "NASA FIRMS VIIRS Suomi-NPP. Bukan kebakaran terkonfirmasi. Hanya titik di dalam poligon kabupaten Indonesia.",
     });
   }
   const headers = ["tanggal", "waktu", "lintang", "bujur", "provinsi", "kabupaten", "satelit", "kepercayaan", "frp", "kecerahan", "keterangan"];
   return {
     body: toCsv(headers, rows),
     observedAt: newest || null,
-    observedLabel: newest ? `Lintasan terbaru dalam cuplikan Indonesia ${newest} UTC` : "Tidak ada titik di dalam bingkai Indonesia pada 5 hari terakhir",
+    observedLabel: newest ? `Lintasan terbaru di dalam poligon Indonesia ${newest} UTC` : "Tidak ada titik di dalam poligon Indonesia pada 5 hari terakhir",
     sourceUpdatedAt: newest || nowIso,
     url: "https://firms.modaps.eosdis.nasa.gov/api/area/",
+    recordsBeforeBoundary: before,
+    recordsAfterBoundary: rows.length,
+    droppedOutsideIndonesia: outside,
+    invalidCoordinates: invalid,
   };
 }
 
@@ -627,6 +639,12 @@ async function main() {
       hotspotEntry.observed_label = result.observedLabel;
       hotspotEntry.source_updated_at = result.sourceUpdatedAt;
       writeIfChanged("data/live/hotspot.csv", result.body, hotspotEntry, previousEntry(previous, "hotspot"));
+      hotspotEntry.records_before_boundary = result.recordsBeforeBoundary;
+      hotspotEntry.records_after_boundary = result.recordsAfterBoundary;
+      hotspotEntry.dropped_outside_indonesia = result.droppedOutsideIndonesia;
+      hotspotEntry.invalid_coordinates = result.invalidCoordinates;
+      hotspotEntry.boundary = BOUNDARY_SOURCE;
+      hotspotEntry.crs = BOUNDARY_CRS;
       datasets.hotspot = hotspotEntry;
     } catch (error) {
       datasets.hotspot = keepPrevious(hotspotEntry, previousEntry(previous, "hotspot"), error.message);

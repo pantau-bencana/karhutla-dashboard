@@ -1,8 +1,10 @@
+import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseCsv } from "../src/lib/csv.js";
 import { detectionMs } from "../src/lib/hotspotWindow.js";
+import { BOUNDARY_CRS, BOUNDARY_SOURCE, loadAdm1, loadAdm2, locateFeature, parseFirmsCoordinate } from "./indonesia-land.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const ADM1_ID = Object.freeze({
@@ -42,62 +44,6 @@ const ADM1_ID = Object.freeze({
   "West Sumatra": "Sumatera Barat",
 });
 
-function polygonsOf(geometry) {
-  if (!geometry) return [];
-  if (geometry.type === "Polygon") return [geometry.coordinates];
-  if (geometry.type === "MultiPolygon") return geometry.coordinates;
-  return [];
-}
-
-function pointInRing(x, y, ring) {
-  let inside = false;
-  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-    const xi = ring[i][0];
-    const yi = ring[i][1];
-    const xj = ring[j][0];
-    const yj = ring[j][1];
-    if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
-  }
-  return inside;
-}
-
-function prepare(feature) {
-  const polygons = polygonsOf(feature.geometry);
-  let minX = Infinity;
-  let minY = Infinity;
-  let maxX = -Infinity;
-  let maxY = -Infinity;
-  for (const polygon of polygons) {
-    for (const ring of polygon) {
-      for (const [x, y] of ring) {
-        if (x < minX) minX = x;
-        if (y < minY) minY = y;
-        if (x > maxX) maxX = x;
-        if (y > maxY) maxY = y;
-      }
-    }
-  }
-  return { name: feature.properties?.shapeName || "", polygons, minX, minY, maxX, maxY };
-}
-
-function contains(feature, x, y) {
-  if (x < feature.minX || x > feature.maxX || y < feature.minY || y > feature.maxY) return false;
-  return feature.polygons.some((polygon) => {
-    if (!pointInRing(x, y, polygon[0])) return false;
-    for (let hole = 1; hole < polygon.length; hole += 1) {
-      if (pointInRing(x, y, polygon[hole])) return false;
-    }
-    return true;
-  });
-}
-
-function locate(features, x, y) {
-  for (const feature of features) {
-    if (contains(feature, x, y)) return feature;
-  }
-  return null;
-}
-
 function interior(feature) {
   const ring = feature.polygons[0]?.[0] || [];
   let sx = 0;
@@ -108,7 +54,7 @@ function interior(feature) {
     sy += ring[index][1];
   }
   const guess = [sx / usable, sy / usable];
-  if (contains(feature, guess[0], guess[1])) return guess;
+  if (locateFeature([feature], guess[0], guess[1])) return guess;
   return ring[0] || [0, 0];
 }
 
@@ -120,12 +66,12 @@ function csvCell(value) {
 export function writeHotspotMap() {
   const sourcePath = resolve(root, "data/live/hotspot.csv");
   if (!existsSync(sourcePath)) return null;
-  const adm2 = JSON.parse(readFileSync(resolve(root, "data/boundaries/idn-adm2.geojson"), "utf8")).features.map(prepare);
-  const adm1 = JSON.parse(readFileSync(resolve(root, "data/boundaries/idn-adm1.geojson"), "utf8")).features.map(prepare);
+  const adm2 = loadAdm2();
+  const adm1 = loadAdm1();
   const provinceOf = new Map();
   for (const feature of adm2) {
     const [x, y] = interior(feature);
-    const parent = locate(adm1, x, y);
+    const parent = locateFeature(adm1, x, y);
     provinceOf.set(feature, ADM1_ID[parent?.name] || parent?.name || "");
   }
   const raw = parseCsv(readFileSync(sourcePath, "utf8"));
@@ -133,27 +79,31 @@ export function writeHotspotMap() {
   const seen = new Set();
   let duplicates = 0;
   let outside = 0;
+  let invalid = 0;
   const kept = [];
   for (const row of raw) {
-    const lat = Number(row.lintang);
-    const lon = Number(row.bujur);
+    const lat = parseFirmsCoordinate(row.lintang);
+    const lon = parseFirmsCoordinate(row.bujur);
     const sat = row.satelit || "";
     sensorFile[sat || "kosong"] = (sensorFile[sat || "kosong"] || 0) + 1;
-    if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
-    const key = `${lat.toFixed(4)}|${lon.toFixed(4)}|${row.tanggal}|${row.waktu}|${sat}`;
+    if (!lat || !lon) {
+      invalid += 1;
+      continue;
+    }
+    const key = `${lat.text}|${lon.text}|${row.tanggal}|${row.waktu}|${sat}`;
     if (seen.has(key)) {
       duplicates += 1;
       continue;
     }
     seen.add(key);
-    const area = locate(adm2, lon, lat);
+    const area = locateFeature(adm2, lon.value, lat.value);
     if (!area) {
       outside += 1;
       continue;
     }
     kept.push({
-      lintang: lat.toFixed(5),
-      bujur: lon.toFixed(5),
+      lintang: lat.text,
+      bujur: lon.text,
       tanggal: row.tanggal,
       waktu: row.waktu,
       satelit: sat,
@@ -183,9 +133,10 @@ export function writeHotspotMap() {
   const dates = kept.map((row) => row.tanggal).filter(Boolean).sort();
   const meta = {
     sumber: "NASA FIRMS VIIRS_SNPP_NRT",
-    bbox: "94.4,-11.5,141.6,6.5",
+    bbox_permintaan: "94.4,-11.5,141.6,6.5",
     permintaan_hari: 5,
     baris_berkas: raw.length,
+    koordinat_tidak_valid: invalid,
     sensor_berkas: sensorFile,
     duplikat_dibuang: duplicates,
     di_luar_poligon: outside,
@@ -195,15 +146,66 @@ export function writeHotspotMap() {
     jam_24_sensor: last24.sensor,
     jam_24_kepercayaan: last24.kepercayaan,
     jam_24_jumlah: Object.values(last24.sensor).reduce((sum, value) => sum + value, 0),
-    catatan: "Hotspot = deteksi satelit, bukan kebakaran terkonfirmasi. Peta Ringkasan hanya memuat titik di dalam poligon kabupaten.",
-    batas: "geoBoundaries gbOpen Indonesia ADM2 (2020, CC BY 3.0 IGO) dan ADM1 (ODbL) untuk nama provinsi.",
+    catatan: "Hotspot = deteksi satelit, bukan kebakaran terkonfirmasi. Hanya titik di dalam poligon kabupaten Indonesia yang disimpan. Kotak koordinat bukan penyaring.",
+    batas: BOUNDARY_SOURCE,
+    crs: BOUNDARY_CRS,
   };
   writeFileSync(resolve(root, "data/live/hotspot-peta-meta.json"), `${JSON.stringify(meta, null, 2)}\n`);
   return meta;
 }
 
+function csvEscape(value) {
+  const text = value == null ? "" : String(value);
+  return /[",\n\r]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
+}
+
+export function filterHotspotCsvFile() {
+  const sourcePath = resolve(root, "data/live/hotspot.csv");
+  if (!existsSync(sourcePath)) return null;
+  const original = readFileSync(sourcePath, "utf8");
+  const raw = parseCsv(original);
+  const adm2 = loadAdm2();
+  const header = ["tanggal", "waktu", "lintang", "bujur", "provinsi", "kabupaten", "satelit", "kepercayaan", "frp", "kecerahan", "keterangan"];
+  const lines = [header.join(",")];
+  let outside = 0;
+  let invalid = 0;
+  for (const row of raw) {
+    const lat = parseFirmsCoordinate(row.lintang);
+    const lon = parseFirmsCoordinate(row.bujur);
+    if (!lat || !lon) {
+      invalid += 1;
+      continue;
+    }
+    if (!locateFeature(adm2, lon.value, lat.value)) {
+      outside += 1;
+      continue;
+    }
+    lines.push(header.map((name) => csvEscape(name === "lintang" ? lat.text : name === "bujur" ? lon.text : row[name])).join(","));
+  }
+  const body = `${lines.join("\n")}\n`;
+  writeFileSync(sourcePath, body);
+  const manifestPath = resolve(root, "data/live/manifest.json");
+  if (existsSync(manifestPath)) {
+    const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+    const entry = manifest.datasets?.hotspot;
+    if (entry) {
+      entry.record_count = lines.length - 1;
+      entry.content_hash = createHash("sha256").update(body).digest("hex");
+      entry.records_before_boundary = raw.length;
+      entry.records_after_boundary = lines.length - 1;
+      entry.dropped_outside_indonesia = outside;
+      entry.invalid_coordinates = invalid;
+      entry.boundary = BOUNDARY_SOURCE;
+      entry.crs = BOUNDARY_CRS;
+      writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+    }
+  }
+  return { before: raw.length, after: lines.length - 1, outside, invalid };
+}
+
 if (process.argv[1] && process.argv[1].endsWith("build-hotspot-map.mjs")) {
   const started = Date.now();
+  const filtered = filterHotspotCsvFile();
   const meta = writeHotspotMap();
-  console.log(JSON.stringify({ ...meta, ms: Date.now() - started }));
+  console.log(JSON.stringify({ filtered, ...meta, ms: Date.now() - started }));
 }

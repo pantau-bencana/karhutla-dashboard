@@ -27,6 +27,13 @@ export function filterHotspotWindow(points, { hours = 24, provinces = null } = {
   return { rows, newestMs, cutoffMs };
 }
 
+export function clusterCellDegrees(zoom) {
+  if (zoom >= 8) return 0;
+  if (zoom >= 6) return 0.2;
+  if (zoom >= 5) return 0.35;
+  return 0.6;
+}
+
 export function countHotspots(points) {
   const sensor = {};
   const kepercayaan = {};

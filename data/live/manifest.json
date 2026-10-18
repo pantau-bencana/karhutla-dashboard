@@ -140,12 +140,18 @@
       "observed_at": "2026-10-17T19:25:00.000Z",
       "observed_label": "Lintasan terbaru dalam cuplikan Indonesia 2026-10-17T19:25:00.000Z UTC",
       "source_updated_at": "2026-10-17T19:25:00.000Z",
-      "record_count": 36642,
+      "record_count": 32852,
       "status": "ok",
       "error": null,
       "file": "data/live/hotspot.csv",
-      "content_hash": "7a0c4a604f9e835174a79310c1e863bcf8b8fe798277b78812b29d5022998cb7",
-      "kept_previous": false
+      "content_hash": "0db95b863b3897e385e3ffbbd9fa3ff1724d882fcbda5698f29f327258e7b516",
+      "kept_previous": false,
+      "records_before_boundary": 36642,
+      "records_after_boundary": 32852,
+      "dropped_outside_indonesia": 3790,
+      "invalid_coordinates": 0,
+      "boundary": "geoBoundaries gbOpen Indonesia ADM2 simplified, 2020, 519 kabupaten/kota. Lisensi CC BY 3.0 IGO. Sumber data BPS, World Food Programme, dan OCHA. Bukan batas resmi BIG/Kemendagri.",
+      "crs": "GeoJSON CRS84 (bujur, lintang), setara EPSG:4326 untuk urutan sumbu ini. Ubin peta Leaflet adalah Web Mercator. Marker memakai [lintang, bujur]."
     },
     "irbi": {
       "id": "irbi",
