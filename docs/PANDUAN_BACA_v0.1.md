@@ -26,6 +26,14 @@ Nama desa, kecamatan, kabupaten/kota, dan provinsi dicocokkan ke layanan batas B
 
 Bila layanan itu gagal pada saat data diperbarui, titik satelit tetap ditampilkan. Halaman lalu menyatakan bahwa penyaringan wilayah dan batas Indonesia pada pembaruan tersebut tidak lengkap. Titik yang gagal dicari tidak masuk hitungan per provinsi atau per kabupaten.
 
+## Banjir (Aceh dan Bengkulu)
+
+Modul Banjir memuat dua bahan prototipe. Keduanya berlabel **Prototipe internal – menunggu izin tertulis BNPB**.
+
+Peta memilih Aceh atau Bengkulu. Gambarnya indeks risiko banjir inaRISK, edisi KRB 2021, piksel 100 m. Kalimat di bawah peta: **Indeks risiko banjir inaRISK BNPB, KRB 2021, piksel 100 m. Bukan peringatan dini. Bukan IRBI 2025.** Legenda resmi: 0–0,3 Rendah, 0,3–0,6 Sedang, 0,6–1,0 Tinggi. Klik peta membaca nilai pada titik itu. Bila titik di luar area yang dipetakan, tulisannya **Di luar area bahaya banjir yang dipetakan inaRISK**, bukan risiko rendah. Bila layanan tidak menjawab: **Nilai tidak tersedia (layanan BNPB tidak merespons)**. Batas provinsi dan kabupaten diminta langsung ke BIG dan tidak disimpan. Lapisan tambahan, bila dinyalakan: Klasifikasi DAS KLHK dengan label DIPULIHKAN atau DIPERTAHANKAN, dan bahaya banjir. Gagalnya layanan itu tidak mematikan Karhutla.
+
+Tabel berjudul **Konteks risiko banjir jangka panjang per kabupaten/kota (bukan prioritas, bukan prakiraan)**. Isinya 33 kabupaten/kota, urut kode wilayah BIG. IRBI 2025 banjir dan IRBI multi-bahaya adalah data statis dari buku. Kejadian banjir 2024 berasal dari DIBI (ODC-BY). Lima kabupaten/kota yang tidak ada di tabel itu ditulis **Tidak tercantum di tabel DIBI 2024**, bukan 0. Angka 0 hanya muncul bila DIBI memang menulis nol. Ringkasan kajian inaRISK bertuliskan **Belum terhubung**. Dokumen KRB hanya tautan. Angka dari tahun yang berbeda tidak digabung. Tabel ini belum kisi Potensi Hujan Ekstrem × kelas risiko banjir. Catatannya: **Matriks hujan ekstrem × risiko banjir menyusul setelah sumber BMKG per kab/kota diverifikasi**.
+
 ## Kualitas udara
 
 Di dalam Karhutla, buka Peta dan Data lalu pilih **Kualitas Udara (ISPU)**. Ada dua pilihan: Hari Ini dan Historis. Tidak ada Prediksi.
@@ -45,7 +53,8 @@ Matriks **Indikator untuk Wilayah Prioritas** menyiapkan kolom yang nanti perlu 
 - **Aktif** atau cuplikan ok berarti berkas data terakhir berhasil disimpan.
 - **Tautan saja** berarti hanya ada pranala. Tidak ada angka yang ditarik dari situ.
 - **Data statis** berarti tabel terbitan, misalnya IRBI 2025, bukan kondisi hari ini.
-- **Belum terhubung / menunggu data** pada Banjir dan Gunung Api berarti modul itu belum memantau.
+- **Belum terhubung / menunggu data** pada Gunung Api berarti modul itu belum memantau.
+- **Prototipe internal – menunggu izin tertulis BNPB** pada Banjir berarti peta dan tabel IRBI boleh dibaca di dalam, tetapi belum izin tertulis untuk pemakaian umum.
 - Slot **15–20 kabupaten/kota** menunggu data resmi BMKG tentang FDRS atau potensi karhutla per kabupaten/kota. Dasbor tidak mengisi slot itu dengan urutan buatan.
 
 IRBI 2025 berjudul **Konteks risiko jangka panjang (IRBI 2025)**. Tabel itu di bagian bawah, urutan nama, dan bukan daftar wilayah yang harus diprioritaskan minggu ini.
@@ -57,6 +66,7 @@ IRBI 2025 berjudul **Konteks risiko jangka panjang (IRBI 2025)**. Tabel itu di b
 - Tidak menyatakan warna merah lebih berbahaya daripada warna hijau dalam arti operasi.
 - Tidak menyatakan satu stasiun ISPU mewakili satu kabupaten atau kota.
 - Tidak membuat prakiraan 14 hari, tidak membuat prediksi ISPU, dan tidak membuat peringkat 15–20 kabupaten dari data pembanding.
-- Tidak memantau banjir atau gunung api. Kedua modul itu masih menunggu data resmi.
+- Tidak menetapkan prioritas banjir dan tidak membuat prakiraan banjir. Peta banjir adalah indeks risiko KRB 2021, bukan peringatan dini dan bukan IRBI 2025.
+- Tidak memantau gunung api. Modul itu masih menunggu data resmi.
 
 Footer yang harus tetap ada: **Prototipe internal Dit. PD BNPB. Jangan dipublikasikan tanpa persetujuan.**

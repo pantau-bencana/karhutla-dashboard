@@ -282,6 +282,22 @@ export const SOURCES = [
       "Data CHIRPS berada di domain publik (Creative Commons Public Domain). Berkas GeoTIFF bulanan global September 2026 berukuran sekitar 24 MB. Dasbor tidak mengunduh atau merata-rata raster itu, karena tidak ada pustaka raster dan berkasnya tidak disimpan di repositori. Tidak ada angka kekeringan historis pada prototipe 14 hari.",
   },
   {
+    id: "dibi_banjir_2024",
+    nama: "Kejadian banjir kabupaten 2024",
+    instansi: "BNPB — Satu Data / DIBI",
+    fungsi: "Jumlah kejadian BANJIR tahun 2024 untuk kabupaten/kota Aceh dan Bengkulu pada matriks modul Banjir.",
+    officialUrl: "https://data.bnpb.go.id/api/3/action/package_show?id=data-bencana-indonesia",
+    officialLabel: "CKAN data-bencana-indonesia",
+    access: "API",
+    needsKey: false,
+    kind: "statis",
+    updateType: "Tahunan / statis",
+    expectedMaxAgeHours: 24 * 30 * 18,
+    file: "data/live/dibi-banjir-2024.csv",
+    limitation:
+      "Lisensi ODC-BY. Hanya kolom BANJIR pada resource a4daec53-1119-43ef-b05e-00ec3a4c42a4 untuk kode wilayah 11 dan 17. Baris yang tidak tercantum bukan nol. Koordinat tidak disimpan. Bukan rangkaian 2010–2024.",
+  },
+  {
     id: "dibi_karhutla",
     nama: "Kejadian karhutla historis (nasional)",
     instansi: "BNPB — Satu Data / DIBI",
@@ -294,7 +310,7 @@ export const SOURCES = [
     updateType: "Tahunan / statis",
     expectedMaxAgeHours: 24 * 30 * 18,
     limitation:
-      "Lisensi ODC-BY. Hanya baris jenis KEBAKARAN HUTAN DAN LAHAN pada tabel nasional. Tabel kabupaten dan provinsi di paket yang sama menjumlahkan semua jenis bencana, sehingga tidak dipakai sebagai kejadian karhutla per kabupaten. Unduhan XLSX dapat tertahan Cloudflare; pengambilan memakai datastore CKAN.",
+      "Lisensi ODC-BY. Hanya baris jenis KEBAKARAN HUTAN DAN LAHAN pada tabel nasional. Tabel kabupaten 2010–2024 pada paket yang sama menjumlahkan semua jenis bencana, sehingga tidak dipakai sebagai kejadian karhutla per kabupaten. Tabel kabupaten 2024 yang memuat kolom BANJIR dipakai hanya pada modul Banjir. Unduhan XLSX dapat tertahan Cloudflare; pengambilan memakai datastore CKAN.",
   },
 ];
 

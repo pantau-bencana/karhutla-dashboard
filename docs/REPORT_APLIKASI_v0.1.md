@@ -18,7 +18,7 @@ Karhutla yang siap dibuka:
 - **Sumber Data.** Daftar sumber, status, dan tautan.
 - **Glosarium.** Istilah yang dipakai dasbor.
 
-Banjir dan Gunung Api menampilkan **Belum terhubung / menunggu data**. Keduanya tidak memuat peta atau angka.
+Banjir menampilkan prototipe internal untuk Aceh dan Bengkulu: peta indeks risiko inaRISK (KRB 2021) dan matriks 33 kabupaten/kota dari IRBI 2025 plus kejadian DIBI 2024. Labelnya **Prototipe internal – menunggu izin tertulis BNPB**. Bukan peringatan dini, bukan prioritas, dan bukan prakiraan. Kisi Potensi Hujan Ekstrem × risiko banjir belum dipasang. Gunung Api tetap **Belum terhubung / menunggu data**, tanpa peta atau angka.
 
 ## Sumber data
 

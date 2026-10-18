@@ -48,7 +48,7 @@ Situs yang dibuka memakai bundel `index-Ccz34wMm.js`, terbit dari commit `1d3b10
 | FWI BMKG tautan saja, H+7 | SUDAH | Tombol **Buka Peta FWI/Peringatan Karhutla BMKG** membuka tautan. Atribusi BMKG terlihat. Citra tidak tertanam. Matriks menyebut horizon produk hingga H+7, bukan 14 hari. |
 | ISPU tanpa Prediksi | SUDAH | Lapisan **Kualitas Udara (ISPU)** punya Hari Ini dan Historis. Kata Prediksi tidak ada di lapisan itu. Kalimat stasiun pemantau terlihat utuh. |
 | ISPU angka resmi | BELUM | Status data resmi: belum tersedia. Portal hanya ditautkan. OpenAQ menulis bahwa tanpa kunci tidak ada konsentrasi µg/m³. |
-| Banjir | BELUM | Status **Belum terhubung / menunggu data**. Tidak ada peta atau angka. Indikator disebut rencana. |
+| Banjir | PROTOTIPE | Peta indeks risiko inaRISK dan matriks IRBI 2025 untuk Aceh (23) serta Bengkulu (10). Label **Prototipe internal – menunggu izin tertulis BNPB**. Bukan peringatan dini dan bukan prioritas. |
 | Gunung Api | BELUM | Status **Belum terhubung / menunggu data**. Tidak ada tingkat aktivitas. MAGMA, PVMBG, PPID ESDM, dan VAAC Darwin hanya tautan. |
 | Logika, Sumber Data, Glosarium | SUDAH | Ketiga halaman ada di navigasi dan terbuka. |
 | Atribusi peta | SUDAH | Peta menulis OpenStreetMap dan CARTO. Titik menulis NASA FIRMS. Wilayah menulis BIG. |
@@ -58,7 +58,7 @@ Situs yang dibuka memakai bundel `index-Ccz34wMm.js`, terbit dari commit `1d3b10
 
 # Celah dari spesifikasi peta-dahulu
 
-- Banjir dan Gunung Api belum punya peta, dan belum punya Hari Ini, Prediksi, atau Historis.
+- Gunung Api belum punya peta, dan belum punya Hari Ini, Prediksi, atau Historis. Banjir punya peta prototipe Aceh/Bengkulu, tanpa modul prediksi.
 - Hotspot Karhutla memakai jendela 24 jam, 48 jam, dan 7 hari, bukan tiga tab bernama Hari Ini, Prediksi, dan Historis.
 - Tabel desa ada di bawah peta, bukan di kolom kanan pada layar lebar.
 - Arsip 60 hari dan sinyal berita tidak ada sebagai tampilan.
@@ -82,5 +82,6 @@ Perubahan ini ada pada commit `4cf72fb`. Yang diubah:
 - Ringkasan wilayah bawaan adalah kecamatan, dengan pilihan kabupaten dan desa. Kalimat cakupan: "nama desa tersedia untuk N dari M titik".
 - Daftar hotspot di Ringkasan dan di Peta dan Data dikelompokkan per provinsi, tertutup sampai dibuka, urut jumlah titik. Kecamatan memuat kab/kota dan kode. Desa yang teridentifikasi ada di dalam kecamatan. Teks panjang ada di "Cara membaca". Labelnya tetap "Confidence deteksi satelit".
 - IRBI berjudul "Konteks risiko jangka panjang (IRBI 2025)", urutan nama, di bagian bawah.
+- Modul Banjir memuat peta indeks risiko inaRISK (KRB 2021, piksel 100 m) untuk Aceh dan Bengkulu, diminta hanya saat modul dibuka, plus matriks 33 kabupaten/kota. Setiap elemen inaRISK/IRBI berlabel "Prototipe internal – menunggu izin tertulis BNPB". Kejadian DIBI yang tidak tercantum tidak diisi nol. Kolom kajian inaRISK tetap "Belum terhubung". Kisi hujan ekstrem × risiko banjir belum dibuat; tabel menulis "Matriks hujan ekstrem × risiko banjir menyusul setelah sumber BMKG per kab/kota diverifikasi".
 - Di samping warna keyakinan ada kalimat "keyakinan deteksi, bukan intensitas atau bahaya".
 - Header kartu pembanding memuat "Pembanding, bukan produk BMKG/KLHK". Panel hujan 14 hari disebut pembanding model, bukan prakiraan BMKG. Pita galat dan pita data tertunda menempel atau menimpa peta.

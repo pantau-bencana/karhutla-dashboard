@@ -23,7 +23,7 @@ Karhutla is the built hazard. Its pages:
 4. **Sumber Data** — one row per source with the honest status set.
 5. **Glosarium** — shared across hazards, searchable, alphabetical. Links use `#/glosarium/{id}` because the route is already a hash.
 
-Banjir and Gunung Api are skeletons: the same tab strip, then one placeholder. Status text **Belum terhubung / menunggu data**. List planned indicators and sources. No map, no invented numbers, no sample data presented as live.
+Gunung Api stays a skeleton: the same tab strip, then one placeholder. Status text **Belum terhubung / menunggu data**. List planned indicators and sources. No map, no invented numbers, no sample data presented as live. Banjir has an internal prototype for Aceh and Bengkulu only: an inaRISK flood-risk map and a 33-row IRBI/DIBI matrix. Every inaRISK or IRBI element carries **Prototipe internal – menunggu izin tertulis BNPB**. Do not turn that into an official warning, a priority rank, or a forecast.
 
 Hazard tabs must be data-driven from one config list so a later hazard does not require a new router.
 

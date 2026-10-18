@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { DashboardView } from "./components/DashboardView.jsx";
 import { Footer } from "./components/Footer.jsx";
 import { GlossaryPage } from "./components/GlossaryPage.jsx";
@@ -13,6 +13,8 @@ import { loadAll } from "./lib/loadData.js";
 import { parseLocation } from "./lib/route.js";
 import { assessFreshness } from "./lib/freshness.js";
 import { MANIFEST_POLL_MINUTES } from "./lib/schedule.js";
+
+const FloodPage = lazy(() => import("./components/FloodPage.jsx").then((module) => ({ default: module.FloodPage })));
 
 const DEFAULT_TITLE = "Prototipe Pemantauan Karhutla";
 
@@ -119,6 +121,7 @@ export function App() {
     nextRun: manifest?.next_run || "",
   });
   const built = hazardById(hazard).siap && page !== "glosarium";
+  const flood = hazard === "banjir" && (page === "ringkasan" || page === "peta");
   const title = page === "glosarium" ? "Glosarium" : `${hazardById(hazard).nama}`;
   const subtitle =
     page === "glosarium"
@@ -141,7 +144,12 @@ export function App() {
         hazard={hazard}
       />
       {page === "glosarium" ? <GlossaryPage /> : null}
-      {!built && page !== "glosarium" ? <HazardPlaceholder hazardId={hazard} /> : null}
+      {flood ? (
+        <Suspense fallback={<main className="wrap main"><p>Memuat modul Banjir…</p></main>}>
+          <FloodPage />
+        </Suspense>
+      ) : null}
+      {!built && !flood && page !== "glosarium" ? <HazardPlaceholder hazardId={hazard} /> : null}
       {built && page === "ringkasan" ? (
         configError && !config ? (
           <ConfigError message={configError} />

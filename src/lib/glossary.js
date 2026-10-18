@@ -74,7 +74,7 @@ export const GLOSSARY = [
     istilah: "DAS",
     nama: "Daerah Aliran Sungai",
     penjelasan: "Wilayah tangkapan air sungai. Klasifikasi DAS yang disebut untuk banjir berasal dari data KLHK yang disajikan BNPB sebagai layanan peta.",
-    penggunaan: "Belum digambar. Tab Banjir hanya mencantumkan tautan layanan dan status belum terhubung.",
+    penggunaan: "Lapisan opsional pada modul Banjir. Label yang ditampilkan adalah nilai kolom KRITERIA, yaitu DIPULIHKAN atau DIPERTAHANKAN. Geometri tidak disimpan.",
     rujukan: "https://gis.bnpb.go.id/server/rest/services/inarisk/Klasifikasi_DAS_KLHK/MapServer",
     rujukanLabel: "BNPB — Klasifikasi DAS KLHK",
   },

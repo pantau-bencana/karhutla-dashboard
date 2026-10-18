@@ -56,7 +56,7 @@ Citra asap: **Tautan saja – menunggu izin BMKG**. Mekanisme arsip boleh ada di
 - **FDRS / SPARTAN** — sistem peringkat bahaya kebakaran BMKG. Komponen FWI, FFMC, DMC, DC, ISI, BUI tidak dihitung di dasbor dan tidak diambil dari PNG.
 - **ISPU** — indeks resmi mutu udara. Portal `https://ispu.kemenlh.go.id/`. Jangan memakai token dari berkas JavaScript situs itu.
 - **inaRISK, IRBI** — produk BNPB. IRBI 2025 yang disimpan adalah tabel buku, tahunan, bukan peta.
-- **DIBI / Satu Data BNPB** — kompilasi CKAN `data-bencana-indonesia`, lisensi ODC-BY. Yang boleh disimpan untuk karhutla adalah rangkaian nasional jenis kebakaran hutan dan lahan. Tabel kabupaten pada paket itu mencakup semua jenis bencana.
+- **DIBI / Satu Data BNPB** — kompilasi CKAN `data-bencana-indonesia`, lisensi ODC-BY. Yang boleh disimpan untuk karhutla adalah rangkaian nasional jenis kebakaran hutan dan lahan. Tabel kabupaten 2010–2024 mencakup semua jenis bencana. Tabel kabupaten 2024 (`a4daec53-1119-43ef-b05e-00ec3a4c42a4`) punya kolom `BANJIR` dan hanya dipakai modul Banjir; baris yang tidak ada bukan nol.
 - **CAP** — peringatan dini cuaca BMKG dari RSS nowcast, konteks opsional, bukan prospek musiman.
 - **MAGMA / PVMBG** — `https://magma.esdm.go.id/` adalah **Tautan saja**. Jangan memakai pengorek pihak ketiga. Permintaan data tingkat aktivitas lewat PPID ESDM (`https://ppid.esdm.go.id/`) kepada PVMBG / Badan Geologi.
 - **WIB** — Asia/Jakarta, UTC+7. **Dasarian** — periode sekitar sepuluh hari di dalam bulan pada layanan iklim BMKG.
@@ -64,7 +64,7 @@ Citra asap: **Tautan saja – menunggu izin BMKG**. Mekanisme arsip boleh ada di
 
 ## Sumber yang sudah diperiksa (17 Oktober 2026)
 
-Boleh diintegrasikan tanpa kunci: API prakiraan cuaca BMKG; RSS CAP nowcast; CKAN DIBI untuk rangkaian nasional; MapServer Klasifikasi DAS hanya untuk tab Banjir di masa depan, dan kegagalannya tidak boleh menggagalkan Karhutla.
+Boleh diintegrasikan tanpa kunci: API prakiraan cuaca BMKG; RSS CAP nowcast; CKAN DIBI untuk rangkaian nasional dan untuk kolom BANJIR 2024 pada modul Banjir; layanan peta inaRISK dan BIG untuk prototipe Banjir, hanya di memori. Kegagalan layanan itu tidak boleh menggagalkan Karhutla.
 
 Hanya tautan: citra SPARTAN H+0..H+7, prediksi hujan dasarian, peringatan dini curah hujan tinggi, citra sebaran asap, potensi cuaca ekstrem, potensi hujan sepekan, MAGMA.
 
