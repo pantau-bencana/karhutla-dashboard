@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from "react";
 import { HotspotMap } from "./HotspotMap.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { formatAngka, formatWib } from "../lib/format.js";
+import { hotspotSourceLabel } from "../lib/freshness.js";
 import { countHotspots, filterHotspotWindow } from "../lib/hotspotWindow.js";
 import {
   BIG_EDITION_NOTE,
@@ -11,18 +12,25 @@ import {
   CONFIDENCE_LABELS,
   CONFIDENCE_NOTE,
   FILTER_INCOMPLETE,
-  desaGroupKey,
   desaLabel,
   distinctSorted,
   filterHotspotRows,
   hotspotKey,
-  summarizeByDesa,
+  summarizeByWilayah,
+  unverifiedWilayahCount,
+  wilayahGroupKey,
 } from "../lib/bigWilayah.js";
 
 const WINDOWS = [
   [24, "24 jam"],
   [48, "48 jam"],
   [168, "7 hari"],
+];
+
+const GROUP_LEVELS = [
+  ["kecamatan", "Kecamatan"],
+  ["kabupaten", "Kabupaten/kota"],
+  ["desa", "Desa/kelurahan"],
 ];
 
 function SelectFilter({ label, value, onChange, options, empty }) {
@@ -41,7 +49,7 @@ function SelectFilter({ label, value, onChange, options, empty }) {
   );
 }
 
-export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observedAt }) {
+export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observedAt, freshness, sumber }) {
   const mapApi = useRef(null);
   const [hours, setHours] = useState(24);
   const [provinceFilter, setProvinceFilter] = useState("semua");
@@ -54,6 +62,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
   const [confidence, setConfidence] = useState(() => new Set(["rendah", "nominal", "tinggi"]));
   const [selectedKey, setSelectedKey] = useState("");
   const [selectedDesa, setSelectedDesa] = useState("");
+  const [groupLevel, setGroupLevel] = useState("kecamatan");
 
   const selectedProvinces = provinceFilter === "prioritas" ? priority : provinceFilter === "semua" ? null : [provinceFilter];
   const windowed = filterHotspotWindow(points, { hours, provinces: selectedProvinces });
@@ -67,7 +76,9 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
     [confident, provinsi, kabupaten, kecamatan, desa],
   );
   const tally = countHotspots(filtered);
-  const groups = summarizeByDesa(filtered);
+  const groups = summarizeByWilayah(filtered, groupLevel);
+  const desaCoverage = filtered.filter((point) => point.desa && point.desa !== DESA_UNIDENTIFIED).length;
+  const unverified = unverifiedWilayahCount(filtered);
   const dates = distinctSorted(windowed.rows, "tanggal");
   const satellites = distinctSorted(windowed.rows, "satelit");
   const provinces = distinctSorted(confident, "provinsi").filter((name) => name !== "Belum terpetakan");
@@ -88,8 +99,8 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
   function choosePoint(point) {
     const key = hotspotKey(point);
     setSelectedKey(key);
-    setSelectedDesa(desaGroupKey(point));
-    const row = document.getElementById(`desa-${desaGroupKey(point)}`);
+    setSelectedDesa(wilayahGroupKey(point, groupLevel));
+    const row = document.getElementById(`desa-${wilayahGroupKey(point, groupLevel)}`);
     row?.scrollIntoView({ block: "nearest" });
   }
 
@@ -104,12 +115,13 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
   return (
     <div className="logic-body">
       <p>
-        Sumber titik: NASA FIRMS{meta?.sumber ? ` (${meta.sumber})` : ""}. Koordinat yang digambar adalah koordinat FIRMS, tidak dibulatkan dan tidak ditukar.
+        Sumber titik: {hotspotSourceLabel(feed, sumber || meta?.sumber)}. Koordinat yang digambar adalah koordinat FIRMS, tidak dibulatkan dan tidak ditukar.
         Sumber wilayah: {BIG_SOURCE_LABEL}. {BIG_EDITION_NOTE}
       </p>
       <DatasetTiming feed={feed} />
-      {fetchedAt ? <p className="fine">Diambil {formatWib(fetchedAt)}. Waktu data {formatWib(observedAt)}.</p> : null}
-      {filterIncomplete ? <p className="fine">{FILTER_INCOMPLETE}</p> : null}
+      {fetchedAt ? <p className="fine">Diambil {formatWib(fetchedAt)}. Usia cuplikan mengikuti waktu ambil itu.</p> : null}
+      {filterIncomplete ? <p className="banner warn is-sticky">{FILTER_INCOMPLETE}</p> : null}
+      {unverified ? <p className="fine">{formatAngka(unverified)} titik belum terverifikasi wilayah</p> : null}
       <div className="province-filter" role="group" aria-label="Jendela waktu hotspot">
         {WINDOWS.map(([value, label]) => (
           <button key={value} type="button" aria-pressed={hours === value} onClick={() => setHours(value)}>
@@ -133,7 +145,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
         <SelectFilter label="Desa/kelurahan" value={desa} onChange={setDesa} options={desaOptions} empty="Semua desa" />
       </div>
       <div className="confidence-legend" aria-label="Confidence deteksi satelit">
-        <p><strong>Confidence deteksi satelit</strong></p>
+        <p><strong>Confidence deteksi satelit</strong> — keyakinan deteksi, bukan intensitas atau bahaya</p>
         <div className="province-filter" role="group" aria-label="Saring kelas confidence">
           {CONFIDENCE_LABELS.map(([kelas, label]) => (
             <button key={kelas} type="button" aria-pressed={confidence.has(kelas)} onClick={() => toggleConfidence(kelas)}>
@@ -149,20 +161,43 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
         Pada zoom kecil, kelompok abu-abu diletakkan pada salah satu koordinat asli dan hanya menunjukkan jumlah deteksi. Pada zoom besar setiap titik memakai warna confidence dan koordinat FIRMS.
         Garis desa BIG hanya diminta untuk tampilan dekat, tidak untuk seluruh Indonesia, dan tidak disimpan.
       </p>
+      <p className="lintasan-line" role="status">
+        <strong>Lintasan satelit terakhir: {observedAt ? formatWib(observedAt) : "—"}</strong>
+        {freshness?.tertunda ? <span className="tag">tertunda</span> : null}
+      </p>
       <div className="map-toolbar">
         <button type="button" className="button" onClick={() => mapApi.current?.showIndonesia()}>Kembali ke seluruh Indonesia</button>
       </div>
-      <HotspotMap points={filtered} frame="indonesia" mapApi={mapApi} selectedKey={selectedKey} onSelect={choosePoint} />
-      <h3>Jumlah deteksi per desa</h3>
-      <p className="fine">Satu nama desa bisa muncul di lebih dari satu tempat. Kode wilayah membedakannya. Baris tanpa padanan desa tertulis {DESA_UNIDENTIFIED}.</p>
+      <div className="map-stage">
+        {freshness?.tertunda || feed?.status === "usang" || feed?.status === "gagal" ? (
+          <div className="banner warn map-overlay" role="status">
+            <strong>{feed?.status === "gagal" ? "Peta kosong" : "Data tertunda"}</strong>
+            <p>
+              {feed?.status === "gagal"
+                ? feed.error
+                : `Lintasan satelit terakhir: ${observedAt ? formatWib(observedAt) : "—"}. Yang tampil adalah cuplikan, bukan permintaan peramban ke NASA FIRMS.`}
+            </p>
+          </div>
+        ) : null}
+        <HotspotMap points={filtered} frame="indonesia" mapApi={mapApi} selectedKey={selectedKey} onSelect={choosePoint} />
+      </div>
+      <div className="province-filter" role="group" aria-label="Tingkat ringkasan wilayah">
+        {GROUP_LEVELS.map(([value, label]) => (
+          <button key={value} type="button" aria-pressed={groupLevel === value} onClick={() => setGroupLevel(value)}>
+            {label}
+          </button>
+        ))}
+      </div>
+      <h3>{groupLevel === "desa" ? "Jumlah deteksi per desa" : groupLevel === "kabupaten" ? "Jumlah deteksi per kabupaten/kota" : "Jumlah deteksi per kecamatan"}</h3>
+      <p className="fine">nama desa tersedia untuk {formatAngka(desaCoverage)} dari {formatAngka(filtered.length)} titik. Satu nama desa bisa muncul di lebih dari satu tempat. Kode wilayah membedakannya. Baris tanpa padanan desa tertulis {DESA_UNIDENTIFIED}.</p>
       <div className="table-wrap wrap-cells">
         <table>
           <thead>
             <tr>
-              <th scope="col">Desa/kelurahan</th>
-              <th scope="col">Kode desa</th>
-              <th scope="col">Kecamatan</th>
-              <th scope="col">Kode kecamatan</th>
+              {groupLevel === "desa" ? <th scope="col">Desa/kelurahan</th> : null}
+              {groupLevel === "desa" ? <th scope="col">Kode desa</th> : null}
+              {groupLevel !== "kabupaten" ? <th scope="col">Kecamatan</th> : null}
+              {groupLevel !== "kabupaten" ? <th scope="col">Kode kecamatan</th> : null}
               <th scope="col">Kab/kota</th>
               <th scope="col">Kode kab/kota</th>
               <th scope="col">Provinsi</th>
@@ -181,11 +216,12 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
                 className={selectedDesa === group.key ? "is-selected" : undefined}
                 onClick={() => chooseDesa(group)}
               >
-                <th scope="row">{group.desa}</th>
-                <td>{group.kodeDesa || "—"}</td>
-                <td>{group.kecamatan || "—"}</td>
-                <td>{group.kodeKecamatan || "—"}</td>
-                <td>{group.kabupaten || "—"}</td>
+                {groupLevel === "desa" ? <th scope="row">{group.desa}</th> : null}
+                {groupLevel === "desa" ? <td>{group.kodeDesa || "—"}</td> : null}
+                {groupLevel === "kecamatan" ? <th scope="row">{group.kecamatan || "—"}</th> : null}
+                {groupLevel === "desa" ? <td>{group.kecamatan || "—"}</td> : null}
+                {groupLevel !== "kabupaten" ? <td>{group.kodeKecamatan || "—"}</td> : null}
+                {groupLevel === "kabupaten" ? <th scope="row">{group.kabupaten || "—"}</th> : <td>{group.kabupaten || "—"}</td>}
                 <td>{group.kodeKabupaten || "—"}</td>
                 <td>{group.provinsi && group.provinsi !== "Belum terpetakan" ? group.provinsi : "—"}</td>
                 <td>{group.kodeProvinsi || "—"}</td>
@@ -196,7 +232,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
               </tr>
             )) : (
               <tr>
-                <td colSpan={12}>Tidak ada deteksi pada saringan ini.</td>
+                <td colSpan={groupLevel === "desa" ? 12 : groupLevel === "kabupaten" ? 8 : 10}>Tidak ada deteksi pada saringan ini.</td>
               </tr>
             )}
           </tbody>

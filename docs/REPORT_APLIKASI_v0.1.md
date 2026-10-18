@@ -1,6 +1,6 @@
 # Laporan aplikasi v0.1
 
-Diperiksa pada situs tayang https://rixaga.github.io/karhutla-dashboard/ tanggal 18 Oktober 2026. Bundel yang termuat `index-Ccz34wMm.js`, dari commit `1d3b103` di cabang `main`.
+Diperiksa pada situs tayang https://rixaga.github.io/karhutla-dashboard/ tanggal 18 Oktober 2026, lalu diperbarui agar sesuai perbaikan aturan pada commit yang digabung ke `main` sesudah inspeksi itu. Bundel inspeksi awal `index-Ccz34wMm.js` berasal dari commit `1d3b103`. Judul peramban sesudah perbaikan: **Prototipe Pemantauan Karhutla**.
 
 ## Maksud
 
@@ -12,8 +12,8 @@ Navigasi modul: Karhutla, Banjir, Gunung Api.
 
 Karhutla yang siap dibuka:
 
-- **Ringkasan.** Kartu status sumber, matriks **Indikator untuk Wilayah Prioritas**, peta hotspot, tabel jumlah deteksi per desa, panel prakiraan pembanding, slot wilayah perhatian yang masih kosong, slot 15–20 kabupaten/kota yang menunggu data resmi BMKG, dan konteks IRBI 2025.
-- **Peta dan Data.** Lapisan hotspot dengan peta, saringan, dan tabel desa yang sama. Memilih baris memusatkan peta. Di bawahnya ada indikator provinsi, grafik, rekap SiPongi bila ada, dan tabel IRBI kabupaten. Lapisan **Kualitas Udara (ISPU)** ada di halaman ini.
+- **Ringkasan.** Kartu status sumber, matriks **Indikator untuk Wilayah Prioritas**, peta hotspot dengan lintasan satelit terakhir, tabel jumlah deteksi (bawaan kecamatan), panel prakiraan pembanding, slot wilayah perhatian yang masih kosong, slot 15–20 kabupaten/kota yang menunggu data resmi BMKG, dan di bagian bawah **Konteks risiko jangka panjang (IRBI 2025)** dengan urutan nama.
+- **Peta dan Data.** Lapisan hotspot dengan peta, saringan, dan tabel wilayah yang sama. Memilih baris memusatkan peta. Di bawah peta ada tabel **Jumlah deteksi hotspot (bukan status)**. Tidak ada tabel status provinsi dan tidak ada FWI contoh. Grafik dan rekap SiPongi bila ada tetap di situ. Tabel IRBI berada di bawah, terpisah dari hitungan hotspot. Lapisan **Kualitas Udara (ISPU)** ada di halaman ini. FDRS pada lapisan itu menulis menunggu data resmi BMKG.
 - **Logika Pemantauan.** Penjelasan alur dan matriks indikator dalam bentuk yang lebih panjang.
 - **Sumber Data.** Daftar sumber, status, dan tautan.
 - **Glosarium.** Istilah yang dipakai dasbor.
@@ -52,7 +52,9 @@ Hanya tautan, status gagal diintegrasikan pada manifest:
 
 ## Jadwal pembaruan
 
-Workflow **Perbarui data** memakai cron `0 */3 * * *` UTC. Dalam WIB itu jatuh pada 07.00, 10.00, 13.00, 16.00, 19.00, 22.00, 01.00, dan 04.00. Halaman juga menampilkan `next_run` dari manifest. Pada inspeksi, nilai itu masih 18 Oktober 2026 pukul 00.00 UTC, yaitu 07.00 WIB, meskipun jam itu sudah lewat.
+Workflow **Perbarui data** memakai cron `0 */3 * * *` UTC. Dalam WIB itu jatuh pada 07.00, 10.00, 13.00, 16.00, 19.00, 22.00, 01.00, dan 04.00. Halaman menampilkan **Lintasan satelit terakhir** dalam WIB. Data ditandai **tertunda** bila lintasan terakhir lebih lama dari sekitar 8 jam, atau bila waktu sekarang melewati `next_run` lebih dari 1 jam. `next_run` yang sudah lewat disembunyikan. Cuplikan hotspot dilabeli **VIIRS S-NPP NRT (snapshot ±3 jam)**.
+
+Pada inspeksi 18 Oktober 2026, jadwal cron itu belum pernah membuat run `schedule`. Dua run yang ada sama-sama `workflow_dispatch`. Workflow-nya aktif dan berkasnya ada di `main` sejak 17 Oktober 2026 pukul 22.44 UTC. GitHub dapat menunda atau menggugurkan jadwal yang jatuh pada menit 0. Penjelasan itu dicatat di laporan penggabungan.
 
 ## Skill di repositori
 
@@ -72,7 +74,9 @@ Berkas di `.grok/skills/` mengatur bagian berikut:
 - Penyaringan wilayah memakai layanan BIG saat pembaruan. Geometri batas tidak disimpan di repositori. Layer desa edisi Mei 2021 tidak memuat seluruh desa, jadi banyak titik hanya punya kecamatan, kabupaten/kota, dan provinsi.
 - Bila BIG tidak tersedia pada satu pembaruan, titik FIRMS tetap ada dan halaman menulis bahwa penyaringan wilayah serta batas Indonesia pada pembaruan itu tidak lengkap.
 - ISPU resmi belum terisi. OpenAQ tanpa kunci tidak menampilkan µg/m³.
-- FWI BMKG hanya tautan, sampai H+7 sesuai produk, bukan 14 hari.
+- FWI BMKG hanya tautan, sampai H+7 sesuai produk, bukan 14 hari. Panel hujan 14 hari Open-Meteo, bila ada, adalah pembanding model, bukan prakiraan BMKG. Header kartu pembanding memuat **Pembanding, bukan produk BMKG/KLHK**. Nilai GWIS tidak disebut FDRS.
+- Bila cuplikan hotspot gagal, dasbor tidak memakai `data/sample/hotspot.csv`. Yang tampil cuplikan terakhir beserta usianya, atau keadaan kosong dengan pita galat.
+- Titik yang pencarian BIG-nya gagal tetap di peta, tetapi tidak masuk hitungan provinsi atau kabupaten. Halaman menulis berapa titik yang belum terverifikasi.
 - Daftar 15–20 kabupaten/kota tidak disusun dari IRBI, citra, atau prakiraan terbuka.
 
 ## Langkah berikutnya

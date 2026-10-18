@@ -2,7 +2,7 @@
 
 Prototipe internal Dit. PD BNPB. Jangan dipublikasikan tanpa persetujuan.
 
-Dasbor statis untuk memantau kebakaran hutan dan lahan (karhutla): sebaran titik panas, status peringatan per provinsi, lapisan Kualitas Udara (ISPU), rekap SiPongi, indeks IRBI, dan cuaca/FDRS. Antarmuka berbahasa Indonesia. Tidak ada server aplikasi. Peramban mengambil CSV langsung dari berkas contoh atau dari tautan yang Anda isi.
+Dasbor statis untuk memantau kebakaran hutan dan lahan (karhutla): sebaran titik panas, jumlah deteksi per provinsi, lapisan Kualitas Udara (ISPU), rekap SiPongi, dan indeks IRBI. Antarmuka berbahasa Indonesia. Tidak ada server aplikasi. Situs publik membaca cuplikan di `data/live`. Berkas contoh hotspot tidak ditampilkan bila cuplikan gagal.
 
 Angka dan status pada prototipe ini **bukan** peringatan dini resmi BNPB, BMKG, atau instansi sumber.
 
@@ -100,7 +100,7 @@ Setiap objek di `datasets` punya:
 | `terakhirDiperbarui` | Tanggal `YYYY-MM-DD` yang Anda catat sendiri. Dasbor tidak bisa mengetahui tanggal ubah berkas Drive. |
 | `contoh` | `true` untuk data contoh. Set `false` setelah tautan operasional terpasang. |
 
-`provinsiPrioritas` mengisi tombol filter (enam provinsi ditambah pilihan Seluruh Indonesia). `peringatan.hotspot` dan `peringatan.fwi` adalah ambang status.
+`provinsiPrioritas` mengisi tombol filter (enam provinsi ditambah pilihan Seluruh Indonesia). Dasbor tidak menghitung status provinsi.
 
 Setelah mengedit config untuk situs yang sudah dibangun, jalankan `npm run build` lagi (atau biarkan GitHub Actions yang membangun saat berkas masuk ke `main`).
 
@@ -109,7 +109,7 @@ Setelah mengedit config untuk situs yang sudah dibangun, jalankan `npm run build
 Titik panas bisa diambil langsung dari API area FIRMS bila `firms.mapKey` diisi.
 
 1. Minta kunci gratis di <https://firms.modaps.eosdis.nasa.gov/api/map_key/>.
-2. Isi `firms.mapKey`. Kosongkan (`""`) untuk memakai `csvUrl` dataset `hotspot`.
+2. Isi `firms.mapKey` hanya untuk percobaan lokal. Situs publik membiarkannya kosong dan memakai cuplikan `data/live`.
 3. `firms.sumber` bawaan `VIIRS_SNPP_NRT`. Nilai lain yang diterima FIRMS antara lain `VIIRS_NOAA20_NRT`, `VIIRS_NOAA21_NRT`, dan `MODIS_NRT`.
 4. `firms.area` adalah `barat,selatan,timur,utara`. Bawaan `95,-11,141,6` menutup wilayah Indonesia secara kasar.
 5. `firms.rentangHari` adalah jendela hari yang diminta ke API (maksimum sesuai ketentuan FIRMS, biasanya 5 hari untuk beberapa sumber NRT; kurangi jika API menolak).
@@ -118,28 +118,17 @@ Titik panas bisa diambil langsung dari API area FIRMS bila `firms.mapKey` diisi.
 
 CSV FIRMS tidak memuat nama provinsi. Dasbor tidak menebak provinsi dari kotak koordinat. Baris tanpa nama wilayah menjadi **Belum terpetakan**. Kotak di `src/lib/geo.js` bukan batas administrasi.
 
-Kunci pada `config.json` tidak dipakai untuk situs publik. Pengambilan FIRMS yang sah berjalan di Actions dengan secret `FIRMS_MAP_KEY`, lalu menulis CSV tanpa kunci. Jika secret kosong, dasbor memakai CSV contoh dan tidak menyebut FIRMS tersambung.
+Kunci pada `config.json` tidak dipakai untuk situs publik. Pengambilan FIRMS yang sah berjalan di Actions dengan secret `FIRMS_MAP_KEY`, lalu menulis CSV tanpa kunci. Jika secret kosong atau permintaan gagal, cuplikan terakhir dipertahankan. Dasbor tidak menampilkan CSV contoh hotspot.
 
 Prakiraan BMKG yang tersambung berhorizon **3 hari** untuk satu kelurahan ibu kota tiap provinsi prioritas. Atribusi: **Sumber: BMKG**. Citra SPARTAN, dasarian, asap, dan potensi cuaca ekstrem hanya ditautkan. Izin integrasi yang lebih luas diurus lewat <https://ptsp.bmkg.go.id/>.
 
-## Cara status dihitung
+## Jumlah deteksi
 
-Untuk tiap provinsi, pada rentang tanggal yang dipilih:
+Untuk tiap provinsi, pada rentang tanggal yang dipilih, tabel **Jumlah deteksi hotspot (bukan status)** menghitung titik yang wilayahnya terverifikasi. Titik dengan pencarian wilayah gagal tidak masuk hitungan itu. FDRS resmi menunggu data resmi BMKG. Nilai GWIS, bila ada, tetap berlabel pembanding dan tidak disebut FDRS.
 
-- level titik panas dari **jumlah titik** dibanding `peringatan.hotspot`
-- level FDRS dari **FWI tertinggi** dibanding `peringatan.fwi`
-- status provinsi = level yang lebih tinggi di antara keduanya
+Kepercayaan tinggi = teks `high` / `tinggi` / `h`, atau angka ≥ 80 (kebiasaan MODIS). `nominal` dan `low` mengikuti teks VIIRS; angka 30–79 dianggap nominal. Warna itu keyakinan deteksi, bukan intensitas atau bahaya.
 
-Label: Normal, Waspada, Siaga, Awas. Ambang bawaan (ilustratif, untuk jendela sekitar 7 hari):
-
-| | Waspada | Siaga | Awas |
-| --- | --- | --- | --- |
-| Jumlah titik panas | ≥ 8 | ≥ 20 | ≥ 45 |
-| FWI maksimum | ≥ 6 | ≥ 13 | ≥ 21 |
-
-Kelas FDRS pada berkas contoh (`Rendah` sampai `Ekstrem`) diselaraskan dengan ambang ini, bukan tabel resmi BMKG. Kartu "Provinsi waspada+" menghitung provinsi yang bukan Normal. Subjudulnya memisahkan yang sudah Siaga atau Awas.
-
-Kepercayaan tinggi = teks `high` / `tinggi` / `h`, atau angka ≥ 80 (kebiasaan MODIS). `nominal` dan `low` mengikuti teks VIIRS; angka 30–79 dianggap nominal.
+Data disebut tertunda bila lintasan satelit terakhir lebih lama dari sekitar 8 jam, atau bila waktu sekarang melewati `next_run` lebih dari 1 jam. `next_run` yang sudah lewat disembunyikan. Cuplikan hotspot dilabeli **VIIRS S-NPP NRT (snapshot ±3 jam)** bila yang tampil adalah berkas cuplikan.
 
 Kualitas Udara (ISPU) ada di dalam Karhutla, bukan sebagai modul utama. Periode yang ada hanya Hari Ini dan Historis. ISPU resmi tidak punya API publik; tanpa stasiun yang tersambung, peta dan tabel menulis tidak tersedia serta menautkan portal KLH. Kategori resmi, bila data stasiun ada: 0–50 Baik, 51–100 Sedang, 101–200 Tidak Sehat, 201–300 Sangat Tidak Sehat, di atas 300 Berbahaya. Angka contoh dan konsentrasi model tidak ditampilkan sebagai ISPU.
 
@@ -175,10 +164,10 @@ Pull request hanya membangun dan memeriksa hasilnya. Deploy tidak berjalan sebel
 
 - Situs statis hanya bisa membaca CSV yang **publik**. Spreadsheet pribadi, tautan yang minta login, atau berkas Drive yang tidak dipublikasikan akan gagal. Dasbor menampilkan galat sumber itu dan tetap menggambar bagian yang berhasil dimuat.
 - Respons HTML (halaman login Google) ditolak dan dijelaskan, bukan dipaksa menjadi tabel.
-- `MAP_KEY` FIRMS di `config.json` terlihat oleh pengunjung. CORS pada API FIRMS bisa saja memblokir permintaan dari peramban; kalau begitu CSV cadangan yang dipakai.
+- `MAP_KEY` FIRMS di `config.json` terlihat oleh pengunjung. CORS pada API FIRMS bisa saja memblokir permintaan dari peramban. Situs publik tidak memakai berkas contoh sebagai pengganti.
 - Jendela `firms.rentangHari` tidak sama dengan filter tanggal di layar. Memilih tanggal di luar data yang kembali membuat peta kosong.
-- Tebakan provinsi untuk CSV FIRMS memakai kotak kasar, bukan shapefile resmi.
-- Ambang peringatan, kelas FDRS contoh, dan angka IRBI/SiPongi/ISPU/cuaca contoh bersifat ilustratif.
+- Nama wilayah hotspot diisi dari kueri BIG saat pembaruan. Geometri batas tidak disimpan di repositori.
+- Angka IRBI/SiPongi/ISPU contoh bersifat ilustratif. IRBI 2025 yang resmi adalah konteks jangka panjang, urutan nama.
 - Peta dasar OpenStreetMap butuh internet dan tunduk pada [kebijakan petak OSM](https://operations.osmfoundation.org/policies/tiles/). Pemakaian operasional yang ramai sebaiknya memakai server petak sendiri. Zoom keluar dibatasi pada bingkai Indonesia; tombol "Tampilkan seluruh Indonesia" mengembalikan tampilan nasional.
 - Tidak ada login, jejak audit, atau penyimpanan di server.
 

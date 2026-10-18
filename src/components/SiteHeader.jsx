@@ -10,7 +10,7 @@ const PAGES = [
   ["glosarium", "Glosarium"],
 ];
 
-export function SiteHeader({ eyebrow, title, subtitle, manifest, onReload, loading, page, hazard }) {
+export function SiteHeader({ eyebrow, title, subtitle, manifest, freshness, onReload, loading, page, hazard }) {
   return (
     <header className="site-header">
       <div className="stripe" aria-hidden="true" />
@@ -48,7 +48,8 @@ export function SiteHeader({ eyebrow, title, subtitle, manifest, onReload, loadi
           </nav>
           <div className="header-actions">
             <p>Terakhir diperbarui {manifest?.generated_at ? formatWib(manifest.generated_at) : "belum ada snapshot"}</p>
-            <p>Pembaruan berikutnya {manifest?.next_run ? formatWib(manifest.next_run) : "lihat jadwal 3 jam"}</p>
+            {freshness?.tertunda ? <p><strong>Data tertunda</strong></p> : null}
+            {freshness?.nextVisible ? <p>Pembaruan berikutnya {formatWib(freshness.nextRun)}</p> : null}
             <button type="button" className="button" onClick={onReload} disabled={loading}>
               {loading ? "Memuat…" : "Muat ulang"}
             </button>

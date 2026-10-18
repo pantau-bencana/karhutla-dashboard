@@ -61,7 +61,7 @@ export function ExtraLayers({ layer, view, feeds, province }) {
             Portal inaRISK
           </a>
         </p>
-        <p className="fine">Layanan peta berupa ImageServer, bukan tabel kabupaten. Batas resmi belum dipasang.</p>
+        <p className="fine">Layanan peta berupa ImageServer raster, bukan tabel kabupaten. Raster inaRISK tidak digambar di dasbor ini.</p>
       </Panel>
     );
   }
@@ -69,8 +69,8 @@ export function ExtraLayers({ layer, view, feeds, province }) {
   if (layer === "irbi") {
     return (
       <Panel
-        title="IRBI 2025"
-        note={irbiFeed?.contoh ? "Angka contoh, bukan keluaran buku." : "Tabel buku tahun 2025. Tidak mengikuti filter tanggal."}
+        title="Konteks risiko jangka panjang (IRBI 2025)"
+        note={irbiFeed?.contoh ? "Angka contoh, bukan keluaran buku. Urutan nama." : "Tabel buku tahun 2025, urutan nama. Tidak mengikuti filter tanggal dan bukan hitungan hotspot."}
         feed={irbiFeed}
       >
         <Simple rows={view.irbiRows.map((row) => [row.kabupaten, row.provinsi, formatAngka(row.indeks, 2), row.kelas])} head={["Kabupaten", "Provinsi", "Indeks", "Kelas"]} empty="Tidak ada baris pada cakupan ini." />
@@ -98,26 +98,22 @@ export function ExtraLayers({ layer, view, feeds, province }) {
   if (layer === "fdrs") {
     return (
       <>
-        <Panel title="FDRS" note="Tautan saja. Citra hingga H+7 sesuai produk BMKG. Tabel di bawah masih data contoh." feed={feeds.find((feed) => feed.id === "bmkg")}>
+        <Panel title="FDRS" note="menunggu data resmi BMKG. Tautan saja. Citra hingga H+7 sesuai produk BMKG. Nilai contoh tidak ditampilkan.">
+          <p>menunggu data resmi BMKG</p>
           <p>
             <a href="https://spartan.bmkg.go.id/" target="_blank" rel="noreferrer">
               SPARTAN
             </a>
           </p>
-          <Simple
-            head={["Provinsi", "Tanggal", "FWI", "Kelas"]}
-            empty="Tidak ada baris contoh pada rentang ini."
-            rows={view.bmkgRows.map((row) => [row.provinsi, formatTanggalPendek(row.tanggal), formatAngka(row.fwi, 1), row.kelasFdrs || "—"])}
-          />
         </Panel>
-        <Panel title="FWI ECMWF pada titik wakil" note="Pembanding (data terbuka, bukan resmi). Bukan FDRS BMKG. Horizon mengikuti hari yang layanan isi." feed={compareFwi}>
+        <Panel title="FWI ECMWF pada titik wakil" note="Bukan FDRS BMKG. Horizon mengikuti hari yang layanan isi." feed={compareFwi} compare>
           <Simple
             head={["Kabupaten", "FWI rata-rata", "Hari", "Periode"]}
             empty="Snapshot FWI pembanding belum ada."
             rows={placeFwiTable(fwiGwis).map((row) => [row.kabupaten, formatAngka(row.fwiRata, 1), String(row.hari), `${formatTanggalPendek(row.dari)}–${formatTanggalPendek(row.sampai)}`])}
           />
         </Panel>
-        <Panel title="Cuaca harian terbuka" note="Pembanding (data terbuka, bukan resmi). Bukan FDRS." feed={compareWeather}>
+        <Panel title="Cuaca harian terbuka" note="Bukan FDRS." feed={compareWeather} compare>
           <Simple
             head={["Provinsi", "Tanggal", "Hujan", "Angin"]}
             empty="Snapshot pembanding belum ada."
@@ -149,7 +145,7 @@ export function ExtraLayers({ layer, view, feeds, province }) {
         <p className="fine">Satu kelurahan ibu kota tiap provinsi prioritas. Horizon 3 hari, bukan 14 hari.</p>
       </Panel>
       {rain ? (
-        <Panel title="Hujan dan angin 14 hari pada titik wakil" note="Pembanding (data terbuka, bukan resmi). Bukan peluang atau angin BMKG." feed={compareRain}>
+        <Panel title="Hujan dan angin 14 hari pada titik wakil" note="Pembanding model, bukan prakiraan BMKG. Bukan peluang atau angin BMKG." feed={compareRain} compare>
           <Simple
             head={["Kabupaten", "Hujan (mm)", "Hari di bawah 1 mm", "Angin maks"]}
             empty="Snapshot hujan 14 hari belum ada."
@@ -158,7 +154,7 @@ export function ExtraLayers({ layer, view, feeds, province }) {
           <p className="fine">Titik wakil Satu Data, zona tanggal Asia/Jakarta. Bukan batas kabupaten.</p>
         </Panel>
       ) : (
-        <Panel title="Angin 14 hari pada titik wakil" note="Pembanding (data terbuka, bukan resmi). Kecepatan maksimum harian, bukan arah BMKG." feed={compareRain}>
+        <Panel title="Angin 14 hari pada titik wakil" note="Pembanding model, bukan prakiraan BMKG. Kecepatan maksimum harian, bukan arah BMKG." feed={compareRain} compare>
           <Simple
             head={["Kabupaten", "Angin maks (km/jam)", "Periode"]}
             empty="Snapshot angin 14 hari belum ada."
@@ -183,12 +179,13 @@ function rowsFor(feeds, id, province) {
   return rows.filter((row) => row.provinsi === province);
 }
 
-function Panel({ title, note, feed, children }) {
+function Panel({ title, note, feed, compare = false, children }) {
   return (
     <section className="card">
       <header className="card-head">
         <div>
           <h2>{title}</h2>
+          {compare ? <p>Pembanding, bukan produk BMKG/KLHK</p> : null}
           <p>{note}</p>
         </div>
       </header>

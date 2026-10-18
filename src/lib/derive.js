@@ -1,5 +1,3 @@
-import { statusProvinsi } from "./warning.js";
-
 export function addDays(iso, amount) {
   const [year, month, day] = iso.split("-").map(Number);
   const date = new Date(Date.UTC(year, month - 1, day));
@@ -56,13 +54,21 @@ export function latestIspu(rows) {
   return best;
 }
 
-function provinceNames(priority, hotspots, bmkg) {
+function provinceNames(priority, hotspots) {
   const names = new Set(priority ?? []);
-  for (const row of hotspots ?? []) if (row.provinsi) names.add(row.provinsi);
-  for (const row of bmkg ?? []) if (row.provinsi) names.add(row.provinsi);
+  for (const row of hotspots ?? []) {
+    if (row?.wilayahStatus === "gagal") continue;
+    if (row.provinsi) names.add(row.provinsi);
+  }
   names.delete("Lainnya");
   names.delete("Belum terpetakan");
   return [...names];
+}
+
+function confidenceBucket(row) {
+  if (row?.kelasKepercayaan === "tinggi") return "tinggi";
+  if (row?.kelasKepercayaan === "rendah") return "rendah";
+  return "nominal";
 }
 
 export function deriveDashboard({
@@ -77,7 +83,6 @@ export function deriveDashboard({
   config,
 }) {
   const priority = config?.provinsiPrioritas ?? [];
-  const thresholds = config?.peringatan;
   const rangeInvalid = Boolean(from && to && from > to);
 
   const points = rangeInvalid
@@ -88,35 +93,26 @@ export function deriveDashboard({
         return Number.isFinite(row.lintang) && Number.isFinite(row.bujur);
       });
 
-  const names = provinceNames(priority, hotspots, bmkg);
-  const scoped = province ? [province] : names;
+  const datedHotspots = rangeInvalid
+    ? []
+    : hotspots.filter((row) => inDateRange(row.tanggal, from, to) && (!province || row.provinsi === province));
+  const belumTerverifikasi = datedHotspots.filter((row) => row.wilayahStatus === "gagal").length;
+  const names = province ? [province] : provinceNames(priority, datedHotspots);
 
-  const warnings = scoped
+  const provinsiDeteksi = names
     .map((name) => {
-      const rows = hotspots.filter(
-        (row) => row.provinsi === name && inDateRange(row.tanggal, from, to) && !rangeInvalid,
-      );
-      const fwiValues = bmkg
-        .filter((row) => row.provinsi === name && inDateRange(row.tanggal, from, to) && !rangeInvalid)
-        .map((row) => row.fwi)
-        .filter((value) => Number.isFinite(value));
-      const fwiMax = fwiValues.length ? Math.max(...fwiValues) : null;
-      const stat = statusProvinsi({ hotspotCount: rows.length, fwiMax, thresholds });
+      const rows = datedHotspots.filter((row) => row.provinsi === name && row.wilayahStatus !== "gagal");
       return {
         provinsi: name,
         prioritas: priority.includes(name),
         jumlah: rows.length,
-        tinggi: rows.filter((row) => row.kelasKepercayaan === "tinggi").length,
-        fwiMax,
-        ...stat,
+        rendah: rows.filter((row) => confidenceBucket(row) === "rendah").length,
+        nominal: rows.filter((row) => confidenceBucket(row) === "nominal").length,
+        tinggi: rows.filter((row) => confidenceBucket(row) === "tinggi").length,
       };
     })
-    .sort((a, b) => {
-      const byStatus = (b.status === a.status ? 0 : (statusRank(b.status) - statusRank(a.status)));
-      if (byStatus) return byStatus;
-      if (b.jumlah !== a.jumlah) return b.jumlah - a.jumlah;
-      return a.provinsi.localeCompare(b.provinsi, "id");
-    });
+    .filter((row) => row.jumlah > 0)
+    .sort((a, b) => a.provinsi.localeCompare(b.provinsi, "id"));
 
   const ispuScoped = rangeInvalid
     ? []
@@ -163,29 +159,18 @@ export function deriveDashboard({
     }
   }
 
-  const bmkgNames = province ? [province] : names;
-  const bmkgRows = bmkgNames
-    .map((name) => {
-      const rows = rangeInvalid
-        ? []
-        : bmkg.filter((row) => row.provinsi === name && inDateRange(row.tanggal, from, to) && row.tanggal);
-      if (!rows.length) return null;
-      return rows.reduce((latest, row) => (row.tanggal > latest.tanggal ? row : latest));
-    })
-    .filter(Boolean)
-    .sort((a, b) => (b.fwi ?? -1) - (a.fwi ?? -1));
-
   return {
     rangeInvalid,
     points,
     summary: {
       hotspot: points.length,
       tinggi: points.filter((point) => point.kelasKepercayaan === "tinggi").length,
-      waspadaPlus: warnings.filter((row) => row.status !== "Normal").length,
-      siagaAwas: warnings.filter((row) => row.status === "Siaga" || row.status === "Awas").length,
+      belumTerverifikasi,
+      rendah: datedHotspots.filter((row) => row.wilayahStatus !== "gagal" && confidenceBucket(row) === "rendah").length,
+      nominal: datedHotspots.filter((row) => row.wilayahStatus !== "gagal" && confidenceBucket(row) === "nominal").length,
       ispuTerkini: latestIspu(ispuScoped),
     },
-    warnings,
+    provinsiDeteksi,
     hotspotTrend,
     hotspotSeries,
     ispuTrend,
@@ -194,11 +179,10 @@ export function deriveDashboard({
     irbiRows: irbi
       .filter((row) => !province || row.provinsi === province)
       .slice()
-      .sort((a, b) => (b.indeks ?? 0) - (a.indeks ?? 0)),
-    bmkgRows,
+      .sort(
+        (a, b) =>
+          String(a.kabupaten || "").localeCompare(String(b.kabupaten || ""), "id") ||
+          String(a.provinsi || "").localeCompare(String(b.provinsi || ""), "id"),
+      ),
   };
-}
-
-function statusRank(status) {
-  return { Awas: 3, Siaga: 2, Waspada: 1, Normal: 0 }[status] ?? 0;
 }

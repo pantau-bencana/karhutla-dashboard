@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { deriveDashboard, defaultRange } from "../src/lib/derive.js";
 import { areaContains, assignProvince, INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../src/lib/geo.js";
 import { looksLikeCsv, parseCsv } from "../src/lib/csv.js";
-import { fetchCsv, loadAll, redactFirmsUrl } from "../src/lib/loadData.js";
+import { fetchCsv, loadAll, normalizeHotspotRow, redactFirmsUrl } from "../src/lib/loadData.js";
 import { GLOSSARY } from "../src/lib/glossary.js";
 import { HAZARDS } from "../src/lib/hazards.js";
 import { ispuFromPm25 } from "../src/lib/ispuEstimate.js";
@@ -19,28 +19,16 @@ import {
 import { parseLocation, parseRoute } from "../src/lib/route.js";
 import { clusterCellDegrees, countHotspots, filterHotspotWindow } from "../src/lib/hotspotWindow.js";
 import { parseFirmsCoordinate } from "./indonesia-land.mjs";
-import { arcGisContains, summarizeByDesa, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
+import { arcGisContains, summarizeByDesa, summarizeByWilayah, unverifiedWilayahCount, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
+import { assessFreshness, hotspotSourceLabel } from "../src/lib/freshness.js";
 import { annotatePoints } from "./big-wilayah.mjs";
 import { buildComparisonAttention, normalizePlaceName, PROTOTYPE_LABEL } from "../src/lib/attentionPrototype.js";
 import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { REFRESH_CRON, nextScheduledRun } from "../src/lib/schedule.js";
 import { monitoringSources } from "../src/lib/sourceStatus.js";
-import { levelFromThresholds, statusProvinsi } from "../src/lib/warning.js";
-
 const DISCLAIMER = "Prototipe internal Dit. PD BNPB. Jangan dipublikasikan tanpa persetujuan.";
-const thresholds = {
-  hotspot: { waspada: 8, siaga: 20, awas: 45 },
-  fwi: { waspada: 6, siaga: 13, awas: 21 },
-};
-
-assert.equal(levelFromThresholds(7, thresholds.hotspot), "Normal");
-assert.equal(levelFromThresholds(8, thresholds.hotspot), "Waspada");
-assert.equal(levelFromThresholds(20, thresholds.hotspot), "Siaga");
-assert.equal(levelFromThresholds(45, thresholds.hotspot), "Awas");
-
-const fdrsOnly = statusProvinsi({ hotspotCount: 3, fwiMax: 16, thresholds });
-assert.equal(fdrsOnly.status, "Siaga");
-assert.equal(fdrsOnly.pemicu, "FDRS");
+assert.equal(readFileSync("src/lib/warning.js", "utf8").includes("statusProvinsi"), false);
+assert.equal(readFileSync("src/lib/warning.js", "utf8").includes("Waspada"), false);
 
 const parsed = parseCsv('nama,catatan\n"Riau, daratan","kutipan ""resmi"""\n');
 assert.equal(parsed[0].nama, "Riau, daratan");
@@ -65,9 +53,12 @@ assert.equal(
 const config = JSON.parse(readFileSync("public/config.json", "utf8"));
 assert.equal(config.catatan, DISCLAIMER);
 assert.equal(String(config.firms?.mapKey ?? "").trim(), "", "Jangan commit MAP_KEY FIRMS");
+assert.equal(config.judul, "Prototipe Pemantauan Karhutla");
+assert.equal(config.peringatan, undefined);
+assert.equal(readFileSync("index.html", "utf8").includes("Prototipe Pemantauan Karhutla"), true);
 assert.deepEqual(
   config.datasets.map((dataset) => dataset.id),
-  ["hotspot", "sipongi", "irbi", "bmkg", "ispu"],
+  ["hotspot", "sipongi", "irbi", "ispu"],
 );
 for (const dataset of config.datasets) {
   assert.equal(dataset.contoh, true);
@@ -83,17 +74,23 @@ async function readFiles(url) {
 }
 
 const loaded = await loadAll(config, { resolveUrl: (url) => url, fetchImpl: readFiles });
-assert.equal(loaded.find((feed) => feed.status === "gagal"), undefined);
+assert.deepEqual(
+  loaded.filter((feed) => feed.status === "gagal").map((feed) => feed.id),
+  ["hotspot"],
+);
 const hotspot = loaded.find((feed) => feed.id === "hotspot");
-assert.equal(hotspot.status, "contoh");
-const range = defaultRange(hotspot.rows, 7);
+assert.equal(hotspot.status, "gagal");
+assert.equal(hotspot.contoh, false);
+assert.equal(hotspot.rows.length, 0);
+assert.match(hotspot.error, /contoh tidak ditampilkan/i);
+const sampleHotspots = parseCsv(readFileSync("data/sample/hotspot.csv", "utf8")).map((raw) => normalizeHotspotRow(raw, { contoh: true }));
+const range = defaultRange(sampleHotspots, 7);
 assert.deepEqual(range, { from: "2026-10-10", to: "2026-10-16" });
 
 const view = deriveDashboard({
-  hotspots: hotspot.rows,
+  hotspots: sampleHotspots,
   sipongi: loaded.find((feed) => feed.id === "sipongi").rows,
   irbi: loaded.find((feed) => feed.id === "irbi").rows,
-  bmkg: loaded.find((feed) => feed.id === "bmkg").rows,
   ispu: loaded.find((feed) => feed.id === "ispu").rows,
   province: "",
   from: range.from,
@@ -101,23 +98,15 @@ const view = deriveDashboard({
   config,
 });
 
-const byProvince = Object.fromEntries(view.warnings.map((row) => [row.provinsi, row]));
+const byProvince = Object.fromEntries(view.provinsiDeteksi.map((row) => [row.provinsi, row]));
 assert.equal(view.summary.hotspot, 158);
 assert.equal(byProvince.Riau.jumlah, 72);
-assert.equal(byProvince.Riau.status, "Awas");
-assert.equal(byProvince.Riau.pemicu, "Titik panas dan FDRS");
-assert.equal(byProvince["Kalimantan Tengah"].status, "Siaga");
 assert.equal(byProvince["Sumatera Selatan"].jumlah, 23);
-assert.equal(byProvince["Sumatera Selatan"].status, "Siaga");
-assert.equal(byProvince["Sumatera Selatan"].pemicu, "Titik panas");
-assert.equal(byProvince.Jambi.status, "Waspada");
-assert.equal(byProvince["Kalimantan Barat"].status, "Waspada");
-assert.equal(byProvince["Kalimantan Selatan"].status, "Normal");
-assert.equal(byProvince["Nusa Tenggara Timur"].status, "Siaga");
-assert.equal(byProvince["Nusa Tenggara Timur"].pemicu, "FDRS");
-assert.equal(byProvince["Sumatera Utara"].status, "Normal");
-assert.equal(view.summary.waspadaPlus, 7);
-assert.equal(view.summary.siagaAwas, 4);
+assert.equal(Object.hasOwn(byProvince.Riau, "status"), false);
+const provinceNames = view.provinsiDeteksi.map((row) => row.provinsi);
+assert.deepEqual(provinceNames, [...provinceNames].sort((a, b) => a.localeCompare(b, "id")));
+const irbiNames = view.irbiRows.map((row) => row.kabupaten);
+assert.deepEqual(irbiNames, [...irbiNames].sort((a, b) => a.localeCompare(b, "id")));
 assert.equal(view.summary.ispuTerkini.ispu, 112);
 assert.equal(view.summary.ispuTerkini.provinsi, "Riau");
 assert.equal(view.summary.ispuTerkini.kota, "Pekanbaru");
@@ -128,9 +117,8 @@ assert.ok(view.hotspotSeries.includes("Lainnya"));
 assert.equal(view.hotspotTrend.at(-1).tanggal, "2026-10-16");
 
 const riau = deriveDashboard({
-  hotspots: hotspot.rows,
+  hotspots: sampleHotspots,
   ispu: loaded.find((feed) => feed.id === "ispu").rows,
-  bmkg: loaded.find((feed) => feed.id === "bmkg").rows,
   sipongi: [],
   irbi: loaded.find((feed) => feed.id === "irbi").rows,
   province: "Riau",
@@ -139,13 +127,12 @@ const riau = deriveDashboard({
   config,
 });
 assert.equal(riau.summary.hotspot, 72);
-assert.equal(riau.warnings.length, 1);
+assert.equal(riau.provinsiDeteksi.length, 1);
 assert.ok(riau.irbiRows.every((row) => row.provinsi === "Riau"));
 
 const oneDay = deriveDashboard({
-  hotspots: hotspot.rows,
+  hotspots: sampleHotspots,
   ispu: loaded.find((feed) => feed.id === "ispu").rows,
-  bmkg: loaded.find((feed) => feed.id === "bmkg").rows,
   sipongi: [],
   irbi: [],
   province: "",
@@ -194,9 +181,34 @@ const fallback = await loadAll(liveConfig, {
   },
 });
 const fallbackHotspot = fallback.find((feed) => feed.id === "hotspot");
-assert.equal(fallbackHotspot.status, "cadangan");
+assert.equal(fallbackHotspot.status, "gagal");
+assert.equal(fallbackHotspot.rows.length, 0);
 assert.match(fallbackHotspot.error, /FIRMS gagal/);
-assert.ok(fallbackHotspot.rows.length > 100);
+assert.match(fallbackHotspot.error, /contoh tidak dipakai/i);
+const snapCsv = "tanggal,waktu,lintang,bujur,provinsi,kabupaten,satelit,kepercayaan\n2026-10-17,1200,0.5,101.4,Riau,Pelalawan,N,n\n";
+const snap = await loadAll(liveConfig, {
+  manifest: {
+    datasets: {
+      hotspot: {
+        file: "data/live/hotspot.csv",
+        status: "ok",
+        fetched_at: "2026-10-17T22:00:00.000Z",
+        observed_at: "2026-10-17T12:00:00.000Z",
+      },
+    },
+  },
+  resolveUrl: (url) => url,
+  fetchImpl: async (url) => {
+    if (String(url).includes("firms.modaps.eosdis.nasa.gov")) throw new Error("snapshot tidak boleh memanggil FIRMS");
+    if (String(url).includes("data/live/hotspot.csv")) return { ok: true, status: 200, text: async () => snapCsv };
+    return readFiles(url);
+  },
+});
+const snapHotspot = snap.find((feed) => feed.id === "hotspot");
+assert.equal(snapHotspot.asal, "snapshot");
+assert.equal(snapHotspot.contoh, false);
+assert.equal(snapHotspot.rows.length, 1);
+assert.equal(snapHotspot.rows[0].provinsi, "Riau");
 
 const broken = structuredClone(config);
 const ispu = broken.datasets.find((dataset) => dataset.id === "ispu");
@@ -211,7 +223,8 @@ const partial = await loadAll(broken, {
 });
 assert.equal(partial.find((feed) => feed.id === "ispu").status, "gagal");
 assert.match(partial.find((feed) => feed.id === "ispu").error, /404/);
-assert.ok(partial.find((feed) => feed.id === "hotspot").rows.length > 100);
+assert.equal(partial.find((feed) => feed.id === "hotspot").rows.length, 0);
+assert.equal(partial.find((feed) => feed.id === "hotspot").status, "gagal");
 
 await assert.rejects(
   () =>
@@ -250,8 +263,9 @@ assert.equal(parseRoute("#/glosarium/ispu"), "glosarium");
 
 const described = monitoringSources({ config, feeds: loaded });
 assert.equal(described.find((row) => row.id === "firms-api").status, "belum terhubung");
-assert.equal(described.find((row) => row.id === "hotspot").status, "contoh");
-for (const id of ["sipongi", "irbi", "bmkg", "ispu"]) {
+assert.equal(described.find((row) => row.id === "hotspot").status, "belum terhubung");
+assert.match(described.find((row) => row.id === "hotspot").catatan, /contoh tidak ditampilkan/i);
+for (const id of ["sipongi", "irbi", "ispu"]) {
   assert.equal(described.find((row) => row.id === id).status, "contoh", id);
   assert.equal(described.find((row) => row.id === id).tautan, "", id);
 }
@@ -266,7 +280,7 @@ assert.match(describedLive.find((row) => row.id === "hotspot").catatan, /tidak s
 
 const describedFallback = monitoringSources({ config: liveConfig, feeds: fallback });
 assert.equal(describedFallback.find((row) => row.id === "firms-api").status, "belum terhubung");
-assert.match(describedFallback.find((row) => row.id === "hotspot").catatan, /FIRMS gagal|cadangan/i);
+assert.match(describedFallback.find((row) => row.id === "hotspot").catatan, /FIRMS gagal/);
 
 const configured = monitoringSources({
   config: {
@@ -443,7 +457,62 @@ assert.equal(singapore.stats.droppedOutside, 1);
 const gagal = await annotatePoints([{ lon: 106.8, lat: -6.2 }], { fetchImpl: async () => { throw new Error("timeout"); }, concurrency: 1 });
 assert.equal(gagal.rows.length, 1);
 assert.equal(gagal.rows[0].wilayahStatus, "gagal");
-assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /Confidence deteksi satelit/);
+const mixedWilayah = [
+  { ...gagal.rows[0], kelasKepercayaan: "tinggi", provinsi: "Riau", kabupaten: "Pelalawan", tanggal: "2026-10-16", lintang: 0.5, bujur: 101.4 },
+  { provinsi: "Riau", kabupaten: "Pelalawan", kecamatan: "Bandar Sei Kijang", kelasKepercayaan: "nominal", wilayahStatus: "ok", desa: "Hangtuah", tanggal: "2026-10-16", lintang: 0.5, bujur: 101.5 },
+  { provinsi: "Jambi", kabupaten: "Tebo", kecamatan: "Tebo Tengah", kelasKepercayaan: "rendah", wilayahStatus: "gagal", tanggal: "2026-10-16", lintang: -1.5, bujur: 102.4 },
+];
+assert.equal(unverifiedWilayahCount(mixedWilayah), 2);
+const kabCounts = summarizeByWilayah(mixedWilayah, "kabupaten");
+assert.equal(kabCounts.length, 1);
+assert.equal(kabCounts[0].kabupaten, "Pelalawan");
+assert.equal(kabCounts[0].jumlah, 1);
+const provinsiGagal = deriveDashboard({
+  hotspots: mixedWilayah,
+  from: "2026-10-16",
+  to: "2026-10-16",
+  config,
+});
+assert.equal(provinsiGagal.summary.belumTerverifikasi, 2);
+assert.equal(provinsiGagal.provinsiDeteksi.find((row) => row.provinsi === "Riau").jumlah, 1);
+assert.equal(provinsiGagal.provinsiDeteksi.some((row) => row.provinsi === "Jambi"), false);
+const staleClock = assessFreshness({
+  observedAt: "2026-10-17T19:25:00.000Z",
+  nextRun: "2026-10-18T00:00:00.000Z",
+  now: new Date("2026-10-18T03:30:00.000Z"),
+});
+assert.equal(staleClock.tertunda, true);
+assert.equal(staleClock.nextVisible, false);
+const freshClock = assessFreshness({
+  observedAt: "2026-10-18T03:00:00.000Z",
+  nextRun: "2026-10-18T06:00:00.000Z",
+  now: new Date("2026-10-18T03:30:00.000Z"),
+});
+assert.equal(freshClock.tertunda, false);
+assert.equal(freshClock.nextVisible, true);
+assert.equal(hotspotSourceLabel({ asal: "snapshot", status: "berhasil" }, "VIIRS_SNPP_NRT"), "VIIRS S-NPP NRT (snapshot ±3 jam)");
+const boardSource = readFileSync("src/components/HotspotBoard.jsx", "utf8");
+assert.match(boardSource, /Confidence deteksi satelit/);
+assert.match(boardSource, /Lintasan satelit terakhir/);
+assert.match(boardSource, /nama desa tersedia untuk/);
+assert.match(boardSource, /titik belum terverifikasi wilayah/);
+assert.match(boardSource, /keyakinan deteksi, bukan intensitas atau bahaya/);
+const dashSource = readFileSync("src/components/DashboardView.jsx", "utf8");
+assert.match(dashSource, /Jumlah deteksi hotspot \(bukan status\)/);
+assert.equal(dashSource.includes("Indikator prototipe"), false);
+assert.equal(dashSource.includes("Waspada"), false);
+assert.equal(dashSource.includes("FIRMS langsung"), false);
+assert.equal(dashSource.includes("FWI maks"), false);
+const extraSource = readFileSync("src/components/ExtraLayers.jsx", "utf8");
+assert.equal(extraSource.includes("Batas resmi belum dipasang"), false);
+assert.match(extraSource, /menunggu data resmi BMKG/);
+assert.match(extraSource, /Pembanding, bukan produk BMKG\/KLHK/);
+assert.equal(extraSource.includes("bmkgRows"), false);
+assert.match(readFileSync("src/components/ForecastPanel.jsx", "utf8"), /Pembanding, bukan produk BMKG\/KLHK/);
+assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /Nama wilayah dari kueri BIG/);
+assert.equal(readFileSync("scripts/refresh-live-data.mjs", "utf8").includes("Kabupaten tidak diisi"), false);
+assert.equal(readFileSync("src/components/LogicPage.jsx", "utf8").includes("Batas administrasi resmi belum dipasang"), false);
+assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /Konteks risiko jangka panjang \(IRBI 2025\)/);
 assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /FILTER_INCOMPLETE/);
 assert.match(readFileSync("src/lib/bigWilayah.js", "utf8"), /Penyaringan wilayah dan batas Indonesia pada pembaruan ini tidak lengkap/);
 assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /big_filter_incomplete/);

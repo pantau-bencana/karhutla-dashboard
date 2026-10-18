@@ -11,9 +11,10 @@ import { defaultRange, deriveDashboard } from "./lib/derive.js";
 import { hazardById } from "./lib/hazards.js";
 import { loadAll } from "./lib/loadData.js";
 import { parseLocation } from "./lib/route.js";
-import { MANIFEST_POLL_MINUTES, nextScheduledRun } from "./lib/schedule.js";
+import { assessFreshness } from "./lib/freshness.js";
+import { MANIFEST_POLL_MINUTES } from "./lib/schedule.js";
 
-const DEFAULT_TITLE = "Dashboard Peringatan Dini Karhutla Nasional";
+const DEFAULT_TITLE = "Prototipe Pemantauan Karhutla";
 
 function useLocation() {
   const initial = parseLocation(window.location.hash);
@@ -112,7 +113,11 @@ export function App() {
   }, [config, feeds, province, from, to]);
 
   const manifest = feeds.manifest || null;
-  const clock = manifest || { next_run: nextScheduledRun() };
+  const hotspotFeed = feeds.find((feed) => feed.id === "hotspot");
+  const freshness = assessFreshness({
+    observedAt: hotspotFeed?.observedAt || manifest?.datasets?.hotspot?.observed_at || "",
+    nextRun: manifest?.next_run || "",
+  });
   const built = hazardById(hazard).siap && page !== "glosarium";
   const title = page === "glosarium" ? "Glosarium" : `${hazardById(hazard).nama}`;
   const subtitle =
@@ -128,7 +133,8 @@ export function App() {
         eyebrow={config?.instansi || "Dit. PD BNPB"}
         title={title}
         subtitle={subtitle}
-        manifest={clock}
+        manifest={manifest}
+        freshness={freshness}
         onReload={() => reload()}
         loading={loading}
         page={page}
@@ -140,7 +146,7 @@ export function App() {
         configError && !config ? (
           <ConfigError message={configError} />
         ) : (
-          <SummaryPage config={config} feeds={feeds} manifest={manifest} />
+          <SummaryPage config={config} feeds={feeds} manifest={manifest} freshness={freshness} />
         )
       ) : null}
       {built && page === "peta" ? (
@@ -159,6 +165,7 @@ export function App() {
             to={to}
             setTo={setTo}
             view={view}
+            freshness={freshness}
           />
         )
       ) : null}
