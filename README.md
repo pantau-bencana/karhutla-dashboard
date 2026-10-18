@@ -32,7 +32,7 @@ npm run preview
 
 Header memuat tab bahaya **Karhutla**, **Banjir**, dan **Gunung Api**, lalu halaman **Ringkasan**, **Peta dan Data**, **Logika Pemantauan**, **Sumber Data**, dan **Glosarium**. Karhutla yang diisi. Banjir dan Gunung Api menampilkan status **Belum terhubung / menunggu data** tanpa angka buatan. Rute memakai hash (`#/`, `#/karhutla/peta`, `#/logika`, `#/glosarium/ispu`) supaya tetap benar di subfolder GitHub Pages.
 
-GitHub Actions mengambil sumber publik tiap 3 jam (cron `0 */3 * * *` UTC, yaitu 07.00, 10.00, 13.00, 16.00, 19.00, 22.00, 01.00, dan 04.00 WIB) lewat [`.github/workflows/refresh-data.yml`](.github/workflows/refresh-data.yml). Hasilnya disimpan di `data/live/` bersama manifes. Situs membaca snapshot itu lebih dulu, lalu berkas contoh bila snapshot tidak ada. Header menampilkan waktu ambil dan jadwal berikutnya dalam WIB.
+GitHub Actions mengambil sumber publik tiap 3 jam (cron `17 */3 * * *` UTC, menit 17, yaitu 07.17, 10.17, 13.17, 16.17, 19.17, 22.17, 01.17, dan 04.17 WIB) lewat [`.github/workflows/refresh-data.yml`](.github/workflows/refresh-data.yml). Hasilnya disimpan di `data/live/` bersama manifes. Situs membaca snapshot itu lebih dulu, lalu berkas contoh bila snapshot tidak ada. Header menampilkan waktu ambil dan jadwal berikutnya dalam WIB.
 
 Alur: sumber → pengambilan terjadwal → snapshot → dasbor → status peringatan dini (prototipe, bukan peringatan resmi).
 

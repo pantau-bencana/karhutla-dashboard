@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { flattenBmkgForecast, bmkgForecastUrl, BMKG_LOCATIONS, BMKG_DOCS_URL } from "../src/lib/bmkgForecast.js";
@@ -678,6 +678,7 @@ async function fetchFirms() {
     droppedOutsideIndonesia: annotated.stats.droppedOutside,
     invalidCoordinates: invalid,
     wilayahGagal: annotated.stats.gagal,
+    bigQueries: annotated.stats.queries,
     bigFilterIncomplete: annotated.stats.gagal > 0,
     wilayahDesa: annotated.stats.desa,
     wilayahTanpaDesa: annotated.stats.tanpaDesa,
@@ -850,6 +851,23 @@ function tautanEntry(source) {
   return entry;
 }
 
+let hotspotCountsLogged = false;
+
+function countText(value) {
+  return value == null || value === "" ? "tidak-ada" : String(value);
+}
+
+function logHotspotCounts(entry) {
+  const line = `wilayah_gagal=${countText(entry?.wilayah_gagal)} big_queries=${countText(entry?.big_queries)}`;
+  console.log(line);
+  writeFileSync("/tmp/refresh-hotspot-counts.txt", `${line}\n`);
+  if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${line}\n`);
+  if (process.env.GITHUB_OUTPUT) {
+    appendFileSync(process.env.GITHUB_OUTPUT, `wilayah_gagal=${countText(entry?.wilayah_gagal)}\nbig_queries=${countText(entry?.big_queries)}\n`);
+  }
+  hotspotCountsLogged = true;
+}
+
 function material(entry) {
   return JSON.stringify({
     status: entry?.status,
@@ -971,6 +989,7 @@ async function main() {
       hotspotEntry.dropped_outside_indonesia = result.droppedOutsideIndonesia;
       hotspotEntry.invalid_coordinates = result.invalidCoordinates;
       hotspotEntry.wilayah_gagal = result.wilayahGagal;
+      hotspotEntry.big_queries = result.bigQueries;
       hotspotEntry.big_filter_incomplete = result.bigFilterIncomplete;
       hotspotEntry.wilayah_desa = result.wilayahDesa;
       hotspotEntry.wilayah_tanpa_desa = result.wilayahTanpaDesa;
@@ -1041,6 +1060,7 @@ async function main() {
     datasets,
   };
 
+  logHotspotCounts(datasets.hotspot);
   const changed = !previous || Object.keys(next.datasets).some((id) => material(next.datasets[id]) !== material(previous.datasets?.[id]));
   if (!changed) {
     console.log("Data tidak berubah. Manifes tidak ditulis ulang.");
@@ -1094,8 +1114,10 @@ async function comparisonOnly() {
   console.log("Cuplikan pembanding ditulis. Status kunci FIRMS tidak diubah.");
 }
 
-const run = process.argv.includes("--comparison-only") ? comparisonOnly : main;
+const comparisonOnlyRun = process.argv.includes("--comparison-only");
+const run = comparisonOnlyRun ? comparisonOnly : main;
 run().catch((error) => {
   console.error(redactSecret(error?.stack || error?.message || error, firmsKey));
+  if (!comparisonOnlyRun && !hotspotCountsLogged) logHotspotCounts(null);
   process.exitCode = 1;
 });

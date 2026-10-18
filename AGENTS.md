@@ -23,7 +23,7 @@ Tidak ada kunci, layanan berbayar, atau konfigurasi lain. Menggabungkan pull req
 
 ## Tumpukan
 
-Vite 6, React 18, Leaflet, Recharts. Situs statis. Rute hash. GitHub Pages lewat Actions, prefiks `/karhutla-dashboard/`. Pembaruan terjadwal: workflow cron `0 */3 * * *` UTC menulis `data/live/` dan manifes; situs membaca snapshot itu lalu berkas contoh per dataset. Secret Actions hanya `FIRMS_MAP_KEY`. Pada komit `main` saat berkas skill ini pertama kali ditambahkan, jadwal itu belum tentu sudah tergabung. Ikuti kontraknya. Jangan membuat jalur data lain.
+Vite 6, React 18, Leaflet, Recharts. Situs statis. Rute hash. GitHub Pages lewat Actions, prefiks `/karhutla-dashboard/`. Pembaruan terjadwal: workflow cron `17 */3 * * *` UTC (menit 17) menulis `data/live/` dan manifes; situs membaca snapshot itu lalu berkas contoh per dataset. Secret Actions hanya `FIRMS_MAP_KEY`. Pada komit `main` saat berkas skill ini pertama kali ditambahkan, jadwal itu belum tentu sudah tergabung. Ikuti kontraknya. Jangan membuat jalur data lain.
 
 ## Prinsip
 

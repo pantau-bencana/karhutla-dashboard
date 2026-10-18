@@ -1,15 +1,17 @@
 # Mengambil sumber publik di sisi server, lalu menyimpan CSV/JSON tanpa secret.
-# Jadwal UTC: menit 0 setiap 3 jam. Ubah cron di bawah ini bila perlu.
-# WIB (UTC+7): 07.00, 10.00, 13.00, 16.00, 19.00, 22.00, 01.00, 04.00.
+# Jadwal UTC: menit 17 setiap 3 jam. Jangan kembalikan ke menit 0; GitHub sering menggugurkan jadwal itu.
+# WIB (UTC+7): 07.17, 10.17, 13.17, 16.17, 19.17, 22.17, 01.17, 04.17.
 # String cron harus sama dengan REFRESH_CRON di src/lib/schedule.js.
 # Push dari GITHUB_TOKEN tidak memicu workflow Pages lain, jadi deploy dilakukan di sini
 # hanya bila isi data berubah dan ref-nya persis refs/heads/main.
-# workflow_dispatch pada cabang lain tidak men-deploy.
+# workflow_dispatch pada cabang lain tidak men-deploy dan tidak menulis ke main.
+# Sebelum push: git fetch, lalu git pull --rebase, diulang bila push ditolak.
+# Bila rebase bentrok, snapshot dibuat ulang. Jangan force-push.
 name: Perbarui data
 
 on:
   schedule:
-    - cron: "0 */3 * * *"
+    - cron: "17 */3 * * *"
   workflow_dispatch:
 
 permissions:
@@ -26,9 +28,13 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.commit.outputs.changed }}
+      wilayah_gagal: ${{ steps.commit.outputs.wilayah_gagal }}
+      big_queries: ${{ steps.commit.outputs.big_queries }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -46,18 +52,75 @@ jobs:
 
       - name: Commit bila isi data berubah
         id: commit
+        env:
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/live data/static
-          if git diff --cached --quiet; then
+          branch="${GITHUB_REF_NAME}"
+
+          publish_counts() {
+            local line gagal queries
+            if [[ ! -f /tmp/refresh-hotspot-counts.txt ]]; then
+              line="wilayah_gagal=tidak-ada big_queries=tidak-ada"
+            else
+              line="$(tr -d '\r\n' < /tmp/refresh-hotspot-counts.txt)"
+            fi
+            echo "$line"
+            if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
+              printf '%s\n' "$line" >> "$GITHUB_STEP_SUMMARY"
+            fi
+            gagal="${line#wilayah_gagal=}"
+            gagal="${gagal%% big_queries=*}"
+            queries="${line##*big_queries=}"
+            {
+              echo "wilayah_gagal=${gagal}"
+              echo "big_queries=${queries}"
+            } >> "$GITHUB_OUTPUT"
+          }
+
+          commit_snapshot() {
+            git add data/live data/static
+            if git diff --cached --quiet; then
+              return 1
+            fi
+            git commit -m "Perbarui snapshot data karhutla"
+          }
+
+          if ! commit_snapshot; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "Tidak ada perubahan data."
-          else
-            git commit -m "Perbarui snapshot data karhutla"
-            git push
-            echo "changed=true" >> "$GITHUB_OUTPUT"
+            publish_counts
+            exit 0
           fi
+
+          for attempt in 1 2 3 4; do
+            git fetch origin "$branch"
+            if git pull --rebase origin "$branch"; then
+              if git push origin "HEAD:${branch}"; then
+                echo "changed=true" >> "$GITHUB_OUTPUT"
+                echo "Snapshot terdorong ke ${branch} (percobaan ${attempt})."
+                publish_counts
+                exit 0
+              fi
+              echo "Push ditolak (percobaan ${attempt}). Ambil ulang lalu coba lagi."
+            else
+              echo "Rebase bentrok (percobaan ${attempt}). Snapshot dibuat ulang."
+              git rebase --abort || true
+              git reset --hard "origin/${branch}"
+              node scripts/refresh-live-data.mjs
+              if ! commit_snapshot; then
+                echo "changed=false" >> "$GITHUB_OUTPUT"
+                echo "Tidak ada perubahan data setelah dibuat ulang."
+                publish_counts
+                exit 0
+              fi
+            fi
+          done
+          publish_counts
+          echo "Gagal mendorong snapshot setelah 4 percobaan."
+          exit 1
 
       - name: Setup Pages
         if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
