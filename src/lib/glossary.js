@@ -45,7 +45,7 @@ export const GLOSSARY = [
     istilah: "CAMS",
     nama: "Copernicus Atmosphere Monitoring Service",
     penjelasan: "Layanan pemantauan atmosfer Copernicus yang menjadi salah satu sumber model pada API kualitas udara Open-Meteo.",
-    penggunaan: "Hanya pada lapisan pembanding ISPU perkiraan, bukan pada ISPU resmi.",
+    penggunaan: "Berkas model PM2.5 boleh tersimpan sebagai pembanding. Lapisan Kualitas Udara (ISPU) tidak menampilkan prakiraan CAMS dan tidak mengubahnya menjadi ISPU.",
     rujukan: "https://atmosphere.copernicus.eu/",
     rujukanLabel: "atmosphere.copernicus.eu",
   },
@@ -206,7 +206,7 @@ export const GLOSSARY = [
     nama: "Indeks Standar Pencemar Udara",
     penjelasan:
       "Indeks resmi mutu udara di Indonesia. Permen LHK No. 14 Tahun 2020 menetapkan kategori Baik, Sedang, Tidak Sehat, Sangat Tidak Sehat, dan Berbahaya, serta cara mengubah konsentrasi menjadi angka indeks.",
-    penggunaan: "Portal ISPU belum terintegrasi. Lapisan pembanding menghitung perkiraan dari PM2.5 model dan diberi label bukan ISPU resmi.",
+    penggunaan: "Lapisan Kualitas Udara (ISPU) di dalam Karhutla menampilkan stasiun resmi bila tersambung. Tanpa API, statusnya belum terhubung. Data contoh dan model tidak diisi sebagai ISPU.",
     rujukan: "https://peraturan.bpk.go.id/Details/163466/permen-lhk-no-14-tahun-2020",
     rujukanLabel: "Permen LHK No. 14 Tahun 2020",
   },
@@ -216,7 +216,7 @@ export const GLOSSARY = [
     nama: "Kementerian Lingkungan Hidup",
     penjelasan:
       "Portal ISPU saat ini berada di ispu.kemenlh.go.id. Peraturan ISPU tahun 2020 diterbitkan oleh Kementerian Lingkungan Hidup dan Kehutanan. Dasbor mengikuti nama yang tertulis pada situs dan pada peraturan itu.",
-    penggunaan: "ISPU resmi hanya ditautkan. Tidak ada angka stasiun yang ditarik dari portal.",
+    penggunaan: "Dua halaman resmi ditautkan dari lapisan Kualitas Udara (ISPU). Tidak ada angka stasiun yang ditarik dari portal.",
     rujukan: "https://ispu.kemenlh.go.id/app/#/",
     rujukanLabel: "ispu.kemenlh.go.id",
   },
@@ -261,7 +261,7 @@ export const GLOSSARY = [
     nama: "Pembanding (data terbuka, bukan resmi)",
     penjelasan:
       "Lapisan dari sumber terbuka yang diletakkan di samping produk resmi yang belum bisa diunduh. Nilainya tidak menggantikan angka instansi dan tidak masuk daftar wilayah perhatian.",
-    penggunaan: "Open-Meteo untuk cuaca harian dan untuk perkiraan ISPU dari PM2.5. Keduanya memakai lencana pembanding.",
+    penggunaan: "Open-Meteo untuk cuaca harian. Pengukuran stasiun terbuka, bila ada kunci, hanya pada bagian Data Pembanding dan tetap dalam µg/m³.",
     rujukan: "https://open-meteo.com/en/licence",
     rujukanLabel: "Lisensi Open-Meteo",
   },
@@ -271,7 +271,7 @@ export const GLOSSARY = [
     nama: "PM2.5 dan PM10",
     penjelasan:
       "Partikulat di udara dengan diameter aerodinamis di bawah 2,5 mikrometer (PM2.5) atau 10 mikrometer (PM10). Keduanya parameter pada ISPU. Peraturan memakai rata-rata 24 jam.",
-    penggunaan: "Lapisan pembanding memakai rata-rata harian PM2.5 dari model, lalu menghitung perkiraan ISPU. PM10 tidak dipakai untuk angka itu.",
+    penggunaan: "Pada ISPU resmi, PM2.5 dapat menjadi parameter kritis. Konsentrasi model tidak ditampilkan sebagai nilai atau kategori ISPU.",
     rujukan: "https://peraturan.bpk.go.id/Details/163466/permen-lhk-no-14-tahun-2020",
     rujukanLabel: "Permen LHK No. 14 Tahun 2020",
   },

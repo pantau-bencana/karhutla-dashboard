@@ -9,10 +9,8 @@ import { parseFirmsCoordinate } from "./indonesia-land.mjs";
 import { BIG_EDITION_NOTE, BIG_SOURCE_LABEL, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
 import { annotatePoints, rowsToHotspotCsv } from "./big-wilayah.mjs";
 import { provinceCenters } from "../src/lib/geo.js";
-import { ispuFromPm25 } from "../src/lib/ispuEstimate.js";
 import { REFRESH_CRON, REFRESH_INTERVAL_HOURS, nextScheduledRun } from "../src/lib/schedule.js";
 import { SMOKE_IMAGE_URL, SMOKE_URL, SOURCES } from "../src/lib/sourceCatalog.js";
-import { kategoriIspu } from "../src/lib/warning.js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const liveDir = resolve(root, "data/live");
@@ -270,22 +268,18 @@ async function fetchOpenMeteoAir(names) {
       buckets.set(day, current);
     });
     for (const [tanggal, bucket] of buckets) {
-      if (!bucket.pm25.length) continue;
-      const mean = bucket.pm25.reduce((sum, value) => sum + value, 0) / bucket.pm25.length;
-      const ispu = ispuFromPm25(mean);
+      if (!bucket.pm25.length && !bucket.pm10.length) continue;
+      const mean = (values) => values.reduce((sum, value) => sum + value, 0) / values.length;
       rows.push({
         tanggal,
         provinsi: points[index].name,
-        kota: "Titik tengah provinsi",
-        ispu: ispu ?? "",
-        kategori: kategoriIspu(ispu),
-        parameter_dominan: "PM2.5 (perkiraan)",
-        pm25: mean.toFixed(1),
-        keterangan: `Rata-rata ${bucket.pm25.length} jam. Bukan ISPU stasiun KLH.`,
+        pm25_ugm3: bucket.pm25.length ? mean(bucket.pm25).toFixed(1) : "",
+        pm10_ugm3: bucket.pm10.length ? mean(bucket.pm10).toFixed(1) : "",
+        keterangan: "Konsentrasi model pada titik tengah provinsi. Bukan ISPU dan tidak ditampilkan pada lapisan Kualitas Udara (ISPU).",
       });
     }
   }
-  const headers = ["tanggal", "provinsi", "kota", "ispu", "kategori", "parameter_dominan", "pm25", "keterangan"];
+  const headers = ["tanggal", "provinsi", "pm25_ugm3", "pm10_ugm3", "keterangan"];
   const dates = rows.map((row) => row.tanggal).sort();
   return {
     body: toCsv(headers, rows),

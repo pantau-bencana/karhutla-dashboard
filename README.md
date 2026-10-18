@@ -2,7 +2,7 @@
 
 Prototipe internal Dit. PD BNPB. Jangan dipublikasikan tanpa persetujuan.
 
-Dasbor statis untuk memantau kebakaran hutan dan lahan (karhutla): sebaran titik panas, status peringatan per provinsi, tren ISPU, rekap SiPongi, indeks IRBI, dan cuaca/FDRS. Antarmuka berbahasa Indonesia. Tidak ada server aplikasi. Peramban mengambil CSV langsung dari berkas contoh atau dari tautan yang Anda isi.
+Dasbor statis untuk memantau kebakaran hutan dan lahan (karhutla): sebaran titik panas, status peringatan per provinsi, lapisan Kualitas Udara (ISPU), rekap SiPongi, indeks IRBI, dan cuaca/FDRS. Antarmuka berbahasa Indonesia. Tidak ada server aplikasi. Peramban mengambil CSV langsung dari berkas contoh atau dari tautan yang Anda isi.
 
 Angka dan status pada prototipe ini **bukan** peringatan dini resmi BNPB, BMKG, atau instansi sumber.
 
@@ -139,7 +139,7 @@ Kelas FDRS pada berkas contoh (`Rendah` sampai `Ekstrem`) diselaraskan dengan am
 
 Kepercayaan tinggi = teks `high` / `tinggi` / `h`, atau angka ≥ 80 (kebiasaan MODIS). `nominal` dan `low` mengikuti teks VIIRS; angka 30–79 dianggap nominal.
 
-ISPU terkini = nilai **tertinggi pada tanggal terakhir** yang ada datanya di cakupan filter. Kategori ISPU memakai rentang yang umum dipakai: 0–50 Baik, 51–100 Sedang, 101–200 Tidak Sehat, 201–300 Sangat Tidak Sehat, di atas 300 Berbahaya.
+Kualitas Udara (ISPU) ada di dalam Karhutla, bukan sebagai modul utama. Periode yang ada hanya Hari Ini dan Historis. ISPU resmi tidak punya API publik; tanpa stasiun yang tersambung, peta dan tabel menulis tidak tersedia serta menautkan portal KLH. Kategori resmi, bila data stasiun ada: 0–50 Baik, 51–100 Sedang, 101–200 Tidak Sehat, 201–300 Sangat Tidak Sehat, di atas 300 Berbahaya. Angka contoh dan konsentrasi model tidak ditampilkan sebagai ISPU.
 
 ## Kolom CSV
 

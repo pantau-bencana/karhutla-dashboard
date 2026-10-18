@@ -187,10 +187,11 @@ export const SOURCES = [
     id: "ispu",
     nama: "ISPU",
     instansi: "Kementerian Lingkungan Hidup",
-    fungsi: "Menunjukkan kualitas udara resmi. Riwayat sepekan resmi belum tersedia di dasbor.",
+    fungsi: "Menunjukkan kualitas udara di stasiun pemantau pada lapisan Kualitas Udara (ISPU) di dalam Karhutla. Bukan bukti tunggal bahwa polutan berasal dari karhutla.",
     officialUrl: "https://ispu.kemenlh.go.id/app/#/",
     officialLabel: "Portal ISPU",
     extraUrls: [
+      ["Analisis kawasan ISPU", "https://ispu.kemenlh.go.id/kawasan/analytic"],
       ["Permen LHK No. 14 Tahun 2020", "https://peraturan.bpk.go.id/Details/163466/permen-lhk-no-14-tahun-2020"],
     ],
     access: "Tautan portal",
@@ -198,19 +199,19 @@ export const SOURCES = [
     kind: "tautan",
     updateType: "",
     limitation:
-      "Tidak ada dokumentasi API publik. Token yang tertanam di aplikasi web tidak dipakai. Angka ISPU pada grafik lama masih data contoh. Tren resmi sepekan tidak ditampilkan.",
+      "Tidak ada dokumentasi API publik. Token yang tertanam di aplikasi web tidak dipakai. Tanpa stasiun resmi, Hari Ini dan Historis ditulis tidak tersedia. Tidak ada prediksi ISPU.",
     comparisons: [
       {
         id: "ispu_pembanding",
-        nama: "ISPU perkiraan dari PM2.5",
+        nama: "PM2.5 model (CAMS), di luar lapisan ISPU",
         instansi: "Open-Meteo / CAMS",
         provider: "Open-Meteo Air Quality",
-        fungsi: "Pembanding kualitas udara. Bukan ISPU stasiun KLH.",
+        fungsi: "Berkas konsentrasi model. Tidak ditampilkan pada Kualitas Udara (ISPU) dan tidak diubah menjadi nilai atau kategori ISPU.",
         officialUrl: "https://open-meteo.com/en/docs/air-quality-api",
         license: "CC BY 4.0. Model udara dari Copernicus Atmosphere Monitoring Service (CAMS).",
         method:
-          "Rata-rata harian PM2.5 pada titik tengah kasar provinsi diubah ke angka ISPU dengan batas PM2.5 pada Lampiran Permen LHK No. 14 Tahun 2020. Contoh di peraturan: 31,4 µg/m³ menjadi 70. Ini perkiraan, bukan pengukuran stasiun.",
-        updateType: "Estimasi",
+          "Rata-rata harian PM2.5 dan PM10 dalam µg/m³ pada titik tengah kasar provinsi. Bukan pengukuran stasiun dan bukan ISPU.",
+        updateType: "Model",
         expectedMaxAgeHours: 36,
         access: "API",
       },

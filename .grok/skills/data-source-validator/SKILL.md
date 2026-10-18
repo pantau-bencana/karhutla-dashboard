@@ -43,7 +43,7 @@ Smoke images waiting on BMKG's written permission: **Tautan saja – menunggu iz
 Do not reopen these without a new official document:
 
 - SiPongi+ (`https://sipongi.gakkum.kehutanan.go.id/`) is a portal, not an API. **Tautan saja**. The old menlhk host does not resolve.
-- Official ISPU (`https://ispu.kemenlh.go.id/app/`) has no documented public API. Do not use a bearer token from the bundle. Breakpoints for an estimated comparison come from Permen LHK No. 14 Tahun 2020 and must be labeled perkiraan, not KLH ISPU.
+- Official ISPU (`https://ispu.kemenlh.go.id/app/` and `https://ispu.kemenlh.go.id/kawasan/analytic`) has no documented public API. Do not use a bearer token from the bundle. The Karhutla layer is named exactly `Kualitas Udara (ISPU)` and has only Hari Ini and Historis. Do not convert PM2.5 into an ISPU value or category. CAMS stays out of that layer. OpenAQ, if a key exists, appears only as `Data Pembanding – pengukuran stasiun` in µg/m³.
 - inaRISK portal and the karhutla ImageServer stay **Tautan saja** until a non-raster table or an approved overlay exists.
 - `datacuaca.bmkg.go.id` behind a Cloudflare challenge is not a usable API.
 - MAGMA `https://magma.esdm.go.id/` is **Tautan saja**. Paths `/api`, `/docs`, and `/rss` are not a documented feed. Volcano levels need a letter to PVMBG / Badan Geologi through `https://ppid.esdm.go.id/`.

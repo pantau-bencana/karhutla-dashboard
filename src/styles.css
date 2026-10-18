@@ -330,6 +330,31 @@ a.button {
 .swatch.tinggi { background: #b42318; }
 .swatch.nominal { background: #ca8a04; }
 .swatch.rendah { background: #15803d; }
+.swatch.baik { background: #1b7f3a; }
+.swatch.sedang { background: #2f6fed; }
+.swatch.tidak { background: #ca8a04; }
+.swatch.sangat { background: #dc2626; }
+.swatch.bahaya { background: #111111; }
+
+.stack { display: grid; gap: 16px; }
+
+.search-field {
+  display: grid;
+  gap: 4px;
+  max-width: 320px;
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.search-field input {
+  border: 1px solid #cfc4b2;
+  background: white;
+  border-radius: 8px;
+  padding: 7px 8px;
+  font-weight: 500;
+}
 
 .map-card { overflow: hidden; }
 
@@ -369,6 +394,7 @@ a.button {
 .table-wrap.short { max-height: 320px; }
 .table-wrap.wrap-cells th, .table-wrap.wrap-cells td { white-space: normal; }
 tr.is-selected { background: #fde68a; box-shadow: inset 4px 0 0 #92400e; }
+tr.is-selected th { background: transparent; }
 
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
 
