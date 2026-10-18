@@ -7,7 +7,6 @@ import { formatAngka, formatWib } from "../lib/format.js";
 import { countHotspots, filterHotspotWindow } from "../lib/hotspotWindow.js";
 import { pageHref } from "../lib/route.js";
 import { karhutlaRankingPlan } from "../lib/ranking.js";
-import { buildComparisonAttention } from "../lib/attentionPrototype.js";
 import { decorateSources } from "../lib/sourceCatalog.js";
 
 const WINDOWS = [
@@ -28,13 +27,7 @@ export function SummaryPage({ config, feeds, manifest }) {
   const prakiraan = feeds.find((feed) => feed.id === "bmkg_prakiraan");
   const sampleHotspot = !hotspot || hotspot.contoh || hotspot.status === "gagal" || hotspot.status === "cadangan";
   const ranking = karhutlaRankingPlan({ irbiFeed: irbi });
-  const hujan14 = feeds.find((feed) => feed.id === "hujan_14_pembanding");
   const fwiGwis = feeds.find((feed) => feed.id === "fwi_gwis_pembanding");
-  const prototype = buildComparisonAttention({
-    irbiRows: irbi && !irbi.contoh ? irbi.rows : [],
-    rainRows: hujan14?.contoh ? [] : hujan14?.rows,
-    fwiRows: fwiGwis?.contoh ? [] : fwiGwis?.rows,
-  });
   const sources = decorateSources(manifest);
   const counts = sources.reduce((bag, row) => {
     bag[row.status] = (bag[row.status] || 0) + 1;
@@ -186,78 +179,6 @@ export function SummaryPage({ config, feeds, manifest }) {
               </tbody>
             </table>
           </div>
-        </div>
-      </section>
-
-      <section className="card">
-        <header className="card-head">
-          <div>
-            <h2>15–20 kabupaten/kota, 14 hari</h2>
-            <p>{prototype.label}</p>
-          </div>
-        </header>
-        <div className="logic-body">
-          <p>
-            Urutan resmi tetap {ranking.status}. Daftar di bawah memakai hujan dan angin Open-Meteo pada titik wakil,
-            plus kelas IRBI 2025 sebagai konteks statis. FWI GWIS ditampilkan bila ada, tetapi tidak mengubah urutan
-            karena horizonnya lebih pendek dari 14 hari.
-          </p>
-          <DatasetTiming feed={hujan14} />
-          {prototype.rows.length ? (
-            <>
-              <p>
-                Periode prakiraan {prototype.dari} sampai {prototype.sampai} ({prototype.zona}). Ambang hari kering{" "}
-                {formatAngka(prototype.ambangMm, 0)} mm. Bobot kelas hanya untuk urutan: Tinggi 2, Sedang 1, Rendah 0.
-                Kabupaten dengan kurang dari {prototype.minimumHari} hari berharga angka tidak masuk.
-              </p>
-              <div className="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th scope="col">Urutan</th>
-                      <th scope="col">Kabupaten/kota</th>
-                      <th scope="col">Provinsi</th>
-                      <th scope="col">Titik wakil</th>
-                      <th scope="col">Hujan 14 hari (mm)</th>
-                      <th scope="col">Hari di bawah 1 mm</th>
-                      <th scope="col">Angin maks (km/jam)</th>
-                      <th scope="col">IRBI</th>
-                      <th scope="col">Kelas</th>
-                      <th scope="col">FWI rata-rata</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {prototype.rows.map((row) => (
-                      <tr key={row.kode || `${row.provinsi}-${row.kabupaten}`}>
-                        <td>{row.urutan}</td>
-                        <th scope="row">{row.kabupaten}</th>
-                        <td>{row.provinsi}</td>
-                        <td>
-                          {formatAngka(row.lintang, 2)}, {formatAngka(row.bujur, 2)}
-                        </td>
-                        <td>{formatAngka(row.hujanMm, 1)}</td>
-                        <td>
-                          {row.hariKering}/{row.hariNilai}
-                        </td>
-                        <td>{formatAngka(row.anginMaks, 0)}</td>
-                        <td>{formatAngka(row.indeks, 2)}</td>
-                        <td>{row.kelas}</td>
-                        <td>{row.fwiHari ? `${formatAngka(row.fwiRata, 1)} (${row.fwiHari} hari)` : "—"}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <p className="fine">
-                Titik adalah lintang dan bujur pada baris kabupaten Satu Data BNPB, bukan batas administrasi dan bukan
-                kotak koordinat. {prototype.jumlahTitik} titik punya prakiraan hujan. {prototype.tanpaIrbi} tanpa padanan
-                nama IRBI. {prototype.hariKurang} gugur karena hari berharga angka kurang dari {prototype.minimumHari}.
-                Peluang hujan disimpan pada berkas pembanding dan tidak masuk urutan.
-              </p>
-            </>
-          ) : (
-            <p>Cuplikan pembanding belum cukup untuk menyusun daftar. Peringkat resmi tidak diisi.</p>
-          )}
         </div>
       </section>
 

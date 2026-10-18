@@ -316,7 +316,8 @@ assert.equal(workflow.includes("eyJ"), false);
 assert.equal(karhutlaRankingPlan().dapatDisusun, false);
 assert.equal(karhutlaRankingPlan().status.includes("menunggu data resmi BMKG"), true);
 assert.equal(PROTOTYPE_LABEL, "Prototipe – berbasis data pembanding terbuka, bukan data resmi BMKG");
-assert.equal(logicSource.includes("PROTOTYPE_LABEL"), true);
+assert.equal(logicSource.includes("PROTOTYPE_LABEL"), false);
+assert.equal(logicSource.includes("bukan daftar prioritas"), true);
 assert.equal(normalizePlaceName("Kota Lubuk Linggau"), "LUBUKLINGGAU");
 assert.equal(normalizePlaceName("Kota Lubuklinggau"), "LUBUKLINGGAU");
 const perhatian = buildComparisonAttention({
@@ -367,6 +368,8 @@ assert.equal(parseLocation("#/gunung-api").hazard, "gunung-api");
 assert.equal(parseLocation("#/karhutla/peta").page, "peta");
 const summarySource = readFileSync("src/components/SummaryPage.jsx", "utf8");
 assert.equal(summarySource.includes("points={[]}"), false);
+assert.equal(summarySource.includes("15–20 kabupaten/kota, 14 hari"), false);
+assert.equal(summarySource.includes("buildComparisonAttention"), false);
 assert.match(summarySource, /hotspot = deteksi satelit, bukan kebakaran terkonfirmasi/);
 assert.match(summarySource, /Prakiraan kondisi \(pembanding, bukan resmi\)|ForecastPanel/);
 const forecastSource = readFileSync("src/components/ForecastPanel.jsx", "utf8");

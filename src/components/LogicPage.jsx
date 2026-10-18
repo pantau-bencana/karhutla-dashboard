@@ -1,4 +1,3 @@
-import { PROTOTYPE_LABEL } from "../lib/attentionPrototype.js";
 import { formatAmbang } from "../lib/format.js";
 import { pageHref } from "../lib/route.js";
 import { Term } from "./Term.jsx";
@@ -56,14 +55,9 @@ export function LogicPage({ config }) {
             diisi.
           </p>
           <p>
-            <strong>{PROTOTYPE_LABEL}.</strong> Daftar pada Ringkasan, bila cuplikan ada, hanya mengurutkan kabupaten
-            prioritas yang punya titik wakil Satu Data dan baris IRBI 2025. Periode adalah 14 tanggal prakiraan
-            Open-Meteo pada zona Asia/Jakarta. Hari kering adalah precipitation_sum di bawah 1 mm. Kabupaten dengan
-            kurang dari 12 hari berharga angka keluar. Urutan: kelas IRBI (bobot Tinggi 2, Sedang 1, Rendah 0), lalu
-            hari kering terbanyak, lalu jumlah hujan terkecil, lalu indeks IRBI terbesar. Peluang hujan, angin
-            maksimum, dan FWI GWIS tidak mengubah urutan. FWI GWIS berhenti pada hari yang layanan isi, biasanya lebih
-            pendek dari 14 hari. Jumlah kejadian DIBI dan peta inaRISK tidak masuk bobot. Hasilnya bukan level
-            Normal, Waspada, Siaga, atau Awas.
+            Daftar 15–20 kabupaten/kota tidak diurutkan dari IRBI, citra, atau prakiraan terbuka. Tabel hujan dan FWI
+            terbuka pada Peta dan Data, bila ada, adalah angka pembanding pada titik wakil. Itu bukan daftar prioritas
+            dan bukan daftar risiko.
           </p>
         </div>
       </section>
