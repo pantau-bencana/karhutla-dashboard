@@ -1,18 +1,10 @@
 import { Component, useEffect, useMemo, useState } from "react";
 import { HazardPlaceholder } from "./HazardPlaceholder.jsx";
+import { FloodInfoTable } from "./FloodInfoTable.jsx";
 import { FloodRiskMap } from "./FloodRiskMap.jsx";
 import { parseCsv } from "../lib/csv.js";
 import { hazardById } from "../lib/hazards.js";
-import {
-  DIBI_RESOURCE,
-  FLOOD_PERMISSION,
-  IRBI_PERMISSION,
-  RISK_ATTRIBUTION,
-  buildFloodRows,
-  krbLinksFor,
-  skorTeks,
-  sortFloodRows,
-} from "../lib/floodMatrix.js";
+import { DIBI_RESOURCE, FLOOD_PERMISSION, IRBI_PERMISSION, RISK_ATTRIBUTION, buildFloodRows } from "../lib/floodMatrix.js";
 
 const BANJIR_CSV = "data/static/irbi-2025-banjir-aceh-bengkulu.csv";
 const MULTI_CSV = "data/static/irbi-2025-multibahaya-aceh-bengkulu.csv";
@@ -50,108 +42,6 @@ class FloodBoundary extends Component {
     }
     return this.props.children;
   }
-}
-
-function MatrixTable({ rows }) {
-  const [sort, setSort] = useState({ key: "kode", direction: "asc" });
-  const ordered = useMemo(() => sortFloodRows(rows, sort.key, sort.direction), [rows, sort]);
-  const grouped = sort.key === "kode";
-
-  function toggle(key) {
-    setSort((current) =>
-      current.key === key
-        ? { key, direction: current.direction === "asc" ? "desc" : "asc" }
-        : { key, direction: key === "nama" || key === "kode" ? "asc" : "desc" },
-    );
-  }
-
-  const body = [];
-  let lastProvince = "";
-  for (const row of ordered) {
-    if (grouped && row.provinsi !== lastProvince) {
-      lastProvince = row.provinsi;
-      body.push(
-        <tr key={`${row.provinsi}-grup`} className="flood-group">
-          <th scope="colgroup" colSpan={6}>
-            {row.provinsi}
-          </th>
-        </tr>,
-      );
-    }
-    const links = krbLinksFor(row);
-    body.push(
-      <tr key={row.kode}>
-        <th scope="row">
-          {row.kode}
-          <small>{row.nama}</small>
-        </th>
-        <td>
-          {skorTeks(row.banjirSkor)} · {row.banjirKelas}
-          <small>hal. {row.banjirHalaman}</small>
-        </td>
-        <td>
-          {row.multiKelas || "—"}
-          <small>
-            hal. {row.multiHalaman || "—"}
-            {row.multiSkor ? ` · skor ${skorTeks(row.multiSkor)}` : ""}
-          </small>
-        </td>
-        <td>{row.dibiTeks}</td>
-        <td>Belum terhubung</td>
-        <td>
-          {links.map((link) => (
-            <a key={link.url} href={link.url} target="_blank" rel="noreferrer">
-              {link.nama}
-            </a>
-          ))}
-        </td>
-      </tr>,
-    );
-  }
-
-  return (
-    <div className="table-wrap flood-table">
-      <table>
-        <thead>
-          <tr>
-            <th scope="col">
-              <button type="button" onClick={() => toggle("kode")}>
-                Kode dan nama
-              </button>
-              <small>BIG, edisi 2022</small>
-            </th>
-            <th scope="col">
-              <button type="button" onClick={() => toggle("banjir")}>
-                IRBI 2025 Banjir
-              </button>
-              <small>Data statis. Skor, kelas, halaman.</small>
-            </th>
-            <th scope="col">
-              <button type="button" onClick={() => toggle("multi")}>
-                IRBI 2025 multi-bahaya
-              </button>
-              <small>Data statis. Kelas dan halaman. Bukan khusus banjir.</small>
-            </th>
-            <th scope="col">
-              <button type="button" onClick={() => toggle("dibi")}>
-                Kejadian banjir 2024
-              </button>
-              <small>Data statis. DIBI, ODC-BY.</small>
-            </th>
-            <th scope="col">
-              Ringkasan kajian inaRISK
-              <small>Belum terhubung</small>
-            </th>
-            <th scope="col">
-              Dokumen KRB
-              <small>Tautan saja</small>
-            </th>
-          </tr>
-        </thead>
-        <tbody>{body}</tbody>
-      </table>
-    </div>
-  );
 }
 
 function FloodBody() {
@@ -218,7 +108,7 @@ function FloodBody() {
             <p className="fine">Cuplikan kejadian banjir 2024 belum tersedia. Sel yang kosong bukan angka nol.</p>
           ) : null}
           {error ? <p className="banner warn">{error}</p> : null}
-          {rows.length ? <MatrixTable rows={rows} /> : null}
+          {rows.length ? <FloodInfoTable rows={rows} /> : null}
         </div>
       </section>
       <HazardPlaceholder hazardId={hazard.id} bare />

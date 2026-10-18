@@ -10,6 +10,25 @@ export const IRBI_PERMISSION =
 export const DIBI_RESOURCE = "a4daec53-1119-43ef-b05e-00ec3a4c42a4";
 export const INARISK_PORTAL = "https://inarisk.bnpb.go.id/";
 
+export const RAIN_RISK_MATRIX = {
+  id: "hujan-ekstrem-x-risiko-banjir",
+  ready: false,
+  axes: [
+    { id: "hujan", sumber: "BMKG", kelas: "Potensi Hujan Ekstrem" },
+    { id: "risiko", sumber: "IRBI 2025 / inaRISK", kelas: "risiko banjir" },
+  ],
+  note: "Matriks hujan ekstrem × risiko banjir menyusul setelah sumber BMKG per kab/kota diverifikasi",
+};
+
+export const FLOOD_INFO_COLUMNS = [
+  { id: "wilayah", label: "Kode dan nama", detail: "BIG, edisi 2022", sortKey: "kode" },
+  { id: "irbi-banjir", label: "IRBI 2025 Banjir", detail: "Data statis. Skor, kelas, halaman.", sortKey: "banjir" },
+  { id: "irbi-multi", label: "IRBI 2025 multi-bahaya", detail: "Data statis. Kelas dan halaman. Bukan khusus banjir.", sortKey: "multi" },
+  { id: "dibi", label: "Kejadian banjir 2024", detail: "Data statis. DIBI, ODC-BY.", sortKey: "dibi" },
+  { id: "kajian", label: "Ringkasan kajian inaRISK", detail: "Belum terhubung" },
+  { id: "krb", label: "Dokumen KRB", detail: "Tautan saja" },
+];
+
 export const KRB_LINKS = {
   Aceh: [
     {

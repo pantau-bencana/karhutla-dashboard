@@ -26,7 +26,7 @@ import { buildComparisonAttention, normalizePlaceName, PROTOTYPE_LABEL } from ".
 import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
 import { buildHotspotTree } from "../src/lib/hotspotTree.js";
-import { buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI } from "../src/lib/floodMatrix.js";
+import { FLOOD_INFO_COLUMNS, RAIN_RISK_MATRIX, buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI } from "../src/lib/floodMatrix.js";
 import { manifestNeedsRefresh } from "./refresh-watchdog.mjs";
 import { monitoringSources } from "../src/lib/sourceStatus.js";
 const DISCLAIMER = "Prototipe internal Dit. PD BNPB. Jangan dipublikasikan tanpa persetujuan.";
@@ -689,6 +689,7 @@ assert.equal(floodRows.find((row) => row.kode === "17.09").dibiTeks, MISSING_DIB
 const floodSource = [
   "src/components/FloodRiskMap.jsx",
   "src/components/FloodPage.jsx",
+  "src/components/FloodInfoTable.jsx",
   "src/lib/floodServices.js",
   "src/lib/floodMatrix.js",
 ].map((file) => readFileSync(file, "utf8")).join("\n");
@@ -702,6 +703,18 @@ assert.match(floodSource, /Prototipe internal – menunggu izin tertulis BNPB/);
 assert.match(floodSource, /Di luar area bahaya banjir yang dipetakan inaRISK/);
 assert.match(floodSource, /Nilai tidak tersedia \(layanan BNPB tidak merespons\)/);
 assert.match(floodSource, /Konteks risiko banjir jangka panjang per kabupaten\/kota \(bukan prioritas, bukan prakiraan\)/);
+assert.equal(
+  RAIN_RISK_MATRIX.note,
+  "Matriks hujan ekstrem × risiko banjir menyusul setelah sumber BMKG per kab/kota diverifikasi",
+);
+assert.equal(RAIN_RISK_MATRIX.ready, false);
+assert.deepEqual(
+  RAIN_RISK_MATRIX.axes.map((axis) => axis.id),
+  ["hujan", "risiko"],
+);
+const infoColumnIds = FLOOD_INFO_COLUMNS.map((column) => column.id);
+assert.deepEqual(infoColumnIds, ["wilayah", "irbi-banjir", "irbi-multi", "dibi", "kajian", "krb"]);
+assert.equal(infoColumnIds.includes("hujan"), false);
 const hazardText = readFileSync("src/lib/hazards.js", "utf8");
 assert.match(hazardText, /kolom BANJIR/);
 assert.equal(hazardText.includes("tidak memisahkan banjir per kabupaten"), false);
