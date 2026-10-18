@@ -430,6 +430,8 @@ const pagesWorkflow = readFileSync(".github/workflows/pages.yml", "utf8");
 assert.match(pagesWorkflow, /github\.event_name != 'pull_request' && github\.ref == 'refs\/heads\/main'/);
 assert.match(pagesWorkflow, /queue: max/);
 assert.match(pagesWorkflow, /GITHUB_TOKEN/);
+assert.match(pagesWorkflow, /Deploy dilewati/);
+assert.match(pagesWorkflow, /steps\.head\.outputs\.skip != 'true'/);
 const windowed = filterHotspotWindow([
   { tanggal: "2026-10-17", waktu: "1200", satelit: "N", kelasKepercayaan: "nominal", provinsi: "Riau" },
   { tanggal: "2026-10-16", waktu: "1200", satelit: "N", kelasKepercayaan: "tinggi", provinsi: "Aceh" },

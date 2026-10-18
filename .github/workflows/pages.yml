@@ -3,6 +3,7 @@
 # Hanya push ke main (dan workflow_dispatch pada main) yang mengunggah artefak dan men-deploy.
 # Push dari GITHUB_TOKEN, termasuk commit data oleh github-actions[bot], tidak memicu workflow ini.
 # Cuplikan baru di-deploy dari dalam refresh-data.yml pada run yang sama.
+# Deploy ini dilewati bila ujung main sudah berpindah, supaya artefak lama tidak menimpa cuplikan yang lebih baru.
 # Pull request, termasuk cabang cursor/*, hanya membangun dan memeriksa. Job deploy dilewati.
 # https://rixaga.github.io/karhutla-dashboard/
 name: Deploy GitHub Pages
@@ -65,9 +66,25 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     permissions:
+      contents: read
       pages: write
       id-token: write
     steps:
+      - name: Lewati bila commit ini bukan ujung main
+        id: head
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          current="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_REF_NAME}" --jq .sha)"
+          if [ "$current" != "$GITHUB_SHA" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Deploy dilewati. main=${current} run=${GITHUB_SHA}"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Deploy to GitHub Pages
+        if: steps.head.outputs.skip != 'true'
         id: deployment
         uses: actions/deploy-pages@v5
