@@ -29,6 +29,8 @@ import { buildHotspotTree } from "../src/lib/hotspotTree.js";
 import { FLOOD_INFO_COLUMNS, RAIN_RISK_MATRIX, buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI } from "../src/lib/floodMatrix.js";
 import { manifestNeedsRefresh } from "./refresh-watchdog.mjs";
 import { monitoringSources } from "../src/lib/sourceStatus.js";
+import { aggregateCells, gfwedCsv, latestDailyStamp } from "./gfwed-kabupaten.mjs";
+import { GFWED_LABEL, GFWED_UNAVAILABLE } from "../src/lib/gfwed.js";
 import { GWIS_FWI_LAYER, GWIS_LABEL, GWIS_UNAVAILABLE, gwisLayerReady, gwisProbeUrl, tanggalJakarta } from "../src/lib/gwisFwi.js";
 const DISCLAIMER = "Prototipe internal Dit. PD BNPB. Jangan dipublikasikan tanpa persetujuan.";
 assert.equal(readFileSync("src/lib/warning.js", "utf8").includes("statusProvinsi"), false);
@@ -752,5 +754,29 @@ assert.equal(hazardText.toLowerCase().includes("das kritis"), false);
 assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /a4daec53-1119-43ef-b05e-00ec3a4c42a4/);
 assert.match(readFileSync("src/App.jsx", "utf8"), /lazy\(/);
 assert.equal(readFileSync("data/live/dibi-banjir-2024.csv", "utf8").includes("Latitude"), false);
+
+assert.equal(latestDailyStamp('<a>FWI.GEOS-5.Daily.Default.20261013.nc</a><a>FWI.GEOS-5.Daily.Default.20261014.nc</a>'), "20261014");
+const gfwedRows = aggregateCells([
+  { kode: "32.01", kabupaten: "Bogor", provinsi: "Jawa Barat", fwi: 10 },
+  { kode: "11.71", kabupaten: "Kota Banda Aceh", provinsi: "Aceh", fwi: 4 },
+  { kode: "11.71", kabupaten: "Kota Banda Aceh", provinsi: "Aceh", fwi: 8 },
+]);
+assert.deepEqual(gfwedRows.map((row) => row.kode), ["11.71", "32.01"]);
+assert.equal(gfwedRows[0].fwi_rata, 6);
+assert.equal(gfwedRows[0].fwi_maks, 8);
+assert.equal(gfwedRows[0].n_sel, 2);
+assert.match(gfwedCsv(gfwedRows, "2026-10-14", "sumber"), /^kode,kabupaten,provinsi,fwi_rata,fwi_maks,n_sel,tanggal,sumber/);
+assert.equal(GFWED_LABEL, "Pembanding model NASA GFWED (GEOS-5, analisis), bukan BMKG");
+assert.equal(GFWED_UNAVAILABLE, "Tidak tersedia");
+const gfwedUi = readFileSync("src/components/GfwedTable.jsx", "utf8");
+assert.match(gfwedUi, /tertunda/);
+assert.match(gfwedUi, /GFWED_UNAVAILABLE/);
+assert.match(gfwedUi, /localeCompare\(b\.kode/);
+assert.equal(gfwedUi.includes("#b42318"), false);
+assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /fetchGfwedKabupaten/);
+assert.match(readFileSync(".github/workflows/refresh-data.yml", "utf8"), /netCDF4/);
+assert.match(readFileSync("scripts/gfwed_clip.py", "utf8"), /GEOS-5_FWI/);
+assert.equal(readFileSync("scripts/gfwed-kabupaten.mjs", "utf8").includes("returnGeometry: \"true\""), true);
+assert.equal(readFileSync("scripts/gfwed_clip.py", "utf8").includes("geojson"), false);
 
 console.log("Pemeriksaan prototipe lulus.");

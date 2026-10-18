@@ -8,6 +8,7 @@ import { writeHotspotMap } from "./build-hotspot-map.mjs";
 import { parseFirmsCoordinate } from "./indonesia-land.mjs";
 import { BIG_EDITION_NOTE, BIG_SOURCE_LABEL, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
 import { annotatePoints, rowsToHotspotCsv } from "./big-wilayah.mjs";
+import { fetchGfwedKabupaten } from "./gfwed-kabupaten.mjs";
 import { provinceCenters } from "../src/lib/geo.js";
 import { REFRESH_CRON, REFRESH_CRON_CADANGAN, REFRESH_INTERVAL_HOURS, nextScheduledRun } from "../src/lib/schedule.js";
 import { SMOKE_IMAGE_URL, SMOKE_URL, SOURCES } from "../src/lib/sourceCatalog.js";
@@ -609,6 +610,41 @@ async function refreshKabupatenComparison(datasets, previous) {
     }
   }
   datasets.fwi_gwis_pembanding = fwiEntry;
+
+  const gfwedEntry = {
+    ...baseEntry({
+      id: "gfwed_kabupaten",
+      nama: "FWI GFWED per kabupaten/kota",
+      instansi: "NASA GFWED (GEOS-5)",
+      officialUrl: "https://portal.nccs.nasa.gov/datashare/GlobalFWI/",
+      access: "Berkas publik",
+      kind: "pembanding",
+      updateType: "Harian, tertunda",
+      expectedMaxAgeHours: 24 * 6,
+      limitation: "Pembanding model NASA GFWED (GEOS-5, analisis), bukan BMKG. Bukan kelas FDRS.",
+      fungsi: "Rata-rata dan maksimum FWI sel yang pusatnya jatuh di dalam kabupaten/kota.",
+    }),
+    mode: "pembanding",
+    provider: "NASA GFWED",
+    license: "Berkas publik NASA NCCS Datashare, tanpa login. Kutipan Field et al. 2015, doi:10.5194/nhess-15-1407-2015.",
+    compares_to: "fdrs",
+    official_url: "https://portal.nccs.nasa.gov/datashare/GlobalFWI/",
+  };
+  try {
+    const result = await fetchGfwedKabupaten();
+    gfwedEntry.observed_at = new Date().toISOString();
+    gfwedEntry.observed_label = `Tanggal data ${result.tanggal}. ${result.rows.length} kabupaten/kota. Bukan kelas BMKG.`;
+    gfwedEntry.source_updated_at = `${result.tanggal}T00:00:00.000Z`;
+    gfwedEntry.url = result.url;
+    gfwedEntry.method = "Rata-rata dan maksimum sel GEOS-5_FWI yang pusatnya jatuh di dalam kabupaten/kota. Geometri BIG tidak disimpan.";
+    writeIfChanged("data/live/gfwed-kabupaten.csv", result.csv, gfwedEntry, previousEntry(previous, "gfwed_kabupaten"));
+    writeFileSync(resolve(root, "data/live/gfwed-kabupaten.json"), result.json);
+    console.log(`GFWED ${result.tanggal}: ${result.rows.length} kabupaten/kota, kueri BIG ${result.queries}, sel gagal ${result.failed}.`);
+  } catch (error) {
+    Object.assign(gfwedEntry, keepPrevious(gfwedEntry, previousEntry(previous, "gfwed_kabupaten"), error.message));
+    console.log(`GFWED tidak tersedia: ${error.message}`);
+  }
+  datasets.gfwed_kabupaten = gfwedEntry;
 }
 
 async function fetchFirms() {

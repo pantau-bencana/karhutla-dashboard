@@ -437,7 +437,7 @@ export async function loadAll(config, deps = {}) {
     }),
   );
 
-  for (const id of ["bmkg_prakiraan", "fdrs_pembanding", "ispu_pembanding", "bmkg_cap", "dibi_karhutla", "titik_wakil", "hujan_14_pembanding", "fwi_gwis_pembanding"]) {
+  for (const id of ["bmkg_prakiraan", "fdrs_pembanding", "ispu_pembanding", "bmkg_cap", "dibi_karhutla", "titik_wakil", "hujan_14_pembanding", "fwi_gwis_pembanding", "gfwed_kabupaten"]) {
     const entry = manifest?.datasets?.[id];
     if (!entry?.file) continue;
     const snapshot = await trySnapshot(
@@ -479,6 +479,22 @@ export async function loadAll(config, deps = {}) {
     resolveUrl,
   );
   if (fwi && !feeds.some((feed) => feed.id === "fwi_gwis_pembanding")) feeds.push(fwi);
+  const gfwed = await loadOptionalCsv(
+    { id: "gfwed_kabupaten", nama: "FWI GFWED per kabupaten/kota", csvUrl: "data/live/gfwed-kabupaten.csv" },
+    (raw) => ({
+      kode: String(raw.kode ?? ""),
+      kabupaten: String(raw.kabupaten ?? ""),
+      provinsi: String(raw.provinsi ?? ""),
+      fwiRata: Number(raw.fwi_rata),
+      fwiMaks: Number(raw.fwi_maks),
+      nSel: Number(raw.n_sel),
+      tanggal: String(raw.tanggal ?? "").slice(0, 10),
+      sumber: String(raw.sumber ?? ""),
+    }),
+    fetchImpl,
+    resolveUrl,
+  );
+  if (gfwed && !feeds.some((feed) => feed.id === "gfwed_kabupaten")) feeds.push(gfwed);
 
   feeds.manifest = manifest;
   return feeds;

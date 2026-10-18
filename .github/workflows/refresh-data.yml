@@ -50,6 +50,9 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Pasang pembaca NetCDF
+        run: python3 -m pip install --user netCDF4
+
       - name: Ambil data publik
         env:
           FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}

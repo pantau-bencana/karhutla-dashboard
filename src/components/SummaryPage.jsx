@@ -7,6 +7,7 @@ import { pageHref } from "../lib/route.js";
 import { karhutlaRankingPlan } from "../lib/ranking.js";
 import { decorateSources } from "../lib/sourceCatalog.js";
 import { PriorityIndicators } from "./PriorityIndicators.jsx";
+import { GfwedTable } from "./GfwedTable.jsx";
 
 export function SummaryPage({ config, feeds, manifest, freshness }) {
   const hotspot = feeds.find((feed) => feed.id === "hotspot");
@@ -89,6 +90,7 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
         weatherRows={weather?.contoh ? [] : weather?.rows}
         fwiRows={fwiGwis?.contoh ? [] : fwiGwis?.rows}
       />
+      <GfwedTable rows={feeds.find((feed) => feed.id === "gfwed_kabupaten")?.rows} />
 
       <section className="card">
         <header className="card-head">

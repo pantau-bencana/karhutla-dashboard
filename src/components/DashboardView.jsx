@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ExtraLayers, LayerBar, WilayahDetail } from "./ExtraLayers.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { HotspotBoard } from "./HotspotBoard.jsx";
+import { GfwedTable } from "./GfwedTable.jsx";
 import { HotspotAccordion } from "./HotspotAccordion.jsx";
 import { TrendCharts } from "./TrendCharts.jsx";
 import { defaultRange } from "../lib/derive.js";
@@ -328,6 +329,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           <p className="empty">{loading ? "Memuat sumber…" : "Tidak ada dataset di config.json."}</p>
         )}
       </section>
+      <GfwedTable rows={feeds.find((feed) => feed.id === "gfwed_kabupaten")?.rows} />
     </main>
   );
 }
