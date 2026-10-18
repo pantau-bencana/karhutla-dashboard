@@ -13,7 +13,12 @@ Di dalam Karhutla, Peta dan Data punya lapisan Kualitas Udara (ISPU).
 Periksa tiap halaman. Untuk setiap butir tulis SUDAH, SEBAGIAN, atau BELUM, plus kalimat yang terlihat.
 - Status jujur: sumber yang gagal atau hanya tautan tidak ditulis seolah tersambung.
 - Data contoh tidak disajikan sebagai data resmi.
-- IRBI 2025 hanya konteks jangka panjang, di bagian bawah, bukan urutan prioritas 14 hari.
+- IRBI 2025 hanya konteks jangka panjang, judulnya "Konteks risiko jangka panjang (IRBI 2025)", di bagian bawah, urutan nama, bukan urutan prioritas 14 hari.
+- Tidak ada tabel status provinsi dan tidak ada kata status operasional pada jumlah hotspot. Tabel yang diharapkan: "Jumlah deteksi hotspot (bukan status)".
+- FDRS resmi menulis "menunggu data resmi BMKG". Nilai contoh FWI tidak ditampilkan. Panel 14 hari Open-Meteo, bila ada, berlabel pembanding model, bukan prakiraan BMKG, dan header kartunya memuat "Pembanding, bukan produk BMKG/KLHK".
+- Judul peramban: Prototipe Pemantauan Karhutla.
+- Di atas peta hotspot ada "Lintasan satelit terakhir" dalam WIB. Data yang lintasannya lebih lama dari sekitar 8 jam, atau yang melewati jadwal berikutnya lebih dari 1 jam, ditandai tertunda. Jam pembaruan yang sudah lewat tidak ditampilkan.
+- Sumber cuplikan hotspot berbunyi "VIIRS S-NPP NRT (snapshot ±3 jam)", bukan "FIRMS langsung".
 - Slot 15–20 kabupaten/kota tidak diisi peringkat bila data resmi BMKG belum ada. Status yang diharapkan: menunggu data resmi BMKG (FDRS/potensi karhutla per kab/kota).
 - FWI/SPARTAN BMKG hanya tautan. Horizon produk sampai H+7, bukan prakiraan 14 hari. Citra tidak tertanam.
 - Kualitas Udara (ISPU) hanya Hari Ini dan Historis, tanpa Prediksi. Titik adalah stasiun, bukan seluruh kabupaten/kota.
@@ -60,3 +65,21 @@ Situs yang dibuka memakai bundel `index-Ccz34wMm.js`, terbit dari commit `1d3b10
 - Lapisan desa BIG edisi Mei 2021 hanya mencakup sebagian desa, jadi sebagian besar titik tidak punya nama desa.
 - Angka ISPU stasiun resmi belum terisi.
 - Tampilan "pembaruan berikutnya" pada manifest masih 18 Oktober 2026 pukul 00.00 UTC (07.00 WIB) ketika inspeksi dilakukan sesudah jam itu.
+- Tabel indikator prototipe memakai kata status operasional per provinsi dan FWI dari berkas contoh.
+- Keterangan pada `data/live/hotspot.csv` masih menulis bahwa kabupaten tidak diisi karena batas belum dipasang, padahal nama kabupaten sudah terisi dari kueri BIG.
+
+# Perbaikan sesudah inspeksi
+
+Perubahan ini ada pada commit `4cf72fb`. Yang diubah:
+
+- Tabel status per provinsi, ambang 8/20/45, dan kartu yang memakainya dihapus. Penggantinya tabel "Jumlah deteksi hotspot (bukan status)", urutan nama atau jumlah, dengan dasar periode, satelit, dan rincian keyakinan.
+- FWI contoh tidak ditampilkan. FDRS resmi tetap "menunggu data resmi BMKG". GWIS tidak disebut FDRS.
+- Bila cuplikan hotspot gagal dimuat, berkas contoh tidak dipakai. Yang tampil cuplikan terakhir beserta usianya, atau peta kosong dengan pita galat.
+- Judul peramban menjadi "Prototipe Pemantauan Karhutla".
+- Kalimat "batas resmi belum dipasang" pada inaRISK dibatasi ke raster yang memang tidak digambar. Penulis cuplikan hotspot menulis bahwa nama wilayah datang dari kueri BIG.
+- Aturan kesegaran: lintasan terakhir ditampilkan dalam WIB di atas peta. Tanda tertunda bila lintasan lebih lama dari sekitar 8 jam, atau bila waktu sekarang melewati `next_run` lebih dari 1 jam. `next_run` yang sudah lewat disembunyikan. Label cuplikan: "VIIRS S-NPP NRT (snapshot ±3 jam)".
+- Titik yang pencarian wilayahnya gagal tidak masuk hitungan provinsi atau kabupaten. Halaman menulis "N titik belum terverifikasi wilayah".
+- Ringkasan wilayah bawaan adalah kecamatan, dengan pilihan kabupaten dan desa. Kalimat cakupan: "nama desa tersedia untuk N dari M titik".
+- IRBI berjudul "Konteks risiko jangka panjang (IRBI 2025)", urutan nama, di bagian bawah.
+- Di samping warna keyakinan ada kalimat "keyakinan deteksi, bukan intensitas atau bahaya".
+- Header kartu pembanding memuat "Pembanding, bukan produk BMKG/KLHK". Panel hujan 14 hari disebut pembanding model, bukan prakiraan BMKG. Pita galat dan pita data tertunda menempel atau menimpa peta.

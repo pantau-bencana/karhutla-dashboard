@@ -655,7 +655,7 @@ async function fetchFirms() {
       kepercayaan: cells[index.confidence] || "",
       frp: cells[index.frp] || "",
       kecerahan: cells[index.bright_ti4] || "",
-      keterangan: "NASA FIRMS VIIRS Suomi-NPP. Bukan kebakaran terkonfirmasi.",
+      keterangan: "NASA FIRMS VIIRS Suomi-NPP. Bukan kebakaran terkonfirmasi. Nama wilayah dari kueri BIG pada pembaruan ini bila layanan menjawab. Koordinat FIRMS tidak diubah.",
     });
   }
   let annotated;
@@ -953,7 +953,7 @@ async function main() {
         checked_at: nowIso,
       };
     } else {
-      hotspotEntry.error = "FIRMS_MAP_KEY belum dipasang. Dasbor memakai data contoh dan tidak mengaku tersambung.";
+      hotspotEntry.error = "FIRMS_MAP_KEY belum dipasang. Cuplikan tidak ditulis. Dasbor tidak memakai data contoh.";
       hotspotEntry.status = "failed";
       datasets.hotspot = hotspotEntry;
     }

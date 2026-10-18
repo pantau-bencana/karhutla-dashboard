@@ -194,7 +194,7 @@ export const SOURCES = [
     kind: "tautan",
     updateType: "",
     limitation:
-      "Portal menampilkan peta. Layanan yang terdaftar di Satu Data berupa ImageServer raster, bukan tabel kabupaten yang bisa disimpan apa adanya. Batas administrasi resmi juga belum dipasang, jadi peta bahaya tidak digambar di dasbor.",
+      "Portal menampilkan peta. Layanan yang terdaftar di Satu Data berupa ImageServer raster, bukan tabel kabupaten yang bisa disimpan apa adanya. Raster inaRISK tidak digambar di dasbor.",
   },
   {
     id: "irbi",

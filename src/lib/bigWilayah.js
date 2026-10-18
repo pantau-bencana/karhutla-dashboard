@@ -9,7 +9,7 @@ export const BIG_KECAMATAN_LAYER = 3;
 export const BIG_EDITION_NOTE =
   "Layer desa (MapServer/4) berjudul Peta Batas Administrasi Desa, edisi Mei 2021, 1.419 wilayah, dan layanan ini tidak mengirim geometrinya. Layer kecamatan (MapServer/3) pada layanan yang sama memuat nama kecamatan, kabupaten/kota, dan provinsi; deskripsi layanannya menyebut revisi 27 Desember 2022. Padanan adalah pencocokan koordinat pada batas peta, bukan verifikasi lapangan. Cakupan dan batas edisi Mei 2021 tidak lengkap untuk seluruh desa di Indonesia.";
 export const CONFIDENCE_NOTE =
-  "Confidence deteksi satelit. Bukan tingkat bahaya dan bukan tingkat kebakaran. VIIRS memakai l/n/h. Nominal adalah kelas menengah; padanan katanya sedang, dan warna yang dipakai kuning. MODIS 0–100 dipetakan 0–29 rendah, 30–79 nominal, 80–100 tinggi. Nilai asli tidak diubah.";
+  "keyakinan deteksi, bukan intensitas atau bahaya. Confidence deteksi satelit. Bukan tingkat bahaya dan bukan tingkat kebakaran. VIIRS memakai l/n/h. Nominal adalah kelas menengah; padanan katanya sedang, dan warna yang dipakai kuning. MODIS 0–100 dipetakan 0–29 rendah, 30–79 nominal, 80–100 tinggi. Nilai asli tidak diubah.";
 export const DESA_LINE_ZOOM = 11;
 export const MATCH_OFFSET_DEGREES = 0.001;
 
@@ -68,13 +68,33 @@ export function desaGroupKey(point) {
   ].join("|");
 }
 
-export function summarizeByDesa(points) {
+export function unverifiedWilayahCount(points) {
+  return (points ?? []).filter((point) => point?.wilayahStatus === "gagal").length;
+}
+
+export function wilayahGroupKey(point, level = "kecamatan") {
+  if (level === "desa") return desaGroupKey(point);
+  if (level === "kabupaten") {
+    return [point?.kodeKabupaten || "", point?.kabupaten || "", point?.kodeProvinsi || "", point?.provinsi || ""].join("|");
+  }
+  return [
+    point?.kodeKecamatan || "",
+    point?.kecamatan || "",
+    point?.kodeKabupaten || "",
+    point?.kabupaten || "",
+    point?.kodeProvinsi || "",
+    point?.provinsi || "",
+  ].join("|");
+}
+
+export function summarizeByWilayah(points, level = "kecamatan") {
   const groups = new Map();
   for (const point of points ?? []) {
-    const key = desaGroupKey(point);
+    if (point?.wilayahStatus === "gagal") continue;
+    const key = wilayahGroupKey(point, level);
     const current = groups.get(key) ?? {
       key,
-      desa: desaLabel(point),
+      desa: level === "desa" ? desaLabel(point) : "",
       kodeDesa: point?.kodeDesa || "",
       kecamatan: point?.kecamatan || "",
       kodeKecamatan: point?.kodeKecamatan || "",
@@ -96,7 +116,16 @@ export function summarizeByDesa(points) {
     current.points.push(point);
     groups.set(key, current);
   }
-  return [...groups.values()].sort((a, b) => b.jumlah - a.jumlah || a.desa.localeCompare(b.desa, "id") || a.kodeDesa.localeCompare(b.kodeDesa));
+  const labelOf = (group) => {
+    if (level === "desa") return group.desa;
+    if (level === "kabupaten") return group.kabupaten || group.provinsi;
+    return group.kecamatan || group.kabupaten;
+  };
+  return [...groups.values()].sort((a, b) => b.jumlah - a.jumlah || labelOf(a).localeCompare(labelOf(b), "id") || a.key.localeCompare(b.key));
+}
+
+export function summarizeByDesa(points) {
+  return summarizeByWilayah(points, "desa");
 }
 
 export function distinctSorted(points, field) {

@@ -159,6 +159,28 @@ a.button {
 
 .banner.error { background: #fdecea; border-color: #f0b4ae; color: #7a1b14; }
 
+.banner.is-sticky {
+  position: sticky;
+  top: 8px;
+  z-index: 900;
+}
+
+.lintasan-line {
+  margin: 8px 0;
+  font-size: 1.15rem;
+}
+
+.map-stage { position: relative; }
+
+.map-overlay {
+  position: absolute;
+  z-index: 1000;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  pointer-events: none;
+}
+
 .filters {
   position: sticky;
   top: 0;

@@ -4,13 +4,14 @@ import { DatasetTiming } from "./DatasetTiming.jsx";
 import { HotspotBoard } from "./HotspotBoard.jsx";
 import { TrendCharts } from "./TrendCharts.jsx";
 import { defaultRange } from "../lib/derive.js";
-import { formatAmbang, formatAngka, formatTanggal, formatTanggalPendek } from "../lib/format.js";
+import { hotspotSourceLabel } from "../lib/freshness.js";
+import { formatAngka, formatTanggal } from "../lib/format.js";
 
-function feedStatus(feed) {
-  if (feed.asal === "firms" && feed.status === "berhasil") return "FIRMS langsung";
+function feedStatus(feed, sumber) {
+  if (feed.asal === "snapshot") return hotspotSourceLabel(feed, sumber);
   if (feed.status === "contoh") return "Data contoh";
   if (feed.status === "berhasil") return "Terhubung";
-  if (feed.status === "cadangan") return "CSV cadangan";
+  if (feed.status === "usang") return "Cuplikan terakhir";
   return "Gagal";
 }
 
@@ -26,6 +27,7 @@ export function DashboardView({
   to,
   setTo,
   view,
+  freshness,
 }) {
   if (!config || !view) {
     return (
@@ -50,12 +52,14 @@ export function DashboardView({
       to={to}
       setTo={setTo}
       view={view}
+      freshness={freshness}
     />
   );
 }
 
-function DashboardBody({ active, config, feeds, loading, province, setProvince, from, setFrom, to, setTo, view }) {
+function DashboardBody({ active, config, feeds, loading, province, setProvince, from, setFrom, to, setTo, view, freshness }) {
   const [layer, setLayer] = useState("hotspot");
+  const [provinceSort, setProvinceSort] = useState("nama");
   const hotspotFeed = feeds.find((feed) => feed.id === "hotspot");
   const visibleFeeds = layer === "ispu" ? feeds.filter((feed) => feed.id !== "ispu" && feed.id !== "ispu_pembanding") : feeds;
   const samples = visibleFeeds.filter((feed) => feed.contoh && feed.status !== "gagal");
@@ -89,7 +93,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
   return (
     <main className="wrap main">
       {samples.length > 0 && (
-        <div className="banner sample" role="status">
+        <div className="banner sample is-sticky" role="status">
           <strong>Data contoh sedang ditampilkan.</strong>
           <p>
             {samples.map((feed) => feed.nama).join(", ")} bukan data operasional. Snapshot resmi, bila ada, tampil
@@ -98,7 +102,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
         </div>
       )}
       {failures.length > 0 && (
-        <div className="banner error" role="alert">
+        <div className="banner error is-sticky" role="alert">
           <strong>Sebagian sumber gagal dimuat. Bagian lain tetap ditampilkan.</strong>
           <ul>
             {failures.map((feed) => (
@@ -110,7 +114,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
         </div>
       )}
       {fallbacks.length > 0 && (
-        <div className="banner warn" role="status">
+        <div className="banner warn is-sticky" role="status">
           <ul>
             {fallbacks.map((feed) => (
               <li key={feed.id}>
@@ -170,10 +174,10 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           <p className="metric-value">{formatAngka(view.summary.tinggi)}</p>
           <p className="metric-note">Kelas tinggi, high, atau nilai ≥ 80</p>
         </article>
-        <article className={`card metric ${view.summary.siagaAwas ? "metric-alert" : ""}`}>
-          <p className="metric-label">Provinsi waspada+</p>
-          <p className="metric-value">{formatAngka(view.summary.waspadaPlus)}</p>
-          <p className="metric-note">{formatAngka(view.summary.siagaAwas)} di antaranya siaga atau awas</p>
+        <article className="card metric">
+          <p className="metric-label">Belum terverifikasi wilayah</p>
+          <p className="metric-value">{formatAngka(view.summary.belumTerverifikasi || 0)}</p>
+          <p className="metric-note">Tidak masuk hitungan provinsi</p>
         </article>
         <article className="card metric">
           <p className="metric-label">ISPU stasiun</p>
@@ -190,7 +194,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
             <p>
               {formatAngka(view.points.length)} titik
               {hotspotFeed?.contoh ? " · data contoh" : ""}
-              {hotspotFeed?.asal === "firms" ? " · NASA FIRMS" : ""}
+              {hotspotFeed ? ` · ${hotspotSourceLabel(hotspotFeed, config.firms?.sumber)}` : ""}
             </p>
           </div>
         </header>
@@ -204,117 +208,54 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
             feed={hotspotFeed}
             fetchedAt={hotspotFeed?.fetchedAt}
             observedAt={hotspotFeed?.observedAt}
+            freshness={freshness}
+            sumber={config.firms?.sumber}
           />
         )}
       </section>
 
-      <section className="card">
-          <header className="card-head">
-            <div>
-              <h2>Indikator prototipe</h2>
-              <p>Level lebih tinggi antara jumlah titik panas dan FWI maksimum. Bukan peringatan resmi.</p>
-            </div>
-          </header>
-          <div className="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Provinsi</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Titik panas</th>
-                  <th scope="col">Tinggi</th>
-                  <th scope="col">FWI maks</th>
-                  <th scope="col">Pemicu</th>
-                </tr>
-              </thead>
-              <tbody>
-                {view.warnings.length ? (
-                  view.warnings.map((row) => (
-                    <tr key={row.provinsi}>
-                      <th scope="row">
-                        {row.provinsi}
-                        {row.prioritas ? <span className="tag">Prioritas</span> : null}
-                      </th>
-                      <td>
-                        <span className={`badge level-${row.status.toLowerCase()}`}>{row.status}</span>
-                        <span className="subline">
-                          Titik panas {row.dariHotspot}
-                          {row.dariFwi ? ` · FDRS ${row.dariFwi}` : " · FDRS tidak ada"}
-                        </span>
-                      </td>
-                      <td>{formatAngka(row.jumlah)}</td>
-                      <td>{formatAngka(row.tinggi)}</td>
-                      <td>{row.fwiMax == null ? "—" : formatAngka(row.fwiMax, 1)}</td>
-                      <td>{row.pemicu}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={6}>Tidak ada provinsi pada cakupan ini.</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-          <p className="fine">{formatAmbang(config.peringatan)}</p>
-          {config.peringatan?.catatan ? <p className="fine">{config.peringatan.catatan}</p> : null}
-      </section>
+      <ProvinceCounts
+        rows={view.provinsiDeteksi}
+        sort={provinceSort}
+        setSort={setProvinceSort}
+        from={from}
+        to={to}
+        sumber={hotspotSourceLabel(hotspotFeed, config.firms?.sumber)}
+        summary={view.summary}
+      />
 
       <TrendCharts hotspotTrend={view.hotspotTrend} hotspotSeries={view.hotspotSeries} province={province} />
 
-      <section className="thirds">
-        <article className="card">
-          <header className="card-head">
-            <div>
-              <h2>Rekap SiPongi</h2>
-              <p>Jumlah hotspot dan luas terbakar dijumlahkan pada rentang tanggal. Bukan rekap resmi.</p>
-            </div>
-          </header>
-          <SimpleTable
-            empty="Tidak ada rekap SiPongi pada rentang ini."
-            head={["Provinsi", "Hotspot", "Luas (ha)"]}
-            rows={view.sipongiRows.map((row) => [row.provinsi, formatAngka(row.jumlah), formatAngka(row.luas, 1)])}
-          />
-        </article>
-        <article className="card">
-          <header className="card-head">
-            <div>
-              <h2>IRBI kabupaten</h2>
-              <p>
-                {feeds.find((feed) => feed.id === "irbi")?.contoh
-                  ? "Indeks tahunan pada berkas contoh, bukan keluaran buku IRBI."
-                  : "IRBI 2025 dari buku resmi. Tidak mengikuti filter tanggal."}
-              </p>
-            </div>
-          </header>
-          <SimpleTable
-            empty="Tidak ada baris IRBI pada cakupan ini."
-            head={["Kabupaten", "Provinsi", "Indeks", "Kelas"]}
-            rows={view.irbiRows.map((row) => [row.kabupaten, row.provinsi, formatAngka(row.indeks, 2), row.kelas])}
-          />
-        </article>
-        <article className="card">
-          <header className="card-head">
-            <div>
-              <h2>Cuaca dan FDRS</h2>
-              <p>
-                Tanggal terakhir tiap provinsi dalam rentang
-                {view.bmkgRows[0] ? `, misalnya ${formatTanggalPendek(latestSharedDate(view.bmkgRows))}` : ""}.
-              </p>
-            </div>
-          </header>
-          <SimpleTable
-            empty="Tidak ada data cuaca pada rentang ini."
-            head={["Provinsi", "Tanggal", "Hujan (mm)", "FWI", "Kelas"]}
-            rows={view.bmkgRows.map((row) => [
-              row.provinsi,
-              formatTanggalPendek(row.tanggal),
-              formatAngka(row.curahHujan, 1),
-              formatAngka(row.fwi, 1),
-              row.kelasFdrs || "—",
-            ])}
-          />
-        </article>
+      <section className="card">
+        <header className="card-head">
+          <div>
+            <h2>Rekap SiPongi</h2>
+            <p>Jumlah hotspot dan luas terbakar dijumlahkan pada rentang tanggal. Bukan rekap resmi.</p>
+          </div>
+        </header>
+        <SimpleTable
+          empty="Tidak ada rekap SiPongi pada rentang ini."
+          head={["Provinsi", "Hotspot", "Luas (ha)"]}
+          rows={view.sipongiRows.map((row) => [row.provinsi, formatAngka(row.jumlah), formatAngka(row.luas, 1)])}
+        />
+      </section>
+
+      <section className="card">
+        <header className="card-head">
+          <div>
+            <h2>Konteks risiko jangka panjang (IRBI 2025)</h2>
+            <p>
+              {feeds.find((feed) => feed.id === "irbi")?.contoh
+                ? "Indeks tahunan pada berkas contoh, bukan keluaran buku IRBI. Urutan nama, bukan urutan prioritas."
+                : "Buku IRBI 2025. Tidak mengikuti filter tanggal. Urutan nama, bukan urutan prioritas dan bukan hitungan hotspot."}
+            </p>
+          </div>
+        </header>
+        <SimpleTable
+          empty="Tidak ada baris IRBI pada cakupan ini."
+          head={["Kabupaten", "Provinsi", "Indeks", "Kelas"]}
+          rows={view.irbiRows.map((row) => [row.kabupaten, row.provinsi, formatAngka(row.indeks, 2), row.kelas])}
+        />
       </section>
       </> : null}
 
@@ -329,7 +270,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           <strong>{keySet ? "MAP_KEY FIRMS aktif di config." : "MAP_KEY FIRMS kosong."}</strong>
           <p>
             {config.firms?.catatan ||
-              "Kunci FIRMS pada situs statis dapat dibaca siapa saja. Jika kosong, dasbor memakai CSV hotspot."}
+              "Kunci FIRMS pada situs statis dapat dibaca siapa saja. Cuplikan hotspot dibaca dari data/live. Berkas contoh tidak ditampilkan."}
           </p>
           {keySet ? (
             <p>
@@ -345,7 +286,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
               <li key={feed.id}>
                 <div className="source-top">
                   <h3>{feed.id === "ispu_pembanding" ? "PM2.5 model (CAMS)" : feed.nama}</h3>
-                  <span className={`status-pill status-${feed.status}`}>{feedStatus(feed)}</span>
+                  <span className={`status-pill status-${feed.status}`}>{feedStatus(feed, config.firms?.sumber)}</span>
                 </div>
                 <dl>
                   <div>
@@ -393,8 +334,47 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
   );
 }
 
-function latestSharedDate(rows) {
-  return rows.reduce((max, row) => (row.tanggal > max ? row.tanggal : max), rows[0].tanggal);
+function ProvinceCounts({ rows, sort, setSort, from, to, sumber, summary }) {
+  const ordered = [...(rows ?? [])].sort((a, b) => {
+    if (sort === "jumlah" && b.jumlah !== a.jumlah) return b.jumlah - a.jumlah;
+    return a.provinsi.localeCompare(b.provinsi, "id");
+  });
+  return (
+    <section className="card">
+      <header className="card-head">
+        <div>
+          <h2>Jumlah deteksi hotspot (bukan status)</h2>
+          <p>
+            Pengamatan pada periode {from || "—"} sampai {to || "—"}. Satelit: {sumber || "—"}. Rendah{" "}
+            {formatAngka(summary?.rendah || 0)}, nominal {formatAngka(summary?.nominal || 0)}, tinggi{" "}
+            {formatAngka(summary?.tinggi || 0)}.
+            {summary?.belumTerverifikasi
+              ? ` ${formatAngka(summary.belumTerverifikasi)} titik belum terverifikasi wilayah dan tidak masuk tabel ini.`
+              : ""}
+          </p>
+        </div>
+      </header>
+      <div className="province-filter" role="group" aria-label="Urutan tabel provinsi">
+        <button type="button" aria-pressed={sort === "nama"} onClick={() => setSort("nama")}>
+          Urut nama
+        </button>
+        <button type="button" aria-pressed={sort === "jumlah"} onClick={() => setSort("jumlah")}>
+          Urut jumlah
+        </button>
+      </div>
+      <SimpleTable
+        empty="Tidak ada provinsi pada cakupan ini."
+        head={["Provinsi", "Jumlah", "Rendah", "Nominal", "Tinggi"]}
+        rows={ordered.map((row) => [
+          row.provinsi,
+          formatAngka(row.jumlah),
+          formatAngka(row.rendah),
+          formatAngka(row.nominal),
+          formatAngka(row.tinggi),
+        ])}
+      />
+    </section>
+  );
 }
 
 function SimpleTable({ head, rows, empty }) {

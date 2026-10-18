@@ -8,7 +8,7 @@ import { karhutlaRankingPlan } from "../lib/ranking.js";
 import { decorateSources } from "../lib/sourceCatalog.js";
 import { PriorityIndicators } from "./PriorityIndicators.jsx";
 
-export function SummaryPage({ config, feeds, manifest }) {
+export function SummaryPage({ config, feeds, manifest, freshness }) {
   const hotspot = feeds.find((feed) => feed.id === "hotspot");
   const hotspotPeta = feeds.find((feed) => feed.id === "hotspot_peta");
   const priority = config?.provinsiPrioritas ?? [];
@@ -64,10 +64,10 @@ export function SummaryPage({ config, feeds, manifest }) {
         </header>
         {sampleHotspot ? (
           <div className="logic-body">
-            <p>
-              Hotspot resmi belum tersambung. Titik pada data contoh tidak digambar di halaman ini. Peta contoh ada di{" "}
-              <a href={pageHref("peta")}>Peta dan Data</a>.
-            </p>
+            <div className="banner error is-sticky" role="alert">
+              <strong>Cuplikan hotspot tidak tampil.</strong>
+              <p>{hotspot?.error || "Data contoh tidak ditampilkan. Peta dikosongkan."}</p>
+            </div>
             <DatasetTiming feed={hotspot} />
           </div>
         ) : (
@@ -78,6 +78,8 @@ export function SummaryPage({ config, feeds, manifest }) {
             feed={hotspot}
             fetchedAt={hotspot?.fetchedAt || manifest?.datasets?.hotspot?.fetched_at}
             observedAt={hotspot?.observedAt || manifest?.datasets?.hotspot?.observed_at}
+            freshness={freshness}
+            sumber={config?.firms?.sumber}
           />
         )}
       </section>
@@ -138,44 +140,6 @@ export function SummaryPage({ config, feeds, manifest }) {
           </div>
         </div>
       </section>
-
-      {ranking.annual.length ? (
-        <section className="card">
-          <header className="card-head">
-            <div>
-              <h2>
-                Konteks <Term id="irbi">IRBI</Term> 2025
-              </h2>
-              <p>Dua puluh skor tertinggi pada buku tahun 2025. Bukan urutan 14 hari dan bukan prakiraan.</p>
-            </div>
-          </header>
-          <DatasetTiming feed={irbi} />
-          <div className="table-wrap short">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Urutan</th>
-                  <th scope="col">Kabupaten/kota</th>
-                  <th scope="col">Provinsi</th>
-                  <th scope="col">Indeks</th>
-                  <th scope="col">Kelas</th>
-                </tr>
-              </thead>
-              <tbody>
-                {ranking.annual.map((row) => (
-                  <tr key={`${row.provinsi}-${row.kabupaten}`}>
-                    <td>{row.urutan}</td>
-                    <th scope="row">{row.kabupaten}</th>
-                    <td>{row.provinsi}</td>
-                    <td>{formatAngka(row.indeks, 2)}</td>
-                    <td>{row.kelas}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      ) : null}
 
       <section className="split">
         <article className="card">
@@ -242,6 +206,52 @@ export function SummaryPage({ config, feeds, manifest }) {
         </header>
         <p className="logic-body">{realTrend ? "Arsip siap digambar." : "Tren sepekan tidak ditampilkan. Arsip hotspot resmi belum ada."}</p>
       </section>
+
+      <IrbiContext feed={irbi} />
     </main>
+  );
+}
+
+function IrbiContext({ feed }) {
+  const rows = [...(feed?.rows ?? [])]
+    .filter((row) => row.kabupaten)
+    .sort(
+      (a, b) =>
+        String(a.kabupaten).localeCompare(String(b.kabupaten), "id") ||
+        String(a.provinsi).localeCompare(String(b.provinsi), "id"),
+    );
+  if (!rows.length || feed?.contoh) return null;
+  return (
+    <section className="card">
+      <header className="card-head">
+        <div>
+          <h2>Konteks risiko jangka panjang (IRBI 2025)</h2>
+          <p>Urutan nama kabupaten/kota. Bukan urutan 14 hari, bukan prakiraan, dan bukan hitungan hotspot.</p>
+        </div>
+      </header>
+      <DatasetTiming feed={feed} />
+      <div className="table-wrap short">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Kabupaten/kota</th>
+              <th scope="col">Provinsi</th>
+              <th scope="col">Indeks</th>
+              <th scope="col">Kelas</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={`${row.provinsi}-${row.kabupaten}`}>
+                <th scope="row">{row.kabupaten}</th>
+                <td>{row.provinsi}</td>
+                <td>{formatAngka(row.indeks, 2)}</td>
+                <td>{row.kelas}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 }

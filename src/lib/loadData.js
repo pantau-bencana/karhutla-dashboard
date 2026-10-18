@@ -331,21 +331,25 @@ async function readDataset(dataset, fetchImpl, resolveUrl) {
   return records.map((raw) => normalize(raw, Boolean(dataset.contoh)));
 }
 
-async function loadHotspot(dataset, config, fetchImpl, resolveUrl) {
+function emptyHotspot(dataset, error, extra = {}) {
+  return blankFeed(dataset, {
+    contoh: false,
+    status: "gagal",
+    error,
+    rows: [],
+    asal: "kosong",
+    urlTampil: "",
+    ...extra,
+  });
+}
+
+async function loadHotspot(dataset, config, fetchImpl) {
   const key = String(config?.firms?.mapKey ?? "").trim();
   if (!key) {
-    try {
-      const rows = await readDataset(dataset, fetchImpl, resolveUrl);
-      return blankFeed(dataset, {
-        status: dataset.contoh ? "contoh" : "berhasil",
-        error: "",
-        rows,
-        urlTampil: dataset.csvUrl,
-        asal: "csv",
-      });
-    } catch (error) {
-      return blankFeed(dataset, { status: "gagal", error: error.message, rows: [] });
-    }
+    return emptyHotspot(
+      dataset,
+      "Cuplikan hotspot tidak tersedia. Data contoh tidak ditampilkan. Peta dikosongkan.",
+    );
   }
 
   const liveUrl = firmsRequestUrl(config.firms);
@@ -361,24 +365,11 @@ async function loadHotspot(dataset, config, fetchImpl, resolveUrl) {
       asal: "firms",
     });
   } catch (error) {
-    try {
-      const rows = await readDataset(dataset, fetchImpl, resolveUrl);
-      return blankFeed(dataset, {
-        status: "cadangan",
-        error: `FIRMS gagal (${error.message}). Memakai CSV cadangan.`,
-        rows,
-        urlTampil: dataset.csvUrl,
-        asal: "csv",
-      });
-    } catch (fallbackError) {
-      return blankFeed(dataset, {
-        status: "gagal",
-        error: `FIRMS gagal (${error.message}). CSV cadangan juga gagal (${fallbackError.message}).`,
-        rows: [],
-        urlTampil: redactFirmsUrl(liveUrl),
-        asal: "firms",
-      });
-    }
+    return emptyHotspot(
+      dataset,
+      `FIRMS gagal (${error.message}). Cuplikan terakhir tidak ada. Data contoh tidak dipakai.`,
+      { urlTampil: redactFirmsUrl(liveUrl), asal: "firms" },
+    );
   }
 }
 
@@ -427,7 +418,7 @@ export async function loadAll(config, deps = {}) {
       const snapshot = await trySnapshot(dataset, manifest?.datasets?.[dataset.id], fetchImpl, resolveUrl);
       if (snapshot) return snapshot;
       if (dataset.id === "hotspot") {
-        return withSampleClock(await loadHotspot(dataset, config, fetchImpl, resolveUrl), dataset);
+        return loadHotspot(dataset, config, fetchImpl);
       }
       try {
         const rows = await readDataset(dataset, fetchImpl, resolveUrl);

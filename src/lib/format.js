@@ -70,10 +70,3 @@ export function formatUsia(ms) {
   if (hours < 48) return `${hours} jam`;
   return `${Math.floor(hours / 24)} hari`;
 }
-
-export function formatAmbang(thresholds) {
-  if (!thresholds) return "";
-  const part = (label, rule) =>
-    `${label}: Waspada ≥ ${rule.waspada}, Siaga ≥ ${rule.siaga}, Awas ≥ ${rule.awas}`;
-  return `${part("Titik panas pada rentang ini", thresholds.hotspot)}. ${part("FWI maksimum", thresholds.fwi)}.`;
-}

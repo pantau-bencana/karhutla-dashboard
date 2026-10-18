@@ -160,7 +160,7 @@ export const GLOSSARY = [
     penjelasan:
       "Indeks cuaca kebakaran pada sistem Kanada. FWI memakai beberapa kode kelembapan bahan bakar dan indeks sebaran. BMKG memakai keluarga indeks ini di dalam FDRS.",
     penggunaan:
-      "Kolom FWI pada indikator contoh tetap data contoh. Lapisan pembanding GWIS menampilkan FWI ECMWF pada titik wakil dan tidak disebut FDRS BMKG. Angka itu tidak mengubah urutan 14 hari.",
+      "FDRS resmi menunggu data resmi BMKG. Lapisan pembanding GWIS menampilkan FWI ECMWF pada titik wakil dan tidak disebut FDRS BMKG. Angka itu tidak mengubah urutan 14 hari.",
     rujukan: "https://cwfis.cfs.nrcan.gc.ca/background/summary/fwi",
     rujukanLabel: "Natural Resources Canada — FWI",
   },
@@ -170,7 +170,7 @@ export const GLOSSARY = [
     nama: "Hotspot atau titik panas",
     penjelasan:
       "Deteksi satelit atas suhu atau pancaran yang menonjol. Dalam pemantauan karhutla, hotspot adalah indikasi yang perlu diperiksa. Titik api atau kebakaran terkonfirmasi baru ada setelah verifikasi lapangan. Dasbor tidak menampilkan hotspot hari besok.",
-    penggunaan: "Peta dan tabel memakai koordinat deteksi. Tanpa batas administrasi resmi, titik tanpa nama wilayah ditandai belum terpetakan, bukan ditebak.",
+    penggunaan: "Peta dan tabel memakai koordinat deteksi. Nama wilayah diisi dari kueri BIG pada saat pembaruan. Titik yang pencariannya gagal tidak masuk hitungan provinsi atau kabupaten.",
     rujukan: "https://firms.modaps.eosdis.nasa.gov/",
     rujukanLabel: "NASA FIRMS",
   },
@@ -389,6 +389,6 @@ export const GLOSSARY = [
     penjelasan:
       "Daftar wilayah yang perlu dilihat karena ada data pendukung, misalnya deteksi satelit pada data yang memang tersambung. Ini bukan peringatan resmi dan bukan urutan prioritas operasional BNPB.",
     penggunaan:
-      "Ringkasan pimpinan hanya menyusun daftar dari data yang bukan contoh. Indikator Normal/Waspada/Siaga/Awas di Peta dan Data adalah ambang prototipe pada config.json.",
+      "Ringkasan pimpinan hanya menyusun daftar dari data yang bukan contoh. Tabel provinsi pada Peta dan Data adalah jumlah deteksi, bukan penetapan operasional.",
   },
 ];

@@ -1,5 +1,5 @@
 {
-  "judul": "Dashboard Peringatan Dini Karhutla Nasional",
+  "judul": "Prototipe Pemantauan Karhutla",
   "instansi": "Dit. PD BNPB",
   "catatan": "Prototipe internal Dit. PD BNPB. Jangan dipublikasikan tanpa persetujuan.",
   "provinsiPrioritas": [
@@ -25,12 +25,7 @@
     "sumber": "VIIRS_SNPP_NRT",
     "area": "95,-11,141,6",
     "rentangHari": 7,
-    "catatan": "MAP_KEY yang ditulis di config situs statis dapat dibaca siapa saja yang membuka situs. Jangan memakai kunci yang dipakai sistem lain. Jika mapKey kosong, atau permintaan FIRMS gagal, dasbor memakai csvUrl dataset hotspot."
-  },
-  "peringatan": {
-    "hotspot": { "waspada": 8, "siaga": 20, "awas": 45 },
-    "fwi": { "waspada": 6, "siaga": 13, "awas": 21 },
-    "catatan": "Status provinsi memakai level yang lebih tinggi antara jumlah titik panas pada rentang tanggal terpilih dan FWI maksimum (FDRS) pada rentang yang sama. Ambang ini ilustratif untuk jendela sekitar 7 hari dan dapat diubah di config.json. Bukan ambang resmi BNPB atau BMKG."
+    "catatan": "MAP_KEY yang ditulis di config situs statis dapat dibaca siapa saja yang membuka situs. Jangan memakai kunci yang dipakai sistem lain. Situs publik memakai cuplikan data/live. Jika cuplikan tidak ada, peta hotspot dikosongkan. Berkas contoh hotspot tidak ditampilkan."
   },
   "datasets": [
     {
@@ -61,16 +56,6 @@
       "frekuensi": "Tahunan",
       "lisensi": "Berkas contoh untuk ilustrasi kelas risiko per kabupaten. Bukan keluaran resmi IRBI.",
       "terakhirDiperbarui": "2025-12-01",
-      "contoh": true
-    },
-    {
-      "id": "bmkg",
-      "nama": "Cuaca, hujan, dan FDRS",
-      "instansi": "BMKG",
-      "csvUrl": "data/sample/bmkg.csv",
-      "frekuensi": "Harian",
-      "lisensi": "Berkas contoh. Kelas FDRS pada prototipe diselaraskan dengan ambang config, bukan tabel resmi BMKG.",
-      "terakhirDiperbarui": "2026-10-16",
       "contoh": true
     },
     {

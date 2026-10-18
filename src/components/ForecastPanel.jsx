@@ -37,8 +37,9 @@ export function ForecastPanel({ provinces = [], weatherRows = [], fwiRows = [] }
       <header className="card-head">
         <div>
           <h2>Prakiraan kondisi (pembanding, bukan resmi)</h2>
+          <p>Pembanding, bukan produk BMKG/KLHK</p>
           <p>
-            Bukan prakiraan titik panas dan bukan FDRS BMKG. Angka di bawah berasal dari data terbuka yang tersambung.
+            Pembanding model, bukan prakiraan BMKG. Bukan prakiraan titik panas dan bukan FDRS BMKG. Angka di bawah berasal dari data terbuka yang tersambung.
             Pengguna membuka peta FWI resmi di situs BMKG.
           </p>
         </div>
@@ -71,7 +72,7 @@ export function ForecastPanel({ provinces = [], weatherRows = [], fwiRows = [] }
             ? ` mencakup ${formatTanggal(fwiDates[0])} sampai ${formatTanggal(latestFwi)} (${fwiDates.length} tanggal pada berkas).`
             : " belum ada pada snapshot ini."}
           {" "}
-          Labelnya pembanding. Nilainya tidak dipakai sebagai prakiraan hotspot.
+          Nilai GWIS tidak disebut FDRS. Nilainya tidak dipakai sebagai prakiraan hotspot.
         </p>
         {names.length ? (
           <div className="table-wrap">

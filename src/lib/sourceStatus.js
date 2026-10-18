@@ -14,13 +14,14 @@ function firmsCatatan(firms, keySet, live) {
     return `API sedang dibaca${detail ? ` (${detail})` : ""}. Kunci tidak ditampilkan di halaman ini. Jendela hari API mengikuti konfigurasi, bukan tanggal yang dipilih di dasbor. Hasilnya tetap bahan prototipe, bukan peringatan resmi.`;
   }
   if (keySet) {
-    return "Kunci FIRMS terpasang di konfigurasi, tetapi API tidak sedang mengisi peta. Permintaan dapat gagal karena jaringan atau CORS. Nilai kunci tidak ditampilkan. Dasbor memakai CSV cadangan.";
+    return "Kunci FIRMS terpasang di konfigurasi, tetapi API tidak sedang mengisi peta. Permintaan dapat gagal karena jaringan atau CORS. Nilai kunci tidak ditampilkan. Bila cuplikan terakhir ada, dasbor memakai cuplikan itu. Data contoh hotspot tidak dipakai.";
   }
-  return "Hotspot dapat dibaca dari API NASA FIRMS atau dari CSV. Kunci API saat ini kosong, jadi FIRMS tidak dihubungi. Pada situs statis, kunci yang diisi dapat dilihat pengunjung; halaman ini tidak menampilkan nilainya.";
+  return "Hotspot pada situs publik dibaca dari cuplikan data/live. Kunci API saat ini kosong, jadi FIRMS tidak dihubungi dari peramban. Halaman ini tidak menampilkan nilainya. Berkas contoh hotspot tidak ditampilkan.";
 }
 
 function csvStatus(dataset, feed) {
   const hasUrl = Boolean(text(dataset?.csvUrl));
+  if (feed?.asal === "snapshot" && !feed.contoh) return feed.status === "usang" ? "cuplikan terakhir" : "cuplikan";
   if (!hasUrl || feed?.status === "gagal") return "belum terhubung";
   if (dataset?.contoh || feed?.status === "contoh" || feed?.contoh) return "contoh";
   if (!feed || feed.status === "berhasil" || feed.status === "cadangan") return "CSV yang dikonfigurasi";
@@ -29,7 +30,10 @@ function csvStatus(dataset, feed) {
 
 function csvCatatan(dataset, feed, status, { sedangDipakai }) {
   const parts = [];
-  if (status === "contoh") {
+  if (status === "cuplikan" || status === "cuplikan terakhir") {
+    parts.push("Yang dipakai adalah cuplikan data/live, bukan berkas contoh.");
+    if (status === "cuplikan terakhir") parts.push(feed?.error || "Menampilkan cuplikan terakhir.");
+  } else if (status === "contoh") {
     parts.push("Yang dipakai adalah berkas CSV contoh, bukan data operasional dan bukan aliran langsung.");
   } else if (status === "CSV yang dikonfigurasi") {
     parts.push("CSV pada konfigurasi berhasil dibaca. Ini berkas atau tautan yang dipasang, bukan jaminan data resmi waktu nyata.");
