@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import {
   BMKG_ATTRIBUTION,
-  DASARIAN_LINKS,
   DASARIAN_NOTE,
   NOWCAST_FAIL,
   NOWCAST_LOADING,
@@ -9,7 +8,13 @@ import {
   nowcastCrossTab,
   nowcastExpiredText,
 } from "../lib/capKab.js";
-import { formatWib } from "../lib/format.js";
+import {
+  DASARIAN_BMKG_URL,
+  DASARIAN_EMPTY,
+  DASARIAN_EXPIRED,
+  DASARIAN_UNLISTED,
+} from "../lib/dasarianManual.js";
+import { formatTanggal, formatWib } from "../lib/format.js";
 import { FLOOD_INFO_COLUMNS, RAIN_RISK_MATRIX, krbLinksFor, skorTeks, sortFloodRows } from "../lib/floodMatrix.js";
 
 const CELLS = {
@@ -55,16 +60,36 @@ const CELLS = {
       </span>
     ));
   },
-  dasarian: () => (
-    <>
-      Tautan saja
-      {DASARIAN_LINKS.map((link) => (
-        <a key={link.url} href={link.url} target="_blank" rel="noreferrer">
-          {link.nama}
-        </a>
-      ))}
-    </>
-  ),
+  dasarian: (row) => {
+    if (row.dasarianKind === "memuat") return NOWCAST_LOADING;
+    if (row.dasarianKind === "gagal") return NOWCAST_FAIL;
+    if (row.dasarianKind === "tak-tercantum") return DASARIAN_UNLISTED;
+    if (row.dasarianKind !== "isi") {
+      return (
+        <>
+          {DASARIAN_EMPTY}
+          <a href={DASARIAN_BMKG_URL} target="_blank" rel="noreferrer">
+            Peringatan dini hujan tinggi
+          </a>
+        </>
+      );
+    }
+    const tone = row.dasarianExpired ? "expired" : String(row.dasarianStatus || "").toLowerCase();
+    return (
+      <span className={`dasarian-cell ${tone}`}>
+        <strong className="dasarian-status">{row.dasarianStatus}</strong>
+        {row.dasarianExpired ? <small className="dasarian-badge">{DASARIAN_EXPIRED}</small> : null}
+        {row.dasarianNama ? <small>{row.dasarianNama}</small> : null}
+        {row.dasarianKutipan ? <small>{row.dasarianKutipan}</small> : null}
+        {row.dasarianUrl ? (
+          <a href={row.dasarianUrl} target="_blank" rel="noreferrer">
+            Halaman BMKG
+          </a>
+        ) : null}
+        {row.dasarianAkses ? <small>Diakses {formatTanggal(row.dasarianAkses)}</small> : null}
+      </span>
+    );
+  },
   dibi: (row) => row.dibiTeks,
   kajian: () => "Belum terhubung",
   krb: (row) =>

@@ -30,8 +30,8 @@ export const FLOOD_INFO_COLUMNS = [
   },
   {
     id: "dasarian",
-    label: "Status Peringatan Dini Curah Hujan Tinggi dasarian (Waspada/Siaga/Awas)",
-    detail: "Tautan saja – menunggu izin tertulis BMKG",
+    label: "Peringatan Dini Curah Hujan Tinggi dasarian (BMKG, diisi manual)",
+    detail: "Disalin manual dari halaman resmi BMKG; bukan integrasi data otomatis",
   },
   { id: "irbi-multi", label: "IRBI 2025 multi-bahaya", detail: "Data statis. Kelas dan halaman. Bukan khusus banjir.", sortKey: "multi" },
   { id: "dibi", label: "Kejadian banjir 2024", detail: "Data statis. DIBI, ODC-BY.", sortKey: "dibi" },

@@ -85,7 +85,8 @@ export const GLOSSARY = [
     nama: "Dasarian",
     penjelasan:
       "Pada layanan iklim BMKG, dasarian adalah periode sekitar sepuluh hari dalam sebulan: tanggal 1–10, 11–20, dan 21 sampai akhir bulan. Itu bukan prakiraan cuaca harian yang bergulir sepuluh hari ke depan.",
-    penggunaan: "Halaman prediksi dasarian hanya ditautkan. Angkanya tidak disalin dari citra. Prakiraan BMKG yang tersambung berjangka 3 hari.",
+    penggunaan:
+      "Prediksi hujan dasarian tetap tautan; citranya tidak disalin. Status Peringatan Dini Curah Hujan Tinggi untuk Aceh dan Bengkulu diisi manual pada berkas CSV, lalu dibaca dasbor. Halaman BMKG itu tidak dikorek.",
     rujukan: "https://www.bmkg.go.id/iklim/prediksi-hujan-dasarian",
     rujukanLabel: "BMKG — Prediksi hujan dasarian",
   },

@@ -4,7 +4,7 @@ export const MATRIX_PERMISSION = "Prototipe internal – menunggu izin tertulis 
 export const BMKG_ATTRIBUTION = "Sumber: BMKG";
 export const NOWCAST_BASIS = "Nowcast BMKG, dasar waktu 0–3 jam.";
 export const DASARIAN_NOTE =
-  "Status Peringatan Dini Curah Hujan Tinggi dasarian (Waspada/Siaga/Awas): Tautan saja – menunggu izin tertulis BMKG";
+  "Disalin manual dari halaman resmi BMKG; bukan integrasi data otomatis";
 export const DASARIAN_LINKS = [
   {
     nama: "Peringatan dini hujan tinggi",

@@ -38,7 +38,7 @@ Di tabel yang sama ada kolom **Peringatan hujan lebat BMKG aktif (0–3 jam)**. 
 
 **Cara membaca.** Nowcast adalah peringatan jangka pendek, kira-kira 0–3 jam. Itu berbeda dari Peringatan Dini Curah Hujan Tinggi dasarian dan dari prakiraan berbasis dampak (IBF). Kolom ini tidak memakai prakiraan adm4 dan tidak memakai Open-Meteo. Dasar waktu dan waktu ambil cuplikan tertulis di halaman, dengan atribusi **Sumber: BMKG**.
 
-Kolom dan catatan dasarian berbunyi **Status Peringatan Dini Curah Hujan Tinggi dasarian (Waspada/Siaga/Awas): Tautan saja – menunggu izin tertulis BMKG**. Tautannya halaman peringatan dini hujan tinggi dan potensi cuaca ekstrem BMKG. Status dasarian tidak diisi dari RSS nowcast.
+Kolom **Peringatan Dini Curah Hujan Tinggi dasarian (BMKG, diisi manual)** menyalin status dari halaman BMKG. Kalimatnya: **Disalin manual dari halaman resmi BMKG; bukan integrasi data otomatis**. Warna kuning, jingga, dan merah hanya ada di kolom itu. Bila masa berlaku sudah lewat, muncul **Kedaluwarsa – perlu diperbarui** dan warnanya pudar. Bila berkas masih kosong: **Belum diisi untuk dasarian ini**. Bila dasarian sudah diisi tetapi kabupaten itu tidak ada di halaman BMKG: **Tidak tercantum di peringatan BMKG dasarian ini**. Cara mengisi ada di [panduan isi dasarian](PANDUAN_ISI_DASARIAN.md).
 
 ## Kualitas udara
 

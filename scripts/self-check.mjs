@@ -38,6 +38,16 @@ import {
   nowcastExpiredText,
   warningActive,
 } from "../src/lib/capKab.js";
+import {
+  DASARIAN_EMPTY,
+  DASARIAN_EXPIRED,
+  DASARIAN_FILE,
+  DASARIAN_HEADER,
+  DASARIAN_MANUAL_LABEL,
+  DASARIAN_UNLISTED,
+  applyDasarian,
+  validateDasarian,
+} from "../src/lib/dasarianManual.js";
 import { assignKabupaten, capKabCsv, ringsFromXml, rowsFromFeatures, targetRings } from "./cap-kab.mjs";
 import { manifestNeedsRefresh } from "./refresh-watchdog.mjs";
 import { monitoringSources } from "../src/lib/sourceStatus.js";
@@ -756,10 +766,69 @@ assert.deepEqual(
   RAIN_RISK_MATRIX.axes.map((axis) => axis.id),
   ["hujan", "risiko"],
 );
-assert.equal(
-  DASARIAN_NOTE,
-  "Status Peringatan Dini Curah Hujan Tinggi dasarian (Waspada/Siaga/Awas): Tautan saja – menunggu izin tertulis BMKG",
+assert.equal(DASARIAN_NOTE, DASARIAN_MANUAL_LABEL);
+assert.equal(DASARIAN_EMPTY, "Belum diisi untuk dasarian ini");
+assert.equal(DASARIAN_UNLISTED, "Tidak tercantum di peringatan BMKG dasarian ini");
+assert.equal(DASARIAN_EXPIRED, "Kedaluwarsa – perlu diperbarui");
+assert.equal(/aman/i.test(DASARIAN_EMPTY + DASARIAN_UNLISTED + DASARIAN_EXPIRED), false);
+const dasarianCodes = irbiBanjir.map((row) => kodeWilayah(row.kode_wilayah));
+const dasarianText = readFileSync(DASARIAN_FILE, "utf8");
+assert.equal(validateDasarian(dasarianText, dasarianCodes).length, 0);
+assert.equal(parseCsv(dasarianText).every((row) => !String(row.status ?? "").trim()), true);
+assert.equal(parseCsv(dasarianText).length, 33);
+const badStatus = validateDasarian(
+  `${DASARIAN_HEADER}\n11.01,Aceh Selatan,Aceh,Aman,,,,,,,,`,
+  ["11.01"],
 );
+assert.match(badStatus.join("\n"), /Status tidak dikenal/);
+const badDate = validateDasarian(
+  `${DASARIAN_HEADER}\n11.01,Aceh Selatan,Aceh,Waspada,Dasarian II,2026-10-11,18-10-2026,kutipan,https://www.bmkg.go.id/iklim/peringatan-dini-hujan-tinggi,2026-10-18,Nama`,
+  ["11.01"],
+);
+assert.match(badDate.join("\n"), /tidak berbentuk YYYY-MM-DD/);
+const missingUrl = validateDasarian(
+  `${DASARIAN_HEADER}\n11.01,Aceh Selatan,Aceh,Waspada,Dasarian II,2026-10-11,2026-10-20,kutipan,,2026-10-18,Nama`,
+  ["11.01"],
+);
+assert.match(missingUrl.join("\n"), /sumber_url wajib diisi/);
+const missingName = validateDasarian(
+  `${DASARIAN_HEADER}\n11.01,Aceh Selatan,Aceh,Siaga,,2026-10-11,2026-10-20,kutipan,https://www.bmkg.go.id/iklim/peringatan-dini-hujan-tinggi,2026-10-18,Nama`,
+  ["11.01"],
+);
+assert.match(missingName.join("\n"), /dasarian wajib diisi/);
+const missingAccess = validateDasarian(
+  `${DASARIAN_HEADER}\n11.01,Aceh Selatan,Aceh,Awas,Dasarian II,2026-10-11,2026-10-20,kutipan,https://www.bmkg.go.id/iklim/peringatan-dini-hujan-tinggi,,Nama`,
+  ["11.01"],
+);
+assert.match(missingAccess.join("\n"), /tanggal_akses wajib diisi/);
+const manualRows = [
+  {
+    kode_wilayah: "11.01",
+    status: "Waspada",
+    dasarian: "Dasarian II",
+    berlaku_sampai: "2026-10-20",
+    kutipan: "kutipan",
+    sumber_url: "https://www.bmkg.go.id/iklim/peringatan-dini-hujan-tinggi",
+    tanggal_akses: "2026-10-18",
+  },
+  { kode_wilayah: "17.01", status: "", dasarian: "", berlaku_sampai: "", kutipan: "", sumber_url: "", tanggal_akses: "" },
+];
+const dasarianView = applyDasarian(floodRows, manualRows, { status: "ok", now: new Date("2026-10-18T00:00:00Z") });
+assert.equal(dasarianView.find((row) => row.kode === "11.01").dasarianStatus, "Waspada");
+assert.equal(dasarianView.find((row) => row.kode === "11.01").dasarianExpired, false);
+assert.equal(dasarianView.find((row) => row.kode === "17.01").dasarianKind, "tak-tercantum");
+const expiredView = applyDasarian(floodRows, manualRows, { status: "ok", now: new Date("2026-10-21T00:00:00Z") });
+assert.equal(expiredView.find((row) => row.kode === "11.01").dasarianExpired, true);
+const blankView = applyDasarian(floodRows, [{ kode_wilayah: "11.01", status: "" }], { status: "ok" });
+assert.equal(blankView.every((row) => row.dasarianKind === "kosong"), true);
+assert.equal(/paths-ignore:/.test(pagesWorkflow), false);
+assert.match(pagesWorkflow, /bmkg-pdcht-dasarian\.csv/);
+assert.match(pagesWorkflow, /validate-dasarian\.mjs/);
+const styleText = readFileSync("src/styles.css", "utf8");
+assert.match(styleText, /\.dasarian-cell\.waspada[\s\S]*#f5d76e/);
+assert.match(styleText, /\.dasarian-cell\.siaga[\s\S]*#ef8f3a/);
+assert.match(styleText, /\.dasarian-cell\.awas[\s\S]*#c5362b/);
+assert.equal(styleText.includes(".nowcast-cross") && styleText.slice(styleText.indexOf(".nowcast-cross"), styleText.indexOf(".dasarian-status")).includes("#f5d76e"), false);
 assert.equal(MATRIX_PERMISSION, "Prototipe internal – menunggu izin tertulis BNPB/BMKG");
 assert.equal(NOWCAST_FAIL, "Tidak tersedia");
 assert.equal(clockWib("2026-10-18T13:15:18.000Z"), "20:15");

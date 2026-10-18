@@ -13,7 +13,13 @@ assert.match(
 assert.equal(html.includes('src="/assets/'), false, "Aset tidak boleh di akar domain");
 assert.equal(html.includes('href="/assets/'), false, "CSS tidak boleh di akar domain");
 
-for (const file of ["dist/config.json", "dist/favicon.svg", "dist/data/sample/hotspot.csv", "dist/data/sample/ispu.csv"]) {
+for (const file of [
+  "dist/config.json",
+  "dist/favicon.svg",
+  "dist/data/sample/hotspot.csv",
+  "dist/data/sample/ispu.csv",
+  "dist/data/manual/bmkg-pdcht-dasarian.csv",
+]) {
   assert.equal(existsSync(file), true, `Berkas hilang: ${file}`);
 }
 

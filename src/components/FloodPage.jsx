@@ -11,6 +11,7 @@ import {
   NOWCAST_BASIS,
   applyNowcast,
 } from "../lib/capKab.js";
+import { DASARIAN_CSV_URL, DASARIAN_FILE, DASARIAN_GUIDE_URL, applyDasarian } from "../lib/dasarianManual.js";
 import { formatWib } from "../lib/format.js";
 import { hazardById } from "../lib/hazards.js";
 import { DIBI_RESOURCE, FLOOD_PERMISSION, IRBI_PERMISSION, RISK_ATTRIBUTION, buildFloodRows } from "../lib/floodMatrix.js";
@@ -20,6 +21,7 @@ const MULTI_CSV = "data/static/irbi-2025-multibahaya-aceh-bengkulu.csv";
 const DIBI_CSV = "data/live/dibi-banjir-2024.csv";
 const CAP_CSV = "data/live/bmkg-cap-kab.csv";
 const CAP_META = "data/live/bmkg-cap-kab-meta.json";
+const DASARIAN_CSV = DASARIAN_FILE;
 
 function assetUrl(path) {
   return new URL(path, document.baseURI).href;
@@ -67,6 +69,7 @@ function FloodBody() {
   const [dibi, setDibi] = useState([]);
   const [dibiLoaded, setDibiLoaded] = useState(false);
   const [cap, setCap] = useState({ status: "memuat", alerts: [], meta: {} });
+  const [dasarian, setDasarian] = useState({ status: "memuat", rows: [] });
   const [error, setError] = useState("");
   const hazard = hazardById("banjir");
 
@@ -101,6 +104,12 @@ function FloodBody() {
       } catch {
         if (!cancelled) setCap({ status: "gagal", alerts: [], meta: {} });
       }
+      try {
+        const manual = await loadCsv(DASARIAN_CSV);
+        if (!cancelled) setDasarian({ status: "ok", rows: manual });
+      } catch {
+        if (!cancelled) setDasarian({ status: "gagal", rows: [] });
+      }
     })();
     return () => {
       cancelled = true;
@@ -108,10 +117,10 @@ function FloodBody() {
   }, []);
 
   const rows = useMemo(() => buildFloodRows({ banjir, multi, dibi, dibiLoaded }), [banjir, multi, dibi, dibiLoaded]);
-  const shown = useMemo(
-    () => applyNowcast(rows, cap.alerts, { ...cap.meta, status: cap.status }),
-    [rows, cap],
-  );
+  const shown = useMemo(() => {
+    const withNowcast = applyNowcast(rows, cap.alerts, { ...cap.meta, status: cap.status });
+    return applyDasarian(withNowcast, dasarian.rows, { status: dasarian.status });
+  }, [rows, cap, dasarian]);
 
   return (
     <main className="wrap main">
@@ -157,6 +166,18 @@ function FloodBody() {
             memakai prakiraan adm4 (tp) dan tidak memakai Open-Meteo.
           </p>
           <p>{DASARIAN_NOTE}</p>
+          <p>
+            Kolom dasarian diisi dengan menyalin status dari halaman BMKG ke berkas CSV. Warna kuning, jingga, dan merah
+            hanya dipakai pada kolom itu. Tidak ada skor gabungan. Cara mengisinya ada di{" "}
+            <a href={DASARIAN_GUIDE_URL} target="_blank" rel="noreferrer">
+              panduan isi dasarian
+            </a>
+            . Berkasnya{" "}
+            <a href={DASARIAN_CSV_URL} target="_blank" rel="noreferrer">
+              bmkg-pdcht-dasarian.csv
+            </a>
+            .
+          </p>
           <p className="nowcast-links">
             {DASARIAN_LINKS.map((link) => (
               <a key={link.url} href={link.url} target="_blank" rel="noreferrer">
