@@ -38,6 +38,8 @@ Alur: sumber → pengambilan terjadwal → snapshot → dasbor → status pering
 
 Secret FIRMS, bila dipakai, hanya di **Settings → Secrets and variables → Actions** dengan nama `FIRMS_MAP_KEY`. Daftarkan kunci sendiri di <https://firms.modaps.eosdis.nasa.gov/api/map_key/>. Jangan menempelkan kunci di obrolan, berkas, atau commit. Tanpa secret, build tetap jalan dan hotspot berstatus **Belum terhubung** dengan data contoh.
 
+Pembanding terbuka (hujan 14 hari Open-Meteo, PM2.5 CAMS lewat Open-Meteo, dan FWI GWIS) tidak memakai secret. Secret CDS tidak dipasang: angka FWI harian diambil dari WMS publik `ecmwf.query`, sedangkan dataset musiman CEMS di Early Warning Data Store membutuhkan akun dan bukan deret 9 hari itu. CHIRPS, laporan Smithsonian, dan VAAC Darwin hanya tautan.
+
 `npm run preview` membuka `http://127.0.0.1:4173`. Setara dengan itu:
 
 ```bash

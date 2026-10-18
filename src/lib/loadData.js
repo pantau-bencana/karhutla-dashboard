@@ -201,12 +201,45 @@ function normalizePembandingCuaca(raw) {
   };
 }
 
+function normalizeTitikWakil(raw) {
+  return {
+    kode: String(raw.kode ?? "").trim(),
+    provinsi: raw.provinsi || "—",
+    kabupaten: raw.kabupaten || "—",
+    lintang: num(raw.lintang),
+    bujur: num(raw.bujur),
+    sumber: raw.sumber || "",
+  };
+}
+
+function normalizeHujan14(raw) {
+  return {
+    tanggal: String(raw.tanggal ?? "").slice(0, 10),
+    provinsi: raw.provinsi || "—",
+    kabupaten: raw.kabupaten || "—",
+    kode: String(raw.kode ?? "").trim(),
+    lintang: num(raw.lintang),
+    bujur: num(raw.bujur),
+    curahHujan: num(raw.curah_hujan_mm),
+    peluang: num(raw.peluang_hujan_maks),
+    anginKmj: num(raw.angin_maks_kmj),
+  };
+}
+
 function normalizeFwiGwis(raw) {
   return {
     tanggal: String(raw.tanggal ?? "").slice(0, 10),
     provinsi: raw.provinsi || "—",
-    kabupaten: raw.kabupaten || "",
+    kabupaten: raw.kabupaten || "—",
+    kode: String(raw.kode ?? "").trim(),
+    lintang: coordinate(raw.lintang),
+    bujur: coordinate(raw.bujur),
     fwi: num(raw.fwi),
+    isi: num(raw.isi),
+    bui: num(raw.bui),
+    ffmc: num(raw.ffmc),
+    dmc: num(raw.dmc),
+    dc: num(raw.dc),
   };
 }
 
@@ -219,6 +252,9 @@ const NORMALIZERS = {
   bmkg_prakiraan: (raw) => normalizePrakiraan(raw),
   fdrs_pembanding: (raw) => normalizePembandingCuaca(raw),
   ispu_pembanding: (raw) => normalizeIspu(raw),
+  titik_wakil: (raw) => normalizeTitikWakil(raw),
+  hujan_14_pembanding: (raw) => normalizeHujan14(raw),
+  fwi_gwis_pembanding: (raw) => normalizeFwiGwis(raw),
   bmkg_cap: (raw) => normalizeCap(raw),
   dibi_karhutla: (raw) => normalizeDibi(raw),
 };
@@ -410,7 +446,7 @@ export async function loadAll(config, deps = {}) {
     }),
   );
 
-  for (const id of ["bmkg_prakiraan", "fdrs_pembanding", "ispu_pembanding", "bmkg_cap", "dibi_karhutla"]) {
+  for (const id of ["bmkg_prakiraan", "fdrs_pembanding", "ispu_pembanding", "bmkg_cap", "dibi_karhutla", "titik_wakil", "hujan_14_pembanding", "fwi_gwis_pembanding"]) {
     const entry = manifest?.datasets?.[id];
     if (!entry?.file) continue;
     const snapshot = await trySnapshot(

@@ -21,6 +21,7 @@ import { clusterCellDegrees, countHotspots, filterHotspotWindow } from "../src/l
 import { parseFirmsCoordinate } from "./indonesia-land.mjs";
 import { arcGisContains, summarizeByDesa, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
 import { annotatePoints } from "./big-wilayah.mjs";
+import { buildComparisonAttention, normalizePlaceName, PROTOTYPE_LABEL } from "../src/lib/attentionPrototype.js";
 import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { REFRESH_CRON, nextScheduledRun } from "../src/lib/schedule.js";
 import { monitoringSources } from "../src/lib/sourceStatus.js";
@@ -316,6 +317,49 @@ assert.match(workflow, /FIRMS_MAP_KEY/);
 assert.equal(workflow.includes("eyJ"), false);
 assert.equal(karhutlaRankingPlan().dapatDisusun, false);
 assert.equal(karhutlaRankingPlan().status.includes("menunggu data resmi BMKG"), true);
+assert.equal(PROTOTYPE_LABEL, "Prototipe – berbasis data pembanding terbuka, bukan data resmi BMKG");
+assert.equal(logicSource.includes("PROTOTYPE_LABEL"), false);
+assert.equal(logicSource.includes("bukan daftar prioritas"), true);
+assert.equal(normalizePlaceName("Kota Lubuk Linggau"), "LUBUKLINGGAU");
+assert.equal(normalizePlaceName("Kota Lubuklinggau"), "LUBUKLINGGAU");
+const perhatian = buildComparisonAttention({
+  irbiRows: [
+    { provinsi: "Riau", kabupaten: "Pelalawan", indeks: 20, kelas: "Tinggi" },
+    { provinsi: "Riau", kabupaten: "Siak", indeks: 22, kelas: "Tinggi" },
+    { provinsi: "Jambi", kabupaten: "Tebo", indeks: 30, kelas: "Sedang" },
+    { provinsi: "Jambi", kabupaten: "Merangin", indeks: 18, kelas: "Tinggi" },
+  ],
+  rainRows: [
+    ...Array.from({ length: 14 }, (_, index) => ({ tanggal: `2026-10-${String(index + 1).padStart(2, "0")}`, provinsi: "Riau", kabupaten: "PELALAWAN", kode: "1405", lintang: 0.1, bujur: 102, curahHujan: index < 2 ? 0 : 5, peluang: 40, anginKmj: 10 })),
+    ...Array.from({ length: 14 }, (_, index) => ({ tanggal: `2026-10-${String(index + 1).padStart(2, "0")}`, provinsi: "Riau", kabupaten: "SIAK", kode: "1408", lintang: 0.8, bujur: 102, curahHujan: 0, peluang: 10, anginKmj: 12 })),
+    ...Array.from({ length: 14 }, (_, index) => ({ tanggal: `2026-10-${String(index + 1).padStart(2, "0")}`, provinsi: "Jambi", kabupaten: "TEBO", kode: "1509", lintang: -1.5, bujur: 102, curahHujan: 0, peluang: 5, anginKmj: 20 })),
+    ...Array.from({ length: 11 }, (_, index) => ({ tanggal: `2026-10-${String(index + 1).padStart(2, "0")}`, provinsi: "Jambi", kabupaten: "MERANGIN", kode: "1502", lintang: -2, bujur: 102, curahHujan: 0, peluang: 5, anginKmj: 8 })),
+  ],
+  fwiRows: [
+    { tanggal: "2026-10-01", kode: "1405", fwi: 40 },
+    { tanggal: "2026-10-01", kode: "1408", fwi: 1 },
+  ],
+});
+assert.equal(perhatian.label, PROTOTYPE_LABEL);
+assert.deepEqual(perhatian.rows.map((row) => row.kabupaten), ["Siak", "Pelalawan", "Tebo"]);
+assert.equal(perhatian.hariKurang, 1);
+assert.equal(perhatian.rows[0].fwiRata, 1);
+assert.equal(perhatian.rows[1].fwiRata, 40);
+const dibalik = buildComparisonAttention({
+  irbiRows: [
+    { provinsi: "Riau", kabupaten: "Pelalawan", indeks: 20, kelas: "Tinggi" },
+    { provinsi: "Riau", kabupaten: "Siak", indeks: 22, kelas: "Tinggi" },
+  ],
+  rainRows: perhatian.rows.length ? [
+    ...Array.from({ length: 14 }, (_, index) => ({ tanggal: `2026-10-${String(index + 1).padStart(2, "0")}`, provinsi: "Riau", kabupaten: "PELALAWAN", kode: "1405", curahHujan: index < 2 ? 0 : 5 })),
+    ...Array.from({ length: 14 }, (_, index) => ({ tanggal: `2026-10-${String(index + 1).padStart(2, "0")}`, provinsi: "Riau", kabupaten: "SIAK", kode: "1408", curahHujan: 0 })),
+  ] : [],
+  fwiRows: [
+    { tanggal: "2026-10-01", kode: "1405", fwi: 1 },
+    { tanggal: "2026-10-01", kode: "1408", fwi: 40 },
+  ],
+});
+assert.deepEqual(dibalik.rows.map((row) => row.kabupaten), ["Siak", "Pelalawan"]);
 const glossaryIds = new Set(GLOSSARY.map((item) => item.id));
 for (const id of ["ispu", "fwi", "fdrs", "ffmc", "dmc", "dc", "isi", "bui", "irbi", "inarisk", "bnpb", "bmkg", "klh", "firms", "viirs", "modis", "nrt", "confidence", "hotspot", "spartan", "sipongi", "cams", "pm", "wib", "dasarian", "snapshot", "statis", "prakiraan", "observasi"]) {
   assert.equal(glossaryIds.has(id), true, id);
@@ -326,6 +370,8 @@ assert.equal(parseLocation("#/gunung-api").hazard, "gunung-api");
 assert.equal(parseLocation("#/karhutla/peta").page, "peta");
 const summarySource = readFileSync("src/components/SummaryPage.jsx", "utf8");
 assert.equal(summarySource.includes("points={[]}"), false);
+assert.equal(summarySource.includes("15–20 kabupaten/kota, 14 hari"), false);
+assert.equal(summarySource.includes("buildComparisonAttention"), false);
 assert.match(summarySource, /hotspot = deteksi satelit, bukan kebakaran terkonfirmasi/);
 assert.match(summarySource, /Prakiraan kondisi \(pembanding, bukan resmi\)|ForecastPanel/);
 const forecastSource = readFileSync("src/components/ForecastPanel.jsx", "utf8");

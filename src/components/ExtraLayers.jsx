@@ -1,3 +1,4 @@
+import { placeFwiTable, placeRainTable } from "../lib/attentionPrototype.js";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { KualitasUdara } from "./KualitasUdara.jsx";
 import { formatAngka, formatTanggalPendek } from "../lib/format.js";
@@ -47,6 +48,10 @@ export function ExtraLayers({ layer, view, feeds, province }) {
   const irbiFeed = feeds.find((feed) => feed.id === "irbi");
   const forecastFeed = feeds.find((feed) => feed.id === "bmkg_prakiraan");
   const compareWeather = feeds.find((feed) => feed.id === "fdrs_pembanding");
+  const hujan14 = rowsFor(feeds, "hujan_14_pembanding", province);
+  const fwiGwis = rowsFor(feeds, "fwi_gwis_pembanding", province);
+  const compareRain = feeds.find((feed) => feed.id === "hujan_14_pembanding");
+  const compareFwi = feeds.find((feed) => feed.id === "fwi_gwis_pembanding");
 
   if (layer === "inarisk") {
     return (
@@ -105,6 +110,13 @@ export function ExtraLayers({ layer, view, feeds, province }) {
             rows={view.bmkgRows.map((row) => [row.provinsi, formatTanggalPendek(row.tanggal), formatAngka(row.fwi, 1), row.kelasFdrs || "—"])}
           />
         </Panel>
+        <Panel title="FWI ECMWF pada titik wakil" note="Pembanding (data terbuka, bukan resmi). Bukan FDRS BMKG. Horizon mengikuti hari yang layanan isi." feed={compareFwi}>
+          <Simple
+            head={["Kabupaten", "FWI rata-rata", "Hari", "Periode"]}
+            empty="Snapshot FWI pembanding belum ada."
+            rows={placeFwiTable(fwiGwis).map((row) => [row.kabupaten, formatAngka(row.fwiRata, 1), String(row.hari), `${formatTanggalPendek(row.dari)}–${formatTanggalPendek(row.sampai)}`])}
+          />
+        </Panel>
         <Panel title="Cuaca harian terbuka" note="Pembanding (data terbuka, bukan resmi). Bukan FDRS." feed={compareWeather}>
           <Simple
             head={["Provinsi", "Tanggal", "Hujan", "Angin"]}
@@ -119,6 +131,7 @@ export function ExtraLayers({ layer, view, feeds, province }) {
   if (layer === "hujan" || layer === "angin") {
     const rain = layer === "hujan";
     return (
+      <>
       <Panel
         title={rain ? "Hujan pada prakiraan 3 hari" : "Angin pada prakiraan 3 hari"}
         note={rain ? "Nilai tp per slot. Bukan peluang persen. Sumber: BMKG." : "Arah dan kecepatan (km/jam). Bukan asal kebakaran. Sumber: BMKG."}
@@ -135,6 +148,25 @@ export function ExtraLayers({ layer, view, feeds, province }) {
         />
         <p className="fine">Satu kelurahan ibu kota tiap provinsi prioritas. Horizon 3 hari, bukan 14 hari.</p>
       </Panel>
+      {rain ? (
+        <Panel title="Hujan dan angin 14 hari pada titik wakil" note="Pembanding (data terbuka, bukan resmi). Bukan peluang atau angin BMKG." feed={compareRain}>
+          <Simple
+            head={["Kabupaten", "Hujan (mm)", "Hari di bawah 1 mm", "Angin maks"]}
+            empty="Snapshot hujan 14 hari belum ada."
+            rows={placeRainTable(hujan14).map((row) => [row.kabupaten, formatAngka(row.hujanMm, 1), `${row.hariKering}/${row.hariNilai}`, formatAngka(row.anginMaks, 0)])}
+          />
+          <p className="fine">Titik wakil Satu Data, zona tanggal Asia/Jakarta. Bukan batas kabupaten.</p>
+        </Panel>
+      ) : (
+        <Panel title="Angin 14 hari pada titik wakil" note="Pembanding (data terbuka, bukan resmi). Kecepatan maksimum harian, bukan arah BMKG." feed={compareRain}>
+          <Simple
+            head={["Kabupaten", "Angin maks (km/jam)", "Periode"]}
+            empty="Snapshot angin 14 hari belum ada."
+            rows={placeRainTable(hujan14).map((row) => [row.kabupaten, formatAngka(row.anginMaks, 0), `${formatTanggalPendek(row.dari)}–${formatTanggalPendek(row.sampai)}`])}
+          />
+        </Panel>
+      )}
+    </>
     );
   }
 

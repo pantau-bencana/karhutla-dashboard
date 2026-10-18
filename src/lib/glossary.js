@@ -45,7 +45,7 @@ export const GLOSSARY = [
     istilah: "CAMS",
     nama: "Copernicus Atmosphere Monitoring Service",
     penjelasan: "Layanan pemantauan atmosfer Copernicus yang menjadi salah satu sumber model pada API kualitas udara Open-Meteo.",
-    penggunaan: "Berkas model PM2.5 boleh tersimpan sebagai pembanding. Lapisan Kualitas Udara (ISPU) tidak menampilkan prakiraan CAMS dan tidak mengubahnya menjadi ISPU.",
+    penggunaan: "Berkas model PM2.5 boleh tersimpan sebagai pembanding, termasuk hari yang API isi. Lapisan Kualitas Udara (ISPU) tidak menampilkan prakiraan CAMS dan tidak mengubahnya menjadi ISPU.",
     rujukan: "https://atmosphere.copernicus.eu/",
     rujukanLabel: "atmosphere.copernicus.eu",
   },
@@ -159,7 +159,8 @@ export const GLOSSARY = [
     nama: "Fire Weather Index",
     penjelasan:
       "Indeks cuaca kebakaran pada sistem Kanada. FWI memakai beberapa kode kelembapan bahan bakar dan indeks sebaran. BMKG memakai keluarga indeks ini di dalam FDRS.",
-    penggunaan: "Kolom FWI pada indikator prototipe hanya terisi dari data contoh. Tidak dihitung dari prakiraan BMKG dan tidak disebut FDRS resmi.",
+    penggunaan:
+      "Kolom FWI pada indikator contoh tetap data contoh. Lapisan pembanding GWIS menampilkan FWI ECMWF pada titik wakil dan tidak disebut FDRS BMKG. Angka itu tidak mengubah urutan 14 hari.",
     rujukan: "https://cwfis.cfs.nrcan.gc.ca/background/summary/fwi",
     rujukanLabel: "Natural Resources Canada — FWI",
   },
@@ -261,7 +262,8 @@ export const GLOSSARY = [
     nama: "Pembanding (data terbuka, bukan resmi)",
     penjelasan:
       "Lapisan dari sumber terbuka yang diletakkan di samping produk resmi yang belum bisa diunduh. Nilainya tidak menggantikan angka instansi dan tidak masuk daftar wilayah perhatian.",
-    penggunaan: "Open-Meteo untuk cuaca harian. Pengukuran stasiun terbuka, bila ada kunci, hanya pada bagian Data Pembanding dan tetap dalam µg/m³.",
+    penggunaan:
+      "Open-Meteo untuk cuaca provinsi, hujan 14 hari pada titik wakil, dan PM2.5 model dalam µg/m³. GWIS untuk FWI ECMWF. Pengukuran stasiun terbuka, bila ada kunci, tetap dalam µg/m³. Semuanya berlabel pembanding dan tidak mengganti baris resmi.",
     rujukan: "https://open-meteo.com/en/licence",
     rujukanLabel: "Lisensi Open-Meteo",
   },
@@ -289,9 +291,42 @@ export const GLOSSARY = [
     istilah: "PVMBG",
     nama: "Pusat Vulkanologi dan Mitigasi Bencana Geologi",
     penjelasan: "Unit Badan Geologi yang menerbitkan tingkat aktivitas gunung api. Permintaan data resmi dapat melalui PPID ESDM.",
-    penggunaan: "Belum terhubung. Pengorek pihak ketiga tidak dipakai.",
+    penggunaan: "Belum terhubung. Pengorek pihak ketiga tidak dipakai. Laporan mingguan Smithsonian dan nasihat VAAC Darwin hanya tautan.",
     rujukan: "https://ppid.esdm.go.id/",
     rujukanLabel: "PPID ESDM",
+  },
+  {
+    id: "chirps",
+    istilah: "CHIRPS",
+    nama: "Climate Hazards Center InfraRed Precipitation with Station data",
+    penjelasan:
+      "Rangkaian hujan global dari UC Santa Barbara yang menggabungkan citra inframerah dan data stasiun. Berkas bulanan global tersedia sebagai GeoTIFF tanpa kunci.",
+    penggunaan:
+      "Hanya ditautkan. Berkas bulanan sekitar 24 MB tidak diunduh dan tidak diubah menjadi angka kabupaten, karena dasbor tidak memproses raster.",
+    rujukan: "https://www.chc.ucsb.edu/data/chirps",
+    rujukanLabel: "Climate Hazards Center — CHIRPS",
+  },
+  {
+    id: "gwis",
+    istilah: "GWIS",
+    nama: "Global Wildfire Information System",
+    penjelasan:
+      "Layanan Copernicus EMS dan JRC untuk bahaya kebakaran global. Prakiraan FWI model ECMWF disajikan lewat WMS publik, terpisah dari FDRS BMKG.",
+    penggunaan:
+      "Lapisan pembanding membaca angka pada titik wakil kabupaten. Horizon mengikuti tanggal yang layanan isi dan tidak disebut 14 hari. Tidak masuk urutan prototipe.",
+    rujukan: "https://gwis.jrc.ec.europa.eu/about-gwis/technical-background/fire-danger-forecast",
+    rujukanLabel: "GWIS — Fire Danger Forecast",
+  },
+  {
+    id: "vaac",
+    istilah: "VAAC",
+    nama: "Volcanic Ash Advisory Centre",
+    penjelasan:
+      "Pusat nasihat abu vulkanik untuk penerbangan. Untuk Indonesia, pusat yang relevan adalah VAAC Darwin pada Bureau of Meteorology Australia.",
+    penggunaan:
+      "Tab Gunung Api hanya menautkan halaman resmi. Klien netral mendapat jawaban 403, jadi teks nasihat tidak disimpan.",
+    rujukan: "https://www.bom.gov.au/aviation/warnings/volcanic-ash/",
+    rujukanLabel: "Bureau of Meteorology — volcanic ash",
   },
   {
     id: "sipongi",

@@ -19,8 +19,8 @@ const ROWS = [
   ["IRBI 2025", "Membandingkan risiko tahunan.", "Skor buku, tidak mengikuti tanggal.", "Konteks tahunan, bukan urutan 14 hari.", "Halaman 294–307. Komponen yang tidak ada di buku dikosongkan."],
   ["Asap", "Sebaran asap terpantau.", "Halaman dan citra resmi.", "Tidak menjadi alasan perhatian.", "Tautan saja – menunggu izin BMKG. Arsip citra mati. Tidak ada gambar buatan."],
   ["FDRS", "Kemudahan terbakar menurut BMKG.", "Citra SPARTAN hingga H+7 sesuai produk BMKG.", "Belum menjadi alasan perhatian.", "Tidak didigitasi. Bukan 10 atau 14 hari. FWI pada indikator prototipe masih contoh."],
-  ["Hujan", "Konteks basah atau kering.", "API 3 hari memuat nilai tp, bukan peluang persen. Dasarian hanya tautan.", "Tidak dipakai untuk menebak titik api.", "Produk dasarian, curah hujan tinggi, dan narasi sepekan tidak dikorek."],
-  ["Angin", "Arah dan kecepatan jangka pendek.", "wd dan ws pada prakiraan 3 hari, km/jam menurut dokumentasi BMKG.", "Bukan penentu asal kebakaran.", "Satu kelurahan per provinsi prioritas. Vektor satelit hanya tautan."],
+  ["Hujan", "Konteks basah atau kering.", "API 3 hari memuat nilai tp, bukan peluang persen. Dasarian hanya tautan.", "Tidak dipakai untuk menebak titik api.", "Produk dasarian, curah hujan tinggi, dan narasi sepekan tidak dikorek. Pembanding 14 hari terpisah dan tidak menjadi peluang BMKG."],
+  ["Angin", "Arah dan kecepatan jangka pendek.", "wd dan ws pada prakiraan 3 hari, km/jam menurut dokumentasi BMKG.", "Bukan penentu asal kebakaran.", "Satu kelurahan per provinsi prioritas. Vektor satelit hanya tautan. Angin 14 hari pada titik wakil hanya pembanding."],
   ["Kualitas Udara (ISPU)", "Dampak asap pada mutu udara di lokasi stasiun.", "Nilai stasiun, bukan seluruh kabupaten. Bukan bukti tunggal asal karhutla.", "Tidak masuk daftar perhatian.", "Tanpa API resmi: belum terhubung. Hanya Hari Ini dan Historis. Tidak ada prediksi. CAMS tidak ditampilkan di lapisan ini."],
 ];
 
@@ -53,6 +53,11 @@ export function LogicPage({ config }) {
             (FDRS/potensi karhutla per kab/kota). Horizon yang benar-benar ada pada API adalah 3 hari, dan pada citra
             SPARTAN hingga H+7 sesuai produk BMKG. Bobot, ambang, dan periode belum disepakati, jadi peringkat tidak
             diisi.
+          </p>
+          <p>
+            Daftar 15–20 kabupaten/kota tidak diurutkan dari IRBI, citra, atau prakiraan terbuka. Tabel hujan dan FWI
+            terbuka pada Peta dan Data, bila ada, adalah angka pembanding pada titik wakil. Itu bukan daftar prioritas
+            dan bukan daftar risiko.
           </p>
         </div>
       </section>

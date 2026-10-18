@@ -17,6 +17,7 @@ export function SummaryPage({ config, feeds, manifest }) {
   const prakiraan = feeds.find((feed) => feed.id === "bmkg_prakiraan");
   const sampleHotspot = !hotspot || hotspot.contoh || hotspot.status === "gagal" || hotspot.status === "cadangan";
   const ranking = karhutlaRankingPlan({ irbiFeed: irbi });
+  const fwiGwis = feeds.find((feed) => feed.id === "fwi_gwis_pembanding");
   const sources = decorateSources(manifest);
   const counts = sources.reduce((bag, row) => {
     bag[row.status] = (bag[row.status] || 0) + 1;
@@ -27,7 +28,6 @@ export function SummaryPage({ config, feeds, manifest }) {
   const mapPoints = !sampleHotspot && mapSource && !mapSource.contoh ? mapSource.rows : [];
   const meta = hotspotPeta?.petaMeta;
   const weather = feeds.find((feed) => feed.id === "fdrs_pembanding");
-  const fwiGwis = feeds.find((feed) => feed.id === "fwi_gwis_pembanding");
 
   return (
     <main className="wrap main">
