@@ -26,6 +26,7 @@ import { buildComparisonAttention, normalizePlaceName, PROTOTYPE_LABEL } from ".
 import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
 import { buildHotspotTree } from "../src/lib/hotspotTree.js";
+import { buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI } from "../src/lib/floodMatrix.js";
 import { manifestNeedsRefresh } from "./refresh-watchdog.mjs";
 import { monitoringSources } from "../src/lib/sourceStatus.js";
 const DISCLAIMER = "Prototipe internal Dit. PD BNPB. Jangan dipublikasikan tanpa persetujuan.";
@@ -658,5 +659,55 @@ for (const url of [
 ]) {
   assert.equal(indicatorSource.includes(url), true, url);
 }
+
+assert.equal(nameKey("MUKOMUKO"), nameKey("Muko Muko"));
+assert.equal(nameKey("MUKO MUKO"), nameKey("MUKOMUKO"));
+assert.equal(nameKey("KOTA BANDA ACEH"), nameKey("Kota Banda Aceh"));
+assert.equal(kodeWilayah(1101), "11.01");
+assert.equal(legendClass("NoData").kind, "nodata");
+assert.equal(legendClass("0.711889").kelas, "Tinggi");
+assert.equal(legendClass("0").kelas, "Rendah");
+const irbiBanjir = parseCsv(readFileSync("data/static/irbi-2025-banjir-aceh-bengkulu.csv", "utf8"));
+const irbiMulti = parseCsv(readFileSync("data/static/irbi-2025-multibahaya-aceh-bengkulu.csv", "utf8"));
+const dibiBanjir = parseCsv(readFileSync("data/live/dibi-banjir-2024.csv", "utf8"));
+assert.equal(irbiBanjir.length, 33);
+assert.equal(irbiMulti.length, 33);
+assert.equal(dibiBanjir.length, 28);
+const floodRows = buildFloodRows({ banjir: irbiBanjir, multi: irbiMulti, dibi: dibiBanjir, dibiLoaded: true });
+assert.equal(floodRows.length, 33);
+assert.equal(floodRows[0].kode, "11.01");
+const muko = floodRows.find((row) => row.kode === "17.06");
+assert.equal(muko.nama, "Muko Muko");
+assert.equal(muko.banjirSkor, "17.6");
+assert.equal(muko.multiKelas, "TINGGI");
+assert.equal(muko.dibiTeks, "0");
+assert.equal(muko.dibiNama, "MUKO MUKO");
+assert.equal(floodRows.find((row) => row.kode === "11.72").dibiTeks, MISSING_DIBI);
+assert.equal(floodRows.find((row) => row.kode === "11.06").dibiTeks, "0");
+assert.equal(floodRows.find((row) => row.kode === "17.02").dibiTeks, MISSING_DIBI);
+assert.equal(floodRows.find((row) => row.kode === "17.09").dibiTeks, MISSING_DIBI);
+const floodSource = [
+  "src/components/FloodRiskMap.jsx",
+  "src/components/FloodPage.jsx",
+  "src/lib/floodServices.js",
+  "src/lib/floodMatrix.js",
+].map((file) => readFileSync(file, "utf8")).join("\n");
+assert.equal(floodSource.includes("apiv4"), false);
+assert.equal(floodSource.toLowerCase().includes("kritis"), false);
+assert.match(floodSource, /png32/);
+assert.match(floodSource, /bboxSR/);
+assert.match(floodSource, /imageSR/);
+assert.match(floodSource, /3857/);
+assert.match(floodSource, /Prototipe internal – menunggu izin tertulis BNPB/);
+assert.match(floodSource, /Di luar area bahaya banjir yang dipetakan inaRISK/);
+assert.match(floodSource, /Nilai tidak tersedia \(layanan BNPB tidak merespons\)/);
+assert.match(floodSource, /Konteks risiko banjir jangka panjang per kabupaten\/kota \(bukan prioritas, bukan prakiraan\)/);
+const hazardText = readFileSync("src/lib/hazards.js", "utf8");
+assert.match(hazardText, /kolom BANJIR/);
+assert.equal(hazardText.includes("tidak memisahkan banjir per kabupaten"), false);
+assert.equal(hazardText.toLowerCase().includes("das kritis"), false);
+assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /a4daec53-1119-43ef-b05e-00ec3a4c42a4/);
+assert.match(readFileSync("src/App.jsx", "utf8"), /lazy\(/);
+assert.equal(readFileSync("data/live/dibi-banjir-2024.csv", "utf8").includes("Latitude"), false);
 
 console.log("Pemeriksaan prototipe lulus.");

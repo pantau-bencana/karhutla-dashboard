@@ -749,6 +749,25 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 }
 .conf-chip.conf-nominal { color: #1c1915; }
 
+.flood-map,
+.flood-map.leaflet-container { height: 460px; max-height: 460px; }
+.flood-legend { display: grid; gap: 6px; margin-top: 8px; }
+.flood-legend img { width: min(240px, 100%); height: auto; }
+.flood-table { max-width: 100%; }
+.flood-table table { min-width: 760px; }
+.flood-table small { display: block; font-weight: 500; color: var(--muted); }
+.flood-table a { display: block; }
+.flood-table button {
+  font: inherit;
+  font-weight: 700;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+.flood-group th { background: #f4f1ea; text-align: left; }
+
 @media (max-width: 640px) {
   .cards { grid-template-columns: 1fr; }
   .wrap { width: min(1280px, calc(100% - 20px)); }
@@ -756,6 +775,8 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   .map-canvas.leaflet-container { height: 180px; max-height: 180px; }
   .map-canvas.hotspot-map,
   .map-canvas.hotspot-map.leaflet-container { height: 320px; max-height: 320px; }
+  .map-canvas.flood-map,
+  .map-canvas.flood-map.leaflet-container { height: 300px; max-height: 300px; }
   .acc-row { grid-template-columns: 16px minmax(0, 1fr) auto; }
   .conf-chips { grid-column: 2 / -1; }
 }
@@ -764,4 +785,6 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   .wrap { width: min(1280px, calc(100% - 16px)); }
   .acc-row { padding: 8px 6px; gap: 6px; }
   .acc-children { padding-left: 8px; }
+  .map-canvas.flood-map,
+  .map-canvas.flood-map.leaflet-container { height: 260px; max-height: 260px; }
 }

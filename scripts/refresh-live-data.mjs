@@ -11,6 +11,7 @@ import { annotatePoints, rowsToHotspotCsv } from "./big-wilayah.mjs";
 import { provinceCenters } from "../src/lib/geo.js";
 import { REFRESH_CRON, REFRESH_CRON_CADANGAN, REFRESH_INTERVAL_HOURS, nextScheduledRun } from "../src/lib/schedule.js";
 import { SMOKE_IMAGE_URL, SMOKE_URL, SOURCES } from "../src/lib/sourceCatalog.js";
+import { kodeWilayah } from "../src/lib/floodMatrix.js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const liveDir = resolve(root, "data/live");
@@ -809,6 +810,35 @@ async function fetchCap() {
   };
 }
 
+async function fetchDibiBanjir2024() {
+  const resource = "a4daec53-1119-43ef-b05e-00ec3a4c42a4";
+  const searchUrl = `https://data.bnpb.go.id/api/3/action/datastore_search?resource_id=${resource}&limit=500`;
+  const { text } = await getText(searchUrl, 30000);
+  const payload = JSON.parse(text);
+  if (!payload.success) throw new Error("CKAN menolak tabel kejadian kabupaten 2024.");
+  const rows = [];
+  for (const record of payload.result?.records ?? []) {
+    const kode = kodeWilayah(record["Kode Wilayah Kabupaten / Kota"]);
+    if (!kode.startsWith("11.") && !kode.startsWith("17.")) continue;
+    if (record.BANJIR == null || record.BANJIR === "") continue;
+    rows.push({
+      kode_wilayah: kode,
+      nama_dibi: record["Nama Kabupaten/Kota"] ?? "",
+      banjir_2024: record.BANJIR,
+    });
+  }
+  rows.sort((a, b) => a.kode_wilayah.localeCompare(b.kode_wilayah, "id"));
+  if (rows.length < 20) throw new Error(`Tabel DIBI 2024 hanya mengembalikan ${rows.length} baris Aceh/Bengkulu.`);
+  return {
+    body: toCsv(["kode_wilayah", "nama_dibi", "banjir_2024"], rows),
+    observedAt: "2024-12-31T17:00:00.000Z",
+    observedLabel:
+      "Jumlah kejadian BANJIR tahun 2024 untuk kabupaten/kota Aceh dan Bengkulu yang tercantum. ODC-BY, BNPB Satu Data. Baris yang tidak ada tidak diisi nol. Koordinat tidak disimpan.",
+    sourceUpdatedAt: null,
+    license: "ODC-BY. Cantumkan BNPB Satu Data.",
+  };
+}
+
 async function fetchDibi() {
   const packageUrl = "https://data.bnpb.go.id/api/3/action/package_show?id=data-bencana-indonesia";
   const { text: packageText } = await getText(packageUrl, 30000);
@@ -1041,6 +1071,21 @@ async function main() {
     Object.assign(dibiEntry, keepPrevious(dibiEntry, previousEntry(previous, "dibi_karhutla"), error.message));
   }
   datasets.dibi_karhutla = dibiEntry;
+
+  const dibiBanjirSource = SOURCES.find((source) => source.id === "dibi_banjir_2024");
+  const dibiBanjirEntry = baseEntry(dibiBanjirSource);
+  dibiBanjirEntry.mode = "statis";
+  try {
+    const result = await fetchDibiBanjir2024();
+    dibiBanjirEntry.license = result.license;
+    dibiBanjirEntry.observed_at = result.observedAt;
+    dibiBanjirEntry.observed_label = result.observedLabel;
+    dibiBanjirEntry.source_updated_at = result.sourceUpdatedAt;
+    writeIfChanged("data/live/dibi-banjir-2024.csv", result.body, dibiBanjirEntry, previousEntry(previous, "dibi_banjir_2024"));
+  } catch (error) {
+    Object.assign(dibiBanjirEntry, keepPrevious(dibiBanjirEntry, previousEntry(previous, "dibi_banjir_2024"), error.message));
+  }
+  datasets.dibi_banjir_2024 = dibiBanjirEntry;
 
   for (const source of SOURCES) {
     if (datasets[source.id]) continue;

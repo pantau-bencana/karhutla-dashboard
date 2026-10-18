@@ -1,17 +1,19 @@
 import { hazardById } from "../lib/hazards.js";
 
-export function HazardPlaceholder({ hazardId }) {
+export function HazardPlaceholder({ hazardId, bare = false }) {
   const hazard = hazardById(hazardId);
-  return (
-    <main className="wrap main">
-      <div className="banner warn" role="status">
-        <strong>{hazard.status}</strong>
-        <p>{hazard.catatan}</p>
-      </div>
+  const body = (
+    <>
+      {bare ? null : (
+        <div className="banner warn" role="status">
+          <strong>{hazard.status}</strong>
+          <p>{hazard.catatan}</p>
+        </div>
+      )}
       <section className="card">
         <header className="card-head">
           <div>
-            <h2>Indikator yang direncanakan</h2>
+            <h2>{bare ? "Status sumber lain" : "Indikator yang direncanakan"}</h2>
             <p>Bukan klaim kondisi saat ini dan bukan data contoh yang disamarkan sebagai data resmi.</p>
           </div>
         </header>
@@ -57,6 +59,8 @@ export function HazardPlaceholder({ hazardId }) {
           </table>
         </div>
       </section>
-    </main>
+    </>
   );
+  if (bare) return body;
+  return <main className="wrap main">{body}</main>;
 }
