@@ -1,25 +1,15 @@
-import { useState } from "react";
-import { HotspotMap } from "./HotspotMap.jsx";
+import { HotspotBoard } from "./HotspotBoard.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { ForecastPanel } from "./ForecastPanel.jsx";
 import { Term } from "./Term.jsx";
 import { formatAngka, formatWib } from "../lib/format.js";
-import { countHotspots, filterHotspotWindow } from "../lib/hotspotWindow.js";
 import { pageHref } from "../lib/route.js";
 import { karhutlaRankingPlan } from "../lib/ranking.js";
 import { decorateSources } from "../lib/sourceCatalog.js";
 
-const WINDOWS = [
-  [24, "24 jam"],
-  [48, "48 jam"],
-  [168, "7 hari"],
-];
-
 export function SummaryPage({ config, feeds, manifest }) {
   const hotspot = feeds.find((feed) => feed.id === "hotspot");
   const hotspotPeta = feeds.find((feed) => feed.id === "hotspot_peta");
-  const [hours, setHours] = useState(24);
-  const [provinceFilter, setProvinceFilter] = useState("semua");
   const priority = config?.provinsiPrioritas ?? [];
   const irbi = feeds.find((feed) => feed.id === "irbi");
   const dibi = feeds.find((feed) => feed.id === "dibi_karhutla");
@@ -36,9 +26,6 @@ export function SummaryPage({ config, feeds, manifest }) {
   const realTrend = hotspot && !hotspot.contoh && hotspot.asal === "snapshot" && hotspot.rows?.length;
   const mapSource = hotspotPeta?.rows?.length ? hotspotPeta : hotspot;
   const mapPoints = !sampleHotspot && mapSource && !mapSource.contoh ? mapSource.rows : [];
-  const selectedProvinces = provinceFilter === "prioritas" ? priority : provinceFilter === "semua" ? null : [provinceFilter];
-  const windowed = filterHotspotWindow(mapPoints, { hours, provinces: selectedProvinces });
-  const tally = countHotspots(windowed.rows);
   const meta = hotspotPeta?.petaMeta;
   const weather = feeds.find((feed) => feed.id === "fdrs_pembanding");
 
@@ -81,47 +68,14 @@ export function SummaryPage({ config, feeds, manifest }) {
             <DatasetTiming feed={hotspot} />
           </div>
         ) : (
-          <div className="logic-body">
-            <p>
-              Sumber: NASA FIRMS{meta?.sumber ? ` (${meta.sumber})` : ""}. Kotak unduhan{" "}
-              {meta?.bbox_permintaan || meta?.bbox || "94.4,-11.5,141.6,6.5"} bukan penyaring peta. Yang digambar hanya titik di dalam poligon kabupaten Indonesia,{" "}
-              {meta?.permintaan_hari || 5} hari ({formatAngka(meta?.baris_berkas)} baris berkas, sensor{" "}
-              {meta ? Object.entries(meta.sensor_berkas || {}).map(([name, count]) => `${name} ${formatAngka(count)}`).join(", ") : "—"}
-              ). {meta ? `${formatAngka(meta.di_darat)} di dalam poligon, ${formatAngka(meta.di_luar_poligon)} di luar poligon tidak digambar.` : ""}
-              Duplikat yang dibuang: {formatAngka(meta?.duplikat_dibuang ?? 0)}.
-            </p>
-            <DatasetTiming feed={hotspot} />
-            {hotspot?.fetchedAt || manifest?.datasets?.hotspot?.fetched_at ? (
-              <p className="fine">Diambil {formatWib(hotspot?.fetchedAt || manifest?.datasets?.hotspot?.fetched_at)}. Waktu data {formatWib(hotspot?.observedAt || manifest?.datasets?.hotspot?.observed_at)}.</p>
-            ) : null}
-            <div className="province-filter" role="group" aria-label="Jendela waktu hotspot">
-              {WINDOWS.map(([value, label]) => (
-                <button key={value} type="button" aria-pressed={hours === value} onClick={() => setHours(value)}>
-                  {label}
-                </button>
-              ))}
-            </div>
-            <div className="province-filter" role="group" aria-label="Provinsi prioritas">
-              <button type="button" aria-pressed={provinceFilter === "semua"} onClick={() => setProvinceFilter("semua")}>
-                Semua
-              </button>
-              <button type="button" aria-pressed={provinceFilter === "prioritas"} onClick={() => setProvinceFilter("prioritas")}>
-                Enam prioritas
-              </button>
-              {priority.map((name) => (
-                <button key={name} type="button" aria-pressed={provinceFilter === name} onClick={() => setProvinceFilter(name)}>
-                  {name}
-                </button>
-              ))}
-            </div>
-            <p className="fine">
-              {WINDOWS.find(([value]) => value === hours)?.[1]} sampai deteksi terbaru: {formatAngka(tally.jumlah)} titik.
-              Sensor {Object.entries(tally.sensor).map(([name, count]) => `${name} ${formatAngka(count)}`).join(", ") || "—"}.
-              Kepercayaan tinggi {formatAngka(tally.kepercayaan.tinggi || 0)}, nominal {formatAngka(tally.kepercayaan.nominal || 0)}, rendah {formatAngka(tally.kepercayaan.rendah || 0)}.
-              Kelompok warna pada zoom kecil adalah kumpulan deteksi dan diletakkan pada salah satu koordinat asli, bukan rata-rata. Pada zoom besar setiap titik memakai koordinat FIRMS.
-            </p>
-            <HotspotMap points={windowed.rows} frame="indonesia" />
-          </div>
+          <HotspotBoard
+            points={mapPoints}
+            priority={priority}
+            meta={meta}
+            feed={hotspot}
+            fetchedAt={hotspot?.fetchedAt || manifest?.datasets?.hotspot?.fetched_at}
+            observedAt={hotspot?.observedAt || manifest?.datasets?.hotspot?.observed_at}
+          />
         )}
       </section>
 
