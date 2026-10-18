@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { deriveDashboard, defaultRange } from "../src/lib/derive.js";
 import { areaContains, assignProvince, INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../src/lib/geo.js";
 import { looksLikeCsv, parseCsv } from "../src/lib/csv.js";
@@ -9,7 +9,9 @@ import { HAZARDS } from "../src/lib/hazards.js";
 import { ispuFromPm25 } from "../src/lib/ispuEstimate.js";
 import { parseLocation, parseRoute } from "../src/lib/route.js";
 import { clusterCellDegrees, countHotspots, filterHotspotWindow } from "../src/lib/hotspotWindow.js";
-import { insideIndonesia, parseFirmsCoordinate } from "./indonesia-land.mjs";
+import { parseFirmsCoordinate } from "./indonesia-land.mjs";
+import { arcGisContains, summarizeByDesa, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
+import { annotatePoints } from "./big-wilayah.mjs";
 import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { REFRESH_CRON, nextScheduledRun } from "../src/lib/schedule.js";
 import { monitoringSources } from "../src/lib/sourceStatus.js";
@@ -339,26 +341,65 @@ assert.notEqual(clusterCellDegrees(4), 0);
 assert.equal(parseFirmsCoordinate("1,3521"), null);
 assert.equal(parseFirmsCoordinate("1.35210").text, "1.35210");
 assert.equal(parseFirmsCoordinate("1.35210").value, 1.3521);
-assert.equal(insideIndonesia(106.8456, -6.2088), true);
-assert.equal(insideIndonesia(101.4478, 0.5071), true);
-assert.equal(insideIndonesia(103.8198, 1.3521), false);
-assert.equal(insideIndonesia(101.6869, 3.139), false);
-assert.equal(insideIndonesia(116.0735, 5.9804), false);
-assert.equal(insideIndonesia(110.3592, 1.5533), false);
-assert.equal(insideIndonesia(114.9398, 4.9031), false);
-assert.equal(insideIndonesia(125.5603, -8.5569), false);
+const square = { rings: [[[0, 0], [2, 0], [2, 2], [0, 2], [0, 0]]] };
+assert.equal(arcGisContains(square, 1, 1), true);
+assert.equal(arcGisContains(square, 3, 1), false);
+assert.equal(arcGisContains({ rings: [] }, 1, 1), false);
+const desaRows = summarizeByDesa([
+  { desa: "Hangtuah", kodeDesa: "14.01.16.2003", kecamatan: "Perhentian Raja", kabupaten: "Kampar", provinsi: "Riau", kelasKepercayaan: "nominal" },
+  { desa: "Hangtuah", kodeDesa: "14.01.16.2003", kecamatan: "Perhentian Raja", kabupaten: "Kampar", provinsi: "Riau", kelasKepercayaan: "tinggi" },
+  { desa: "", kodeDesa: "", kecamatan: "Setiabudi", kabupaten: "Kota Adm. Jakarta Selatan", provinsi: "DKI Jakarta", kelasKepercayaan: "rendah" },
+]);
+assert.equal(desaRows[0].desa, "Hangtuah");
+assert.equal(desaRows[0].jumlah, 2);
+assert.equal(desaRows[0].nominal, 1);
+assert.equal(desaRows[0].tinggi, 1);
+assert.equal(desaRows.find((row) => row.kecamatan === "Setiabudi").desa, DESA_UNIDENTIFIED);
 const mapComponent = readFileSync("src/components/HotspotMap.jsx", "utf8");
 assert.match(mapComponent, /L\.circleMarker\(\[lat, lon\]/);
 assert.match(mapComponent, /Number\(anchor\.lintang\)/);
 assert.equal(mapComponent.includes("circleMarker([meanLat"), false);
+assert.match(readFileSync("src/lib/bigWilayah.js", "utf8"), /#15803d/);
+function jsonResponse(payload, ok = true) {
+  return { ok, status: ok ? 200 : 500, json: async () => payload };
+}
+const jakartaRing = { rings: [[[106, -7], [107, -7], [107, -6], [106, -6], [106, -7]]] };
+const mockFetch = async (url, init) => {
+  const params = new URLSearchParams(init.body);
+  const geometry = params.get("geometry") || "";
+  if (String(url).includes("/3/query") && geometry.includes("106")) {
+    return jsonResponse({ features: [{ attributes: { namobj: "Setiabudi", wadmkc: "Setiabudi", wadmkk: "Kota Adm. Jakarta Selatan", wadmpr: "DKI Jakarta", kdcpum: "31.74.02", kdppum: "31" }, geometry: jakartaRing }] });
+  }
+  if (String(url).includes("/4/query")) return jsonResponse({ features: [] });
+  if (String(url).includes("/3/query")) return jsonResponse({ features: [] });
+  return jsonResponse({ error: { message: "tak dikenal" } }, false);
+};
+const jakarta = await annotatePoints([{ lon: 106.8456, lat: -6.2088, lintangTeks: "-6.2088", bujurTeks: "106.8456" }], { fetchImpl: mockFetch, concurrency: 1 });
+assert.equal(jakarta.rows.length, 1);
+assert.equal(jakarta.rows[0].kecamatan, "Setiabudi");
+assert.equal(jakarta.rows[0].kabupaten, "Kota Adm. Jakarta Selatan");
+assert.equal(jakarta.rows[0].provinsi, "DKI Jakarta");
+assert.equal(jakarta.rows[0].kodeKecamatan, "31.74.02");
+assert.equal(jakarta.rows[0].desa, "");
+assert.equal(jakarta.rows[0].wilayahStatus, "tanpa_desa");
+const singapore = await annotatePoints([{ lon: 103.8198, lat: 1.3521 }], { fetchImpl: mockFetch, concurrency: 1 });
+assert.equal(singapore.rows.length, 0);
+assert.equal(singapore.stats.droppedOutside, 1);
+const gagal = await annotatePoints([{ lon: 106.8, lat: -6.2 }], { fetchImpl: async () => { throw new Error("timeout"); }, concurrency: 1 });
+assert.equal(gagal.rows.length, 1);
+assert.equal(gagal.rows[0].wilayahStatus, "gagal");
+assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /Confidence deteksi satelit/);
+const wilayahCopy = readFileSync("src/lib/bigWilayah.js", "utf8");
+assert.equal(wilayahCopy.includes("Bukan tingkat bahaya"), true);
+assert.equal(wilayahCopy.includes("bukan tingkat kebakaran"), true);
 const firmsFetch = readFileSync("scripts/refresh-live-data.mjs", "utf8");
-assert.match(firmsFetch, /insideIndonesia/);
+assert.match(firmsFetch, /annotatePoints/);
 assert.match(firmsFetch, /records_before_boundary/);
 assert.match(firmsFetch, /records_after_boundary/);
+assert.match(firmsFetch, /kspservices\.big\.go\.id|BIG_SOURCE_LABEL|bigWilayah/);
 assert.equal(firmsFetch.includes("function inIndonesia"), false);
-const boundary = JSON.parse(readFileSync("data/boundaries/idn-adm2.geojson", "utf8"));
-assert.equal(boundary.crs.properties.name, "urn:ogc:def:crs:OGC:1.3:CRS84");
-const samplePair = boundary.features[0].geometry.coordinates[0][0];
-assert.ok(samplePair[0] > 90 && samplePair[1] < 20);
+assert.equal(firmsFetch.includes("data/boundaries"), false);
+assert.equal(existsSync("data/boundaries/idn-adm2.geojson"), false);
+assert.equal(existsSync("data/boundaries/idn-adm1.geojson"), false);
 
 console.log("Pemeriksaan prototipe lulus.");

@@ -5,7 +5,9 @@ import { fileURLToPath } from "node:url";
 import { flattenBmkgForecast, bmkgForecastUrl, BMKG_LOCATIONS, BMKG_DOCS_URL } from "../src/lib/bmkgForecast.js";
 import { firmsAreaUrl, redactSecret } from "../src/lib/firms.js";
 import { writeHotspotMap } from "./build-hotspot-map.mjs";
-import { BOUNDARY_CRS, BOUNDARY_SOURCE, insideIndonesia, parseFirmsCoordinate } from "./indonesia-land.mjs";
+import { parseFirmsCoordinate } from "./indonesia-land.mjs";
+import { BIG_EDITION_NOTE, BIG_SOURCE_LABEL, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
+import { annotatePoints, rowsToHotspotCsv } from "./big-wilayah.mjs";
 import { provinceCenters } from "../src/lib/geo.js";
 import { ispuFromPm25 } from "../src/lib/ispuEstimate.js";
 import { REFRESH_CRON, REFRESH_INTERVAL_HOURS, nextScheduledRun } from "../src/lib/schedule.js";
@@ -307,11 +309,10 @@ async function fetchFirms() {
   const lines = text.trim().split(/\r?\n/);
   const header = lines[0].split(",");
   const index = Object.fromEntries(header.map((name, position) => [name.trim(), position]));
-  const rows = [];
+  const parsed = [];
   let newest = "";
   let before = 0;
   let invalid = 0;
-  let outside = 0;
   for (const line of lines.slice(1)) {
     if (!line.trim()) continue;
     const cells = line.split(",");
@@ -322,39 +323,48 @@ async function fetchFirms() {
       invalid += 1;
       continue;
     }
-    if (!insideIndonesia(lon.value, lat.value)) {
-      outside += 1;
-      continue;
-    }
     const tanggal = cells[index.acq_date] || "";
     const waktu = cells[index.acq_time] || "";
     const iso = tanggal && waktu ? `${tanggal}T${String(waktu).padStart(4, "0").slice(0, 2)}:${String(waktu).padStart(4, "0").slice(2, 4)}:00.000Z` : "";
     if (iso > newest) newest = iso;
-    rows.push({
+    parsed.push({
       tanggal,
       waktu,
-      lintang: lat.text,
-      bujur: lon.text,
+      lat: lat.value,
+      lon: lon.value,
+      lintangTeks: lat.text,
+      bujurTeks: lon.text,
       provinsi: "Belum terpetakan",
       kabupaten: "",
       satelit: cells[index.satellite] || "",
       kepercayaan: cells[index.confidence] || "",
       frp: cells[index.frp] || "",
       kecerahan: cells[index.bright_ti4] || "",
-      keterangan: "NASA FIRMS VIIRS Suomi-NPP. Bukan kebakaran terkonfirmasi. Hanya titik di dalam poligon kabupaten Indonesia.",
+      keterangan: "NASA FIRMS VIIRS Suomi-NPP. Bukan kebakaran terkonfirmasi.",
     });
   }
-  const headers = ["tanggal", "waktu", "lintang", "bujur", "provinsi", "kabupaten", "satelit", "kepercayaan", "frp", "kecerahan", "keterangan"];
+  let annotated;
+  try {
+    annotated = await annotatePoints(parsed, { concurrency: 2 });
+  } catch {
+    annotated = {
+      rows: parsed.map((point) => ({ ...point, wilayahStatus: "gagal", desaTampilan: DESA_UNIDENTIFIED })),
+      stats: { droppedOutside: 0, gagal: parsed.length, desa: 0, tanpaDesa: 0, queries: 0 },
+    };
+  }
   return {
-    body: toCsv(headers, rows),
+    body: rowsToHotspotCsv(annotated.rows),
     observedAt: newest || null,
-    observedLabel: newest ? `Lintasan terbaru di dalam poligon Indonesia ${newest} UTC` : "Tidak ada titik di dalam poligon Indonesia pada 5 hari terakhir",
+    observedLabel: newest ? `Lintasan terbaru ${newest} UTC. Wilayah dari kueri BIG, bukan berkas batas.` : "Tidak ada titik pada 5 hari terakhir",
     sourceUpdatedAt: newest || nowIso,
     url: "https://firms.modaps.eosdis.nasa.gov/api/area/",
     recordsBeforeBoundary: before,
-    recordsAfterBoundary: rows.length,
-    droppedOutsideIndonesia: outside,
+    recordsAfterBoundary: annotated.rows.length,
+    droppedOutsideIndonesia: annotated.stats.droppedOutside,
     invalidCoordinates: invalid,
+    wilayahGagal: annotated.stats.gagal,
+    wilayahDesa: annotated.stats.desa,
+    wilayahTanpaDesa: annotated.stats.tanpaDesa,
   };
 }
 
@@ -643,8 +653,13 @@ async function main() {
       hotspotEntry.records_after_boundary = result.recordsAfterBoundary;
       hotspotEntry.dropped_outside_indonesia = result.droppedOutsideIndonesia;
       hotspotEntry.invalid_coordinates = result.invalidCoordinates;
-      hotspotEntry.boundary = BOUNDARY_SOURCE;
-      hotspotEntry.crs = BOUNDARY_CRS;
+      hotspotEntry.wilayah_gagal = result.wilayahGagal;
+      hotspotEntry.wilayah_desa = result.wilayahDesa;
+      hotspotEntry.wilayah_tanpa_desa = result.wilayahTanpaDesa;
+      hotspotEntry.boundary = BIG_SOURCE_LABEL;
+      hotspotEntry.boundary_edition = "Mei 2021 untuk desa; layer kecamatan revisi 27 Desember 2022 menurut deskripsi layanan";
+      hotspotEntry.boundary_note = BIG_EDITION_NOTE;
+      hotspotEntry.crs = "EPSG:4326. Geometri batas tidak disimpan di repositori.";
       datasets.hotspot = hotspotEntry;
     } catch (error) {
       datasets.hotspot = keepPrevious(hotspotEntry, previousEntry(previous, "hotspot"), error.message);
