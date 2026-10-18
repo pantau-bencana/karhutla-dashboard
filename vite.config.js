@@ -62,7 +62,14 @@ export default defineConfig({
         server.middlewares.use("/data", dataMiddleware());
       },
       closeBundle() {
-        cpSync(dataDir, path.join(root, "dist", "data"), { recursive: true });
+        cpSync(dataDir, path.join(root, "dist", "data"), {
+          recursive: true,
+          filter(source) {
+            const rel = path.relative(dataDir, source);
+            if (!rel) return true;
+            return rel.split(path.sep)[0] !== "boundaries";
+          },
+        });
       },
     },
   ],

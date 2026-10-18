@@ -1,5 +1,6 @@
-import { HotspotMap } from "./HotspotMap.jsx";
+import { HotspotBoard } from "./HotspotBoard.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
+import { ForecastPanel } from "./ForecastPanel.jsx";
 import { Term } from "./Term.jsx";
 import { formatAngka, formatWib } from "../lib/format.js";
 import { pageHref } from "../lib/route.js";
@@ -8,6 +9,8 @@ import { decorateSources } from "../lib/sourceCatalog.js";
 
 export function SummaryPage({ config, feeds, manifest }) {
   const hotspot = feeds.find((feed) => feed.id === "hotspot");
+  const hotspotPeta = feeds.find((feed) => feed.id === "hotspot_peta");
+  const priority = config?.provinsiPrioritas ?? [];
   const irbi = feeds.find((feed) => feed.id === "irbi");
   const dibi = feeds.find((feed) => feed.id === "dibi_karhutla");
   const cap = feeds.find((feed) => feed.id === "bmkg_cap");
@@ -20,6 +23,11 @@ export function SummaryPage({ config, feeds, manifest }) {
     return bag;
   }, {});
   const realTrend = hotspot && !hotspot.contoh && hotspot.asal === "snapshot" && hotspot.rows?.length;
+  const mapSource = hotspotPeta?.rows?.length ? hotspotPeta : hotspot;
+  const mapPoints = !sampleHotspot && mapSource && !mapSource.contoh ? mapSource.rows : [];
+  const meta = hotspotPeta?.petaMeta;
+  const weather = feeds.find((feed) => feed.id === "fdrs_pembanding");
+  const fwiGwis = feeds.find((feed) => feed.id === "fwi_gwis_pembanding");
 
   return (
     <main className="wrap main">
@@ -48,25 +56,34 @@ export function SummaryPage({ config, feeds, manifest }) {
             <h2>
               Peta <Term id="hotspot">hotspot</Term>
             </h2>
-            <p>
-              {sampleHotspot
-                ? "Hotspot resmi belum tersambung. Titik pada data contoh tidak digambar di halaman ini."
-                : "Deteksi satelit pada snapshot terakhir. Bukan kebakaran terkonfirmasi."}
-            </p>
+            <p>hotspot = deteksi satelit, bukan kebakaran terkonfirmasi</p>
           </div>
         </header>
         {sampleHotspot ? (
           <div className="logic-body">
             <p>
-              Peta contoh ada di <a href={pageHref("peta")}>Peta dan Data</a>, dengan label Data contoh. Tanpa secret
-              FIRMS_MAP_KEY, status sumber ini Belum terhubung.
+              Hotspot resmi belum tersambung. Titik pada data contoh tidak digambar di halaman ini. Peta contoh ada di{" "}
+              <a href={pageHref("peta")}>Peta dan Data</a>.
             </p>
             <DatasetTiming feed={hotspot} />
           </div>
         ) : (
-          <HotspotMap points={[]} frame="indonesia" />
+          <HotspotBoard
+            points={mapPoints}
+            priority={priority}
+            meta={meta}
+            feed={hotspot}
+            fetchedAt={hotspot?.fetchedAt || manifest?.datasets?.hotspot?.fetched_at}
+            observedAt={hotspot?.observedAt || manifest?.datasets?.hotspot?.observed_at}
+          />
         )}
       </section>
+
+      <ForecastPanel
+        provinces={priority}
+        weatherRows={weather?.contoh ? [] : weather?.rows}
+        fwiRows={fwiGwis?.contoh ? [] : fwiGwis?.rows}
+      />
 
       <section className="card">
         <header className="card-head">

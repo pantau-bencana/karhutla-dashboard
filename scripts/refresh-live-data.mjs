@@ -4,6 +4,10 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { flattenBmkgForecast, bmkgForecastUrl, BMKG_LOCATIONS, BMKG_DOCS_URL } from "../src/lib/bmkgForecast.js";
 import { firmsAreaUrl, redactSecret } from "../src/lib/firms.js";
+import { writeHotspotMap } from "./build-hotspot-map.mjs";
+import { parseFirmsCoordinate } from "./indonesia-land.mjs";
+import { BIG_EDITION_NOTE, BIG_SOURCE_LABEL, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
+import { annotatePoints, rowsToHotspotCsv } from "./big-wilayah.mjs";
 import { provinceCenters } from "../src/lib/geo.js";
 import { ispuFromPm25 } from "../src/lib/ispuEstimate.js";
 import { REFRESH_CRON, REFRESH_INTERVAL_HOURS, nextScheduledRun } from "../src/lib/schedule.js";
@@ -291,10 +295,6 @@ async function fetchOpenMeteoAir(names) {
   };
 }
 
-function inIndonesia(lat, lon) {
-  return lat >= -11.5 && lat <= 6.5 && lon >= 94.4 && lon <= 141.6;
-}
-
 async function fetchFirms() {
   const url = firmsAreaUrl(firmsKey, { days: 5 });
   let text;
@@ -309,39 +309,62 @@ async function fetchFirms() {
   const lines = text.trim().split(/\r?\n/);
   const header = lines[0].split(",");
   const index = Object.fromEntries(header.map((name, position) => [name.trim(), position]));
-  const rows = [];
+  const parsed = [];
   let newest = "";
+  let before = 0;
+  let invalid = 0;
   for (const line of lines.slice(1)) {
     if (!line.trim()) continue;
     const cells = line.split(",");
-    const lat = Number(cells[index.latitude]);
-    const lon = Number(cells[index.longitude]);
-    if (!inIndonesia(lat, lon)) continue;
+    before += 1;
+    const lat = parseFirmsCoordinate(cells[index.latitude]);
+    const lon = parseFirmsCoordinate(cells[index.longitude]);
+    if (!lat || !lon || Math.abs(lat.value) > 90 || Math.abs(lon.value) > 180) {
+      invalid += 1;
+      continue;
+    }
     const tanggal = cells[index.acq_date] || "";
     const waktu = cells[index.acq_time] || "";
     const iso = tanggal && waktu ? `${tanggal}T${String(waktu).padStart(4, "0").slice(0, 2)}:${String(waktu).padStart(4, "0").slice(2, 4)}:00.000Z` : "";
     if (iso > newest) newest = iso;
-    rows.push({
+    parsed.push({
       tanggal,
       waktu,
-      lintang: lat,
-      bujur: lon,
+      lat: lat.value,
+      lon: lon.value,
+      lintangTeks: lat.text,
+      bujurTeks: lon.text,
       provinsi: "Belum terpetakan",
       kabupaten: "",
       satelit: cells[index.satellite] || "",
       kepercayaan: cells[index.confidence] || "",
       frp: cells[index.frp] || "",
       kecerahan: cells[index.bright_ti4] || "",
-      keterangan: "NASA FIRMS VIIRS Suomi-NPP. Bukan kebakaran terkonfirmasi. Kabupaten tidak diisi karena batas administrasi resmi belum dipasang.",
+      keterangan: "NASA FIRMS VIIRS Suomi-NPP. Bukan kebakaran terkonfirmasi.",
     });
   }
-  const headers = ["tanggal", "waktu", "lintang", "bujur", "provinsi", "kabupaten", "satelit", "kepercayaan", "frp", "kecerahan", "keterangan"];
+  let annotated;
+  try {
+    annotated = await annotatePoints(parsed, { concurrency: 2 });
+  } catch {
+    annotated = {
+      rows: parsed.map((point) => ({ ...point, wilayahStatus: "gagal", desaTampilan: DESA_UNIDENTIFIED })),
+      stats: { droppedOutside: 0, gagal: parsed.length, desa: 0, tanpaDesa: 0, queries: 0 },
+    };
+  }
   return {
-    body: toCsv(headers, rows),
+    body: rowsToHotspotCsv(annotated.rows),
     observedAt: newest || null,
-    observedLabel: newest ? `Lintasan terbaru dalam cuplikan Indonesia ${newest} UTC` : "Tidak ada titik di dalam bingkai Indonesia pada 5 hari terakhir",
+    observedLabel: newest ? `Lintasan terbaru ${newest} UTC. Wilayah dari kueri BIG, bukan berkas batas.` : "Tidak ada titik pada 5 hari terakhir",
     sourceUpdatedAt: newest || nowIso,
     url: "https://firms.modaps.eosdis.nasa.gov/api/area/",
+    recordsBeforeBoundary: before,
+    recordsAfterBoundary: annotated.rows.length,
+    droppedOutsideIndonesia: annotated.stats.droppedOutside,
+    invalidCoordinates: invalid,
+    wilayahGagal: annotated.stats.gagal,
+    wilayahDesa: annotated.stats.desa,
+    wilayahTanpaDesa: annotated.stats.tanpaDesa,
   };
 }
 
@@ -626,10 +649,28 @@ async function main() {
       hotspotEntry.observed_label = result.observedLabel;
       hotspotEntry.source_updated_at = result.sourceUpdatedAt;
       writeIfChanged("data/live/hotspot.csv", result.body, hotspotEntry, previousEntry(previous, "hotspot"));
+      hotspotEntry.records_before_boundary = result.recordsBeforeBoundary;
+      hotspotEntry.records_after_boundary = result.recordsAfterBoundary;
+      hotspotEntry.dropped_outside_indonesia = result.droppedOutsideIndonesia;
+      hotspotEntry.invalid_coordinates = result.invalidCoordinates;
+      hotspotEntry.wilayah_gagal = result.wilayahGagal;
+      hotspotEntry.wilayah_desa = result.wilayahDesa;
+      hotspotEntry.wilayah_tanpa_desa = result.wilayahTanpaDesa;
+      hotspotEntry.boundary = BIG_SOURCE_LABEL;
+      hotspotEntry.boundary_edition = "Mei 2021 untuk desa; layer kecamatan revisi 27 Desember 2022 menurut deskripsi layanan";
+      hotspotEntry.boundary_note = BIG_EDITION_NOTE;
+      hotspotEntry.crs = "EPSG:4326. Geometri batas tidak disimpan di repositori.";
       datasets.hotspot = hotspotEntry;
     } catch (error) {
       datasets.hotspot = keepPrevious(hotspotEntry, previousEntry(previous, "hotspot"), error.message);
     }
+  }
+
+  try {
+    const mapMeta = writeHotspotMap();
+    if (mapMeta) console.log(`Peta hotspot darat: ${mapMeta.di_darat} titik, 24 jam ${mapMeta.jam_24_jumlah}.`);
+  } catch (error) {
+    console.log(`Peta hotspot darat tidak diperbarui: ${redactSecret(error.message, firmsKey)}`);
   }
 
   datasets.irbi = staticIrbi(previousEntry(previous, "irbi"));
