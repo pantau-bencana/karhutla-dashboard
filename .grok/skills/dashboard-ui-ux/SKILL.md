@@ -18,7 +18,7 @@ The UI is React 18, Vite 6, Leaflet, and Recharts 2. Hash routes only, because G
 Karhutla is the built hazard. Its pages:
 
 1. **Ringkasan Pimpinan** — last update, source status counts, national map only when the hotspot feed is not sample data, attention list only from non-sample feeds, week trend only when a real archive exists, and the 14-day ranking structure.
-2. **Peta dan Data** — filters and one active layer at a time (hotspot, inaRISK, IRBI, smoke, FDRS, rain, wind, ISPU). A selected province shows area, period, update time, source, role, and limitation.
+2. **Peta dan Data** — filters and one active layer at a time (hotspot, inaRISK, IRBI, smoke, FDRS, rain, wind, Kualitas Udara (ISPU)). There is no ISPU module in the main navigation and no Prediksi control on that layer. A selected province shows area, period, update time, source, role, and limitation.
 3. **Logika Pemantauan** — indicator table plus the eight-step flow.
 4. **Sumber Data** — one row per source with the honest status set.
 5. **Glosarium** — shared across hazards, searchable, alphabetical. Links use `#/glosarium/{id}` because the route is already a hash.

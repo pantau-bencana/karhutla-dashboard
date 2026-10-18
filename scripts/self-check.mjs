@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { deriveDashboard, defaultRange } from "../src/lib/derive.js";
 import { areaContains, assignProvince, INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../src/lib/geo.js";
 import { looksLikeCsv, parseCsv } from "../src/lib/csv.js";
@@ -7,7 +7,21 @@ import { fetchCsv, loadAll, redactFirmsUrl } from "../src/lib/loadData.js";
 import { GLOSSARY } from "../src/lib/glossary.js";
 import { HAZARDS } from "../src/lib/hazards.js";
 import { ispuFromPm25 } from "../src/lib/ispuEstimate.js";
+import {
+  ISPU_EXPLANATION,
+  KLH_ISPU_ANALYTIC,
+  KLH_ISPU_APP,
+  filterStations,
+  historyRange,
+  openAqMeasurements,
+  stationPoints,
+} from "../src/lib/ispuView.js";
 import { parseLocation, parseRoute } from "../src/lib/route.js";
+import { clusterCellDegrees, countHotspots, filterHotspotWindow } from "../src/lib/hotspotWindow.js";
+import { parseFirmsCoordinate } from "./indonesia-land.mjs";
+import { arcGisContains, summarizeByDesa, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
+import { annotatePoints } from "./big-wilayah.mjs";
+import { buildComparisonAttention, normalizePlaceName, PROTOTYPE_LABEL } from "../src/lib/attentionPrototype.js";
 import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { REFRESH_CRON, nextScheduledRun } from "../src/lib/schedule.js";
 import { monitoringSources } from "../src/lib/sourceStatus.js";
@@ -303,6 +317,49 @@ assert.match(workflow, /FIRMS_MAP_KEY/);
 assert.equal(workflow.includes("eyJ"), false);
 assert.equal(karhutlaRankingPlan().dapatDisusun, false);
 assert.equal(karhutlaRankingPlan().status.includes("menunggu data resmi BMKG"), true);
+assert.equal(PROTOTYPE_LABEL, "Prototipe – berbasis data pembanding terbuka, bukan data resmi BMKG");
+assert.equal(logicSource.includes("PROTOTYPE_LABEL"), false);
+assert.equal(logicSource.includes("bukan daftar prioritas"), true);
+assert.equal(normalizePlaceName("Kota Lubuk Linggau"), "LUBUKLINGGAU");
+assert.equal(normalizePlaceName("Kota Lubuklinggau"), "LUBUKLINGGAU");
+const perhatian = buildComparisonAttention({
+  irbiRows: [
+    { provinsi: "Riau", kabupaten: "Pelalawan", indeks: 20, kelas: "Tinggi" },
+    { provinsi: "Riau", kabupaten: "Siak", indeks: 22, kelas: "Tinggi" },
+    { provinsi: "Jambi", kabupaten: "Tebo", indeks: 30, kelas: "Sedang" },
+    { provinsi: "Jambi", kabupaten: "Merangin", indeks: 18, kelas: "Tinggi" },
+  ],
+  rainRows: [
+    ...Array.from({ length: 14 }, (_, index) => ({ tanggal: `2026-10-${String(index + 1).padStart(2, "0")}`, provinsi: "Riau", kabupaten: "PELALAWAN", kode: "1405", lintang: 0.1, bujur: 102, curahHujan: index < 2 ? 0 : 5, peluang: 40, anginKmj: 10 })),
+    ...Array.from({ length: 14 }, (_, index) => ({ tanggal: `2026-10-${String(index + 1).padStart(2, "0")}`, provinsi: "Riau", kabupaten: "SIAK", kode: "1408", lintang: 0.8, bujur: 102, curahHujan: 0, peluang: 10, anginKmj: 12 })),
+    ...Array.from({ length: 14 }, (_, index) => ({ tanggal: `2026-10-${String(index + 1).padStart(2, "0")}`, provinsi: "Jambi", kabupaten: "TEBO", kode: "1509", lintang: -1.5, bujur: 102, curahHujan: 0, peluang: 5, anginKmj: 20 })),
+    ...Array.from({ length: 11 }, (_, index) => ({ tanggal: `2026-10-${String(index + 1).padStart(2, "0")}`, provinsi: "Jambi", kabupaten: "MERANGIN", kode: "1502", lintang: -2, bujur: 102, curahHujan: 0, peluang: 5, anginKmj: 8 })),
+  ],
+  fwiRows: [
+    { tanggal: "2026-10-01", kode: "1405", fwi: 40 },
+    { tanggal: "2026-10-01", kode: "1408", fwi: 1 },
+  ],
+});
+assert.equal(perhatian.label, PROTOTYPE_LABEL);
+assert.deepEqual(perhatian.rows.map((row) => row.kabupaten), ["Siak", "Pelalawan", "Tebo"]);
+assert.equal(perhatian.hariKurang, 1);
+assert.equal(perhatian.rows[0].fwiRata, 1);
+assert.equal(perhatian.rows[1].fwiRata, 40);
+const dibalik = buildComparisonAttention({
+  irbiRows: [
+    { provinsi: "Riau", kabupaten: "Pelalawan", indeks: 20, kelas: "Tinggi" },
+    { provinsi: "Riau", kabupaten: "Siak", indeks: 22, kelas: "Tinggi" },
+  ],
+  rainRows: perhatian.rows.length ? [
+    ...Array.from({ length: 14 }, (_, index) => ({ tanggal: `2026-10-${String(index + 1).padStart(2, "0")}`, provinsi: "Riau", kabupaten: "PELALAWAN", kode: "1405", curahHujan: index < 2 ? 0 : 5 })),
+    ...Array.from({ length: 14 }, (_, index) => ({ tanggal: `2026-10-${String(index + 1).padStart(2, "0")}`, provinsi: "Riau", kabupaten: "SIAK", kode: "1408", curahHujan: 0 })),
+  ] : [],
+  fwiRows: [
+    { tanggal: "2026-10-01", kode: "1405", fwi: 1 },
+    { tanggal: "2026-10-01", kode: "1408", fwi: 40 },
+  ],
+});
+assert.deepEqual(dibalik.rows.map((row) => row.kabupaten), ["Siak", "Pelalawan"]);
 const glossaryIds = new Set(GLOSSARY.map((item) => item.id));
 for (const id of ["ispu", "fwi", "fdrs", "ffmc", "dmc", "dc", "isi", "bui", "irbi", "inarisk", "bnpb", "bmkg", "klh", "firms", "viirs", "modis", "nrt", "confidence", "hotspot", "spartan", "sipongi", "cams", "pm", "wib", "dasarian", "snapshot", "statis", "prakiraan", "observasi"]) {
   assert.equal(glossaryIds.has(id), true, id);
@@ -311,6 +368,142 @@ assert.equal(GLOSSARY.every((item) => item.penjelasan && item.penggunaan), true)
 assert.deepEqual(HAZARDS.map((item) => item.id), ["karhutla", "banjir", "gunung-api"]);
 assert.equal(parseLocation("#/gunung-api").hazard, "gunung-api");
 assert.equal(parseLocation("#/karhutla/peta").page, "peta");
+const summarySource = readFileSync("src/components/SummaryPage.jsx", "utf8");
+assert.equal(summarySource.includes("points={[]}"), false);
+assert.equal(summarySource.includes("15–20 kabupaten/kota, 14 hari"), false);
+assert.equal(summarySource.includes("buildComparisonAttention"), false);
+assert.match(summarySource, /hotspot = deteksi satelit, bukan kebakaran terkonfirmasi/);
+assert.match(summarySource, /Prakiraan kondisi \(pembanding, bukan resmi\)|ForecastPanel/);
+const forecastSource = readFileSync("src/components/ForecastPanel.jsx", "utf8");
+assert.match(forecastSource, /Buka Peta FWI\/Peringatan Karhutla BMKG/);
+assert.match(forecastSource, /target="_blank" rel="noopener noreferrer"/);
+assert.match(forecastSource, /https:\/\/www\.bmkg\.go\.id\/cuaca\/karhutla\/fwi/);
+assert.match(forecastSource, /https:\/\/gis\.bmkg\.go\.id\/portal\/dataapi/);
+assert.equal(forecastSource.includes("<img"), false);
+const pagesWorkflow = readFileSync(".github/workflows/pages.yml", "utf8");
+assert.match(pagesWorkflow, /github\.event_name != 'pull_request' && github\.ref == 'refs\/heads\/main'/);
+const windowed = filterHotspotWindow([
+  { tanggal: "2026-10-17", waktu: "1200", satelit: "N", kelasKepercayaan: "nominal", provinsi: "Riau" },
+  { tanggal: "2026-10-16", waktu: "1200", satelit: "N", kelasKepercayaan: "tinggi", provinsi: "Aceh" },
+  { tanggal: "2026-10-17", waktu: "1800", satelit: "N20", kelasKepercayaan: "rendah", provinsi: "Riau" },
+], { hours: 24, provinces: ["Riau"] });
+assert.equal(windowed.rows.length, 2);
+assert.equal(countHotspots(windowed.rows).sensor.N, 1);
+assert.equal(countHotspots(windowed.rows).sensor.N20, 1);
+assert.equal(clusterCellDegrees(8), 0);
+assert.equal(clusterCellDegrees(10), 0);
+assert.notEqual(clusterCellDegrees(4), 0);
+assert.equal(parseFirmsCoordinate("1,3521"), null);
+assert.equal(parseFirmsCoordinate("1.35210").text, "1.35210");
+assert.equal(parseFirmsCoordinate("1.35210").value, 1.3521);
+const square = { rings: [[[0, 0], [2, 0], [2, 2], [0, 2], [0, 0]]] };
+assert.equal(arcGisContains(square, 1, 1), true);
+assert.equal(arcGisContains(square, 3, 1), false);
+assert.equal(arcGisContains({ rings: [] }, 1, 1), false);
+const desaRows = summarizeByDesa([
+  { desa: "Hangtuah", kodeDesa: "14.01.16.2003", kecamatan: "Perhentian Raja", kabupaten: "Kampar", provinsi: "Riau", kelasKepercayaan: "nominal" },
+  { desa: "Hangtuah", kodeDesa: "14.01.16.2003", kecamatan: "Perhentian Raja", kabupaten: "Kampar", provinsi: "Riau", kelasKepercayaan: "tinggi" },
+  { desa: "", kodeDesa: "", kecamatan: "Setiabudi", kabupaten: "Kota Adm. Jakarta Selatan", provinsi: "DKI Jakarta", kelasKepercayaan: "rendah" },
+]);
+assert.equal(desaRows[0].desa, "Hangtuah");
+assert.equal(desaRows[0].jumlah, 2);
+assert.equal(desaRows[0].nominal, 1);
+assert.equal(desaRows[0].tinggi, 1);
+assert.equal(desaRows.find((row) => row.kecamatan === "Setiabudi").desa, DESA_UNIDENTIFIED);
+const mapComponent = readFileSync("src/components/HotspotMap.jsx", "utf8");
+assert.match(mapComponent, /L\.circleMarker\(\[lat, lon\]/);
+assert.match(mapComponent, /Number\(anchor\.lintang\)/);
+assert.equal(mapComponent.includes("circleMarker([meanLat"), false);
+assert.match(readFileSync("src/lib/bigWilayah.js", "utf8"), /#15803d/);
+function jsonResponse(payload, ok = true) {
+  return { ok, status: ok ? 200 : 500, json: async () => payload };
+}
+const jakartaRing = { rings: [[[106, -7], [107, -7], [107, -6], [106, -6], [106, -7]]] };
+const mockFetch = async (url, init) => {
+  const params = new URLSearchParams(init.body);
+  const geometry = params.get("geometry") || "";
+  if (String(url).includes("/3/query") && geometry.includes("106")) {
+    return jsonResponse({ features: [{ attributes: { namobj: "Setiabudi", wadmkc: "Setiabudi", wadmkk: "Kota Adm. Jakarta Selatan", wadmpr: "DKI Jakarta", kdcpum: "31.74.02", kdppum: "31" }, geometry: jakartaRing }] });
+  }
+  if (String(url).includes("/4/query")) return jsonResponse({ features: [] });
+  if (String(url).includes("/3/query")) return jsonResponse({ features: [] });
+  return jsonResponse({ error: { message: "tak dikenal" } }, false);
+};
+const jakarta = await annotatePoints([{ lon: 106.8456, lat: -6.2088, lintangTeks: "-6.2088", bujurTeks: "106.8456" }], { fetchImpl: mockFetch, concurrency: 1 });
+assert.equal(jakarta.rows.length, 1);
+assert.equal(jakarta.rows[0].kecamatan, "Setiabudi");
+assert.equal(jakarta.rows[0].kabupaten, "Kota Adm. Jakarta Selatan");
+assert.equal(jakarta.rows[0].provinsi, "DKI Jakarta");
+assert.equal(jakarta.rows[0].kodeKecamatan, "31.74.02");
+assert.equal(jakarta.rows[0].desa, "");
+assert.equal(jakarta.rows[0].wilayahStatus, "tanpa_desa");
+const singapore = await annotatePoints([{ lon: 103.8198, lat: 1.3521 }], { fetchImpl: mockFetch, concurrency: 1 });
+assert.equal(singapore.rows.length, 0);
+assert.equal(singapore.stats.droppedOutside, 1);
+const gagal = await annotatePoints([{ lon: 106.8, lat: -6.2 }], { fetchImpl: async () => { throw new Error("timeout"); }, concurrency: 1 });
+assert.equal(gagal.rows.length, 1);
+assert.equal(gagal.rows[0].wilayahStatus, "gagal");
+assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /Confidence deteksi satelit/);
+const wilayahCopy = readFileSync("src/lib/bigWilayah.js", "utf8");
+assert.equal(wilayahCopy.includes("Bukan tingkat bahaya"), true);
+assert.equal(wilayahCopy.includes("bukan tingkat kebakaran"), true);
+const firmsFetch = readFileSync("scripts/refresh-live-data.mjs", "utf8");
+assert.match(firmsFetch, /annotatePoints/);
+assert.match(firmsFetch, /records_before_boundary/);
+assert.match(firmsFetch, /records_after_boundary/);
+assert.match(firmsFetch, /kspservices\.big\.go\.id|BIG_SOURCE_LABEL|bigWilayah/);
+assert.equal(firmsFetch.includes("function inIndonesia"), false);
+assert.equal(firmsFetch.includes("data/boundaries"), false);
+assert.equal(existsSync("data/boundaries/idn-adm2.geojson"), false);
+assert.equal(existsSync("data/boundaries/idn-adm1.geojson"), false);
+
+assert.equal(
+  ISPU_EXPLANATION,
+  "ISPU menggambarkan kualitas udara berdasarkan pengukuran di stasiun pemantau. Titik pada peta menunjukkan lokasi pengukuran dan tidak otomatis mewakili seluruh wilayah kabupaten/kota. Nilai ISPU bukan bukti tunggal bahwa polusi berasal dari karhutla.",
+);
+assert.equal(KLH_ISPU_APP, "https://ispu.kemenlh.go.id/app/#/");
+assert.equal(KLH_ISPU_ANALYTIC, "https://ispu.kemenlh.go.id/kawasan/analytic");
+const blockedStations = stationPoints([
+  { id: "ispu", contoh: true, status: "contoh", rows: [{ lintang: 0.5, bujur: 101.4, ispu: 112, tanggal: "2026-10-17", stasiun: "Contoh" }] },
+  { id: "ispu_pembanding", status: "berhasil", rows: [{ lintang: 0.5, bujur: 101.4, ispu: 70, tanggal: "2026-10-17", stasiun: "Model" }] },
+  { id: "ispu_stasiun", contoh: true, status: "contoh", rows: [{ lintang: 0.5, bujur: 101.4, ispu: 80, tanggal: "2026-10-17", stasiun: "Contoh stasiun" }] },
+]);
+assert.equal(blockedStations.length, 0);
+const officialStations = stationPoints([
+  {
+    id: "ispu_stasiun",
+    status: "berhasil",
+    contoh: false,
+    rows: [
+      { id: "a", stasiun: "A", kabupaten: "X", provinsi: "Riau", ispu: 90, kategori: "Sedang", parameter: "PM2.5", tanggal: "2026-10-16", sumber: "KLH", lintang: -1, bujur: 110 },
+      { id: "b", stasiun: "B", kabupaten: "Y", provinsi: "Riau", ispu: 40, kategori: "Baik", parameter: "PM10", tanggal: "2026-10-17", sumber: "KLH", lintang: -2, bujur: 111 },
+    ],
+  },
+]);
+assert.equal(filterStations(officialStations, { period: "hari-ini", today: "2026-10-17" }).length, 1);
+assert.equal(filterStations(officialStations, { period: "hari-ini", today: "2026-10-18" }).length, 0);
+const stationHistory = historyRange(officialStations);
+assert.equal(stationHistory.to, "2026-10-17");
+assert.equal(filterStations(officialStations, { period: "historis", ...stationHistory }).length, 2);
+const openAq = openAqMeasurements([
+  { id: "openaq_stasiun", status: "berhasil", rows: [{ stasiun: "S", nilai_ugm3: 12.5, ispu: 70, kategori: "Sedang" }] },
+]);
+assert.equal(openAq.length, 1);
+assert.equal(openAq[0].nilai, 12.5);
+assert.equal(Object.hasOwn(openAq[0], "ispu"), false);
+assert.equal(Object.hasOwn(openAq[0], "kategori"), false);
+assert.equal(openAqMeasurements([{ id: "openaq_stasiun", status: "gagal", rows: [{ nilai_ugm3: 3 }] }]).length, 0);
+const udaraSource = readFileSync("src/components/KualitasUdara.jsx", "utf8");
+assert.match(udaraSource, /Kualitas Udara \(ISPU\)/);
+assert.match(udaraSource, /Data Pembanding – pengukuran stasiun/);
+assert.match(udaraSource, /Hari Ini/);
+assert.match(udaraSource, /Historis/);
+assert.equal(udaraSource.includes("Prediksi"), false);
+assert.equal(udaraSource.includes("ispu_pembanding"), false);
+assert.equal(udaraSource.includes("CAMS"), false);
+assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Kualitas Udara \(ISPU\)/);
+assert.equal(readFileSync("src/components/ExtraLayers.jsx", "utf8").includes("ISPU perkiraan"), false);
+assert.equal(readFileSync("src/lib/hazards.js", "utf8").includes("ispu"), false);
 
 const indicatorSource = readFileSync("src/lib/priorityIndicators.js", "utf8");
 const indicatorUi = readFileSync("src/components/PriorityIndicators.jsx", "utf8");

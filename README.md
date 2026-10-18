@@ -2,7 +2,7 @@
 
 Prototipe internal Dit. PD BNPB. Jangan dipublikasikan tanpa persetujuan.
 
-Dasbor statis untuk memantau kebakaran hutan dan lahan (karhutla): sebaran titik panas, status peringatan per provinsi, tren ISPU, rekap SiPongi, indeks IRBI, dan cuaca/FDRS. Antarmuka berbahasa Indonesia. Tidak ada server aplikasi. Peramban mengambil CSV langsung dari berkas contoh atau dari tautan yang Anda isi.
+Dasbor statis untuk memantau kebakaran hutan dan lahan (karhutla): sebaran titik panas, status peringatan per provinsi, lapisan Kualitas Udara (ISPU), rekap SiPongi, indeks IRBI, dan cuaca/FDRS. Antarmuka berbahasa Indonesia. Tidak ada server aplikasi. Peramban mengambil CSV langsung dari berkas contoh atau dari tautan yang Anda isi.
 
 Angka dan status pada prototipe ini **bukan** peringatan dini resmi BNPB, BMKG, atau instansi sumber.
 
@@ -37,6 +37,8 @@ GitHub Actions mengambil sumber publik tiap 3 jam (cron `0 */3 * * *` UTC, yaitu
 Alur: sumber → pengambilan terjadwal → snapshot → dasbor → status peringatan dini (prototipe, bukan peringatan resmi).
 
 Secret FIRMS, bila dipakai, hanya di **Settings → Secrets and variables → Actions** dengan nama `FIRMS_MAP_KEY`. Daftarkan kunci sendiri di <https://firms.modaps.eosdis.nasa.gov/api/map_key/>. Jangan menempelkan kunci di obrolan, berkas, atau commit. Tanpa secret, build tetap jalan dan hotspot berstatus **Belum terhubung** dengan data contoh.
+
+Pembanding terbuka (hujan 14 hari Open-Meteo, PM2.5 CAMS lewat Open-Meteo, dan FWI GWIS) tidak memakai secret. Secret CDS tidak dipasang: angka FWI harian diambil dari WMS publik `ecmwf.query`, sedangkan dataset musiman CEMS di Early Warning Data Store membutuhkan akun dan bukan deret 9 hari itu. CHIRPS, laporan Smithsonian, dan VAAC Darwin hanya tautan.
 
 `npm run preview` membuka `http://127.0.0.1:4173`. Setara dengan itu:
 
@@ -139,7 +141,7 @@ Kelas FDRS pada berkas contoh (`Rendah` sampai `Ekstrem`) diselaraskan dengan am
 
 Kepercayaan tinggi = teks `high` / `tinggi` / `h`, atau angka ≥ 80 (kebiasaan MODIS). `nominal` dan `low` mengikuti teks VIIRS; angka 30–79 dianggap nominal.
 
-ISPU terkini = nilai **tertinggi pada tanggal terakhir** yang ada datanya di cakupan filter. Kategori ISPU memakai rentang yang umum dipakai: 0–50 Baik, 51–100 Sedang, 101–200 Tidak Sehat, 201–300 Sangat Tidak Sehat, di atas 300 Berbahaya.
+Kualitas Udara (ISPU) ada di dalam Karhutla, bukan sebagai modul utama. Periode yang ada hanya Hari Ini dan Historis. ISPU resmi tidak punya API publik; tanpa stasiun yang tersambung, peta dan tabel menulis tidak tersedia serta menautkan portal KLH. Kategori resmi, bila data stasiun ada: 0–50 Baik, 51–100 Sedang, 101–200 Tidak Sehat, 201–300 Sangat Tidak Sehat, di atas 300 Berbahaya. Angka contoh dan konsentrasi model tidak ditampilkan sebagai ISPU.
 
 ## Kolom CSV
 

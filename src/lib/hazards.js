@@ -51,11 +51,14 @@ export const HAZARDS = [
       "Tingkat aktivitas PVMBG: Normal, Waspada, Siaga, Awas, dari sumber resmi MAGMA Indonesia. Saat ini tautan saja.",
       "Kabupaten/kota terdampak. Belum terhubung.",
       "Permintaan data resmi diajukan ke PVMBG / Badan Geologi melalui PPID ESDM.",
+      "Laporan mingguan Smithsonian dan nasihat VAAC Darwin hanya tautan. Umpan mesin tidak terbaca oleh klien netral.",
     ],
     sumber: [
       { nama: "MAGMA Indonesia", instansi: "PVMBG / Badan Geologi", url: "https://magma.esdm.go.id/", status: "Tautan saja" },
       { nama: "PVMBG", instansi: "Badan Geologi", url: "https://vsi.esdm.go.id/", status: "Tautan saja" },
       { nama: "PPID ESDM", instansi: "Kementerian ESDM", url: "https://ppid.esdm.go.id/", status: "Tautan saja" },
+      { nama: "Laporan mingguan GVP", instansi: "Smithsonian", url: "https://volcano.si.edu/reports_weekly.cfm", status: "Tautan saja" },
+      { nama: "VAAC Darwin", instansi: "Bureau of Meteorology", url: "https://www.bom.gov.au/aviation/warnings/volcanic-ash/", status: "Tautan saja" },
     ],
   },
 ];

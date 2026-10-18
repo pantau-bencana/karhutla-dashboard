@@ -3,7 +3,8 @@
 # WIB (UTC+7): 07.00, 10.00, 13.00, 16.00, 19.00, 22.00, 01.00, 04.00.
 # String cron harus sama dengan REFRESH_CRON di src/lib/schedule.js.
 # Push dari GITHUB_TOKEN tidak memicu workflow Pages lain, jadi deploy dilakukan di sini
-# hanya bila isi data berubah dan cabangnya main.
+# hanya bila isi data berubah dan ref-nya persis refs/heads/main.
+# workflow_dispatch pada cabang lain tidak men-deploy.
 name: Perbarui data
 
 on:

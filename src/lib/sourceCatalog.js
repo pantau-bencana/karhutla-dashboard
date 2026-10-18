@@ -87,7 +87,21 @@ export const SOURCES = [
         officialUrl: "https://open-meteo.com/en/docs",
         license: "CC BY 4.0. Cantumkan Open-Meteo.",
         method:
-          "Nilai harian pada titik tengah kasar enam provinsi prioritas: hujan akumulasi, suhu maksimum, kelembapan rata-rata, angin maksimum. Hari tanpa hujan dihitung bila hujan harian di bawah 1 mm. Tidak dihitung menjadi FWI atau FDRS.",
+          "Nilai harian pada titik tengah kasar enam provinsi prioritas: hujan akumulasi, suhu maksimum, kelembapan rata-rata, angin maksimum, 14 hari ke belakang dan 1 hari berjalan. Hari tanpa hujan dihitung bila hujan harian di bawah 1 mm. Bukan titik kabupaten dan tidak dihitung menjadi FWI.",
+        updateType: "Harian",
+        expectedMaxAgeHours: 36,
+        access: "API",
+      },
+      {
+        id: "fwi_gwis_pembanding",
+        nama: "FWI prakiraan ECMWF",
+        instansi: "Copernicus EMS — GWIS/EFFIS",
+        provider: "GWIS",
+        fungsi: "Angka FWI pada titik wakil kabupaten. Bukan FDRS BMKG dan bukan prakiraan 14 hari.",
+        officialUrl: "https://maps.effis.emergency.copernicus.eu/gwis",
+        license: "CC BY 4.0 untuk konten Uni Eropa pada situs EFFIS. Cantumkan Copernicus Emergency Management Service / JRC.",
+        method:
+          "GetFeatureInfo WMS lapisan ecmwf.query, format HTML, pada piksel tengah kotak 0,04 derajat di sekitar titik wakil. Horizon adalah tanggal berurutan yang layanan isi, lalu berhenti setelah dua tanggal kosong. Pemeriksaan 17 Oktober 2026 mendapat 9 hari, bukan 10 atau 14. Lapisan mf010.query hanya mencakup Eropa. Dataset musiman CEMS membutuhkan akun dan bukan deret harian ini, jadi secret CDS tidak dipasang.",
         updateType: "Harian",
         expectedMaxAgeHours: 36,
         access: "API",
@@ -114,6 +128,22 @@ export const SOURCES = [
     updateType: "",
     limitation:
       "API terbuka berisi nilai tp per 3 jam selama 3 hari, bukan peluang dalam persen. Prediksi dasarian (3 dasarian, citra), peringatan curah hujan tinggi, potensi cuaca ekstrem, dan narasi hujan sepekan hanya ditautkan. Halaman itu tidak dikorek dan citranya tidak dipotong.",
+    comparisons: [
+      {
+        id: "hujan_14_pembanding",
+        nama: "Hujan dan angin 14 hari",
+        instansi: "Open-Meteo",
+        provider: "Open-Meteo",
+        fungsi: "Jumlah hujan, peluang hujan, dan angin maksimum 14 hari pada titik wakil kabupaten prioritas. Bukan prakiraan BMKG.",
+        officialUrl: "https://open-meteo.com/en/docs",
+        license: "CC BY 4.0 untuk pemakaian nonkomersial. Cantumkan Open-Meteo.com. Pemakaian komersial punya syarat terpisah.",
+        method:
+          "forecast_days 14 pada API prakiraan, zona Asia/Jakarta untuk semua titik termasuk Kalimantan Selatan. curah hujan adalah precipitation_sum (mm). Peluang adalah precipitation_probability_max: peluang ensemble hujan di atas 0,1 mm, nilai maksimum pada hari itu, dalam persen. Angin adalah wind_speed_10m_max (km/jam). Titik adalah lintang/bujur pada baris kabupaten Satu Data BNPB, bukan batas administrasi dan bukan kotak perkiraan. Jumlah kejadian bencana pada tabel itu tidak dibaca.",
+        updateType: "Harian",
+        expectedMaxAgeHours: 36,
+        access: "API",
+      },
+    ],
   },
   {
     id: "angin",
@@ -187,10 +217,11 @@ export const SOURCES = [
     id: "ispu",
     nama: "ISPU",
     instansi: "Kementerian Lingkungan Hidup",
-    fungsi: "Menunjukkan kualitas udara resmi. Riwayat sepekan resmi belum tersedia di dasbor.",
+    fungsi: "Menunjukkan kualitas udara di stasiun pemantau pada lapisan Kualitas Udara (ISPU) di dalam Karhutla. Bukan bukti tunggal bahwa polutan berasal dari karhutla.",
     officialUrl: "https://ispu.kemenlh.go.id/app/#/",
     officialLabel: "Portal ISPU",
     extraUrls: [
+      ["Analisis kawasan ISPU", "https://ispu.kemenlh.go.id/kawasan/analytic"],
       ["Permen LHK No. 14 Tahun 2020", "https://peraturan.bpk.go.id/Details/163466/permen-lhk-no-14-tahun-2020"],
     ],
     access: "Tautan portal",
@@ -198,19 +229,19 @@ export const SOURCES = [
     kind: "tautan",
     updateType: "",
     limitation:
-      "Tidak ada dokumentasi API publik. Token yang tertanam di aplikasi web tidak dipakai. Angka ISPU pada grafik lama masih data contoh. Tren resmi sepekan tidak ditampilkan.",
+      "Tidak ada dokumentasi API publik. Token yang tertanam di aplikasi web tidak dipakai. Tanpa stasiun resmi, Hari Ini dan Historis ditulis tidak tersedia. Tidak ada prediksi ISPU.",
     comparisons: [
       {
         id: "ispu_pembanding",
-        nama: "ISPU perkiraan dari PM2.5",
+        nama: "PM2.5 model (CAMS), di luar lapisan ISPU",
         instansi: "Open-Meteo / CAMS",
         provider: "Open-Meteo Air Quality",
-        fungsi: "Pembanding kualitas udara. Bukan ISPU stasiun KLH.",
+        fungsi: "Berkas konsentrasi model. Tidak ditampilkan pada Kualitas Udara (ISPU) dan tidak diubah menjadi nilai atau kategori ISPU.",
         officialUrl: "https://open-meteo.com/en/docs/air-quality-api",
         license: "CC BY 4.0. Model udara dari Copernicus Atmosphere Monitoring Service (CAMS).",
         method:
-          "Rata-rata harian PM2.5 pada titik tengah kasar provinsi diubah ke angka ISPU dengan batas PM2.5 pada Lampiran Permen LHK No. 14 Tahun 2020. Contoh di peraturan: 31,4 µg/m³ menjadi 70. Ini perkiraan, bukan pengukuran stasiun.",
-        updateType: "Estimasi",
+          "Rata-rata harian PM2.5 dan PM10 dalam µg/m³ pada titik tengah kasar provinsi, 7 hari ke belakang dan hingga 5 hari yang API isi. Bukan pengukuran stasiun, bukan ISPU, dan tidak ditampilkan pada lapisan Kualitas Udara (ISPU).",
+        updateType: "Model",
         expectedMaxAgeHours: 36,
         access: "API",
       },
@@ -231,6 +262,24 @@ export const SOURCES = [
     expectedMaxAgeHours: 8,
     limitation:
       "Diambil dari RSS resmi, lalu tiap berkas CAP XML. Halaman web nowcast tidak dikorek. Poligon kecamatan tidak digambar. Atribusi: Sumber: BMKG.",
+  },
+  {
+    id: "chirps",
+    nama: "CHIRPS hujan historis",
+    instansi: "UC Santa Barbara Climate Hazards Center",
+    fungsi: "Arsip hujan satelit-stasiun untuk konteks kekeringan. Belum diolah menjadi angka kabupaten.",
+    officialUrl: "https://www.chc.ucsb.edu/data/chirps",
+    officialLabel: "CHIRPS — Climate Hazards Center",
+    extraUrls: [
+      ["Berkas bulanan global v3", "https://data.chc.ucsb.edu/products/CHIRPS/v3.0/monthly/global/tifs/"],
+      ["DOI CHIRPS3", "https://doi.org/10.15780/G2JQ0P"],
+    ],
+    access: "Tautan unduhan",
+    needsKey: false,
+    kind: "tautan",
+    updateType: "",
+    limitation:
+      "Data CHIRPS berada di domain publik (Creative Commons Public Domain). Berkas GeoTIFF bulanan global September 2026 berukuran sekitar 24 MB. Dasbor tidak mengunduh atau merata-rata raster itu, karena tidak ada pustaka raster dan berkasnya tidak disimpan di repositori. Tidak ada angka kekeringan historis pada prototipe 14 hari.",
   },
   {
     id: "dibi_karhutla",

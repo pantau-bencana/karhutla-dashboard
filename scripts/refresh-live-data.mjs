@@ -4,11 +4,13 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { flattenBmkgForecast, bmkgForecastUrl, BMKG_LOCATIONS, BMKG_DOCS_URL } from "../src/lib/bmkgForecast.js";
 import { firmsAreaUrl, redactSecret } from "../src/lib/firms.js";
+import { writeHotspotMap } from "./build-hotspot-map.mjs";
+import { parseFirmsCoordinate } from "./indonesia-land.mjs";
+import { BIG_EDITION_NOTE, BIG_SOURCE_LABEL, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
+import { annotatePoints, rowsToHotspotCsv } from "./big-wilayah.mjs";
 import { provinceCenters } from "../src/lib/geo.js";
-import { ispuFromPm25 } from "../src/lib/ispuEstimate.js";
 import { REFRESH_CRON, REFRESH_INTERVAL_HOURS, nextScheduledRun } from "../src/lib/schedule.js";
 import { SMOKE_IMAGE_URL, SMOKE_URL, SOURCES } from "../src/lib/sourceCatalog.js";
-import { kategoriIspu } from "../src/lib/warning.js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const liveDir = resolve(root, "data/live");
@@ -240,6 +242,22 @@ async function fetchOpenMeteoWeather(names) {
   };
 }
 
+function jakartaToday(date = new Date()) {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Jakarta",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+}
+
+function addCalendarDays(iso, days) {
+  const [year, month, day] = iso.split("-").map(Number);
+  const next = new Date(Date.UTC(year, month - 1, day));
+  next.setUTCDate(next.getUTCDate() + days);
+  return next.toISOString().slice(0, 10);
+}
+
 async function fetchOpenMeteoAir(names) {
   const points = provinceCenters(names);
   const url = new URL("https://air-quality-api.open-meteo.com/v1/air-quality");
@@ -248,7 +266,7 @@ async function fetchOpenMeteoAir(names) {
   url.searchParams.set("hourly", "pm2_5,pm10");
   url.searchParams.set("timezone", "Asia/Jakarta");
   url.searchParams.set("past_days", "7");
-  url.searchParams.set("forecast_days", "1");
+  url.searchParams.set("forecast_days", "5");
   const { text } = await getText(url, 30000);
   const payload = JSON.parse(text);
   const blocks = Array.isArray(payload) ? payload : [payload];
@@ -266,33 +284,330 @@ async function fetchOpenMeteoAir(names) {
       buckets.set(day, current);
     });
     for (const [tanggal, bucket] of buckets) {
-      if (!bucket.pm25.length) continue;
-      const mean = bucket.pm25.reduce((sum, value) => sum + value, 0) / bucket.pm25.length;
-      const ispu = ispuFromPm25(mean);
+      if (!bucket.pm25.length && !bucket.pm10.length) continue;
+      const mean = (values) => values.reduce((sum, value) => sum + value, 0) / values.length;
       rows.push({
         tanggal,
         provinsi: points[index].name,
-        kota: "Titik tengah provinsi",
-        ispu: ispu ?? "",
-        kategori: kategoriIspu(ispu),
-        parameter_dominan: "PM2.5 (perkiraan)",
-        pm25: mean.toFixed(1),
-        keterangan: `Rata-rata ${bucket.pm25.length} jam. Bukan ISPU stasiun KLH.`,
+        pm25_ugm3: bucket.pm25.length ? mean(bucket.pm25).toFixed(1) : "",
+        pm10_ugm3: bucket.pm10.length ? mean(bucket.pm10).toFixed(1) : "",
+        keterangan: "Konsentrasi model pada titik tengah provinsi. Bukan ISPU dan tidak ditampilkan pada lapisan Kualitas Udara (ISPU).",
       });
     }
   }
-  const headers = ["tanggal", "provinsi", "kota", "ispu", "kategori", "parameter_dominan", "pm25", "keterangan"];
+  const headers = ["tanggal", "provinsi", "pm25_ugm3", "pm10_ugm3", "keterangan"];
   const dates = rows.map((row) => row.tanggal).sort();
   return {
     body: toCsv(headers, rows),
     observedAt: dates.at(-1) ? `${dates.at(-1)}T16:59:00.000Z` : null,
-    observedLabel: dates.length ? `Rata-rata harian PM2.5 ${dates[0]}–${dates.at(-1)}` : "",
+    observedLabel: dates.length ? `Rata-rata harian PM2.5 ${dates[0]}–${dates.at(-1)}. Hari ini dan sesudahnya prakiraan CAMS lewat Open-Meteo, bukan 14 hari.` : "",
     sourceUpdatedAt: dates.at(-1) ? `${dates.at(-1)}T16:59:00.000Z` : null,
   };
 }
 
-function inIndonesia(lat, lon) {
+const PRIORITY_PREFIX = {
+  14: "Riau",
+  15: "Jambi",
+  16: "Sumatera Selatan",
+  61: "Kalimantan Barat",
+  62: "Kalimantan Tengah",
+  63: "Kalimantan Selatan",
+};
+
+function inFrame(lat, lon) {
   return lat >= -11.5 && lat <= 6.5 && lon >= 94.4 && lon <= 141.6;
+}
+
+async function fetchRepresentativePoints() {
+  const resource = "21044ffd-c397-4b3c-acbd-5adaa03d79e3";
+  const url = `https://data.bnpb.go.id/api/3/action/datastore_search?resource_id=${resource}&limit=600`;
+  const { text } = await getText(url, 30000);
+  const payload = JSON.parse(text);
+  if (!payload.success) throw new Error("CKAN menolak tabel kabupaten.");
+  const points = [];
+  for (const record of payload.result?.records ?? []) {
+    const rawCode = Number(record["Kode Wilayah Kabupaten / Kota"]);
+    if (!Number.isFinite(rawCode)) continue;
+    const kode = String(Math.trunc(rawCode)).padStart(4, "0");
+    const provinsi = PRIORITY_PREFIX[kode.slice(0, 2)];
+    if (!provinsi) continue;
+    const lintang = Number(record.Latitude);
+    const bujur = Number(record.Longitude);
+    const kabupaten = String(record["Nama Kabupaten/Kota"] ?? "").trim();
+    if (!kabupaten || !inFrame(lintang, bujur)) continue;
+    points.push({
+      kode,
+      provinsi,
+      kabupaten,
+      lintang,
+      bujur,
+      sumber: "Titik wakil pada baris kabupaten Satu Data BNPB. Bukan batas administrasi. Jumlah kejadian tidak dipakai.",
+    });
+  }
+  points.sort((a, b) => a.provinsi.localeCompare(b.provinsi, "id") || a.kabupaten.localeCompare(b.kabupaten, "id"));
+  if (points.length < 15) throw new Error("Titik wakil kabupaten prioritas kurang dari 15.");
+  return {
+    points,
+    body: toCsv(["kode", "provinsi", "kabupaten", "lintang", "bujur", "sumber"], points),
+    license: "ODC-BY. Cantumkan BNPB Satu Data. Hanya koordinat, bukan jumlah bencana.",
+  };
+}
+
+async function fetchRain14(points) {
+  const rows = [];
+  for (let start = 0; start < points.length; start += 25) {
+    const chunk = points.slice(start, start + 25);
+    const url = new URL("https://api.open-meteo.com/v1/forecast");
+    url.searchParams.set("latitude", chunk.map((point) => point.lintang).join(","));
+    url.searchParams.set("longitude", chunk.map((point) => point.bujur).join(","));
+    url.searchParams.set("daily", "precipitation_sum,precipitation_probability_max,wind_speed_10m_max");
+    url.searchParams.set("forecast_days", "14");
+    url.searchParams.set("timezone", "Asia/Jakarta");
+    url.searchParams.set("wind_speed_unit", "kmh");
+    const { text } = await getText(url, 30000);
+    const payload = JSON.parse(text);
+    const blocks = Array.isArray(payload) ? payload : [payload];
+    if (blocks.length !== chunk.length) throw new Error("Open-Meteo tidak mengembalikan satu blok per kabupaten.");
+    blocks.forEach((block, index) => {
+      const daily = block.daily ?? {};
+      (daily.time ?? []).forEach((time, dayIndex) => {
+        const rain = daily.precipitation_sum?.[dayIndex];
+        const chance = daily.precipitation_probability_max?.[dayIndex];
+        const wind = daily.wind_speed_10m_max?.[dayIndex];
+        rows.push({
+          tanggal: time,
+          provinsi: chunk[index].provinsi,
+          kabupaten: chunk[index].kabupaten,
+          kode: chunk[index].kode,
+          lintang: chunk[index].lintang,
+          bujur: chunk[index].bujur,
+          curah_hujan_mm: rain ?? "",
+          peluang_hujan_maks: chance ?? "",
+          angin_maks_kmj: wind ?? "",
+        });
+      });
+    });
+  }
+  const dates = rows.map((row) => row.tanggal).filter(Boolean).sort();
+  return {
+    body: toCsv(
+      ["tanggal", "provinsi", "kabupaten", "kode", "lintang", "bujur", "curah_hujan_mm", "peluang_hujan_maks", "angin_maks_kmj"],
+      rows,
+    ),
+    observedAt: dates.at(-1) ? `${dates.at(-1)}T16:59:00.000Z` : null,
+    observedLabel: dates.length ? `Prakiraan harian ${dates[0]}–${dates.at(-1)} (14 hari, zona Asia/Jakarta) pada titik wakil kabupaten` : "",
+    sourceUpdatedAt: dates.at(-1) ? `${dates.at(-1)}T16:59:00.000Z` : null,
+  };
+}
+
+function gwisInfoUrl(lat, lon, time) {
+  const west = (lon - 0.02).toFixed(4);
+  const south = (lat - 0.02).toFixed(4);
+  const east = (lon + 0.02).toFixed(4);
+  const north = (lat + 0.02).toFixed(4);
+  const params = new URLSearchParams({
+    SERVICE: "WMS",
+    VERSION: "1.1.1",
+    REQUEST: "GetFeatureInfo",
+    LAYERS: "ecmwf.query",
+    QUERY_LAYERS: "ecmwf.query",
+    STYLES: "",
+    SRS: "EPSG:4326",
+    BBOX: `${west},${south},${east},${north}`,
+    WIDTH: "11",
+    HEIGHT: "11",
+    X: "5",
+    Y: "5",
+    INFO_FORMAT: "text/html",
+    FEATURE_COUNT: "1",
+    TIME: time,
+  });
+  return `https://maps.effis.emergency.copernicus.eu/gwis?${params}`;
+}
+
+function parseGwisHtml(html) {
+  if (String(html).includes("ServiceException")) throw new Error("GWIS menolak GetFeatureInfo.");
+  const found = [...String(html).matchAll(/<tr>\s*<td>([^<]+)<\/td>\s*<td>([^<]*)<\/td>\s*<\/tr>/g)];
+  const map = Object.fromEntries(found.map((item) => [item[1].trim(), item[2].trim()]));
+  const fwi = Number(map["Fire Weather Index (FWI)"]);
+  if (!Number.isFinite(fwi)) return null;
+  const numOrEmpty = (label) => {
+    const value = Number(map[label]);
+    return Number.isFinite(value) ? value : "";
+  };
+  return {
+    fwi,
+    isi: numOrEmpty("Initial Spread Index (ISI)"),
+    bui: numOrEmpty("Build Up Index (BUI)"),
+    ffmc: numOrEmpty("Fine Fuel Moisture Code (FFMC)"),
+    dmc: numOrEmpty("Duff Moisture Code (DMC)"),
+    dc: numOrEmpty("Drought Code (DC)"),
+  };
+}
+
+async function gwisAt(lat, lon, time) {
+  const { text } = await getText(gwisInfoUrl(lat, lon, time), 30000);
+  return parseGwisHtml(text);
+}
+
+async function mapPool(items, limit, task) {
+  const output = new Array(items.length);
+  let cursor = 0;
+  async function worker() {
+    while (cursor < items.length) {
+      const index = cursor;
+      cursor += 1;
+      output[index] = await task(items[index], index);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, () => worker()));
+  return output;
+}
+
+async function fetchGwisFwi(points) {
+  const probe = points[0];
+  const today = jakartaToday();
+  const dates = [];
+  let misses = 0;
+  for (let offset = 0; offset < 12; offset += 1) {
+    const time = addCalendarDays(today, offset);
+    const value = await gwisAt(probe.lintang, probe.bujur, time);
+    if (!value) {
+      misses += 1;
+      if (misses >= 2) break;
+      continue;
+    }
+    misses = 0;
+    dates.push(time);
+  }
+  if (!dates.length) throw new Error("GWIS tidak mengembalikan FWI pada titik uji.");
+  const jobs = [];
+  for (const point of points) {
+    for (const time of dates) jobs.push({ point, time });
+  }
+  let failures = 0;
+  const found = await mapPool(jobs, 4, async (job) => {
+    try {
+      const value = await gwisAt(job.point.lintang, job.point.bujur, job.time);
+      return { ...job, value };
+    } catch {
+      failures += 1;
+      return { ...job, value: null };
+    }
+  });
+  if (failures > jobs.length * 0.3) throw new Error("Sebagian besar permintaan GWIS gagal.");
+  const rows = found
+    .filter((item) => item.value)
+    .map((item) => ({
+      tanggal: item.time,
+      provinsi: item.point.provinsi,
+      kabupaten: item.point.kabupaten,
+      kode: item.point.kode,
+      lintang: item.point.lintang,
+      bujur: item.point.bujur,
+      fwi: item.value.fwi,
+      isi: item.value.isi,
+      bui: item.value.bui,
+      ffmc: item.value.ffmc,
+      dmc: item.value.dmc,
+      dc: item.value.dc,
+    }));
+  if (!rows.length) throw new Error("GWIS tidak menghasilkan baris FWI.");
+  return {
+    body: toCsv(["tanggal", "provinsi", "kabupaten", "kode", "lintang", "bujur", "fwi", "isi", "bui", "ffmc", "dmc", "dc"], rows),
+    observedAt: `${dates.at(-1)}T16:59:00.000Z`,
+    observedLabel: `FWI ECMWF ${dates[0]}–${dates.at(-1)} (${dates.length} hari yang dikembalikan layanan). Bukan 14 hari dan bukan FDRS BMKG.`,
+    sourceUpdatedAt: `${dates.at(-1)}T16:59:00.000Z`,
+  };
+}
+
+function comparisonEntry(item, id, comparesTo) {
+  return {
+    ...baseEntry({
+      ...item,
+      id,
+      kind: "pembanding",
+      officialUrl: item.officialUrl,
+      access: "API",
+      updateType: item.updateType,
+      expectedMaxAgeHours: item.expectedMaxAgeHours,
+      limitation: item.method,
+    }),
+    id,
+    mode: "pembanding",
+    provider: item.provider,
+    method: item.method,
+    license: item.license,
+    compares_to: comparesTo,
+    official_url: comparesTo === "fdrs" ? "https://spartan.bmkg.go.id/" : "https://www.bmkg.go.id/cuaca/prakiraan-cuaca",
+  };
+}
+
+async function refreshKabupatenComparison(datasets, previous) {
+  const rainSource = SOURCES.find((source) => source.id === "peluang_hujan").comparisons[0];
+  const fwiSource = SOURCES.find((source) => source.id === "fdrs").comparisons.find((item) => item.id === "fwi_gwis_pembanding");
+  const pointEntry = {
+    ...baseEntry({
+      id: "titik_wakil",
+      nama: "Titik wakil kabupaten",
+      instansi: "BNPB Satu Data",
+      officialUrl: "https://data.bnpb.go.id/api/3/action/package_show?id=data-bencana-indonesia",
+      access: "API",
+      kind: "statis",
+      updateType: "Tahunan / statis",
+      expectedMaxAgeHours: 24 * 30 * 18,
+      limitation: "Hanya koordinat kabupaten pada enam provinsi prioritas. Jumlah kejadian semua jenis bencana tidak disimpan.",
+      fungsi: "Titik wakil untuk lapisan pembanding. Bukan batas administrasi.",
+    }),
+    mode: "statis",
+    license: "ODC-BY. Cantumkan BNPB Satu Data.",
+  };
+  let points = [];
+  try {
+    const result = await fetchRepresentativePoints();
+    points = result.points;
+    pointEntry.license = result.license;
+    pointEntry.observed_at = new Date().toISOString();
+    pointEntry.observed_label = `${points.length} titik wakil kabupaten pada enam provinsi prioritas. Bukan batas administrasi.`;
+    pointEntry.source_updated_at = pointEntry.observed_at;
+    writeIfChanged("data/live/titik_wakil.csv", result.body, pointEntry, previousEntry(previous, "titik_wakil"));
+  } catch (error) {
+    Object.assign(pointEntry, keepPrevious(pointEntry, previousEntry(previous, "titik_wakil"), error.message));
+  }
+  datasets.titik_wakil = pointEntry;
+
+  const rainEntry = comparisonEntry(rainSource, "hujan_14_pembanding", "peluang_hujan");
+  if (!points.length) {
+    Object.assign(rainEntry, keepPrevious(rainEntry, previousEntry(previous, "hujan_14_pembanding"), "Titik wakil tidak tersedia."));
+  } else {
+    try {
+      const result = await fetchRain14(points);
+      rainEntry.observed_at = result.observedAt;
+      rainEntry.observed_label = result.observedLabel;
+      rainEntry.source_updated_at = result.sourceUpdatedAt;
+      writeIfChanged("data/live/hujan_14_pembanding.csv", result.body, rainEntry, previousEntry(previous, "hujan_14_pembanding"));
+    } catch (error) {
+      Object.assign(rainEntry, keepPrevious(rainEntry, previousEntry(previous, "hujan_14_pembanding"), error.message));
+    }
+  }
+  datasets.hujan_14_pembanding = rainEntry;
+
+  const fwiEntry = comparisonEntry(fwiSource, "fwi_gwis_pembanding", "fdrs");
+  fwiEntry.url = "https://maps.effis.emergency.copernicus.eu/gwis";
+  if (!points.length) {
+    Object.assign(fwiEntry, keepPrevious(fwiEntry, previousEntry(previous, "fwi_gwis_pembanding"), "Titik wakil tidak tersedia."));
+  } else {
+    try {
+      const result = await fetchGwisFwi(points);
+      fwiEntry.observed_at = result.observedAt;
+      fwiEntry.observed_label = result.observedLabel;
+      fwiEntry.source_updated_at = result.sourceUpdatedAt;
+      writeIfChanged("data/live/fwi_gwis_pembanding.csv", result.body, fwiEntry, previousEntry(previous, "fwi_gwis_pembanding"));
+    } catch (error) {
+      Object.assign(fwiEntry, keepPrevious(fwiEntry, previousEntry(previous, "fwi_gwis_pembanding"), error.message));
+    }
+  }
+  datasets.fwi_gwis_pembanding = fwiEntry;
 }
 
 async function fetchFirms() {
@@ -309,39 +624,62 @@ async function fetchFirms() {
   const lines = text.trim().split(/\r?\n/);
   const header = lines[0].split(",");
   const index = Object.fromEntries(header.map((name, position) => [name.trim(), position]));
-  const rows = [];
+  const parsed = [];
   let newest = "";
+  let before = 0;
+  let invalid = 0;
   for (const line of lines.slice(1)) {
     if (!line.trim()) continue;
     const cells = line.split(",");
-    const lat = Number(cells[index.latitude]);
-    const lon = Number(cells[index.longitude]);
-    if (!inIndonesia(lat, lon)) continue;
+    before += 1;
+    const lat = parseFirmsCoordinate(cells[index.latitude]);
+    const lon = parseFirmsCoordinate(cells[index.longitude]);
+    if (!lat || !lon || Math.abs(lat.value) > 90 || Math.abs(lon.value) > 180) {
+      invalid += 1;
+      continue;
+    }
     const tanggal = cells[index.acq_date] || "";
     const waktu = cells[index.acq_time] || "";
     const iso = tanggal && waktu ? `${tanggal}T${String(waktu).padStart(4, "0").slice(0, 2)}:${String(waktu).padStart(4, "0").slice(2, 4)}:00.000Z` : "";
     if (iso > newest) newest = iso;
-    rows.push({
+    parsed.push({
       tanggal,
       waktu,
-      lintang: lat,
-      bujur: lon,
+      lat: lat.value,
+      lon: lon.value,
+      lintangTeks: lat.text,
+      bujurTeks: lon.text,
       provinsi: "Belum terpetakan",
       kabupaten: "",
       satelit: cells[index.satellite] || "",
       kepercayaan: cells[index.confidence] || "",
       frp: cells[index.frp] || "",
       kecerahan: cells[index.bright_ti4] || "",
-      keterangan: "NASA FIRMS VIIRS Suomi-NPP. Bukan kebakaran terkonfirmasi. Kabupaten tidak diisi karena batas administrasi resmi belum dipasang.",
+      keterangan: "NASA FIRMS VIIRS Suomi-NPP. Bukan kebakaran terkonfirmasi.",
     });
   }
-  const headers = ["tanggal", "waktu", "lintang", "bujur", "provinsi", "kabupaten", "satelit", "kepercayaan", "frp", "kecerahan", "keterangan"];
+  let annotated;
+  try {
+    annotated = await annotatePoints(parsed, { concurrency: 2 });
+  } catch {
+    annotated = {
+      rows: parsed.map((point) => ({ ...point, wilayahStatus: "gagal", desaTampilan: DESA_UNIDENTIFIED })),
+      stats: { droppedOutside: 0, gagal: parsed.length, desa: 0, tanpaDesa: 0, queries: 0 },
+    };
+  }
   return {
-    body: toCsv(headers, rows),
+    body: rowsToHotspotCsv(annotated.rows),
     observedAt: newest || null,
-    observedLabel: newest ? `Lintasan terbaru dalam cuplikan Indonesia ${newest} UTC` : "Tidak ada titik di dalam bingkai Indonesia pada 5 hari terakhir",
+    observedLabel: newest ? `Lintasan terbaru ${newest} UTC. Wilayah dari kueri BIG, bukan berkas batas.` : "Tidak ada titik pada 5 hari terakhir",
     sourceUpdatedAt: newest || nowIso,
     url: "https://firms.modaps.eosdis.nasa.gov/api/area/",
+    recordsBeforeBoundary: before,
+    recordsAfterBoundary: annotated.rows.length,
+    droppedOutsideIndonesia: annotated.stats.droppedOutside,
+    invalidCoordinates: invalid,
+    wilayahGagal: annotated.stats.gagal,
+    wilayahDesa: annotated.stats.desa,
+    wilayahTanpaDesa: annotated.stats.tanpaDesa,
   };
 }
 
@@ -599,6 +937,7 @@ async function main() {
     Object.assign(airEntry, keepPrevious(airEntry, previousEntry(previous, "ispu_pembanding"), error.message));
   }
   datasets.ispu_pembanding = airEntry;
+  await refreshKabupatenComparison(datasets, previous);
 
   const hotspotSource = SOURCES.find((source) => source.id === "hotspot");
   const hotspotEntry = baseEntry(hotspotSource);
@@ -626,10 +965,28 @@ async function main() {
       hotspotEntry.observed_label = result.observedLabel;
       hotspotEntry.source_updated_at = result.sourceUpdatedAt;
       writeIfChanged("data/live/hotspot.csv", result.body, hotspotEntry, previousEntry(previous, "hotspot"));
+      hotspotEntry.records_before_boundary = result.recordsBeforeBoundary;
+      hotspotEntry.records_after_boundary = result.recordsAfterBoundary;
+      hotspotEntry.dropped_outside_indonesia = result.droppedOutsideIndonesia;
+      hotspotEntry.invalid_coordinates = result.invalidCoordinates;
+      hotspotEntry.wilayah_gagal = result.wilayahGagal;
+      hotspotEntry.wilayah_desa = result.wilayahDesa;
+      hotspotEntry.wilayah_tanpa_desa = result.wilayahTanpaDesa;
+      hotspotEntry.boundary = BIG_SOURCE_LABEL;
+      hotspotEntry.boundary_edition = "Mei 2021 untuk desa; layer kecamatan revisi 27 Desember 2022 menurut deskripsi layanan";
+      hotspotEntry.boundary_note = BIG_EDITION_NOTE;
+      hotspotEntry.crs = "EPSG:4326. Geometri batas tidak disimpan di repositori.";
       datasets.hotspot = hotspotEntry;
     } catch (error) {
       datasets.hotspot = keepPrevious(hotspotEntry, previousEntry(previous, "hotspot"), error.message);
     }
+  }
+
+  try {
+    const mapMeta = writeHotspotMap();
+    if (mapMeta) console.log(`Peta hotspot darat: ${mapMeta.di_darat} titik, 24 jam ${mapMeta.jam_24_jumlah}.`);
+  } catch (error) {
+    console.log(`Peta hotspot darat tidak diperbarui: ${redactSecret(error.message, firmsKey)}`);
   }
 
   datasets.irbi = staticIrbi(previousEntry(previous, "irbi"));
@@ -691,7 +1048,52 @@ async function main() {
   console.log(`Manifes ditulis. Kunci FIRMS: ${firmsKey ? "dipakai" : "tidak ada"}.`);
 }
 
-main().catch((error) => {
+async function comparisonOnly() {
+  const previous = readJson(manifestPath) ?? { datasets: {} };
+  const config = JSON.parse(readFileSync(resolve(root, "public/config.json"), "utf8"));
+  const names = config.provinsiPrioritas ?? [];
+  const datasets = { ...(previous.datasets ?? {}) };
+  const compareAir = SOURCES.find((source) => source.id === "ispu").comparisons[0];
+  const airEntry = {
+    ...baseEntry({ ...compareAir, kind: "pembanding", officialUrl: compareAir.officialUrl, access: "API", updateType: compareAir.updateType, expectedMaxAgeHours: 36, limitation: compareAir.method }),
+    id: "ispu_pembanding",
+    mode: "pembanding",
+    provider: compareAir.provider,
+    method: compareAir.method,
+    license: compareAir.license,
+    compares_to: "ispu",
+    official_url: "https://ispu.kemenlh.go.id/app/#/",
+    update_type: "Estimasi",
+  };
+  try {
+    const result = await fetchOpenMeteoAir(names);
+    airEntry.observed_at = result.observedAt;
+    airEntry.observed_label = result.observedLabel;
+    airEntry.source_updated_at = result.sourceUpdatedAt;
+    writeIfChanged("data/live/ispu_pembanding.csv", result.body, airEntry, previousEntry(previous, "ispu_pembanding"));
+  } catch (error) {
+    Object.assign(airEntry, keepPrevious(airEntry, previousEntry(previous, "ispu_pembanding"), error.message));
+  }
+  datasets.ispu_pembanding = airEntry;
+  await refreshKabupatenComparison(datasets, previous);
+  const next = {
+    generated_at: nowIso,
+    schedule: previous.schedule ?? {
+      cron: REFRESH_CRON,
+      interval_hours: REFRESH_INTERVAL_HOURS,
+      timezone: "UTC",
+      display_timezone: "Asia/Jakarta",
+    },
+    next_run: nextScheduledRun(new Date(), REFRESH_INTERVAL_HOURS),
+    firms_key: previous.firms_key === "used" ? "used" : "absent",
+    datasets,
+  };
+  writeFileSync(manifestPath, `${JSON.stringify(next, null, 2)}\n`);
+  console.log("Cuplikan pembanding ditulis. Status kunci FIRMS tidak diubah.");
+}
+
+const run = process.argv.includes("--comparison-only") ? comparisonOnly : main;
+run().catch((error) => {
   console.error(redactSecret(error?.stack || error?.message || error, firmsKey));
   process.exitCode = 1;
 });

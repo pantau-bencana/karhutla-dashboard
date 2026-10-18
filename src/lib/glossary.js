@@ -45,7 +45,7 @@ export const GLOSSARY = [
     istilah: "CAMS",
     nama: "Copernicus Atmosphere Monitoring Service",
     penjelasan: "Layanan pemantauan atmosfer Copernicus yang menjadi salah satu sumber model pada API kualitas udara Open-Meteo.",
-    penggunaan: "Hanya pada lapisan pembanding ISPU perkiraan, bukan pada ISPU resmi.",
+    penggunaan: "Berkas model PM2.5 boleh tersimpan sebagai pembanding, termasuk hari yang API isi. Lapisan Kualitas Udara (ISPU) tidak menampilkan prakiraan CAMS dan tidak mengubahnya menjadi ISPU.",
     rujukan: "https://atmosphere.copernicus.eu/",
     rujukanLabel: "atmosphere.copernicus.eu",
   },
@@ -65,7 +65,7 @@ export const GLOSSARY = [
     nama: "Tingkat kepercayaan deteksi",
     penjelasan:
       "Pada hotspot VIIRS di FIRMS, kepercayaan disebut low, nominal, atau high. Pada MODIS sering berupa angka. Nilai ini menilai kualitas deteksi satelit, bukan hasil cek lapangan.",
-    penggunaan: "Warna titik dan hitungan kepercayaan tinggi memakai kolom ini bila ada. Angka 80 ke atas dikelompokkan tinggi, mengikuti kebiasaan berkas MODIS.",
+    penggunaan: "Warna titik: rendah hijau, nominal kuning, tinggi merah. VIIRS memakai l, n, atau h. MODIS 0–29 rendah, 30–79 nominal, 80–100 tinggi. Nilai asli tetap ditampilkan. Nominal adalah kelas menengah, padanan katanya sedang. Ini kualitas deteksi satelit, bukan tingkat bahaya atau tingkat kebakaran.",
     rujukan: "https://firms.modaps.eosdis.nasa.gov/",
     rujukanLabel: "NASA FIRMS",
   },
@@ -159,7 +159,8 @@ export const GLOSSARY = [
     nama: "Fire Weather Index",
     penjelasan:
       "Indeks cuaca kebakaran pada sistem Kanada. FWI memakai beberapa kode kelembapan bahan bakar dan indeks sebaran. BMKG memakai keluarga indeks ini di dalam FDRS.",
-    penggunaan: "Kolom FWI pada indikator prototipe hanya terisi dari data contoh. Tidak dihitung dari prakiraan BMKG dan tidak disebut FDRS resmi.",
+    penggunaan:
+      "Kolom FWI pada indikator contoh tetap data contoh. Lapisan pembanding GWIS menampilkan FWI ECMWF pada titik wakil dan tidak disebut FDRS BMKG. Angka itu tidak mengubah urutan 14 hari.",
     rujukan: "https://cwfis.cfs.nrcan.gc.ca/background/summary/fwi",
     rujukanLabel: "Natural Resources Canada — FWI",
   },
@@ -206,7 +207,7 @@ export const GLOSSARY = [
     nama: "Indeks Standar Pencemar Udara",
     penjelasan:
       "Indeks resmi mutu udara di Indonesia. Permen LHK No. 14 Tahun 2020 menetapkan kategori Baik, Sedang, Tidak Sehat, Sangat Tidak Sehat, dan Berbahaya, serta cara mengubah konsentrasi menjadi angka indeks.",
-    penggunaan: "Portal ISPU belum terintegrasi. Lapisan pembanding menghitung perkiraan dari PM2.5 model dan diberi label bukan ISPU resmi.",
+    penggunaan: "Lapisan Kualitas Udara (ISPU) di dalam Karhutla menampilkan stasiun resmi bila tersambung. Tanpa API, statusnya belum terhubung. Data contoh dan model tidak diisi sebagai ISPU.",
     rujukan: "https://peraturan.bpk.go.id/Details/163466/permen-lhk-no-14-tahun-2020",
     rujukanLabel: "Permen LHK No. 14 Tahun 2020",
   },
@@ -216,7 +217,7 @@ export const GLOSSARY = [
     nama: "Kementerian Lingkungan Hidup",
     penjelasan:
       "Portal ISPU saat ini berada di ispu.kemenlh.go.id. Peraturan ISPU tahun 2020 diterbitkan oleh Kementerian Lingkungan Hidup dan Kehutanan. Dasbor mengikuti nama yang tertulis pada situs dan pada peraturan itu.",
-    penggunaan: "ISPU resmi hanya ditautkan. Tidak ada angka stasiun yang ditarik dari portal.",
+    penggunaan: "Dua halaman resmi ditautkan dari lapisan Kualitas Udara (ISPU). Tidak ada angka stasiun yang ditarik dari portal.",
     rujukan: "https://ispu.kemenlh.go.id/app/#/",
     rujukanLabel: "ispu.kemenlh.go.id",
   },
@@ -261,7 +262,8 @@ export const GLOSSARY = [
     nama: "Pembanding (data terbuka, bukan resmi)",
     penjelasan:
       "Lapisan dari sumber terbuka yang diletakkan di samping produk resmi yang belum bisa diunduh. Nilainya tidak menggantikan angka instansi dan tidak masuk daftar wilayah perhatian.",
-    penggunaan: "Open-Meteo untuk cuaca harian dan untuk perkiraan ISPU dari PM2.5. Keduanya memakai lencana pembanding.",
+    penggunaan:
+      "Open-Meteo untuk cuaca provinsi, hujan 14 hari pada titik wakil, dan PM2.5 model dalam µg/m³. GWIS untuk FWI ECMWF. Pengukuran stasiun terbuka, bila ada kunci, tetap dalam µg/m³. Semuanya berlabel pembanding dan tidak mengganti baris resmi.",
     rujukan: "https://open-meteo.com/en/licence",
     rujukanLabel: "Lisensi Open-Meteo",
   },
@@ -271,7 +273,7 @@ export const GLOSSARY = [
     nama: "PM2.5 dan PM10",
     penjelasan:
       "Partikulat di udara dengan diameter aerodinamis di bawah 2,5 mikrometer (PM2.5) atau 10 mikrometer (PM10). Keduanya parameter pada ISPU. Peraturan memakai rata-rata 24 jam.",
-    penggunaan: "Lapisan pembanding memakai rata-rata harian PM2.5 dari model, lalu menghitung perkiraan ISPU. PM10 tidak dipakai untuk angka itu.",
+    penggunaan: "Pada ISPU resmi, PM2.5 dapat menjadi parameter kritis. Konsentrasi model tidak ditampilkan sebagai nilai atau kategori ISPU.",
     rujukan: "https://peraturan.bpk.go.id/Details/163466/permen-lhk-no-14-tahun-2020",
     rujukanLabel: "Permen LHK No. 14 Tahun 2020",
   },
@@ -289,9 +291,42 @@ export const GLOSSARY = [
     istilah: "PVMBG",
     nama: "Pusat Vulkanologi dan Mitigasi Bencana Geologi",
     penjelasan: "Unit Badan Geologi yang menerbitkan tingkat aktivitas gunung api. Permintaan data resmi dapat melalui PPID ESDM.",
-    penggunaan: "Belum terhubung. Pengorek pihak ketiga tidak dipakai.",
+    penggunaan: "Belum terhubung. Pengorek pihak ketiga tidak dipakai. Laporan mingguan Smithsonian dan nasihat VAAC Darwin hanya tautan.",
     rujukan: "https://ppid.esdm.go.id/",
     rujukanLabel: "PPID ESDM",
+  },
+  {
+    id: "chirps",
+    istilah: "CHIRPS",
+    nama: "Climate Hazards Center InfraRed Precipitation with Station data",
+    penjelasan:
+      "Rangkaian hujan global dari UC Santa Barbara yang menggabungkan citra inframerah dan data stasiun. Berkas bulanan global tersedia sebagai GeoTIFF tanpa kunci.",
+    penggunaan:
+      "Hanya ditautkan. Berkas bulanan sekitar 24 MB tidak diunduh dan tidak diubah menjadi angka kabupaten, karena dasbor tidak memproses raster.",
+    rujukan: "https://www.chc.ucsb.edu/data/chirps",
+    rujukanLabel: "Climate Hazards Center — CHIRPS",
+  },
+  {
+    id: "gwis",
+    istilah: "GWIS",
+    nama: "Global Wildfire Information System",
+    penjelasan:
+      "Layanan Copernicus EMS dan JRC untuk bahaya kebakaran global. Prakiraan FWI model ECMWF disajikan lewat WMS publik, terpisah dari FDRS BMKG.",
+    penggunaan:
+      "Lapisan pembanding membaca angka pada titik wakil kabupaten. Horizon mengikuti tanggal yang layanan isi dan tidak disebut 14 hari. Tidak masuk urutan prototipe.",
+    rujukan: "https://gwis.jrc.ec.europa.eu/about-gwis/technical-background/fire-danger-forecast",
+    rujukanLabel: "GWIS — Fire Danger Forecast",
+  },
+  {
+    id: "vaac",
+    istilah: "VAAC",
+    nama: "Volcanic Ash Advisory Centre",
+    penjelasan:
+      "Pusat nasihat abu vulkanik untuk penerbangan. Untuk Indonesia, pusat yang relevan adalah VAAC Darwin pada Bureau of Meteorology Australia.",
+    penggunaan:
+      "Tab Gunung Api hanya menautkan halaman resmi. Klien netral mendapat jawaban 403, jadi teks nasihat tidak disimpan.",
+    rujukan: "https://www.bom.gov.au/aviation/warnings/volcanic-ash/",
+    rujukanLabel: "Bureau of Meteorology — volcanic ash",
   },
   {
     id: "sipongi",

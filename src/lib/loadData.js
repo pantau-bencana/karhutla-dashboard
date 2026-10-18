@@ -60,9 +60,16 @@ function blankFeed(dataset, extra) {
   };
 }
 
+function coordinate(value) {
+  const text = String(value ?? "").trim();
+  if (!/^-?\d+(?:\.\d+)?$/.test(text)) return null;
+  const number = Number(text);
+  return Number.isFinite(number) ? number : null;
+}
+
 export function normalizeHotspotRow(raw, { contoh = false } = {}) {
-  const lintang = num(raw.lintang ?? raw.latitude);
-  const bujur = num(raw.bujur ?? raw.longitude);
+  const lintang = coordinate(raw.lintang ?? raw.latitude);
+  const bujur = coordinate(raw.bujur ?? raw.longitude);
   const provinsi = String(raw.provinsi ?? raw.province ?? "").trim() || "Belum terpetakan";
   const kepercayaan = raw.kepercayaan ?? raw.confidence ?? "";
   const keterangan = raw.keterangan ?? "";
@@ -71,8 +78,17 @@ export function normalizeHotspotRow(raw, { contoh = false } = {}) {
     waktu: raw.waktu ?? raw.acq_time ?? "",
     lintang,
     bujur,
+    lintangTeks: String(raw.lintang ?? raw.latitude ?? "").trim(),
+    bujurTeks: String(raw.bujur ?? raw.longitude ?? "").trim(),
     provinsi: provinsi || "Lainnya",
     kabupaten: raw.kabupaten ?? "",
+    kecamatan: raw.kecamatan ?? "",
+    desa: raw.desa ?? "",
+    kodeDesa: raw.kode_desa ?? raw.kodeDesa ?? "",
+    kodeKecamatan: raw.kode_kecamatan ?? raw.kodeKecamatan ?? "",
+    kodeKabupaten: raw.kode_kabupaten ?? raw.kodeKabupaten ?? "",
+    kodeProvinsi: raw.kode_provinsi ?? raw.kodeProvinsi ?? "",
+    wilayahStatus: raw.wilayah_status ?? raw.wilayahStatus ?? "",
     satelit: raw.satelit ?? raw.satellite ?? "",
     kepercayaan: String(kepercayaan),
     kelasKepercayaan: kelasKepercayaan(kepercayaan),
@@ -185,6 +201,48 @@ function normalizePembandingCuaca(raw) {
   };
 }
 
+function normalizeTitikWakil(raw) {
+  return {
+    kode: String(raw.kode ?? "").trim(),
+    provinsi: raw.provinsi || "—",
+    kabupaten: raw.kabupaten || "—",
+    lintang: num(raw.lintang),
+    bujur: num(raw.bujur),
+    sumber: raw.sumber || "",
+  };
+}
+
+function normalizeHujan14(raw) {
+  return {
+    tanggal: String(raw.tanggal ?? "").slice(0, 10),
+    provinsi: raw.provinsi || "—",
+    kabupaten: raw.kabupaten || "—",
+    kode: String(raw.kode ?? "").trim(),
+    lintang: num(raw.lintang),
+    bujur: num(raw.bujur),
+    curahHujan: num(raw.curah_hujan_mm),
+    peluang: num(raw.peluang_hujan_maks),
+    anginKmj: num(raw.angin_maks_kmj),
+  };
+}
+
+function normalizeFwiGwis(raw) {
+  return {
+    tanggal: String(raw.tanggal ?? "").slice(0, 10),
+    provinsi: raw.provinsi || "—",
+    kabupaten: raw.kabupaten || "—",
+    kode: String(raw.kode ?? "").trim(),
+    lintang: coordinate(raw.lintang),
+    bujur: coordinate(raw.bujur),
+    fwi: num(raw.fwi),
+    isi: num(raw.isi),
+    bui: num(raw.bui),
+    ffmc: num(raw.ffmc),
+    dmc: num(raw.dmc),
+    dc: num(raw.dc),
+  };
+}
+
 const NORMALIZERS = {
   hotspot: (raw, contoh) => normalizeHotspotRow(raw, { contoh }),
   sipongi: (raw) => normalizeSipongi(raw),
@@ -194,6 +252,9 @@ const NORMALIZERS = {
   bmkg_prakiraan: (raw) => normalizePrakiraan(raw),
   fdrs_pembanding: (raw) => normalizePembandingCuaca(raw),
   ispu_pembanding: (raw) => normalizeIspu(raw),
+  titik_wakil: (raw) => normalizeTitikWakil(raw),
+  hujan_14_pembanding: (raw) => normalizeHujan14(raw),
+  fwi_gwis_pembanding: (raw) => normalizeFwiGwis(raw),
   bmkg_cap: (raw) => normalizeCap(raw),
   dibi_karhutla: (raw) => normalizeDibi(raw),
 };
@@ -385,7 +446,7 @@ export async function loadAll(config, deps = {}) {
     }),
   );
 
-  for (const id of ["bmkg_prakiraan", "fdrs_pembanding", "ispu_pembanding", "bmkg_cap", "dibi_karhutla"]) {
+  for (const id of ["bmkg_prakiraan", "fdrs_pembanding", "ispu_pembanding", "bmkg_cap", "dibi_karhutla", "titik_wakil", "hujan_14_pembanding", "fwi_gwis_pembanding"]) {
     const entry = manifest?.datasets?.[id];
     if (!entry?.file) continue;
     const snapshot = await trySnapshot(
@@ -404,6 +465,47 @@ export async function loadAll(config, deps = {}) {
     if (snapshot) feeds.push(snapshot);
   }
 
+  const peta = await loadOptionalCsv(
+    { id: "hotspot_peta", nama: "Peta hotspot darat", csvUrl: "data/live/hotspot-peta.csv" },
+    (raw) => normalizeHotspotRow(raw, { contoh: false }),
+    fetchImpl,
+    resolveUrl,
+  );
+  if (peta) {
+    try {
+      const metaUrl = resolveUrl("data/live/hotspot-peta-meta.json");
+      const response = await fetchImpl(metaUrl);
+      if (response.ok) peta.petaMeta = await response.json();
+    } catch {
+      peta.petaMeta = null;
+    }
+    feeds.push(peta);
+  }
+  const fwi = await loadOptionalCsv(
+    { id: "fwi_gwis_pembanding", nama: "FWI GWIS", csvUrl: "data/live/fwi_gwis_pembanding.csv" },
+    normalizeFwiGwis,
+    fetchImpl,
+    resolveUrl,
+  );
+  if (fwi && !feeds.some((feed) => feed.id === "fwi_gwis_pembanding")) feeds.push(fwi);
+
   feeds.manifest = manifest;
   return feeds;
+}
+
+async function loadOptionalCsv(dataset, normalizer, fetchImpl, resolveUrl) {
+  try {
+    const records = await fetchCsv(resolveUrl(dataset.csvUrl), fetchImpl);
+    const rows = records.map((raw) => normalizer(raw)).filter(Boolean);
+    if (!rows.length) return null;
+    return blankFeed(dataset, {
+      status: "berhasil",
+      contoh: false,
+      error: "",
+      rows,
+      asal: "snapshot",
+    });
+  } catch {
+    return null;
+  }
 }
