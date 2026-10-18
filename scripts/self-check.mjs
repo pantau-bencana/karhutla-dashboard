@@ -505,4 +505,27 @@ assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Kualitas U
 assert.equal(readFileSync("src/components/ExtraLayers.jsx", "utf8").includes("ISPU perkiraan"), false);
 assert.equal(readFileSync("src/lib/hazards.js", "utf8").includes("ispu"), false);
 
+const indicatorSource = readFileSync("src/lib/priorityIndicators.js", "utf8");
+const indicatorUi = readFileSync("src/components/PriorityIndicators.jsx", "utf8");
+assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<PriorityIndicators \/>/);
+assert.match(logicSource, /<PriorityIndicators rinci \/>/);
+assert.match(indicatorSource, /Indikator untuk Wilayah Prioritas/);
+assert.match(indicatorSource, /menunggu data resmi BMKG \(FDRS\/potensi karhutla per kab\/kota\)/);
+assert.match(indicatorSource, /hingga H\+7 sesuai produk BMKG/);
+assert.match(indicatorSource, /bukan prakiraan 14 hari/);
+assert.match(indicatorSource, /Tidak ada data stasiun/);
+assert.match(indicatorSource, /bukan peluang dalam persen/);
+assert.match(indicatorUi, /target="_blank" rel="noopener noreferrer"/);
+assert.equal((indicatorSource.match(/status: "Tautan saja"/g) || []).length, 4);
+for (const url of [
+  "https://spartan.bmkg.go.id/",
+  "https://www.bmkg.go.id/cuaca/karhutla",
+  "https://ispu.kemenlh.go.id/app/#/",
+  "https://www.bmkg.go.id/iklim/prediksi-hujan-dasarian",
+  "https://data.bmkg.go.id/prakiraan-cuaca/",
+  "https://cews.bmkg.go.id/dashboard-custom/prediksi-karhutla/",
+]) {
+  assert.equal(indicatorSource.includes(url), true, url);
+}
+
 console.log("Pemeriksaan prototipe lulus.");

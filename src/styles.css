@@ -392,6 +392,7 @@ a.button {
 
 .table-wrap { overflow: auto; max-height: 560px; margin-top: 10px; }
 .table-wrap.short { max-height: 320px; }
+.table-wrap.wrap-cells { max-height: none; }
 .table-wrap.wrap-cells th, .table-wrap.wrap-cells td { white-space: normal; }
 tr.is-selected { background: #fde68a; box-shadow: inset 4px 0 0 #92400e; }
 tr.is-selected th { background: transparent; }

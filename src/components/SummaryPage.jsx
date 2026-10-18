@@ -6,6 +6,7 @@ import { formatAngka, formatWib } from "../lib/format.js";
 import { pageHref } from "../lib/route.js";
 import { karhutlaRankingPlan } from "../lib/ranking.js";
 import { decorateSources } from "../lib/sourceCatalog.js";
+import { PriorityIndicators } from "./PriorityIndicators.jsx";
 
 export function SummaryPage({ config, feeds, manifest }) {
   const hotspot = feeds.find((feed) => feed.id === "hotspot");
@@ -49,6 +50,8 @@ export function SummaryPage({ config, feeds, manifest }) {
           Sumber Data
         </a>
       </p>
+
+      <PriorityIndicators />
 
       <section className="card">
         <header className="card-head">
