@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { ExtraLayers, LayerBar, WilayahDetail } from "./ExtraLayers.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
-import { HotspotMap } from "./HotspotMap.jsx";
+import { HotspotBoard } from "./HotspotBoard.jsx";
 import { TrendCharts } from "./TrendCharts.jsx";
 import { defaultRange } from "../lib/derive.js";
 import { formatAmbang, formatAngka, formatTanggal, formatTanggalPendek } from "../lib/format.js";
@@ -55,21 +55,7 @@ export function DashboardView({
 }
 
 function DashboardBody({ active, config, feeds, loading, province, setProvince, from, setFrom, to, setTo, view }) {
-  const mapApi = useRef(null);
   const [layer, setLayer] = useState("hotspot");
-  const filterKey = `${province}|${from}|${to}`;
-  const [seenFilter, setSeenFilter] = useState(filterKey);
-  const [lockIndonesia, setLockIndonesia] = useState(true);
-  if (filterKey !== seenFilter) {
-    setSeenFilter(filterKey);
-    setLockIndonesia(false);
-  }
-  const mapFrame = lockIndonesia ? "indonesia" : "points";
-
-  function showIndonesia() {
-    setLockIndonesia(true);
-    mapApi.current?.showIndonesia();
-  }
   const hotspotFeed = feeds.find((feed) => feed.id === "hotspot");
   const visibleFeeds = layer === "ispu" ? feeds.filter((feed) => feed.id !== "ispu" && feed.id !== "ispu_pembanding") : feeds;
   const samples = visibleFeeds.filter((feed) => feed.contoh && feed.status !== "gagal");
@@ -197,48 +183,32 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
       </section> : null}
 
       {layer === "hotspot" ? <>
-      <section className="split">
-        <article className="card map-card">
-          <header className="card-head">
-            <div>
-              <h2>Sebaran titik panas</h2>
-              <p>
-                {formatAngka(view.points.length)} titik
-                {hotspotFeed?.contoh ? " · data contoh" : ""}
-                {hotspotFeed?.asal === "firms" ? " · NASA FIRMS" : ""}
-              </p>
-            </div>
-            <div className="map-tools">
-              <ul className="legend">
-                <li>
-                  <i className="swatch tinggi" /> Tinggi
-                </li>
-                <li>
-                  <i className="swatch nominal" /> Nominal
-                </li>
-                <li>
-                  <i className="swatch rendah" /> Rendah
-                </li>
-              </ul>
-              <button type="button" className="button ghost" onClick={showIndonesia}>
-                Tampilkan seluruh Indonesia
-              </button>
-            </div>
-          </header>
-          {hotspotFeed?.status === "gagal" ? (
-            <p className="empty">Peta tidak diisi karena sumber titik panas gagal: {hotspotFeed.error}</p>
-          ) : null}
-          {active ? (
-            <HotspotMap points={view.points} frame={mapFrame} mapApi={mapApi} />
-          ) : (
-            <div className="map-canvas" aria-hidden="true" />
-          )}
-          {!view.points.length && hotspotFeed?.status !== "gagal" ? (
-            <p className="map-note">Tidak ada titik pada cakupan ini. Peta tetap menampilkan wilayah Indonesia.</p>
-          ) : null}
-        </article>
+      <section className="card">
+        <header className="card-head">
+          <div>
+            <h2>Sebaran titik panas</h2>
+            <p>
+              {formatAngka(view.points.length)} titik
+              {hotspotFeed?.contoh ? " · data contoh" : ""}
+              {hotspotFeed?.asal === "firms" ? " · NASA FIRMS" : ""}
+            </p>
+          </div>
+        </header>
+        {hotspotFeed?.status === "gagal" ? (
+          <p className="empty">Peta tidak diisi karena sumber titik panas gagal: {hotspotFeed.error}</p>
+        ) : (
+          <HotspotBoard
+            points={view.points}
+            priority={priority}
+            meta={feeds.find((feed) => feed.id === "hotspot_peta")?.petaMeta}
+            feed={hotspotFeed}
+            fetchedAt={hotspotFeed?.fetchedAt}
+            observedAt={hotspotFeed?.observedAt}
+          />
+        )}
+      </section>
 
-        <article className="card">
+      <section className="card">
           <header className="card-head">
             <div>
               <h2>Indikator prototipe</h2>
@@ -288,7 +258,6 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           </div>
           <p className="fine">{formatAmbang(config.peringatan)}</p>
           {config.peringatan?.catatan ? <p className="fine">{config.peringatan.catatan}</p> : null}
-        </article>
       </section>
 
       <TrendCharts hotspotTrend={view.hotspotTrend} hotspotSeries={view.hotspotSeries} province={province} />

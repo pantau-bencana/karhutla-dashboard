@@ -444,6 +444,10 @@ const gagal = await annotatePoints([{ lon: 106.8, lat: -6.2 }], { fetchImpl: asy
 assert.equal(gagal.rows.length, 1);
 assert.equal(gagal.rows[0].wilayahStatus, "gagal");
 assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /Confidence deteksi satelit/);
+assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /FILTER_INCOMPLETE/);
+assert.match(readFileSync("src/lib/bigWilayah.js", "utf8"), /Penyaringan wilayah dan batas Indonesia pada pembaruan ini tidak lengkap/);
+assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /big_filter_incomplete/);
+assert.match(readFileSync("src/components/DashboardView.jsx", "utf8"), /HotspotBoard/);
 const wilayahCopy = readFileSync("src/lib/bigWilayah.js", "utf8");
 assert.equal(wilayahCopy.includes("Bukan tingkat bahaya"), true);
 assert.equal(wilayahCopy.includes("bukan tingkat kebakaran"), true);

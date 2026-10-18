@@ -10,7 +10,7 @@ import {
   CONFIDENCE_COLORS,
   CONFIDENCE_LABELS,
   CONFIDENCE_NOTE,
-  WILAYAH_UNAVAILABLE,
+  FILTER_INCOMPLETE,
   desaGroupKey,
   desaLabel,
   distinctSorted,
@@ -74,7 +74,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
   const kabOptions = distinctSorted(filterHotspotRows(confident, { provinsi }), "kabupaten");
   const kecOptions = distinctSorted(filterHotspotRows(confident, { provinsi, kabupaten }), "kecamatan");
   const desaOptions = [...new Set(filterHotspotRows(confident, { provinsi, kabupaten, kecamatan }).map((point) => desaLabel(point)))].sort((a, b) => a.localeCompare(b, "id"));
-  const wilayahGagal = filtered.some((point) => point.wilayahStatus === "gagal") || filtered.some((point) => !point.wilayahStatus && !point.kecamatan && !point.desa);
+  const filterIncomplete = (points ?? []).some((point) => point.wilayahStatus === "gagal");
 
   function toggleConfidence(kelas) {
     setConfidence((current) => {
@@ -109,7 +109,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
       </p>
       <DatasetTiming feed={feed} />
       {fetchedAt ? <p className="fine">Diambil {formatWib(fetchedAt)}. Waktu data {formatWib(observedAt)}.</p> : null}
-      {wilayahGagal ? <p className="fine">{WILAYAH_UNAVAILABLE}. Titik FIRMS tetap ditampilkan.</p> : null}
+      {filterIncomplete ? <p className="fine">{FILTER_INCOMPLETE}</p> : null}
       <div className="province-filter" role="group" aria-label="Jendela waktu hotspot">
         {WINDOWS.map(([value, label]) => (
           <button key={value} type="button" aria-pressed={hours === value} onClick={() => setHours(value)}>
