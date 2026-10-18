@@ -70,7 +70,7 @@ Situs yang dibuka memakai bundel `index-Ccz34wMm.js`, terbit dari commit `1d3b10
 
 # Perbaikan sesudah inspeksi
 
-Perubahan ini ada pada commit yang disebut di laporan penggabungan ke `main`. Yang diubah:
+Perubahan ini ada pada commit `4cf72fb`. Yang diubah:
 
 - Tabel status per provinsi, ambang 8/20/45, dan kartu yang memakainya dihapus. Penggantinya tabel "Jumlah deteksi hotspot (bukan status)", urutan nama atau jumlah, dengan dasar periode, satelit, dan rincian keyakinan.
 - FWI contoh tidak ditampilkan. FDRS resmi tetap "menunggu data resmi BMKG". GWIS tidak disebut FDRS.

@@ -1,6 +1,6 @@
 # Laporan aplikasi v0.1
 
-Diperiksa pada situs tayang https://rixaga.github.io/karhutla-dashboard/ tanggal 18 Oktober 2026, lalu diperbarui agar sesuai perbaikan aturan pada commit yang digabung ke `main` sesudah inspeksi itu. Bundel inspeksi awal `index-Ccz34wMm.js` berasal dari commit `1d3b103`. Judul peramban sesudah perbaikan: **Prototipe Pemantauan Karhutla**.
+Diperiksa pada situs tayang https://rixaga.github.io/karhutla-dashboard/ tanggal 18 Oktober 2026, lalu diperbarui agar sesuai perbaikan aturan pada commit `4cf72fb`. Bundel inspeksi awal `index-Ccz34wMm.js` berasal dari commit `1d3b103`. Judul peramban sesudah perbaikan: **Prototipe Pemantauan Karhutla**.
 
 ## Maksud
 

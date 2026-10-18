@@ -1,6 +1,6 @@
 # Panduan baca v0.1
 
-Panduan ini untuk pimpinan dan pembaca yang tidak mengoperasikan kode. Situsnya https://rixaga.github.io/karhutla-dashboard/. Ini prototipe internal. Angka di layar adalah bahan pantau, bukan perintah operasi dan bukan peringatan resmi.
+Panduan ini untuk pimpinan dan pembaca yang tidak mengoperasikan kode. Situsnya https://rixaga.github.io/karhutla-dashboard/. Ini prototipe internal. Angka di layar adalah bahan pantau, bukan perintah operasi dan bukan peringatan resmi. Isi panduan ini mengikuti commit `4cf72fb`.
 
 ## Peta titik panas
 
