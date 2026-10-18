@@ -310,6 +310,34 @@ a.button {
 .swatch.tinggi { background: #b42318; }
 .swatch.nominal { background: #c2410c; }
 .swatch.rendah { background: #ca8a04; }
+.swatch.baik { background: #1b7f3a; }
+.swatch.sedang { background: #2f6fed; }
+.swatch.tidak { background: #ca8a04; }
+.swatch.sangat { background: #dc2626; }
+.swatch.bahaya { background: #111111; }
+
+.stack { display: grid; gap: 16px; }
+
+.search-field {
+  display: grid;
+  gap: 4px;
+  max-width: 320px;
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.search-field input {
+  border: 1px solid #cfc4b2;
+  background: white;
+  border-radius: 8px;
+  padding: 7px 8px;
+  font-weight: 500;
+}
+
+tr.is-selected { background: #f4e7c3; }
+tr.is-selected th { background: transparent; }
 
 .map-card { overflow: hidden; }
 

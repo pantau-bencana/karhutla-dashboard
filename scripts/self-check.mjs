@@ -7,6 +7,15 @@ import { fetchCsv, loadAll, redactFirmsUrl } from "../src/lib/loadData.js";
 import { GLOSSARY } from "../src/lib/glossary.js";
 import { HAZARDS } from "../src/lib/hazards.js";
 import { ispuFromPm25 } from "../src/lib/ispuEstimate.js";
+import {
+  ISPU_EXPLANATION,
+  KLH_ISPU_ANALYTIC,
+  KLH_ISPU_APP,
+  filterStations,
+  historyRange,
+  openAqMeasurements,
+  stationPoints,
+} from "../src/lib/ispuView.js";
 import { parseLocation, parseRoute } from "../src/lib/route.js";
 import { clusterCellDegrees, countHotspots, filterHotspotWindow } from "../src/lib/hotspotWindow.js";
 import { insideIndonesia, parseFirmsCoordinate } from "./indonesia-land.mjs";
@@ -360,5 +369,53 @@ const boundary = JSON.parse(readFileSync("data/boundaries/idn-adm2.geojson", "ut
 assert.equal(boundary.crs.properties.name, "urn:ogc:def:crs:OGC:1.3:CRS84");
 const samplePair = boundary.features[0].geometry.coordinates[0][0];
 assert.ok(samplePair[0] > 90 && samplePair[1] < 20);
+
+assert.equal(
+  ISPU_EXPLANATION,
+  "ISPU menggambarkan kualitas udara berdasarkan pengukuran di stasiun pemantau. Titik pada peta menunjukkan lokasi pengukuran dan tidak otomatis mewakili seluruh wilayah kabupaten/kota. Nilai ISPU bukan bukti tunggal bahwa polusi berasal dari karhutla.",
+);
+assert.equal(KLH_ISPU_APP, "https://ispu.kemenlh.go.id/app/#/");
+assert.equal(KLH_ISPU_ANALYTIC, "https://ispu.kemenlh.go.id/kawasan/analytic");
+const blockedStations = stationPoints([
+  { id: "ispu", contoh: true, status: "contoh", rows: [{ lintang: 0.5, bujur: 101.4, ispu: 112, tanggal: "2026-10-17", stasiun: "Contoh" }] },
+  { id: "ispu_pembanding", status: "berhasil", rows: [{ lintang: 0.5, bujur: 101.4, ispu: 70, tanggal: "2026-10-17", stasiun: "Model" }] },
+  { id: "ispu_stasiun", contoh: true, status: "contoh", rows: [{ lintang: 0.5, bujur: 101.4, ispu: 80, tanggal: "2026-10-17", stasiun: "Contoh stasiun" }] },
+]);
+assert.equal(blockedStations.length, 0);
+const officialStations = stationPoints([
+  {
+    id: "ispu_stasiun",
+    status: "berhasil",
+    contoh: false,
+    rows: [
+      { id: "a", stasiun: "A", kabupaten: "X", provinsi: "Riau", ispu: 90, kategori: "Sedang", parameter: "PM2.5", tanggal: "2026-10-16", sumber: "KLH", lintang: -1, bujur: 110 },
+      { id: "b", stasiun: "B", kabupaten: "Y", provinsi: "Riau", ispu: 40, kategori: "Baik", parameter: "PM10", tanggal: "2026-10-17", sumber: "KLH", lintang: -2, bujur: 111 },
+    ],
+  },
+]);
+assert.equal(filterStations(officialStations, { period: "hari-ini", today: "2026-10-17" }).length, 1);
+assert.equal(filterStations(officialStations, { period: "hari-ini", today: "2026-10-18" }).length, 0);
+const stationHistory = historyRange(officialStations);
+assert.equal(stationHistory.to, "2026-10-17");
+assert.equal(filterStations(officialStations, { period: "historis", ...stationHistory }).length, 2);
+const openAq = openAqMeasurements([
+  { id: "openaq_stasiun", status: "berhasil", rows: [{ stasiun: "S", nilai_ugm3: 12.5, ispu: 70, kategori: "Sedang" }] },
+]);
+assert.equal(openAq.length, 1);
+assert.equal(openAq[0].nilai, 12.5);
+assert.equal(Object.hasOwn(openAq[0], "ispu"), false);
+assert.equal(Object.hasOwn(openAq[0], "kategori"), false);
+assert.equal(openAqMeasurements([{ id: "openaq_stasiun", status: "gagal", rows: [{ nilai_ugm3: 3 }] }]).length, 0);
+const udaraSource = readFileSync("src/components/KualitasUdara.jsx", "utf8");
+assert.match(udaraSource, /Kualitas Udara \(ISPU\)/);
+assert.match(udaraSource, /Data Pembanding – pengukuran stasiun/);
+assert.match(udaraSource, /Hari Ini/);
+assert.match(udaraSource, /Historis/);
+assert.equal(udaraSource.includes("Prediksi"), false);
+assert.equal(udaraSource.includes("ispu_pembanding"), false);
+assert.equal(udaraSource.includes("CAMS"), false);
+assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Kualitas Udara \(ISPU\)/);
+assert.equal(readFileSync("src/components/ExtraLayers.jsx", "utf8").includes("ISPU perkiraan"), false);
+assert.equal(readFileSync("src/lib/hazards.js", "utf8").includes("ispu"), false);
 
 console.log("Pemeriksaan prototipe lulus.");

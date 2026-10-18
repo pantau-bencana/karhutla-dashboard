@@ -14,14 +14,6 @@ function feedStatus(feed) {
   return "Gagal";
 }
 
-function ispuTone(kategori) {
-  if (kategori === "Baik") return "tone-baik";
-  if (kategori === "Sedang") return "tone-sedang";
-  if (kategori === "Tidak Sehat") return "tone-tidak";
-  if (kategori === "Sangat Tidak Sehat" || kategori === "Berbahaya") return "tone-bahaya";
-  return "";
-}
-
 export function DashboardView({
   active = true,
   config,
@@ -79,11 +71,11 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
     mapApi.current?.showIndonesia();
   }
   const hotspotFeed = feeds.find((feed) => feed.id === "hotspot");
-  const samples = feeds.filter((feed) => feed.contoh && feed.status !== "gagal");
-  const failures = feeds.filter((feed) => feed.status === "gagal");
-  const fallbacks = feeds.filter((feed) => feed.status === "cadangan");
+  const visibleFeeds = layer === "ispu" ? feeds.filter((feed) => feed.id !== "ispu" && feed.id !== "ispu_pembanding") : feeds;
+  const samples = visibleFeeds.filter((feed) => feed.contoh && feed.status !== "gagal");
+  const failures = visibleFeeds.filter((feed) => feed.status === "gagal");
+  const fallbacks = visibleFeeds.filter((feed) => feed.status === "cadangan");
   const keySet = Boolean(String(config.firms?.mapKey ?? "").trim());
-  const ispu = view.summary.ispuTerkini;
   const priority = config.provinsiPrioritas ?? [];
 
   function resetDates() {
@@ -154,7 +146,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
             </button>
           ))}
         </div>
-        <div className="date-filter">
+        {layer === "ispu" ? null : <div className="date-filter">
           <label>
             Dari
             <input type="date" value={from} onChange={(event) => updateFrom(event.target.value)} />
@@ -169,7 +161,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           <button type="button" className="button ghost" onClick={resetDates}>
             7 hari terakhir
           </button>
-        </div>
+        </div>}
       </section>
       <LayerBar layer={layer} setLayer={setLayer} />
       <WilayahDetail province={province} from={from} to={to} layer={layer} />
@@ -197,14 +189,10 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           <p className="metric-value">{formatAngka(view.summary.waspadaPlus)}</p>
           <p className="metric-note">{formatAngka(view.summary.siagaAwas)} di antaranya siaga atau awas</p>
         </article>
-        <article className={`card metric ${ispuTone(ispu?.kategori)}`}>
-          <p className="metric-label">ISPU terkini</p>
-          <p className="metric-value">{ispu ? formatAngka(ispu.ispu) : "—"}</p>
-          <p className="metric-note">
-            {ispu
-              ? `${ispu.kategori} · ${ispu.kota ? `${ispu.kota}, ` : ""}${ispu.provinsi} · ${formatTanggal(ispu.tanggal)}`
-              : "Tidak ada data ISPU pada rentang ini"}
-          </p>
+        <article className="card metric">
+          <p className="metric-label">ISPU stasiun</p>
+          <p className="metric-value">—</p>
+          <p className="metric-note">Stasiun resmi belum terhubung. Buka lapisan Kualitas Udara (ISPU).</p>
         </article>
       </section> : null}
 
@@ -303,13 +291,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
         </article>
       </section>
 
-      <TrendCharts
-        hotspotTrend={view.hotspotTrend}
-        hotspotSeries={view.hotspotSeries}
-        ispuTrend={view.ispuTrend}
-        ispuSeries={view.ispuSeries}
-        province={province}
-      />
+      <TrendCharts hotspotTrend={view.hotspotTrend} hotspotSeries={view.hotspotSeries} province={province} />
 
       <section className="thirds">
         <article className="card">
@@ -390,10 +372,10 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
         </div>
         {feeds.length ? (
           <ul className="sources">
-            {feeds.map((feed) => (
+            {visibleFeeds.map((feed) => (
               <li key={feed.id}>
                 <div className="source-top">
-                  <h3>{feed.nama}</h3>
+                  <h3>{feed.id === "ispu_pembanding" ? "PM2.5 model (CAMS)" : feed.nama}</h3>
                   <span className={`status-pill status-${feed.status}`}>{feedStatus(feed)}</span>
                 </div>
                 <dl>
@@ -422,6 +404,12 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
                     </dd>
                   </div>
                 </dl>
+                {feed.id === "ispu_pembanding" ? (
+                  <p className="fine">
+                    Konsentrasi model, bukan ISPU. Tidak ditampilkan pada lapisan Kualitas Udara (ISPU) dan tidak diubah
+                    menjadi kategori ISPU di antarmuka.
+                  </p>
+                ) : null}
                 {feed.error ? <p className="error-text">{feed.error}</p> : null}
                 <DatasetTiming feed={feed} />
                 {feed.lisensi ? <p className="fine">{feed.lisensi}</p> : null}

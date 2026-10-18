@@ -21,7 +21,7 @@ const ROWS = [
   ["FDRS", "Kemudahan terbakar menurut BMKG.", "Citra SPARTAN hingga H+7 sesuai produk BMKG.", "Belum menjadi alasan perhatian.", "Tidak didigitasi. Bukan 10 atau 14 hari. FWI pada indikator prototipe masih contoh."],
   ["Hujan", "Konteks basah atau kering.", "API 3 hari memuat nilai tp, bukan peluang persen. Dasarian hanya tautan.", "Tidak dipakai untuk menebak titik api.", "Produk dasarian, curah hujan tinggi, dan narasi sepekan tidak dikorek."],
   ["Angin", "Arah dan kecepatan jangka pendek.", "wd dan ws pada prakiraan 3 hari, km/jam menurut dokumentasi BMKG.", "Bukan penentu asal kebakaran.", "Satu kelurahan per provinsi prioritas. Vektor satelit hanya tautan."],
-  ["ISPU", "Mutu udara resmi.", "Portal belum terhubung.", "Tidak masuk daftar perhatian.", "Pembanding PM2.5 berlabel perkiraan, bukan stasiun KLH."],
+  ["Kualitas Udara (ISPU)", "Dampak asap pada mutu udara di lokasi stasiun.", "Nilai stasiun, bukan seluruh kabupaten. Bukan bukti tunggal asal karhutla.", "Tidak masuk daftar perhatian.", "Tanpa API resmi: belum terhubung. Hanya Hari Ini dan Historis. Tidak ada prediksi. CAMS tidak ditampilkan di lapisan ini."],
 ];
 
 export function LogicPage({ config }) {

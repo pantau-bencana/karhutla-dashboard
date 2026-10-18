@@ -1,5 +1,5 @@
 import { DatasetTiming } from "./DatasetTiming.jsx";
-import { Term } from "./Term.jsx";
+import { KualitasUdara } from "./KualitasUdara.jsx";
 import { formatAngka, formatTanggalPendek } from "../lib/format.js";
 
 const LAYERS = [
@@ -10,7 +10,7 @@ const LAYERS = [
   ["fdrs", "FDRS"],
   ["hujan", "Hujan"],
   ["angin", "Angin"],
-  ["ispu", "ISPU"],
+  ["ispu", "Kualitas Udara (ISPU)"],
 ];
 
 export function LayerBar({ layer, setLayer }) {
@@ -44,11 +44,9 @@ export function WilayahDetail({ province, from, to, layer }) {
 export function ExtraLayers({ layer, view, feeds, province }) {
   const prakiraan = rowsFor(feeds, "bmkg_prakiraan", province);
   const cuaca = rowsFor(feeds, "fdrs_pembanding", province);
-  const udara = rowsFor(feeds, "ispu_pembanding", province);
   const irbiFeed = feeds.find((feed) => feed.id === "irbi");
   const forecastFeed = feeds.find((feed) => feed.id === "bmkg_prakiraan");
   const compareWeather = feeds.find((feed) => feed.id === "fdrs_pembanding");
-  const compareAir = feeds.find((feed) => feed.id === "ispu_pembanding");
 
   if (layer === "inarisk") {
     return (
@@ -141,21 +139,7 @@ export function ExtraLayers({ layer, view, feeds, province }) {
   }
 
   if (layer === "ispu") {
-    return (
-      <Panel title="ISPU perkiraan" note="Pembanding (data terbuka, bukan resmi). Bukan stasiun KLH." feed={compareAir}>
-        <p>
-          Portal resmi:{" "}
-          <a href="https://ispu.kemenlh.go.id/app/#/" target="_blank" rel="noreferrer">
-            <Term id="ispu">ISPU</Term>
-          </a>
-        </p>
-        <Simple
-          head={["Provinsi", "Tanggal", "Perkiraan", "Kategori"]}
-          empty="Snapshot pembanding belum ada."
-          rows={udara.map((row) => [row.provinsi, formatTanggalPendek(row.tanggal), formatAngka(row.ispu), row.kategori])}
-        />
-      </Panel>
-    );
+    return <KualitasUdara feeds={feeds} province={province} />;
   }
 
   return null;
