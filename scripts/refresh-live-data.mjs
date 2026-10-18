@@ -9,7 +9,7 @@ import { parseFirmsCoordinate } from "./indonesia-land.mjs";
 import { BIG_EDITION_NOTE, BIG_SOURCE_LABEL, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
 import { annotatePoints, rowsToHotspotCsv } from "./big-wilayah.mjs";
 import { provinceCenters } from "../src/lib/geo.js";
-import { REFRESH_CRON, REFRESH_INTERVAL_HOURS, nextScheduledRun } from "../src/lib/schedule.js";
+import { REFRESH_CRON, REFRESH_CRON_CADANGAN, REFRESH_INTERVAL_HOURS, nextScheduledRun } from "../src/lib/schedule.js";
 import { SMOKE_IMAGE_URL, SMOKE_URL, SOURCES } from "../src/lib/sourceCatalog.js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -1051,11 +1051,12 @@ async function main() {
     generated_at: nowIso,
     schedule: {
       cron: REFRESH_CRON,
+      cron_cadangan: REFRESH_CRON_CADANGAN,
       interval_hours: REFRESH_INTERVAL_HOURS,
       timezone: "UTC",
       display_timezone: "Asia/Jakarta",
     },
-    next_run: nextScheduledRun(new Date(), REFRESH_INTERVAL_HOURS),
+    next_run: nextScheduledRun(new Date()),
     firms_key: firmsKey ? "used" : "absent",
     datasets,
   };
@@ -1102,11 +1103,12 @@ async function comparisonOnly() {
     generated_at: nowIso,
     schedule: previous.schedule ?? {
       cron: REFRESH_CRON,
+      cron_cadangan: REFRESH_CRON_CADANGAN,
       interval_hours: REFRESH_INTERVAL_HOURS,
       timezone: "UTC",
       display_timezone: "Asia/Jakarta",
     },
-    next_run: nextScheduledRun(new Date(), REFRESH_INTERVAL_HOURS),
+    next_run: nextScheduledRun(new Date()),
     firms_key: previous.firms_key === "used" ? "used" : "absent",
     datasets,
   };

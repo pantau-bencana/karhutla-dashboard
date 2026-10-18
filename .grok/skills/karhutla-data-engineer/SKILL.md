@@ -15,8 +15,11 @@ Stack this skill assumes: Vite static site, no application server. Scheduled Git
 
 ## Architecture
 
-- Cron in `refresh-data.yml` is `17 */3 * * *` UTC (minute 17). Keep it equal to `REFRESH_CRON` in `src/lib/schedule.js`. Display times in WIB (Asia/Jakarta, UTC+7): 07.17, 10.17, 13.17, 16.17, 19.17, 22.17, 01.17, and 04.17. Do not move it back to minute 0; GitHub can drop those schedules.
+- Crons in `refresh-data.yml` are `17 */3 * * *` and `47 1-23/3 * * *` UTC. Keep them equal to `REFRESH_CRON` and `REFRESH_CRON_CADANGAN` in `src/lib/schedule.js`. Display the sooner next run in WIB (Asia/Jakarta, UTC+7). Do not move either cron back to minute 0; GitHub can drop a schedule without creating a run.
+- `refresh-watchdog.yml` cron is `7 * * * *`. It dispatches `refresh-data.yml` only when the live manifest is older than 4 hours and no refresh run is already active. It uses `actions: write` and its own concurrency group, not `pages`.
 - The commit step must `git fetch` and `git pull --rebase` before push, retry when the push is rejected, and regenerate the snapshot if rebase conflicts. Never force-push. Push the checked-out branch, not `main`, when the dispatch is on another branch.
+- A data commit by `github-actions[bot]` does not trigger `pages.yml`. Keep the `deploy-pages` job inside `refresh-data.yml`.
+- Concurrency group `pages` uses `cancel-in-progress: false` and `queue: max`.
 - Log `wilayah_gagal` and `big_queries` in the workflow output. `big_queries` is the BIG MapServer query count on that refresh.
 - Commit `data/live` only when material fields change (status, content hash, record count, error, observed time, file, kept_previous, mode). On failure, keep the last good file.
 - `public/config.json` datasets that the self-check owns stay the five sample ids (`hotspot`, `sipongi`, `irbi`, `bmkg`, `ispu`) with `contoh: true` until a real snapshot replaces that feed at read time. Extra feeds (forecast, comparison, CAP, DIBI) come from the manifest, not from new sample rows.

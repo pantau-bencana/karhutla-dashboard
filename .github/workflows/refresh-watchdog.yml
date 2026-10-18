@@ -1,0 +1,46 @@
+# Penjaga murah. Cron utama bisa hilang tanpa run (GitHub menggugurkan jadwal saat beban tinggi).
+# Bila manifes lebih tua dari 4 jam dan tidak ada run Perbarui data yang aktif, kirim workflow_dispatch.
+# workflow_dispatch dari GITHUB_TOKEN memang membuat run baru. Push GITHUB_TOKEN tidak memicu workflow lain.
+# Grup concurrency terpisah dari `pages` supaya penjaga tidak mengantri di belakang unduhan 30 menit
+# dan tidak membatalkan deploy.
+name: Jaga jadwal data
+
+on:
+  schedule:
+    - cron: "7 * * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: refresh-watchdog
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  jaga:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Periksa umur cuplikan
+        id: umur
+        run: node scripts/refresh-watchdog.mjs
+
+      - name: Picu pembaruan bila cuplikan basi
+        if: steps.umur.outputs.dispatch == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          active="$(gh run list --workflow refresh-data.yml --limit 10 --json status --jq '[.[] | select(.status=="in_progress" or .status=="queued" or .status=="pending" or .status=="waiting" or .status=="requested")] | length')"
+          echo "run_aktif=${active}"
+          if [ "$active" != "0" ]; then
+            echo "Perbarui data sudah berjalan atau antre. Tidak memicu lagi."
+            exit 0
+          fi
+          gh workflow run refresh-data.yml --ref main
+          echo "workflow_dispatch Perbarui data dikirim."
