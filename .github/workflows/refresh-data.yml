@@ -1,17 +1,21 @@
 # Mengambil sumber publik di sisi server, lalu menyimpan CSV/JSON tanpa secret.
-# Jadwal UTC: menit 17 setiap 3 jam. Jangan kembalikan ke menit 0; GitHub sering menggugurkan jadwal itu.
-# WIB (UTC+7): 07.17, 10.17, 13.17, 16.17, 19.17, 22.17, 01.17, 04.17.
-# String cron harus sama dengan REFRESH_CRON di src/lib/schedule.js.
+# Dua jadwal UTC, selisih 90 menit, keduanya di luar menit 0. GitHub dapat menggugurkan satu slot.
+# Utama "17 */3 * * *": 00.17, 03.17, 06.17, 09.17, 12.17, 15.17, 18.17, 21.17.
+# Cadangan "47 1-23/3 * * *": 01.47, 04.47, 07.47, 10.47, 13.47, 16.47, 19.47, 22.47.
+# String itu harus sama dengan REFRESH_CRON dan REFRESH_CRON_CADANGAN di src/lib/schedule.js.
 # Push dari GITHUB_TOKEN tidak memicu workflow Pages lain, jadi deploy dilakukan di sini
 # hanya bila isi data berubah dan ref-nya persis refs/heads/main.
+# Untuk event schedule, github.ref adalah cabang default (refs/heads/main). Job refresh tidak memakai if.
 # workflow_dispatch pada cabang lain tidak men-deploy dan tidak menulis ke main.
 # Sebelum push: git fetch, lalu git pull --rebase, diulang bila push ditolak.
 # Bila rebase bentrok, snapshot dibuat ulang. Jangan force-push.
+# queue: max supaya run yang masih pending di grup `pages` tidak dibatalkan oleh run berikutnya.
 name: Perbarui data
 
 on:
   schedule:
     - cron: "17 */3 * * *"
+    - cron: "47 1-23/3 * * *"
   workflow_dispatch:
 
 permissions:
@@ -22,6 +26,7 @@ permissions:
 concurrency:
   group: pages
   cancel-in-progress: false
+  queue: max
 
 jobs:
   refresh:

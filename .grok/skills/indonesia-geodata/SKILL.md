@@ -42,7 +42,7 @@ DIBI kabupaten rows in the Satu Data compilation are all-hazard counts. Do not a
 - Display clock times in WIB, `Asia/Jakarta`, UTC+7, no daylight saving. Suffix the formatted string with ` WIB`.
 - Keep the source clock as published. FIRMS acquisition times in the file are UTC until a label converts them. BMKG `local_datetime` is the local time in the API. Kalsel local times can fall on a different calendar date from WIB because that province is WITA (UTC+8); do not rewrite them to WIB and still call them local.
 - `analysis_date` from BMKG is UTC without a `Z`. Append `Z` once.
-- Schedule display: cron `17 */3 * * *` UTC is 07:17, 10:17, 13:17, 16:17, 19:17, 22:17, 01:17, and 04:17 WIB. Do not move it back to minute 0.
+- Schedule display: crons `17 */3 * * *` and `47 1-23/3 * * *` UTC. In WIB that is 07:17, 08:47, 10:17, 11:47, 13:17, 14:47, 16:17, 17:47, 19:17, 20:47, 22:17, 23:47, 01:17, 02:47, 04:17, and 05:47. Do not move either cron back to minute 0. `nextScheduledRun` returns the sooner of the two.
 - Dasarian means the BMKG climate periods (dates 1–10, 11–20, and 21 through the end of the month), not "the next 14 days".
 
 ## Workflow
