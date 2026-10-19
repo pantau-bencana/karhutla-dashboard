@@ -393,6 +393,55 @@ a.button {
   background: #d7d0c3;
 }
 
+.leaflet-tile-pane {
+  filter: saturate(0.55) brightness(1.05);
+}
+
+.leaflet-div-icon.hotspot-cluster {
+  background: transparent;
+  border: 0;
+}
+
+.hotspot-cluster span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  background: #1e293b;
+  color: #fff;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px #1e293b;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.cluster-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 0;
+}
+
+.cluster-key {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #1e293b;
+  color: #fff;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px #1e293b;
+  font-size: 12px;
+  font-weight: 700;
+}
+
 .map-canvas.leaflet-container {
   height: min(70vh, 640px);
   max-height: none;
@@ -529,6 +578,7 @@ tbody th { font-weight: 700; text-transform: none; letter-spacing: 0; font-size:
 .sources a { color: #1d4e89; }
 
 .status-contoh { background: #fff1c2; color: #7a4b00; }
+.status-tautan { background: #eeeae3; color: #5e584e; }
 .status-berhasil { background: #e5f6ec; color: #0f6b3c; }
 .status-cadangan { background: #ffeadc; color: #b3450a; }
 .status-gagal { background: #fde4e1; color: #a11d16; }

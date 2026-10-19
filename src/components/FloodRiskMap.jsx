@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
+import { osmTileLayer } from "../lib/basemap.js";
 import { INDONESIA_FRAME } from "../lib/geo.js";
 import {
   FLOOD_PERMISSION,
@@ -90,11 +91,7 @@ export function FloodRiskMap() {
       fadeAnimation: false,
       minZoom: 4,
     });
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-      maxZoom: 19,
-      subdomains: "abcd",
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    }).addTo(map);
+    osmTileLayer(L).addTo(map);
     map.createPane("flood-mask");
     map.getPane("flood-mask").style.zIndex = 420;
     map.createPane("flood-lines");

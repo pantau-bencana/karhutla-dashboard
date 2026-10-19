@@ -4,6 +4,7 @@ import { INDONESIA_FRAME } from "../lib/geo.js";
 import { GWIS_ATTRIBUTION, GWIS_CREDIT, GWIS_FWI_LAYER, GWIS_WMS } from "../lib/gwisFwi.js";
 import { formatTanggal, formatWaktu } from "../lib/format.js";
 import { clusterCellDegrees } from "../lib/hotspotWindow.js";
+import { osmTileLayer } from "../lib/basemap.js";
 import {
   BIG_SERVICE,
   BIG_SOURCE_LABEL,
@@ -85,10 +86,10 @@ function drawHotspots(map, layer, points, selectedKey, onSelect) {
     const marker = L.circleMarker([lat, lon], {
       renderer,
       radius: selected ? radius + 3 : radius,
-      color: selected ? "#111827" : "#1c1915",
-      weight: selected ? 3 : 1,
+      color: selected ? "#111827" : "#ffffff",
+      weight: selected ? 3 : 2,
       fillColor: color,
-      fillOpacity: 0.92,
+      fillOpacity: 0.95,
     });
     marker.bindPopup(popupHtml(point));
     marker.on("click", () => onSelect?.(point));
@@ -132,15 +133,8 @@ function drawHotspots(map, layer, points, selectedKey, onSelect) {
     }
     const lat = Number(anchor.lintang);
     const lon = Number(anchor.bujur);
-    const marker = L.circleMarker([lat, lon], {
-      renderer,
-      radius: Math.min(22, 6 + Math.sqrt(group.count)),
-      color: "#f8fafc",
-      weight: 1,
-      fillColor: "#334155",
-      fillOpacity: 0.88,
-    });
-    marker.bindTooltip(`${group.count} deteksi satelit`, { direction: "top" });
+    const marker = L.marker([lat, lon], { icon: clusterIcon(group.count) });
+    marker.bindTooltip(`${group.count} deteksi satelit dalam petak ini. Bukan kelas confidence. Perbesar untuk memisahkan titik.`, { direction: "top" });
     marker.on("click", () => {
       map.setView([lat, lon], Math.min((map.getZoom() || 4) + 2, 12));
     });
@@ -148,6 +142,17 @@ function drawHotspots(map, layer, points, selectedKey, onSelect) {
     latlngs.push([lat, lon]);
   }
   return latlngs;
+}
+
+function clusterIcon(count) {
+  const label = String(count);
+  const size = Math.min(46, 26 + label.length * 3);
+  return L.divIcon({
+    className: "hotspot-cluster",
+    html: `<span>${label}</span>`,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+  });
 }
 
 function indonesiaBounds() {
@@ -272,11 +277,7 @@ export function HotspotMap({ points, frame = "indonesia", active = true, mapApi,
       maxBoundsViscosity: 1,
       worldCopyJump: false,
     });
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-      maxZoom: 19,
-      subdomains: "abcd",
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    }).addTo(map);
+    osmTileLayer(L).addTo(map);
     map.createPane("gwisFwi");
     map.getPane("gwisFwi").style.zIndex = 250;
     desaLayerRef.current = L.layerGroup().addTo(map);

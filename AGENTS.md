@@ -23,14 +23,14 @@ Tidak ada kunci, layanan berbayar, atau konfigurasi lain. Menggabungkan pull req
 
 ## Tumpukan
 
-Vite 6, React 18, Leaflet, Recharts. Situs statis. Rute hash. GitHub Pages lewat Actions, prefiks `/karhutla-dashboard/`. Pembaruan terjadwal: workflow cron `17 */3 * * *` dan `47 1-23/3 * * *` UTC menulis `data/live/` dan manifes; penjaga `7 * * * *` memicu pembaruan bila cuplikan lebih tua dari 4 jam. Situs membaca snapshot itu lalu berkas contoh per dataset. Secret Actions hanya `FIRMS_MAP_KEY`. Pada komit `main` saat berkas skill ini pertama kali ditambahkan, jadwal itu belum tentu sudah tergabung. Ikuti kontraknya. Jangan membuat jalur data lain.
+Vite 6, React 18, Leaflet, Recharts. Situs statis. Rute hash. GitHub Pages lewat Actions, prefiks `/karhutla-dashboard/`. Pembaruan terjadwal: workflow cron `17 */3 * * *` dan `47 1-23/3 * * *` UTC menulis `data/live/` dan manifes; penjaga `7 * * * *` memicu pembaruan bila cuplikan lebih tua dari 4 jam. Situs membaca snapshot itu. Berkas contoh tidak ditampilkan bila snapshot tidak ada. Secret Actions hanya `FIRMS_MAP_KEY`. Pada komit `main` saat berkas skill ini pertama kali ditambahkan, jadwal itu belum tentu sudah tergabung. Ikuti kontraknya. Jangan membuat jalur data lain.
 
 ## Prinsip
 
 - Perubahan kecil lewat pull request ke `main`. Jangan force-push. Jangan mengubah visibilitas repositori atau menyalakan Pages di luar workflow yang ada.
 - Jangan menambah dependensi berbayar, proxy CORS, atau server aplikasi.
 - Jangan mengarang endpoint, kode wilayah, atau riwayat. Jika produk resmi tidak punya API yang terdokumentasi, statusnya **Tautan saja**.
-- Data contoh tetap berlabel **Data contoh** dan tidak ditampilkan sebagai deteksi di Ringkasan Pimpinan.
+- Data contoh tidak ditampilkan. Sumber resmi yang belum tersambung berstatus **Tautan saja** atau **Tidak tersedia**.
 - Hotspot atau titik panas adalah deteksi satelit, bukan kebakaran terkonfirmasi.
 - Batas administrasi resmi, bukan kotak koordinat. Tanpa batas itu: **Belum terpetakan** / **belum dapat dipetakan secara administratif**.
 - Horizon prakiraan hanya sepanjang produk resmi. API prakiraan BMKG: **3 hari**. Citra SPARTAN: **hingga H+7 sesuai produk BMKG**. Dasarian bukan prakiraan harian 14 hari.

@@ -259,6 +259,34 @@ const NORMALIZERS = {
   dibi_karhutla: (raw) => normalizeDibi(raw),
 };
 
+export function normalizeRecords(datasetId, records) {
+  const normalize = NORMALIZERS[datasetId];
+  if (!normalize) throw new Error(`Normalisasi ${datasetId} tidak ada.`);
+  return records.map((raw) => normalize(raw));
+}
+
+const SAMPLE_ABSENT = {
+  sipongi: "Tautan saja. Rekap resmi SiPongi belum terhubung.",
+  ispu: "Tidak tersedia. Angka stasiun ISPU resmi belum terhubung.",
+  irbi: "Tidak tersedia. Tabel IRBI resmi belum dimuat.",
+};
+
+function sampleConfigured(dataset) {
+  const url = String(dataset?.csvUrl || "");
+  return Boolean(dataset?.contoh) || url.includes("data/sample/");
+}
+
+function absentOfficial(dataset) {
+  return blankFeed(dataset, {
+    contoh: false,
+    status: "tautan",
+    asal: "tautan",
+    error: SAMPLE_ABSENT[dataset.id] || "Tidak tersedia. Berkas contoh tidak ditampilkan.",
+    rows: [],
+    urlTampil: "",
+  });
+}
+
 function metaFromEntry(entry) {
   if (!entry) return {};
   return {
@@ -420,6 +448,7 @@ export async function loadAll(config, deps = {}) {
       if (dataset.id === "hotspot") {
         return loadHotspot(dataset, config, fetchImpl);
       }
+      if (sampleConfigured(dataset)) return absentOfficial(dataset);
       try {
         const rows = await readDataset(dataset, fetchImpl, resolveUrl);
         return withSampleClock(

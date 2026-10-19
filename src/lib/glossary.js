@@ -124,7 +124,7 @@ export const GLOSSARY = [
     nama: "Fire Danger Rating System",
     penjelasan:
       "Sistem peringkat bahaya kebakaran BMKG yang disajikan di SPARTAN. FDRS bukan prakiraan cuaca umum dan bukan daftar titik api.",
-    penggunaan: "Hanya tautan. Citra SPARTAN mencakup pengamatan dan prakiraan hingga H+7 sesuai produk BMKG, bukan 14 hari. Angka FWI pada indikator prototipe masih data contoh.",
+    penggunaan: "Hanya tautan. Citra SPARTAN mencakup pengamatan dan prakiraan hingga H+7 sesuai produk BMKG, bukan 14 hari. Angka FWI contoh tidak ditampilkan.",
     rujukan: "https://spartan.bmkg.go.id/",
     rujukanLabel: "SPARTAN BMKG",
   },
@@ -209,7 +209,7 @@ export const GLOSSARY = [
     nama: "Indeks Standar Pencemar Udara",
     penjelasan:
       "Indeks resmi mutu udara di Indonesia. Permen LHK No. 14 Tahun 2020 menetapkan kategori Baik, Sedang, Tidak Sehat, Sangat Tidak Sehat, dan Berbahaya, serta cara mengubah konsentrasi menjadi angka indeks.",
-    penggunaan: "Lapisan Kualitas Udara (ISPU) di dalam Karhutla menampilkan stasiun resmi bila tersambung. Tanpa API, statusnya belum terhubung. Data contoh dan model tidak diisi sebagai ISPU.",
+    penggunaan: "Lapisan Kualitas Udara (ISPU) di dalam Karhutla menampilkan stasiun resmi bila tersambung. Tanpa angka resmi, statusnya Tidak tersedia. Berkas contoh dan model tidak diisi sebagai ISPU.",
     rujukan: "https://peraturan.bpk.go.id/Details/163466/permen-lhk-no-14-tahun-2020",
     rujukanLabel: "Permen LHK No. 14 Tahun 2020",
   },
@@ -335,7 +335,7 @@ export const GLOSSARY = [
     istilah: "SiPongi+",
     nama: "SiPongi+",
     penjelasan: "Sistem Pemantauan Karhutla pada portal Kementerian Kehutanan. Situs ini menyajikan peta dan grafik, bukan berkas unduhan yang ditemukan sebagai API publik.",
-    penggunaan: "Status tautan saja. Tabel bernama SiPongi pada Peta dan Data masih data contoh.",
+    penggunaan: "Status Tautan saja. Tabel SiPongi tidak diisi dari berkas contoh.",
     rujukan: "https://sipongi.gakkum.kehutanan.go.id/",
     rujukanLabel: "sipongi.gakkum.kehutanan.go.id",
   },

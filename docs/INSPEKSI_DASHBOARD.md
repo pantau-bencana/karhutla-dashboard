@@ -24,7 +24,7 @@ Periksa tiap halaman. Untuk setiap butir tulis SUDAH, SEBAGIAN, atau BELUM, plus
 - Kualitas Udara (ISPU) hanya Hari Ini dan Historis, tanpa Prediksi. Titik adalah stasiun, bukan seluruh kabupaten/kota.
 - Warna titik panas adalah confidence deteksi satelit, bukan tingkat bahaya atau tingkat kebakaran. Nilai asli confidence tetap terlihat.
 - Titik panas hanya di dalam Indonesia. Periksa sekitar Malaysia, Singapura, Brunei, Timor Leste, dan Papua Nugini.
-- Atribusi sumber terlihat, termasuk NASA FIRMS, BIG, dan CARTO/OpenStreetMap pada peta.
+- Atribusi sumber terlihat, termasuk NASA FIRMS, BIG, dan © OpenStreetMap contributors pada peta. Peta dasar memakai ubin `https://tile.openstreetmap.org/{z}/{x}/{y}.png` tanpa kunci API. Lingkaran gelap bernomor pada zoom kecil adalah jumlah deteksi, bukan kelas confidence.
 - Lebar 390 piksel tidak memotong isi, dan footer tetap: Prototipe internal Dit. PD BNPB. Jangan dipublikasikan tanpa persetujuan.
 ```
 
@@ -87,3 +87,4 @@ Perubahan ini ada pada commit `4cf72fb`. Yang diubah:
 - Header kartu pembanding memuat "Pembanding, bukan produk BMKG/KLHK". Panel hujan 14 hari disebut pembanding model, bukan prakiraan BMKG. Pita galat dan pita data tertunda menempel atau menimpa peta.
 - Tabel pembanding NASA GFWED pada Ringkasan dan Peta dan Data berjudul **Pembanding model NASA GFWED (GEOS-5, analisis), bukan BMKG**. Tanggal data dan lencana tertunda terlihat. Urutan kode wilayah. Tidak ada warna kelas BMKG dan tidak ada peringkat. Bila berkas tidak ada, tulisan **Tidak tersedia**.
 - Overlay FWI pada peta Karhutla memakai WMS publik `https://maps.effis.emergency.copernicus.eu/gwis`, lapisan `ecmwf.fwi`, parameter TIME. GetCapabilities 1.3.0 menulis dimensi waktu `2018-01-01/2099-12-31`, default `2019-01-01`, `nearestValue=0`. Default itu kosong. Pemeriksaan GetMap 18 Oktober 2026: piksel ada pada 18–27 Oktober 2026 dan PNG transparan mulai 28 Oktober 2026. Legenda adalah GetLegendGraphic resmi GWIS, bukan kelas BMKG. Layanan `gis.bmkg.go.id` tidak dipakai.
+- Peta dasar Karhutla, ISPU, dan Banjir memakai ubin OpenStreetMap `https://tile.openstreetmap.org/{z}/{x}/{y}.png`, atribusi © OpenStreetMap contributors, tanpa kunci. Lapisan ubin sedikit diturunkan saturasinya. Gunung Api tidak punya peta. Berkas contoh tidak ditampilkan: SiPongi menulis Tautan saja, ISPU menulis Tidak tersedia. Lingkaran gelap bernomor pada zoom kecil adalah jumlah deteksi dalam satu petak, bukan kelas confidence.

@@ -34,7 +34,7 @@ export function LogicPage() {
       </p>
       <div className="banner sample" role="note">
         <strong>Ini penjelasan prototipe, bukan peringatan resmi.</strong>
-        <p>Data contoh bukan data operasional. Jumlah deteksi pada Peta dan Data adalah pengamatan, bukan penetapan operasional.</p>
+        <p>Jumlah deteksi pada Peta dan Data adalah pengamatan satelit, bukan penetapan operasional. Sumber yang belum tersambung ditulis Tautan saja atau Tidak tersedia. Berkas contoh tidak ditampilkan.</p>
       </div>
 
       <section className="card">

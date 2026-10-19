@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
+import { osmTileLayer } from "../lib/basemap.js";
 import { frameIndonesia, framePoints } from "./HotspotMap.jsx";
 
 const COLORS = {
@@ -60,10 +61,7 @@ export function StationMap({ stations, selectedId, onSelect, active = true }) {
       maxBoundsViscosity: 1,
       worldCopyJump: false,
     });
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 18,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    }).addTo(map);
+    osmTileLayer(L).addTo(map);
     layerRef.current = L.layerGroup().addTo(map);
     mapRef.current = map;
 
