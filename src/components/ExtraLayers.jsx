@@ -44,7 +44,7 @@ export function WilayahDetail({ province, from, to, layer }) {
   );
 }
 
-export function ExtraLayers({ layer, view, feeds, province }) {
+export function ExtraLayers({ layer, view, feeds, province, provinces = [] }) {
   const prakiraan = rowsFor(feeds, "bmkg_prakiraan", province);
   const cuaca = rowsFor(feeds, "fdrs_pembanding", province);
   const irbiFeed = feeds.find((feed) => feed.id === "irbi");
@@ -169,7 +169,7 @@ export function ExtraLayers({ layer, view, feeds, province }) {
   }
 
   if (layer === "ispu") {
-    return <KualitasUdara feeds={feeds} province={province} />;
+    return <KualitasUdara feeds={feeds} province={province} provinces={provinces} />;
   }
 
   return null;

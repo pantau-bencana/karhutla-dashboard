@@ -23,7 +23,7 @@ const ROWS = [
   ["FDRS", "Kemudahan terbakar menurut BMKG.", "Citra SPARTAN hingga H+7 sesuai produk BMKG.", "Belum menjadi alasan perhatian.", "menunggu data resmi BMKG. Tidak didigitasi. Bukan 10 atau 14 hari."],
   ["Hujan", "Konteks basah atau kering.", "API 3 hari memuat nilai tp, bukan peluang persen. Dasarian hanya tautan.", "Tidak dipakai untuk menebak titik api.", "Produk dasarian, curah hujan tinggi, dan narasi sepekan tidak dikorek. Pembanding 14 hari terpisah dan tidak menjadi peluang BMKG."],
   ["Angin", "Arah dan kecepatan jangka pendek.", "wd dan ws pada prakiraan 3 hari, km/jam menurut dokumentasi BMKG.", "Bukan penentu asal kebakaran.", "Satu kelurahan per provinsi prioritas. Vektor satelit hanya tautan. Angin 14 hari pada titik wakil hanya pembanding."],
-  ["Kualitas Udara (ISPU)", "Dampak asap pada mutu udara di lokasi stasiun.", "Nilai stasiun, bukan seluruh kabupaten. Bukan bukti tunggal asal karhutla.", "Tidak masuk daftar perhatian.", "Tanpa API resmi: belum terhubung. Hanya Hari Ini dan Historis. Tidak ada prediksi. CAMS tidak ditampilkan di lapisan ini."],
+  ["Kualitas Udara (ISPU)", "Dampak asap pada mutu udara di lokasi stasiun.", "Nilai stasiun, bukan seluruh kabupaten. Bukan bukti tunggal asal karhutla.", "Tidak masuk daftar perhatian.", "Tanpa API resmi: ISPU belum terhubung. Model CAMS, bila berkasnya ada, hanya pembanding µg/m³, bukan ISPU dan bukan stasiun."],
 ];
 
 function limitationCell(text) {

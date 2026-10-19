@@ -248,14 +248,14 @@ export const SOURCES = [
     comparisons: [
       {
         id: "ispu_pembanding",
-        nama: "PM2.5 model (CAMS), di luar lapisan ISPU",
+        nama: "PM2.5 model (CAMS), pembanding",
         instansi: "Open-Meteo / CAMS",
         provider: "Open-Meteo Air Quality",
-        fungsi: "Berkas konsentrasi model. Tidak ditampilkan pada Kualitas Udara (ISPU) dan tidak diubah menjadi nilai atau kategori ISPU.",
+        fungsi: "Konsentrasi model dalam µg/m³. Bukan pengukuran stasiun dan bukan ISPU KemenLH.",
         officialUrl: "https://open-meteo.com/en/docs/air-quality-api",
         license: "CC BY 4.0. Model udara dari Copernicus Atmosphere Monitoring Service (CAMS).",
         method:
-          "Rata-rata harian PM2.5 dan PM10 dalam µg/m³ pada titik tengah kasar provinsi, 7 hari ke belakang dan hingga 5 hari yang API isi. Bukan pengukuran stasiun, bukan ISPU, dan tidak ditampilkan pada lapisan Kualitas Udara (ISPU).",
+          "Rata-rata harian PM2.5 dan PM10 dalam µg/m³ pada titik tengah kasar provinsi, 7 hari ke belakang dan hingga 5 hari yang API isi. Domain global CAMS sekitar 0,4°. Bukan sel grid pada peta, bukan pengukuran stasiun, dan bukan ISPU.",
         updateType: "Model",
         expectedMaxAgeHours: 36,
         access: "API",

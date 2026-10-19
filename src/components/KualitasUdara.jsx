@@ -4,12 +4,17 @@ import { StationMap } from "./StationMap.jsx";
 import { parseCsv } from "../lib/csv.js";
 import { formatAngka, formatTanggal, formatWib } from "../lib/format.js";
 import {
+  CAMS_LABEL,
   ISPU_EXPLANATION,
   KLH_ISPU_ANALYTIC,
   KLH_ISPU_APP,
+  OPENAQ_BLOCKED,
   OPENAQ_DOCS,
   OPENAQ_HOME,
   OPENAQ_STATUS,
+  camsModelFeed,
+  camsRole,
+  filterCams,
   filterStations,
   historyRange,
   officialStationFeed,
@@ -38,6 +43,7 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
   const [history, setHistory] = useState({ from: "", to: "" });
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState("");
+  const [sourceOn, setSourceOn] = useState({ kemenlh: true, openaq: true, cams: true });
   const today = todayInJakarta();
   const allStations = useMemo(() => stationPoints(feeds), [feeds]);
   const archive = historyRange(allStations);
@@ -51,6 +57,9 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
     query,
   });
   const measurements = openAqMeasurements(feeds);
+  const cams = useMemo(() => camsModelFeed(feeds), [feeds]);
+  const camsVisible = filterCams(cams.rows, { period, today }).filter((row) => !province || row.provinsi === province);
+  const camsHasHistory = cams.rows.some((row) => row.tanggal && row.tanggal !== today);
   const [ikuRows, setIkuRows] = useState([]);
   const [ikuState, setIkuState] = useState("memuat");
   const [ikuQuery, setIkuQuery] = useState("");
@@ -152,9 +161,127 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
           <p className="fine">
             <Badge kind="pem">Pembanding, bukan BMKG/KLHK</Badge>
             {" "}
-            PM2.5 model Copernicus bukan ISPU dan tidak dikonversi ke kategori ISPU. Angka model tidak ditampilkan di halaman ini. Indeks Kualitas Udara 2024 di bawah adalah data statis tahunan, bukan ISPU harian.
+            {CAMS_LABEL}. Angka model, bila ada, tetap dalam µg/m³ dan tidak diwarnai sebagai ISPU. Indeks Kualitas Udara 2024 di bawah adalah data statis tahunan, bukan ISPU harian.
           </p>
         </article>
+
+      <article className="card">
+        <header className="card-head">
+          <div>
+            <h2>Peta dan tabel</h2>
+            <p>Hari Ini memakai tanggal {formatTanggal(today)} (WIB). Riwayat hanya untuk tanggal yang memang ada pada sumber.</p>
+          </div>
+          <Badge kind="pem">Pembanding (data terbuka, bukan resmi)</Badge>
+        </header>
+        <div className="province-filter" role="group" aria-label="Periode kualitas udara">
+          <button type="button" aria-pressed={period === "hari-ini"} onClick={() => setPeriod("hari-ini")}>Hari Ini</button>
+          <button type="button" aria-pressed={period === "historis"} onClick={showHistory} disabled={!camsHasHistory && !archive}>
+            Historis
+          </button>
+        </div>
+        {!camsHasHistory && !archive ? <p className="fine">Tombol Historis mati karena ISPU resmi tidak menyediakan arsip dan berkas model tidak punya tanggal lain.</p> : null}
+        <div className="province-filter" role="group" aria-label="Filter sumber">
+          {[
+            ["kemenlh", "ISPU KemenLH"],
+            ["openaq", "OpenAQ"],
+            ["cams", "Model CAMS"],
+          ].map(([id, label]) => (
+            <button key={id} type="button" aria-pressed={sourceOn[id]} onClick={() => setSourceOn((current) => ({ ...current, [id]: !current[id] }))}>
+              {label}
+            </button>
+          ))}
+        </div>
+        <ul className="legend aq-legend" aria-label="Legenda sumber">
+          <li><i className="aq-mark kemenlh" /> Stasiun KemenLH</li>
+          <li><i className="aq-mark openaq" /> Stasiun OpenAQ</li>
+          <li><i className="aq-mark cams" /> Sel model CAMS</li>
+        </ul>
+        <StationMap stations={sourceOn.kemenlh ? rows : []} selectedId={selectedId} onSelect={setSelectedId} />
+        <p className="map-note">
+          Stasiun KemenLH tidak dipetakan: tidak ada dataset terbuka koordinat stasiun yang dipakai di sini. Portal mengirim X-Frame-Options strict-origin-when-cross-origin, jadi halaman itu tidak disematkan.
+          {" "}OpenAQ tidak dipetakan: {OPENAQ_BLOCKED}.
+          {" "}Sel CAMS tidak digambar. Berkas model adalah rata-rata harian pada titik tengah provinsi, bukan grid sekitar 0,4° (sekitar 45 km) domain global. Produk Eropa 0,1° tidak mencakup Indonesia. Titik tengah provinsi terlalu kasar untuk kesimpulan kabupaten atau kota.
+        </p>
+        <p className="fine">
+          Waktu ambil model: {cams.fetchedAt ? formatWib(cams.fetchedAt) : "tidak tersedia"}. Waktu model pada berkas: {cams.observedAt ? formatWib(cams.observedAt) : "tidak tersedia"}.
+          {cams.state === "usang" ? ` Gagal/stale: ${cams.alasan}` : ""}
+        </p>
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Sumber dan jenis data</th>
+                <th scope="col">Lokasi, stasiun, atau koordinat</th>
+                <th scope="col">Indikator</th>
+                <th scope="col">Nilai dan satuan</th>
+                <th scope="col">Kategori indeks</th>
+                <th scope="col">Waktu observasi atau prakiraan model</th>
+                <th scope="col">Tautan sumber</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sourceOn.kemenlh ? (provinces.length ? provinces : ["Tidak tersedia"]).map((name) => (
+                <tr key={`ispu-${name}`}>
+                  <th scope="row">ISPU KemenLH — pengukuran stasiun</th>
+                  <td>{name}. {stationCount.get(name) ? "Ada stasiun tersambung." : "Tidak ada data stasiun."}</td>
+                  <td>ISPU</td>
+                  <td>Data belum terhubung</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td><a href={KLH_ISPU_APP} target="_blank" rel="noopener noreferrer">Portal ISPU</a></td>
+                </tr>
+              )) : null}
+              {sourceOn.openaq ? (
+                <tr>
+                  <th scope="row">OpenAQ — pengukuran stasiun</th>
+                  <td>{OPENAQ_BLOCKED}. Bukan seluruh wilayah.</td>
+                  <td>PM2.5, PM10</td>
+                  <td>gagal/belum tersedia</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td><a href={OPENAQ_DOCS} target="_blank" rel="noopener noreferrer">Dokumentasi OpenAQ</a></td>
+                </tr>
+              ) : null}
+              {sourceOn.cams && cams.state === "gagal" ? (
+                <tr>
+                  <th scope="row">{CAMS_LABEL}</th>
+                  <td>Tidak ada sel grid.</td>
+                  <td>PM2.5, PM10</td>
+                  <td>gagal/belum tersedia. {cams.alasan}</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td><a href="https://open-meteo.com/en/docs/air-quality-api" target="_blank" rel="noopener noreferrer">Open-Meteo Air Quality</a></td>
+                </tr>
+              ) : null}
+              {sourceOn.cams && cams.state !== "gagal" && !camsVisible.length ? (
+                <tr>
+                  <th scope="row">{CAMS_LABEL}</th>
+                  <td>Titik tengah provinsi, bukan stasiun.</td>
+                  <td>PM2.5, PM10</td>
+                  <td>gagal/belum tersedia. Berkas tidak berisi tanggal {formatTanggal(today)}.</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td><a href="https://open-meteo.com/en/docs/air-quality-api" target="_blank" rel="noopener noreferrer">Open-Meteo Air Quality</a></td>
+                </tr>
+              ) : null}
+              {sourceOn.cams && cams.state !== "gagal" ? camsVisible.flatMap((row) => [
+                ["PM2.5", row.pm25],
+                ["PM10", row.pm10],
+              ].filter(([, value]) => value != null).map(([name, value]) => (
+                <tr key={`${row.provinsi}-${row.tanggal}-${name}`}>
+                  <th scope="row">{CAMS_LABEL}{cams.state === "usang" ? " — gagal/stale" : ""}</th>
+                  <td>Titik tengah {row.provinsi}. Bukan stasiun dan bukan sel 0,4°.</td>
+                  <td>{name}</td>
+                  <td>{formatAngka(value, 1)} µg/m³</td>
+                  <td>—</td>
+                  <td>{formatTanggal(row.tanggal)} · {camsRole(row.tanggal, today)}</td>
+                  <td><a href="https://open-meteo.com/en/docs/air-quality-api" target="_blank" rel="noopener noreferrer">Open-Meteo Air Quality</a></td>
+                </tr>
+              ))) : null}
+            </tbody>
+          </table>
+        </div>
+      </article>
 
       {allStations.length ? <>
       <article className="card">

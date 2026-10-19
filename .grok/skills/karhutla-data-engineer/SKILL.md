@@ -55,7 +55,7 @@ Link only (no scrape, no crop, no invented series):
 - Extreme-weather HTML: `https://www.bmkg.go.id/cuaca/potensi-cuaca-ekstrem`. Weekly rain narrative: `https://www.bmkg.go.id/cuaca/potensi-hujan-sepekan`.
 - MAGMA activity: `https://magma.esdm.go.id/`. No documented public API. Do not call a third-party Magma scraper.
 
-Open comparison layers stay separate, with badge **Pembanding (data terbuka, bukan resmi)**, provider, license, method, fetch time, and data time. They never enter the prototype warning score. Open-Meteo is not a substitute for BMKG or ISPU. Do not place CAMS, an ISPU forecast, or a Prediksi tab inside Kualitas Udara (ISPU).
+Open comparison layers stay separate, with badge **Pembanding (data terbuka, bukan resmi)**, provider, license, method, fetch time, and data time. They never enter the prototype warning score. Open-Meteo is not a substitute for BMKG or ISPU. CAMS may appear inside Kualitas Udara only with the label `Model kualitas udara CAMS — pembanding, bukan pengukuran stasiun dan bukan ISPU KemenLH`, in µg/m³, as a model rather than a station. Do not add an ISPU forecast or a Prediksi tab.
 
 ## BMKG terms (updated 8 Jul 2026)
 

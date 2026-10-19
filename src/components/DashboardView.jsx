@@ -161,7 +161,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
       </section>
       <LayerBar layer={layer} setLayer={setLayer} />
       <WilayahDetail province={province} from={from} to={to} layer={layer} />
-      {layer !== "hotspot" ? <ExtraLayers layer={layer} view={view} feeds={feeds} province={province} /> : null}
+      {layer !== "hotspot" ? <ExtraLayers layer={layer} view={view} feeds={feeds} province={province} provinces={config?.provinsiPrioritas ?? []} /> : null}
 
       {layer === "hotspot" && view.rangeInvalid ? (
         <p className="banner error" role="alert">
@@ -317,8 +317,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
                 </dl>
                 {feed.id === "ispu_pembanding" ? (
                   <p className="fine">
-                    Konsentrasi model, bukan ISPU. Tidak ditampilkan pada lapisan Kualitas Udara (ISPU) dan tidak diubah
-                    menjadi kategori ISPU di antarmuka.
+                    Konsentrasi model dalam µg/m³. Pada lapisan Kualitas Udara labelnya pembanding CAMS, bukan ISPU dan bukan stasiun. Tidak diubah menjadi kategori ISPU.
                   </p>
                 ) : null}
                 {feed.error ? <p className="error-text">{feed.error}</p> : null}

@@ -365,6 +365,18 @@ a.button {
 .swatch.tidak { background: #ca8a04; }
 .swatch.sangat { background: #dc2626; }
 .swatch.bahaya { background: #111111; }
+.aq-legend { margin: 8px 0 12px; }
+.aq-mark {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  vertical-align: -1px;
+  background: #64748b;
+}
+.aq-mark.kemenlh { background: transparent; border: 2px solid #0f766e; border-radius: 50%; }
+.aq-mark.openaq { width: 10px; height: 10px; background: #475569; transform: rotate(45deg); }
+.aq-mark.cams { border-radius: 2px; }
 
 .stack { display: grid; gap: 16px; }
 

@@ -8,9 +8,14 @@ import { GLOSSARY } from "../src/lib/glossary.js";
 import { HAZARDS } from "../src/lib/hazards.js";
 import { ispuFromPm25 } from "../src/lib/ispuEstimate.js";
 import {
+  CAMS_LABEL,
   ISPU_EXPLANATION,
   KLH_ISPU_ANALYTIC,
   KLH_ISPU_APP,
+  OPENAQ_BLOCKED,
+  camsModelFeed,
+  camsRole,
+  filterCams,
   filterStations,
   historyRange,
   openAqMeasurements,
@@ -716,6 +721,23 @@ assert.equal(openAq[0].nilai, 12.5);
 assert.equal(Object.hasOwn(openAq[0], "ispu"), false);
 assert.equal(Object.hasOwn(openAq[0], "kategori"), false);
 assert.equal(openAqMeasurements([{ id: "openaq_stasiun", status: "gagal", rows: [{ nilai_ugm3: 3 }] }]).length, 0);
+assert.equal(OPENAQ_BLOCKED, "Belum terhubung – perlu API key (persetujuan pemilik)");
+assert.equal(CAMS_LABEL, "Model kualitas udara CAMS — pembanding, bukan pengukuran stasiun dan bukan ISPU KemenLH");
+const camsFeed = camsModelFeed([
+  {
+    id: "ispu_pembanding",
+    status: "berhasil",
+    rows: [
+      { tanggal: "2026-10-19", provinsi: "Riau", pm25: 10.2, pm10: 12 },
+      { tanggal: "2026-10-20", provinsi: "Riau", pm25: 11, pm10: 13, ispu: 80, kategori: "Sedang" },
+    ],
+  },
+]);
+assert.equal(camsFeed.rows.length, 2);
+assert.equal(Object.hasOwn(camsFeed.rows[1], "ispu"), false);
+assert.equal(filterCams(camsFeed.rows, { period: "hari-ini", today: "2026-10-19" }).length, 1);
+assert.equal(camsRole("2026-10-20", "2026-10-19"), "prakiraan model");
+assert.equal(camsModelFeed([{ id: "ispu_pembanding", status: "gagal", error: "jaringan", rows: [{ pm25: 9, tanggal: "2026-10-19" }] }]).rows.length, 0);
 const udaraSource = readFileSync("src/components/KualitasUdara.jsx", "utf8");
 assert.match(udaraSource, /Kualitas Udara \(ISPU\)/);
 assert.match(udaraSource, /Data Pembanding – pengukuran stasiun/);
@@ -735,7 +757,11 @@ assert.equal(ikuRows.every((row) => row.tahun === "2024" && row.tanggal_akses ==
 assert.equal(new Set(ikuRows.map((row) => `${row.kode_wilayah}|${row.kab_kota}`)).size, 509);
 assert.equal(ikuRows.some((row) => row.kab_kota === "Kabupaten Aceh Barat" && row.iku === "92.11"), true);
 assert.equal(udaraSource.includes("ispu_pembanding"), false);
-assert.equal(udaraSource.includes("CAMS"), false);
+assert.match(udaraSource, /CAMS_LABEL/);
+assert.match(udaraSource, /OPENAQ_BLOCKED/);
+assert.match(udaraSource, /Data belum terhubung/);
+assert.equal(udaraSource.includes("Prediksi ISPU"), false);
+assert.match(readFileSync("docs/ARAHAN_KUALITAS_UDARA.md", "utf8"), /ISPU resmi dan pembanding kualitas udara/);
 assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Kualitas Udara \(ISPU\)/);
 assert.equal(readFileSync("src/components/ExtraLayers.jsx", "utf8").includes("ISPU perkiraan"), false);
 assert.equal(readFileSync("src/lib/hazards.js", "utf8").includes("ispu"), false);
