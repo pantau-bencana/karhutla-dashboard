@@ -1038,6 +1038,21 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 }
 
 .method-note { margin-top: 8px; }
+.method-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.method-links a {
+  color: var(--pine-2);
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .formula {
   margin: 8px 0 12px;
   padding: 10px 12px;

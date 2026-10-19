@@ -140,17 +140,20 @@ function jangkarDariHash() {
 export function MetodeAplus({ anchor = "" }) {
   useEffect(() => {
     const id = jangkarDariHash() || anchor;
-    if (!id) return;
+    if (!id) return undefined;
+    let cancelled = false;
+    const timers = [];
     const run = () => {
-      const node = document.getElementById(id);
-      if (node) node.scrollIntoView({ block: "start" });
+      if (cancelled) return;
+      document.getElementById(id)?.scrollIntoView({ block: "start" });
     };
     run();
     const frame = window.requestAnimationFrame(run);
-    const timer = window.setTimeout(run, 80);
+    for (const delay of [50, 200, 600]) timers.push(window.setTimeout(run, delay));
     return () => {
+      cancelled = true;
       window.cancelAnimationFrame(frame);
-      window.clearTimeout(timer);
+      for (const timer of timers) window.clearTimeout(timer);
     };
   }, [anchor]);
 
