@@ -1,4 +1,5 @@
 import { Badge } from "./Badge.jsx";
+import { Term } from "./Term.jsx";
 import { CATATAN_SATU_TITIK, tampilanPrioritas } from "../lib/aplus.js";
 import { formatAngka, formatWib } from "../lib/format.js";
 
@@ -100,14 +101,14 @@ export function PrioritasPanel({ snapshot, now }) {
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Kab/kota</th>
-                    <th scope="col">Skor</th>
-                    <th scope="col">FWI P75 (maks)</th>
-                    <th scope="col">Hari FFMC≥78</th>
-                    <th scope="col">DC maks</th>
-                    <th scope="col">P(14 hari tanpa &gt;20 mm)</th>
-                    <th scope="col">IRBI 2025</th>
-                    <th scope="col">Hotspot</th>
+                    <th scope="col"><Term id="kabkota">Kab/kota</Term></th>
+                    <th scope="col"><Term id="peringkat">Skor</Term></th>
+                    <th scope="col"><Term id="fwi">FWI P75 (maks)</Term></th>
+                    <th scope="col"><Term id="ffmc">Hari FFMC≥78</Term></th>
+                    <th scope="col"><Term id="dc">DC maks</Term></th>
+                    <th scope="col"><Term id="ensemble">P(14 hari tanpa &gt;20 mm)</Term></th>
+                    <th scope="col"><Term id="irbi">IRBI 2025</Term></th>
+                    <th scope="col"><Term id="hotspot">Hotspot</Term></th>
                     <th scope="col">Titik</th>
                   </tr>
                 </thead>
@@ -140,6 +141,7 @@ export function PrioritasPanel({ snapshot, now }) {
           <nav className="method-links" aria-label="Metode perhitungan dan rujukan">
             <a href="#/sumber-metode/cara-hitung">Metode perhitungan dan rujukan →</a>
             <a href="#/sumber-metode/rujukan">Rujukan</a>
+            <a href="#/sumber-metode/glosarium">Glosarium</a>
           </nav>
         </div>
       ) : null}

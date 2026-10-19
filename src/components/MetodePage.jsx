@@ -1,5 +1,6 @@
 import { Badge } from "./Badge.jsx";
 import { decorateSources } from "../lib/sourceCatalog.js";
+import { GlossaryPage } from "./GlossaryPage.jsx";
 import { MetodeAplus } from "./MetodeAplus.jsx";
 
 const KINDS = [
@@ -21,7 +22,7 @@ function badgeKind(status) {
   return "tau";
 }
 
-export function MetodePage({ manifest, anchor = "" }) {
+export function MetodePage({ manifest, anchor = "", term = "" }) {
   const sources = decorateSources(manifest);
   return (
     <main className="wrap main">
@@ -77,6 +78,8 @@ export function MetodePage({ manifest, anchor = "" }) {
       </section>
 
       <MetodeAplus anchor={anchor} />
+
+      <GlossaryPage embedded term={term} />
 
       <div className="split">
         <section className="card">
