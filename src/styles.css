@@ -503,8 +503,11 @@ tbody th { font-weight: 700; text-transform: none; letter-spacing: 0; font-size:
   font-weight: 700;
 }
 
+.badge::before { content: none; }
+.status-pill { white-space: normal; max-width: 100%; }
+.main a, .fine, dd { overflow-wrap: anywhere; }
 .badge::before {
-  content: "";
+  content: none;
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -570,7 +573,7 @@ tbody th { font-weight: 700; text-transform: none; letter-spacing: 0; font-size:
   background: #fffcf7;
 }
 
-.source-top { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.source-top { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; flex-wrap: wrap; }
 
 .source-top h3 { margin: 0; font-size: 1rem; }
 
