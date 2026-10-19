@@ -28,10 +28,11 @@ export function filterHotspotWindow(points, { hours = 24, provinces = null } = {
 }
 
 export function clusterCellDegrees(zoom) {
-  if (zoom >= 8) return 0;
-  if (zoom >= 6) return 0.2;
-  if (zoom >= 5) return 0.35;
-  return 0.6;
+  // Titik terpisah mulai zoom 6. Di bawah itu petak cukup lebar agar cincin
+  // kecil tidak menumpuk rapat di tampilan nasional.
+  if (zoom >= 6) return 0;
+  if (zoom >= 5) return 0.22;
+  return 0.45;
 }
 
 export function countHotspots(points) {

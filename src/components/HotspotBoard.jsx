@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from "react";
-import { HotspotMap } from "./HotspotMap.jsx";
+import { ClusterLegend, HotspotMap } from "./HotspotMap.jsx";
 import { GwisFwiToggle } from "./GwisFwiToggle.jsx";
 import { tanggalJakarta } from "../lib/gwisFwi.js";
 import { HotspotAccordion } from "./HotspotAccordion.jsx";
@@ -121,7 +121,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
         <p>{BIG_EDITION_NOTE}</p>
         <p>{CONFIDENCE_NOTE} Jumlah per kelas adalah jumlah deteksi, bukan tingkat keparahan.</p>
         <p>
-          Pada zoom kecil, lingkaran gelap bernomor adalah jumlah deteksi dalam satu petak, bukan kelas confidence. Pada zoom besar, atau bila petak hanya berisi satu titik, tiap titik memakai warna confidence (hijau rendah, kuning nominal, merah tinggi) dan koordinat FIRMS.
+          Pada zoom kecil, cincin berwarna membagi petak menjadi hijau, kuning, dan merah menurut bagian kelas confidence di dalamnya. Angka di tengah adalah jumlah deteksi, bukan kelas confidence. Pada zoom 6 ke atas, atau bila petak hanya berisi satu titik, tiap titik memakai warna confidence (hijau rendah, kuning nominal, merah tinggi) dan koordinat FIRMS.
           Garis desa BIG hanya diminta untuk tampilan dekat, tidak untuk seluruh Indonesia, dan tidak disimpan.
         </p>
       </details>
@@ -159,10 +159,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
             </button>
           ))}
         </div>
-        <p className="cluster-note">
-          <span className="cluster-key" aria-hidden="true">n</span>
-          Lingkaran gelap bernomor pada zoom kecil adalah jumlah deteksi dalam satu petak, bukan kelas confidence. Perbesar peta sampai titik terpisah. Satu titik memakai warna rendah, nominal, atau tinggi.
-        </p>
+        <ClusterLegend />
       </div>
       <p className="fine">
         {WINDOWS.find(([value]) => value === hours)?.[1]}: {formatAngka(tally.jumlah)} titik.
