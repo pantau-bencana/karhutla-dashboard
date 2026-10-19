@@ -2,13 +2,14 @@ import { useMemo, useState } from "react";
 import { GLOSSARY } from "../lib/glossary.js";
 import { glossaryTermFromHash } from "../lib/route.js";
 
-export function GlossaryPage() {
-  const focus = glossaryTermFromHash(window.location.hash);
+export function GlossaryPage({ embedded = false, term = "" }) {
+  const focus = term || glossaryTermFromHash(window.location.hash);
   const [query, setQuery] = useState("");
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    if (!needle) return GLOSSARY;
-    return GLOSSARY.filter((item) =>
+    const ordered = [...GLOSSARY].sort((a, b) => a.istilah.localeCompare(b.istilah, "id"));
+    if (!needle) return ordered;
+    return ordered.filter((item) =>
       [item.istilah, item.nama, item.penjelasan, item.penggunaan].join(" ").toLowerCase().includes(needle),
     );
   }, [query]);
@@ -19,8 +20,8 @@ export function GlossaryPage() {
     groups.get(letter).push(item);
   }
 
-  return (
-    <main className="wrap main">
+  const body = (
+    <div id="glosarium">
       <section className="card">
         <header className="card-head">
           <div>
@@ -69,6 +70,8 @@ export function GlossaryPage() {
           </div>
         </section>
       ))}
-    </main>
+    </div>
   );
+  if (embedded) return body;
+  return <main className="wrap main">{body}</main>;
 }

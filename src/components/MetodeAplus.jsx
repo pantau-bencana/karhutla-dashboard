@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Term } from "./Term.jsx";
 
 const RUJUKAN = [
   {
@@ -184,8 +185,8 @@ skor = (rI1 + rI2 + rI3 + rI4) / 4`}</pre>
             <thead>
               <tr>
                 <th scope="col">Kelas literatur</th>
-                <th scope="col">FFMC</th>
-                <th scope="col">DC</th>
+                <th scope="col"><Term id="ffmc">FFMC</Term></th>
+                <th scope="col"><Term id="dc">DC</Term></th>
               </tr>
             </thead>
             <tbody>

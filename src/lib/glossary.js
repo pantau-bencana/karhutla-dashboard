@@ -45,7 +45,7 @@ export const GLOSSARY = [
     istilah: "CAMS",
     nama: "Copernicus Atmosphere Monitoring Service",
     penjelasan: "Layanan pemantauan atmosfer Copernicus yang menjadi salah satu sumber model pada API kualitas udara Open-Meteo.",
-    penggunaan: "Berkas model PM2.5 boleh tersimpan sebagai pembanding, termasuk hari yang API isi. Lapisan Kualitas Udara (ISPU) tidak menampilkan prakiraan CAMS dan tidak mengubahnya menjadi ISPU.",
+    penggunaan: "Bila angka model ditampilkan, labelnya model pembanding dalam µg/m³. Angka itu bukan pengukuran stasiun dan tidak diubah menjadi ISPU atau kategori ISPU.",
     rujukan: "https://atmosphere.copernicus.eu/",
     rujukanLabel: "atmosphere.copernicus.eu",
   },
@@ -65,7 +65,7 @@ export const GLOSSARY = [
     istilah: "Confidence",
     nama: "Tingkat kepercayaan deteksi",
     penjelasan:
-      "Pada hotspot VIIRS di FIRMS, kepercayaan disebut low, nominal, atau high. Pada MODIS sering berupa angka. Nilai ini menilai kualitas deteksi satelit, bukan hasil cek lapangan.",
+      "Pada hotspot VIIRS di FIRMS, kepercayaan disebut low, nominal, atau high, yang dasbor tulis rendah, nominal, atau tinggi. Pada MODIS sering berupa angka. Nilai ini menilai kualitas deteksi satelit, bukan hasil cek lapangan dan bukan tingkat bahaya.",
     penggunaan: "Warna titik: rendah hijau, nominal kuning, tinggi merah. VIIRS memakai l, n, atau h. MODIS 0–29 rendah, 30–79 nominal, 80–100 tinggi. Nilai asli tetap ditampilkan. Nominal adalah kelas menengah, padanan katanya sedang. Ini kualitas deteksi satelit, bukan tingkat bahaya atau tingkat kebakaran.",
     rujukan: "https://firms.modaps.eosdis.nasa.gov/",
     rujukanLabel: "NASA FIRMS",
@@ -95,7 +95,7 @@ export const GLOSSARY = [
     istilah: "DC",
     nama: "Drought Code",
     penjelasan: "Komponen Fire Weather Index yang menggambarkan kekeringan bahan bakar kasar yang mengering dalam waktu lama.",
-    penggunaan: "Tidak ditampilkan sebagai angka tersendiri.",
+    penggunaan: "Daftar prioritas menampilkan DC maksimum dari model GWIS, bukan komponen FDRS BMKG yang dihitung dasbor.",
     rujukan: "https://cwfis.cfs.nrcan.gc.ca/background/summary/fwi",
     rujukanLabel: "Natural Resources Canada — FWI",
   },
@@ -123,8 +123,8 @@ export const GLOSSARY = [
     istilah: "FDRS",
     nama: "Fire Danger Rating System",
     penjelasan:
-      "Sistem peringkat bahaya kebakaran BMKG yang disajikan di SPARTAN. FDRS bukan prakiraan cuaca umum dan bukan daftar titik api.",
-    penggunaan: "Hanya tautan. Citra SPARTAN mencakup pengamatan dan prakiraan hingga H+7 sesuai produk BMKG, bukan 14 hari. Angka FWI contoh tidak ditampilkan.",
+      "Fire Danger Rating System adalah sistem peringkat bahaya kebakaran BMKG di SPARTAN. FWI pada GWIS adalah indeks model ECMWF dari Copernicus, bukan keluaran FDRS BMKG. Kelas pada legenda GWIS tidak disamakan dengan kelas FDRS BMKG.",
+    penggunaan: "FDRS BMKG hanya tautan. Citra SPARTAN mencakup pengamatan dan prakiraan hingga H+7 sesuai produk BMKG, bukan 14 hari. Angka FWI contoh tidak ditampilkan. Angka FWI pada daftar prioritas berasal dari GWIS, bukan dari SPARTAN.",
     rujukan: "https://spartan.bmkg.go.id/",
     rujukanLabel: "SPARTAN BMKG",
   },
@@ -133,7 +133,7 @@ export const GLOSSARY = [
     istilah: "FFMC",
     nama: "Fine Fuel Moisture Code",
     penjelasan: "Komponen Fire Weather Index yang menggambarkan kekeringan bahan bakar halus di permukaan.",
-    penggunaan: "Tidak ditampilkan sebagai angka tersendiri.",
+    penggunaan: "Daftar prioritas menghitung hari dengan FFMC model GWIS minimal 78. Itu bukan komponen FDRS BMKG yang dihitung dasbor.",
     rujukan: "https://cwfis.cfs.nrcan.gc.ca/background/summary/fwi",
     rujukanLabel: "Natural Resources Canada — FWI",
   },
@@ -403,5 +403,110 @@ export const GLOSSARY = [
       "Daftar wilayah yang perlu dilihat karena ada data pendukung, misalnya deteksi satelit pada data yang memang tersambung. Ini bukan peringatan resmi dan bukan urutan prioritas operasional BNPB.",
     penggunaan:
       "Ringkasan pimpinan hanya menyusun daftar dari data yang bukan contoh. Tabel provinsi pada Peta dan Data adalah jumlah deteksi, bukan penetapan operasional.",
+  },
+  {
+    id: "big",
+    istilah: "BIG",
+    nama: "Badan Informasi Geospasial — batas wilayah",
+    penjelasan:
+      "Lembaga yang menyediakan batas administrasi. Dasbor memakai layanan peta publik BATAS_WILAYAH untuk nama desa atau kelurahan, kecamatan, kabupaten/kota, dan provinsi.",
+    penggunaan:
+      "Nama wilayah hotspot diisi hanya bila layanan itu menjawab. Geometri batas tidak disimpan. Titik yang gagal dicari tidak ditebak dari kotak koordinat dan berstatus belum terpetakan.",
+    rujukan: "https://kspservices.big.go.id/satupeta/rest/services/PUBLIK/BATAS_WILAYAH/MapServer",
+    rujukanLabel: "BIG — layanan BATAS_WILAYAH",
+  },
+  {
+    id: "ensemble",
+    istilah: "Open-Meteo ensemble",
+    nama: "Ensemble prakiraan Open-Meteo",
+    penjelasan:
+      "API ensemble Open-Meteo menyajikan anggota prakiraan model, termasuk ECMWF. Peluang pada daftar prioritas dihitung dari anggota itu, bukan dari peluang persen pada API prakiraan BMKG.",
+    penggunaan:
+      "Perhitungan daftar memakai API ensemble Open-Meteo dan menolak hasil bila anggota yang kembali kurang dari 51. Lisensinya CC BY 4.0 untuk pemakaian nonkomersial. Ini pembanding, bukan prakiraan resmi BMKG.",
+    rujukan: "https://open-meteo.com/en/docs/ensemble-api",
+    rujukanLabel: "Open-Meteo — Ensemble API",
+  },
+  {
+    id: "gfwed",
+    istilah: "GFWED",
+    nama: "Global Fire Weather Database",
+    penjelasan:
+      "Basis data cuaca kebakaran global NASA yang menghitung Fire Weather Index dari medan cuaca, termasuk analisis GEOS-5. Bukan FDRS BMKG dan bukan FWI pada GWIS.",
+    penggunaan:
+      "Bila berkas kabupaten tersedia, tabelnya berlabel pembanding model NASA GFWED (GEOS-5, analisis), bukan BMKG. Bila berkas tidak ada, statusnya Tidak tersedia.",
+    rujukan: "https://data.giss.nasa.gov/impacts/gfwed/",
+    rujukanLabel: "NASA GISS — GFWED",
+  },
+  {
+    id: "kabkota",
+    istilah: "Kabupaten/kota",
+    nama: "Kabupaten atau kota",
+    penjelasan:
+      "Wilayah administrasi di bawah provinsi. Satu stasiun, satu titik model, atau satu sel grid tidak mewakili seluruh kabupaten atau kota.",
+    penggunaan:
+      "Nama pada hotspot mengikuti jawaban layanan batas BIG. Daftar prioritas memakai kabupaten/kota pada enam provinsi cakupan. Kode atau nama yang tidak ada tidak diisi nol.",
+    rujukan: "https://kspservices.big.go.id/satupeta/rest/services/PUBLIK/BATAS_WILAYAH/MapServer",
+    rujukanLabel: "BIG — layanan BATAS_WILAYAH",
+  },
+  {
+    id: "krb",
+    istilah: "KRB",
+    nama: "Kajian Risiko Bencana",
+    penjelasan:
+      "Dokumen kajian risiko bencana. Pada modul Banjir, kolom KRB hanya menautkan dokumen yang sudah dicatat. Label peta banjir inaRISK pada modul itu menyebut KRB 2021.",
+    penggunaan:
+      "Status tautan saja untuk dokumen. Peta gunung api kawasan rawan bencana tidak ditampilkan. Prototipe banjir menunggu izin tertulis BNPB.",
+    rujukan: "https://inarisk.bnpb.go.id/",
+    rujukanLabel: "inarisk.bnpb.go.id",
+  },
+  {
+    id: "nowcast",
+    istilah: "Nowcast",
+    nama: "Peringatan dini cuaca jangka sangat pendek",
+    penjelasan:
+      "Peringatan BMKG untuk beberapa jam ke depan, terbit sebagai RSS nowcast berformat CAP. Dasar waktunya sekitar 0–3 jam. Bukan prakiraan dasarian dan bukan prospek musiman.",
+    penggunaan:
+      "Pada modul Banjir, peringatan yang masih berlaku dipasangkan ke kabupaten/kota. Peringatan yang sudah berakhir tidak ditampilkan sebagai aktif.",
+    rujukan: "https://www.bmkg.go.id/alerts/nowcast/id",
+    rujukanLabel: "BMKG — RSS nowcast",
+  },
+  {
+    id: "p75",
+    istilah: "P75",
+    nama: "Persentil ke-75",
+    penjelasan:
+      "Nilai yang berada di atas atau sama dengan 75 persen dari nilai pada kumpulan yang sama. Pada daftar prioritas, kumpulannya adalah titik sampel di dalam satu kabupaten atau kota, bukan seluruh Indonesia.",
+    penggunaan:
+      "FWI, FFMC, DC, dan peluang kering memakai P75 antartitik. Nilai maksimum FWI tetap ditulis di sampingnya. Rumusnya ada di bagian cara menghitung pada halaman ini.",
+  },
+  {
+    id: "pdcht",
+    istilah: "PDCHT",
+    nama: "Peringatan Dini Curah Hujan Tinggi",
+    penjelasan:
+      "Produk iklim BMKG untuk peringatan curah hujan tinggi pada periode dasarian. Halaman resminya berisi citra dan narasi, bukan tabel kabupaten yang diunduh otomatis.",
+    penggunaan:
+      "Status tautan saja. Untuk modul Banjir, status Aceh dan Bengkulu yang sudah diisi disalin manual ke CSV. Baris kosong bukan nol. Citra tidak diunduh dan tidak dipotong.",
+    rujukan: "https://www.bmkg.go.id/iklim/peringatan-dini-hujan-tinggi",
+    rujukanLabel: "BMKG — Peringatan dini curah hujan tinggi",
+  },
+  {
+    id: "peringkat",
+    istilah: "Rata-rata peringkat",
+    nama: "Skor rata-rata peringkat",
+    penjelasan:
+      "Setiap indikator diubah menjadi peringkat di antara kabupaten/kota yang datanya lengkap. Nilai yang sama mendapat rata-rata peringkat. Skor adalah rata-rata peringkat itu, 25 persen tiap indikator yang dipakai.",
+    penggunaan:
+      "Ini cara hitung Metode A+ pada daftar prioritas. Bukan peringatan resmi BMKG atau BNPB, dan bukan urutan FDRS.",
+  },
+  {
+    id: "vona",
+    istilah: "VONA",
+    nama: "Volcano Observatory Notice for Aviation",
+    penjelasan:
+      "Pemberitahuan observatorium gunung api untuk penerbangan. PVMBG menerbitkannya lewat MAGMA Indonesia bila aktivitas gunung berubah, naik atau turun.",
+    penggunaan: "Tab Gunung Api tidak menampilkan teks VONA dan tidak menyimpan kode warna penerbangan.",
+    rujukan: "https://magma.esdm.go.id/vona/",
+    rujukanLabel: "MAGMA Indonesia — VONA",
   },
 ];

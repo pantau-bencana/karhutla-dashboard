@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { formatWib } from "../lib/format.js";
-import { pageHref } from "../lib/route.js";
 
 const TOP = [
   ["ringkasan", "Ringkasan", "#/"],
@@ -8,6 +7,7 @@ const TOP = [
   ["banjir", "Banjir", "#/banjir"],
   ["gunung-api", "Gunung Api", "#/gunung-api"],
   ["metode", "Sumber & Metode", "#/sumber-metode"],
+  ["glosarium", "Glosarium", "#/sumber-metode/glosarium"],
 ];
 
 const KARHUTLA_PAGES = [
@@ -16,17 +16,19 @@ const KARHUTLA_PAGES = [
   ["ispu", "Kualitas Udara (ISPU)", "#/karhutla/ispu"],
   ["logika", "Logika Pemantauan", "#/karhutla/logika"],
   ["sumber", "Sumber Data", "#/karhutla/sumber"],
-  ["glosarium", "Glosarium", "#/glosarium"],
+  ["glosarium", "Glosarium", "#/sumber-metode/glosarium"],
 ];
 
-function topCurrent(id, page, hazard) {
-  if (id === "metode") return page === "metode";
+function topCurrent(id, page, hazard, anchor) {
+  const glossary = page === "glosarium" || (page === "metode" && anchor === "glosarium");
+  if (id === "glosarium") return glossary;
+  if (id === "metode") return page === "metode" && !glossary;
   if (id === "ringkasan") return page === "ringkasan" && hazard === "karhutla";
-  if (id === "karhutla") return hazard === "karhutla" && page !== "ringkasan" && page !== "metode";
-  return hazard === id && page !== "metode";
+  if (id === "karhutla") return hazard === "karhutla" && page !== "ringkasan" && page !== "metode" && page !== "glosarium";
+  return hazard === id && page !== "metode" && page !== "glosarium";
 }
 
-export function SiteHeader({ manifest, onReload, loading, page, hazard }) {
+export function SiteHeader({ manifest, onReload, loading, page, hazard, anchor = "" }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const showSub = hazard === "karhutla" && page !== "ringkasan" && page !== "metode";
   const loaded = manifest?.generated_at ? formatWib(manifest.generated_at) : "belum ada snapshot";
@@ -43,7 +45,7 @@ export function SiteHeader({ manifest, onReload, loading, page, hazard }) {
         </a>
         <nav className="nav" aria-label="Bagian">
           {TOP.map(([id, label, href]) => (
-            <a key={id} href={href} aria-current={topCurrent(id, page, hazard) ? "page" : undefined}>{label}</a>
+            <a key={id} href={href} aria-current={topCurrent(id, page, hazard, anchor) ? "page" : undefined}>{label}</a>
           ))}
         </nav>
         <div className="tright">
@@ -68,7 +70,6 @@ export function SiteHeader({ manifest, onReload, loading, page, hazard }) {
           {TOP.map(([id, label, href]) => (
             <a key={id} href={href} onClick={() => setMenuOpen(false)}>{label}</a>
           ))}
-          <a href={pageHref("glosarium")} onClick={() => setMenuOpen(false)}>Glosarium</a>
         </nav>
       ) : null}
       <div className="notice">
@@ -78,7 +79,7 @@ export function SiteHeader({ manifest, onReload, loading, page, hazard }) {
       </div>
       <nav className="tabbar" aria-label="Bagian">
         {TOP.map(([id, label, href]) => (
-          <a key={id} href={href} aria-current={topCurrent(id, page, hazard) ? "page" : undefined}>
+          <a key={id} href={href} aria-current={topCurrent(id, page, hazard, anchor) ? "page" : undefined}>
             {id === "metode" ? "Sumber" : label}
           </a>
         ))}

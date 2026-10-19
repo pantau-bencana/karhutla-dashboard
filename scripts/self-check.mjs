@@ -462,7 +462,7 @@ const dibalik = buildComparisonAttention({
 });
 assert.deepEqual(dibalik.rows.map((row) => row.kabupaten), ["Siak", "Pelalawan"]);
 const glossaryIds = new Set(GLOSSARY.map((item) => item.id));
-for (const id of ["ispu", "fwi", "fdrs", "ffmc", "dmc", "dc", "isi", "bui", "irbi", "inarisk", "bnpb", "bmkg", "klh", "firms", "viirs", "modis", "nrt", "confidence", "hotspot", "spartan", "sipongi", "cams", "pm", "wib", "dasarian", "snapshot", "statis", "prakiraan", "observasi"]) {
+for (const id of ["ispu", "fwi", "fdrs", "ffmc", "dmc", "dc", "isi", "bui", "irbi", "inarisk", "bnpb", "bmkg", "klh", "firms", "viirs", "modis", "nrt", "confidence", "hotspot", "spartan", "sipongi", "cams", "pm", "wib", "dasarian", "snapshot", "statis", "prakiraan", "observasi", "gfwed", "ensemble", "p75", "peringkat", "iku", "dibi", "nowcast", "pdcht", "kabkota", "big", "krb", "magma", "vona", "gwis"]) {
   assert.equal(glossaryIds.has(id), true, id);
 }
 assert.equal(GLOSSARY.every((item) => item.penjelasan && item.penggunaan), true);
@@ -471,6 +471,10 @@ assert.equal(parseLocation("#/gunung-api").hazard, "gunung-api");
 assert.equal(parseLocation("#/karhutla/peta").page, "peta");
 assert.equal(parseLocation("#/sumber-metode/cara-hitung").page, "metode");
 assert.equal(parseLocation("#/sumber-metode/cara-hitung").anchor, "cara-hitung");
+assert.equal(parseLocation("#/sumber-metode/glosarium").page, "metode");
+assert.equal(parseLocation("#/sumber-metode/glosarium").anchor, "glosarium");
+assert.equal(parseLocation("#/sumber-metode/glosarium/fwi").term, "fwi");
+assert.equal(parseRoute("#/glosarium"), "glosarium");
 const summarySource = readFileSync("src/components/SummaryPage.jsx", "utf8");
 assert.equal(summarySource.includes("points={[]}"), false);
 assert.equal(summarySource.includes("15–20 kabupaten/kota, 14 hari"), false);
@@ -1206,6 +1210,15 @@ assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /Cara hi
 assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /Metode perhitungan dan rujukan →/);
 assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /href="#\/sumber-metode\/cara-hitung"/);
 assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /href="#\/sumber-metode\/rujukan"/);
+assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /href="#\/sumber-metode\/glosarium"/);
+assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /<Term id="fwi">FWI P75/);
+assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /<Term id="ffmc">Hari FFMC/);
+assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /<Term id="dc">DC maks/);
+assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /<Term id="irbi">IRBI 2025/);
+assert.match(readFileSync("src/components/SiteHeader.jsx", "utf8"), /#\/sumber-metode\/glosarium/);
+assert.match(readFileSync("src/components/Footer.jsx", "utf8"), /#\/sumber-metode\/glosarium/);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /<GlossaryPage embedded/);
+assert.match(readFileSync("src/lib/route.js", "utf8"), /#\/sumber-metode\/glosarium\/\$\{id\}/);
 assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), />Rujukan</);
 assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /bukan resmi BMKG\/BNPB/);
 assert.match(readFileSync("src/App.jsx", "utf8"), /location\.anchor/);

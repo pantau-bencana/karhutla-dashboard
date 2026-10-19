@@ -3,7 +3,6 @@ import { Badge } from "./components/Badge.jsx";
 import { OfficialLinks } from "./components/OfficialLinks.jsx";
 import { DashboardView } from "./components/DashboardView.jsx";
 import { Footer } from "./components/Footer.jsx";
-import { GlossaryPage } from "./components/GlossaryPage.jsx";
 import { HazardPlaceholder } from "./components/HazardPlaceholder.jsx";
 import { KualitasUdara } from "./components/KualitasUdara.jsx";
 import { LogicPage } from "./components/LogicPage.jsx";
@@ -96,12 +95,21 @@ export function App() {
 
   useEffect(() => {
     const hazardName = hazardById(hazard).nama;
-    const pageName = { ringkasan: "Ringkasan", peta: "Peta dan Data", ispu: "Kualitas Udara", logika: "Logika Pemantauan", sumber: "Sumber Data", metode: "Sumber dan Metode", glosarium: "Glosarium" }[page] || "Ringkasan";
+    const onGlossary = page === "glosarium" || (page === "metode" && location.anchor === "glosarium");
+    const pageName = onGlossary
+      ? "Glosarium"
+      : ({ ringkasan: "Ringkasan", peta: "Peta dan Data", ispu: "Kualitas Udara", logika: "Logika Pemantauan", sumber: "Sumber Data", metode: "Sumber dan Metode" }[page] || "Ringkasan");
     document.title = `${pageName} ${hazardName} — ${config?.judul || DEFAULT_TITLE}`;
-  }, [page, hazard, config]);
+  }, [page, hazard, location.anchor, config]);
 
   useEffect(() => {
-    const id = location.anchor;
+    if (page !== "glosarium") return;
+    const dest = location.term ? `#/sumber-metode/glosarium/${location.term}` : "#/sumber-metode/glosarium";
+    if (window.location.hash.toLowerCase() !== dest) window.location.replace(dest);
+  }, [page, location.term]);
+
+  useEffect(() => {
+    const id = location.term || location.anchor || (page === "glosarium" ? "glosarium" : "");
     if (!id) {
       window.scrollTo(0, 0);
       return undefined;
@@ -120,7 +128,7 @@ export function App() {
       window.cancelAnimationFrame(frame);
       for (const timer of timers) window.clearTimeout(timer);
     };
-  }, [page, hazard, location.anchor]);
+  }, [page, hazard, location.anchor, location.term]);
 
   const view = useMemo(() => {
     if (!config) return null;
@@ -155,9 +163,15 @@ export function App() {
         loading={loading}
         page={page}
         hazard={hazard}
+        anchor={page === "glosarium" ? "glosarium" : location.anchor}
       />
-      {page === "glosarium" ? <GlossaryPage /> : null}
-      {page === "metode" ? <MetodePage manifest={manifest} anchor={location.anchor} /> : null}
+      {page === "metode" || page === "glosarium" ? (
+        <MetodePage
+          manifest={manifest}
+          anchor={page === "glosarium" ? "glosarium" : location.anchor}
+          term={location.term}
+        />
+      ) : null}
       {hazard === "gunung-api" && page !== "glosarium" && page !== "metode" ? <VolcanoPage /> : null}
       {flood ? (
         <Suspense fallback={<main className="wrap main"><p>Memuat modul Banjir…</p></main>}>

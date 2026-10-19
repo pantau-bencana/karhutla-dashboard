@@ -34,7 +34,8 @@ export function parseLocation(hash) {
   else if (token === "sumber" || token === "sumber-data") page = "sumber";
   else if (token === "ringkasan") page = "ringkasan";
   const anchor = token === "sumber-metode" || token === "metode" ? rest[1] || "" : "";
-  return { hazard, page, term: "", anchor };
+  const term = anchor === "glosarium" ? rest[2] || "" : "";
+  return { hazard, page, term, anchor };
 }
 
 export function parseRoute(hash) {
@@ -42,7 +43,7 @@ export function parseRoute(hash) {
 }
 
 export function pageHref(page, hazard = "karhutla") {
-  if (page === "glosarium") return "#/glosarium";
+  if (page === "glosarium") return "#/sumber-metode/glosarium";
   if (page === "metode") return "#/sumber-metode";
   const safeHazard = hazard === "gunungapi" ? "gunung-api" : hazard || "karhutla";
   if (safeHazard === "karhutla") {
@@ -58,7 +59,7 @@ export function hazardHref(id) {
 }
 
 export function termHref(id) {
-  return `#/glosarium/${id}`;
+  return `#/sumber-metode/glosarium/${id}`;
 }
 
 export function glossaryTermFromHash(hash) {
@@ -70,5 +71,6 @@ export function glossaryTermFromHash(hash) {
     .toLowerCase();
   const parts = path.split("/").filter(Boolean);
   if (parts[0] === "glosarium" && parts[1]) return parts[1];
+  if ((parts[0] === "sumber-metode" || parts[0] === "metode") && parts[1] === "glosarium" && parts[2]) return parts[2];
   return "";
 }
