@@ -266,6 +266,94 @@ export function nilaiKab(rows) {
   });
 }
 
+// Jejak peringkat persen: urutan 1-based (nilai sama dirata-rata), peringkat (urutan−1)/(n−1).
+export function jejakUrutan(values) {
+  const indexed = [];
+  (values ?? []).forEach((value, index) => {
+    if (!Number.isFinite(value)) return;
+    indexed.push({ index, value });
+  });
+  const n = indexed.length;
+  const out = (values ?? []).map(() => null);
+  if (!n) return out;
+  indexed.sort((a, b) => a.value - b.value || a.index - b.index);
+  let cursor = 0;
+  while (cursor < n) {
+    let end = cursor;
+    while (end < n && indexed[end].value === indexed[cursor].value) end += 1;
+    const urutan = (cursor + 1 + end) / 2;
+    const peringkat = n === 1 ? 1 : (urutan - 1) / (n - 1);
+    for (let i = cursor; i < end; i += 1) {
+      out[indexed[i].index] = { n, diBawah: cursor, urutan, peringkat };
+    }
+    cursor = end;
+  }
+  return out;
+}
+
+const CONTOH_INDIKATOR = Object.freeze([
+  { kunci: "I1", kode: "I1", nama: "FWI P75" },
+  { kunci: "I2", kode: "I2", nama: "P(14 hari tanpa >20 mm)" },
+  { kunci: "I3", kode: "I3", nama: "IRBI 2025" },
+  { kunci: "I4", kode: "I4", nama: "Hotspot" },
+]);
+
+export function contohSkorUtama(snapshot) {
+  const baris = Array.isArray(snapshot?.baris) ? snapshot.baris : [];
+  const dasar = {
+    tanggal: snapshot?.generated_at || snapshot?.gwis_fetched_at || null,
+    ensemble_fetched_at: snapshot?.ensemble_fetched_at || null,
+    gwis_fetched_at: snapshot?.gwis_fetched_at || null,
+    gwis_fetched_until: snapshot?.gwis_fetched_until || null,
+    gwis_hari: snapshot?.gwis_hari ?? null,
+    firms_observed_at: snapshot?.firms_observed_at || null,
+    catatan_cuplikan: snapshot?.catatan_cuplikan || "",
+    ada: false,
+    indikator: [],
+  };
+  if (!baris.length) return dasar;
+  const scored = nilaiKab(baris);
+  const lengkap = scored.filter((row) => row.data_ok);
+  const utama = scored.find((row) => row.peringkat_daftar === 1) ?? null;
+  if (!utama) {
+    return { ...dasar, kab_lengkap: lengkap.length, lolos_jumlah: scored.filter((row) => row.lolos).length };
+  }
+  const index = scored.findIndex((row) => row.kode === utama.kode && row.kab === utama.kab);
+  const indikator = CONTOH_INDIKATOR.map((spec) => {
+    const values = scored.map((row) => (row.data_ok ? num(row[spec.kunci]) : null));
+    const jejak = jejakUrutan(values)[index];
+    return {
+      ...spec,
+      nilai: num(utama[spec.kunci]),
+      n: jejak?.n ?? 0,
+      diBawah: jejak?.diBawah ?? null,
+      urutan: jejak?.urutan ?? null,
+      peringkat: jejak?.peringkat ?? null,
+      tanpa: lengkap.length - (jejak?.n ?? 0),
+    };
+  });
+  const present = indikator.filter((item) => item.peringkat != null);
+  const skor = present.length ? present.reduce((sum, item) => sum + item.peringkat, 0) / present.length : null;
+  return {
+    ...dasar,
+    ada: true,
+    kab: utama.kab,
+    prov: utama.prov,
+    kode: utama.kode,
+    n_titik: num(utama.n_titik),
+    src: utama.src || "",
+    fwi_titik_maks: num(utama.fwi_titik_maks),
+    ffmc78_hari: num(utama.ffmc78_hari),
+    dc_maks: num(utama.dc_maks),
+    gwis_hari_baris: num(utama.gwis_hari),
+    kab_lengkap: lengkap.length,
+    lolos_jumlah: scored.filter((row) => row.lolos).length,
+    indikator,
+    skor,
+    skor_tampil: round3(skor),
+  };
+}
+
 export function ambangHotspot(counts) {
   const positive = (counts ?? []).filter((value) => Number.isFinite(value) && value > 0);
   const p95 = kuantilIndeks(positive, 0.95);

@@ -1077,7 +1077,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   line-height: 1.5;
   white-space: pre-wrap;
 }
-#cara-hitung, #rujukan, #faq, #glosarium, .glossary-list article { scroll-margin-top: 88px; }
+#cara-hitung, #contoh-hitung, #rujukan, #faq, #glosarium, .glossary-list article { scroll-margin-top: 88px; }
 thead th a.term { color: inherit; font-weight: 700; }
 .faq-list { display: grid; gap: 8px; }
 .faq-list details {

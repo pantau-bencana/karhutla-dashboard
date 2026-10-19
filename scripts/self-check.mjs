@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import { deriveDashboard, defaultRange } from "../src/lib/derive.js";
 import { areaContains, assignProvince, INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../src/lib/geo.js";
 import { looksLikeCsv, parseCsv } from "../src/lib/csv.js";
@@ -34,6 +36,7 @@ import {
   alasanKesegaran,
   ambangHotspot,
   blokHotspot,
+  contohSkorUtama,
   farthestPointSample,
   kuantilIndeks,
   nilaiKab,
@@ -1277,10 +1280,96 @@ const rujukanBoleh = new Set([
   "http://urlib.net/sid.inpe.br/mtc-m21c/2019/11.21.11.03",
   "https://dataserver-coids.inpe.br/queimadas/queimadas/Publicacoes-Impacto/documentos/RiscoFogo_Sucinto_v11_2019.pdf",
   "https://open-meteo.com/en/licence",
+  "https://ostrnrcan-dostrncan.canada.ca/entities/publication/d96e56aa-e836-4394-ba29-3afe91c3aa6c",
+  "https://forest-fire.emergency.copernicus.eu/about-effis/technical-background/fire-danger-forecast",
+  "https://open-meteo.com/en/docs/ensemble-api",
+  "https://firms.modaps.eosdis.nasa.gov/",
+  "https://www.earthdata.nasa.gov/data/tools/firms/faq",
+  "https://inarisk.bnpb.go.id/IRBI-2025/files/basic-html/page294.html",
+  "https://doi.org/10.1080/00031305.1996.10473566",
 ]);
 assert.equal(rujukanHref.length > 0, true);
 for (const href of rujukanHref) assert.equal(rujukanBoleh.has(href), true, href);
 assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<PrioritasPanel /);
 assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /prioritas_aplus/);
+
+const cuplikanAplus = JSON.parse(readFileSync("data/live/prioritas_aplus.json", "utf8"));
+const contohOki = contohSkorUtama(cuplikanAplus);
+const okiSkor = nilaiKab(cuplikanAplus.baris).find((row) => row.peringkat_daftar === 1);
+assert.equal(contohOki.kab, "Ogan Komering Ilir");
+assert.equal(contohOki.indikator[0].nilai, 27.725);
+assert.equal(contohOki.indikator[0].diBawah, 79);
+assert.equal(contohOki.indikator[0].n, 81);
+assert.equal(contohOki.indikator[0].urutan, 80);
+assert.equal(Math.round(contohOki.indikator[0].peringkat * 1000) / 1000, 0.988);
+assert.equal(contohOki.indikator[1].nilai, 0.843);
+assert.equal(contohOki.indikator[1].diBawah, 67);
+assert.equal(contohOki.indikator[1].urutan, 68);
+assert.equal(Math.round(contohOki.indikator[1].peringkat * 1000) / 1000, 0.838);
+assert.equal(contohOki.indikator[2].nilai, 22.01);
+assert.equal(contohOki.indikator[2].diBawah, 45);
+assert.equal(contohOki.indikator[2].n, 79);
+assert.equal(contohOki.indikator[2].urutan, 46);
+assert.equal(contohOki.indikator[2].tanpa, 2);
+assert.equal(Math.round(contohOki.indikator[2].peringkat * 1000) / 1000, 0.577);
+assert.equal(contohOki.indikator[3].nilai, 1369);
+assert.equal(contohOki.indikator[3].diBawah, 77);
+assert.equal(contohOki.indikator[3].urutan, 78);
+assert.equal(Math.round(contohOki.indikator[3].peringkat * 1000) / 1000, 0.963);
+assert.equal(contohOki.skor_tampil, 0.841);
+assert.equal(contohOki.skor_tampil, okiSkor.skor_tampil);
+assert.ok(Math.abs(contohOki.indikator[0].peringkat - okiSkor.rI1) < 1e-12);
+assert.equal(contohSkorUtama(null).ada, false);
+
+const contohSeri = contohSkorUtama({
+  generated_at: "2026-01-02T00:00:00.000Z",
+  baris: [
+    { kode: "11.01", kab: "A", prov: "Riau", gwis_hari: 5, I1: 10, I2: 0.8, I3: 1, I4: 3, ffmc78_hari: 3, dc_maks: 0, n_titik: 5, src: "grid" },
+    { kode: "11.02", kab: "B", prov: "Riau", gwis_hari: 5, I1: 10, I2: 0.6, I3: null, I4: 9, ffmc78_hari: 0, dc_maks: 300, n_titik: 1, src: "titik_wakil" },
+  ],
+});
+assert.equal(contohSeri.kab, "A");
+assert.equal(contohSeri.indikator[0].urutan, 1.5);
+assert.equal(contohSeri.indikator[0].peringkat, 0.5);
+assert.equal(contohSeri.indikator[0].diBawah, 0);
+assert.equal(contohSeri.indikator[2].n, 1);
+assert.equal(contohSeri.indikator[2].tanpa, 1);
+assert.equal(contohSeri.indikator[2].peringkat, 1);
+assert.equal(contohSeri.skor_tampil, 0.625);
+
+const { build } = await import("esbuild");
+const { createElement } = await import("react");
+const { renderToStaticMarkup } = await import("react-dom/server");
+const contohBundle = resolve("node_modules/.cache/metode-aplus-check.mjs");
+mkdirSync(resolve("node_modules/.cache"), { recursive: true });
+await build({
+  absWorkingDir: process.cwd(),
+  entryPoints: ["src/components/MetodeAplus.jsx"],
+  bundle: true,
+  format: "esm",
+  platform: "node",
+  outfile: contohBundle,
+  external: ["react", "react/jsx-runtime"],
+  jsx: "automatic",
+});
+const rendered = await import(pathToFileURL(contohBundle).href);
+const htmlContoh = renderToStaticMarkup(createElement(rendered.MetodeAplus, { prioritas: cuplikanAplus }));
+assert.match(htmlContoh, /Ogan Komering Ilir/);
+assert.match(htmlContoh, /27,725/);
+assert.match(htmlContoh, /79 dari 81/);
+assert.match(htmlContoh, /0,988/);
+assert.match(htmlContoh, /0,838/);
+assert.match(htmlContoh, /45 dari 79/);
+assert.match(htmlContoh, /0,577/);
+assert.match(htmlContoh, /0,963/);
+assert.match(htmlContoh, /45\/78/);
+assert.match(htmlContoh, /0,841/);
+assert.match(htmlContoh, /Kenapa pakai peringkat/);
+assert.match(htmlContoh, /tidak masuk skor/);
+assert.match(htmlContoh, /ecmwf_ifs025/);
+assert.match(htmlContoh, /Hyndman/);
+assert.match(htmlContoh, /2 kab\/kota lengkap tanpa IRBI 2025/);
+assert.match(htmlContoh, /data_ok/);
+assert.match(htmlContoh, /FFMC/);
 
 console.log("Pemeriksaan prototipe lulus.");
