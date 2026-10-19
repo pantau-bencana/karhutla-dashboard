@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Badge } from "./Badge.jsx";
 import { StationMap } from "./StationMap.jsx";
 import { parseCsv } from "../lib/csv.js";
 import { formatAngka, formatTanggal, formatWib } from "../lib/format.js";
@@ -32,7 +33,7 @@ function todayInJakarta() {
   }).format(new Date());
 }
 
-export function KualitasUdara({ feeds, province }) {
+export function KualitasUdara({ feeds, province, provinces = [] }) {
   const [period, setPeriod] = useState("hari-ini");
   const [history, setHistory] = useState({ from: "", to: "" });
   const [query, setQuery] = useState("");
@@ -85,6 +86,15 @@ export function KualitasUdara({ feeds, province }) {
     return `${row.kab_kota} ${row.provinsi} ${row.kode_wilayah}`.toLocaleLowerCase("id").includes(needle);
   });
 
+  const stationCount = useMemo(() => {
+    const counts = new Map();
+    for (const row of allStations) {
+      if (!row.provinsi) continue;
+      counts.set(row.provinsi, (counts.get(row.provinsi) || 0) + 1);
+    }
+    return counts;
+  }, [allStations]);
+
   function showHistory() {
     setPeriod("historis");
     setSelectedId("");
@@ -92,7 +102,79 @@ export function KualitasUdara({ feeds, province }) {
   }
 
   return (
-    <section className="stack" aria-labelledby="ispu-heading">
+    <section className="stack" aria-label="Kualitas Udara (ISPU)">
+      <div className="split">
+        <article className="card">
+          <h2>Status per provinsi prioritas</h2>
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Provinsi</th>
+                  <th scope="col">Status data di dashboard</th>
+                  <th scope="col">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(provinces.length ? provinces : ["Tidak tersedia"]).map((name) => {
+                  const count = stationCount.get(name) || 0;
+                  return (
+                    <tr key={name}>
+                      <th scope="row">{name}</th>
+                      <td>
+                        {count ? (
+                          <Badge kind="akt">{formatAngka(count)} stasiun tersambung</Badge>
+                        ) : (
+                          <Badge kind="tau">Tidak ada data stasiun</Badge>
+                        )}
+                      </td>
+                      <td>
+                        {count ? (
+                          "Tabel stasiun di bawah"
+                        ) : (
+                          <a href={KLH_ISPU_APP} target="_blank" rel="noopener noreferrer">Lihat di ISPU KLH</a>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <p className="fine">
+            Dashboard tidak menyimpan daftar stasiun. Ketersediaan stasiun diperiksa di portal resmi. Baris tanpa pengukuran tidak diisi angka.
+          </p>
+        </article>
+        <div className="stack-card">
+          <article className="card rank-card">
+            <h2>Portal resmi ISPU – KLH</h2>
+            <p>Nilai, parameter kritis, kategori, dan waktu pembaruan per stasiun.</p>
+            <p>
+              <a className="btn pri" href={KLH_ISPU_APP} target="_blank" rel="noopener noreferrer">Buka ispu.kemenlh.go.id</a>
+            </p>
+          </article>
+          <article className="card">
+            <div className="mod-head">
+              <h2>PM2.5 model Copernicus</h2>
+              <Badge kind="pem">Pembanding, bukan BMKG/KLHK</Badge>
+            </div>
+            <p>Pembanding model atmosfer. Bukan ISPU dan tidak dikonversi ke kategori ISPU. Angka model tidak ditampilkan di halaman ini.</p>
+          </article>
+          <article className="card">
+            <div className="mod-head">
+              <h2>Indeks Kualitas Udara 2024</h2>
+              <Badge kind="sta">Data statis tahunan 2024</Badge>
+            </div>
+            <p>Satu Data KemenLH, per kab/kota, dataset terbuka dengan atribusi. Konteks tahunan, bukan ISPU. Tabel lengkap ada di bawah.</p>
+          </article>
+          <article className="empty">
+            <h2>Kenapa tidak ada angka ISPU?</h2>
+            <p>Portal ISPU belum punya API publik terdokumentasi dan katalog Satu Data belum memuat ISPU harian per stasiun. Pengambilan otomatis memerlukan izin tertulis KLH.</p>
+          </article>
+        </div>
+      </div>
+
+      {allStations.length ? <>
       <article className="card">
         <header className="card-head">
           <div>
@@ -223,6 +305,7 @@ export function KualitasUdara({ feeds, province }) {
           </div>
         </article>
       </section>
+      </> : null}
 
       <article className="card">
         <header className="card-head">
