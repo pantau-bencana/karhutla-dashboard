@@ -772,6 +772,12 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   width: fit-content;
 }
 
+.hotspot-count {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.hotspot-count h2 { margin: 0 0 6px; font-size: 1.15rem; }
 .hotspot-acc { display: grid; gap: 6px; }
 .acc-search { max-width: 280px; }
 .acc-legend {
