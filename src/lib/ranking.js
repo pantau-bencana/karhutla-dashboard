@@ -1,28 +1,12 @@
-export const RANKING_STATUS = "menunggu data resmi BMKG (FDRS/potensi karhutla per kab/kota)";
+export const RANKING_STATUS = "Belum tersedia – metode menunggu persetujuan";
 
-function topIrbi(rows) {
-  return [...(rows ?? [])]
-    .filter((row) => Number.isFinite(row.indeks))
-    .sort((a, b) => b.indeks - a.indeks || String(a.kabupaten).localeCompare(String(b.kabupaten), "id"))
-    .slice(0, 20)
-    .map((row, index) => ({
-      urutan: index + 1,
-      kabupaten: row.kabupaten,
-      provinsi: row.provinsi,
-      indeks: row.indeks,
-      kelas: row.kelas,
-      tahun: row.tahun || "2025",
-    }));
-}
-
-export function karhutlaRankingPlan({ irbiFeed } = {}) {
-  const annual = irbiFeed && !irbiFeed.contoh && irbiFeed.status !== "gagal" ? topIrbi(irbiFeed.rows) : [];
+export function karhutlaRankingPlan() {
   return {
     dapatDisusun: false,
     status: RANKING_STATUS,
     target: "15–20 kabupaten/kota",
     horizonDiminta: "14 hari",
-    izin: "Perlu permintaan data resmi dan izin tertulis ke BMKG melalui PTSP / Biro Hukum, Humas, dan Kerja Sama (https://ptsp.bmkg.go.id/). Peringkat tidak disusun dari citra prakiraan.",
+    izin: "Peringkat tidak disusun. Metode 15–20 kabupaten/kota untuk 14 hari menunggu persetujuan. Yang masih kurang: FDRS atau FWI BMKG terstruktur per kabupaten/kota (citra SPARTAN hanya tautan, horizon hingga H+7 sesuai produk BMKG), peluang hujan lebih dari 20 mm resmi per kabupaten/kota (bukan jumlah tp pada prakiraan 3 hari), serta aturan gabungan yang disetujui. IRBI 2025, GWIS, dan GFWED tidak dipakai sebagai daftar prioritas.",
     masukan: [
       {
         nama: "FDRS dan potensi karhutla BMKG",
@@ -45,6 +29,5 @@ export function karhutlaRankingPlan({ irbiFeed } = {}) {
         catatan: "Rangkaian DIBI yang terfilter karhutla berlingkup nasional, bukan per kabupaten.",
       },
     ],
-    annual,
   };
 }

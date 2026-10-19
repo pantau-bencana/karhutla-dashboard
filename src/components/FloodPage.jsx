@@ -124,6 +124,12 @@ function FloodBody() {
 
   return (
     <main className="wrap main">
+      <header className="page-head">
+        <div>
+          <h1>Banjir · Aceh & Bengkulu</h1>
+          <p className="lead">Konteks risiko jangka panjang (inaRISK, IRBI 2025) digabung dengan tautan nowcast BMKG. Ini bukan prakiraan 14 hari.</p>
+        </div>
+      </header>
       <p className="banner warn" role="status">
         <strong>{FLOOD_PERMISSION}</strong>
         <span> {IRBI_PERMISSION}</span>

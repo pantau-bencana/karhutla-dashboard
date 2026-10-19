@@ -1,6 +1,6 @@
 # Dashboard Peringatan Dini Karhutla Nasional
 
-Prototipe internal Dit. PD BNPB. Jangan dipublikasikan tanpa persetujuan.
+Pantau Bencana v0.1 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH.
 
 Dasbor statis untuk memantau kebakaran hutan dan lahan (karhutla): sebaran titik panas, jumlah deteksi per provinsi, lapisan Kualitas Udara (ISPU), rekap SiPongi, dan indeks IRBI. Antarmuka berbahasa Indonesia. Tidak ada server aplikasi. Situs publik membaca cuplikan di `data/live`. Berkas contoh hotspot tidak ditampilkan bila cuplikan gagal.
 

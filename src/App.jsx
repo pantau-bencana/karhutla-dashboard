@@ -3,10 +3,13 @@ import { DashboardView } from "./components/DashboardView.jsx";
 import { Footer } from "./components/Footer.jsx";
 import { GlossaryPage } from "./components/GlossaryPage.jsx";
 import { HazardPlaceholder } from "./components/HazardPlaceholder.jsx";
+import { KualitasUdara } from "./components/KualitasUdara.jsx";
 import { LogicPage } from "./components/LogicPage.jsx";
+import { MetodePage } from "./components/MetodePage.jsx";
 import { SiteHeader } from "./components/SiteHeader.jsx";
 import { SourcesPage } from "./components/SourcesPage.jsx";
 import { SummaryPage } from "./components/SummaryPage.jsx";
+import { VolcanoPage } from "./components/VolcanoPage.jsx";
 import { defaultRange, deriveDashboard } from "./lib/derive.js";
 import { hazardById } from "./lib/hazards.js";
 import { loadAll } from "./lib/loadData.js";
@@ -16,7 +19,7 @@ import { MANIFEST_POLL_MINUTES } from "./lib/schedule.js";
 
 const FloodPage = lazy(() => import("./components/FloodPage.jsx").then((module) => ({ default: module.FloodPage })));
 
-const DEFAULT_TITLE = "Prototipe Pemantauan Karhutla";
+const DEFAULT_TITLE = "Pantau Bencana v0.1";
 
 function useLocation() {
   const initial = parseLocation(window.location.hash);
@@ -90,7 +93,7 @@ export function App() {
 
   useEffect(() => {
     const hazardName = hazardById(hazard).nama;
-    const pageName = { ringkasan: "Ringkasan", peta: "Peta dan Data", logika: "Logika Pemantauan", sumber: "Sumber Data", glosarium: "Glosarium" }[page] || "Ringkasan";
+    const pageName = { ringkasan: "Ringkasan", peta: "Peta dan Data", ispu: "Kualitas Udara", logika: "Logika Pemantauan", sumber: "Sumber Data", metode: "Sumber dan Metode", glosarium: "Glosarium" }[page] || "Ringkasan";
     document.title = `${pageName} ${hazardName} — ${config?.judul || DEFAULT_TITLE}`;
   }, [page, hazard, config]);
 
@@ -120,36 +123,27 @@ export function App() {
     observedAt: hotspotFeed?.observedAt || manifest?.datasets?.hotspot?.observed_at || "",
     nextRun: manifest?.next_run || "",
   });
-  const built = hazardById(hazard).siap && page !== "glosarium";
-  const flood = hazard === "banjir" && (page === "ringkasan" || page === "peta");
-  const title = page === "glosarium" ? "Glosarium" : `${hazardById(hazard).nama}`;
-  const subtitle =
-    page === "glosarium"
-      ? "Singkatan dan istilah pada dasbor."
-      : hazard === "karhutla"
-        ? "Prototipe pemantauan kebakaran hutan dan lahan. Bukan peringatan resmi."
-        : hazardById(hazard).status;
+  const built = hazardById(hazard).siap && page !== "glosarium" && page !== "metode";
+  const flood = hazard === "banjir" && page !== "glosarium" && page !== "metode" && (page === "ringkasan" || page === "peta");
 
   return (
     <>
       <SiteHeader
-        eyebrow={config?.instansi || "Dit. PD BNPB"}
-        title={title}
-        subtitle={subtitle}
         manifest={manifest}
-        freshness={freshness}
         onReload={() => reload()}
         loading={loading}
         page={page}
         hazard={hazard}
       />
       {page === "glosarium" ? <GlossaryPage /> : null}
+      {page === "metode" ? <MetodePage manifest={manifest} /> : null}
+      {hazard === "gunung-api" && page !== "glosarium" && page !== "metode" ? <VolcanoPage /> : null}
       {flood ? (
         <Suspense fallback={<main className="wrap main"><p>Memuat modul Banjir…</p></main>}>
           <FloodPage />
         </Suspense>
       ) : null}
-      {!built && !flood && page !== "glosarium" ? <HazardPlaceholder hazardId={hazard} /> : null}
+      {!built && !flood && hazard !== "gunung-api" && page !== "glosarium" && page !== "metode" ? <HazardPlaceholder hazardId={hazard} /> : null}
       {built && page === "ringkasan" ? (
         configError && !config ? (
           <ConfigError message={configError} />
@@ -176,6 +170,17 @@ export function App() {
             freshness={freshness}
           />
         )
+      ) : null}
+      {built && page === "ispu" ? (
+        <main className="wrap main">
+          <header className="page-head">
+            <div>
+              <h1>Kualitas Udara (ISPU)</h1>
+              <p className="lead">ISPU diukur di stasiun pemantau KLH. Dashboard ini tidak mengambil data ISPU otomatis dan tidak membuat prediksi ISPU.</p>
+            </div>
+          </header>
+          <KualitasUdara feeds={feeds} province={province} />
+        </main>
       ) : null}
       {built && page === "logika" ? <LogicPage config={config} /> : null}
       {built && page === "sumber" ? <SourcesPage manifest={manifest} /> : null}

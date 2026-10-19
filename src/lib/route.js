@@ -29,6 +29,8 @@ export function parseLocation(hash) {
   let page = "ringkasan";
   if (token === "logika" || token === "logika-pemantauan") page = "logika";
   else if (token === "peta" || token === "peta-dan-data" || token === "dashboard") page = "peta";
+  else if (token === "ispu" || token === "kualitas-udara") page = "ispu";
+  else if (token === "sumber-metode" || token === "metode") page = "metode";
   else if (token === "sumber" || token === "sumber-data") page = "sumber";
   else if (token === "ringkasan") page = "ringkasan";
   return { hazard, page, term: "" };
@@ -40,6 +42,7 @@ export function parseRoute(hash) {
 
 export function pageHref(page, hazard = "karhutla") {
   if (page === "glosarium") return "#/glosarium";
+  if (page === "metode") return "#/sumber-metode";
   const safeHazard = hazard === "gunungapi" ? "gunung-api" : hazard || "karhutla";
   if (safeHazard === "karhutla") {
     if (!page || page === "ringkasan" || page === "dashboard") return "#/";

@@ -93,6 +93,12 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
 
   return (
     <main className="wrap main">
+      <header className="page-head">
+        <div>
+          <h1>Karhutla · Peta dan Data</h1>
+          <p className="lead">Peta lebih dulu: lihat sebaran, lalu periksa jumlah per provinsi.</p>
+        </div>
+      </header>
       {failures.length > 0 && (
         <div className="banner error is-sticky" role="alert">
           <strong>Sebagian sumber gagal dimuat. Bagian lain tetap ditampilkan.</strong>

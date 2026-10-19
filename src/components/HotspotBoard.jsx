@@ -173,6 +173,8 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
         {freshness?.tertunda ? <span className="tag">tertunda</span> : null}
       </p>
       <GwisFwiToggle date={modelDate} enabled={fwiOn} onEnabled={setFwiOn} onReady={onFwiReady} />
+      <div className="board-split">
+      <div className="board-map">
       <div className="map-toolbar">
         <button type="button" className="button" onClick={() => mapApi.current?.showIndonesia()}>Kembali ke seluruh Indonesia</button>
       </div>
@@ -188,6 +190,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
           </div>
         ) : null}
         <HotspotMap points={filtered} frame="indonesia" mapApi={mapApi} selectedKey={selectedKey} onSelect={choosePoint} fwiDate={fwiOn && fwiReady ? modelDate : ""} />
+      </div>
       </div>
       <section className="hotspot-count" aria-labelledby="hotspot-count-heading">
         <h2 id="hotspot-count-heading">Jumlah deteksi hotspot (bukan status)</h2>
@@ -205,6 +208,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
         </details>
         <HotspotAccordion points={filtered} onFocus={focusGroup} selectedKey={selectedGroup} revealKey={mapReveal} />
       </section>
+      </div>
     </div>
   );
 }

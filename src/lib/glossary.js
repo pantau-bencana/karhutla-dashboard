@@ -204,6 +204,17 @@ export const GLOSSARY = [
     rujukanLabel: "Natural Resources Canada — FWI",
   },
   {
+    id: "iku",
+    istilah: "IKU",
+    nama: "Indeks Kualitas Udara",
+    penjelasan:
+      "Indeks tahunan mutu udara per kabupaten/kota pada Satu Data Kementerian Lingkungan Hidup. Bukan Indeks Standar Pencemar Udara dan bukan pengukuran hari ini.",
+    penggunaan:
+      "Tabel 2024 ditampilkan sebagai konteks statis di lapisan Kualitas Udara, dengan atribusi ke Direktorat Perlindungan dan Pengelolaan Mutu Udara. Tidak diwarnai dan tidak dijadikan peringkat.",
+    rujukan: "https://satudata.kemenlh.go.id/dataset/indeks-kualitas-udara",
+    rujukanLabel: "Satu Data KemenLH — Indeks Kualitas Udara",
+  },
+  {
     id: "ispu",
     istilah: "ISPU",
     nama: "Indeks Standar Pencemar Udara",

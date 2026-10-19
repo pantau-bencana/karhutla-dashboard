@@ -244,7 +244,7 @@ export const SOURCES = [
     kind: "tautan",
     updateType: "",
     limitation:
-      "Tidak ada dokumentasi API publik. Token yang tertanam di aplikasi web tidak dipakai. Tanpa stasiun resmi, Hari Ini dan Historis ditulis tidak tersedia. Tidak ada prediksi ISPU.",
+      "Pada Satu Data KemenLH tidak ada dataset deret waktu ISPU harian, per jam, atau per stasiun (diperiksa 19 Oktober 2026). Token yang tertanam di aplikasi web tidak dipakai. Hari Ini dan Historis ditulis tidak tersedia. Tidak ada prediksi ISPU. Indeks Kualitas Udara 2024 adalah tabel tahunan terpisah, bukan pengganti ISPU.",
     comparisons: [
       {
         id: "ispu_pembanding",
@@ -261,6 +261,22 @@ export const SOURCES = [
         access: "API",
       },
     ],
+  },
+  {
+    id: "iku_2024",
+    nama: "Indeks Kualitas Udara 2024",
+    instansi: "Kementerian Lingkungan Hidup – Direktorat Perlindungan dan Pengelolaan Mutu Udara",
+    fungsi: "Konteks tahunan mutu udara per kabupaten/kota. Bukan ISPU dan bukan kondisi harian.",
+    officialUrl: "https://satudata.kemenlh.go.id/dataset/indeks-kualitas-udara",
+    officialLabel: "Satu Data KemenLH — Indeks Kualitas Udara",
+    extraUrls: [["Kebijakan Satu Data KemenLH", "https://satudata.kemenlh.go.id/tentang/kebijakan"]],
+    access: "Terbuka",
+    needsKey: false,
+    kind: "statis",
+    updateType: "Tahunan / statis",
+    file: "data/static/iku-2024-kabupaten.csv",
+    limitation:
+      "509 baris tahun 2024 dari API terbuka Satu Data, disalin 19 Oktober 2026. Sumber menulis pembaruan 8 Juli 2026. Metode pada halaman dataset: 40% indeks SO2, 40% indeks NO2, dan 20% indeks PM2.5 dari data ambien tahunan. Tidak ada kelas warna resmi pada berkas ini. Beberapa kode wilayah terulang untuk nama yang berbeda dan disimpan apa adanya. Tidak diurutkan sebagai peringkat.",
   },
   {
     id: "bmkg_cap",

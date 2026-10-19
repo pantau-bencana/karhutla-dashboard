@@ -1,10 +1,12 @@
+const IDENTITY = "Pantau Bencana v0.1 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH.";
+
 export function Footer() {
   return (
     <footer className="footer">
-      <p className="footer-notice">Prototipe internal Dit. PD BNPB. Jangan dipublikasikan tanpa persetujuan.</p>
       <p>
-        Jumlah pada dasbor ini adalah pengamatan. Bukan peringatan dini resmi BNPB, BMKG, atau instansi sumber data.
+        <strong>{IDENTITY}</strong> Setiap angka mencantumkan sumber, jenis data (observasi, prakiraan, model pembanding, statis, atau tautan), dan waktu data. Hotspot adalah deteksi satelit, bukan konfirmasi kebakaran. Data model pihak ketiga bukan prakiraan resmi.
       </p>
+      <p>Kode sumber terbuka di GitHub: pantau-bencana/karhutla-dashboard. Lisensi dan atribusi tiap sumber ada di halaman Sumber & Metode.</p>
     </footer>
   );
 }
