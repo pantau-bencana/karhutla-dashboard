@@ -45,7 +45,7 @@ function SelectFilter({ label, value, onChange, options, empty }) {
   );
 }
 
-export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observedAt, freshness, sumber }) {
+export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observedAt, freshness, sumber, from = "", to = "" }) {
   const mapApi = useRef(null);
   const [hours, setHours] = useState(24);
   const [provinceFilter, setProvinceFilter] = useState("semua");
@@ -128,7 +128,6 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
       <DatasetTiming feed={feed} />
       {fetchedAt ? <p className="fine">Diambil {formatWib(fetchedAt)}. Usia cuplikan mengikuti waktu ambil itu.</p> : null}
       {filterIncomplete ? <p className="banner warn is-sticky">{FILTER_INCOMPLETE}</p> : null}
-      {unverified ? <p className="fine">{formatAngka(unverified)} titik belum terverifikasi wilayah</p> : null}
       <div className="province-filter" role="group" aria-label="Jendela waktu hotspot">
         {WINDOWS.map(([value, label]) => (
           <button key={value} type="button" aria-pressed={hours === value} onClick={() => setHours(value)}>
@@ -174,6 +173,8 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
         {freshness?.tertunda ? <span className="tag">tertunda</span> : null}
       </p>
       <GwisFwiToggle date={modelDate} enabled={fwiOn} onEnabled={setFwiOn} onReady={onFwiReady} />
+      <div className="board-split">
+      <div className="board-map">
       <div className="map-toolbar">
         <button type="button" className="button" onClick={() => mapApi.current?.showIndonesia()}>Kembali ke seluruh Indonesia</button>
       </div>
@@ -190,7 +191,24 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
         ) : null}
         <HotspotMap points={filtered} frame="indonesia" mapApi={mapApi} selectedKey={selectedKey} onSelect={choosePoint} fwiDate={fwiOn && fwiReady ? modelDate : ""} />
       </div>
-      <HotspotAccordion points={filtered} onFocus={focusGroup} selectedKey={selectedGroup} revealKey={mapReveal} />
+      </div>
+      <section className="hotspot-count" aria-labelledby="hotspot-count-heading">
+        <h2 id="hotspot-count-heading">Jumlah deteksi hotspot (bukan status)</h2>
+        <p>
+          Periode {WINDOWS.find(([value]) => value === hours)?.[1]}
+          {from && to ? ` di dalam tanggal ${from}–${to}` : ""}. Bukan status operasional.
+          {unverified ? ` ${formatAngka(unverified)} titik belum terverifikasi wilayah.` : ""}
+          {" "}Daftar mengikuti saringan di atas dan memusatkan peta saat baris dipilih.
+        </p>
+        <details className="read-help">
+          <summary>Cara membaca</summary>
+          <p>
+            Satelit: {hotspotSourceLabel(feed, sumber || meta?.sumber)}. Urutan provinsi mengikuti jumlah titik, dari yang terbanyak. Angka berwarna adalah confidence deteksi satelit: rendah, nominal (sedang), dan tinggi. Bukan tingkat bahaya. Membuka provinsi menampilkan kecamatan, lalu desa.
+          </p>
+        </details>
+        <HotspotAccordion points={filtered} onFocus={focusGroup} selectedKey={selectedGroup} revealKey={mapReveal} />
+      </section>
+      </div>
     </div>
   );
 }

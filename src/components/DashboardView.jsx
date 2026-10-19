@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { ExtraLayers, LayerBar, WilayahDetail } from "./ExtraLayers.jsx";
+import { PrioritasPanel } from "./PrioritasPanel.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { HotspotBoard } from "./HotspotBoard.jsx";
 import { GfwedTable } from "./GfwedTable.jsx";
-import { HotspotAccordion } from "./HotspotAccordion.jsx";
 import { TrendCharts } from "./TrendCharts.jsx";
 import { defaultRange } from "../lib/derive.js";
 import { hotspotSourceLabel } from "../lib/freshness.js";
@@ -94,6 +94,12 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
 
   return (
     <main className="wrap main">
+      <header className="page-head">
+        <div>
+          <h1>Karhutla · Peta dan Data</h1>
+          <p className="lead">Peta lebih dulu: lihat sebaran, lalu periksa jumlah per provinsi.</p>
+        </div>
+      </header>
       {failures.length > 0 && (
         <div className="banner error is-sticky" role="alert">
           <strong>Sebagian sumber gagal dimuat. Bagian lain tetap ditampilkan.</strong>
@@ -203,17 +209,11 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
             observedAt={hotspotFeed?.observedAt}
             freshness={freshness}
             sumber={config.firms?.sumber}
+            from={from}
+            to={to}
           />
         )}
       </section>
-
-      <ProvinceCounts
-        points={view.points}
-        from={from}
-        to={to}
-        sumber={hotspotSourceLabel(hotspotFeed, config.firms?.sumber)}
-        summary={view.summary}
-      />
 
       <TrendCharts hotspotTrend={view.hotspotTrend} hotspotSeries={view.hotspotSeries} province={province} />
 
@@ -334,33 +334,8 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
         )}
       </section>
       <GfwedTable rows={feeds.find((feed) => feed.id === "gfwed_kabupaten")?.rows} />
+      <PrioritasPanel snapshot={feeds.prioritas} />
     </main>
-  );
-}
-
-function ProvinceCounts({ points, from, to, sumber, summary }) {
-  return (
-    <section className="card">
-      <header className="card-head">
-        <div>
-          <h2>Jumlah deteksi hotspot (bukan status)</h2>
-          <p>
-            Periode {from || "—"}–{to || "—"}. Bukan status operasional.
-            {summary?.belumTerverifikasi
-              ? ` ${formatAngka(summary.belumTerverifikasi)} titik belum terverifikasi wilayah.`
-              : ""}
-          </p>
-        </div>
-      </header>
-      <details className="read-help">
-        <summary>Cara membaca</summary>
-        <p>
-          Satelit: {sumber || "—"}. Urutan provinsi mengikuti jumlah titik, dari yang terbanyak. Angka berwarna adalah
-          confidence deteksi satelit: rendah, nominal (sedang), dan tinggi. Bukan tingkat bahaya.
-        </p>
-      </details>
-      <HotspotAccordion points={points} />
-    </section>
   );
 }
 

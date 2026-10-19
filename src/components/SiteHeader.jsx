@@ -1,61 +1,89 @@
-import { HAZARDS } from "../lib/hazards.js";
+import { useState } from "react";
 import { formatWib } from "../lib/format.js";
-import { hazardHref, pageHref } from "../lib/route.js";
+import { pageHref } from "../lib/route.js";
 
-const PAGES = [
-  ["ringkasan", "Ringkasan"],
-  ["peta", "Peta dan Data"],
-  ["logika", "Logika Pemantauan"],
-  ["sumber", "Sumber Data"],
-  ["glosarium", "Glosarium"],
+const TOP = [
+  ["ringkasan", "Ringkasan", "#/"],
+  ["karhutla", "Karhutla", "#/karhutla/peta"],
+  ["banjir", "Banjir", "#/banjir"],
+  ["gunung-api", "Gunung Api", "#/gunung-api"],
+  ["metode", "Sumber & Metode", "#/sumber-metode"],
 ];
 
-export function SiteHeader({ eyebrow, title, subtitle, manifest, freshness, onReload, loading, page, hazard }) {
+const KARHUTLA_PAGES = [
+  ["ringkasan", "Ringkasan", "#/"],
+  ["peta", "Peta dan Data", "#/karhutla/peta"],
+  ["ispu", "Kualitas Udara (ISPU)", "#/karhutla/ispu"],
+  ["logika", "Logika Pemantauan", "#/karhutla/logika"],
+  ["sumber", "Sumber Data", "#/karhutla/sumber"],
+  ["glosarium", "Glosarium", "#/glosarium"],
+];
+
+function topCurrent(id, page, hazard) {
+  if (id === "metode") return page === "metode";
+  if (id === "ringkasan") return page === "ringkasan" && hazard === "karhutla";
+  if (id === "karhutla") return hazard === "karhutla" && page !== "ringkasan" && page !== "metode";
+  return hazard === id && page !== "metode";
+}
+
+export function SiteHeader({ manifest, onReload, loading, page, hazard }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const showSub = hazard === "karhutla" && page !== "ringkasan" && page !== "metode";
+  const loaded = manifest?.generated_at ? formatWib(manifest.generated_at) : "belum ada snapshot";
+
   return (
-    <header className="site-header">
-      <div className="stripe" aria-hidden="true" />
-      <div className="wrap header-inner">
-        <div className="brand">
-          <span className="mark" aria-hidden="true">
-            <svg viewBox="0 0 32 32" width="36" height="36">
-              <rect width="32" height="32" rx="7" fill="#e8b931" />
-              <path
-                fill="#143028"
-                d="M16 5c2 4 2 6-1 8 3 0 6 2 6 6a7 7 0 1 1-14 0c0-3 2-5 4-6-1 2-1 3 1 4-2-3-1-7 4-12z"
-              />
-            </svg>
+    <>
+      <header className="topbar">
+        <a className="brand" href="#/">
+          <span className="logo" aria-hidden="true"><span /></span>
+          <span>
+            <span className="bname">Pantau Bencana <span className="bver">v0.1</span></span>
+            <span className="bsub">Proyek data terbuka komunitas · bukan sistem resmi pemerintah</span>
           </span>
-          <div>
-            <p className="eyebrow">{eyebrow}</p>
-            <h1>{title}</h1>
-            {subtitle ? <p className="subtitle">{subtitle}</p> : null}
-          </div>
+        </a>
+        <nav className="nav" aria-label="Bagian">
+          {TOP.map(([id, label, href]) => (
+            <a key={id} href={href} aria-current={topCurrent(id, page, hazard) ? "page" : undefined}>{label}</a>
+          ))}
+        </nav>
+        <div className="tright">
+          <p className="small">Dimuat {loaded}</p>
+          <button type="button" className="btn" onClick={onReload} disabled={loading}>
+            {loading ? "Memuat…" : "Muat ulang"}
+          </button>
+          <button type="button" className="btn menu-btn" aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}>
+            Menu
+          </button>
         </div>
-        <div className="header-side">
-          <nav className="hazard-tabs" aria-label="Bahaya">
-            {HAZARDS.map((item) => (
-              <a key={item.id} href={hazardHref(item.id)} aria-current={hazard === item.id ? "page" : undefined}>
-                {item.nama}
-              </a>
-            ))}
-          </nav>
-          <nav className="site-nav" aria-label="Halaman">
-            {PAGES.map(([id, label]) => (
-              <a key={id} href={pageHref(id, hazard)} aria-current={page === id ? "page" : undefined}>
-                {label}
-              </a>
-            ))}
-          </nav>
-          <div className="header-actions">
-            <p>Terakhir diperbarui {manifest?.generated_at ? formatWib(manifest.generated_at) : "belum ada snapshot"}</p>
-            {freshness?.tertunda ? <p><strong>Data tertunda</strong></p> : null}
-            {freshness?.nextVisible ? <p>Pembaruan berikutnya {formatWib(freshness.nextRun)}</p> : null}
-            <button type="button" className="button" onClick={onReload} disabled={loading}>
-              {loading ? "Memuat…" : "Muat ulang"}
-            </button>
-          </div>
-        </div>
+      </header>
+      {showSub ? (
+        <nav className="subnav" aria-label="Halaman Karhutla">
+          {KARHUTLA_PAGES.map(([id, label, href]) => (
+            <a key={id} href={href} aria-current={page === id ? "page" : undefined}>{label}</a>
+          ))}
+        </nav>
+      ) : null}
+      {menuOpen ? (
+        <nav className="menu-panel" aria-label="Menu">
+          {TOP.map(([id, label, href]) => (
+            <a key={id} href={href} onClick={() => setMenuOpen(false)}>{label}</a>
+          ))}
+          <a href={pageHref("glosarium")} onClick={() => setMenuOpen(false)}>Glosarium</a>
+        </nav>
+      ) : null}
+      <div className="notice">
+        <p>
+          <strong>Prototipe v0.1.</strong> Kompilasi data dari sumber publik. Bukan peringatan resmi — untuk keputusan operasional, rujuk BNPB, BMKG, PVMBG, dan KLH.
+        </p>
       </div>
-    </header>
+      <nav className="tabbar" aria-label="Bagian">
+        {TOP.map(([id, label, href]) => (
+          <a key={id} href={href} aria-current={topCurrent(id, page, hazard) ? "page" : undefined}>
+            <span aria-hidden="true" />
+            {id === "metode" ? "Sumber" : label}
+          </a>
+        ))}
+      </nav>
+    </>
   );
 }

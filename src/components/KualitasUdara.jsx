@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { StationMap } from "./StationMap.jsx";
+import { parseCsv } from "../lib/csv.js";
 import { formatAngka, formatTanggal, formatWib } from "../lib/format.js";
 import {
   ISPU_EXPLANATION,
@@ -49,6 +50,40 @@ export function KualitasUdara({ feeds, province }) {
     query,
   });
   const measurements = openAqMeasurements(feeds);
+  const [ikuRows, setIkuRows] = useState([]);
+  const [ikuState, setIkuState] = useState("memuat");
+  const [ikuQuery, setIkuQuery] = useState("");
+
+  useEffect(() => {
+    let cancel = false;
+    const url = new URL("data/static/iku-2024-kabupaten.csv", document.baseURI).href;
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) throw new Error(String(response.status));
+        return response.text();
+      })
+      .then((text) => {
+        if (cancel) return;
+        const parsed = parseCsv(text)
+          .filter((row) => row.kode_wilayah && row.kab_kota)
+          .sort((a, b) => String(a.kode_wilayah).localeCompare(String(b.kode_wilayah), "id", { numeric: true })
+            || String(a.kab_kota).localeCompare(String(b.kab_kota), "id"));
+        setIkuRows(parsed);
+        setIkuState(parsed.length ? "ada" : "kosong");
+      })
+      .catch(() => {
+        if (!cancel) setIkuState("gagal");
+      });
+    return () => {
+      cancel = true;
+    };
+  }, []);
+
+  const ikuVisible = ikuRows.filter((row) => {
+    const needle = ikuQuery.trim().toLocaleLowerCase("id");
+    if (!needle) return true;
+    return `${row.kab_kota} ${row.provinsi} ${row.kode_wilayah}`.toLocaleLowerCase("id").includes(needle);
+  });
 
   function showHistory() {
     setPeriod("historis");
@@ -206,6 +241,60 @@ export function KualitasUdara({ feeds, province }) {
             {" · "}
             <a href={KLH_ISPU_ANALYTIC} target="_blank" rel="noopener noreferrer">Analisis kawasan ISPU</a>
           </p>
+        </div>
+      </article>
+
+      <article className="card">
+        <header className="card-head">
+          <div>
+            <h2>Indeks Kualitas Udara 2024 (tahunan, statis) — bukan ISPU, bukan kondisi harian</h2>
+            <p>Sumber: Kementerian Lingkungan Hidup – Direktorat Perlindungan dan Pengelolaan Mutu Udara (Satu Data KemenLH)</p>
+          </div>
+        </header>
+        <div className="logic-body">
+          <p>
+            Akses Terbuka. Tahun data 2024. Pembaruan pada sumber 8 Juli 2026. Disalin 19 Oktober 2026.
+            Metode pada halaman dataset: 40% indeks SO2, 40% indeks NO2, dan 20% indeks PM2.5 dari data ambien tahunan.
+            Tidak ada kelas resmi pada berkas ini, jadi angka tidak diwarnai. Urutan mengikuti kode wilayah, bukan nilai IKU.
+          </p>
+          <p>
+            <a href="https://satudata.kemenlh.go.id/dataset/indeks-kualitas-udara" target="_blank" rel="noopener noreferrer">Halaman dataset</a>
+            {" · "}
+            <a href="https://satudata.kemenlh.go.id/tentang/kebijakan" target="_blank" rel="noopener noreferrer">Kebijakan pemakaian</a>
+          </p>
+          <p className="fine">
+            Beberapa kode wilayah pada sumber terulang untuk kabupaten dan kota yang berbeda. Kode disimpan apa adanya.
+          </p>
+          <label className="search-field">
+            Cari kabupaten/kota atau provinsi
+            <input type="search" value={ikuQuery} onChange={(event) => setIkuQuery(event.target.value)} />
+          </label>
+        </div>
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Kode wilayah</th>
+                <th scope="col">Kabupaten/kota</th>
+                <th scope="col">Provinsi</th>
+                <th scope="col">IKU 2024</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ikuState === "ada" && ikuVisible.length ? ikuVisible.map((row) => (
+                <tr key={`${row.kode_wilayah}-${row.kab_kota}`}>
+                  <td>{row.kode_wilayah}</td>
+                  <th scope="row">{row.kab_kota}</th>
+                  <td>{row.provinsi}</td>
+                  <td>{row.iku}</td>
+                </tr>
+              )) : (
+                <tr>
+                  <td colSpan={4}>{ikuState === "memuat" ? "Memuat tabel IKU…" : "Tidak tersedia"}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </article>
 

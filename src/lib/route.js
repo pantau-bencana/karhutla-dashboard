@@ -17,7 +17,7 @@ function hashPath(hash) {
 export function parseLocation(hash) {
   const parts = hashPath(hash).split("/").filter(Boolean);
   if (parts[0] === "glosarium") {
-    return { hazard: "karhutla", page: "glosarium", term: parts[1] || "" };
+    return { hazard: "karhutla", page: "glosarium", term: parts[1] || "", anchor: "" };
   }
   let hazard = "karhutla";
   let rest = parts;
@@ -29,9 +29,12 @@ export function parseLocation(hash) {
   let page = "ringkasan";
   if (token === "logika" || token === "logika-pemantauan") page = "logika";
   else if (token === "peta" || token === "peta-dan-data" || token === "dashboard") page = "peta";
+  else if (token === "ispu" || token === "kualitas-udara") page = "ispu";
+  else if (token === "sumber-metode" || token === "metode") page = "metode";
   else if (token === "sumber" || token === "sumber-data") page = "sumber";
   else if (token === "ringkasan") page = "ringkasan";
-  return { hazard, page, term: "" };
+  const anchor = token === "sumber-metode" || token === "metode" ? rest[1] || "" : "";
+  return { hazard, page, term: "", anchor };
 }
 
 export function parseRoute(hash) {
@@ -40,6 +43,7 @@ export function parseRoute(hash) {
 
 export function pageHref(page, hazard = "karhutla") {
   if (page === "glosarium") return "#/glosarium";
+  if (page === "metode") return "#/sumber-metode";
   const safeHazard = hazard === "gunungapi" ? "gunung-api" : hazard || "karhutla";
   if (safeHazard === "karhutla") {
     if (!page || page === "ringkasan" || page === "dashboard") return "#/";

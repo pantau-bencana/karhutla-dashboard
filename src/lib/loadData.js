@@ -525,6 +525,15 @@ export async function loadAll(config, deps = {}) {
   );
   if (gfwed && !feeds.some((feed) => feed.id === "gfwed_kabupaten")) feeds.push(gfwed);
 
+  let prioritas = null;
+  try {
+    const response = await fetchImpl(resolveUrl("data/live/prioritas_aplus.json"), { cache: "no-store" });
+    if (response.ok) prioritas = await response.json();
+  } catch {
+    prioritas = null;
+  }
+  feeds.prioritas = prioritas && typeof prioritas === "object" ? prioritas : null;
+
   feeds.manifest = manifest;
   return feeds;
 }

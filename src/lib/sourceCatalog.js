@@ -244,7 +244,7 @@ export const SOURCES = [
     kind: "tautan",
     updateType: "",
     limitation:
-      "Tidak ada dokumentasi API publik. Token yang tertanam di aplikasi web tidak dipakai. Tanpa stasiun resmi, Hari Ini dan Historis ditulis tidak tersedia. Tidak ada prediksi ISPU.",
+      "Pada Satu Data KemenLH tidak ada dataset deret waktu ISPU harian, per jam, atau per stasiun (diperiksa 19 Oktober 2026). Token yang tertanam di aplikasi web tidak dipakai. Hari Ini dan Historis ditulis tidak tersedia. Tidak ada prediksi ISPU. Indeks Kualitas Udara 2024 adalah tabel tahunan terpisah, bukan pengganti ISPU.",
     comparisons: [
       {
         id: "ispu_pembanding",
@@ -261,6 +261,22 @@ export const SOURCES = [
         access: "API",
       },
     ],
+  },
+  {
+    id: "iku_2024",
+    nama: "Indeks Kualitas Udara 2024",
+    instansi: "Kementerian Lingkungan Hidup – Direktorat Perlindungan dan Pengelolaan Mutu Udara",
+    fungsi: "Konteks tahunan mutu udara per kabupaten/kota. Bukan ISPU dan bukan kondisi harian.",
+    officialUrl: "https://satudata.kemenlh.go.id/dataset/indeks-kualitas-udara",
+    officialLabel: "Satu Data KemenLH — Indeks Kualitas Udara",
+    extraUrls: [["Kebijakan Satu Data KemenLH", "https://satudata.kemenlh.go.id/tentang/kebijakan"]],
+    access: "Terbuka",
+    needsKey: false,
+    kind: "statis",
+    updateType: "Tahunan / statis",
+    file: "data/static/iku-2024-kabupaten.csv",
+    limitation:
+      "509 baris tahun 2024 dari API terbuka Satu Data, disalin 19 Oktober 2026. Sumber menulis pembaruan 8 Juli 2026. Metode pada halaman dataset: 40% indeks SO2, 40% indeks NO2, dan 20% indeks PM2.5 dari data ambien tahunan. Tidak ada kelas warna resmi pada berkas ini. Beberapa kode wilayah terulang untuk nama yang berbeda dan disimpan apa adanya. Tidak diurutkan sebagai peringkat.",
   },
   {
     id: "bmkg_cap",
@@ -326,6 +342,26 @@ export const SOURCES = [
     expectedMaxAgeHours: 24 * 30 * 18,
     limitation:
       "Lisensi ODC-BY. Hanya baris jenis KEBAKARAN HUTAN DAN LAHAN pada tabel nasional. Tabel kabupaten 2010–2024 pada paket yang sama menjumlahkan semua jenis bencana, sehingga tidak dipakai sebagai kejadian karhutla per kabupaten. Tabel kabupaten 2024 yang memuat kolom BANJIR dipakai hanya pada modul Banjir. Unduhan XLSX dapat tertahan Cloudflare; pengambilan memakai datastore CKAN.",
+  },
+  {
+    id: "prioritas_aplus",
+    nama: "Prioritas kesiapsiagaan 14 hari (FWI hanya 9 hari)",
+    instansi: "Pemodelan pihak ketiga (GWIS, Open-Meteo, FIRMS, IRBI)",
+    fungsi: "Daftar paling banyak 15 kab/kota pada enam provinsi, plus blok hotspot nasional. Bukan prakiraan resmi BMKG/BNPB.",
+    officialUrl: "https://gwis.jrc.ec.europa.eu/about-gwis/technical-background/fire-danger-forecast",
+    officialLabel: "GWIS Fire Danger Forecast",
+    extraUrls: [
+      ["Lisensi Open-Meteo", "https://open-meteo.com/en/licence"],
+      ["de Groot dkk. 2007", "https://doi.org/10.1007/s11027-006-9043-8"],
+    ],
+    access: "API",
+    needsKey: false,
+    kind: "dinamis",
+    updateType: "Harian",
+    expectedMaxAgeHours: 36,
+    file: "data/live/prioritas_aplus.json",
+    limitation:
+      "Open-Meteo CC BY 4.0, nonkomersial. FWI hanya 9 hari. Ambang FFMC/DC dari literatur, diterapkan pada nilai model, bukan kelas BMKG. Geometri BIG tidak disimpan.",
   },
 ];
 

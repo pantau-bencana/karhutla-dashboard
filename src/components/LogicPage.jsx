@@ -46,12 +46,9 @@ export function LogicPage() {
         </header>
         <div className="logic-body">
           <p>
-            Rencana karhutla adalah menyusun 15–20 kabupaten/kota dengan risiko tertinggi untuk periode yang diminta
-            14 hari, memakai bahaya api BMKG (<Term id="fdrs">FDRS</Term> dan potensi karhutla), ditimpa dengan{" "}
-            <Term id="inarisk">inaRISK</Term> dan kejadian historis. Statusnya: menunggu data resmi BMKG
-            (FDRS/potensi karhutla per kab/kota). Horizon yang benar-benar ada pada API adalah 3 hari, dan pada citra
-            SPARTAN hingga H+7 sesuai produk BMKG. Bobot, ambang, dan periode belum disepakati, jadi peringkat tidak
-            diisi.
+            Daftar yang ditampilkan berjudul Prioritas kesiapsiagaan 14 hari (FWI hanya 9 hari). Jenisnya pemodelan
+            pihak ketiga (Metode A+), bukan prakiraan resmi BMKG/BNPB. FDRS dan potensi karhutla BMKG tetap tautan:
+            horizon API 3 hari, citra SPARTAN hingga H+7 sesuai produk BMKG, bukan prakiraan 14 hari resmi.
           </p>
           <p>
             Daftar 15–20 kabupaten/kota tidak diurutkan dari IRBI, citra, atau prakiraan terbuka. Tabel hujan dan FWI
