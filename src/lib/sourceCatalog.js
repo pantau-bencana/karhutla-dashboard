@@ -365,6 +365,16 @@ export const SOURCES = [
   },
 ];
 
+export function officialLinks(id) {
+  const source = SOURCES.find((item) => item.id === id);
+  if (!source?.officialUrl) return [];
+  const links = [{ href: source.officialUrl, label: source.officialLabel || source.nama }];
+  for (const [label, href] of source.extraUrls ?? []) {
+    if (href) links.push({ href, label });
+  }
+  return links;
+}
+
 export function integrationStatus(source, entry) {
   if (!source) return "Belum terhubung";
   if (source.statusLabel) return source.statusLabel;

@@ -2,6 +2,20 @@ import { Badge } from "./Badge.jsx";
 import { CATATAN_SATU_TITIK, tampilanPrioritas } from "../lib/aplus.js";
 import { formatAngka, formatWib } from "../lib/format.js";
 
+function waktuGwis(view) {
+  const mulai = formatWib(view.gwis_fetched_at);
+  if (!view.gwis_fetched_until) return mulai;
+  return `${mulai}–${formatWib(view.gwis_fetched_until)}`;
+}
+
+function waktuData(view) {
+  if (view.catatan_cuplikan) {
+    return `Waktu data cuplikan: Open-Meteo ${formatWib(view.ensemble_fetched_at)}. GWIS ${view.gwis_hari} hari, ${waktuGwis(view)}. Cuplikan hotspot ${formatWib(view.firms_observed_at)}.`;
+  }
+  if (!view.tersedia) return "Waktu data: cuplikan segar belum ada.";
+  return `Waktu data: ensemble ${formatWib(view.ensemble_fetched_at)}, GWIS ${view.gwis_hari} hari (${waktuGwis(view)}), FIRMS ${formatWib(view.firms_observed_at)}.`;
+}
+
 function persen(value) {
   const number = Number(value);
   if (!Number.isFinite(number)) return "—";
@@ -24,16 +38,13 @@ export function PrioritasPanel({ snapshot, now }) {
         Skor = rata-rata peringkat empat indikator (25% tiap indikator). Masuk daftar bila data lengkap, peluang 14 hari tanpa hari hujan di atas 20 mm minimal 50%, serta FFMC minimal 78 pada minimal 3 dari 9 hari atau DC minimal 260.
         {" "}Pemodelan pihak ketiga, bukan resmi BMKG/BNPB.
         {" "}
-        {view.tersedia
-          ? `Waktu data: ensemble ${formatWib(view.ensemble_fetched_at)}, GWIS ${view.gwis_hari} hari (${formatWib(view.gwis_fetched_at)}), FIRMS ${formatWib(view.firms_observed_at)}.`
-          : "Waktu data: cuplikan segar belum ada."}
-        {" "}
         <a href="#/sumber-metode/cara-hitung">Cara hitung & rujukan</a>
       </p>
+      {view.catatan_cuplikan ? <p>{view.catatan_cuplikan}</p> : null}
       {view.tersedia ? (
         <p className="fine">
-          Ensemble diambil {formatWib(view.ensemble_fetched_at)}. GWIS {view.gwis_hari} hari, diambil {formatWib(view.gwis_fetched_at)}
-          {view.gwis_tanggal?.length ? ` (${view.gwis_tanggal[0]}–${view.gwis_tanggal.at(-1)})` : ""}. FIRMS {formatWib(view.firms_observed_at)}.
+          {waktuData(view)}
+          {view.gwis_tanggal?.length ? ` Hari model ${view.gwis_tanggal[0]}–${view.gwis_tanggal.at(-1)}.` : ""}
           {" "}
           {formatAngka(view.kab_lengkap)} kab/kota lengkap, {formatAngka(view.lolos)} lolos syarat.
         </p>

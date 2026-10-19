@@ -1,4 +1,6 @@
+import { OfficialLinks } from "./OfficialLinks.jsx";
 import { placeFwiTable, placeRainTable } from "../lib/attentionPrototype.js";
+import { officialLinks } from "../lib/sourceCatalog.js";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { KualitasUdara } from "./KualitasUdara.jsx";
 import { formatAngka, formatTanggalPendek } from "../lib/format.js";
@@ -55,9 +57,9 @@ export function ExtraLayers({ layer, view, feeds, province }) {
 
   if (layer === "inarisk") {
     return (
-      <Panel title="Bahaya karhutla inaRISK" note="Tautan saja. Raster tidak digambar di peta ini.">
+      <Panel title="Bahaya karhutla inaRISK" note={<><span className="link-only"><span>Tautan saja.</span><OfficialLinks links={officialLinks("inarisk").slice(0, 1)} /></span> Raster tidak digambar di peta ini.</>}>
         <p>
-          <a href="https://inarisk2.bnpb.go.id/portal/" target="_blank" rel="noreferrer">
+          <a href="https://inarisk2.bnpb.go.id/portal/" target="_blank" rel="noopener noreferrer">
             Portal inaRISK
           </a>
         </p>
@@ -80,13 +82,13 @@ export function ExtraLayers({ layer, view, feeds, province }) {
 
   if (layer === "asap") {
     return (
-      <Panel title="Citra sebaran asap" note="Tautan saja – menunggu izin BMKG. Citra tidak diunduh dan tidak dipotong.">
+      <Panel title="Citra sebaran asap" note={<><span className="link-only"><span>Tautan saja – menunggu izin BMKG.</span><OfficialLinks links={officialLinks("asap")} /></span> Citra tidak diunduh dan tidak dipotong.</>}>
         <p>
-          <a href="https://www.bmkg.go.id/cuaca/satelit/citra-sebaran-asap" target="_blank" rel="noreferrer">
+          <a href="https://www.bmkg.go.id/cuaca/satelit/citra-sebaran-asap" target="_blank" rel="noopener noreferrer">
             Halaman BMKG
           </a>
           {" · "}
-          <a href="https://inderaja.bmkg.go.id/Trajektori/Asap.png" target="_blank" rel="noreferrer">
+          <a href="https://inderaja.bmkg.go.id/Trajektori/Asap.png" target="_blank" rel="noopener noreferrer">
             Berkas citra utuh
           </a>
         </p>
@@ -98,10 +100,10 @@ export function ExtraLayers({ layer, view, feeds, province }) {
   if (layer === "fdrs") {
     return (
       <>
-        <Panel title="FDRS" note="menunggu data resmi BMKG. Tautan saja. Citra hingga H+7 sesuai produk BMKG. Nilai contoh tidak ditampilkan.">
+        <Panel title="FDRS" note={<><span className="link-only"><span>menunggu data resmi BMKG. Tautan saja.</span><OfficialLinks links={officialLinks("fdrs").slice(0, 2)} /></span> Citra hingga H+7 sesuai produk BMKG. Nilai contoh tidak ditampilkan.</>}>
           <p>menunggu data resmi BMKG</p>
           <p>
-            <a href="https://spartan.bmkg.go.id/" target="_blank" rel="noreferrer">
+            <a href="https://spartan.bmkg.go.id/" target="_blank" rel="noopener noreferrer">
               SPARTAN
             </a>
           </p>

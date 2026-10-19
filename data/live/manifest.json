@@ -562,6 +562,31 @@
       "file": null,
       "content_hash": null,
       "kept_previous": false
+    },
+    "prioritas_aplus": {
+      "id": "prioritas_aplus",
+      "nama": "Prioritas kesiapsiagaan 14 hari (FWI hanya 9 hari)",
+      "instansi": "Pemodelan pihak ketiga",
+      "source": "Metode A+",
+      "url": "https://github.com/pantau-bencana/karhutla-dashboard",
+      "license": "Open-Meteo CC BY 4.0, nonkomersial. GWIS © EU Copernicus. FIRMS NASA. IRBI 2025 BNPB.",
+      "mode": "snapshot",
+      "update_type": "Harian",
+      "access": "API",
+      "frequency": "Harian, sekitar 19.32 WIB",
+      "limitation": "Bukan prakiraan resmi BMKG/BNPB. FWI hanya 9 hari. cuplikan awal dari perhitungan 19 Okt pagi; pembaruan otomatis berikutnya oleh workflow",
+      "fungsi": "Daftar prioritas kesiapsiagaan dan blok hotspot nasional.",
+      "expected_max_age_hours": 36,
+      "fetched_at": "2026-10-19T03:47:00.000Z",
+      "observed_at": "2026-10-18T12:00:00.000Z",
+      "observed_label": "Cuplikan awal 19 Okt pagi. Open-Meteo 18 Okt 19.00 WIB. GWIS 19 Okt 10.21–10.47 WIB. Hotspot 19 Okt 07.30 WIB.",
+      "source_updated_at": "2026-10-18T12:00:00.000Z",
+      "record_count": 81,
+      "status": "ok",
+      "error": null,
+      "file": "data/live/prioritas_aplus.json",
+      "content_hash": "6292322ebfb086ff2e14360c6058b712c52d6a7d3c6966ee86e69323ff0f9a08",
+      "kept_previous": false
     }
   }
 }

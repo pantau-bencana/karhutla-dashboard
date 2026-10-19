@@ -63,7 +63,7 @@ export function MetodePage({ manifest, anchor = "" }) {
               {sources.map((source) => (
                 <tr key={source.id}>
                   <th scope="row">
-                    <a href={source.officialUrl} target="_blank" rel="noreferrer">{source.nama}</a>
+                    <a href={source.officialUrl} target="_blank" rel="noopener noreferrer">{source.nama}</a>
                     <small>{source.instansi}</small>
                   </th>
                   <td>{source.fungsi}</td>

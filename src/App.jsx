@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Badge } from "./components/Badge.jsx";
+import { OfficialLinks } from "./components/OfficialLinks.jsx";
 import { DashboardView } from "./components/DashboardView.jsx";
 import { Footer } from "./components/Footer.jsx";
 import { GlossaryPage } from "./components/GlossaryPage.jsx";
@@ -16,6 +17,7 @@ import { hazardById } from "./lib/hazards.js";
 import { loadAll } from "./lib/loadData.js";
 import { parseLocation } from "./lib/route.js";
 import { assessFreshness } from "./lib/freshness.js";
+import { officialLinks } from "./lib/sourceCatalog.js";
 import { MANIFEST_POLL_MINUTES } from "./lib/schedule.js";
 
 const FloodPage = lazy(() => import("./components/FloodPage.jsx").then((module) => ({ default: module.FloodPage })));
@@ -181,6 +183,7 @@ export function App() {
             </div>
             <div className="badges">
               <Badge kind="tau">Tautan saja</Badge>
+              <OfficialLinks links={officialLinks("ispu").filter((link) => link.href.includes("ispu.kemenlh.go.id"))} />
             </div>
           </header>
           <KualitasUdara feeds={feeds} province={province} provinces={config?.provinsiPrioritas ?? []} />

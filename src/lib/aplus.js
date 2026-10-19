@@ -378,8 +378,12 @@ export function tampilanPrioritas(snapshot, now = new Date()) {
     catatan_hotspot: CATATAN_HOTSPOT,
     daftar_kosong: DAFTAR_KOSONG,
   };
+  const cuplikan = {
+    catatan_cuplikan: snapshot?.catatan_cuplikan || "",
+    gwis_fetched_until: snapshot?.gwis_fetched_until || null,
+  };
   if (alasan.length) {
-    return { ...dasar, tersedia: false, alasan, daftar: [], blok: [], blok_alasan: "" };
+    return { ...dasar, ...cuplikan, tersedia: false, alasan, daftar: [], blok: [], blok_alasan: "" };
   }
   const blokAlasan = firmsBlokUsang(snapshot, now);
   return {
@@ -398,5 +402,6 @@ export function tampilanPrioritas(snapshot, now = new Date()) {
     firms_observed_at: snapshot.firms_observed_at,
     kab_lengkap: snapshot.kab_lengkap,
     lolos: snapshot.lolos,
+    ...cuplikan,
   };
 }

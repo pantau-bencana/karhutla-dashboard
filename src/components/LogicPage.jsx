@@ -1,4 +1,6 @@
 import { pageHref } from "../lib/route.js";
+import { officialLinks } from "../lib/sourceCatalog.js";
+import { OfficialLinks } from "./OfficialLinks.jsx";
 import { PriorityIndicators } from "./PriorityIndicators.jsx";
 import { Term } from "./Term.jsx";
 
@@ -23,6 +25,24 @@ const ROWS = [
   ["Angin", "Arah dan kecepatan jangka pendek.", "wd dan ws pada prakiraan 3 hari, km/jam menurut dokumentasi BMKG.", "Bukan penentu asal kebakaran.", "Satu kelurahan per provinsi prioritas. Vektor satelit hanya tautan. Angin 14 hari pada titik wakil hanya pembanding."],
   ["Kualitas Udara (ISPU)", "Dampak asap pada mutu udara di lokasi stasiun.", "Nilai stasiun, bukan seluruh kabupaten. Bukan bukti tunggal asal karhutla.", "Tidak masuk daftar perhatian.", "Tanpa API resmi: belum terhubung. Hanya Hari Ini dan Historis. Tidak ada prediksi. CAMS tidak ditampilkan di lapisan ini."],
 ];
+
+function limitationCell(text) {
+  if (text.startsWith("Tautan saja. Raster inaRISK")) {
+    return (
+      <>
+        {text} <OfficialLinks links={officialLinks("inarisk").slice(0, 1)} />
+      </>
+    );
+  }
+  if (text.startsWith("Tautan saja – menunggu izin BMKG")) {
+    return (
+      <>
+        {text} <OfficialLinks links={officialLinks("asap")} />
+      </>
+    );
+  }
+  return text;
+}
 
 export function LogicPage() {
   return (
@@ -85,7 +105,7 @@ export function LogicPage() {
                         {cell}
                       </th>
                     ) : (
-                      <td key={cell}>{cell}</td>
+                      <td key={cell}>{limitationCell(cell)}</td>
                     ),
                   )}
                 </tr>
