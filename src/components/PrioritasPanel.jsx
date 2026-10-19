@@ -137,6 +137,10 @@ export function PrioritasPanel({ snapshot, now }) {
               </table>
             </div>
           ) : null}
+          <nav className="method-links" aria-label="Metode perhitungan dan rujukan">
+            <a href="#/sumber-metode/cara-hitung">Metode perhitungan dan rujukan →</a>
+            <a href="#/sumber-metode/rujukan">Rujukan</a>
+          </nav>
         </div>
       ) : null}
     </section>

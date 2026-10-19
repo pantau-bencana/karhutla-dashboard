@@ -101,8 +101,26 @@ export function App() {
   }, [page, hazard, config]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [page, hazard]);
+    const id = location.anchor;
+    if (!id) {
+      window.scrollTo(0, 0);
+      return undefined;
+    }
+    let cancelled = false;
+    const timers = [];
+    const run = () => {
+      if (cancelled) return;
+      document.getElementById(id)?.scrollIntoView({ block: "start" });
+    };
+    run();
+    const frame = window.requestAnimationFrame(run);
+    for (const delay of [50, 200, 600]) timers.push(window.setTimeout(run, delay));
+    return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(frame);
+      for (const timer of timers) window.clearTimeout(timer);
+    };
+  }, [page, hazard, location.anchor]);
 
   const view = useMemo(() => {
     if (!config) return null;
