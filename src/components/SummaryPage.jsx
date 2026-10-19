@@ -1,5 +1,4 @@
 import { useMemo, useRef } from "react";
-import { Badge } from "./Badge.jsx";
 import { HotspotMap } from "./HotspotMap.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { ForecastPanel } from "./ForecastPanel.jsx";
@@ -7,12 +6,9 @@ import { formatAngka, formatWib } from "../lib/format.js";
 import { hotspotSourceLabel } from "../lib/freshness.js";
 import { buildHotspotTree } from "../lib/hotspotTree.js";
 import { countHotspots, filterHotspotWindow } from "../lib/hotspotWindow.js";
-import { pageHref } from "../lib/route.js";
 import { karhutlaRankingPlan } from "../lib/ranking.js";
-import { decorateSources } from "../lib/sourceCatalog.js";
 import { PriorityIndicators } from "./PriorityIndicators.jsx";
 import { PrioritasPanel } from "./PrioritasPanel.jsx";
-import { GfwedTable } from "./GfwedTable.jsx";
 
 export function SummaryPage({ config, feeds, manifest, freshness }) {
   const hotspot = feeds.find((feed) => feed.id === "hotspot");
@@ -26,12 +22,6 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
   const ranking = karhutlaRankingPlan(feeds.prioritas);
   const mapApi = useRef(null);
   const fwiGwis = feeds.find((feed) => feed.id === "fwi_gwis_pembanding");
-  const sources = decorateSources(manifest);
-  const counts = sources.reduce((bag, row) => {
-    bag[row.status] = (bag[row.status] || 0) + 1;
-    return bag;
-  }, {});
-  const realTrend = hotspot && !hotspot.contoh && hotspot.asal === "snapshot" && hotspot.rows?.length;
   const mapSource = hotspotPeta?.rows?.length ? hotspotPeta : hotspot;
   const mapPoints = !sampleHotspot && mapSource && !mapSource.contoh ? mapSource.rows : [];
   const day = useMemo(() => filterHotspotWindow(mapPoints, { hours: 24 }).rows, [mapPoints]);
@@ -44,148 +34,86 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
       <header className="page-head">
         <div>
           <h1>Ringkasan pemantauan</h1>
-          <p className="lead">Satu layar untuk melihat apa yang sedang terdeteksi, seberapa baru datanya, dan sumber mana yang sudah aktif.</p>
-        </div>
-        <div className="badges">
-          <Badge kind="akt">Aktif</Badge>
-          <Badge kind="pem">Pembanding, bukan BMKG/KLHK</Badge>
-          <Badge kind="tau">Tautan saja</Badge>
+          <p className="lead">hotspot = deteksi satelit, bukan kebakaran terkonfirmasi. Peta memakai jendela 24 jam, cakupan Indonesia.</p>
         </div>
       </header>
-      <section className="time-row" aria-label="Waktu data">
-        <article className="tbox">
-          <p className="tlabel">Hotspot terakhir (FIRMS)</p>
-          <p className="tval">{hotspot?.observedAt ? formatWib(hotspot.observedAt) : "Tidak tersedia"}</p>
-          <p className="tnote">{freshness?.tertunda ? <span className="delay">Data tertunda</span> : "Observasi satelit"} · {hotspotSourceLabel(hotspot, config?.firms?.sumber)}</p>
-        </article>
-        <article className="tbox">
-          <p className="tlabel">FWI pembanding (GWIS)</p>
-          <p className="tval">Bukan produk BMKG</p>
-          <p className="tnote">Lapisan peta opsional. Horizon mengikuti produk GWIS, bukan prakiraan 14 hari.</p>
-        </article>
-        <article className="tbox">
-          <p className="tlabel">Banjir – inaRISK</p>
-          <p className="tval">Aceh & Bengkulu</p>
-          <p className="tnote">Prototipe · menunggu izin tertulis</p>
-        </article>
-        <article className="tbox">
-          <p className="tlabel">Gunung Api</p>
-          <p className="tval">Tautan resmi MAGMA</p>
-          <p className="tnote">Integrasi data belum tersedia</p>
-        </article>
-      </section>
       <section className="overview-grid">
         <article className="modcard">
           <div className="mod-head">
             <div>
-              <h2>Karhutla</h2>
-              <p>hotspot = deteksi satelit, bukan kebakaran terkonfirmasi. FWI pembanding, ISPU (tautan).</p>
+              <h2>Sebaran 24 jam</h2>
+              {sampleHotspot ? (
+                <p>{hotspot?.error || "Data contoh tidak ditampilkan. Peta dikosongkan."}</p>
+              ) : (
+                <p>
+                  {formatAngka(tally.jumlah)} titik, {formatAngka(tally.kepercayaan.tinggi || 0)} confidence tinggi
+                  {topProvince ? `, terbanyak di ${topProvince.provinsi}` : ""}.
+                  Observasi {hotspot?.observedAt ? formatWib(hotspot.observedAt) : "tidak tersedia"}
+                  {freshness?.tertunda ? " · data tertunda" : ""}.
+                  Sumber: {hotspotSourceLabel(hotspot, config?.firms?.sumber)}. Satuan: titik deteksi.
+                </p>
+              )}
             </div>
-            <Badge kind="akt">Aktif</Badge>
           </div>
           {sampleHotspot ? (
             <p className="empty">{hotspot?.error || "Data contoh tidak ditampilkan. Peta dikosongkan."}</p>
           ) : (
             <HotspotMap points={day} frame="indonesia" mapApi={mapApi} />
           )}
-          <div className="time-row">
-            <article className="tbox">
-              <p className="tlabel">Deteksi 24 jam</p>
-              <p className="kpi">{formatAngka(tally.jumlah)} titik</p>
-            </article>
-            <article className="tbox">
-              <p className="tlabel">Confidence tinggi</p>
-              <p className="kpi">{formatAngka(tally.kepercayaan.tinggi || 0)} titik</p>
-            </article>
-            <article className="tbox">
-              <p className="tlabel">Provinsi terbanyak</p>
-              <p className="kpi kpi-name">{topProvince ? topProvince.provinsi : "Tidak tersedia"}</p>
-            </article>
-          </div>
-          <div className="mod-foot">
-            <p>Sumber: NASA FIRMS · bukan status kebakaran</p>
-            <a className="btn pri" href={pageHref("peta")}>Buka Karhutla</a>
-          </div>
+          <p className="fine">
+            Hijau rendah, kuning nominal, merah tinggi: kualitas deteksi satelit, bukan tingkat bahaya.
+            {" "}
+            <a href="#/karhutla/peta">Buka peta dan tabel</a>
+          </p>
         </article>
-        <div className="stack-card">
-          <article className="modcard">
-            <div className="mod-head">
-              <div>
-                <h2>Banjir</h2>
-                <p>inaRISK Aceh & Bengkulu</p>
-              </div>
-              <Badge kind="tun">Tertunda</Badge>
-            </div>
-            <div className="badges">
-              <Badge kind="pro">Prototipe internal – menunggu izin tertulis BNPB</Badge>
-              <Badge kind="sta">IRBI – data statis 2025</Badge>
-            </div>
-            <p>Nowcast BMKG 0–3 jam hanya tautan; bukan prakiraan 14 hari. Kolom dasarian diisi manual.</p>
-            <a className="btn" href="#/banjir">Buka Banjir</a>
-          </article>
-          <article className="modcard">
-            <div className="mod-head">
-              <div>
-                <h2>Gunung Api</h2>
-                <p>Status aktivitas dari sumber resmi</p>
-              </div>
-              <Badge kind="tau">Tautan saja</Badge>
-            </div>
-            <p>Integrasi data PVMBG belum tersedia. Status dibaca langsung di MAGMA Indonesia.</p>
-            <a className="btn" href="#/gunung-api">Buka Gunung Api</a>
-          </article>
-          <article className="card rank-card">
-            <h2>{ranking.judul}</h2>
-            <p>
-              <Badge kind={ranking.dapatDisusun ? "pem" : "tun"}>{ranking.dapatDisusun ? ranking.jenis : "Belum tersedia"}</Badge>{" "}
-              {ranking.dapatDisusun ? `${ranking.daftar.length} kab/kota pada daftar.` : ranking.status}
-            </p>
-            <a className="btn" href="#prioritas-kesiapsiagaan">Lihat daftar</a>
-          </article>
-        </div>
-      </section>
-      <section className="cards" aria-label="Status sumber">
-        {Object.entries(counts).map(([status, count]) => (
-          <article key={status} className="card metric">
-            <p className="metric-label">{status}</p>
-            <p className="metric-value">{count}</p>
-            <p className="metric-note">Baris pada Sumber Data</p>
-          </article>
-        ))}
+        <article className="modcard">
+          <h2>Yang perlu perhatian</h2>
+          <ol className="attention-list">
+            <li>
+              <strong>Wilayah dengan perhatian tertinggi</strong>
+              <p>
+                {ranking.dapatDisusun
+                  ? `${ranking.daftar.length} kab/kota pada daftar model pihak ketiga. ${ranking.jenis}.`
+                  : ranking.status}
+                {" "}
+                <a href="#prioritas-kesiapsiagaan">Lihat daftar</a>
+              </p>
+            </li>
+            <li>
+              <strong>Banjir, Aceh dan Bengkulu</strong>
+              <p>
+                Prototipe internal – menunggu izin tertulis BNPB. IRBI 2025 statis. Bukan prakiraan 14 hari.
+                {" "}
+                <a href="#/banjir">Buka tabel</a>
+              </p>
+            </li>
+            <li>
+              <strong>Gunung api</strong>
+              <p>
+                Tautan saja. Status resmi dibaca di MAGMA. Tidak ada daftar gunung di dasbor ini.
+                {" "}
+                <a href="#/gunung-api">Buka tautan</a>
+              </p>
+            </li>
+          </ol>
+        </article>
       </section>
 
-      <p className="back-row">
-        <a className="button" href={pageHref("logika")}>
-          Logika Pemantauan
-        </a>{" "}
-        <a className="button ghost" href={pageHref("sumber")}>
-          Sumber Data
-        </a>
-      </p>
+      <section className="card">
+        <h2>Wilayah dengan perhatian tertinggi</h2>
+        <p>
+          Belum ada daftar dari produk resmi per kabupaten. FDRS BMKG dan kejadian historis per kabupaten belum tersambung untuk urutan ini.
+          Daftar di bawah, bila cuplikannya segar, adalah model pihak ketiga dan bukan peringatan BNPB atau BMKG.
+        </p>
+      </section>
 
-      <PriorityIndicators />
+      <PrioritasPanel snapshot={feeds.prioritas} />
 
       <ForecastPanel
         provinces={priority}
         weatherRows={weather?.contoh ? [] : weather?.rows}
         fwiRows={fwiGwis?.contoh ? [] : fwiGwis?.rows}
       />
-      <GfwedTable rows={feeds.find((feed) => feed.id === "gfwed_kabupaten")?.rows} />
-
-      <section className="card">
-        <header className="card-head">
-          <div>
-            <h2>Wilayah perhatian</h2>
-            <p>Hanya dari data yang bukan contoh. Tidak ada skor resmi dan tidak ada rekomendasi operasi otomatis.</p>
-          </div>
-        </header>
-        <p className="logic-body empty">
-          Belum ada wilayah perhatian. Hotspot, FDRS per kabupaten, dan kejadian historis per kabupaten belum
-          tersambung sebagai data resmi.
-        </p>
-      </section>
-
-      <PrioritasPanel snapshot={feeds.prioritas} />
 
       <section className="split">
         <article className="card">
@@ -243,16 +171,7 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
         </article>
       </section>
 
-      <section className="card">
-        <header className="card-head">
-          <div>
-            <h2>Tren sepekan</h2>
-            <p>Hanya ditampilkan bila arsip hotspot resmi ada.</p>
-          </div>
-        </header>
-        <p className="logic-body">{realTrend ? "Arsip siap digambar." : "Tren sepekan tidak ditampilkan. Arsip hotspot resmi belum ada."}</p>
-      </section>
-
+      <PriorityIndicators />
       <IrbiContext feed={irbi} />
     </main>
   );

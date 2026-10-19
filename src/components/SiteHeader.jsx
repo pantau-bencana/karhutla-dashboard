@@ -47,7 +47,7 @@ export function SiteHeader({ manifest, onReload, loading, page, hazard }) {
           ))}
         </nav>
         <div className="tright">
-          <p className="small">Dimuat {loaded}</p>
+          <p className="small">Pembaruan data {loaded}</p>
           <button type="button" className="btn" onClick={onReload} disabled={loading}>
             {loading ? "Memuat…" : "Muat ulang"}
           </button>
@@ -79,7 +79,6 @@ export function SiteHeader({ manifest, onReload, loading, page, hazard }) {
       <nav className="tabbar" aria-label="Bagian">
         {TOP.map(([id, label, href]) => (
           <a key={id} href={href} aria-current={topCurrent(id, page, hazard) ? "page" : undefined}>
-            <span aria-hidden="true" />
             {id === "metode" ? "Sumber" : label}
           </a>
         ))}
