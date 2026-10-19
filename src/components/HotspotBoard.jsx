@@ -192,7 +192,8 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
       <section className="hotspot-count" aria-labelledby="hotspot-count-heading">
         <h2 id="hotspot-count-heading">Jumlah deteksi hotspot (bukan status)</h2>
         <p>
-          Periode {from && to ? `${from}–${to}` : WINDOWS.find(([value]) => value === hours)?.[1]}. Bukan status operasional.
+          Periode {WINDOWS.find(([value]) => value === hours)?.[1]}
+          {from && to ? ` di dalam tanggal ${from}–${to}` : ""}. Bukan status operasional.
           {unverified ? ` ${formatAngka(unverified)} titik belum terverifikasi wilayah.` : ""}
           {" "}Daftar mengikuti saringan di atas dan memusatkan peta saat baris dipilih.
         </p>

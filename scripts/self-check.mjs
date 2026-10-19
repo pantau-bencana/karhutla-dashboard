@@ -575,6 +575,7 @@ assert.match(boardSource, /titik belum terverifikasi wilayah/);
 assert.match(boardSource, /keyakinan deteksi, bukan intensitas atau bahaya/);
 assert.match(boardSource, /Cara membaca/);
 assert.match(boardSource, /Jumlah deteksi hotspot \(bukan status\)/);
+assert.match(boardSource, /di dalam tanggal/);
 assert.equal((boardSource.match(/<HotspotAccordion/g) || []).length, 1);
 assert.match(readFileSync("src/components/HotspotAccordion.jsx", "utf8"), /Cari provinsi/);
 assert.match(readFileSync("src/components/HotspotAccordion.jsx", "utf8"), /Confidence deteksi satelit/);
