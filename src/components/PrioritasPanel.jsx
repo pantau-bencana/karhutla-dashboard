@@ -105,7 +105,6 @@ export function PrioritasPanel({ snapshot, now }) {
                     <tr key={row.kode}>
                       <td>{row.peringkat_daftar}</td>
                       <th scope="row">
-                        {row.dalam_blok ? "🔥 " : ""}
                         {row.kab}
                       </th>
                       <td>{formatAngka(row.skor, 3)}</td>

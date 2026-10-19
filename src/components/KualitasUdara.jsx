@@ -103,8 +103,7 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
 
   return (
     <section className="stack" aria-label="Kualitas Udara (ISPU)">
-      <div className="split">
-        <article className="card">
+      <article className="card">
           <h2>Status per provinsi prioritas</h2>
           <div className="table-wrap">
             <table>
@@ -141,38 +140,21 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
               </tbody>
             </table>
           </div>
+          <h3>Kenapa tidak ada angka ISPU?</h3>
+          <p>
+            Portal ISPU belum punya API publik terdokumentasi dan katalog Satu Data belum memuat ISPU harian per stasiun. Pengambilan otomatis memerlukan izin tertulis KLH. Dasbor tidak memakai token dari situs KLH. Ketersediaan stasiun diperiksa di portal resmi. Baris tanpa pengukuran tidak diisi angka.
+          </p>
+          <p>
+            <a href={KLH_ISPU_APP} target="_blank" rel="noopener noreferrer">Buka ispu.kemenlh.go.id</a>
+            {" · "}
+            <a href={KLH_ISPU_ANALYTIC} target="_blank" rel="noopener noreferrer">Analisis kawasan</a>
+          </p>
           <p className="fine">
-            Dashboard tidak menyimpan daftar stasiun. Ketersediaan stasiun diperiksa di portal resmi. Baris tanpa pengukuran tidak diisi angka.
+            <Badge kind="pem">Pembanding, bukan BMKG/KLHK</Badge>
+            {" "}
+            PM2.5 model Copernicus bukan ISPU dan tidak dikonversi ke kategori ISPU. Angka model tidak ditampilkan di halaman ini. Indeks Kualitas Udara 2024 di bawah adalah data statis tahunan, bukan ISPU harian.
           </p>
         </article>
-        <div className="stack-card">
-          <article className="card rank-card">
-            <h2>Portal resmi ISPU – KLH</h2>
-            <p>Nilai, parameter kritis, kategori, dan waktu pembaruan per stasiun.</p>
-            <p>
-              <a className="btn pri" href={KLH_ISPU_APP} target="_blank" rel="noopener noreferrer">Buka ispu.kemenlh.go.id</a>
-            </p>
-          </article>
-          <article className="card">
-            <div className="mod-head">
-              <h2>PM2.5 model Copernicus</h2>
-              <Badge kind="pem">Pembanding, bukan BMKG/KLHK</Badge>
-            </div>
-            <p>Pembanding model atmosfer. Bukan ISPU dan tidak dikonversi ke kategori ISPU. Angka model tidak ditampilkan di halaman ini.</p>
-          </article>
-          <article className="card">
-            <div className="mod-head">
-              <h2>Indeks Kualitas Udara 2024</h2>
-              <Badge kind="sta">Data statis tahunan 2024</Badge>
-            </div>
-            <p>Satu Data KemenLH, per kab/kota, dataset terbuka dengan atribusi. Konteks tahunan, bukan ISPU. Tabel lengkap ada di bawah.</p>
-          </article>
-          <article className="empty">
-            <h2>Kenapa tidak ada angka ISPU?</h2>
-            <p>Portal ISPU belum punya API publik terdokumentasi dan katalog Satu Data belum memuat ISPU harian per stasiun. Pengambilan otomatis memerlukan izin tertulis KLH.</p>
-          </article>
-        </div>
-      </div>
 
       {allStations.length ? <>
       <article className="card">
@@ -306,26 +288,6 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
         </article>
       </section>
       </> : null}
-
-      <article className="card">
-        <header className="card-head">
-          <div>
-            <h2>Status data resmi</h2>
-            <p>Belum tersedia. Portal ISPU tidak menyediakan API publik yang terdokumentasi.</p>
-          </div>
-        </header>
-        <div className="logic-body">
-          <p>
-            Koordinat, nilai ISPU, kategori, parameter kritis, dan riwayat tidak diisi dari sumber lain. Dasbor tidak
-            memakai token yang tertanam di aplikasi web KLH.
-          </p>
-          <p>
-            <a href={KLH_ISPU_APP} target="_blank" rel="noopener noreferrer">Portal ISPU</a>
-            {" · "}
-            <a href={KLH_ISPU_ANALYTIC} target="_blank" rel="noopener noreferrer">Analisis kawasan ISPU</a>
-          </p>
-        </div>
-      </article>
 
       <article className="card">
         <header className="card-head">

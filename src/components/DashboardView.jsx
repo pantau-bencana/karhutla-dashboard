@@ -97,7 +97,11 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
       <header className="page-head">
         <div>
           <h1>Karhutla · Peta dan Data</h1>
-          <p className="lead">Peta lebih dulu: lihat sebaran, lalu periksa jumlah per provinsi.</p>
+          <p className="lead">
+            Cakupan {province || "seluruh Indonesia"}
+            {from && to ? `, ${formatTanggal(from)}–${formatTanggal(to)}` : ""}.
+            Hotspot = deteksi satelit, bukan kebakaran terkonfirmasi.
+          </p>
         </div>
       </header>
       {failures.length > 0 && (
@@ -162,28 +166,13 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
         </p>
       ) : null}
 
-      {layer === "hotspot" ? <section className="cards" aria-label="Ringkasan">
-        <article className="card metric">
-          <p className="metric-label">Titik panas</p>
-          <p className="metric-value">{formatAngka(view.summary.hotspot)}</p>
-          <p className="metric-note">Pada cakupan dan rentang tanggal ini</p>
-        </article>
-        <article className="card metric">
-          <p className="metric-label">Kepercayaan tinggi</p>
-          <p className="metric-value">{formatAngka(view.summary.tinggi)}</p>
-          <p className="metric-note">Kelas tinggi, high, atau nilai ≥ 80</p>
-        </article>
-        <article className="card metric">
-          <p className="metric-label">Belum terverifikasi wilayah</p>
-          <p className="metric-value">{formatAngka(view.summary.belumTerverifikasi || 0)}</p>
-          <p className="metric-note">Tidak masuk hitungan provinsi</p>
-        </article>
-        <article className="card metric">
-          <p className="metric-label">ISPU stasiun</p>
-          <p className="metric-value">—</p>
-          <p className="metric-note">Stasiun resmi belum terhubung. Buka lapisan Kualitas Udara (ISPU).</p>
-        </article>
-      </section> : null}
+      {layer === "hotspot" ? (
+        <p className="fine">
+          {formatAngka(view.summary.hotspot)} titik pada cakupan dan rentang ini, {formatAngka(view.summary.tinggi)} confidence tinggi
+          (kelas tinggi, high, atau nilai ≥ 80). {formatAngka(view.summary.belumTerverifikasi || 0)} titik belum terverifikasi wilayah dan tidak masuk hitungan provinsi.
+          ISPU stasiun: tidak tersedia. Stasiun resmi belum terhubung.
+        </p>
+      ) : null}
 
       {layer === "hotspot" ? <>
       <section className="card">

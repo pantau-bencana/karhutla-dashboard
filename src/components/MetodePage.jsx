@@ -27,37 +27,26 @@ export function MetodePage({ manifest, anchor = "" }) {
     <main className="wrap main">
       <header className="page-head">
         <div>
-          <h1>Sumber & Metode</h1>
-          <p className="lead">Apa fungsi tiap indikator, dari mana datanya, seberapa sering diperbarui, dan apa batasannya.</p>
+          <h1>Sumber dan batasan data</h1>
+          <p className="lead">Jenis data, sumber, kapan diperbarui, dan apa yang tidak boleh dibaca sebagai produk resmi.</p>
         </div>
       </header>
 
       <section className="card">
         <h2>Jenis data yang dibedakan</h2>
-        <div className="kind-row">
+        <ul className="plain-list">
           {KINDS.map(([kind, badge, title, note]) => (
-            <article key={kind} className="tbox">
-              <Badge kind={kind}>{badge}</Badge>
-              <h3>{title}</h3>
-              <p>{note}</p>
-            </article>
+            <li key={kind}>
+              <Badge kind={kind}>{badge}</Badge> {title}. {note}
+            </li>
           ))}
-        </div>
-      </section>
-
-      <section className="card">
-        <h2>Logika pemantauan</h2>
-        <ol className="steps">
-          <li><span>1</span><div><strong>Ambil</strong><p>Workflow terjadwal mengambil data dari sumber terbuka yang sah.</p></div></li>
-          <li><span>2</span><div><strong>Periksa</strong><p>Cek waktu data; jika basi, tampilkan “Tertunda”, bukan angka lama.</p></div></li>
-          <li><span>3</span><div><strong>Cocokkan</strong><p>Titik dicocokkan ke batas wilayah BIG bila layanan itu menjawab. Tingkat kecocokan mengikuti kolom yang terisi, tanpa menebak nama desa.</p></div></li>
-          <li><span>4</span><div><strong>Tampilkan</strong><p>Setiap angka diberi label jenis data, sumber, dan waktu.</p></div></li>
-        </ol>
+        </ul>
+        <p className="fine">Alur singkat: ambil dari sumber terbuka, tandai tertunda bila basi, cocokkan ke batas BIG hanya bila layanan menjawab, lalu tulis jenis, sumber, dan waktu di samping angka.</p>
       </section>
 
       <section className="card">
         <div className="card-head">
-          <h2>Daftar sumber</h2>
+          <h2>Sumber dan batasan data</h2>
           <p>Status mengikuti cuplikan terakhir. Waktu data tampil di tiap tab.</p>
         </div>
         <div className="table-wrap">
