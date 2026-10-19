@@ -469,6 +469,8 @@ assert.equal(GLOSSARY.every((item) => item.penjelasan && item.penggunaan), true)
 assert.deepEqual(HAZARDS.map((item) => item.id), ["karhutla", "banjir", "gunung-api"]);
 assert.equal(parseLocation("#/gunung-api").hazard, "gunung-api");
 assert.equal(parseLocation("#/karhutla/peta").page, "peta");
+assert.equal(parseLocation("#/sumber-metode/cara-hitung").page, "metode");
+assert.equal(parseLocation("#/sumber-metode/cara-hitung").anchor, "cara-hitung");
 const summarySource = readFileSync("src/components/SummaryPage.jsx", "utf8");
 assert.equal(summarySource.includes("points={[]}"), false);
 assert.equal(summarySource.includes("15–20 kabupaten/kota, 14 hari"), false);
@@ -1179,7 +1181,40 @@ assert.match(readFileSync("src/lib/aplus.js", "utf8"), /ambang literatur FDRS AS
 assert.match(readFileSync("src/lib/aplus.js", "utf8"), /hanya 1 titik sampel/);
 assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /Aktivitas hotspot tinggi saat ini/);
 assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /CATATAN_SATU_TITIK/);
-assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /de Groot dkk\. 2007/);
+assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /Cara hitung & rujukan/);
+assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /bukan resmi BMKG\/BNPB/);
+assert.match(readFileSync("src/components/MetodeAplus.jsx", "utf8"), /Peringkat prioritas karhutla – cara menghitung/);
+assert.match(readFileSync("src/components/MetodeAplus.jsx", "utf8"), /78–82/);
+assert.match(readFileSync("src/components/MetodeAplus.jsx", "utf8"), /260–350/);
+assert.match(readFileSync("src/components/MetodeAplus.jsx", "utf8"), /73% hotspot/);
+assert.match(readFileSync("src/components/MetodeAplus.jsx", "utf8"), /bukan kelas BMKG/);
+assert.match(readFileSync("src/components/MetodeAplus.jsx", "utf8"), /Apakah ini data resmi/);
+assert.match(readFileSync("src/components/MetodeAplus.jsx", "utf8"), /Kenapa ISPU hanya tautan/);
+assert.match(readFileSync("src/components/MetodeAplus.jsx", "utf8"), /Kenapa status dasarian diisi manual/);
+const rujukanHref = [...readFileSync("src/components/MetodeAplus.jsx", "utf8").matchAll(/https?:\/\/[^"'\s]+/g)].map((item) => item[0]);
+const rujukanBoleh = new Set([
+  "https://doi.org/10.1007/s11027-006-9043-8",
+  "http://www.columbia.edu/~rf2426/index_files/deGrootetal2006MITI.pdf",
+  "https://doi.org/10.1016/j.atmosenv.2004.01.011",
+  "https://doi.org/10.1007/s00267-003-0241-9",
+  "https://asmc.asean.org/asmc-fire/",
+  "https://asmc.asean.org/asmc-fire-dc/",
+  "https://asmc.asean.org/asmc-fire-ffmc/",
+  "https://asmc.asean.org/asmc-fire-fwi/",
+  "https://asmc.asean.org/asmc-alerts/",
+  "https://doi.org/10.1038/ngeo443",
+  "https://doi.org/10.1038/nclimate3280",
+  "https://doi.org/10.1071/WF24057",
+  "https://gwis.jrc.ec.europa.eu/about-gwis/technical-background/fire-danger-forecast",
+  "https://data.effis.emergency.copernicus.eu/effis/reports-and-publications/effis-related-publications/Camia_and_Amatulli_2010__ICFFR-2010_B04.pdf",
+  "https://doi.org/10.1175/JAMC-D-15-0297.1",
+  "https://doi.org/10.1038/s41597-020-0554-z",
+  "http://urlib.net/sid.inpe.br/mtc-m21c/2019/11.21.11.03",
+  "https://dataserver-coids.inpe.br/queimadas/queimadas/Publicacoes-Impacto/documentos/RiscoFogo_Sucinto_v11_2019.pdf",
+  "https://open-meteo.com/en/licence",
+]);
+assert.equal(rujukanHref.length > 0, true);
+for (const href of rujukanHref) assert.equal(rujukanBoleh.has(href), true, href);
 assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<PrioritasPanel /);
 assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /prioritas_aplus/);
 

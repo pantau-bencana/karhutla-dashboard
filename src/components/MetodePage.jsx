@@ -1,5 +1,6 @@
 import { Badge } from "./Badge.jsx";
 import { decorateSources } from "../lib/sourceCatalog.js";
+import { MetodeAplus } from "./MetodeAplus.jsx";
 
 const KINDS = [
   ["akt", "Aktif", "Observasi", "Diukur atau dideteksi langsung (satelit, stasiun)."],
@@ -20,7 +21,7 @@ function badgeKind(status) {
   return "tau";
 }
 
-export function MetodePage({ manifest }) {
+export function MetodePage({ manifest, anchor = "" }) {
   const sources = decorateSources(manifest);
   return (
     <main className="wrap main">
@@ -86,19 +87,7 @@ export function MetodePage({ manifest }) {
         </div>
       </section>
 
-      <section className="card" id="metode-aplus">
-        <h2>Prioritas kesiapsiagaan 14 hari (FWI hanya 9 hari)</h2>
-        <p>Jenis data: pemodelan pihak ketiga. Bukan produk BNPB atau BMKG. Skor adalah rata-rata peringkat persentil empat indikator (masing-masing 25%) pada enam provinsi: FWI ECMWF 9 hari dari GWIS (persentil-75 antartitik), peluang 14 hari tanpa hari hujan di atas 20 mm dari ensemble ECMWF 51 anggota lewat Open-Meteo (CC BY 4.0, nonkomersial), IRBI Karhutla 2025, dan hotspot FIRMS nominal serta tinggi. Syarat masuk daftar: data lengkap, peluang kering minimal 50%, serta FFMC persentil-75 minimal 78 pada minimal 3 dari 9 hari atau DC persentil-75 minimal 260. Ambang itu ambang literatur FDRS ASEAN diterapkan pada nilai model, bukan kelas BMKG.</p>
-        <p>Blok terpisah “Aktivitas hotspot tinggi saat ini” bersifat nasional: jumlah minimal maksimum dari persentil-95 kab/kota yang punya hotspot dan 50 titik, serta terdeteksi pada minimal 2 hari berturut-turut. Hotspot dapat berasal dari sumber panas lain.</p>
-        <ul className="plain-list">
-          <li><a href="https://doi.org/10.1007/s11027-006-9043-8" target="_blank" rel="noreferrer">de Groot dkk. 2007</a> — ambang FFMC dan DC literatur FDRS ASEAN.</li>
-          <li><a href="https://asmc.asean.org/asmc-fire/" target="_blank" rel="noreferrer">ASMC Fire Danger</a> dan <a href="https://asmc.asean.org/asmc-alerts/" target="_blank" rel="noreferrer">ASMC Alerts</a> — pola persistensi hotspot.</li>
-          <li><a href="http://urlib.net/sid.inpe.br/mtc-m21c/2019/11.21.11.03" target="_blank" rel="noreferrer">INPE Risco de Fogo</a> — hujan menurunkan risiko; hotspot menaikkannya.</li>
-          <li><a href="https://gwis.jrc.ec.europa.eu/about-gwis/technical-background/fire-danger-forecast" target="_blank" rel="noreferrer">GWIS — Fire Danger Forecast</a> — FWI model ECMWF.</li>
-          <li><a href="https://open-meteo.com/en/licence" target="_blank" rel="noreferrer">Lisensi Open-Meteo</a> — CC BY 4.0, nonkomersial.</li>
-        </ul>
-        <p className="fine">Keterbatasan: ambang de Groot dikalibrasi pada data stasiun, bukan model; DC/FFMC bukan muka air gambut; syarat kering belum dikalibrasi terhadap kejadian; lima titik grid adalah sampel; ambang hotspot adalah pilihan desain. Bila situs menjadi komersial, Open-Meteo gratis tidak boleh dipakai. GFWED tidak masuk skor.</p>
-      </section>
+      <MetodeAplus anchor={anchor} />
 
       <div className="split">
         <section className="card">

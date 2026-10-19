@@ -1,7 +1,6 @@
 import { Badge } from "./Badge.jsx";
 import { CATATAN_SATU_TITIK, tampilanPrioritas } from "../lib/aplus.js";
 import { formatAngka, formatWib } from "../lib/format.js";
-import { pageHref } from "../lib/route.js";
 
 function persen(value) {
   const number = Number(value);
@@ -21,12 +20,15 @@ export function PrioritasPanel({ snapshot, now }) {
         <Badge kind="pem">{view.jenis}</Badge>
       </header>
       <p>{view.disclaimer}</p>
-      <p className="fine">
-        <a href={pageHref("metode")}>Sumber & Metode</a>
-        {" · "}
-        {view.label_ambang}
-        {" · "}
-        Open-Meteo CC BY 4.0, nonkomersial.
+      <p className="fine method-note">
+        Skor = rata-rata peringkat empat indikator (25% tiap indikator). Masuk daftar bila data lengkap, peluang 14 hari tanpa hari hujan di atas 20 mm minimal 50%, serta FFMC minimal 78 pada minimal 3 dari 9 hari atau DC minimal 260.
+        {" "}Pemodelan pihak ketiga, bukan resmi BMKG/BNPB.
+        {" "}
+        {view.tersedia
+          ? `Waktu data: ensemble ${formatWib(view.ensemble_fetched_at)}, GWIS ${view.gwis_hari} hari (${formatWib(view.gwis_fetched_at)}), FIRMS ${formatWib(view.firms_observed_at)}.`
+          : "Waktu data: cuplikan segar belum ada."}
+        {" "}
+        <a href="#/sumber-metode/cara-hitung">Cara hitung & rujukan</a>
       </p>
       {view.tersedia ? (
         <p className="fine">

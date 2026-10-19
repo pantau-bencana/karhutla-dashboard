@@ -136,7 +136,7 @@ export function App() {
         hazard={hazard}
       />
       {page === "glosarium" ? <GlossaryPage /> : null}
-      {page === "metode" ? <MetodePage manifest={manifest} /> : null}
+      {page === "metode" ? <MetodePage manifest={manifest} anchor={location.anchor} /> : null}
       {hazard === "gunung-api" && page !== "glosarium" && page !== "metode" ? <VolcanoPage /> : null}
       {flood ? (
         <Suspense fallback={<main className="wrap main"><p>Memuat modul Banjir…</p></main>}>
