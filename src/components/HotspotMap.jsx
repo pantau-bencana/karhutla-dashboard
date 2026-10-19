@@ -133,8 +133,8 @@ function drawHotspots(map, layer, points, selectedKey, onSelect) {
     }
     const lat = Number(anchor.lintang);
     const lon = Number(anchor.bujur);
-    const marker = L.marker([lat, lon], { icon: clusterIcon(group.count) });
-    marker.bindTooltip(`${group.count} deteksi satelit dalam petak ini. Bukan kelas confidence. Perbesar untuk memisahkan titik.`, { direction: "top" });
+    const marker = L.marker([lat, lon], { icon: clusterIcon(group.members, map.getZoom() || 4) });
+    marker.bindTooltip(`${group.count} deteksi satelit dalam petak ini. Cincin membagi rendah, nominal, dan tinggi. Angka bukan kelas confidence. Perbesar untuk memisahkan titik.`, { direction: "top" });
     marker.on("click", () => {
       map.setView([lat, lon], Math.min((map.getZoom() || 4) + 2, 12));
     });
@@ -144,15 +144,59 @@ function drawHotspots(map, layer, points, selectedKey, onSelect) {
   return latlngs;
 }
 
-function clusterIcon(count) {
+function classCounts(members) {
+  const counts = { rendah: 0, nominal: 0, tinggi: 0, lain: 0 };
+  for (const point of members) {
+    const kelas = point?.kelasKepercayaan;
+    if (kelas === "rendah" || kelas === "nominal" || kelas === "tinggi") counts[kelas] += 1;
+    else counts.lain += 1;
+  }
+  return counts;
+}
+
+function shareGradient(counts, total) {
+  const parts = [
+    [counts.rendah, COLORS.rendah],
+    [counts.nominal, COLORS.nominal],
+    [counts.tinggi, COLORS.tinggi],
+    [counts.lain, "#a8a29e"],
+  ];
+  const stops = [];
+  let cursor = 0;
+  const safe = total || 1;
+  for (const [count, color] of parts) {
+    if (!count) continue;
+    const next = cursor + (count / safe) * 100;
+    stops.push(`${color} ${cursor.toFixed(2)}% ${next.toFixed(2)}%`);
+    cursor = next;
+  }
+  return stops.length ? `conic-gradient(${stops.join(",")})` : "#d6d3d1";
+}
+
+function clusterIcon(members, zoom) {
+  const count = members.length;
   const label = String(count);
-  const size = Math.min(46, 26 + label.length * 3);
+  const cap = zoom < 5 ? 16 : 20;
+  const size = Math.min(cap, 14 + Math.max(0, label.length - 2) * 2);
+  const gradient = shareGradient(classCounts(members), count);
+  const font = label.length >= 4 ? 7 : label.length === 3 ? 8 : 10;
   return L.divIcon({
     className: "hotspot-cluster",
-    html: `<span>${label}</span>`,
+    html: `<span style="background:${gradient}"><b style="font-size:${font}px">${label}</b></span>`,
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
   });
+}
+
+export function ClusterLegend() {
+  return (
+    <p className="cluster-note">
+      <span className="cluster-key" aria-hidden="true"><b>n</b></span>
+      <span>
+        Cincin pada zoom kecil membagi petak menjadi hijau (rendah), kuning (nominal), dan merah (tinggi). Angka di tengah adalah jumlah deteksi dalam petak itu, bukan kelas confidence. Perbesar peta sampai tiap titik terpisah.
+      </span>
+    </p>
+  );
 }
 
 function indonesiaBounds() {

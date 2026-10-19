@@ -1,5 +1,5 @@
 import { useMemo, useRef } from "react";
-import { HotspotMap } from "./HotspotMap.jsx";
+import { ClusterLegend, HotspotMap } from "./HotspotMap.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { ForecastPanel } from "./ForecastPanel.jsx";
 import { formatAngka, formatWib } from "../lib/format.js";
@@ -60,8 +60,9 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
           ) : (
             <HotspotMap points={day} frame="indonesia" mapApi={mapApi} />
           )}
+          <ClusterLegend />
           <p className="fine">
-            Hijau rendah, kuning nominal, merah tinggi: kualitas deteksi satelit, bukan tingkat bahaya.
+            Hijau rendah, kuning nominal, merah tinggi: kualitas deteksi satelit, bukan tingkat bahaya. Satu titik memakai warna itu. Cincin pada zoom kecil hanya merangkum bagian ketiga warna di dalam petak.
             {" "}
             <a href="#/karhutla/peta">Buka peta dan tabel</a>
           </p>
