@@ -708,6 +708,7 @@ tbody th { font-weight: 700; text-transform: none; letter-spacing: 0; font-size:
 }
 
 .plain-list li + li { margin-top: 6px; }
+.source-notes small { display: block; margin-top: 2px; color: var(--muted); }
 
 .plan-list {
   list-style: none;

@@ -353,7 +353,7 @@ function SumberHitung() {
     <>
       <h3>Sumber perhitungan</h3>
       <p>Tautan berikut dipakai untuk rumus dan ambang pada contoh hitung. Diperiksa 19 Oktober 2026.</p>
-      <ul className="plain-list">
+      <ul className="plain-list source-notes">
         {SUMBER_HITUNG.map((item) => (
           <li key={item.judul}>
             {item.judul}{" "}
