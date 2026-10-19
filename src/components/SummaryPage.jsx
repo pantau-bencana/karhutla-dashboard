@@ -11,6 +11,7 @@ import { pageHref } from "../lib/route.js";
 import { karhutlaRankingPlan } from "../lib/ranking.js";
 import { decorateSources } from "../lib/sourceCatalog.js";
 import { PriorityIndicators } from "./PriorityIndicators.jsx";
+import { PrioritasPanel } from "./PrioritasPanel.jsx";
 import { GfwedTable } from "./GfwedTable.jsx";
 
 export function SummaryPage({ config, feeds, manifest, freshness }) {
@@ -22,7 +23,7 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
   const cap = feeds.find((feed) => feed.id === "bmkg_cap");
   const prakiraan = feeds.find((feed) => feed.id === "bmkg_prakiraan");
   const sampleHotspot = !hotspot || hotspot.contoh || hotspot.status === "gagal" || hotspot.status === "cadangan";
-  const ranking = karhutlaRankingPlan();
+  const ranking = karhutlaRankingPlan(feeds.prioritas);
   const mapApi = useRef(null);
   const fwiGwis = feeds.find((feed) => feed.id === "fwi_gwis_pembanding");
   const sources = decorateSources(manifest);
@@ -134,8 +135,12 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
             <a className="btn" href="#/gunung-api">Buka Gunung Api</a>
           </article>
           <article className="card rank-card">
-            <h2>Peringkat 15–20 kab/kota (14 hari)</h2>
-            <p><Badge kind="tun">Belum tersedia</Badge> {ranking.status}. Tidak diisi dari IRBI, citra, model terbuka, atau prakiraan 3 hari.</p>
+            <h2>{ranking.judul}</h2>
+            <p>
+              <Badge kind={ranking.dapatDisusun ? "pem" : "tun"}>{ranking.dapatDisusun ? ranking.jenis : "Belum tersedia"}</Badge>{" "}
+              {ranking.dapatDisusun ? `${ranking.daftar.length} kab/kota pada daftar.` : ranking.status}
+            </p>
+            <a className="btn" href="#prioritas-kesiapsiagaan">Lihat daftar</a>
           </article>
         </div>
       </section>
@@ -180,43 +185,7 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
         </p>
       </section>
 
-      <section className="card">
-        <header className="card-head">
-          <div>
-            <h2>15–20 kabupaten/kota</h2>
-            <p>
-              Kerangka prototipe untuk {ranking.horizonDiminta}. Status: {ranking.status}. Metode belum disetujui, jadi daftar tidak diisi.
-            </p>
-          </div>
-        </header>
-        <div className="logic-body">
-          <p>{ranking.izin}</p>
-          <div className="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Masukan</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Catatan</th>
-                </tr>
-              </thead>
-              <tbody>
-                {ranking.masukan.map((row) => (
-                  <tr key={row.nama}>
-                    <th scope="row">{row.nama}</th>
-                    <td>{row.status}</td>
-                    <td>{row.catatan}</td>
-                  </tr>
-                ))}
-                <tr>
-                  <th scope="row">Daftar peringkat</th>
-                  <td colSpan={2}>Kosong. Tidak diisi dari citra atau dari prakiraan 3 hari.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+      <PrioritasPanel snapshot={feeds.prioritas} />
 
       <section className="split">
         <article className="card">

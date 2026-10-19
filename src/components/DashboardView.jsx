@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ExtraLayers, LayerBar, WilayahDetail } from "./ExtraLayers.jsx";
+import { PrioritasPanel } from "./PrioritasPanel.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { HotspotBoard } from "./HotspotBoard.jsx";
 import { GfwedTable } from "./GfwedTable.jsx";
@@ -333,6 +334,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
         )}
       </section>
       <GfwedTable rows={feeds.find((feed) => feed.id === "gfwed_kabupaten")?.rows} />
+      <PrioritasPanel snapshot={feeds.prioritas} />
     </main>
   );
 }

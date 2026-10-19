@@ -343,6 +343,26 @@ export const SOURCES = [
     limitation:
       "Lisensi ODC-BY. Hanya baris jenis KEBAKARAN HUTAN DAN LAHAN pada tabel nasional. Tabel kabupaten 2010–2024 pada paket yang sama menjumlahkan semua jenis bencana, sehingga tidak dipakai sebagai kejadian karhutla per kabupaten. Tabel kabupaten 2024 yang memuat kolom BANJIR dipakai hanya pada modul Banjir. Unduhan XLSX dapat tertahan Cloudflare; pengambilan memakai datastore CKAN.",
   },
+  {
+    id: "prioritas_aplus",
+    nama: "Prioritas kesiapsiagaan 14 hari (FWI hanya 9 hari)",
+    instansi: "Pemodelan pihak ketiga (GWIS, Open-Meteo, FIRMS, IRBI)",
+    fungsi: "Daftar paling banyak 15 kab/kota pada enam provinsi, plus blok hotspot nasional. Bukan prakiraan resmi BMKG/BNPB.",
+    officialUrl: "https://gwis.jrc.ec.europa.eu/about-gwis/technical-background/fire-danger-forecast",
+    officialLabel: "GWIS Fire Danger Forecast",
+    extraUrls: [
+      ["Lisensi Open-Meteo", "https://open-meteo.com/en/licence"],
+      ["de Groot dkk. 2007", "https://doi.org/10.1007/s11027-006-9043-8"],
+    ],
+    access: "API",
+    needsKey: false,
+    kind: "dinamis",
+    updateType: "Harian",
+    expectedMaxAgeHours: 36,
+    file: "data/live/prioritas_aplus.json",
+    limitation:
+      "Open-Meteo CC BY 4.0, nonkomersial. FWI hanya 9 hari. Ambang FFMC/DC dari literatur, diterapkan pada nilai model, bukan kelas BMKG. Geometri BIG tidak disimpan.",
+  },
 ];
 
 export function integrationStatus(source, entry) {

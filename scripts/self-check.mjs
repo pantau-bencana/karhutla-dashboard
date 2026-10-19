@@ -24,6 +24,19 @@ import { assessFreshness, hotspotSourceLabel } from "../src/lib/freshness.js";
 import { annotatePoints } from "./big-wilayah.mjs";
 import { buildComparisonAttention, normalizePlaceName, PROTOTYPE_LABEL } from "../src/lib/attentionPrototype.js";
 import { karhutlaRankingPlan } from "../src/lib/ranking.js";
+import {
+  agregasiHotspot,
+  alasanKesegaran,
+  ambangHotspot,
+  blokHotspot,
+  farthestPointSample,
+  kuantilIndeks,
+  nilaiKab,
+  p75,
+  statusDaftar,
+  susunPrioritas,
+  tampilanPrioritas,
+} from "../src/lib/aplus.js";
 import { REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
 import { buildHotspotTree } from "../src/lib/hotspotTree.js";
 import { FLOOD_INFO_COLUMNS, RAIN_RISK_MATRIX, buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI } from "../src/lib/floodMatrix.js";
@@ -402,8 +415,9 @@ assert.match(refreshSource, /wilayah_gagal=\$\{countText/);
 assert.match(refreshSource, /big_queries=\$\{countText/);
 assert.match(refreshSource, /\/tmp\/refresh-hotspot-counts\.txt/);
 assert.equal(karhutlaRankingPlan().dapatDisusun, false);
-assert.equal(karhutlaRankingPlan().status, "Belum tersedia – metode menunggu persetujuan");
-assert.equal(karhutlaRankingPlan().dapatDisusun, false);
+assert.match(karhutlaRankingPlan().status, /Belum tersedia – cuplikan prioritas belum ada/);
+assert.equal(karhutlaRankingPlan().judul, "Prioritas kesiapsiagaan 14 hari (FWI hanya 9 hari)");
+assert.equal(karhutlaRankingPlan().jenis, "pemodelan pihak ketiga");
 assert.equal(PROTOTYPE_LABEL, "Prototipe – berbasis data pembanding terbuka, bukan data resmi BMKG");
 assert.equal(logicSource.includes("PROTOTYPE_LABEL"), false);
 assert.equal(logicSource.includes("bukan daftar prioritas"), true);
@@ -704,7 +718,8 @@ const indicatorUi = readFileSync("src/components/PriorityIndicators.jsx", "utf8"
 assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<PriorityIndicators \/>/);
 assert.match(logicSource, /<PriorityIndicators rinci \/>/);
 assert.match(indicatorSource, /Indikator untuk Wilayah Prioritas/);
-assert.match(indicatorSource, /Belum tersedia – metode menunggu persetujuan/);
+assert.match(indicatorSource, /Metode A\+/);
+assert.match(indicatorSource, /bukan prakiraan resmi BMKG\/BNPB/);
 assert.match(indicatorSource, /hingga H\+7 sesuai produk BMKG/);
 assert.match(indicatorSource, /bukan prakiraan 14 hari/);
 assert.match(indicatorSource, /Tidak ada data stasiun/);
@@ -1018,5 +1033,154 @@ assert.match(readFileSync(".github/workflows/refresh-data.yml", "utf8"), /netCDF
 assert.match(readFileSync("scripts/gfwed_clip.py", "utf8"), /GEOS-5_FWI/);
 assert.equal(readFileSync("scripts/gfwed-kabupaten.mjs", "utf8").includes("returnGeometry: \"true\""), true);
 assert.equal(readFileSync("scripts/gfwed_clip.py", "utf8").includes("geojson"), false);
+
+const contohAplus = parseCsv(readFileSync("data/fixtures/contoh-hitung-aplus-2026-10-19.csv", "utf8")).map((row) => ({
+  ...row,
+  n_titik: Number(row.n_titik),
+  I1: Number(row.I1),
+  I2: Number(row.I2),
+  I3: row.I3 === "" ? null : Number(row.I3),
+  I4: Number(row.I4),
+  ffmc78_hari: Number(row.ffmc78_hari),
+  dc_maks: Number(row.dc_maks),
+  gwis_hari: Number(row.gwis_hari),
+  fwi_titik_maks: Number(row.fwi_titik_maks),
+}));
+const dinilai = nilaiKab(contohAplus);
+assert.equal(dinilai.length, 81);
+assert.equal(dinilai.filter((row) => row.lolos).length, 44);
+const gagalKeringSaja = dinilai.filter((row) => row.data_ok && !row.G_kering && row.G_cuaca);
+const gagalKeduanya = dinilai.filter((row) => row.data_ok && !row.G_kering && !row.G_cuaca);
+const gagalCuacaSaja = dinilai.filter((row) => row.data_ok && row.G_kering && !row.G_cuaca);
+assert.equal(gagalKeringSaja.length, 13);
+assert.equal(gagalKeduanya.length, 23);
+assert.equal(gagalCuacaSaja.length, 1);
+for (const row of dinilai) {
+  const sumber = contohAplus.find((item) => item.kode === row.kode);
+  assert.equal(row.lolos, sumber.lolos === "True", row.kab);
+  assert.equal(row.data_ok, sumber.data_ok === "True", row.kab);
+  if (row.skor_tampil != null) assert.ok(Math.abs(row.skor_tampil - Number(sumber.skor)) <= 0.002, `${row.kab} ${row.skor_tampil} ${sumber.skor}`);
+}
+const urutan = dinilai.filter((row) => row.lolos).sort((a, b) => a.peringkat_daftar - b.peringkat_daftar);
+assert.deepEqual(urutan.slice(0, 15).map((row) => row.kab), [
+  "Ogan Komering Ilir",
+  "Tanah Laut",
+  "Kotabaru",
+  "Barito Kuala",
+  "Tapin",
+  "Banjar",
+  "Pulang Pisau",
+  "Tanah Bumbu",
+  "Barito Selatan",
+  "Tabalong",
+  "Kapuas",
+  "Sukamara",
+  "Katingan",
+  "Banyuasin",
+  "Hulu Sungai Selatan",
+]);
+const palembang = dinilai.find((row) => row.kab === "Kota Palembang");
+assert.equal(palembang.n_titik, 1);
+assert.equal(palembang.satu_titik, true);
+assert.equal(palembang.lolos, true);
+assert.equal(palembang.I4, 0);
+assert.equal(palembang.peringkat_daftar, 19);
+assert.equal(palembang.peringkat_daftar <= 15, false);
+const seruyan = dinilai.find((row) => row.kab === "Seruyan");
+assert.equal(seruyan.lolos, true);
+assert.equal(seruyan.peringkat_daftar, 22);
+assert.equal(seruyan.I4, 2635);
+assert.equal(seruyan.hs_hari, "4");
+const musi = dinilai.find((row) => row.kab === "Musi Banyuasin");
+assert.equal(musi.lolos, false);
+assert.equal(musi.G_kering, false);
+const nasionalUji = [
+  { kode: "93.01", kab: "Merauke", prov: "Papua Selatan", jumlah: 2979, hari: 4, berurutan: 4 },
+  { kode: seruyan.kode, kab: "Seruyan", prov: "Kalimantan Tengah", jumlah: 2635, hari: 4, berurutan: 4 },
+  { kode: musi.kode, kab: "Musi Banyuasin", prov: "Sumatera Selatan", jumlah: 458, hari: 4, berurutan: 4 },
+  { kode: dinilai.find((row) => row.kab === "Ogan Komering Ilir").kode, kab: "Ogan Komering Ilir", prov: "Sumatera Selatan", jumlah: 1369, hari: 4, berurutan: 4 },
+  { kode: "35.13", kab: "Probolinggo", prov: "Jawa Timur", jumlah: 40, hari: 2, berurutan: 2 },
+];
+const blok = blokHotspot(nasionalUji, dinilai, 231);
+assert.deepEqual(blok.map((row) => row.kab), ["Merauke", "Seruyan", "Ogan Komering Ilir", "Musi Banyuasin"]);
+assert.equal(blok.find((row) => row.kab === "Seruyan").status, "di luar 15 besar (peringkat skor 22)");
+assert.equal(blok.find((row) => row.kab === "Merauke").status, "di luar cakupan pemeringkatan");
+assert.equal(blok.find((row) => row.kab === "Musi Banyuasin").status, "tidak lolos syarat: kering/cuaca");
+assert.equal(blok.find((row) => row.kab === "Ogan Komering Ilir").status, "peringkat 1");
+assert.equal(blok.some((row) => row.kab === "Probolinggo"), false);
+assert.equal(statusDaftar({ cakupan: false }), "di luar cakupan pemeringkatan");
+const nasionalPadat = [
+  ...nasionalUji,
+  ...Array.from({ length: 100 }, (_, index) => ({ kode: `00.${index}`, kab: `Lain ${index}`, prov: "Lain", jumlah: 1, hari: 1, berurutan: 1 })),
+];
+const hitungUlang = susunPrioritas({
+  kab: contohAplus,
+  nasional: nasionalPadat,
+  ensembleFetchedAt: "2026-10-19T03:00:00.000Z",
+  gwisFetchedAt: "2026-10-19T03:30:00.000Z",
+  gwisHari: 9,
+  firmsObservedAt: "2026-10-19T02:00:00.000Z",
+});
+assert.equal(hitungUlang.daftar[0].kab, "Ogan Komering Ilir");
+assert.equal(hitungUlang.daftar.some((row) => row.kab === "Kota Palembang"), false);
+assert.equal(hitungUlang.blok.some((row) => row.kab === "Seruyan"), true);
+assert.equal(hitungUlang.daftar.find((row) => row.kab === "Ogan Komering Ilir").dalam_blok, true);
+const segar = tampilanPrioritas(hitungUlang, new Date("2026-10-19T10:00:00.000Z"));
+assert.equal(segar.tersedia, true);
+assert.equal(segar.blok.length > 0, true);
+const basi = tampilanPrioritas(hitungUlang, new Date("2026-10-21T10:00:00.000Z"));
+assert.equal(basi.tersedia, false);
+assert.match(basi.alasan.join(" "), /36 jam/);
+assert.match(basi.alasan.join(" "), /48 jam/);
+const firmsLama = tampilanPrioritas(hitungUlang, new Date("2026-10-20T03:30:00.000Z"));
+assert.equal(firmsLama.tersedia, true);
+assert.equal(firmsLama.blok.length, 0);
+assert.match(firmsLama.blok_alasan, /24 jam/);
+const kurang = { ...hitungUlang, kab_lengkap: 29 };
+assert.match(alasanKesegaran(kurang, new Date("2026-10-19T10:00:00.000Z")).join(" "), /kurang dari 30/);
+const kosong = tampilanPrioritas({ ...hitungUlang, daftar: [], lolos: 0, blok: [], firms_observed_at: hitungUlang.firms_observed_at, kab_lengkap: 40, gwis_hari: 9 }, new Date("2026-10-19T10:00:00.000Z"));
+assert.equal(kosong.tersedia, true);
+assert.equal(kosong.daftar.length, 0);
+assert.equal(p75([1, 2, 3, 4]), 3.25);
+assert.equal(kuantilIndeks([10, 20, 30, 40], 0.95), 30);
+assert.equal(ambangHotspot([1, 2, 3]), 50);
+const sampel = farthestPointSample(
+  [
+    { lintang: 0, bujur: 0 },
+    { lintang: 0, bujur: 1 },
+    { lintang: 1, bujur: 0 },
+    { lintang: 1, bujur: 1 },
+    { lintang: 0.5, bujur: 0.5 },
+  ],
+  3,
+);
+assert.equal(sampel.length, 3);
+assert.equal(sampel[0].lintang, 0.5);
+const agregat = agregasiHotspot([
+  { kode_kabupaten: "62.07", kabupaten: "Seruyan", provinsi: "Kalimantan Tengah", kepercayaan: "n", tanggal: "2026-10-15" },
+  { kode_kabupaten: "62.07", kabupaten: "Seruyan", provinsi: "Kalimantan Tengah", kepercayaan: "h", tanggal: "2026-10-16" },
+  { kode_kabupaten: "62.07", kabupaten: "Seruyan", provinsi: "Kalimantan Tengah", kepercayaan: "l", tanggal: "2026-10-16" },
+  { kode_kabupaten: "16.71", kabupaten: "Kota Palembang", provinsi: "Sumatera Selatan", kepercayaan: "n", tanggal: "2026-10-15" },
+]);
+assert.equal(agregat.find((row) => row.kode === "62.07").jumlah, 2);
+assert.equal(agregat.find((row) => row.kode === "62.07").berurutan, 2);
+assert.equal(agregat.find((row) => row.kab === "Kota Palembang").berurutan, 1);
+const aplusScript = readFileSync("scripts/build-prioritas-aplus.mjs", "utf8");
+const aplusWorkflow = readFileSync(".github/workflows/prioritas-aplus.yml", "utf8");
+assert.match(aplusWorkflow, /32 12 \* \* \*/);
+assert.equal(aplusWorkflow.includes("FIRMS_MAP_KEY"), false);
+assert.equal(aplusWorkflow.includes("secrets."), false);
+assert.match(aplusScript, /returnGeometry: "true"/);
+assert.equal(aplusScript.includes("data/boundaries"), false);
+assert.equal(aplusScript.includes(".geojson"), false);
+assert.match(readFileSync("src/lib/aplus.js", "utf8"), /Prioritas kesiapsiagaan 14 hari \(FWI hanya 9 hari\)/);
+assert.match(readFileSync("src/lib/aplus.js", "utf8"), /bukan prakiraan resmi BMKG\/BNPB/);
+assert.match(readFileSync("src/lib/aplus.js", "utf8"), /ambang literatur FDRS ASEAN diterapkan pada nilai model, bukan kelas BMKG/);
+assert.match(readFileSync("src/lib/aplus.js", "utf8"), /hanya 1 titik sampel/);
+assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /Aktivitas hotspot tinggi saat ini/);
+assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /CATATAN_SATU_TITIK/);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /de Groot dkk\. 2007/);
+assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<PrioritasPanel /);
+assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /prioritas_aplus/);
 
 console.log("Pemeriksaan prototipe lulus.");

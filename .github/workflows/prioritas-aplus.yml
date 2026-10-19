@@ -1,0 +1,114 @@
+# Prioritas kesiapsiagaan Metode A+, sekali sehari setelah slot hotspot 19.17 WIB.
+# 12:32 UTC = 19.32 WIB. Tanpa secret baru. Geometri BIG tidak disimpan.
+# Push dari GITHUB_TOKEN tidak memicu workflow Pages, jadi deploy ada di sini bila data berubah.
+name: Prioritas A+
+
+on:
+  schedule:
+    - cron: "32 12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: prioritas-aplus
+  cancel-in-progress: false
+
+jobs:
+  hitung:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Hitung prioritas A+
+        run: node scripts/build-prioritas-aplus.mjs
+
+      - name: Commit bila cuplikan berubah
+        id: commit
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          branch="${GITHUB_REF_NAME}"
+          git add data/live/prioritas_aplus.csv data/live/prioritas_aplus.json data/live/manifest.json
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Tidak ada perubahan prioritas."
+            exit 0
+          fi
+          git commit -m "Perbarui prioritas kesiapsiagaan A+"
+          for attempt in 1 2 3 4; do
+            git fetch origin "$branch"
+            if git pull --rebase origin "$branch"; then
+              if git push origin "HEAD:${branch}"; then
+                echo "changed=true" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+            else
+              git rebase --abort || true
+              git reset --hard "origin/${branch}"
+              node scripts/build-prioritas-aplus.mjs
+              git add data/live/prioritas_aplus.csv data/live/prioritas_aplus.json data/live/manifest.json
+              if git diff --cached --quiet; then
+                echo "changed=false" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+              git commit -m "Perbarui prioritas kesiapsiagaan A+"
+            fi
+          done
+          echo "Gagal mendorong prioritas setelah 4 percobaan."
+          exit 1
+
+      - name: Setup Pages
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Build
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        env:
+          VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: npm run check && npm run build
+
+      - name: Verify Pages paths and public config
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        run: node scripts/verify-pages-build.mjs "${{ steps.pages.outputs.base_path }}"
+
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && needs.hitung.outputs.changed == 'true'
+    needs: hitung
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

@@ -1,7 +1,7 @@
 export const PRIORITY_INDICATOR_TITLE = "Indikator untuk Wilayah Prioritas";
 
 export const PRIORITY_INDICATOR_NOTE =
-  "Daftar wilayah prioritas dan nilai per kabupaten/kota tidak ditampilkan. Slot 15–20 kabupaten/kota untuk 14 hari berstatus Belum tersedia – metode menunggu persetujuan. Yang dibutuhkan: FDRS atau FWI BMKG terstruktur per kabupaten/kota, peluang hujan lebih dari 20 mm resmi per kabupaten/kota, dan aturan gabungan yang disetujui.";
+  "Daftar prioritas kesiapsiagaan memakai Metode A+ (pemodelan pihak ketiga, bukan prakiraan resmi BMKG/BNPB) bila cuplikan segar. Produk resmi tetap terpisah: FDRS atau FWI BMKG terstruktur per kabupaten/kota belum tersambung (citra SPARTAN hingga H+7 sesuai produk BMKG, bukan prakiraan 14 hari), dan peluang hujan lebih dari 20 mm resmi per kabupaten/kota belum tersambung (bukan peluang dalam persen pada API 3 hari).";
 
 export const PRIORITY_INDICATORS = [
   {

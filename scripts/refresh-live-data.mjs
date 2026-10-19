@@ -1132,7 +1132,12 @@ async function main() {
   }
   datasets.dibi_banjir_2024 = dibiBanjirEntry;
 
+  if (previous.datasets?.prioritas_aplus) {
+    datasets.prioritas_aplus = previous.datasets.prioritas_aplus;
+  }
+
   for (const source of SOURCES) {
+    if (source.id === "prioritas_aplus") continue;
     if (datasets[source.id]) continue;
     datasets[source.id] = tautanEntry(source);
   }
