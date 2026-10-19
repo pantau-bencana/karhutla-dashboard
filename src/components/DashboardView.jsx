@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { Badge } from "./Badge.jsx";
+import { OfficialLinks } from "./OfficialLinks.jsx";
+import { officialLinks } from "../lib/sourceCatalog.js";
 import { ExtraLayers, LayerBar, WilayahDetail } from "./ExtraLayers.jsx";
 import { PrioritasPanel } from "./PrioritasPanel.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
@@ -211,17 +214,29 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           <div>
             <h2>Rekap SiPongi</h2>
             <p>
-              {sipongiFeed?.rows?.length
-                ? "Jumlah hotspot dan luas terbakar dijumlahkan pada rentang tanggal."
-                : "Tautan saja. Rekap resmi SiPongi belum terhubung."}
+              {sipongiFeed?.rows?.length ? (
+                "Jumlah hotspot dan luas terbakar dijumlahkan pada rentang tanggal."
+              ) : (
+                <span className="link-only">
+                  <Badge kind="tau">Tautan saja</Badge>
+                  <OfficialLinks links={officialLinks("sipongi")} />
+                  <span>Rekap resmi belum terhubung ke dasbor.</span>
+                </span>
+              )}
             </p>
           </div>
         </header>
         <SimpleTable
           empty={
-            sipongiFeed?.rows?.length
-              ? "Tidak ada rekap SiPongi pada rentang ini."
-              : sipongiFeed?.error || "Tautan saja. Rekap resmi SiPongi belum terhubung."
+            sipongiFeed?.rows?.length ? (
+              "Tidak ada rekap SiPongi pada rentang ini."
+            ) : (
+              <span className="link-only">
+                <Badge kind="tau">Tautan saja</Badge>
+                <OfficialLinks links={officialLinks("sipongi")} />
+                <span>Rekap resmi SiPongi belum terhubung.</span>
+              </span>
+            )
           }
           head={["Provinsi", "Hotspot", "Luas (ha)"]}
           rows={view.sipongiRows.map((row) => [row.provinsi, formatAngka(row.jumlah), formatAngka(row.luas, 1)])}
@@ -296,13 +311,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
                   <div>
                     <dt>Tautan</dt>
                     <dd>
-                      {feed.urlTampil ? (
-                        <a href={feed.urlTampil} target="_blank" rel="noreferrer">
-                          {feed.urlTampil}
-                        </a>
-                      ) : (
-                        "—"
-                      )}
+                      <FeedLinks feed={feed} />
                     </dd>
                   </div>
                 </dl>
@@ -326,6 +335,19 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
       <PrioritasPanel snapshot={feeds.prioritas} />
     </main>
   );
+}
+
+function FeedLinks({ feed }) {
+  if (feed.urlTampil) {
+    return (
+      <a href={feed.urlTampil} target="_blank" rel="noopener noreferrer">
+        {feed.urlTampil}
+      </a>
+    );
+  }
+  const links = feed.status === "tautan" || String(feed.error || "").includes("Tautan saja") ? officialLinks(feed.id) : [];
+  if (!links.length) return "—";
+  return <OfficialLinks links={links} />;
 }
 
 function SimpleTable({ head, rows, empty }) {

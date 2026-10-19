@@ -1,3 +1,4 @@
+import { OfficialLinks } from "./OfficialLinks.jsx";
 import { hazardById } from "../lib/hazards.js";
 
 export function HazardPlaceholder({ hazardId, bare = false }) {
@@ -19,7 +20,16 @@ export function HazardPlaceholder({ hazardId, bare = false }) {
         </header>
         <ul className="plain-list logic-body">
           {hazard.indikator.map((item) => (
-            <li key={item}>{item}</li>
+            <li key={item}>
+              {item}
+              {item.includes("Tautan saja") ? (
+                <OfficialLinks
+                  links={hazard.sumber
+                    .filter((row) => String(row.status).includes("Tautan saja"))
+                    .map((row) => ({ href: row.url, label: row.nama }))}
+                />
+              ) : null}
+            </li>
           ))}
         </ul>
       </section>
@@ -46,12 +56,17 @@ export function HazardPlaceholder({ hazardId, bare = false }) {
                   <th scope="row">{row.nama}</th>
                   <td>{row.instansi}</td>
                   <td>
-                    <a href={row.url} target="_blank" rel="noreferrer">
+                    <a href={row.url} target="_blank" rel="noopener noreferrer">
                       {row.url}
                     </a>
                   </td>
                   <td>
-                    <span className="status-pill status-off">{row.status}</span>
+                    <span className="link-only">
+                      <span className="status-pill status-off">{row.status}</span>
+                      {String(row.status).includes("Tautan saja") ? (
+                        <a href={row.url} target="_blank" rel="noopener noreferrer">{row.nama}</a>
+                      ) : null}
+                    </span>
                   </td>
                 </tr>
               ))}

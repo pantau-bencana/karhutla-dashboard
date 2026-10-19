@@ -1,4 +1,5 @@
 import { useMemo, useRef } from "react";
+import { Badge } from "./Badge.jsx";
 import { ClusterLegend, HotspotMap } from "./HotspotMap.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { ForecastPanel } from "./ForecastPanel.jsx";
@@ -91,7 +92,11 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
             <li>
               <strong>Gunung api</strong>
               <p>
-                Tautan saja. Status resmi dibaca di MAGMA. Tidak ada daftar gunung di dasbor ini.
+                <span className="link-only">
+                  <Badge kind="tau">Tautan saja</Badge>
+                  <a href="https://magma.esdm.go.id/" target="_blank" rel="noopener noreferrer">MAGMA Indonesia</a>
+                </span>
+                {" "}Status resmi dibaca di MAGMA. Tidak ada daftar gunung di dasbor ini.
                 {" "}
                 <a href="#/gunung-api">Buka tautan</a>
               </p>
@@ -153,7 +158,7 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
               <ul className="plain-list">
                 {cap.rows.slice(0, 6).map((row) => (
                   <li key={row.id || row.url}>
-                    <a href={row.url} target="_blank" rel="noreferrer">
+                    <a href={row.url} target="_blank" rel="noopener noreferrer">
                       {row.judul || row.kejadian}
                     </a>
                     <div className="subline">

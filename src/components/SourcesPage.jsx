@@ -1,3 +1,4 @@
+import { OfficialLinks } from "./OfficialLinks.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { formatWib } from "../lib/format.js";
 import { decorateSources } from "../lib/sourceCatalog.js";
@@ -59,12 +60,12 @@ function SourceRows({ row }) {
         <th scope="row">{row.nama}</th>
         <td>{row.instansi}</td>
         <td>
-          <a href={row.officialUrl} target="_blank" rel="noreferrer">
+          <a href={row.officialUrl} target="_blank" rel="noopener noreferrer">
             {row.officialLabel || row.officialUrl}
           </a>
           {row.extraUrls?.map(([label, url]) => (
             <div key={url}>
-              <a href={url} target="_blank" rel="noreferrer">
+              <a href={url} target="_blank" rel="noopener noreferrer">
                 {label}
               </a>
             </div>
@@ -74,7 +75,12 @@ function SourceRows({ row }) {
         <td>{row.access}</td>
         <td>{row.needsKey ? `Ya, secret ${row.secret}` : "Tidak"}</td>
         <td>
-          <span className={`status-pill ${statusClass(row.status)}`}>{row.status}</span>
+          <span className="link-only">
+            <span className={`status-pill ${statusClass(row.status)}`}>{row.status}</span>
+            {String(row.status).startsWith("Tautan saja") ? (
+              <OfficialLinks links={[{ href: row.officialUrl, label: row.officialLabel || row.nama }]} />
+            ) : null}
+          </span>
         </td>
         <td>
           <DatasetTiming feed={feedFromEntry(row.entry, row.updateType)} />
@@ -87,7 +93,7 @@ function SourceRows({ row }) {
           <th scope="row">Pembanding: {item.nama}</th>
           <td>{item.instansi}</td>
           <td>
-            <a href={item.officialUrl} target="_blank" rel="noreferrer">
+            <a href={item.officialUrl} target="_blank" rel="noopener noreferrer">
               {item.provider || item.instansi}
             </a>
           </td>

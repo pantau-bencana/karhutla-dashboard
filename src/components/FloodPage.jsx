@@ -175,18 +175,18 @@ function FloodBody() {
           <p>
             Kolom dasarian diisi dengan menyalin status dari halaman BMKG ke berkas CSV. Warna kuning, jingga, dan merah
             hanya dipakai pada kolom itu. Tidak ada skor gabungan. Cara mengisinya ada di{" "}
-            <a href={DASARIAN_GUIDE_URL} target="_blank" rel="noreferrer">
+            <a href={DASARIAN_GUIDE_URL} target="_blank" rel="noopener noreferrer">
               panduan isi dasarian
             </a>
             . Berkasnya{" "}
-            <a href={DASARIAN_CSV_URL} target="_blank" rel="noreferrer">
+            <a href={DASARIAN_CSV_URL} target="_blank" rel="noopener noreferrer">
               bmkg-pdcht-dasarian.csv
             </a>
             .
           </p>
           <p className="nowcast-links">
             {DASARIAN_LINKS.map((link) => (
-              <a key={link.url} href={link.url} target="_blank" rel="noreferrer">
+              <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer">
                 {link.nama}
               </a>
             ))}

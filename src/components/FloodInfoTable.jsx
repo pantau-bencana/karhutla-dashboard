@@ -53,7 +53,7 @@ const CELLS = {
           Berlaku {formatWib(alert.effective)} sampai {formatWib(alert.expires)}
         </small>
         {alert.url ? (
-          <a href={alert.url} target="_blank" rel="noreferrer">
+          <a href={alert.url} target="_blank" rel="noopener noreferrer">
             Berkas CAP
           </a>
         ) : null}
@@ -68,7 +68,7 @@ const CELLS = {
       return (
         <>
           {DASARIAN_EMPTY}
-          <a href={DASARIAN_BMKG_URL} target="_blank" rel="noreferrer">
+          <a href={DASARIAN_BMKG_URL} target="_blank" rel="noopener noreferrer">
             Peringatan dini hujan tinggi
           </a>
         </>
@@ -82,7 +82,7 @@ const CELLS = {
         {row.dasarianNama ? <small>{row.dasarianNama}</small> : null}
         {row.dasarianKutipan ? <small>{row.dasarianKutipan}</small> : null}
         {row.dasarianUrl ? (
-          <a href={row.dasarianUrl} target="_blank" rel="noreferrer">
+          <a href={row.dasarianUrl} target="_blank" rel="noopener noreferrer">
             Halaman BMKG
           </a>
         ) : null}
@@ -94,7 +94,7 @@ const CELLS = {
   kajian: () => "Belum terhubung",
   krb: (row) =>
     krbLinksFor(row).map((link) => (
-      <a key={link.url} href={link.url} target="_blank" rel="noreferrer">
+      <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer">
         {link.nama}
       </a>
     )),

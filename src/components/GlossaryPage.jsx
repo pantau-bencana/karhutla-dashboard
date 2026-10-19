@@ -57,7 +57,7 @@ export function GlossaryPage() {
                 <p className="fine">Di dasbor ini: {item.penggunaan}</p>
                 {item.rujukan ? (
                   <p>
-                    <a href={item.rujukan} target="_blank" rel="noreferrer">
+                    <a href={item.rujukan} target="_blank" rel="noopener noreferrer">
                       {item.rujukanLabel || item.rujukan}
                     </a>
                   </p>

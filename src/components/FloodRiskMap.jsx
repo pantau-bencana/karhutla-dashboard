@@ -309,7 +309,7 @@ export function FloodRiskMap() {
       </header>
       <div className="logic-body">
         <p>
-          <a href={INARISK_PORTAL} target="_blank" rel="noreferrer">
+          <a href={INARISK_PORTAL} target="_blank" rel="noopener noreferrer">
             Portal inaRISK
           </a>
           . Status peta ini belum Aktif. Izin tertulis BNPB menyusul.
@@ -337,7 +337,7 @@ export function FloodRiskMap() {
           <p className="banner warn" role="status">
             <strong>{mapError}</strong>
             <p>
-              <a href={INARISK_PORTAL} target="_blank" rel="noreferrer">
+              <a href={INARISK_PORTAL} target="_blank" rel="noopener noreferrer">
                 Portal inaRISK
               </a>
             </p>

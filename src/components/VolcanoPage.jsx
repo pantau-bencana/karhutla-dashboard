@@ -1,4 +1,5 @@
 import { Badge } from "./Badge.jsx";
+import { OfficialLinks } from "./OfficialLinks.jsx";
 import { hazardById } from "../lib/hazards.js";
 
 export function VolcanoPage() {
@@ -10,14 +11,17 @@ export function VolcanoPage() {
           <h1>Gunung Api</h1>
           <p className="lead">Status aktivitas ditetapkan PVMBG. Dasbor ini tidak menyimpan status dan tidak membuat peta dampak.</p>
         </div>
-        <Badge kind="tau">Tautan saja</Badge>
+        <div className="badges">
+          <Badge kind="tau">Tautan saja</Badge>
+          <OfficialLinks links={[{ href: "https://magma.esdm.go.id/", label: "MAGMA Indonesia" }]} />
+        </div>
       </header>
       <section className="card">
         <h2>Sumber resmi</h2>
         <ul className="plain-list">
           {hazard.sumber.map((row) => (
             <li key={row.nama}>
-              <a href={row.url} target="_blank" rel="noreferrer">{row.nama}</a>
+              <a href={row.url} target="_blank" rel="noopener noreferrer">{row.nama}</a>
               {" · "}{row.instansi} · {row.status}
             </li>
           ))}

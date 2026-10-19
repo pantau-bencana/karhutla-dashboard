@@ -220,7 +220,7 @@ skor = (rI1 + rI2 + rI3 + rI4) / 4`}</pre>
             <li key={item.judul}>
               {item.judul}{" "}
               {item.tautan.map(([label, href]) => (
-                <a key={href} href={href} target="_blank" rel="noreferrer"> {label}</a>
+                <a key={href} href={href} target="_blank" rel="noopener noreferrer"> {label}</a>
               ))}
               <small>{item.catatan}</small>
             </li>

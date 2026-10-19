@@ -1,3 +1,4 @@
+import { OfficialLinks } from "./OfficialLinks.jsx";
 import {
   PRIORITY_INDICATOR_NOTE,
   PRIORITY_INDICATOR_TITLE,
@@ -45,7 +46,10 @@ export function PriorityIndicators({ rinci = false }) {
                     </ul>
                   </td>
                   <td>
-                    <span className="status-pill status-off">{row.status}</span>
+                    <span className="link-only">
+                      <span className="status-pill status-off">{row.status}</span>
+                      {row.status.includes("Tautan saja") ? <OfficialLinks links={row.sumber} /> : null}
+                    </span>
                     <p>{row.keterbatasan}</p>
                   </td>
                 </tr>
