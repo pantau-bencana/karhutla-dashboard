@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { deriveDashboard, defaultRange } from "../src/lib/derive.js";
 import { areaContains, assignProvince, INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../src/lib/geo.js";
 import { looksLikeCsv, parseCsv } from "../src/lib/csv.js";
-import { fetchCsv, loadAll, normalizeHotspotRow, redactFirmsUrl } from "../src/lib/loadData.js";
+import { fetchCsv, loadAll, normalizeHotspotRow, normalizeRecords, redactFirmsUrl } from "../src/lib/loadData.js";
 import { GLOSSARY } from "../src/lib/glossary.js";
 import { HAZARDS } from "../src/lib/hazards.js";
 import { ispuFromPm25 } from "../src/lib/ispuEstimate.js";
@@ -111,15 +111,28 @@ assert.equal(hotspot.status, "gagal");
 assert.equal(hotspot.contoh, false);
 assert.equal(hotspot.rows.length, 0);
 assert.match(hotspot.error, /contoh tidak ditampilkan/i);
+for (const id of ["sipongi", "irbi", "ispu"]) {
+  const feed = loaded.find((item) => item.id === id);
+  assert.equal(feed.status, "tautan", id);
+  assert.equal(feed.contoh, false, id);
+  assert.equal(feed.rows.length, 0, id);
+  assert.equal(feed.urlTampil, "", id);
+}
+assert.match(loaded.find((feed) => feed.id === "sipongi").error, /Tautan saja/);
+assert.match(loaded.find((feed) => feed.id === "ispu").error, /Tidak tersedia/);
+assert.match(loaded.find((feed) => feed.id === "irbi").error, /Tidak tersedia/);
 const sampleHotspots = parseCsv(readFileSync("data/sample/hotspot.csv", "utf8")).map((raw) => normalizeHotspotRow(raw, { contoh: true }));
+const sampleSipongi = normalizeRecords("sipongi", parseCsv(readFileSync("data/sample/sipongi.csv", "utf8")));
+const sampleIrbi = normalizeRecords("irbi", parseCsv(readFileSync("data/sample/irbi.csv", "utf8")));
+const sampleIspu = normalizeRecords("ispu", parseCsv(readFileSync("data/sample/ispu.csv", "utf8")));
 const range = defaultRange(sampleHotspots, 7);
 assert.deepEqual(range, { from: "2026-10-10", to: "2026-10-16" });
 
 const view = deriveDashboard({
   hotspots: sampleHotspots,
-  sipongi: loaded.find((feed) => feed.id === "sipongi").rows,
-  irbi: loaded.find((feed) => feed.id === "irbi").rows,
-  ispu: loaded.find((feed) => feed.id === "ispu").rows,
+  sipongi: sampleSipongi,
+  irbi: sampleIrbi,
+  ispu: sampleIspu,
   province: "",
   from: range.from,
   to: range.to,
@@ -146,9 +159,9 @@ assert.equal(view.hotspotTrend.at(-1).tanggal, "2026-10-16");
 
 const riau = deriveDashboard({
   hotspots: sampleHotspots,
-  ispu: loaded.find((feed) => feed.id === "ispu").rows,
+  ispu: sampleIspu,
   sipongi: [],
-  irbi: loaded.find((feed) => feed.id === "irbi").rows,
+  irbi: sampleIrbi,
   province: "Riau",
   from: range.from,
   to: range.to,
@@ -160,7 +173,7 @@ assert.ok(riau.irbiRows.every((row) => row.provinsi === "Riau"));
 
 const oneDay = deriveDashboard({
   hotspots: sampleHotspots,
-  ispu: loaded.find((feed) => feed.id === "ispu").rows,
+  ispu: sampleIspu,
   sipongi: [],
   irbi: [],
   province: "",
@@ -294,7 +307,7 @@ assert.equal(described.find((row) => row.id === "firms-api").status, "belum terh
 assert.equal(described.find((row) => row.id === "hotspot").status, "belum terhubung");
 assert.match(described.find((row) => row.id === "hotspot").catatan, /contoh tidak ditampilkan/i);
 for (const id of ["sipongi", "irbi", "ispu"]) {
-  assert.equal(described.find((row) => row.id === id).status, "contoh", id);
+  assert.equal(described.find((row) => row.id === id).status, "Tautan saja", id);
   assert.equal(described.find((row) => row.id === id).tautan, "", id);
 }
 assert.equal(JSON.stringify(described).includes("mapKey"), false);
@@ -601,6 +614,17 @@ assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /FILTER_IN
 assert.match(readFileSync("src/lib/bigWilayah.js", "utf8"), /Penyaringan wilayah dan batas Indonesia pada pembaruan ini tidak lengkap/);
 assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /big_filter_incomplete/);
 assert.match(readFileSync("src/components/DashboardView.jsx", "utf8"), /HotspotBoard/);
+assert.equal(readFileSync("src/components/DashboardView.jsx", "utf8").includes("Data contoh sedang ditampilkan"), false);
+assert.equal(readFileSync("src/components/HotspotMap.jsx", "utf8").includes("cartocdn"), false);
+assert.equal(readFileSync("src/components/FloodRiskMap.jsx", "utf8").includes("cartocdn"), false);
+assert.equal(readFileSync("src/components/StationMap.jsx", "utf8").includes("cartocdn"), false);
+assert.match(readFileSync("src/lib/basemap.js", "utf8"), /https:\/\/tile\.openstreetmap\.org\/\{z\}\/\{x\}\/\{y\}\.png/);
+assert.match(readFileSync("src/lib/basemap.js", "utf8"), /OpenStreetMap contributors/);
+assert.match(readFileSync("src/components/HotspotMap.jsx", "utf8"), /hotspot-cluster/);
+assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /bukan kelas confidence/);
+assert.match(readFileSync("src/styles.css", "utf8"), /\.leaflet-tile-pane/);
+assert.equal(readFileSync("src/lib/sourceCatalog.js", "utf8").includes("masih data contoh"), false);
+assert.equal(readFileSync("src/lib/sourceCatalog.js", "utf8").includes("peta memakai data contoh"), false);
 const wilayahCopy = readFileSync("src/lib/bigWilayah.js", "utf8");
 assert.equal(wilayahCopy.includes("Bukan tingkat bahaya"), true);
 assert.equal(wilayahCopy.includes("bukan tingkat kebakaran"), true);

@@ -48,5 +48,5 @@ Hazard tabs must be data-driven from one config list so a later hazard does not 
 ## Verification
 
 - `npm run check` still finds **Logika Pemantauan** in the header and the disclaimer in the footer.
-- Sample data is visibly **Data contoh** or absent from Ringkasan.
+- Sample files in `data/sample/` stay fixtures for tests. The UI does not show them. A missing official feed reads **Tautan saja** or **Tidak tersedia**.
 - Banjir and Gunung Api show no fabricated counts.

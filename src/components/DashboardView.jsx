@@ -11,7 +11,7 @@ import { formatAngka, formatTanggal } from "../lib/format.js";
 
 function feedStatus(feed, sumber) {
   if (feed.asal === "snapshot") return hotspotSourceLabel(feed, sumber);
-  if (feed.status === "contoh") return "Data contoh";
+  if (feed.status === "tautan") return "Tautan saja";
   if (feed.status === "berhasil") return "Terhubung";
   if (feed.status === "usang") return "Cuplikan terakhir";
   return "Gagal";
@@ -62,8 +62,9 @@ export function DashboardView({
 function DashboardBody({ active, config, feeds, loading, province, setProvince, from, setFrom, to, setTo, view, freshness }) {
   const [layer, setLayer] = useState("hotspot");
   const hotspotFeed = feeds.find((feed) => feed.id === "hotspot");
+  const sipongiFeed = feeds.find((feed) => feed.id === "sipongi");
+  const irbiFeed = feeds.find((feed) => feed.id === "irbi");
   const visibleFeeds = layer === "ispu" ? feeds.filter((feed) => feed.id !== "ispu" && feed.id !== "ispu_pembanding") : feeds;
-  const samples = visibleFeeds.filter((feed) => feed.contoh && feed.status !== "gagal");
   const failures = visibleFeeds.filter((feed) => feed.status === "gagal");
   const fallbacks = visibleFeeds.filter((feed) => feed.status === "cadangan");
   const keySet = Boolean(String(config.firms?.mapKey ?? "").trim());
@@ -93,15 +94,6 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
 
   return (
     <main className="wrap main">
-      {samples.length > 0 && (
-        <div className="banner sample is-sticky" role="status">
-          <strong>Data contoh sedang ditampilkan.</strong>
-          <p>
-            {samples.map((feed) => feed.nama).join(", ")} bukan data operasional. Snapshot resmi, bila ada, tampil
-            terpisah dan tidak memakai angka contoh ini.
-          </p>
-        </div>
-      )}
       {failures.length > 0 && (
         <div className="banner error is-sticky" role="alert">
           <strong>Sebagian sumber gagal dimuat. Bagian lain tetap ditampilkan.</strong>
@@ -229,11 +221,19 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
         <header className="card-head">
           <div>
             <h2>Rekap SiPongi</h2>
-            <p>Jumlah hotspot dan luas terbakar dijumlahkan pada rentang tanggal. Bukan rekap resmi.</p>
+            <p>
+              {sipongiFeed?.rows?.length
+                ? "Jumlah hotspot dan luas terbakar dijumlahkan pada rentang tanggal."
+                : "Tautan saja. Rekap resmi SiPongi belum terhubung."}
+            </p>
           </div>
         </header>
         <SimpleTable
-          empty="Tidak ada rekap SiPongi pada rentang ini."
+          empty={
+            sipongiFeed?.rows?.length
+              ? "Tidak ada rekap SiPongi pada rentang ini."
+              : sipongiFeed?.error || "Tautan saja. Rekap resmi SiPongi belum terhubung."
+          }
           head={["Provinsi", "Hotspot", "Luas (ha)"]}
           rows={view.sipongiRows.map((row) => [row.provinsi, formatAngka(row.jumlah), formatAngka(row.luas, 1)])}
         />
@@ -244,14 +244,18 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           <div>
             <h2>Konteks risiko jangka panjang (IRBI 2025)</h2>
             <p>
-              {feeds.find((feed) => feed.id === "irbi")?.contoh
-                ? "Indeks tahunan pada berkas contoh, bukan keluaran buku IRBI. Urutan nama, bukan urutan prioritas."
-                : "Buku IRBI 2025. Tidak mengikuti filter tanggal. Urutan nama, bukan urutan prioritas dan bukan hitungan hotspot."}
+              {irbiFeed?.rows?.length
+                ? "Buku IRBI 2025. Tidak mengikuti filter tanggal. Urutan nama, bukan urutan prioritas dan bukan hitungan hotspot."
+                : irbiFeed?.error || "Tidak tersedia. Tabel IRBI resmi belum dimuat."}
             </p>
           </div>
         </header>
         <SimpleTable
-          empty="Tidak ada baris IRBI pada cakupan ini."
+          empty={
+            irbiFeed?.rows?.length
+              ? "Tidak ada baris IRBI pada cakupan ini."
+              : irbiFeed?.error || "Tidak tersedia. Tabel IRBI resmi belum dimuat."
+          }
           head={["Kabupaten", "Provinsi", "Indeks", "Kelas"]}
           rows={view.irbiRows.map((row) => [row.kabupaten, row.provinsi, formatAngka(row.indeks, 2), row.kelas])}
         />
@@ -262,7 +266,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
         <header className="card-head">
           <div>
             <h2 id="metadata-heading">Metadata sumber</h2>
-            <p>Waktu ambil dan waktu data mengikuti snapshot atau berkas contoh. Tidak ada server aplikasi.</p>
+            <p>Waktu ambil dan waktu data mengikuti snapshot resmi. Berkas contoh tidak ditampilkan. Tidak ada server aplikasi.</p>
           </div>
         </header>
         <div className={`callout ${keySet ? "callout-hot" : ""}`}>

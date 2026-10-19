@@ -25,7 +25,7 @@ export const SOURCES = [
     updateType: "Realtime / mendekati realtime",
     expectedMaxAgeHours: 18,
     limitation:
-      "API area membutuhkan MAP_KEY dan hanya mengembalikan sampai 5 hari. Tanpa secret, dasbor tidak mengaku tersambung dan peta memakai data contoh. Titik tanpa nama wilayah tidak ditebak dari kotak koordinat.",
+      "API area membutuhkan MAP_KEY dan hanya mengembalikan sampai 5 hari. Tanpa secret, dasbor tidak mengaku tersambung. Berkas contoh hotspot tidak ditampilkan; peta memakai cuplikan data/live atau dikosongkan. Titik tanpa nama wilayah tidak ditebak dari kotak koordinat.",
   },
   {
     id: "sipongi",
@@ -39,7 +39,7 @@ export const SOURCES = [
     kind: "tautan",
     updateType: "",
     limitation:
-      "Halaman peta bukan API publik. Akses data perlu diminta ke pengelola, misalnya posko.karhutla@menlhk.go.id yang tercantum di situs. Tabel SiPongi di halaman Peta dan Data masih data contoh.",
+      "Halaman peta bukan API publik. Akses data perlu diminta ke pengelola, misalnya posko.karhutla@menlhk.go.id yang tercantum di situs. Tabel SiPongi di halaman Peta dan Data berstatus Tautan saja. Berkas contoh tidak ditampilkan.",
   },
   {
     id: "bmkg_prakiraan",
@@ -76,7 +76,7 @@ export const SOURCES = [
     kind: "tautan",
     updateType: "",
     limitation:
-      "Produk FWI/FFMC/DMC/DC/ISI/BUI di SPARTAN berupa citra PNG (pengamatan dan prakiraan H+0 sampai H+7), bukan API. Horizon yang ditulis: hingga H+7 sesuai produk BMKG, bukan 10 atau 14 hari. Citra tidak diunduh dan tidak dipotong. Angka FWI pada indikator prototipe masih data contoh. Peringkat 14 hari kabupaten berstatus menunggu data resmi BMKG (FDRS/potensi karhutla per kab/kota). Izin integrasi diurus lewat PTSP BMKG.",
+      "Produk FWI/FFMC/DMC/DC/ISI/BUI di SPARTAN berupa citra PNG (pengamatan dan prakiraan H+0 sampai H+7), bukan API. Horizon yang ditulis: hingga H+7 sesuai produk BMKG, bukan 10 atau 14 hari. Citra tidak diunduh dan tidak dipotong. Angka FWI contoh tidak ditampilkan. Peringkat 14 hari kabupaten berstatus menunggu data resmi BMKG (FDRS/potensi karhutla per kab/kota). Izin integrasi diurus lewat PTSP BMKG.",
     comparisons: [
       {
         id: "fdrs_pembanding",

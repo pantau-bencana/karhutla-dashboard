@@ -36,11 +36,11 @@ npm run preview
 
 Header memuat tab bahaya **Karhutla**, **Banjir**, dan **Gunung Api**, lalu halaman **Ringkasan**, **Peta dan Data**, **Logika Pemantauan**, **Sumber Data**, dan **Glosarium**. Karhutla yang diisi. Banjir memuat prototipe internal peta risiko dan matriks Aceh/Bengkulu dengan label **Prototipe internal – menunggu izin tertulis BNPB**. Gunung Api menampilkan status **Belum terhubung / menunggu data** tanpa angka buatan. Rute memakai hash (`#/`, `#/karhutla/peta`, `#/logika`, `#/glosarium/ispu`) supaya tetap benar di subfolder GitHub Pages.
 
-GitHub Actions mengambil sumber publik lewat [`.github/workflows/refresh-data.yml`](.github/workflows/refresh-data.yml). Dua cron UTC, selisih 90 menit: `17 */3 * * *` dan `47 1-23/3 * * *` (bukan menit 0). Dalam WIB itu 07.17, 08.47, 10.17, 11.47, 13.17, 14.47, 16.17, 17.47, 19.17, 20.47, 22.17, 23.47, 01.17, 02.47, 04.17, dan 05.47. Workflow [`.github/workflows/refresh-watchdog.yml`](.github/workflows/refresh-watchdog.yml) berjalan tiap jam pada menit 7 dan memicu pembaruan bila cuplikan lebih tua dari 4 jam. Commit data oleh `github-actions[bot]` tidak memicu workflow Pages lain; deploy cuplikan dilakukan di dalam workflow pembaruan yang sama. Hasilnya disimpan di `data/live/` bersama manifes. Situs membaca snapshot itu lebih dulu, lalu berkas contoh bila snapshot tidak ada. Header menampilkan waktu ambil dan jadwal berikutnya dalam WIB.
+GitHub Actions mengambil sumber publik lewat [`.github/workflows/refresh-data.yml`](.github/workflows/refresh-data.yml). Dua cron UTC, selisih 90 menit: `17 */3 * * *` dan `47 1-23/3 * * *` (bukan menit 0). Dalam WIB itu 07.17, 08.47, 10.17, 11.47, 13.17, 14.47, 16.17, 17.47, 19.17, 20.47, 22.17, 23.47, 01.17, 02.47, 04.17, dan 05.47. Workflow [`.github/workflows/refresh-watchdog.yml`](.github/workflows/refresh-watchdog.yml) berjalan tiap jam pada menit 7 dan memicu pembaruan bila cuplikan lebih tua dari 4 jam. Commit data oleh `github-actions[bot]` tidak memicu workflow Pages lain; deploy cuplikan dilakukan di dalam workflow pembaruan yang sama. Hasilnya disimpan di `data/live/` bersama manifes. Situs membaca snapshot itu. Bila snapshot resmi tidak ada, bagian itu berstatus Tautan saja atau Tidak tersedia. Berkas contoh tidak ditampilkan. Header menampilkan waktu ambil dan jadwal berikutnya dalam WIB.
 
 Alur: sumber → pengambilan terjadwal → snapshot → dasbor → status peringatan dini (prototipe, bukan peringatan resmi).
 
-Secret FIRMS, bila dipakai, hanya di **Settings → Secrets and variables → Actions** dengan nama `FIRMS_MAP_KEY`. Daftarkan kunci sendiri di <https://firms.modaps.eosdis.nasa.gov/api/map_key/>. Jangan menempelkan kunci di obrolan, berkas, atau commit. Tanpa secret, build tetap jalan dan hotspot berstatus **Belum terhubung** dengan data contoh.
+Secret FIRMS, bila dipakai, hanya di **Settings → Secrets and variables → Actions** dengan nama `FIRMS_MAP_KEY`. Daftarkan kunci sendiri di <https://firms.modaps.eosdis.nasa.gov/api/map_key/>. Jangan menempelkan kunci di obrolan, berkas, atau commit. Tanpa secret, build tetap jalan dan hotspot berstatus **Belum terhubung**. Berkas contoh hotspot tidak ditampilkan.
 
 Pembanding terbuka (hujan 14 hari Open-Meteo, PM2.5 CAMS lewat Open-Meteo, dan FWI GWIS) tidak memakai secret. Secret CDS tidak dipasang: angka FWI harian diambil dari WMS publik `ecmwf.query`, sedangkan dataset musiman CEMS di Early Warning Data Store membutuhkan akun dan bukan deret 9 hari itu. CHIRPS, laporan Smithsonian, dan VAAC Darwin hanya tautan.
 
@@ -55,9 +55,7 @@ Setelah `npm run build`, yang tersaji adalah salinan di `dist/` (termasuk `dist/
 
 ## Data contoh
 
-Berkas di `data/sample/` adalah **data buatan** agar dasbor bisa dibuka sebelum tautan Google Drive diisi. Setiap baris memuat kolom `keterangan` berisi `DATA CONTOH — bukan data operasional`. Koordinat hanya kira-kira di sekitar kabupaten yang disebut, bukan lokasi kebakaran sungguhan.
-
-Selama `contoh` pada dataset masih `true`, pita kuning di bagian atas dasbor mengingatkan bahwa yang tampil bukan data operasional.
+Berkas di `data/sample/` adalah **data buatan** untuk pengujian pemuat dan penurunan angka. Setiap baris memuat kolom `keterangan` berisi `DATA CONTOH — bukan data operasional`. Dasbor tidak menampilkan berkas itu. Sumber resmi yang belum tersambung ditulis **Tautan saja** atau **Tidak tersedia**.
 
 Hasilkan ulang berkas contoh:
 
@@ -171,8 +169,8 @@ Pull request hanya membangun dan memeriksa hasilnya. Deploy tidak berjalan sebel
 - `MAP_KEY` FIRMS di `config.json` terlihat oleh pengunjung. CORS pada API FIRMS bisa saja memblokir permintaan dari peramban. Situs publik tidak memakai berkas contoh sebagai pengganti.
 - Jendela `firms.rentangHari` tidak sama dengan filter tanggal di layar. Memilih tanggal di luar data yang kembali membuat peta kosong.
 - Nama wilayah hotspot diisi dari kueri BIG saat pembaruan. Geometri batas tidak disimpan di repositori.
-- Angka IRBI/SiPongi/ISPU contoh bersifat ilustratif. IRBI 2025 yang resmi adalah konteks jangka panjang, urutan nama.
-- Peta dasar OpenStreetMap butuh internet dan tunduk pada [kebijakan petak OSM](https://operations.osmfoundation.org/policies/tiles/). Pemakaian operasional yang ramai sebaiknya memakai server petak sendiri. Zoom keluar dibatasi pada bingkai Indonesia; tombol "Tampilkan seluruh Indonesia" mengembalikan tampilan nasional.
+- Angka SiPongi dan ISPU resmi yang belum terhubung berstatus Tautan saja atau Tidak tersedia. Berkas contoh tidak ditampilkan. IRBI 2025 yang resmi adalah konteks jangka panjang, urutan nama.
+- Peta dasar memakai ubin standar OpenStreetMap `https://tile.openstreetmap.org/{z}/{x}/{y}.png` dengan atribusi © OpenStreetMap contributors. Tidak ada kunci API. Lapisan ubin sedikit diturunkan saturasinya supaya warna titik tetap terbaca. Peramban mengirim referer sendiri, dan peta hanya meminta petak yang terlihat. Ketentuan: [kebijakan petak OSM](https://operations.osmfoundation.org/policies/tiles/). Pemakaian operasional yang ramai sebaiknya memakai server petak sendiri. Zoom keluar dibatasi pada bingkai Indonesia; tombol "Tampilkan seluruh Indonesia" mengembalikan tampilan nasional. Modul Gunung Api tidak punya peta dasar.
 - Tidak ada login, jejak audit, atau penyimpanan di server.
 
 ## Berkas penting

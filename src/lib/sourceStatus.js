@@ -22,6 +22,7 @@ function firmsCatatan(firms, keySet, live) {
 function csvStatus(dataset, feed) {
   const hasUrl = Boolean(text(dataset?.csvUrl));
   if (feed?.asal === "snapshot" && !feed.contoh) return feed.status === "usang" ? "cuplikan terakhir" : "cuplikan";
+  if (feed?.status === "tautan") return "Tautan saja";
   if (!hasUrl || feed?.status === "gagal") return "belum terhubung";
   if (dataset?.contoh || feed?.status === "contoh" || feed?.contoh) return "contoh";
   if (!feed || feed.status === "berhasil" || feed.status === "cadangan") return "CSV yang dikonfigurasi";
@@ -33,6 +34,8 @@ function csvCatatan(dataset, feed, status, { sedangDipakai }) {
   if (status === "cuplikan" || status === "cuplikan terakhir") {
     parts.push("Yang dipakai adalah cuplikan data/live, bukan berkas contoh.");
     if (status === "cuplikan terakhir") parts.push(feed?.error || "Menampilkan cuplikan terakhir.");
+  } else if (status === "Tautan saja") {
+    parts.push(feed?.error || "Tautan saja. Berkas contoh tidak ditampilkan.");
   } else if (status === "contoh") {
     parts.push("Yang dipakai adalah berkas CSV contoh, bukan data operasional dan bukan aliran langsung.");
   } else if (status === "CSV yang dikonfigurasi") {
