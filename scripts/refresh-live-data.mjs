@@ -294,7 +294,7 @@ async function fetchOpenMeteoAir(names) {
         provinsi: points[index].name,
         pm25_ugm3: bucket.pm25.length ? mean(bucket.pm25).toFixed(1) : "",
         pm10_ugm3: bucket.pm10.length ? mean(bucket.pm10).toFixed(1) : "",
-        keterangan: "Konsentrasi model pada titik tengah provinsi. Bukan ISPU dan tidak ditampilkan pada lapisan Kualitas Udara (ISPU).",
+        keterangan: "Konsentrasi model pada titik tengah provinsi. Bukan stasiun, bukan sel grid 0,4°, dan bukan ISPU.",
       });
     }
   }

@@ -251,7 +251,12 @@ const NORMALIZERS = {
   ispu: (raw) => normalizeIspu(raw),
   bmkg_prakiraan: (raw) => normalizePrakiraan(raw),
   fdrs_pembanding: (raw) => normalizePembandingCuaca(raw),
-  ispu_pembanding: (raw) => normalizeIspu(raw),
+  ispu_pembanding: (raw) => ({
+    tanggal: String(raw.tanggal ?? "").slice(0, 10),
+    provinsi: raw.provinsi || "—",
+    pm25: num(raw.pm25_ugm3 ?? raw.pm25),
+    pm10: num(raw.pm10_ugm3 ?? raw.pm10),
+  }),
   titik_wakil: (raw) => normalizeTitikWakil(raw),
   hujan_14_pembanding: (raw) => normalizeHujan14(raw),
   fwi_gwis_pembanding: (raw) => normalizeFwiGwis(raw),

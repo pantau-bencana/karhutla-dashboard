@@ -7,8 +7,13 @@ export const KLH_ISPU_ANALYTIC = "https://ispu.kemenlh.go.id/kawasan/analytic";
 export const OPENAQ_HOME = "https://openaq.org/";
 export const OPENAQ_DOCS = "https://docs.openaq.org/using-the-api/v3";
 
+export const OPENAQ_BLOCKED = "Belum terhubung – perlu API key (persetujuan pemilik)";
+
 export const OPENAQ_STATUS =
-  "OpenAQ v3 mengembalikan HTTP 401 tanpa kunci pada permintaan lokasi Indonesia. Tidak ada konsentrasi µg/m³ yang ditampilkan.";
+  `${OPENAQ_BLOCKED}. Permintaan lokasi tanpa kunci ditolak. Dokumentasi publik memakai kode negara ISO ID untuk Indonesia. Nama stasiun tidak dimuat tanpa kunci, dan tidak ada konsentrasi µg/m³ yang ditampilkan.`;
+
+export const CAMS_LABEL =
+  "Model kualitas udara CAMS — pembanding, bukan pengukuran stasiun dan bukan ISPU KemenLH";
 
 const BLOCKED_FEEDS = new Set(["ispu", "ispu_pembanding"]);
 
@@ -85,4 +90,47 @@ export function openAqMeasurements(feeds) {
       sumber: "OpenAQ",
     }))
     .filter((row) => row.nilai != null);
+}
+
+export function camsModelFeed(feeds) {
+  const feed = (feeds ?? []).find((item) => item.id === "ispu_pembanding");
+  if (!feed || feed.contoh || feed.status === "contoh" || feed.status === "cadangan") {
+    return { rows: [], state: "gagal", alasan: "Berkas model tidak dimuat.", fetchedAt: "", observedAt: "" };
+  }
+  if (feed.status === "gagal") {
+    return {
+      rows: [],
+      state: "gagal",
+      alasan: feed.error || "Pengambilan model gagal.",
+      fetchedAt: feed.fetchedAt || "",
+      observedAt: feed.observedAt || "",
+    };
+  }
+  const rows = (feed.rows ?? [])
+    .map((row) => ({
+      tanggal: String(row.tanggal || "").slice(0, 10),
+      provinsi: row.provinsi || "—",
+      pm25: finite(row.pm25 ?? row.pm25_ugm3),
+      pm10: finite(row.pm10 ?? row.pm10_ugm3),
+    }))
+    .filter((row) => /^\d{4}-\d{2}-\d{2}$/.test(row.tanggal) && (row.pm25 != null || row.pm10 != null));
+  const stale = feed.status === "usang";
+  return {
+    rows,
+    state: rows.length ? (stale ? "usang" : "ada") : "gagal",
+    alasan: stale ? (feed.error || "Menampilkan snapshot terakhir.") : (rows.length ? "" : "Berkas model tidak berisi konsentrasi."),
+    fetchedAt: feed.fetchedAt || "",
+    observedAt: feed.observedAt || "",
+  };
+}
+
+export function filterCams(rows, { period = "hari-ini", today = "" } = {}) {
+  return (rows ?? []).filter((row) => (period === "hari-ini" ? Boolean(today) && row.tanggal === today : Boolean(row.tanggal)));
+}
+
+export function camsRole(tanggal, today) {
+  if (!tanggal || !today) return "model";
+  if (tanggal > today) return "prakiraan model";
+  if (tanggal < today) return "rata-rata model";
+  return "model hari ini";
 }

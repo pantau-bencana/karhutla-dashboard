@@ -29,7 +29,7 @@ The dashboard supports situational awareness for leaders. It does not issue an o
 
 The requested product is a list of 15–20 kabupaten/kota for the next 14 days using BMKG fire danger and karhutla potential, overlaid with inaRISK and historical incidents. No official BMKG data product for that ranking was verified. Keep the structure and set the status to **menunggu data resmi BMKG (FDRS/potensi karhutla per kab/kota)**. Do not fill it from the 3-day forecast, from Open-Meteo, or from images. Weights, thresholds, and period stay unpublished until they are agreed, and any future formula must be printed next to the list.
 
-Open comparison series (Open-Meteo rain, humidity, wind) may sit beside an official gap. Badge **Pembanding (data terbuka, bukan resmi)**. They are not fire danger. CAMS PM2.5 is not shown inside Kualitas Udara (ISPU) and is not converted into an ISPU category.
+Open comparison series (Open-Meteo rain, humidity, wind) may sit beside an official gap. Badge **Pembanding (data terbuka, bukan resmi)**. They are not fire danger. CAMS PM2.5 may be shown inside Kualitas Udara only with the label `Model kualitas udara CAMS — pembanding, bukan pengukuran stasiun dan bukan ISPU KemenLH`, in µg/m³, and is not converted into an ISPU category.
 
 ## Workflow
 
