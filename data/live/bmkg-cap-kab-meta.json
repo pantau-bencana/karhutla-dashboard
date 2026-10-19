@@ -1,9 +1,9 @@
 {
-  "status": "ok",
-  "fetched_at": "2026-10-19T06:50:52.234Z",
-  "rss_published": "2026-10-19T07:15:27.000Z",
+  "status": "gagal",
+  "fetched_at": "2026-10-19T13:32:42.784Z",
+  "rss_published": "2026-10-19T14:00:23.000Z",
   "sumber": "BMKG",
   "dasar": "Nowcast BMKG, dasar waktu 0–3 jam.",
-  "baris": 32,
-  "error": null
+  "baris": null,
+  "error": "Failed to execute query."
 }
