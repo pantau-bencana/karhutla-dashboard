@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Badge } from "./components/Badge.jsx";
 import { DashboardView } from "./components/DashboardView.jsx";
 import { Footer } from "./components/Footer.jsx";
 import { GlossaryPage } from "./components/GlossaryPage.jsx";
@@ -178,8 +179,11 @@ export function App() {
               <h1>Kualitas Udara (ISPU)</h1>
               <p className="lead">ISPU diukur di stasiun pemantau KLH. Dashboard ini tidak mengambil data ISPU otomatis dan tidak membuat prediksi ISPU.</p>
             </div>
+            <div className="badges">
+              <Badge kind="tau">Tautan saja</Badge>
+            </div>
           </header>
-          <KualitasUdara feeds={feeds} province={province} />
+          <KualitasUdara feeds={feeds} province={province} provinces={config?.provinsiPrioritas ?? []} />
         </main>
       ) : null}
       {built && page === "logika" ? <LogicPage config={config} /> : null}
