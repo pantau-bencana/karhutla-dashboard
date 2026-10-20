@@ -256,12 +256,28 @@ a.button {
 .time-toggle button[aria-selected="true"] { background: var(--pine); color: #f6f1e6; border-color: var(--pine); }
 .time-toggle small { display: block; font-weight: 500; }
 .layer-checks { position: relative; z-index: 5; display: flex; flex-wrap: wrap; gap: 8px 14px; border: 0; margin: 0 0 8px; padding: 0; }
-.layer-pembanding {
-  margin-top: 4px;
-  padding: 8px 10px;
-  border: 1px dashed #8aa0b8;
-  border-radius: 8px;
-  background: #f3f7fb;
+.leaflet-control.hujan-kontrol {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: auto;
+  max-width: min(230px, calc(100% - 16px));
+  padding: 3px 6px;
+  background: #fff;
+  color: #1c1915;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  font-size: 12px;
+  line-height: 1.2;
+}
+.leaflet-control.hujan-kontrol:empty { display: none; }
+.hujan-kontrol label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  cursor: pointer;
 }
 .hujan-pembanding-card {
   margin-top: 12px;

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import L from "leaflet";
 import { feature as topoFeature, mesh as topoMesh } from "topojson-client";
 import { BATAS_KAB_FILE, BATAS_KAB_SUMBER } from "../lib/batasKab.js";
@@ -235,6 +236,8 @@ export function FloodRiskMap({
 }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
+  const kontrolRef = useRef(null);
+  const [kontrolSiap, setKontrolSiap] = useState(false);
   const riskRef = useRef(null);
   const bahayaRef = useRef(null);
   const kabRef = useRef(null);
@@ -298,7 +301,17 @@ export function FloodRiskMap({
     map.on("click", (event) => {
       if (provinceRef.current && inariskRef.current) identifyHandler.current(event);
     });
+    const kontrol = L.control({ position: "topright" });
+    kontrol.onAdd = () => {
+      const div = L.DomUtil.create("div", "hujan-kontrol");
+      L.DomEvent.disableClickPropagation(div);
+      L.DomEvent.disableScrollPropagation(div);
+      kontrolRef.current = div;
+      return div;
+    };
+    kontrol.addTo(map);
     mapRef.current = map;
+    setKontrolSiap(true);
     return () => {
       observer?.disconnect();
       map.remove();
@@ -641,31 +654,7 @@ export function FloodRiskMap({
           Batas provinsi
         </label>
       </fieldset>
-      {tab === "cap" ? (
-        <p className="fine">{HUJAN_TANPA_NOWCAST}</p>
-      ) : (
-      <fieldset className="layer-checks layer-pembanding">
-        <legend>Data Pembanding</legend>
-        <span className="status-pill status-pembanding">{HUJAN_PEMBANDING_BADGE}</span>
-        <span className="layer-with-info">
-          <label>
-            <input type="checkbox" checked={showHujan} onChange={(event) => onShowHujan?.(event.target.checked)} />
-            Curah hujan model
-          </label>
-          <InfoTip label="Penjelasan lapisan Data Pembanding curah hujan">
-            <p>{HUJAN_PEMBANDING_BADGE}. {HUJAN_PEMBANDING_JENIS}.</p>
-            <p>Jumlah hujan harian Open-Meteo, model {HUJAN_PEMBANDING_MODEL}, pada titik adm4 yang sama. Satuan mm. Bukan skala Awas, Siaga, atau Waspada, dan tidak masuk matriks.</p>
-            <p>{HUJAN_TANPA_NOWCAST} {HUJAN_TITIK_BATAS}</p>
-            <p>Bila prakiraan BMKG untuk Hari ini, Besok, atau Lusa tidak ada, angka mm tetap tampil pada tabel dan tooltip. Angka itu tidak menetapkan Awas, Siaga, atau Waspada, dan tidak mewarnai poligon.</p>
-            <p>Diambil {hujan?.waktu || "—"}. Lisensi <a href={HUJAN_PEMBANDING_LISENSI} target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</p>
-            <p>{hujan?.gpm}</p>
-            <p>
-              <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
-            </p>
-          </InfoTip>
-        </span>
-      </fieldset>
-      )}
+      {tab === "cap" ? <p className="fine">{HUJAN_TANPA_NOWCAST}</p> : null}
       <p className="fine">{FLOOD_PERMISSION} Overlay inaRISK mati sampai dinyalakan. Status peta inaRISK belum Aktif.</p>
       {mapError ? (
         <p className="banner warn" role="status">
@@ -678,6 +667,30 @@ export function FloodRiskMap({
       {loadingMap ? <p className="fine">Memuat batas kabupaten/kota…</p> : null}
       {bigNote ? <p className="fine">{bigNote}</p> : null}
       <div ref={containerRef} className="map-canvas flood-map" role="application" aria-label="Peta banjir Indonesia" />
+      {kontrolSiap && kontrolRef.current
+        ? createPortal(
+            tab === "cap" ? null : (
+              <>
+                <label>
+                  <input type="checkbox" checked={showHujan} onChange={(event) => onShowHujan?.(event.target.checked)} />
+                  Curah hujan model
+                </label>
+                <InfoTip label="Penjelasan lapisan Data Pembanding curah hujan" align="end">
+                  <p>{HUJAN_PEMBANDING_BADGE}. {HUJAN_PEMBANDING_JENIS}.</p>
+                  <p>Jumlah hujan harian Open-Meteo, model {HUJAN_PEMBANDING_MODEL}, pada titik adm4 yang sama. Satuan mm. Bukan skala Awas, Siaga, atau Waspada, dan tidak masuk matriks.</p>
+                  <p>{HUJAN_TANPA_NOWCAST} {HUJAN_TITIK_BATAS}</p>
+                  <p>Bila prakiraan BMKG untuk Hari ini, Besok, atau Lusa tidak ada, angka mm tetap tampil pada tabel dan tooltip. Angka itu tidak menetapkan Awas, Siaga, atau Waspada, dan tidak mewarnai poligon.</p>
+                  <p>Diambil {hujan?.waktu || "—"}. Lisensi <a href={HUJAN_PEMBANDING_LISENSI} target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</p>
+                  <p>{hujan?.gpm}</p>
+                  <p>
+                    <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
+                  </p>
+                </InfoTip>
+              </>
+            ),
+            kontrolRef.current,
+          )
+        : null}
       <div className="flood-legend" aria-label="Legenda peta">
         {Object.entries(ANALISIS_WARNA).map(([nama, warna]) => (
           <span key={nama}>
