@@ -8,6 +8,7 @@ import { hotspotSourceLabel } from "../lib/freshness.js";
 import { buildHotspotTree } from "../lib/hotspotTree.js";
 import { countHotspots, filterHotspotWindow } from "../lib/hotspotWindow.js";
 import { karhutlaRankingPlan } from "../lib/ranking.js";
+import { statusRingkasan } from "../lib/ringkasanStatus.js";
 import { PriorityIndicators } from "./PriorityIndicators.jsx";
 import { PrioritasPanel } from "./PrioritasPanel.jsx";
 
@@ -19,12 +20,16 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
   const dibi = feeds.find((feed) => feed.id === "dibi_karhutla");
   const cap = feeds.find((feed) => feed.id === "bmkg_cap");
   const prakiraan = feeds.find((feed) => feed.id === "bmkg_prakiraan");
-  const sampleHotspot = !hotspot || hotspot.contoh || hotspot.status === "gagal" || hotspot.status === "cadangan";
+  const bolehHotspot = hotspot && !hotspot.contoh && (hotspot.status === "berhasil" || hotspot.status === "usang");
   const ranking = karhutlaRankingPlan(feeds.prioritas);
   const mapApi = useRef(null);
   const fwiGwis = feeds.find((feed) => feed.id === "fwi_gwis_pembanding");
   const mapSource = hotspotPeta?.rows?.length ? hotspotPeta : hotspot;
-  const mapPoints = !sampleHotspot && mapSource && !mapSource.contoh ? mapSource.rows : [];
+  const mapPoints = bolehHotspot && mapSource && !mapSource.contoh ? mapSource.rows : [];
+  const sampleHotspot = !bolehHotspot || !mapPoints.length;
+  const kategori = statusRingkasan(manifest, {
+    capBerakhir: (cap?.rows ?? []).map((row) => row.berakhir).filter(Boolean),
+  });
   const day = useMemo(() => filterHotspotWindow(mapPoints, { hours: 24 }).rows, [mapPoints]);
   const tally = countHotspots(day);
   const topProvince = buildHotspotTree(day)[0];
@@ -38,13 +43,44 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
           <p className="lead">hotspot = deteksi satelit, bukan kebakaran terkonfirmasi. Peta memakai jendela 24 jam, cakupan Indonesia.</p>
         </div>
       </header>
+      <section className="card" aria-label="Status kategori">
+        <h2>Status data</h2>
+        <p className="fine">
+          Setiap kategori memakai manifes yang sama dengan halaman lain. Satu sumber yang gagal tidak mengubah status kategori lain.
+          {manifest?.generated_at ? ` Manifes ${formatWib(manifest.generated_at)}.` : " Manifes belum termuat."}
+        </p>
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Kategori</th>
+                <th scope="col">Status</th>
+                <th scope="col">Waktu data</th>
+                <th scope="col">Waktu pembaruan</th>
+                <th scope="col">Catatan</th>
+              </tr>
+            </thead>
+            <tbody>
+              {kategori.map((row) => (
+                <tr key={row.nama}>
+                  <th scope="row">{row.nama}</th>
+                  <td>{row.status}</td>
+                  <td>{formatWib(row.waktuData)}</td>
+                  <td>{formatWib(row.waktuAmbil)}</td>
+                  <td>{row.catatan}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
       <section className="overview-grid">
         <article className="modcard">
           <div className="mod-head">
             <div>
               <h2>Sebaran 24 jam</h2>
               {sampleHotspot ? (
-                <p>{hotspot?.error || "Data contoh tidak ditampilkan. Peta dikosongkan."}</p>
+                <p>{hotspot?.status === "gagal" || hotspot?.status === "usang" ? (hotspot.error || "Titik panas gagal dimuat.") : (hotspot?.error || "Data contoh tidak ditampilkan. Peta dikosongkan.")} Kategori lain tetap mengikuti manifes yang sama.</p>
               ) : (
                 <p>
                   {formatAngka(tally.jumlah)} titik, {formatAngka(tally.kepercayaan.tinggi || 0)} confidence tinggi
@@ -82,9 +118,9 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
               </p>
             </li>
             <li>
-              <strong>Banjir, Aceh dan Bengkulu</strong>
+              <strong>Banjir</strong>
               <p>
-                Prototipe internal – menunggu izin tertulis BNPB. IRBI 2025 statis. Bukan prakiraan 14 hari.
+                Prototipe dasbor untuk Indonesia. CAP yang masih berlaku, prakiraan 3 hari, dan analisis dasbor ditulis terpisah. IRBI 2025 statis dan tidak untuk publikasi. Klasifikasi DAS belum terintegrasi.
                 {" "}
                 <a href="#/banjir">Buka tabel</a>
               </p>

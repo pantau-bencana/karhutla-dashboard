@@ -6,7 +6,7 @@ import { BATAS_KAB_FILE, BATAS_KAB_SUMBER } from "../lib/batasKab.js";
 import { barisDampakHistoris } from "../lib/bnpbBanjir.js";
 import { osmTileLayer } from "../lib/basemap.js";
 import { BANJIR_FRAME, BANJIR_PAN_LIMIT } from "../lib/geo.js";
-import { ANALISIS_WARNA, CATATAN_ABU, CATATAN_ABU_HARI, CATATAN_ARSIR, WARNA_TANPA_PERINGATAN } from "../lib/analisisPantauBencana.js";
+import { ANALISIS_WARNA, CATATAN_ABU, CATATAN_ABU_HARI, CATATAN_ARSIR, LABEL_KEDALUWARSA, LEGENDA_ANALISIS_HARI, WARNA_TANPA_PERINGATAN } from "../lib/analisisPantauBencana.js";
 import {
   FLOOD_PERMISSION,
   IDENTIFY_FAIL,
@@ -105,7 +105,7 @@ function gayaWilayah(paint, selected, peringatan) {
   if (paint?.kind === "status" && paint.fill) {
     return { color: "#3f3a34", weight: selected ? 1.1 : 0.45, fillColor: paint.fill, fillOpacity: 0.78, dashArray: null };
   }
-  if (paint?.kind === "kosong" || paint?.kind === "tak-dikenal") {
+  if (paint?.kind === "kosong" || paint?.kind === "tak-dikenal" || paint?.kind === "kedaluwarsa") {
     return { color: "#6f6a62", weight: selected ? 1 : 0.45, fillColor: WARNA_TANPA_PERINGATAN, fillOpacity: 0.9, dashArray: null };
   }
   return { color: "#6f6a62", weight: selected ? 1 : 0.4, fillColor: "url(#flood-hatch)", fillOpacity: 1, dashArray: null };
@@ -156,6 +156,7 @@ function tooltipFor(feature, kabPaint, hujan) {
   const paint = paintOf(feature, kabPaint);
   const lines = [nama];
   if (paint?.status) lines.push(paint.status);
+  else if (paint?.kind === "kedaluwarsa") lines.push(paint.kosongLabel || LABEL_KEDALUWARSA);
   else if (paint?.kind === "kosong" || paint?.kind === "tak-dikenal") lines.push(paint.kosongLabel || "Tidak ada peringatan");
   else if (paint?.alasan === "irbi") lines.push(IRBI_TIDAK_TERSEDIA);
   const adaModel = paint?.rincian?.some((line) => String(line).startsWith("Hujan model:"));
@@ -746,6 +747,11 @@ export function FloodRiskMap({
                     <i className="legenda-dot" style={{ background: warna }} /> {nama}
                   </li>
                 ))}
+                {tab === "cap" ? (
+                  <li>
+                    <i className="legenda-dot" style={{ background: WARNA_TANPA_PERINGATAN }} /> {LABEL_KEDALUWARSA}
+                  </li>
+                ) : null}
                 <li title={tab === "cap" ? CATATAN_ABU : CATATAN_ABU_HARI}>
                   <i className="legenda-dot" style={{ background: WARNA_TANPA_PERINGATAN }} /> Tidak ada status
                 </li>
@@ -763,6 +769,7 @@ export function FloodRiskMap({
                     ))
                   : null}
               </ul>
+              {tab === "cap" ? null : <p className="peta-catatan">{LEGENDA_ANALISIS_HARI}</p>}
               {showHujan ? <p className="peta-catatan">{HUJAN_PEMBANDING_JENIS}. Bukan warna peringatan.</p> : null}
             </details>,
             legendaRef.current,

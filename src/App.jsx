@@ -99,7 +99,8 @@ export function App() {
     const pageName = onGlossary
       ? "Glosarium"
       : ({ ringkasan: "Ringkasan", peta: "Peta dan Data", ispu: "Kualitas Udara", logika: "Logika Pemantauan", sumber: "Sumber Data", metode: "Sumber dan Metode" }[page] || "Ringkasan");
-    document.title = `${pageName} ${hazardName} — ${config?.judul || DEFAULT_TITLE}`;
+    const judulSitus = hazard === "karhutla" ? (config?.judul || DEFAULT_TITLE) : DEFAULT_TITLE;
+    document.title = `${pageName} ${hazardName} — ${judulSitus}`;
   }, [page, hazard, location.anchor, config]);
 
   useEffect(() => {

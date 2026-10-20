@@ -25,8 +25,10 @@ export function assessFreshness({ observedAt = "", nextRun = "", now = new Date(
 
 export function hotspotSourceLabel(feed, sumber = "VIIRS_SNPP_NRT") {
   const product = !sumber || sumber === "VIIRS_SNPP_NRT" ? "VIIRS S-NPP NRT" : String(sumber);
+  const adaBaris = Array.isArray(feed?.rows) && feed.rows.length > 0;
+  if ((feed?.status === "gagal" || feed?.status === "usang") && !adaBaris) return "Cuplikan tidak tersedia";
+  if (feed?.status === "usang" && adaBaris) return `${product} (cuplikan terakhir)`;
   if (feed?.asal === "snapshot") return `${product} (snapshot ±3 jam)`;
   if (feed?.asal === "firms" && feed.status === "berhasil") return product;
-  if (feed?.status === "gagal" || feed?.status === "usang") return "Cuplikan tidak tersedia";
   return product;
 }

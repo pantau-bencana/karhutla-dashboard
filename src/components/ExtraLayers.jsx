@@ -147,7 +147,7 @@ export function ExtraLayers({ layer, view, feeds, province, provinces = [] }) {
         <p className="fine">Satu kelurahan ibu kota tiap provinsi prioritas. Horizon 3 hari, bukan 14 hari.</p>
       </Panel>
       {rain ? (
-        <Panel title="Hujan dan angin 14 hari pada titik wakil" note="Pembanding model, bukan prakiraan BMKG. Bukan peluang atau angin BMKG." feed={compareRain} compare>
+        <Panel title="Hujan dan angin 14 hari pada titik wakil" note="Pembanding model, bukan prakiraan BMKG. Curah hujan adalah jumlah mm. Peluang hujan di atas 0,1 mm pada berkas ini tidak ditampilkan sebagai P(>20 mm)." feed={compareRain} compare>
           <Simple
             head={["Kabupaten", "Hujan (mm)", "Hari di bawah 1 mm", "Angin maks"]}
             empty="Snapshot hujan 14 hari belum ada."

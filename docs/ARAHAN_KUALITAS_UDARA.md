@@ -8,7 +8,7 @@ A. Data resmi ISPU KemenLH
 - Jika tersedia, gunakan sesuai dokumentasi dan ketentuan sumber. Tampilkan nama stasiun, lokasi, nilai dan kategori ISPU, parameter kritis, waktu pengamatan, waktu pengambilan data, serta tautan sumber.
 - Jika tidak ada API atau izin penggunaan otomatis yang jelas, jangan mengambil data dengan scraping endpoint internal atau cara yang mengakali pembatasan. Jangan menampilkan angka ISPU hasil salinan manual seolah-olah diperbarui otomatis.
 - Dalam kondisi tersebut, tampilkan peta atau daftar stasiun yang datanya belum terhubung, dengan tautan langsung ke portal ISPU KemenLH. Bila portal mengizinkan embed, embed halaman sumber dan pertahankan identitas serta atribusinya.
-- Jangan menganggap satu stasiun mewakili seluruh kabupaten/kota. Wilayah tanpa stasiun atau data terbaru harus diberi label "Tidak ada data stasiun" atau "Data belum tersedia".
+- Jangan menganggap satu stasiun mewakili seluruh kabupaten/kota. Selama stasiun resmi belum tersambung, labelnya "Data stasiun belum terintegrasi ke dashboard", kecuali sumber resmi menyatakan tidak ada stasiun.
 - Riwayat hanya ditampilkan sesuai periode yang benar-benar disediakan sumber. Jangan menyebut ringkasan 24 jam sebagai riwayat satu minggu.
 
 B. Pembanding OpenAQ

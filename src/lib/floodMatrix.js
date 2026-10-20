@@ -185,7 +185,7 @@ export function peringkatTampil(row) {
   const kind = row?.peta?.kind;
   const status = row?.peta?.status || row?.statusTab || "";
   if (kind === "status" && Object.hasOwn(RANK_STATUS, status)) return RANK_STATUS[status];
-  if (kind === "kosong") return 3;
+  if (kind === "kosong" || kind === "kedaluwarsa") return 3;
   return 4;
 }
 

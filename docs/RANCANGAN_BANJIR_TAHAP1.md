@@ -31,7 +31,7 @@ Lapisan terpisah, mati secara bawaan. Jumlah harian `precipitation_sum` (mm) dar
 
 ## Penduduk dan rumah tangga
 
-Hanya total satu kabupaten/kota, dan hanya pada baris yang punya status analisis. Labelnya `potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar`. Berkas `data/static/penduduk-kabkota.csv` menyimpan proyeksi penduduk 2026; rumah tangga hanya DKI Jakarta, Banten, dan Jawa Timur. Tidak ada WorldPop atau GHSL. Dropdown DAS berstatus **Dalam pengembangan** dan tidak memuat data DAS.
+Hanya total satu kabupaten/kota, dan hanya pada baris yang punya status analisis. Labelnya `potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar`. Berkas `data/static/penduduk-kabkota.csv` menyimpan proyeksi penduduk 2026; rumah tangga hanya DKI Jakarta, Banten, dan Jawa Timur. Tidak ada WorldPop atau GHSL. Dropdown DAS berstatus **belum terintegrasi**. Klasifikasi DAS belum terintegrasi dan tidak memuat data DAS.
 
 ## Sumber
 

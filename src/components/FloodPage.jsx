@@ -22,7 +22,7 @@ import { DASARIAN_FILE, DASARIAN_GUIDE_URL, IKLIM_BMKG_URL, applyDasarian, today
 import { formatTanggalPendek, formatUsia, formatWib } from "../lib/format.js";
 import { bigQueryUrl } from "../lib/floodServices.js";
 import { BMKG_DOCS_URL } from "../lib/bmkgForecast.js";
-import { FLOOD_PERMISSION, IRBI_PENGGUNAAN_INTERNAL, IRBI_PERMISSION, IRBI_TIDAK_TERSEDIA, buildFloodRows, kodeWilayah, urutStatusKab } from "../lib/floodMatrix.js";
+import { DIBI_UNAVAILABLE, FLOOD_PERMISSION, IRBI_PENGGUNAAN_INTERNAL, IRBI_PERMISSION, IRBI_TIDAK_TERSEDIA, buildFloodRows, kodeWilayah, urutStatusKab } from "../lib/floodMatrix.js";
 import {
   BPS_PROYEKSI_URL,
   PENDUDUK_ABSENT,
@@ -388,6 +388,7 @@ function FloodBody() {
       ? `Sumber: BMKG. ${PEMBARUAN_TERAKHIR_LABEL}: ${cap.meta.fetched_at ? formatWib(cap.meta.fetched_at) : "—"}.${ringkas.berlakuSampai ? ` Masa berlaku sampai ${formatWib(ringkas.berlakuSampai)}.` : ""}${ringkas.kedaluwarsa ? ` ${CAP_DATA_TERAKHIR}.` : ""}`
       : `Sumber: BMKG. Diambil ${prakiraan.fetchedAt ? formatWib(prakiraan.fetchedAt) : "—"}. Dikeluarkan ${sumberPrakiraan ? formatWib(sumberPrakiraan) : "—"}.`,
     `Cakupan: ${province || SEMUA_PROVINSI}.`,
+    `${DIBI_UNAVAILABLE}. Tanda — pada kolom Historis bukan nol kejadian. Klasifikasi DAS belum terintegrasi.`,
     DISCLAIMER_UNDUH,
   ];
   function unduhTabel(jenis) {
@@ -444,8 +445,8 @@ function FloodBody() {
             </label>
             <label className="filter-field">
               DAS
-              <select aria-label="DAS" disabled value="Dalam pengembangan" onChange={() => {}}>
-                <option value="Dalam pengembangan">Dalam pengembangan</option>
+              <select aria-label="DAS" disabled value="belum terintegrasi" onChange={() => {}}>
+                <option value="belum terintegrasi">belum terintegrasi</option>
               </select>
             </label>
             {province ? (
@@ -457,6 +458,7 @@ function FloodBody() {
               </p>
             ) : null}
           </div>
+          <p className="fine">Klasifikasi DAS belum terintegrasi. Daftar DAS tidak menyaring peta dan tidak menampilkan angka DAS.</p>
           <div className="flood-layout">
             <FloodRiskMap
               province={province}

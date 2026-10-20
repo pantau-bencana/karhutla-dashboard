@@ -25,9 +25,9 @@ export const PRIORITY_INDICATORS = [
     indikator: "ISPU",
     isian: "Nilai ISPU, kategori, nama stasiun, dan waktu pengamatan.",
     logika:
-      "Ini pengamatan di stasiun pemantau. Satu stasiun tidak mewakili seluruh kabupaten/kota. Wilayah tanpa stasiun ditandai Tidak ada data stasiun.",
+      "Ini pengamatan di stasiun pemantau. Satu stasiun tidak mewakili seluruh kabupaten/kota. Selama stasiun resmi belum tersambung, tulisannya Data stasiun belum terintegrasi ke dashboard, kecuali sumber resmi menyatakan tidak ada stasiun.",
     rincian:
-      "Bila data stasiun resmi ada, satu baris adalah satu stasiun pada satu waktu pengamatan, lengkap dengan nilai dan kategori. Kabupaten atau kota yang tidak memiliki stasiun pada sumber itu ditulis Tidak ada data stasiun, bukan nol. Nilai stasiun bukan bukti tunggal bahwa polusi berasal dari karhutla.",
+      "Bila data stasiun resmi ada, satu baris adalah satu stasiun pada satu waktu pengamatan, lengkap dengan nilai dan kategori. Kabupaten atau kota yang belum terhubung ditulis Data stasiun belum terintegrasi ke dashboard, bukan nol dan bukan bukti bahwa stasiun tidak ada. Nilai stasiun bukan bukti tunggal bahwa polusi berasal dari karhutla.",
     sumber: [{ label: "Portal ISPU KLH", href: "https://ispu.kemenlh.go.id/app/#/" }],
     status: "Tautan saja",
     keterbatasan:

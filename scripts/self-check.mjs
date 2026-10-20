@@ -31,6 +31,7 @@ import { assessFreshness, hotspotSourceLabel } from "../src/lib/freshness.js";
 import { annotatePoints } from "./big-wilayah.mjs";
 import { buildComparisonAttention, normalizePlaceName, PROTOTYPE_LABEL } from "../src/lib/attentionPrototype.js";
 import { karhutlaRankingPlan } from "../src/lib/ranking.js";
+import { statusRingkasan } from "../src/lib/ringkasanStatus.js";
 import {
   agregasiHotspot,
   alasanKesegaran,
@@ -45,7 +46,7 @@ import {
   tampilanPrioritas,
 } from "../src/lib/aplus.js";
 import { CAP_CRON, CAP_WATCH_MINUTES, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
-import { ANALISIS_MATRIKS, ANALISIS_NAMA, ANALISIS_WARNA, analisisStatus, applyAnalisis, catWilayah, keparahanCuaca, keparahanTerburuk } from "../src/lib/analisisPantauBencana.js";
+import { ANALISIS_MATRIKS, ANALISIS_NAMA, ANALISIS_WARNA, WARNA_TANPA_PERINGATAN, analisisStatus, applyAnalisis, catWilayah, keparahanCuaca, keparahanTerburuk } from "../src/lib/analisisPantauBencana.js";
 import {
   BPS_PROYEKSI_URL,
   PENDUDUK_ABSENT,
@@ -511,7 +512,23 @@ assert.match(refreshSource, /wilayah_gagal=\$\{countText/);
 assert.match(refreshSource, /big_queries=\$\{countText/);
 assert.match(refreshSource, /\/tmp\/refresh-hotspot-counts\.txt/);
 assert.equal(karhutlaRankingPlan().dapatDisusun, false);
-assert.match(karhutlaRankingPlan().status, /Belum tersedia – cuplikan prioritas belum ada/);
+assert.match(karhutlaRankingPlan().status, /belum cukup data – cuplikan prioritas belum ada/);
+const jamRingkas = new Date("2026-10-20T09:00:00.000Z");
+const kategoriRingkas = statusRingkasan({
+  datasets: {
+    hotspot: { status: "ok", record_count: 12, fetched_at: "2026-10-20T08:40:00.000Z", observed_at: "2026-10-20T08:00:00.000Z", expected_max_age_hours: 18 },
+    bmkg_prakiraan: { status: "failed", error: "HTTP 500", record_count: 0, kept_previous: false },
+    ispu: { status: "failed", mode: "tautan", error: "Tautan resmi. Data belum diintegrasikan.", record_count: 0 },
+    bmkg_cap: { status: "ok", record_count: 2, fetched_at: "2026-10-20T08:50:00.000Z", observed_at: "2026-10-20T08:50:00.000Z" },
+  },
+}, { now: jamRingkas, capBerakhir: ["2026-10-20T08:00:00.000Z"] });
+const statusKategori = Object.fromEntries(kategoriRingkas.map((row) => [row.nama, row.status]));
+assert.equal(statusKategori["Titik panas"], "tersedia");
+assert.equal(statusKategori["Prakiraan cuaca"], "gagal dimuat");
+assert.equal(statusKategori["ISPU stasiun"], "belum terintegrasi");
+assert.equal(statusKategori["Peringatan dini cuaca"], "kedaluwarsa");
+assert.equal(statusKategori["Gunung api"], "belum terintegrasi");
+assert.equal(statusKategori["Titik panas"] === statusKategori["Prakiraan cuaca"], false);
 assert.equal(karhutlaRankingPlan().judul, "Prioritas kesiapsiagaan 14 hari (FWI hanya 9 hari)");
 assert.equal(karhutlaRankingPlan().jenis, "pemodelan pihak ketiga");
 assert.equal(PROTOTYPE_LABEL, "Prototipe – berbasis data pembanding terbuka, bukan data resmi BMKG");
@@ -688,6 +705,11 @@ const freshClock = assessFreshness({
 assert.equal(freshClock.tertunda, false);
 assert.equal(freshClock.nextVisible, true);
 assert.equal(hotspotSourceLabel({ asal: "snapshot", status: "berhasil" }, "VIIRS_SNPP_NRT"), "VIIRS S-NPP NRT (snapshot ±3 jam)");
+assert.equal(
+  hotspotSourceLabel({ asal: "snapshot", status: "usang", rows: [{ id: 1 }] }, "VIIRS_SNPP_NRT"),
+  "VIIRS S-NPP NRT (cuplikan terakhir)",
+);
+assert.equal(hotspotSourceLabel({ status: "usang", rows: [] }), "Cuplikan tidak tersedia");
 const boardSource = readFileSync("src/components/HotspotBoard.jsx", "utf8");
 assert.match(boardSource, /Confidence deteksi satelit/);
 assert.match(boardSource, /Lintasan satelit terakhir/);
@@ -840,7 +862,8 @@ assert.equal(udaraSource.includes("Prediksi"), false);
 assert.match(udaraSource, /Indeks Kualitas Udara 2024 \(tahunan, statis\) — bukan ISPU, bukan kondisi harian/);
 assert.match(udaraSource, /Status per provinsi prioritas/);
 assert.match(udaraSource, /Kenapa tidak ada angka ISPU/);
-assert.match(udaraSource, /Tidak ada data stasiun/);
+assert.match(udaraSource, /Data stasiun belum terintegrasi ke dashboard/);
+assert.equal(udaraSource.includes("Sel model CAMS"), false);
 assert.equal(udaraSource.includes("contoh tampilan"), false);
 assert.match(udaraSource, /Direktorat Perlindungan dan Pengelolaan Mutu Udara \(Satu Data KemenLH\)/);
 const ikuRows = parseCsv(readFileSync("data/static/iku-2024-kabupaten.csv", "utf8"));
@@ -868,7 +891,7 @@ assert.match(indicatorSource, /Metode A\+/);
 assert.match(indicatorSource, /bukan prakiraan resmi BMKG\/BNPB/);
 assert.match(indicatorSource, /hingga H\+7 sesuai produk BMKG/);
 assert.match(indicatorSource, /bukan prakiraan 14 hari/);
-assert.match(indicatorSource, /Tidak ada data stasiun/);
+assert.match(indicatorSource, /Data stasiun belum terintegrasi ke dashboard/);
 assert.match(indicatorSource, /bukan peluang dalam persen/);
 assert.match(indicatorUi, /target="_blank" rel="noopener noreferrer"/);
 assert.equal((indicatorSource.match(/status: "Tautan saja"/g) || []).length, 3);
@@ -1182,7 +1205,11 @@ assert.equal(lampauDenganSeverity.analisisStatus, "Awas");
 assert.equal(lampauDenganSeverity.analisisLampau, true);
 assert.equal(
   catWilayah(lampauDenganSeverity, { tab: "cap", cakupan: "nasional", tertunda: true }).kind,
-  "status",
+  "kedaluwarsa",
+);
+assert.equal(
+  catWilayah(lampauDenganSeverity, { tab: "cap", cakupan: "nasional", tertunda: true }).fill,
+  WARNA_TANPA_PERINGATAN,
 );
 assert.equal(catWilayah(lampauDenganSeverity, { tab: "cap", cakupan: "nasional", tertunda: true }).lampau, true);
 assert.equal(CAP_DATA_TERAKHIR, "Data terakhir — masa berlaku sudah lewat, menunggu pembaruan BMKG");
@@ -1507,7 +1534,7 @@ assert.equal(xlsxBytes([["No", "Kab/Kota"], ["1", "Aceh Selatan"]])[0], 0x50);
 assert.equal(xlsxBytes([["No"]])[1], 0x4b);
 assert.equal(BPS_PROYEKSI_URL, "https://sensus.bps.go.id/publikasi/index/sp2020");
 assert.match(floodSource, /PENDUDUK_FILE/);
-assert.match(floodSource, /Dalam pengembangan/);
+assert.match(floodSource, /Klasifikasi DAS belum terintegrasi/);
 assert.equal(readFileSync("src/components/FloodRiskMap.jsx", "utf8").includes("dasQueryUrl"), false);
 for (const pendudukFile of ["src/lib/pendudukKab.js", "data/static/penduduk-kabkota.csv", "data/static/README.md"]) {
   const pendudukText = readFileSync(pendudukFile, "utf8").toLowerCase();
