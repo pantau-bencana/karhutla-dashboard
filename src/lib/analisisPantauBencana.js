@@ -4,7 +4,10 @@
 
 export const ANALISIS_NAMA = "Analisis Pantau Bencana (gabungan BMKG × IRBI BNPB)";
 export const ANALISIS_BUKAN_RESMI =
-  "Ini analisis dasbor, bukan status resmi BMKG atau BNPB. Pada tab 0–3 jam, warna mengikuti peringatan CAP yang tersimpan. Bila masa berlaku sudah lewat, warna itu data terakhir, bukan peringatan yang masih berlaku. Pada tab hari, Hujan Sedang, Hujan Lebat, Hujan Petir, dan hujan sangat lebat diwarnai lewat matriks bila kelas IRBI ada. Hujan ringan atau lokal hanya bisa menjadi Waspada, dan hanya bila IRBI Tinggi serta hujan ada pada ketiga hari prakiraan.";
+  "Ini analisis dasbor, bukan status resmi BMKG atau BNPB. Pada tab 0–3 jam, warna Awas, Siaga, atau Waspada hanya untuk CAP yang masih dalam masa berlaku dan dalam batas usia cuplikan. CAP yang sudah lewat tidak diwarnai sebagai peringatan aktif; yang tampil adalah data terakhir/kedaluwarsa. Pada tab hari, Hujan Sedang, Hujan Lebat, Hujan Petir, dan hujan sangat lebat diwarnai lewat matriks bila kelas IRBI ada. Hujan ringan atau lokal hanya bisa menjadi Waspada, dan hanya bila IRBI Tinggi serta hujan ada pada ketiga hari prakiraan.";
+export const LABEL_KEDALUWARSA = "data terakhir/kedaluwarsa";
+export const LEGENDA_ANALISIS_HARI =
+  "Awas, Siaga, dan Waspada pada tab prakiraan adalah analisis dasbor, bukan peringatan resmi BMKG atau BNPB.";
 
 export const ANALISIS_WARNA = Object.freeze({
   Awas: "#c5362b",
@@ -150,13 +153,25 @@ export function catWilayah(row, { tab = "cap", cakupan = "", tertunda = false } 
     };
   }
   if (row?.nowcastStatus !== "ok") return { kind: "nodata", fill: "", status: "", alasan: "cap" };
+  if (row.analisisLampau && row.analisisStatus && ANALISIS_WARNA[row.analisisStatus]) {
+    const berlaku = (row.nowcastLampau ?? []).map((alert) => String(alert?.expires || "")).filter(Boolean).sort();
+    return {
+      kind: "kedaluwarsa",
+      fill: WARNA_TANPA_PERINGATAN,
+      status: "",
+      alasan: "",
+      lampau: true,
+      kosongLabel: LABEL_KEDALUWARSA,
+      berlakuSampai: berlaku.at(-1) || "",
+    };
+  }
   if (row.analisisStatus && ANALISIS_WARNA[row.analisisStatus]) {
     return {
       kind: "status",
       fill: ANALISIS_WARNA[row.analisisStatus],
       status: row.analisisStatus,
       alasan: "",
-      lampau: Boolean(row.analisisLampau),
+      lampau: false,
     };
   }
   if (row.nowcastAda || row.nowcastExpired) return { kind: "nodata", fill: "", status: "", alasan: "irbi" };

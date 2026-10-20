@@ -4,7 +4,7 @@ export function karhutlaRankingPlan(snapshot, now = new Date()) {
   const view = tampilanPrioritas(snapshot, now);
   return {
     dapatDisusun: view.tersedia,
-    status: view.tersedia ? PRIORITAS_JENIS : `Belum tersedia – ${view.alasan.join("; ")}`,
+    status: view.tersedia ? PRIORITAS_JENIS : `belum cukup data – ${view.alasan.join("; ")}`,
     judul: PRIORITAS_JUDUL,
     jenis: PRIORITAS_JENIS,
     disclaimer: PRIORITAS_DISCLAIMER,

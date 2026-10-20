@@ -249,7 +249,7 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
           </li>
           <li>{BATAS_KAB_SUMBER}</li>
           <li>Cuplikan CAP yang belum bertanda cakupan nasional tidak dipakai untuk menyatakan suatu kabupaten aman.</li>
-          <li>Dropdown DAS bertuliskan Dalam pengembangan dan tidak memuat data DAS.</li>
+          <li>Dropdown DAS bertuliskan belum terintegrasi. Klasifikasi DAS belum terintegrasi dan tidak memuat data DAS.</li>
         </ul>
         <h3>Rujukan</h3>
         <ul className="plain-list">

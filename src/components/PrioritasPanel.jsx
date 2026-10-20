@@ -37,7 +37,9 @@ export function PrioritasPanel({ snapshot, now }) {
       <p>{view.disclaimer}</p>
       <p className="fine method-note">
         Skor = rata-rata peringkat empat indikator (25% tiap indikator). Masuk daftar bila data lengkap, peluang 14 hari tanpa hari hujan di atas 20 mm minimal 50%, serta FFMC minimal 78 pada minimal 3 dari 9 hari atau DC minimal 260.
-        {" "}Pemodelan pihak ketiga, bukan resmi BMKG/BNPB.
+        {" "}FWI, FFMC, dan DC memakai hari model GWIS yang tersimpan (sekitar 9 hari), bukan 14 hari dan bukan prediksi resmi BMKG.
+        {" "}Peluang kering dihitung dari anggota ensemble precipitation_sum di atas 20 mm selama 14 hari. Bukan precipitation_probability (peluang hujan di atas 0,1 mm) dan bukan peluang resmi BMKG.
+        {" "}Analisis dasbor, bukan resmi BMKG/BNPB.
         {" "}
         <a href="#/sumber-metode/cara-hitung">Cara hitung & rujukan</a>
       </p>
@@ -51,7 +53,7 @@ export function PrioritasPanel({ snapshot, now }) {
         </p>
       ) : (
         <p>
-          <Badge kind="tun">Belum tersedia</Badge> {view.alasan.join("; ")}.
+          <Badge kind="tun">belum cukup data</Badge> Komponen yang belum cukup: {view.alasan.join("; ")}. Peringkat tidak ditampilkan agar tidak tampak lengkap.
         </p>
       )}
 
@@ -103,7 +105,7 @@ export function PrioritasPanel({ snapshot, now }) {
                     <th scope="col">#</th>
                     <th scope="col"><Term id="kabkota">Kab/kota</Term></th>
                     <th scope="col"><Term id="peringkat">Skor</Term></th>
-                    <th scope="col"><Term id="fwi">FWI P75 (maks)</Term></th>
+                    <th scope="col"><Term id="fwi">FWI P75 (maks, periode model ~9 hari)</Term></th>
                     <th scope="col"><Term id="ffmc">Hari FFMC≥78</Term></th>
                     <th scope="col"><Term id="dc">DC maks</Term></th>
                     <th scope="col"><Term id="ensemble">P(14 hari tanpa &gt;20 mm)</Term></th>
@@ -121,11 +123,11 @@ export function PrioritasPanel({ snapshot, now }) {
                       </th>
                       <td>{formatAngka(row.skor, 3)}</td>
                       <td>
-                        {formatAngka(row.I1, 1)} ({formatAngka(row.fwi_titik_maks, 1)})
+                        {row.I1 == null ? "belum cukup data" : `${formatAngka(row.I1, 1)} (${formatAngka(row.fwi_titik_maks, 1)})`}
                       </td>
                       <td>{formatAngka(row.ffmc78_hari)}</td>
                       <td>{formatAngka(row.dc_maks, 0)}</td>
-                      <td>{persen(row.I2)}</td>
+                      <td>{row.I2 == null ? "belum cukup data" : persen(row.I2)}</td>
                       <td>{row.I3 == null || row.I3 === "" ? "—" : `${formatAngka(row.I3, 2)} ${row.irbi_kelas || ""}`.trim()}</td>
                       <td>{formatAngka(row.I4)}</td>
                       <td>

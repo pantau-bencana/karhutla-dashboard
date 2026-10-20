@@ -2,7 +2,9 @@
 
 Pantau Bencana v0.1 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH.
 
-Dasbor statis untuk memantau kebakaran hutan dan lahan (karhutla): sebaran titik panas, jumlah deteksi per provinsi, lapisan Kualitas Udara (ISPU), rekap SiPongi, dan indeks IRBI. Antarmuka berbahasa Indonesia. Tidak ada server aplikasi. Situs publik membaca cuplikan di `data/live`. Berkas contoh hotspot tidak ditampilkan bila cuplikan gagal.
+Situs publik: <https://pantau-bencana.github.io/karhutla-dashboard/>
+
+Dasbor statis untuk memantau kebakaran hutan dan lahan (karhutla), banjir, gunung api, dan kualitas udara. Karhutla menampilkan sebaran titik panas (deteksi satelit, bukan kebakaran terkonfirmasi) bila cuplikan hotspot pada manifes ada. Banjir memuat peta kabupaten/kota, CAP BMKG yang masih berlaku, prakiraan cuaca 3 hari, dan analisis dasbor yang bukan peringatan resmi. Gunung api belum terintegrasi dan hanya menautkan MAGMA. ISPU stasiun resmi belum terintegrasi; model CAMS adalah pembanding dalam tabel, bukan ISPU. Antarmuka berbahasa Indonesia. Tidak ada server aplikasi. Situs membaca cuplikan di `data/live` lewat manifes yang sama di setiap halaman. Berkas contoh tidak ditampilkan. Satu sumber yang gagal tidak mengosongkan kategori lain.
 
 Angka dan status pada prototipe ini **bukan** peringatan dini resmi BNPB, BMKG, atau instansi sumber.
 
@@ -34,7 +36,7 @@ npm run build
 npm run preview
 ```
 
-Header memuat tab bahaya **Karhutla**, **Banjir**, dan **Gunung Api**, lalu halaman **Ringkasan**, **Peta dan Data**, **Logika Pemantauan**, **Sumber Data**, dan **Glosarium**. Karhutla yang diisi. Banjir memuat prototipe internal peta risiko dan matriks Aceh/Bengkulu dengan label **Prototipe internal – menunggu izin tertulis BNPB**. Gunung Api menampilkan status **Belum terhubung / menunggu data** tanpa angka buatan. Rute memakai hash (`#/`, `#/karhutla/peta`, `#/logika`, `#/glosarium/ispu`) supaya tetap benar di subfolder GitHub Pages.
+Header memuat tab bahaya **Karhutla**, **Banjir**, dan **Gunung Api**, lalu halaman **Ringkasan**, **Peta dan Data**, **Logika Pemantauan**, **Sumber Data**, dan **Glosarium**. Karhutla membaca cuplikan hotspot, prakiraan BMKG 3 hari, dan daftar prioritas model pihak ketiga bila komponennya cukup. Banjir memuat peta nasional, kartu lapisan di dalam peta, dan tabel kabupaten di bawah peta. Status Awas/Siaga/Waspada pada tab prakiraan adalah analisis dasbor, bukan peringatan resmi BMKG atau BNPB. CAP yang masa berlakunya sudah lewat ditulis data terakhir/kedaluwarsa dan tidak diwarnai sebagai peringatan aktif. Gunung Api berstatus belum terintegrasi, tanpa angka aktivitas. Rute memakai hash (`#/`, `#/karhutla/peta`, `#/banjir`, `#/gunung-api`, `#/logika`, `#/glosarium/ispu`) supaya tetap benar di subfolder GitHub Pages.
 
 GitHub Actions mengambil sumber publik lewat [`.github/workflows/refresh-data.yml`](.github/workflows/refresh-data.yml). Dua cron UTC, selisih 90 menit: `17 */3 * * *` dan `47 1-23/3 * * *` (bukan menit 0). Dalam WIB itu 07.17, 08.47, 10.17, 11.47, 13.17, 14.47, 16.17, 17.47, 19.17, 20.47, 22.17, 23.47, 01.17, 02.47, 04.17, dan 05.47. Workflow [`.github/workflows/refresh-watchdog.yml`](.github/workflows/refresh-watchdog.yml) berjalan tiap jam pada menit 7 dan memicu pembaruan bila cuplikan lebih tua dari 4 jam. Commit data oleh `github-actions[bot]` tidak memicu workflow Pages lain; deploy cuplikan dilakukan di dalam workflow pembaruan yang sama. Hasilnya disimpan di `data/live/` bersama manifes. Situs membaca snapshot itu. Bila snapshot resmi tidak ada, bagian itu berstatus Tautan saja atau Tidak tersedia. Berkas contoh tidak ditampilkan. Header menampilkan waktu ambil dan jadwal berikutnya dalam WIB.
 
@@ -132,7 +134,7 @@ Kepercayaan tinggi = teks `high` / `tinggi` / `h`, atau angka ≥ 80 (kebiasaan 
 
 Data disebut tertunda bila lintasan satelit terakhir lebih lama dari sekitar 8 jam, atau bila waktu sekarang melewati `next_run` lebih dari 1 jam. `next_run` yang sudah lewat disembunyikan. Cuplikan hotspot dilabeli **VIIRS S-NPP NRT (snapshot ±3 jam)** bila yang tampil adalah berkas cuplikan.
 
-Kualitas Udara (ISPU) ada di dalam Karhutla, bukan sebagai modul utama. Periode yang ada hanya Hari Ini dan Historis. ISPU resmi tidak punya API publik; tanpa stasiun yang tersambung, peta dan tabel menulis tidak tersedia serta menautkan portal KLH. Kategori resmi, bila data stasiun ada: 0–50 Baik, 51–100 Sedang, 101–200 Tidak Sehat, 201–300 Sangat Tidak Sehat, di atas 300 Berbahaya. Angka contoh dan konsentrasi model tidak ditampilkan sebagai ISPU.
+Kualitas Udara (ISPU) ada di dalam Karhutla, bukan sebagai modul utama. Tiga jenis data dipisah: (1) ISPU stasiun KLH, saat ini **Data stasiun belum terintegrasi ke dashboard**, dengan tautan ke portal KLH; (2) model CAMS lewat Open-Meteo sebagai pembanding dalam µg/m³, hanya tabel, bukan ISPU dan bukan pengamatan; (3) tanggal sesudah hari ini pada berkas model, bila ada, adalah prakiraan model, bukan prediksi ISPU. OpenAQ tidak dihubungkan karena membutuhkan kunci. Periode tampilan yang ada hanya Hari Ini dan Historis. Kategori resmi, bila data stasiun nanti ada: 0–50 Baik, 51–100 Sedang, 101–200 Tidak Sehat, 201–300 Sangat Tidak Sehat, di atas 300 Berbahaya.
 
 ## Kolom CSV
 
@@ -152,9 +154,9 @@ Header bahasa Indonesia pada berkas contoh, atau header FIRMS bahasa Inggris unt
 
 Repositori ini publik. **Settings → Pages → Source** sudah **GitHub Actions**. Workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml) berjalan pada push ke `main` dan lewat **workflow_dispatch**. Job itu memakai `actions/configure-pages`, `actions/upload-pages-artifact`, dan `actions/deploy-pages`.
 
-Setelah pull request ini digabung ke `main`, situs terbit di:
+Situs yang terbit dari `main`:
 
-<https://rixaga.github.io/karhutla-dashboard/>
+<https://pantau-bencana.github.io/karhutla-dashboard/>
 
 `configure-pages` memberi `base_path` (untuk repositori ini `/karhutla-dashboard`). Build Actions memakai prefiks itu untuk CSS dan JS. `config.json` serta CSV contoh tetap jalur relatif (`data/sample/...`, tanpa garis miring di depan) supaya ikut terbaca di subfolder itu. Pembangunan lokal tanpa variabel itu memakai jalur relatif yang sama-sama benar.
 
@@ -168,8 +170,9 @@ Pull request hanya membangun dan memeriksa hasilnya. Deploy tidak berjalan sebel
 - Respons HTML (halaman login Google) ditolak dan dijelaskan, bukan dipaksa menjadi tabel.
 - `MAP_KEY` FIRMS di `config.json` terlihat oleh pengunjung. CORS pada API FIRMS bisa saja memblokir permintaan dari peramban. Situs publik tidak memakai berkas contoh sebagai pengganti.
 - Jendela `firms.rentangHari` tidak sama dengan filter tanggal di layar. Memilih tanggal di luar data yang kembali membuat peta kosong.
-- Nama wilayah hotspot diisi dari kueri BIG saat pembaruan. Geometri batas tidak disimpan di repositori.
-- Angka SiPongi dan ISPU resmi yang belum terhubung berstatus Tautan saja atau Tidak tersedia. Berkas contoh tidak ditampilkan. IRBI 2025 yang resmi adalah konteks jangka panjang, urutan nama.
+- Nama wilayah hotspot diisi dari kueri BIG saat pembaruan. Geometri desa dari kueri itu tidak disimpan. Peta banjir memakai salinan TopoJSON kabupaten/kota di `data/static/batas-kabkota.topojson`. Berkas itu tidak dihapus dari repositori ini.
+- Pesan kosong yang dipakai di halaman: **tersedia**, **sebagian**, **belum terintegrasi**, **kedaluwarsa**, **gagal dimuat**, **belum cukup data**, **data terakhir/kedaluwarsa**, dan **Data stasiun belum terintegrasi ke dashboard**. Satu kategori gagal tidak menulis semua kategori sebagai gagal. Angka contoh tidak ditampilkan. IRBI 2025 adalah tabel buku, penggunaan internal, bukan prakiraan.
+- Cuplikan diperbarui dua kali tiap sekitar 3 jam (`17 */3 * * *` dan `47 1-23/3 * * *` UTC). Penjaga jam menit ke-7 memicu pembaruan bila cuplikan lebih tua dari 4 jam. Horizon prakiraan BMKG yang tersambung 3 hari. FWI model pada daftar prioritas sekitar 9 hari, bukan 14 hari dan bukan produk BMKG. Citra SPARTAN hanya tautan, hingga H+7 sesuai produk BMKG.
 - Peta dasar memakai ubin standar OpenStreetMap `https://tile.openstreetmap.org/{z}/{x}/{y}.png` dengan atribusi © OpenStreetMap contributors. Tidak ada kunci API. Lapisan ubin sedikit diturunkan saturasinya supaya warna titik tetap terbaca. Peramban mengirim referer sendiri, dan peta hanya meminta petak yang terlihat. Ketentuan: [kebijakan petak OSM](https://operations.osmfoundation.org/policies/tiles/). Pemakaian operasional yang ramai sebaiknya memakai server petak sendiri. Zoom keluar dibatasi pada bingkai Indonesia; tombol "Tampilkan seluruh Indonesia" mengembalikan tampilan nasional. Modul Gunung Api tidak punya peta dasar.
 - Tidak ada login, jejak audit, atau penyimpanan di server.
 

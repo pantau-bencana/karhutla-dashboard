@@ -134,7 +134,7 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
                         {count ? (
                           <Badge kind="akt">{formatAngka(count)} stasiun tersambung</Badge>
                         ) : (
-                          <Badge kind="tau">Tidak ada data stasiun</Badge>
+                          <Badge kind="tau">Data stasiun belum terintegrasi ke dashboard</Badge>
                         )}
                       </td>
                       <td>
@@ -192,11 +192,9 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
             </button>
           ))}
         </div>
-        <ul className="legend aq-legend" aria-label="Legenda sumber">
-          <li><i className="aq-mark kemenlh" /> Stasiun KemenLH</li>
-          <li><i className="aq-mark openaq" /> Stasiun OpenAQ</li>
-          <li><i className="aq-mark cams" /> Sel model CAMS</li>
-        </ul>
+        <p className="fine">
+          Tiga jenis data tetap terpisah. (1) ISPU stasiun KLH adalah pengukuran resmi dan belum terintegrasi ke dashboard. (2) Model CAMS lewat Open-Meteo adalah pembanding, bukan ISPU dan bukan pengamatan stasiun; angkanya hanya tabel karena sel model tidak digambar. (3) Tanggal sesudah hari ini pada berkas model, bila ada, adalah prakiraan model, bukan prediksi ISPU.
+        </p>
         <StationMap stations={sourceOn.kemenlh ? rows : []} selectedId={selectedId} onSelect={setSelectedId} />
         <p className="map-note">
           Stasiun KemenLH tidak dipetakan: tidak ada dataset terbuka koordinat stasiun yang dipakai di sini. Portal mengirim X-Frame-Options strict-origin-when-cross-origin, jadi halaman itu tidak disematkan.
@@ -224,7 +222,7 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
               {sourceOn.kemenlh ? (provinces.length ? provinces : ["Tidak tersedia"]).map((name) => (
                 <tr key={`ispu-${name}`}>
                   <th scope="row">ISPU KemenLH — pengukuran stasiun</th>
-                  <td>{name}. {stationCount.get(name) ? "Ada stasiun tersambung." : "Tidak ada data stasiun."}</td>
+                  <td>{name}. {stationCount.get(name) ? "Ada stasiun tersambung." : "Data stasiun belum terintegrasi ke dashboard."}</td>
                   <td>ISPU</td>
                   <td>Data belum terhubung</td>
                   <td>—</td>

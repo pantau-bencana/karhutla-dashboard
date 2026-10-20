@@ -9,7 +9,7 @@ export function VolcanoPage() {
       <header className="page-head">
         <div>
           <h1>Gunung Api</h1>
-          <p className="lead">Status aktivitas ditetapkan PVMBG. Dasbor ini tidak menyimpan status dan tidak membuat peta dampak.</p>
+          <p className="lead">Belum terintegrasi. Dasbor ini tidak menyimpan status aktivitas, prakiraan, atau peta dampak.</p>
         </div>
         <div className="badges">
           <Badge kind="tau">Tautan saja</Badge>
@@ -28,7 +28,7 @@ export function VolcanoPage() {
         </ul>
         <h2>Daftar gunung berstatus di atas Normal</h2>
         <p className="empty">
-          Belum tersedia. Yang dibutuhkan: akses data status resmi PVMBG (API atau izin penggunaan) dan peta kawasan rawan bencana untuk wilayah terdampak. {hazard.catatan} Istilah resmi tetap Normal, Waspada, Siaga, Awas; tidak ditampilkan sebagai status saat ini.
+          Belum terintegrasi. Tidak ada angka tingkat aktivitas, prakiraan, atau wilayah terdampak pada halaman ini. Yang dibutuhkan sebelum ada angka: izin tertulis PVMBG / Badan Geologi melalui PPID ESDM (https://ppid.esdm.go.id/) karena MAGMA tidak punya API publik yang terdokumentasi, plus peta kawasan rawan bencana. Pengorek pihak ketiga tidak dipakai. {hazard.catatan} Istilah resmi Normal, Waspada, Siaga, dan Awas tidak ditampilkan sebagai status saat ini.
         </p>
       </section>
     </main>

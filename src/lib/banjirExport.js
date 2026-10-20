@@ -1,3 +1,5 @@
+import { CAP_DATA_TERAKHIR } from "./capKab.js";
+import { formatWib } from "./format.js";
 import { IRBI_TIDAK_TERSEDIA } from "./floodMatrix.js";
 import { HUJAN_PEMBANDING_JENIS } from "./hujanPembanding.js";
 import { POTENSI_LABEL } from "./pendudukKab.js";
@@ -17,8 +19,12 @@ export const DISCLAIMER_UNDUH =
   "Penggunaan internal. Awas/Siaga/Waspada adalah Analisis Pantau Bencana, bukan status resmi.";
 
 export function teksStatusUnduh(row) {
+  if (row?.peta?.kind === "kedaluwarsa") {
+    const sampai = row.peta.berlakuSampai ? ` Masa berlaku sampai ${formatWib(row.peta.berlakuSampai)}.` : "";
+    return `data terakhir/kedaluwarsa.${sampai} ${CAP_DATA_TERAKHIR}`;
+  }
   if (row?.peta?.kind === "status" && row.peta.status) {
-    return row.peta.lampau ? `${row.peta.status} (data terakhir, masa berlaku sudah lewat)` : row.peta.status;
+    return row.peta.status;
   }
   if (row?.peta?.kind === "tak-dikenal") return row.peta.kosongLabel || "Tidak terklasifikasi (kode cuaca BMKG belum dikenali)";
   if (row?.peta?.kind === "kosong") return row.peta.kosongLabel || "Tidak ada peringatan";
@@ -38,7 +44,7 @@ export function barisUnduh(rows) {
       row.nama || "",
       row.provinsi || "",
       teksStatusUnduh(row),
-      row.dibiTeks || "",
+      row.dibiAngka != null && Number.isFinite(Number(row.dibiAngka)) ? String(row.dibiAngka) : "—",
       row.banjirKelas || IRBI_TIDAK_TERSEDIA,
       penduduk == null ? "" : String(penduduk),
       rumah == null ? "" : String(rumah),

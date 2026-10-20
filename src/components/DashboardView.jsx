@@ -173,7 +173,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
         <p className="fine">
           {formatAngka(view.summary.hotspot)} titik pada cakupan dan rentang ini, {formatAngka(view.summary.tinggi)} confidence tinggi
           (kelas tinggi, high, atau nilai ≥ 80). {formatAngka(view.summary.belumTerverifikasi || 0)} titik belum terverifikasi wilayah dan tidak masuk hitungan provinsi.
-          ISPU stasiun: tidak tersedia. Stasiun resmi belum terhubung.
+          Data stasiun ISPU belum terintegrasi ke dashboard.
         </p>
       ) : null}
 

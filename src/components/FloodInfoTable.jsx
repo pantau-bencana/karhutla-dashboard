@@ -1,5 +1,5 @@
 import { Fragment, useMemo, useState } from "react";
-import { ANALISIS_NAMA, ANALISIS_WARNA, keparahanTerburuk } from "../lib/analisisPantauBencana.js";
+import { ANALISIS_NAMA, ANALISIS_WARNA, LABEL_KEDALUWARSA, keparahanTerburuk } from "../lib/analisisPantauBencana.js";
 import {
   BMKG_ATTRIBUTION,
   CAP_DATA_TERAKHIR,
@@ -50,6 +50,11 @@ function selPenduduk(row, jenis) {
       <small>{PENDUDUK_BUKAN_TERPAPAR}</small>
     </>
   );
+}
+
+function penandaHistoris(row) {
+  if (row?.dibiAngka != null && Number.isFinite(Number(row.dibiAngka))) return String(row.dibiAngka);
+  return "—";
 }
 
 const CELLS = {
@@ -162,7 +167,7 @@ const CELLS = {
       </span>
     );
   },
-  dibi: (row) => row.dibiTeks,
+  dibi: (row) => penandaHistoris(row),
   tautan: (row) => {
     const links = [];
     for (const alert of [...(row.nowcastAlerts ?? []), ...(row.nowcastLampau ?? [])]) {
@@ -226,6 +231,7 @@ export function FloodInfoTable({ rows, columns = FLOOD_INFO_COLUMNS }) {
       <p className="fine">{ANALISIS_NAMA}. {RAIN_RISK_MATRIX.note}</p>
       <p className="fine">{DASARIAN_NOTE}</p>
       <p className="fine">{BMKG_ATTRIBUTION}</p>
+      <p className="fine">{DIBI_UNAVAILABLE}. Tanda — pada kolom Historis bukan nol kejadian. Klasifikasi DAS belum terintegrasi.</p>
       <table>
         <thead>
           <tr>
@@ -289,6 +295,7 @@ export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null
   const [buka, setBuka] = useState("");
   return (
     <div className="table-wrap flood-side wrap-cells">
+      <p className="fine">{DIBI_UNAVAILABLE}. Tanda — pada kolom Historis bukan nol kejadian. Klasifikasi DAS belum terintegrasi.</p>
       <table>
         <colgroup>
           <col className="col-no" />
@@ -341,7 +348,7 @@ export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null
                   </th>
                   {tampilProvinsi ? <td>{row.provinsi || "—"}</td> : null}
                   <td>{selStatusPeta(row)}</td>
-                  <td>{row.dibiTeks || DIBI_UNAVAILABLE}</td>
+                  <td>{penandaHistoris(row)}</td>
                   <td>{selIrbi(row)}</td>
                 </tr>
                 {terbuka ? (
@@ -368,6 +375,14 @@ function masaBerlaku(row) {
 
 function selStatusPeta(row) {
   const peta = row.peta;
+  if (peta?.kind === "kedaluwarsa") {
+    const sampai = peta.berlakuSampai ? ` Masa berlaku sampai ${formatWib(peta.berlakuSampai)}.` : "";
+    return (
+      <span>
+        {peta.kosongLabel || LABEL_KEDALUWARSA}.{sampai} {CAP_DATA_TERAKHIR}
+      </span>
+    );
+  }
   if (peta?.kind === "status" && peta.status) {
     const warna = ANALISIS_WARNA[peta.status];
     return (
