@@ -287,6 +287,14 @@ export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null
   return (
     <div className="table-wrap flood-side wrap-cells">
       <table>
+        <colgroup>
+          <col className="col-no" />
+          <col className="col-nama" />
+          {tampilProvinsi ? <col className="col-prov" /> : null}
+          <col className="col-status" />
+          <col className="col-historis" />
+          <col className="col-irbi" />
+        </colgroup>
         <caption>
           Kolom: No, Kab/Kota{tampilProvinsi ? ", Provinsi" : ""}, Status, Historis, IRBI. Nomor mengikuti urutan Awas, Siaga, Waspada, tanpa status, lalu tidak terklasifikasi atau tanpa data.
           Bukan peringkat prioritas. Ketuk nama untuk rincian.

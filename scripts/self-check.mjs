@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { deriveDashboard, defaultRange } from "../src/lib/derive.js";
 import { areaContains, assignProvince, INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../src/lib/geo.js";
 import { looksLikeCsv, parseCsv } from "../src/lib/csv.js";
@@ -111,8 +113,11 @@ import {
 import {
   assignKabupaten,
   aggregateProvinsi,
+  capCsvUsable,
   capKabCsv,
   capKabMeta,
+  previousCapUsable,
+  writeCapKabFiles,
   BMKG_REQUEST_GAP_MS,
   ringsFromXml,
   rowsFromFeatures,
@@ -1440,6 +1445,35 @@ assert.match(capScript, /bmkg-cap-kab\.csv/);
 assert.match(capScript, /bmkg-cap-prov\.csv/);
 assert.match(capScript, /previousCapUsable/);
 assert.match(capScript, /kept_previous/);
+assert.equal(capCsvUsable("kode,kabupaten\n11.01,Aceh Selatan\n"), true);
+assert.equal(capCsvUsable("kode,kabupaten\n"), false);
+assert.equal(capScript.includes('if (meta?.status !== "ok") return false'), false);
+const capSimpan = mkdtempSync(join(tmpdir(), "cap-keep-"));
+writeFileSync(join(capSimpan, "bmkg-cap-kab.csv"), "kode,kabupaten\n11.01,Aceh Selatan\n");
+writeFileSync(
+  join(capSimpan, "bmkg-cap-kab-meta.json"),
+  `${JSON.stringify({ status: "gagal", fetched_at: "2026-10-20T01:17:04.008Z", error: "Failed to execute query." })}\n`,
+);
+assert.equal(previousCapUsable(capSimpan), true);
+const capSimpanHasil = writeCapKabFiles(capSimpan, {
+  status: "gagal",
+  rows: [],
+  error: "Failed to execute query.",
+  fetchedAt: "2026-10-20T06:37:17.308Z",
+});
+assert.equal(capSimpanHasil.kept_previous, true);
+assert.equal(JSON.parse(readFileSync(join(capSimpan, "bmkg-cap-kab-meta.json"), "utf8")).fetched_at, "2026-10-20T01:17:04.008Z");
+assert.equal(readFileSync(join(capSimpan, "bmkg-cap-kab.csv"), "utf8").includes("11.01"), true);
+rmSync(capSimpan, { recursive: true, force: true });
+const halamanBanjirLetak = readFileSync("src/components/FloodPage.jsx", "utf8");
+const judulBanjir = halamanBanjirLetak.indexOf("<h1>Banjir");
+const petaBanjir = halamanBanjirLetak.indexOf("<FloodRiskMap");
+const sebelumPeta = halamanBanjirLetak.slice(judulBanjir, petaBanjir);
+assert.equal(sebelumPeta.includes("FLOOD_PERMISSION"), false);
+assert.equal(sebelumPeta.includes("Penggunaan internal"), false);
+assert.match(halamanBanjirLetak, /<h1>Banjir[\s\S]*<FloodRiskMap/);
+assert.match(halamanBanjirLetak, /className="card flood-disclaimer"[\s\S]*FLOOD_PERMISSION[\s\S]*Penggunaan internal/);
+assert.equal(halamanBanjirLetak.includes("tidak dapat diambil pada pembaruan terakhir"), false);
 assert.match(readFileSync(".github/workflows/refresh-cap.yml", "utf8"), /banjir-ringkasan\.mjs/);
 assert.match(readFileSync(".github/workflows/refresh-data.yml", "utf8"), /banjir-ringkasan\.mjs/);
 const batasTopo = JSON.parse(readFileSync("data/static/batas-kabkota.topojson", "utf8"));
