@@ -2,14 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import { osmTileLayer } from "../lib/basemap.js";
 import { INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../lib/geo.js";
-import { ANALISIS_WARNA, CATATAN_ABU, CATATAN_ARSIR, WARNA_TANPA_PERINGATAN } from "../lib/analisisPantauBencana.js";
-import { kodeWilayah } from "../lib/floodMatrix.js";
+import { ANALISIS_WARNA, CATATAN_ABU, CATATAN_ABU_HARI, CATATAN_ARSIR, WARNA_TANPA_PERINGATAN } from "../lib/analisisPantauBencana.js";
 import {
   FLOOD_PERMISSION,
   IDENTIFY_FAIL,
   INARISK_PORTAL,
+  IRBI_TIDAK_TERSEDIA,
   NODATA_LABEL,
   RISK_ATTRIBUTION,
+  kodeWilayah,
   legendClass,
 } from "../lib/floodMatrix.js";
 import {
@@ -80,23 +81,22 @@ async function loadNationalKab() {
   return nationalLoad;
 }
 
-function paintOf(province, feature, kabPaint, provPaint) {
-  if (province) {
-    const kode = kodeWilayah(feature?.properties?.kdpkab);
-    return kabPaint?.get(kode) ?? null;
-  }
-  return provPaint?.get(feature?.properties?.wadmpr) ?? null;
+function paintOf(feature, kabPaint) {
+  const kode = kodeWilayah(feature?.properties?.kdpkab);
+  return kabPaint?.get(kode) ?? null;
 }
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);
 }
 
-function resolvePaint(province, feature, kabPaint, provPaint, tab, bolehKosong) {
-  const paint = paintOf(province, feature, kabPaint, provPaint);
+function resolvePaint(feature, kabPaint, tab, bolehKosong) {
+  const paint = paintOf(feature, kabPaint);
   if (paint?.kind) return paint;
-  if (tab !== "cap" || !bolehKosong) return { kind: "nodata", fill: "", status: "", alasan: tab === "cap" ? "cakupan" : "hari" };
-  return { kind: "kosong", fill: WARNA_TANPA_PERINGATAN, status: "", alasan: "" };
+  if (tab === "cap" && bolehKosong) {
+    return { kind: "kosong", fill: WARNA_TANPA_PERINGATAN, status: "", alasan: "", kosongLabel: "Tidak ada peringatan" };
+  }
+  return { kind: "nodata", fill: "", status: "", alasan: tab === "cap" ? "cakupan" : "prakiraan" };
 }
 
 function gayaWilayah(paint, selected, peringatan) {
@@ -139,20 +139,22 @@ function pasangArsir(map, layer) {
   svg.insertBefore(defs, svg.firstChild);
 }
 
-function tooltipFor(province, feature, kabPaint, provPaint) {
-  const nama = province ? feature?.properties?.wadmkk : feature?.properties?.wadmpr;
-  const paint = paintOf(province, feature, kabPaint, provPaint);
-  if (province && paint?.status && paint.pendudukBaris?.length) {
-    return [nama, paint.status, ...paint.pendudukBaris].filter(Boolean).map(escapeHtml).join("<br>");
-  }
-  return nama ? escapeHtml(nama) : "";
+function tooltipFor(feature, kabPaint) {
+  const nama = feature?.properties?.wadmkk || feature?.properties?.wadmpr;
+  const paint = paintOf(feature, kabPaint);
+  const lines = [nama];
+  if (paint?.status) lines.push(paint.status);
+  else if (paint?.kind === "kosong") lines.push(paint.kosongLabel || "Tidak ada peringatan");
+  else if (paint?.alasan === "irbi") lines.push(IRBI_TIDAK_TERSEDIA);
+  else if (paint?.kind === "nodata") lines.push("Tanpa data");
+  if (paint?.status && paint.pendudukBaris?.length) lines.push(...paint.pendudukBaris);
+  return lines.filter(Boolean).map(escapeHtml).join("<br>");
 }
 
 export function FloodRiskMap({
   province = "",
   onProvince,
   kabPaint,
-  provPaint,
   nomor,
   tab = "cap",
   bolehKosong = false,
@@ -303,9 +305,9 @@ export function FloodRiskMap({
           { type: "FeatureCollection", features: drawn },
           {
             pane: "flood-lines",
-            style: (feature) => gayaWilayah(resolvePaint(province, feature, kabPaint, provPaint, tab, bolehKosong), Boolean(province), showPeringatan),
+            style: (feature) => gayaWilayah(resolvePaint(feature, kabPaint, tab, bolehKosong), Boolean(province), showPeringatan),
             onEachFeature(feature, layer) {
-              const tip = tooltipFor(province, feature, kabPaint, provPaint);
+              const tip = tooltipFor(feature, kabPaint);
               if (tip) layer.bindTooltip(tip, { sticky: true, className: "flood-tip" });
               if (!province) {
                 layer.on("click", (event) => {
@@ -319,7 +321,7 @@ export function FloodRiskMap({
         ).addTo(map);
         pasangArsir(map, kabRef.current);
         kabRef.current.setStyle((feature) =>
-          gayaWilayah(resolvePaint(province, feature, kabPaint, provPaint, tab, bolehKosong), Boolean(province), showPeringatan),
+          gayaWilayah(resolvePaint(feature, kabPaint, tab, bolehKosong), Boolean(province), showPeringatan),
         );
         const extent = envelopeOf(drawn);
         if (province && extent) {
@@ -355,13 +357,13 @@ export function FloodRiskMap({
     if (kabRef.current && map) pasangArsir(map, kabRef.current);
     kabRef.current?.eachLayer((layer) => {
       const feature = layer.feature;
-      const paint = resolvePaint(province, feature, kabPaint, provPaint, tab, bolehKosong);
+      const paint = resolvePaint(feature, kabPaint, tab, bolehKosong);
       layer.setStyle(gayaWilayah(paint, Boolean(province), showPeringatan));
-      const tip = tooltipFor(province, feature, kabPaint, provPaint);
+      const tip = tooltipFor(feature, kabPaint);
       if (tip) layer.bindTooltip(tip, { sticky: true, className: "flood-tip" });
       else layer.unbindTooltip();
     });
-  }, [province, kabPaint, provPaint, loadingMap, tab, bolehKosong, showPeringatan]);
+  }, [province, kabPaint, loadingMap, tab, bolehKosong, showPeringatan]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -531,13 +533,13 @@ export function FloodRiskMap({
           </span>
         ))}
         <span>
-          <i style={{ background: WARNA_TANPA_PERINGATAN }} /> Tidak ada peringatan
+          <i style={{ background: WARNA_TANPA_PERINGATAN }} /> {tab === "cap" ? "Tidak ada peringatan" : "Cuaca di luar matriks"}
         </span>
         <span>
           <i className="swatch-hatch" /> Tanpa data
         </span>
       </div>
-      <p className="fine">{CATATAN_ABU} {CATATAN_ARSIR}</p>
+      <p className="fine">{tab === "cap" ? CATATAN_ABU : CATATAN_ABU_HARI} {CATATAN_ARSIR}</p>
       {catatan.map((baris) => (
         <p key={baris} className="fine">{baris}</p>
       ))}

@@ -1,7 +1,10 @@
 export const FLOOD_PERMISSION = "Prototipe internal – menunggu izin tertulis BNPB";
 export const IRBI_BUKU_BANJIR_URL = "https://inarisk.bnpb.go.id/IRBI-2025/files/basic-html/page212.html";
+export const IRBI_TIDAK_TERSEDIA = "IRBI tidak tersedia";
 export const IRBI_BANJIR_TERVERIFIKASI =
-  "33 baris kelas banjir Aceh dan Bengkulu sudah dicocokkan dengan Buku IRBI 2025, halaman 212–227. Semua baris cocok. Provinsi lain tidak diisi.";
+  "510 kabupaten/kota punya skor dan kelas banjir dari Buku IRBI 2025, halaman 212–227 (282 Tinggi, 221 Sedang, 7 Rendah). Empat kabupaten/kota tidak ada di tabel banjir itu dan dikosongkan: Adm. Kep. Seribu, Bangli, Kep. Siau Tagulandang Biaro, dan Kota Ternate. Padanan nama yang dipakai: Mamuju Utara = Pasangkayu, Toba Samosir = Toba, Padangsidimpuan = Kota Padang Sidempuan, Maluku Tenggara Barat = Kepulauan Tanimbar. Skor IRB total dan tabel banjir bandang tidak dipakai.";
+export const DIBI_LUAR_CUPLIKAN =
+  "Cuplikan kejadian 2024 yang tersimpan tidak mencakup provinsi ini";
 export const IRBI_PENGGUNAAN_INTERNAL =
   "Penggunaan internal. Data IRBI 2025 bersumber dari Buku IRBI 2025 (BNPB, Januari 2026). Buku ini melarang pengutipan atau perbanyakan tanpa izin tertulis BNPB; izin belum diperoleh, jadi halaman ini tidak untuk publikasi. Status Awas/Siaga/Waspada adalah Analisis Pantau Bencana (gabungan BMKG × IRBI BNPB), bukan status resmi.";
 export const MISSING_DIBI = "Tidak tercantum di tabel BNPB 2024";
@@ -21,7 +24,7 @@ export const RAIN_RISK_MATRIX = {
     { id: "hujan", sumber: "BMKG", kelas: "Nowcast peringatan dini cuaca 0–3 jam" },
     { id: "risiko", sumber: "IRBI 2025", kelas: "kelas risiko banjir" },
   ],
-  note: "Sumbu hujan adalah nowcast BMKG 0–3 jam per kabupaten/kota. Sumbu risiko adalah kelas banjir IRBI 2025 apa adanya. Analisis Pantau Bencana memetakan keparahan CAP dan kelas IRBI menjadi Awas, Siaga, atau Waspada. Itu analisis dasbor, bukan status resmi, bukan skor angka, bukan peringatan dasarian, bukan IBF, dan bukan prakiraan 3 hari.",
+  note: "Sumbu hujan pada tab 0–3 jam adalah nowcast BMKG per kabupaten/kota. Pada tab Hari ini, Besok, dan Lusa sumbu hujan adalah pemetaan teks cuaca BMKG di satu titik sampel: Extreme untuk hujan sangat lebat atau hujan ekstrem, Severe untuk hujan lebat atau petir, Moderate untuk hujan sedang. Sumbu risiko adalah kelas banjir IRBI 2025 apa adanya. Analisis Pantau Bencana memetakan kedua sumbu menjadi Awas, Siaga, atau Waspada. Itu analisis dasbor, bukan status resmi, bukan skor angka, bukan peringatan dasarian, bukan IBF, dan bukan peringatan resmi 3 hari.",
 };
 
 export const FLOOD_INFO_COLUMNS = [
@@ -36,7 +39,7 @@ export const FLOOD_INFO_COLUMNS = [
   {
     id: "irbi-banjir",
     label: "Kelas risiko banjir IRBI 2025",
-    detail: "Statis. Dicocokkan dengan Buku IRBI 2025, halaman 212–227.",
+    detail: "Statis. 510 baris dari Buku IRBI 2025, halaman 212–227. Tanpa kelas: IRBI tidak tersedia.",
     sortKey: "banjir",
   },
   { id: "analisis", label: "Analisis Pantau Bencana", detail: "Bukan status resmi." },
@@ -138,6 +141,9 @@ export function buildFloodRows({ banjir, multi, dibi, dibiLoaded, wilayah }) {
     : (banjir ?? []);
   const multiByName = new Map((multi ?? []).map((row) => [nameKey(row.kabupaten_irbi || row.kabupaten_kota), row]));
   const dibiByKode = new Map((dibi ?? []).map((row) => [kodeWilayah(row.kode_wilayah), row]));
+  const cakupanDibi = new Set(
+    (dibi ?? []).map((row) => kodeWilayah(row.kode_wilayah).slice(0, 2)).filter((kode) => kode),
+  );
   const rows = source.map((row) => {
     const kode = kodeWilayah(row.kode_wilayah);
     const key = nameKey(row.kabupaten_irbi || row.kabupaten_kota);
@@ -146,7 +152,9 @@ export function buildFloodRows({ banjir, multi, dibi, dibiLoaded, wilayah }) {
     let dibiTeks = DIBI_UNAVAILABLE;
     let dibiAngka = null;
     if (dibiLoaded) {
-      if (!kejadian) dibiTeks = MISSING_DIBI;
+      const dalamCuplikan = !cakupanDibi.size || cakupanDibi.has(kode.slice(0, 2));
+      if (!dalamCuplikan) dibiTeks = DIBI_LUAR_CUPLIKAN;
+      else if (!kejadian) dibiTeks = MISSING_DIBI;
       else {
         dibiAngka = Number(kejadian.banjir_2024);
         dibiTeks = Number.isFinite(dibiAngka) ? String(dibiAngka) : MISSING_DIBI;

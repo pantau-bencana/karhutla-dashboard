@@ -7,7 +7,7 @@ import { IKLIM_BMKG_URL } from "../lib/dasarianManual.js";
 import { BIG_SERVICE } from "../lib/bigWilayah.js";
 import { BPS_PENDUDUK_URL, PENDUDUK_BUKAN_TERPAPAR, RUMAH_BELUM } from "../lib/pendudukKab.js";
 import { IRBI_BANJIR_TERVERIFIKASI, IRBI_BUKU_BANJIR_URL, IRBI_PENGGUNAAN_INTERNAL } from "../lib/floodMatrix.js";
-import { PRAKIRAAN_BATAS } from "../lib/prakiraanHujan.js";
+import { PEMETAAN_CUACA, PRAKIRAAN_BATAS } from "../lib/prakiraanHujan.js";
 import { decorateSources } from "../lib/sourceCatalog.js";
 import { GlossaryPage } from "./GlossaryPage.jsx";
 import { MetodeAplus } from "./MetodeAplus.jsx";
@@ -97,15 +97,17 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
         </p>
         <h3>Langkah</h3>
         <ol className="plain-list">
-          <li>Buka tab 0–3 jam. Ambil peringatan CAP BMKG yang masih berlaku. Istilah severity dan event dibiarkan apa adanya.</li>
-          <li>Cocokkan kabupaten/kota ke kelas banjir IRBI 2025 bila kode itu ada di tabel buku yang tersimpan.</li>
-          <li>Pasangkan keparahan CAP dan kelas IRBI pada matriks di bawah. Hasilnya Awas, Siaga, atau Waspada.</li>
-          <li>Tanpa peringatan yang masih berlaku, wilayah diwarnai abu-abu. Itu bukan pernyataan aman.</li>
-          <li>Tanpa data — kelas IRBI belum ada, keparahan di luar matriks, cuplikan CAP belum nasional, atau tab hari — wilayah diarsir. Arsir bukan angka nol.</li>
-          <li>Tab Hari ini, Besok, dan Lusa tidak memakai matriks ini. Prakiraan 3 hari tetap terpisah dan hanya enam kelurahan sampel.</li>
+          <li>Buka tab 0–3 jam. Ambil peringatan CAP BMKG yang masih berlaku. Istilah severity dan event dibiarkan apa adanya. Tab ini tidak memakai prakiraan 3 hari.</li>
+          <li>Pada tab Hari ini, Besok, atau Lusa, baca satu titik sampel per kab/kota. {PEMETAAN_CUACA}</li>
+          <li>Cocokkan kabupaten/kota ke kelas banjir IRBI 2025. Tanpa kelas, tulisannya IRBI tidak tersedia dan tidak ada status matriks.</li>
+          <li>Pasangkan keparahan (CAP pada tab 0–3 jam, atau pemetaan cuaca pada tab hari) dengan kelas IRBI pada matriks di bawah. Hasilnya Awas, Siaga, atau Waspada.</li>
+          <li>Tanpa peringatan CAP yang masih berlaku, atau bila cuaca titik sampel di luar matriks, wilayah diwarnai abu-abu. Itu bukan pernyataan aman.</li>
+          <li>Tanpa data — prakiraan titik tidak ada, kelas IRBI tidak ada, keparahan CAP di luar matriks, atau cuplikan CAP belum nasional — wilayah diarsir. Arsir bukan angka nol.</li>
         </ol>
         <h3>Matriks 3×3</h3>
-        <p>Baris adalah keparahan CAP. Kolom kelas IRBI menghasilkan status analisis.</p>
+        <p>
+          Baris adalah keparahan. Pada tab 0–3 jam itu istilah CAP. Pada tab hari itu hasil pemetaan teks cuaca. Kolom kelas IRBI menghasilkan status analisis.
+        </p>
         <div className="table-wrap">
           <table>
             <thead>
@@ -142,8 +144,11 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
         <h3>Waktu yang sah</h3>
         <ul className="plain-list">
           <li>0–3 jam: nowcast CAP. Berlaku kira-kira dari waktu terbit sampai kedaluwarsa pada berkas CAP, biasanya beberapa jam. Bukan status 3 hari.</li>
-          <li>Hari ini, Besok, Lusa: prakiraan cuaca resmi 3 hari. Tanggal dihitung dari hari ini zona WIB. Waktu pada titik mengikuti local_datetime, tidak ditulis ulang menjadi WIB.</li>
+          <li>Hari ini, Besok, Lusa: prakiraan cuaca resmi 3 hari pada satu titik per kab/kota. Tanggal tab dihitung dari hari ini zona WIB. Slot yang dihitung adalah slot yang tanggal local_datetime-nya sama dengan tanggal tab. Waktu pada titik tidak ditulis ulang menjadi WIB.</li>
         </ul>
+        <h3>Satu titik per kabupaten/kota</h3>
+        <p>{PRAKIRAAN_BATAS}</p>
+        <p>{PEMETAAN_CUACA}</p>
         <h3>Sumber</h3>
         <ul className="plain-list">
           <li>
@@ -162,7 +167,7 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
             <a href={BMKG_DOCS_URL} target="_blank" rel="noopener noreferrer">
               API prakiraan cuaca
             </a>
-            . {PRAKIRAAN_BATAS}
+            . {PRAKIRAAN_BATAS} {PEMETAAN_CUACA}
           </li>
           <li>
             IRBI 2025 banjir: {IRBI_BANJIR_TERVERIFIKASI}{" "}
@@ -203,7 +208,9 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
         <h3>Batasan</h3>
         <ul className="plain-list">
           <li>Awas, Siaga, dan Waspada pada peta ini adalah analisis dasbor, bukan status resmi BMKG atau BNPB.</li>
-          <li>IRBI 2025 yang tersimpan hanya mencakup Aceh dan Bengkulu. Provinsi lain tidak diisi angka.</li>
+          <li>Satu titik per kab/kota bukan rata-rata wilayah dan, di luar enam kelurahan yang sudah dicek, bukan ibu kota yang diverifikasi. Kecamatan dan kelurahan tidak ditampilkan di halaman Banjir.</li>
+          <li>Empat kab/kota tanpa kelas banjir di Buku IRBI 2025 halaman 212–227 tetap kosong: Adm. Kep. Seribu, Bangli, Kep. Siau Tagulandang Biaro, dan Kota Ternate.</li>
+          <li>Cuplikan kejadian BNPB 2024 yang tersimpan tidak dipakai untuk menyatakan provinsi lain tidak tercantum di tabel nasional.</li>
           <li>Penduduk dan rumah tangga adalah total kab/kota, bukan jumlah terpapar.</li>
           <li>Cuplikan CAP yang belum bertanda cakupan nasional tidak dipakai untuk menyatakan suatu kabupaten aman.</li>
           <li>Dropdown DAS bertuliskan Dalam pengembangan dan tidak memuat data DAS.</li>

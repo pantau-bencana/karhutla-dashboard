@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ANALISIS_NAMA, ANALISIS_WARNA } from "../lib/analisisPantauBencana.js";
+import { ANALISIS_NAMA, ANALISIS_WARNA, keparahanTerburuk } from "../lib/analisisPantauBencana.js";
 import {
   BMKG_ATTRIBUTION,
   DASARIAN_NOTE,
@@ -24,8 +24,7 @@ import {
   teksAngkaPenduduk,
   teksRumahTangga,
 } from "../lib/pendudukKab.js";
-import { labelSlotHujan } from "../lib/prakiraanHujan.js";
-import { FLOOD_INFO_COLUMNS, RAIN_RISK_MATRIX, krbLinksFor, skorTeks, sortFloodRows } from "../lib/floodMatrix.js";
+import { FLOOD_INFO_COLUMNS, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, krbLinksFor, skorTeks, sortFloodRows } from "../lib/floodMatrix.js";
 
 function selPenduduk(row, jenis) {
   if (!row.pendudukTampil) return "—";
@@ -58,7 +57,7 @@ const CELLS = {
     </>
   ),
   "irbi-banjir": (row) => {
-    if (!row.banjirKelas) return "Belum tersedia di tabel IRBI 2025 yang tersimpan.";
+    if (!row.banjirKelas) return IRBI_TIDAK_TERSEDIA;
     return (
       <>
         {row.banjirKelas}
@@ -280,9 +279,19 @@ export function FloodKabDaftar({ rows }) {
                 {row.nama}
                 <small>{row.kode}</small>
               </th>
-              <td>{selStatusPeta(row)}</td>
+              <td>
+                {selStatusPeta(row)}
+                {row.cuacaHari?.length ? <small>{row.cuacaHari.join(", ")}</small> : null}
+              </td>
               <td>{row.dibiTeks || "—"}</td>
-              <td>{row.banjirKelas || "Belum tersedia di tabel IRBI 2025 yang tersimpan."}</td>
+              <td>
+                {row.banjirKelas || IRBI_TIDAK_TERSEDIA}
+                {row.pendudukTampil ? (
+                  <small>
+                    Penduduk {teksAngkaPenduduk(row.pendudukItem?.penduduk)} · rumah tangga {teksRumahTangga(row.pendudukItem)} · {PENDUDUK_BUKAN_TERPAPAR}
+                  </small>
+                ) : null}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -302,14 +311,15 @@ function selStatusPeta(row) {
       </span>
     );
   }
-  if (peta?.kind === "kosong") return "Tidak ada peringatan";
+  if (peta?.kind === "kosong") return peta.kosongLabel || "Tidak ada peringatan";
+  if (peta?.alasan === "irbi") return IRBI_TIDAK_TERSEDIA;
   return "Tanpa data";
 }
 
 export function PrakiraanTigaHari({ titik, hari, periodeLabel }) {
   const shown = titik ?? [];
   return (
-    <div className="table-wrap flood-table">
+    <div className="table-wrap flood-table prakiraan-kab">
       <p className="period-label">{periodeLabel}</p>
       {!shown.length ? <p>Tidak ada titik prakiraan pada cakupan ini.</p> : null}
       {shown.length ? (
@@ -328,18 +338,17 @@ export function PrakiraanTigaHari({ titik, hari, periodeLabel }) {
           <tbody>
             {shown.map((item) => (
               <tr key={item.adm4}>
-                <th scope="row">
-                  {item.kotkab || item.provinsi}
-                  <small>
-                    {item.desa}, {item.kecamatan}. adm4 {item.adm4}
-                  </small>
-                </th>
-                {item.hari.map((slot) => (
-                  <td key={slot.tanggal}>
-                    {labelSlotHujan(slot)}
-                    {slot.cuaca?.length ? <small>{slot.cuaca.join(", ")}</small> : null}
-                  </td>
-                ))}
+                <th scope="row">{item.kotkab || item.kodeKab || item.provinsi}</th>
+                {item.hari.map((slot) => {
+                  const severity = keparahanTerburuk(slot.cuaca);
+                  const label = !slot.ada ? "Tidak ada slot" : severity || "Di luar matriks";
+                  return (
+                    <td key={slot.tanggal}>
+                      {label}
+                      {slot.cuaca?.length ? <small>{slot.cuaca.join(", ")}</small> : null}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>

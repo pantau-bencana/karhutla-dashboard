@@ -545,6 +545,7 @@ a.button {
 .table-wrap.short { max-height: 320px; }
 .table-wrap.wrap-cells { max-height: none; }
 .table-wrap.flood-side.wrap-cells { max-height: 520px; overflow: auto; }
+.table-wrap.prakiraan-kab { max-height: 420px; overflow: auto; }
 .table-wrap.wrap-cells th, .table-wrap.wrap-cells td { white-space: normal; }
 tr.is-selected { background: #fde68a; box-shadow: inset 4px 0 0 #92400e; }
 tr.is-selected th { background: transparent; }

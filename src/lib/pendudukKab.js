@@ -83,9 +83,14 @@ export function barisTooltip(item) {
   ];
 }
 
+function statusYangDitampilkan(row) {
+  if (row && Object.hasOwn(row, "statusTab")) return row.statusTab || null;
+  return row?.analisisStatus || null;
+}
+
 export function lampirkanPenduduk(rows, indeks, status = "kosong") {
   return (rows ?? []).map((row) => {
-    const tampil = Boolean(row?.analisisStatus);
+    const tampil = Boolean(statusYangDitampilkan(row));
     return {
       ...row,
       pendudukTampil: tampil,
@@ -96,7 +101,7 @@ export function lampirkanPenduduk(rows, indeks, status = "kosong") {
 }
 
 export function ringkasPendudukBerstatus(rows, indeks) {
-  const berstatus = (rows ?? []).filter((row) => row?.analisisStatus);
+  const berstatus = (rows ?? []).filter((row) => statusYangDitampilkan(row));
   if (!berstatus.length) {
     return { adaStatus: false, lengkap: false, penduduk: null, kurang: 0, jumlahStatus: 0 };
   }

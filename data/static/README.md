@@ -1,8 +1,16 @@
 # Data statis
 
-## IRBI 2025 banjir, Aceh dan Bengkulu
+## IRBI 2025 banjir
 
-`irbi-2025-banjir-aceh-bengkulu.csv` berisi 33 kabupaten/kota. Skor, kelas, dan halaman sudah dicocokkan dengan Buku IRBI 2025 (BNPB, Januari 2026), halaman 212–227. Semua baris cocok. Provinsi lain tidak diisi. Buku melarang pengutipan atau perbanyakan tanpa izin tertulis BNPB; izin belum diperoleh.
+`irbi-2025-banjir.csv` berisi 514 kabupaten/kota. 510 baris punya skor, kelas, dan halaman dari Buku IRBI 2025 (BNPB, Januari 2026), halaman 212–227: 282 Tinggi, 221 Sedang, 7 Rendah. Empat baris dikosongkan karena tidak ada di tabel banjir: Adm. Kep. Seribu (31.01), Bangli (51.06), Kep. Siau Tagulandang Biaro (71.09), dan Kota Ternate (82.71). Skor IRB total dan tabel banjir bandang tidak disalin.
+
+Padanan nama terhadap kode batas BIG: Mamuju Utara = Pasangkayu (76.01), Toba Samosir = Toba (12.12), Padangsidimpuan = Kota Padang Sidempuan (12.77), Maluku Tenggara Barat = Kepulauan Tanimbar (81.03). Nama Jakarta disambungkan ke kode administrasi BIG (31.01 dan 31.71–31.75).
+
+`irbi-2025-banjir-aceh-bengkulu.csv` tetap 33 baris yang sudah dicocokkan angka-nya dengan berkas nasional. Buku melarang pengutipan atau perbanyakan tanpa izin tertulis BNPB; izin belum diperoleh.
+
+## Titik sampel prakiraan
+
+`prakiraan-sampel-adm4.csv` menyimpan satu kode adm4 per kabupaten/kota yang sudah dicek ke API prakiraan BMKG. Enam kelurahan prioritas bertanda `terverifikasi`. Sisanya `kelurahan-terkecil` atau `desa-terkecil`: itu calon kode, bukan ibu kota yang diverifikasi. Baris `status` selain `ok` tidak diambil ulang dan tidak punya prakiraan. Pada 20 Oktober 2026 yang gagal (HTTP 404): Sorong Selatan, Raja Ampat, Tambrauw, dan Maybrat.
 
 ## Penduduk dan rumah tangga kabupaten/kota
 

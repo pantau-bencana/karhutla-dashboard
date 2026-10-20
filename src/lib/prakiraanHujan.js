@@ -1,3 +1,4 @@
+import { analisisStatus, keparahanTerburuk } from "./analisisPantauBencana.js";
 import { todayWib } from "./dasarianManual.js";
 
 const BULAN = [
@@ -16,7 +17,10 @@ const BULAN = [
 ];
 
 export const PRAKIRAAN_BATAS =
-  "Cuplikan prakiraan 3 hari saat ini hanya satu kelurahan yang kodenya sudah dicek per provinsi prioritas (Riau, Jambi, Sumatera Selatan, Kalimantan Barat, Kalimantan Tengah, Kalimantan Selatan). Itu titik sampel, bukan rata-rata kabupaten/kota dan bukan seluruh Indonesia. Mengambil satu adm4 untuk setiap kabupaten/kota berarti ratusan permintaan; batas BMKG 60 permintaan per menit, dan kode yang tidak dicek ke API tidak dipakai.";
+  "Prakiraan 3 hari memakai satu titik adm4 per kabupaten/kota, bukan beberapa kecamatan dan bukan rata-rata kabupaten. Enam kota prioritas memakai kelurahan yang sudah dicek ke API: Padang Bulan (Kota Pekanbaru), Simpang IV Sipin (Kota Jambi), Tiga-puluh-lima Ilir (Kota Palembang), Sungaibangkong (Kota Pontianak), Pahandut (Kota Palangkaraya), dan Mantuil (Kota Banjarmasin). Kabupaten/kota lain memakai satu kode kelurahan terkecil pada transkripsi kode Kemendagri, atau kode desa terkecil bila tidak ada kelurahan. Kode itu baru disimpan setelah API mengembalikan HTTP 200 beserta nama lokasi. Titik itu bukan ibu kota yang diverifikasi, kecuali enam kelurahan di atas. Kode yang gagal tidak diganti dan kabupaten/kota itu tidak punya prakiraan. Pada pengambilan 20 Oktober 2026, Sorong Selatan, Raja Ampat, Tambrauw, dan Maybrat mengembalikan HTTP 404. local_datetime adalah waktu setempat titik, tidak diubah menjadi WIB, jadi tanggal slot di zona WITA atau WIT bisa berbeda dari tanggal WIB pada tab. Batas permintaan BMKG 60 per menit; jeda antar permintaan 1,1 detik.";
+
+export const PEMETAAN_CUACA =
+  "Teks cuaca pada titik itu dipetakan di dasbor, bukan oleh BMKG: Extreme bila ada hujan sangat lebat, hujan ekstrem, atau kata ekstrem; Severe bila ada hujan lebat, petir, atau guntur; Moderate bila ada hujan sedang. Cerah, berawan, hujan ringan, kabut, dan udara kabur berada di luar matriks. Yang dipakai adalah keparahan terburuk pada tanggal local_datetime itu.";
 
 export function tambahHariIso(iso, days) {
   const [year, month, day] = String(iso ?? "").split("-").map(Number);
@@ -92,7 +96,7 @@ export function ringkasPrakiraan(rows, periode) {
       kotkab: String(row.kotkab ?? "").trim(),
       kecamatan: String(row.kecamatan ?? "").trim(),
       desa: String(row.desa ?? "").trim(),
-      kodeKab: adm4.split(".").slice(0, 2).join("."),
+      kodeKab: String(row.kode_kab ?? "").trim() || adm4.split(".").slice(0, 2).join("."),
       analysisUtc: "",
       perHari: new Map(),
     };
@@ -116,5 +120,42 @@ export function ringkasPrakiraan(rows, periode) {
       analysisUtc: item.analysisUtc,
       hari: hari.map((tanggal) => ({ tanggal, ...ringkasHari(item.perHari.get(tanggal) ?? []) })),
     }))
-    .sort((a, b) => a.provinsi.localeCompare(b.provinsi, "id") || a.kotkab.localeCompare(b.kotkab, "id"));
+    .sort((a, b) => a.provinsi.localeCompare(b.provinsi, "id") || a.kotkab.localeCompare(b.kotkab, "id") || a.kodeKab.localeCompare(b.kodeKab, "id"));
+}
+
+export function indeksPrakiraan(rows) {
+  const groups = new Map();
+  for (const row of rows ?? []) {
+    const kode = String(row.kode_kab ?? "").trim() || String(row.adm4 ?? "").split(".").slice(0, 2).join(".");
+    if (!kode) continue;
+    const current = groups.get(kode) ?? { perHari: new Map(), analysisUtc: "" };
+    const analysis = String(row.analysis_utc ?? row.analysisUtc ?? "").trim();
+    if (analysis > current.analysisUtc) current.analysisUtc = analysis;
+    const tanggal = String(row.tanggal ?? "").slice(0, 10);
+    if (tanggal) {
+      const list = current.perHari.get(tanggal) ?? [];
+      list.push(row);
+      current.perHari.set(tanggal, list);
+    }
+    groups.set(kode, current);
+  }
+  return groups;
+}
+
+export function terapkanHari(rows, indeks, iso) {
+  return (rows ?? []).map((row) => {
+    const slots = indeks?.get(row.kode)?.perHari?.get(iso) ?? [];
+    if (!slots.length) {
+      return { ...row, prakiraanAda: false, prakiraanSeverity: "", hariStatus: null, cuacaHari: [] };
+    }
+    const cuaca = [...new Set(slots.map((slot) => String(slot.cuaca ?? slot.weather_desc ?? "").trim()).filter(Boolean))];
+    const severity = keparahanTerburuk(cuaca);
+    return {
+      ...row,
+      prakiraanAda: true,
+      prakiraanSeverity: severity,
+      hariStatus: severity ? analisisStatus(severity, row.banjirKelas) : null,
+      cuacaHari: cuaca,
+    };
+  });
 }

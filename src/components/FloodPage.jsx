@@ -1,26 +1,23 @@
 import { Component, useCallback, useEffect, useMemo, useState } from "react";
 import { FloodInfoTable, FloodKabDaftar, PrakiraanTigaHari } from "./FloodInfoTable.jsx";
 import { FloodRiskMap } from "./FloodRiskMap.jsx";
-import { ANALISIS_BUKAN_RESMI, ANALISIS_NAMA, CATATAN_ALASAN, applyAnalisis, catWilayah, gabungCat } from "../lib/analisisPantauBencana.js";
+import { ANALISIS_BUKAN_RESMI, ANALISIS_NAMA, CATATAN_ALASAN, applyAnalisis, catWilayah } from "../lib/analisisPantauBencana.js";
 import { BNPB_ABSENT, BNPB_FILE, BNPB_RESOURCE_URL, bnpbAsDibi } from "../lib/bnpbBanjir.js";
 import { parseCsv } from "../lib/csv.js";
 import {
   BMKG_ATTRIBUTION,
   BMKG_CAP_DOCS,
-  BMKG_CAP_RSS,
   DASARIAN_LINKS,
   DASARIAN_NOTE,
   NOWCAST_BUKAN_TIGA_HARI,
   applyNowcast,
-  provinsiDenganPeringatan,
   ringkasanNowcast,
-  severityLabel,
 } from "../lib/capKab.js";
 import { DASARIAN_FILE, DASARIAN_GUIDE_URL, IKLIM_BMKG_URL, applyDasarian, todayWib } from "../lib/dasarianManual.js";
 import { formatTanggalPendek, formatUsia, formatWib } from "../lib/format.js";
 import { bigQueryUrl } from "../lib/floodServices.js";
 import { BMKG_DOCS_URL } from "../lib/bmkgForecast.js";
-import { FLOOD_PERMISSION, IRBI_PENGGUNAAN_INTERNAL, IRBI_PERMISSION, buildFloodRows, kodeWilayah } from "../lib/floodMatrix.js";
+import { FLOOD_PERMISSION, IRBI_PENGGUNAAN_INTERNAL, IRBI_PERMISSION, IRBI_TIDAK_TERSEDIA, buildFloodRows, kodeWilayah } from "../lib/floodMatrix.js";
 import {
   BPS_PROYEKSI_URL,
   PENDUDUK_ABSENT,
@@ -31,14 +28,14 @@ import {
   lampirkanPenduduk,
   ringkasPendudukBerstatus,
 } from "../lib/pendudukKab.js";
-import { PRAKIRAAN_BATAS, periodeTigaHari, ringkasPrakiraan } from "../lib/prakiraanHujan.js";
+import { PEMETAAN_CUACA, PRAKIRAAN_BATAS, indeksPrakiraan, periodeTigaHari, ringkasPrakiraan, terapkanHari } from "../lib/prakiraanHujan.js";
 import { PROVINSI, SEMUA_PROVINSI } from "../lib/provinsi.js";
 
-const BANJIR_CSV = "data/static/irbi-2025-banjir-aceh-bengkulu.csv";
+const BANJIR_CSV = "data/static/irbi-2025-banjir.csv";
 const CAP_CSV = "data/live/bmkg-cap-kab.csv";
 const CAP_META = "data/live/bmkg-cap-kab-meta.json";
-const PRAKIRAAN_CSV = "data/live/bmkg_prakiraan.csv";
-const MANIFEST = "data/live/manifest.json";
+const PRAKIRAAN_CSV = "data/live/bmkg-prakiraan-kab.csv";
+const PRAKIRAAN_META = "data/live/bmkg-prakiraan-kab-meta.json";
 
 function assetUrl(path) {
   return new URL(path, document.baseURI).href;
@@ -101,23 +98,14 @@ function wilayahDari(banjir, alerts, bigNames, province) {
 
 function catWarna(rows, indeks, konteks) {
   const kab = new Map();
-  const grouped = new Map();
   for (const row of rows ?? []) {
-    const cat = catWilayah(row, konteks);
+    const cat = row.peta?.kind ? row.peta : catWilayah(row, konteks);
     kab.set(row.kode, {
       ...cat,
       pendudukBaris: cat.status ? barisTooltip(indeks?.get(row.kode)) : [],
     });
-    if (!row.provinsi) continue;
-    const list = grouped.get(row.provinsi) ?? [];
-    list.push(row);
-    grouped.set(row.provinsi, list);
   }
-  const prov = new Map();
-  for (const [nama, list] of grouped) {
-    prov.set(nama, gabungCat(list, konteks));
-  }
-  return { kab, prov };
+  return kab;
 }
 
 function FloodBody() {
@@ -176,17 +164,16 @@ function FloodBody() {
         if (!cancelled) setDasarian({ status: "gagal", rows: [] });
       }
       try {
-        const [rows, manifest] = await Promise.all([
+        const [rows, meta] = await Promise.all([
           loadCsv(PRAKIRAAN_CSV),
-          loadJson(MANIFEST).catch(() => null),
+          loadJson(PRAKIRAAN_META).catch(() => ({})),
         ]);
-        const feed = manifest?.datasets?.bmkg_prakiraan ?? {};
         if (!cancelled) {
           setPrakiraan({
-            status: "ok",
+            status: rows.length ? "ok" : "gagal",
             rows,
-            fetchedAt: feed.fetched_at || "",
-            observedAt: feed.observed_at || feed.source_updated_at || "",
+            fetchedAt: meta.fetched_at || "",
+            observedAt: meta.observed_at || "",
           });
         }
       } catch {
@@ -227,14 +214,8 @@ function FloodBody() {
     };
   }, [province]);
 
-  const periode = periodeTigaHari();
+  const periode = useMemo(() => periodeTigaHari(), []);
   const ringkas = ringkasanNowcast(cap.alerts, { ...cap.meta, status: cap.status });
-  const daftarProv = provinsiDenganPeringatan(cap.alerts);
-  const nasional = useMemo(() => {
-    const wilayah = wilayahDari(banjir, cap.alerts, [], "");
-    const rows = buildFloodRows({ banjir, multi: [], dibi, dibiLoaded, wilayah });
-    return applyAnalisis(applyNowcast(rows, cap.alerts, { ...cap.meta, status: cap.status }));
-  }, [banjir, cap, dibi, dibiLoaded]);
   const konteks = useMemo(
     () => ({
       tab,
@@ -243,48 +224,52 @@ function FloodBody() {
     }),
     [tab, cap.status, cap.meta, ringkas.tertunda],
   );
-  const cat = useMemo(() => catWarna(nasional, penduduk.indeks, konteks), [nasional, penduduk.indeks, konteks]);
-  const ringkasPenduduk = useMemo(
-    () => ringkasPendudukBerstatus(nasional, penduduk.indeks),
-    [nasional, penduduk.indeks],
+  const indeksCuaca = useMemo(
+    () => indeksPrakiraan(prakiraan.status === "ok" ? prakiraan.rows : []),
+    [prakiraan],
   );
-  const kalimatPenduduk = kalimatJumlahPenduduk(ringkasPenduduk, {
-    memuat: cap.status === "memuat" || penduduk.status === "memuat",
-  });
   const dasarianNow = useMemo(() => {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(dasarianDate)) return new Date();
     return new Date(`${dasarianDate}T05:00:00.000Z`);
   }, [dasarianDate]);
-  const shown = useMemo(() => {
-    if (!province) return [];
-    const wilayah = wilayahDari(banjir, cap.alerts, bigNames, province);
+  const urut = useMemo(() => {
+    const wilayah = wilayahDari(banjir, cap.alerts, province ? bigNames : [], province);
     const rows = buildFloodRows({ banjir, multi: [], dibi, dibiLoaded, wilayah });
     const withNowcast = applyAnalisis(applyNowcast(rows, cap.alerts, { ...cap.meta, status: cap.status }));
-    const withDasarian = applyDasarian(withNowcast, dasarian.rows, { status: dasarian.status, now: dasarianNow });
-    return lampirkanPenduduk(withDasarian, penduduk.indeks, penduduk.status);
-  }, [province, banjir, cap, bigNames, dibi, dibiLoaded, dasarian, dasarianNow, penduduk]);
-  const urut = useMemo(() => {
-    return [...shown]
-      .map((row) => ({ ...row, peta: catWilayah(row, konteks) }))
-      .sort((left, right) => left.kode.localeCompare(right.kode, "id"));
-  }, [shown, konteks]);
+    const withHari = tab === "cap" ? withNowcast : terapkanHari(withNowcast, indeksCuaca, periode.hari[tab]);
+    const withDasarian = applyDasarian(withHari, dasarian.rows, { status: dasarian.status, now: dasarianNow });
+    const bertanda = withDasarian.map((row) => {
+      const peta = catWilayah(row, konteks);
+      return { ...row, peta, statusTab: peta.status || null };
+    });
+    return lampirkanPenduduk(bertanda, penduduk.indeks, penduduk.status).sort((left, right) =>
+      left.kode.localeCompare(right.kode, "id"),
+    );
+  }, [province, banjir, cap, bigNames, dibi, dibiLoaded, dasarian, dasarianNow, penduduk, tab, konteks, indeksCuaca, periode.hari]);
+  const ringkasPenduduk = useMemo(
+    () => ringkasPendudukBerstatus(urut, penduduk.indeks),
+    [urut, penduduk.indeks],
+  );
+  const kalimatPenduduk = kalimatJumlahPenduduk(ringkasPenduduk, {
+    memuat: (tab === "cap" && cap.status === "memuat") || penduduk.status === "memuat" || prakiraan.status === "memuat",
+  });
   const nomor = useMemo(() => {
     const map = new Map();
     urut.forEach((row, index) => map.set(row.kode, index + 1));
     return map;
   }, [urut]);
-  const kabPaint = useMemo(() => (province ? catWarna(shown, penduduk.indeks, konteks).kab : cat.kab), [province, shown, penduduk.indeks, konteks, cat.kab]);
+  const kabPaint = useMemo(() => catWarna(urut, penduduk.indeks, konteks), [urut, penduduk.indeks, konteks]);
   const bolehKosong = tab === "cap" && cap.status === "ok" && cap.meta?.cakupan === "nasional" && !ringkas.tertunda;
   const catatanPeta = useMemo(() => {
-    const cats = province ? urut.map((row) => row.peta) : [...cat.prov.values()];
-    const alasan = new Set(cats.filter((cat) => cat?.kind === "nodata").map((cat) => cat.alasan));
+    const alasan = new Set(urut.filter((row) => row.peta?.kind === "nodata").map((row) => row.peta.alasan));
     return [...alasan].map((key) => CATATAN_ALASAN[key]).filter(Boolean);
-  }, [province, urut, cat.prov]);
+  }, [urut]);
   const titik = useMemo(() => {
     const semua = prakiraan.status === "ok" ? ringkasPrakiraan(prakiraan.rows, periode) : [];
-    return province ? semua.filter((item) => item.provinsi === province) : semua;
-  }, [prakiraan, periode, province]);
-  const kabProvinsi = shown.length;
+    if (!province) return semua;
+    const kodeProv = new Set(urut.map((row) => row.kode));
+    return semua.filter((item) => item.provinsi === province || kodeProv.has(item.kodeKab));
+  }, [prakiraan, periode, province, urut]);
   const hariTab = tab === "cap" ? null : periode.hari[tab];
   const namaHari = tab === "cap" ? "" : ["Hari ini", "Besok", "Lusa"][tab];
   const sumberPrakiraan = titik.find((item) => item.analysisUtc)?.analysisUtc || prakiraan.observedAt;
@@ -366,9 +351,10 @@ function FloodBody() {
             ) : (
               <>
                 Sumber: BMKG. Prakiraan cuaca 3 hari untuk {namaHari}, {formatTanggalPendek(hariTab)} {hariTab.slice(0, 4)}.
-                Waktu sah mengikuti <code>local_datetime</code> pada titik sampel, bukan nowcast 0–3 jam. Diambil{" "}
+                Satu titik sampel per kab/kota. {PEMETAAN_CUACA} Hasilnya dipasangkan dengan kelas IRBI pada matriks{" "}
+                {ANALISIS_NAMA}. Bukan nowcast 0–3 jam dan bukan status resmi. Diambil{" "}
                 {prakiraan.fetchedAt ? formatWib(prakiraan.fetchedAt) : "—"}. Dikeluarkan{" "}
-                {sumberPrakiraan ? formatWib(sumberPrakiraan) : "—"}. Matriks Awas/Siaga/Waspada tidak dipakai pada tab ini.
+                {sumberPrakiraan ? formatWib(sumberPrakiraan) : "—"}.
               </>
             )}
           </p>
@@ -404,61 +390,37 @@ function FloodBody() {
               province={province}
               onProvince={pilihProvinsi}
               kabPaint={kabPaint}
-              provPaint={cat.prov}
-              nomor={nomor}
+              nomor={province ? nomor : new Map()}
               tab={tab}
               bolehKosong={bolehKosong}
               catatan={catatanPeta}
             />
             <div>
-              {province ? (
-                <>
-                  <h3>{province}</h3>
-                  <p className="fine">
-                    {urut.length} kab/kota. Nomor pada peta sama dengan nomor tabel.
-                  </p>
-                  <FloodKabDaftar rows={urut} />
-                </>
-              ) : (
-                <>
-              <h3>Provinsi dengan peringatan aktif</h3>
-              {daftarProv.length ? (
-                <ul className="plain-list">
-                  {daftarProv.map((item) => (
-                    <li key={item.nama}>
-                      <button type="button" onClick={() => pilihProvinsi(item.nama)}>
-                        {item.nama}
-                      </button>
-                      <small>
-                        {item.jumlahKab} kab/kota · {item.events.join(", ") || "—"} · {severityLabel(item.severity)} · berlaku sampai{" "}
-                        {formatWib(item.expires)}
-                      </small>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>Tidak ada provinsi dengan peringatan yang masih berlaku.</p>
-              )}
+              <h3>{province || SEMUA_PROVINSI}</h3>
               <p className="fine">
-                {BMKG_ATTRIBUTION}. RSS {cap.meta.rss_published ? formatWib(cap.meta.rss_published) : "—"}. Diambil{" "}
-                {cap.meta.fetched_at ? formatWib(cap.meta.fetched_at) : "—"}. Cakupan: {cap.meta.cakupan || "cuplikan tersimpan"}.{" "}
-                <a href={BMKG_CAP_DOCS} target="_blank" rel="noopener noreferrer">
-                  Data peringatan dini cuaca
-                </a>
-                .{" "}
-                <a href={BMKG_CAP_RSS} target="_blank" rel="noopener noreferrer">
-                  RSS nowcast
-                </a>
-                .
+                {urut.length} kab/kota.
+                {province
+                  ? " Nomor pada peta sama dengan nomor tabel."
+                  : " Nomor peta dimatikan pada Semua provinsi agar tidak bertumpuk."}{" "}
+                Tingkat kabupaten/kota. Kecamatan dan kelurahan tidak ditampilkan.
               </p>
-                </>
-              )}
+              <FloodKabDaftar rows={urut} />
+              {!province ? (
+                <p className="fine">
+                  {BMKG_ATTRIBUTION}. RSS {cap.meta.rss_published ? formatWib(cap.meta.rss_published) : "—"}. Diambil{" "}
+                  {cap.meta.fetched_at ? formatWib(cap.meta.fetched_at) : "—"}. Cakupan CAP: {cap.meta.cakupan || "cuplikan tersimpan"}.{" "}
+                  <a href={BMKG_CAP_DOCS} target="_blank" rel="noopener noreferrer">
+                    Data peringatan dini cuaca
+                  </a>
+                  .
+                </p>
+              ) : null}
             </div>
           </div>
-          {province ? (
+          {urut.length ? (
             <>
               <p>
-                {kabProvinsi} kab/kota · {shown.filter((row) => row.nowcastAda).length} dengan peringatan aktif.
+                {urut.length} kab/kota · {urut.filter((row) => row.peta?.kind === "status").length} dengan status analisis pada tab ini.
               </p>
               {!dibiLoaded ? (
                 <p className="banner">
@@ -469,9 +431,7 @@ function FloodBody() {
                 </p>
               ) : null}
               {error ? <p className="banner warn">{error}</p> : null}
-              {!shown.length ? (
-                <p>Daftar kabupaten/kota untuk provinsi ini belum dapat dimuat. Angka tidak diisi.</p>
-              ) : (
+              {province ? (
                 <>
                   <div className="flood-toolbar">
                     <label className="filter-field">
@@ -487,12 +447,16 @@ function FloodBody() {
                     </a>
                   </div>
                   <p className="fine">{DASARIAN_NOTE}</p>
-                  <FloodInfoTable rows={shown} />
+                  <FloodInfoTable rows={urut} />
                 </>
+              ) : (
+                <p className="fine">
+                  Pilih provinsi untuk membuka tabel rinci, isian dasarian, dan tautan KRB. Peta serta tabel samping sudah memuat kab/kota.
+                </p>
               )}
             </>
           ) : (
-            <p className="fine">Pilih provinsi pada peta atau pada daftar untuk membuka kabupaten/kota.</p>
+            <p>Daftar kabupaten/kota belum dapat dimuat. Angka tidak diisi.</p>
           )}
           <p>
             <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
@@ -510,9 +474,9 @@ function FloodBody() {
         <div className="logic-body">
           <p className="period-label">{periode.label}</p>
           <p>
-            {BMKG_ATTRIBUTION}. Horizon resmi 3 hari pada API prakiraan cuaca, satu kelurahan (adm4) per titik, bukan rata-rata
-            kabupaten. Kolom mengikuti <code>local_datetime</code> pada respons, yaitu waktu setempat titik itu. Label periode
-            dihitung dari hari ini zona WIB.
+            {BMKG_ATTRIBUTION}. Horizon resmi 3 hari. Satu titik sampel per kab/kota, bukan rata-rata kabupaten dan bukan
+            rincian kecamatan. Kolom mengikuti <code>local_datetime</code> pada respons, yaitu waktu setempat titik itu. Label
+            periode dihitung dari hari ini zona WIB.
           </p>
           <p className="fine">
             Diambil {prakiraan.fetchedAt ? formatWib(prakiraan.fetchedAt) : "—"}. Dikeluarkan{" "}
@@ -583,7 +547,7 @@ function FloodBody() {
             </a>
             .
           </p>
-          <p>{IRBI_PERMISSION} Provinsi yang tidak ada di tabel buku yang tersimpan tidak diisi angka.</p>
+          <p>{IRBI_PERMISSION} Tanpa kelas, tulisannya {IRBI_TIDAK_TERSEDIA} dan sel tidak diwarnai.</p>
           <p>Batas wilayah: Badan Informasi Geospasial.</p>
           <p>
             Penduduk dan rumah tangga: BPS, salinan statis di {PENDUDUK_FILE}, proyeksi 2026. Rumah tangga hanya DKI Jakarta, Banten, dan Jawa Timur.{" "}
