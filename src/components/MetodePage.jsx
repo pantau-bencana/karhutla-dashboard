@@ -1,6 +1,6 @@
 import { Badge } from "./Badge.jsx";
 import { ANALISIS_BUKAN_RESMI, ANALISIS_MATRIKS, ANALISIS_NAMA, ANALISIS_WARNA } from "../lib/analisisPantauBencana.js";
-import { BNPB_RESOURCE_URL } from "../lib/bnpbBanjir.js";
+import { BNPB_RESOURCE_URL, DAMPAK_HISTORIS_CATATAN } from "../lib/bnpbBanjir.js";
 import { BMKG_CAP_DOCS, BMKG_CAP_RSS } from "../lib/capKab.js";
 import { BMKG_DOCS_URL } from "../lib/bmkgForecast.js";
 import { IKLIM_BMKG_URL } from "../lib/dasarianManual.js";
@@ -232,6 +232,9 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
           <li>Empat kab/kota tanpa kelas banjir di Buku IRBI 2025 halaman 212–227 tetap kosong: Adm. Kep. Seribu, Bangli, Kep. Siau Tagulandang Biaro, dan Kota Ternate.</li>
           <li>Cuplikan kejadian BNPB 2024 yang tersimpan tidak dipakai untuk menyatakan provinsi lain tidak tercantum di tabel nasional.</li>
           <li>Potensi penduduk terdampak dan potensi rumah terdampak memakai total kab/kota BPS. potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar. Halaman inaRISK yang menampilkan jiwa terpapar tidak dipakai.</li>
+          <li>
+            Penduduk terdampak dan rumah terdampak pada rincian kab/kota tertulis belum tersedia. {DAMPAK_HISTORIS_CATATAN} Angka provinsi tidak dipakai sebagai angka kabupaten.
+          </li>
           <li>{BATAS_KAB_SUMBER}</li>
           <li>Cuplikan CAP yang belum bertanda cakupan nasional tidak dipakai untuk menyatakan suatu kabupaten aman.</li>
           <li>Dropdown DAS bertuliskan Dalam pengembangan dan tidak memuat data DAS.</li>

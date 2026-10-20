@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import { feature as topoFeature, mesh as topoMesh } from "topojson-client";
 import { BATAS_KAB_FILE, BATAS_KAB_SUMBER } from "../lib/batasKab.js";
+import { barisDampakHistoris } from "../lib/bnpbBanjir.js";
 import { osmTileLayer } from "../lib/basemap.js";
 import { INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../lib/geo.js";
 import { ANALISIS_WARNA, CATATAN_ABU, CATATAN_ABU_HARI, CATATAN_ARSIR, WARNA_TANPA_PERINGATAN } from "../lib/analisisPantauBencana.js";
@@ -159,6 +160,7 @@ function tooltipFor(feature, kabPaint, hujan) {
     if (paint?.lampau) lines.push("Data terakhir — masa berlaku sudah lewat, menunggu pembaruan BMKG");
     if (paint?.kind === "tak-dikenal" && paint.cuacaMentah?.length) lines.push(...paint.cuacaMentah);
     if (paint?.status && paint.pendudukBaris?.length) lines.push(...paint.pendudukBaris);
+    lines.push(...barisDampakHistoris());
   }
   lines.push(...barisHujan(feature, hujan));
   return lines.filter(Boolean).map(escapeHtml).join("<br>");

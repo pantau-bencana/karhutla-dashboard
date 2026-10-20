@@ -7,6 +7,15 @@ export const BNPB_HEADER =
 export const BNPB_ABSENT =
   "Berkas kejadian banjir 2024 belum diletakkan di data/bnpb/. Sel kosong bukan angka nol.";
 export const BNPB_MISSING_ROW = "Tidak tercantum di tabel BNPB 2024";
+export const PENDUDUK_TERDAMPAK = "Penduduk terdampak";
+export const RUMAH_TERDAMPAK = "Rumah terdampak";
+export const DAMPAK_BELUM = "belum tersedia";
+export const DAMPAK_HISTORIS_CATATAN =
+  "Sumber: DIBI BNPB Satu Data, kompilasi 2010–2024 dan tabel kabupaten 2024. Historis, bukan prakiraan. Tidak ada korban atau rumah rusak per kabupaten.";
+
+export function barisDampakHistoris() {
+  return [`${PENDUDUK_TERDAMPAK}: ${DAMPAK_BELUM}`, `${RUMAH_TERDAMPAK}: ${DAMPAK_BELUM}`, DAMPAK_HISTORIS_CATATAN];
+}
 
 export function bnpbAsDibi(rows) {
   return (rows ?? []).map((row) => ({

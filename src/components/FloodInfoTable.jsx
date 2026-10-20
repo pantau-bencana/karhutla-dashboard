@@ -24,6 +24,7 @@ import {
   teksAngkaPenduduk,
   teksRumahTangga,
 } from "../lib/pendudukKab.js";
+import { barisDampakHistoris } from "../lib/bnpbBanjir.js";
 import { DIBI_UNAVAILABLE, FLOOD_INFO_COLUMNS, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, krbLinksFor, skorTeks, sortFloodRows } from "../lib/floodMatrix.js";
 
 function selPenduduk(row, jenis) {
@@ -270,6 +271,7 @@ export function rincianKab(row, hujanTeks) {
   if (row?.peta?.kind === "tak-dikenal" && row.peta.cuacaMentah?.length) {
     lines.push(`Kode cuaca: ${row.peta.cuacaMentah.join(", ")}`);
   }
+  lines.push(...barisDampakHistoris());
   if (row?.pendudukTampil) {
     lines.push(
       `Penduduk ${teksAngkaPenduduk(row.pendudukItem?.penduduk)} · rumah tangga ${teksRumahTangga(row.pendudukItem)} · ${PENDUDUK_BUKAN_TERPAPAR}`,
@@ -335,7 +337,7 @@ export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null
           })}
         </tbody>
       </table>
-      <p className="fine">Tingkat kabupaten/kota. Kecamatan tidak ditampilkan. Rincian memuat masa berlaku, prakiraan, potensi BPS, dan hujan model bila lapisan itu nyala.</p>
+      <p className="fine">Tingkat kabupaten/kota. Kecamatan tidak ditampilkan. Rincian memuat masa berlaku, prakiraan, penduduk terdampak, rumah terdampak, potensi BPS, dan hujan model bila lapisan itu nyala.</p>
     </div>
   );
 }

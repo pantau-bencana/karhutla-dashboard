@@ -59,7 +59,7 @@ import {
   ringkasPendudukBerstatus,
   teksRumahTangga,
 } from "../src/lib/pendudukKab.js";
-import { BNPB_ABSENT, BNPB_RESOURCE_URL } from "../src/lib/bnpbBanjir.js";
+import { BNPB_ABSENT, BNPB_RESOURCE_URL, DAMPAK_HISTORIS_CATATAN, barisDampakHistoris } from "../src/lib/bnpbBanjir.js";
 import {
   LABEL_TAK_DIKENAL,
   LABEL_TIDAK_BERPOTENSI,
@@ -1281,6 +1281,16 @@ assert.equal(daftarSumber.includes("<th scope=\"col\">Provinsi</th>"), false);
 assert.equal(daftarSumber.includes("<th scope=\"col\">Riwayat</th>"), false);
 assert.match(daftarSumber, /DIBI_UNAVAILABLE/);
 assert.match(daftarSumber, /Provinsi:/);
+assert.match(daftarSumber, /barisDampakHistoris/);
+const dampakHistoris = barisDampakHistoris();
+assert.deepEqual(dampakHistoris.slice(0, 2), ["Penduduk terdampak: belum tersedia", "Rumah terdampak: belum tersedia"]);
+assert.equal(dampakHistoris[2], DAMPAK_HISTORIS_CATATAN);
+assert.match(DAMPAK_HISTORIS_CATATAN, /Historis, bukan prakiraan/);
+assert.equal(dampakHistoris.join(" ").includes("217009"), false);
+assert.equal(daftarSumber.includes('<th scope="col">Penduduk terdampak</th>'), false);
+assert.equal(daftarSumber.includes('<th scope="col">Rumah terdampak</th>'), false);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /barisDampakHistoris/);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /DAMPAK_HISTORIS_CATATAN/);
 assert.match(readFileSync("src/components/GwisFwiToggle.jsx", "utf8"), /Penjelasan lapisan Data Pembanding/);
 const hujanGabung = gabungHujan(
   [{ kode_kab: "11.01", tanggal: "2026-10-20", curah_hujan_mm: 3 }],
