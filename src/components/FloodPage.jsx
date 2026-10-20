@@ -191,7 +191,16 @@ function FloodBody() {
         }
         if (cancelled) return;
         if (alerts.length || meta?.status === "ok") {
-          setCap({ status: "ok", alerts, meta: { ...(meta ?? {}), status: "ok" } });
+          const cuplikanUtuh = meta?.status === "ok";
+          setCap({
+            status: "ok",
+            alerts,
+            meta: {
+              ...(meta ?? {}),
+              status: "ok",
+              cakupan: cuplikanUtuh ? meta?.cakupan || "" : "",
+            },
+          });
         } else {
           setCap({ status: "gagal", alerts: [], meta: meta ?? {} });
         }
@@ -388,44 +397,7 @@ function FloodBody() {
           </p>
         </div>
       </header>
-      <p className="banner warn" role="status">
-        <strong>{FLOOD_PERMISSION}</strong>
-        <span> {IRBI_PERMISSION}</span>
-      </p>
-      <p className="banner warn" role="note">
-        <strong>Penggunaan internal.</strong>
-        <span> {IRBI_PENGGUNAAN_INTERNAL.replace(/^Penggunaan internal\.\s*/, "")}</span>
-      </p>
-      <p className="flood-summary" role="status">
-        {kalimatCap(ringkas)} {kalimatPenduduk}
-      </p>
-      {penduduk.status !== "memuat" && penduduk.jumlah === 0 ? (
-        <p className="banner">
-          {PENDUDUK_ABSENT}{" "}
-          <a href={BPS_PROYEKSI_URL} target="_blank" rel="noopener noreferrer">
-            Publikasi proyeksi penduduk kabupaten/kota BPS
-          </a>
-        </p>
-      ) : null}
-      {ringkas.status === "ok" && ringkas.kosong ? (
-        <p className="banner">Tidak ada peringatan cuaca aktif dari BMKG saat diambil ({ringkas.fetchedAt ? formatWib(ringkas.fetchedAt) : "—"}). Ini bukan berarti aman dari banjir.</p>
-      ) : null}
-      {ringkas.kedaluwarsa ? (
-        <p className="banner warn" role="status">
-          <strong>{CAP_DATA_TERAKHIR}</strong>
-        </p>
-      ) : null}
-      {cap.status === "ok" && cap.meta?.cakupan !== "nasional" ? (
-        <p className="fine">Cuplikan CAP yang tersimpan belum bertanda cakupan nasional. Provinsi di luar cuplikan lama bisa tidak muncul sampai pembaruan berikutnya.</p>
-      ) : null}
-
-      <section className="card">
-        <header className="card-head">
-          <div>
-            <h2>Peringatan cuaca jangka pendek</h2>
-            <p>{NOWCAST_BUKAN_TIGA_HARI}</p>
-          </div>
-        </header>
+      <section className="card flood-map-first">
         <div className="logic-body">
           <div className="time-toggle" role="tablist" aria-label="Jangka waktu peta">
             <button type="button" role="tab" aria-selected={tab === "cap"} onClick={() => setTab("cap")}>
@@ -441,24 +413,6 @@ function FloodBody() {
               </button>
             ))}
           </div>
-          <p className="fine">
-            {tab === "cap" ? (
-              <>
-                Sumber: BMKG. Nowcast CAP, berlaku sekitar 0–3 jam. Bukan status 3 hari. {PEMBARUAN_TERAKHIR_LABEL}:{" "}
-                {cap.meta.fetched_at ? formatWib(cap.meta.fetched_at) : "—"}. Masa berlaku pada cuplikan
-                {ringkas.berlakuSampai ? ` sampai ${formatWib(ringkas.berlakuSampai)}` : " tidak tercantum"}.
-                {ringkas.kedaluwarsa ? ` ${CAP_DATA_TERAKHIR}.` : ""}
-              </>
-            ) : (
-              <>
-                Sumber: BMKG. Prakiraan cuaca 3 hari untuk {namaHari}, {formatTanggalPendek(hariTab)} {hariTab.slice(0, 4)}.
-                Satu titik sampel per kab/kota. {PEMETAAN_CUACA} Hasilnya dipasangkan dengan kelas IRBI pada matriks{" "}
-                {ANALISIS_NAMA}. Bukan nowcast 0–3 jam dan bukan status resmi. Diambil{" "}
-                {prakiraan.fetchedAt ? formatWib(prakiraan.fetchedAt) : "—"}. Dikeluarkan{" "}
-                {sumberPrakiraan ? formatWib(sumberPrakiraan) : "—"}.
-              </>
-            )}
-          </p>
           <div className="flood-toolbar">
             <label className="filter-field">
               Provinsi
@@ -541,6 +495,48 @@ function FloodBody() {
               ) : null}
             </div>
           </div>
+          <p className="flood-summary" role="status">
+            {kalimatCap(ringkas)} {kalimatPenduduk}
+          </p>
+          {penduduk.status !== "memuat" && penduduk.jumlah === 0 ? (
+            <p className="banner">
+              {PENDUDUK_ABSENT}{" "}
+              <a href={BPS_PROYEKSI_URL} target="_blank" rel="noopener noreferrer">
+                Publikasi proyeksi penduduk kabupaten/kota BPS
+              </a>
+            </p>
+          ) : null}
+          {ringkas.status === "ok" && ringkas.kosong ? (
+            <p className="banner">Tidak ada peringatan cuaca aktif dari BMKG saat diambil ({ringkas.fetchedAt ? formatWib(ringkas.fetchedAt) : "—"}). Ini bukan berarti aman dari banjir.</p>
+          ) : null}
+          {ringkas.kedaluwarsa ? (
+            <p className="banner warn" role="status">
+              <strong>{CAP_DATA_TERAKHIR}</strong>
+            </p>
+          ) : null}
+          {cap.status === "ok" && cap.meta?.cakupan !== "nasional" ? (
+            <p className="fine">Cuplikan CAP yang tersimpan belum bertanda cakupan nasional. Provinsi di luar cuplikan lama bisa tidak muncul sampai pembaruan berikutnya.</p>
+          ) : null}
+          <h2>Peringatan cuaca jangka pendek</h2>
+          <p>{NOWCAST_BUKAN_TIGA_HARI}</p>
+          <p className="fine">
+            {tab === "cap" ? (
+              <>
+                Sumber: BMKG. Nowcast CAP, berlaku sekitar 0–3 jam. Bukan status 3 hari. {PEMBARUAN_TERAKHIR_LABEL}:{" "}
+                {cap.meta.fetched_at ? formatWib(cap.meta.fetched_at) : "—"}. Masa berlaku pada cuplikan
+                {ringkas.berlakuSampai ? ` sampai ${formatWib(ringkas.berlakuSampai)}` : " tidak tercantum"}.
+                {ringkas.kedaluwarsa ? ` ${CAP_DATA_TERAKHIR}.` : ""}
+              </>
+            ) : (
+              <>
+                Sumber: BMKG. Prakiraan cuaca 3 hari untuk {namaHari}, {formatTanggalPendek(hariTab)} {hariTab.slice(0, 4)}.
+                Satu titik sampel per kab/kota. {PEMETAAN_CUACA} Hasilnya dipasangkan dengan kelas IRBI pada matriks{" "}
+                {ANALISIS_NAMA}. Bukan nowcast 0–3 jam dan bukan status resmi. Diambil{" "}
+                {prakiraan.fetchedAt ? formatWib(prakiraan.fetchedAt) : "—"}. Dikeluarkan{" "}
+                {sumberPrakiraan ? formatWib(sumberPrakiraan) : "—"}.
+              </>
+            )}
+          </p>
           {urut.length ? (
             <>
               <p>
@@ -685,6 +681,18 @@ function FloodBody() {
             . Angka yang tampil pada kab/kota berstatus adalah {POTENSI_LABEL}.
           </p>
           <p>Pantau Bencana v0.1 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH.</p>
+        </div>
+      </section>
+      <section className="card flood-disclaimer">
+        <h2>Penyangkalan</h2>
+        <div className="logic-body">
+          <p>
+            <strong>{FLOOD_PERMISSION}</strong>
+          </p>
+          <p>
+            <strong>Penggunaan internal.</strong>
+            <span> {IRBI_PENGGUNAAN_INTERNAL.replace(/^Penggunaan internal\.\s*/, "")}</span>
+          </p>
         </div>
       </section>
     </main>

@@ -258,7 +258,7 @@ export function capKabMeta(snapshot) {
       rss_published: snapshot.rssPublished || "",
       sumber: "BMKG",
       dasar: "Nowcast BMKG, dasar waktu 0–3 jam.",
-      cakupan: "nasional",
+      cakupan: snapshot.status === "ok" ? "nasional" : "",
       jumlah_alert: snapshot.jumlahAlert ?? null,
       jumlah_prov: snapshot.status === "ok" ? provinsi.size : null,
       baris: snapshot.status === "ok" ? (snapshot.rows ?? []).length : null,
@@ -269,18 +269,19 @@ export function capKabMeta(snapshot) {
   )}\n`;
 }
 
+export function capCsvUsable(csvText) {
+  const lines = String(csvText ?? "")
+    .trim()
+    .split(/\r?\n/)
+    .filter(Boolean);
+  return lines.length > 1;
+}
+
 export function previousCapUsable(directory) {
   const csvPath = resolve(directory, "bmkg-cap-kab.csv");
-  const metaPath = resolve(directory, "bmkg-cap-kab-meta.json");
-  if (!existsSync(csvPath) || !existsSync(metaPath)) return false;
+  if (!existsSync(csvPath)) return false;
   try {
-    const meta = JSON.parse(readFileSync(metaPath, "utf8"));
-    if (meta?.status !== "ok") return false;
-    const lines = readFileSync(csvPath, "utf8")
-      .trim()
-      .split(/\r?\n/)
-      .filter(Boolean);
-    return lines.length > 1;
+    return capCsvUsable(readFileSync(csvPath, "utf8"));
   } catch {
     return false;
   }
