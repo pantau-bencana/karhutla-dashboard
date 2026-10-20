@@ -699,6 +699,8 @@ kode_kab,tanggal,waktu_lokal,provinsi,kotkab,kecamatan,desa,adm4,suhu_c,kelembap
 12.12,2026-10-22,2026-10-22 17:00:00,Sumatera Utara,Toba,Balige,Balige I,12.12.01.1034,23,80,1.2,3.8,E,Hujan Ringan,61,2026-10-20T00:00:00Z
 12.12,2026-10-22,2026-10-22 20:00:00,Sumatera Utara,Toba,Balige,Balige I,12.12.01.1034,21,91,0.1,3.8,E,Cerah Berawan,2,2026-10-20T00:00:00Z
 12.12,2026-10-22,2026-10-22 23:00:00,Sumatera Utara,Toba,Balige,Balige I,12.12.01.1034,20,94,0.1,3.5,SE,Berawan,3,2026-10-20T00:00:00Z
+12.13,2026-10-20,2026-10-20 08:00:00,Sumatera Utara,Mandailing Natal,Panyabungan,Kota Siantar,12.13.01.1011,22,96,0.1,2.2,S,Cerah Berawan,2,2026-10-20T00:00:00Z
+12.13,2026-10-20,2026-10-20 11:00:00,Sumatera Utara,Mandailing Natal,Panyabungan,Kota Siantar,12.13.01.1011,26,81,2.7,2.4,W,Hujan Ringan,61,2026-10-20T00:00:00Z
 12.13,2026-10-20,2026-10-20 14:00:00,Sumatera Utara,Mandailing Natal,Panyabungan,Kota Siantar,12.13.01.1011,25,86,5,1.6,N,Hujan Ringan,61,2026-10-20T00:00:00Z
 12.13,2026-10-20,2026-10-20 17:00:00,Sumatera Utara,Mandailing Natal,Panyabungan,Kota Siantar,12.13.01.1011,24,88,3.7,1.5,W,Hujan Ringan,61,2026-10-20T00:00:00Z
 12.13,2026-10-20,2026-10-20 20:00:00,Sumatera Utara,Mandailing Natal,Panyabungan,Kota Siantar,12.13.01.1011,22,97,0,2.7,NW,Berawan,3,2026-10-20T00:00:00Z
@@ -859,26 +861,6 @@ kode_kab,tanggal,waktu_lokal,provinsi,kotkab,kecamatan,desa,adm4,suhu_c,kelembap
 12.20,2026-10-22,2026-10-22 16:00:00,Sumatera Utara,Padang Lawas Utara,Padang Bolak,Pasar Gunung Tua,12.20.04.1001,31,63,1.1,9.1,NE,Hujan Ringan,61,2026-10-20T00:00:00Z
 12.20,2026-10-22,2026-10-22 19:00:00,Sumatera Utara,Padang Lawas Utara,Padang Bolak,Pasar Gunung Tua,12.20.04.1001,27,89,1.1,5.9,W,Hujan Ringan,61,2026-10-20T00:00:00Z
 12.20,2026-10-22,2026-10-22 22:00:00,Sumatera Utara,Padang Lawas Utara,Padang Bolak,Pasar Gunung Tua,12.20.04.1001,25,95,0.1,5.9,W,Cerah Berawan,2,2026-10-20T00:00:00Z
-12.21,2026-10-20,2026-10-20 13:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,27,75,2.3,3.3,NE,Hujan Ringan,61,2026-10-20T00:00:00Z
-12.21,2026-10-20,2026-10-20 16:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,26,79,4.6,0.7,S,Hujan Ringan,61,2026-10-20T00:00:00Z
-12.21,2026-10-20,2026-10-20 19:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,24,96,4.6,1.6,S,Hujan Ringan,61,2026-10-20T00:00:00Z
-12.21,2026-10-20,2026-10-20 22:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,23,96,0.3,0.9,SE,Berawan,3,2026-10-20T00:00:00Z
-12.21,2026-10-21,2026-10-21 01:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,22,94,0.1,2,S,Berawan,3,2026-10-20T00:00:00Z
-12.21,2026-10-21,2026-10-21 04:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,22,91,0.1,1.2,SE,Berawan,3,2026-10-20T00:00:00Z
-12.21,2026-10-21,2026-10-21 07:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,22,95,0,3.2,NE,Berawan,3,2026-10-20T00:00:00Z
-12.21,2026-10-21,2026-10-21 10:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,26,81,0,5.4,NE,Berawan,3,2026-10-20T00:00:00Z
-12.21,2026-10-21,2026-10-21 13:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,28,73,0.2,5.1,N,Berawan,3,2026-10-20T00:00:00Z
-12.21,2026-10-21,2026-10-21 16:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,28,73,0.8,7.3,NE,Cerah,1,2026-10-20T00:00:00Z
-12.21,2026-10-21,2026-10-21 19:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,24,93,0.4,1.7,SE,Cerah,1,2026-10-20T00:00:00Z
-12.21,2026-10-21,2026-10-21 22:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,22,98,0.5,1.7,N,Berawan,3,2026-10-20T00:00:00Z
-12.21,2026-10-22,2026-10-22 01:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,22,99,0,2.9,NE,Berawan,3,2026-10-20T00:00:00Z
-12.21,2026-10-22,2026-10-22 04:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,22,99,0,2.1,NE,Berawan,3,2026-10-20T00:00:00Z
-12.21,2026-10-22,2026-10-22 07:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,22,97,0,0.8,NE,Cerah Berawan,2,2026-10-20T00:00:00Z
-12.21,2026-10-22,2026-10-22 10:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,26,78,0.1,0.8,NE,Cerah,1,2026-10-20T00:00:00Z
-12.21,2026-10-22,2026-10-22 13:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,28,73,0.1,8,NE,Berawan,3,2026-10-20T00:00:00Z
-12.21,2026-10-22,2026-10-22 16:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,28,72,2.8,8,NE,Hujan Ringan,61,2026-10-20T00:00:00Z
-12.21,2026-10-22,2026-10-22 19:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,24,92,2.8,1.2,S,Hujan Ringan,61,2026-10-20T00:00:00Z
-12.21,2026-10-22,2026-10-22 22:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,23,97,0.5,1.2,S,Cerah Berawan,2,2026-10-20T00:00:00Z
 12.22,2026-10-20,2026-10-20 13:00:00,Sumatera Utara,Labuhanbatu Selatan,Kotapinang,Kotapinang,12.22.01.1001,30,73,0,6,SE,Berawan,3,2026-10-20T00:00:00Z
 12.22,2026-10-20,2026-10-20 16:00:00,Sumatera Utara,Labuhanbatu Selatan,Kotapinang,Kotapinang,12.22.01.1001,31,69,4.4,6.1,SE,Hujan Ringan,61,2026-10-20T00:00:00Z
 12.22,2026-10-20,2026-10-20 19:00:00,Sumatera Utara,Labuhanbatu Selatan,Kotapinang,Kotapinang,12.22.01.1001,25,91,2.2,12.4,SW,Hujan Ringan,61,2026-10-20T00:00:00Z
@@ -2739,6 +2721,26 @@ kode_kab,tanggal,waktu_lokal,provinsi,kotkab,kecamatan,desa,adm4,suhu_c,kelembap
 18.12,2026-10-22,2026-10-22 17:00:00,Lampung,Tulang Bawang Barat,Tulang Bawang Tengah,Mulyo Asri,18.12.01.1001,34,42,0,13.3,E,Cerah Berawan,2,2026-10-20T00:00:00Z
 18.12,2026-10-22,2026-10-22 20:00:00,Lampung,Tulang Bawang Barat,Tulang Bawang Tengah,Mulyo Asri,18.12.01.1001,30,62,0,13.3,E,Berawan,3,2026-10-20T00:00:00Z
 18.12,2026-10-22,2026-10-22 23:00:00,Lampung,Tulang Bawang Barat,Tulang Bawang Tengah,Mulyo Asri,18.12.01.1001,28,73,0,8.6,SE,Berawan,3,2026-10-20T00:00:00Z
+18.13,2026-10-20,2026-10-20 14:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,28,79,0.1,11.5,S,Cerah,1,2026-10-20T00:00:00Z
+18.13,2026-10-20,2026-10-20 17:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,27,82,0,7.6,SE,Cerah,1,2026-10-20T00:00:00Z
+18.13,2026-10-20,2026-10-20 20:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,24,94,0,1.7,NE,Cerah,1,2026-10-20T00:00:00Z
+18.13,2026-10-20,2026-10-20 23:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,24,94,0,2.8,NE,Cerah,1,2026-10-20T00:00:00Z
+18.13,2026-10-21,2026-10-21 02:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,23,91,0,2.7,N,Cerah,1,2026-10-20T00:00:00Z
+18.13,2026-10-21,2026-10-21 05:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,22,90,0,2.5,NE,Cerah Berawan,2,2026-10-20T00:00:00Z
+18.13,2026-10-21,2026-10-21 08:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,26,81,0,2.7,NE,Cerah,1,2026-10-20T00:00:00Z
+18.13,2026-10-21,2026-10-21 11:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,28,76,0.2,10.8,S,Cerah,1,2026-10-20T00:00:00Z
+18.13,2026-10-21,2026-10-21 14:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,27,81,0.1,10.2,S,Cerah,1,2026-10-20T00:00:00Z
+18.13,2026-10-21,2026-10-21 17:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,26,83,0,7.5,SE,Cerah,1,2026-10-20T00:00:00Z
+18.13,2026-10-21,2026-10-21 20:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,24,94,0,3.4,NE,Cerah,1,2026-10-20T00:00:00Z
+18.13,2026-10-21,2026-10-21 23:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,24,91,0,6.1,NE,Cerah,0,2026-10-20T00:00:00Z
+18.13,2026-10-22,2026-10-22 02:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,22,91,0,6.4,E,Cerah,1,2026-10-20T00:00:00Z
+18.13,2026-10-22,2026-10-22 05:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,22,89,0,5.8,NE,Berawan,3,2026-10-20T00:00:00Z
+18.13,2026-10-22,2026-10-22 08:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,26,79,0.1,7.2,E,Cerah,1,2026-10-20T00:00:00Z
+18.13,2026-10-22,2026-10-22 11:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,28,75,0.1,12.9,S,Cerah Berawan,2,2026-10-20T00:00:00Z
+18.13,2026-10-22,2026-10-22 14:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,27,81,0.1,12.9,S,Berawan,3,2026-10-20T00:00:00Z
+18.13,2026-10-22,2026-10-22 17:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,26,83,0.1,3.4,SE,Cerah Berawan,2,2026-10-20T00:00:00Z
+18.13,2026-10-22,2026-10-22 20:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,24,93,0,3.4,SE,Cerah Berawan,2,2026-10-20T00:00:00Z
+18.13,2026-10-22,2026-10-22 23:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,24,91,0,5.3,E,Cerah Berawan,2,2026-10-20T00:00:00Z
 18.71,2026-10-20,2026-10-20 14:00:00,Lampung,Kota Bandar Lampung,Kedaton,Kedaton,18.71.01.1003,34,59,0.2,10.2,SE,Cerah,1,2026-10-20T00:00:00Z
 18.71,2026-10-20,2026-10-20 17:00:00,Lampung,Kota Bandar Lampung,Kedaton,Kedaton,18.71.01.1003,29,68,0,9.8,SE,Cerah,1,2026-10-20T00:00:00Z
 18.71,2026-10-20,2026-10-20 20:00:00,Lampung,Kota Bandar Lampung,Kedaton,Kedaton,18.71.01.1003,26,85,0,8.5,SE,Cerah,0,2026-10-20T00:00:00Z
@@ -3979,6 +3981,26 @@ kode_kab,tanggal,waktu_lokal,provinsi,kotkab,kecamatan,desa,adm4,suhu_c,kelembap
 33.13,2026-10-22,2026-10-22 17:00:00,Jawa Tengah,Karanganyar,Tawangmangu,Blumbang,33.13.06.1002,22,79,0.3,9.7,E,Berawan,3,2026-10-20T00:00:00Z
 33.13,2026-10-22,2026-10-22 20:00:00,Jawa Tengah,Karanganyar,Tawangmangu,Blumbang,33.13.06.1002,20,89,0,9.7,E,Cerah Berawan,2,2026-10-20T00:00:00Z
 33.13,2026-10-22,2026-10-22 23:00:00,Jawa Tengah,Karanganyar,Tawangmangu,Blumbang,33.13.06.1002,18,94,0,5.3,NE,Cerah Berawan,2,2026-10-20T00:00:00Z
+33.14,2026-10-20,2026-10-20 14:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,37,33,0,14.4,N,Cerah,0,2026-10-20T00:00:00Z
+33.14,2026-10-20,2026-10-20 17:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,32,50,0,7.2,N,Cerah,0,2026-10-20T00:00:00Z
+33.14,2026-10-20,2026-10-20 20:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,28,69,0,0.5,SE,Cerah,1,2026-10-20T00:00:00Z
+33.14,2026-10-20,2026-10-20 23:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,26,78,0,3.6,S,Cerah,0,2026-10-20T00:00:00Z
+33.14,2026-10-21,2026-10-21 02:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,25,82,0,3.2,S,Cerah,0,2026-10-20T00:00:00Z
+33.14,2026-10-21,2026-10-21 05:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,25,84,0,3.7,S,Cerah,0,2026-10-20T00:00:00Z
+33.14,2026-10-21,2026-10-21 08:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,30,63,0.1,4.8,SW,Cerah,0,2026-10-20T00:00:00Z
+33.14,2026-10-21,2026-10-21 11:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,35,45,0.2,9,W,Cerah,1,2026-10-20T00:00:00Z
+33.14,2026-10-21,2026-10-21 14:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,36,38,0.1,4.8,W,Cerah,1,2026-10-20T00:00:00Z
+33.14,2026-10-21,2026-10-21 17:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,32,49,0,14.1,S,Cerah,1,2026-10-20T00:00:00Z
+33.14,2026-10-21,2026-10-21 20:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,27,64,0,5.7,S,Cerah,1,2026-10-20T00:00:00Z
+33.14,2026-10-21,2026-10-21 23:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,25,72,0,3.7,S,Cerah,0,2026-10-20T00:00:00Z
+33.14,2026-10-22,2026-10-22 02:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,24,78,0,4.6,S,Cerah,0,2026-10-20T00:00:00Z
+33.14,2026-10-22,2026-10-22 05:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,24,80,0,5,S,Cerah,0,2026-10-20T00:00:00Z
+33.14,2026-10-22,2026-10-22 08:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,29,60,0,5.2,W,Cerah,0,2026-10-20T00:00:00Z
+33.14,2026-10-22,2026-10-22 11:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,34,41,0,9.7,NW,Cerah,0,2026-10-20T00:00:00Z
+33.14,2026-10-22,2026-10-22 14:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,35,37,0,9.7,NW,Cerah,1,2026-10-20T00:00:00Z
+33.14,2026-10-22,2026-10-22 17:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,31,52,0,2.7,SW,Berawan,3,2026-10-20T00:00:00Z
+33.14,2026-10-22,2026-10-22 20:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,28,68,0,2.7,SW,Cerah Berawan,2,2026-10-20T00:00:00Z
+33.14,2026-10-22,2026-10-22 23:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,26,77,0,5.7,S,Cerah Berawan,2,2026-10-20T00:00:00Z
 33.15,2026-10-20,2026-10-20 14:00:00,Jawa Tengah,Grobogan,Wirosari,Wirosari,33.15.10.1006,36,36,0,7.1,E,Cerah,0,2026-10-20T00:00:00Z
 33.15,2026-10-20,2026-10-20 17:00:00,Jawa Tengah,Grobogan,Wirosari,Wirosari,33.15.10.1006,32,53,0,10.6,N,Cerah,0,2026-10-20T00:00:00Z
 33.15,2026-10-20,2026-10-20 20:00:00,Jawa Tengah,Grobogan,Wirosari,Wirosari,33.15.10.1006,29,68,0,8.9,W,Cerah,0,2026-10-20T00:00:00Z
@@ -4959,26 +4981,6 @@ kode_kab,tanggal,waktu_lokal,provinsi,kotkab,kecamatan,desa,adm4,suhu_c,kelembap
 35.23,2026-10-22,2026-10-22 17:00:00,Jawa Timur,Tuban,Semanding,Karang,35.23.15.1006,29,75,0,4.9,E,Berawan,3,2026-10-20T00:00:00Z
 35.23,2026-10-22,2026-10-22 20:00:00,Jawa Timur,Tuban,Semanding,Karang,35.23.15.1006,27,88,0,4.9,E,Berawan,3,2026-10-20T00:00:00Z
 35.23,2026-10-22,2026-10-22 23:00:00,Jawa Timur,Tuban,Semanding,Karang,35.23.15.1006,26,89,0,9.5,S,Cerah Berawan,2,2026-10-20T00:00:00Z
-35.24,2026-10-20,2026-10-20 14:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,34,53,0.2,26.4,E,Cerah,1,2026-10-20T00:00:00Z
-35.24,2026-10-20,2026-10-20 17:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,30,67,0,14.1,N,Cerah,0,2026-10-20T00:00:00Z
-35.24,2026-10-20,2026-10-20 20:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,28,74,0,2,SW,Cerah,0,2026-10-20T00:00:00Z
-35.24,2026-10-20,2026-10-20 23:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,26,79,0,6,S,Cerah,0,2026-10-20T00:00:00Z
-35.24,2026-10-21,2026-10-21 02:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,26,83,0,8.9,S,Cerah,0,2026-10-20T00:00:00Z
-35.24,2026-10-21,2026-10-21 05:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,25,85,0,9.4,S,Cerah,0,2026-10-20T00:00:00Z
-35.24,2026-10-21,2026-10-21 08:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,31,62,0,8.8,S,Cerah,0,2026-10-20T00:00:00Z
-35.24,2026-10-21,2026-10-21 11:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,35,44,0,2.6,SE,Cerah,1,2026-10-20T00:00:00Z
-35.24,2026-10-21,2026-10-21 14:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,34,51,0.4,20.3,E,Cerah,1,2026-10-20T00:00:00Z
-35.24,2026-10-21,2026-10-21 17:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,31,63,0,10.1,N,Cerah Berawan,2,2026-10-20T00:00:00Z
-35.24,2026-10-21,2026-10-21 20:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,28,77,0,3.5,E,Cerah,1,2026-10-20T00:00:00Z
-35.24,2026-10-21,2026-10-21 23:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,26,75,0,7.8,S,Cerah,0,2026-10-20T00:00:00Z
-35.24,2026-10-22,2026-10-22 02:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,25,80,0,9.5,S,Cerah,0,2026-10-20T00:00:00Z
-35.24,2026-10-22,2026-10-22 05:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,25,82,0,7,S,Cerah,0,2026-10-20T00:00:00Z
-35.24,2026-10-22,2026-10-22 08:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,30,60,0,8.8,S,Cerah,0,2026-10-20T00:00:00Z
-35.24,2026-10-22,2026-10-22 11:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,34,49,0,20,E,Cerah,1,2026-10-20T00:00:00Z
-35.24,2026-10-22,2026-10-22 14:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,35,41,0,20,E,Cerah Berawan,2,2026-10-20T00:00:00Z
-35.24,2026-10-22,2026-10-22 17:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,30,64,0,3.4,N,Berawan,3,2026-10-20T00:00:00Z
-35.24,2026-10-22,2026-10-22 20:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,28,77,0,3.4,N,Berawan,3,2026-10-20T00:00:00Z
-35.24,2026-10-22,2026-10-22 23:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,27,79,0,6.6,S,Cerah Berawan,2,2026-10-20T00:00:00Z
 35.25,2026-10-20,2026-10-20 14:00:00,Jawa Timur,Gresik,Kebomas,Gulomantung,35.25.14.1006,36,37,0,34,E,Cerah,0,2026-10-20T00:00:00Z
 35.25,2026-10-20,2026-10-20 17:00:00,Jawa Timur,Gresik,Kebomas,Gulomantung,35.25.14.1006,31,64,0,16.3,N,Cerah,0,2026-10-20T00:00:00Z
 35.25,2026-10-20,2026-10-20 20:00:00,Jawa Timur,Gresik,Kebomas,Gulomantung,35.25.14.1006,29,72,0,4.3,N,Cerah,0,2026-10-20T00:00:00Z
@@ -5039,26 +5041,6 @@ kode_kab,tanggal,waktu_lokal,provinsi,kotkab,kecamatan,desa,adm4,suhu_c,kelembap
 35.27,2026-10-22,2026-10-22 17:00:00,Jawa Timur,Sampang,Sampang,Polagan,35.27.03.1003,31,54,0,11.8,E,Cerah Berawan,2,2026-10-20T00:00:00Z
 35.27,2026-10-22,2026-10-22 20:00:00,Jawa Timur,Sampang,Sampang,Polagan,35.27.03.1003,29,72,0,11.8,E,Berawan,3,2026-10-20T00:00:00Z
 35.27,2026-10-22,2026-10-22 23:00:00,Jawa Timur,Sampang,Sampang,Polagan,35.27.03.1003,29,73,0,16.1,SE,Cerah Berawan,2,2026-10-20T00:00:00Z
-35.28,2026-10-20,2026-10-20 14:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,34,46,0,32.5,E,Cerah,0,2026-10-20T00:00:00Z
-35.28,2026-10-20,2026-10-20 17:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,30,67,0,17.1,E,Cerah,0,2026-10-20T00:00:00Z
-35.28,2026-10-20,2026-10-20 20:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,29,75,0,11,E,Cerah,0,2026-10-20T00:00:00Z
-35.28,2026-10-20,2026-10-20 23:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,28,82,0,3.3,S,Cerah,0,2026-10-20T00:00:00Z
-35.28,2026-10-21,2026-10-21 02:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,27,82,0,7,S,Cerah,0,2026-10-20T00:00:00Z
-35.28,2026-10-21,2026-10-21 05:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,27,80,0,16.4,S,Cerah,0,2026-10-20T00:00:00Z
-35.28,2026-10-21,2026-10-21 08:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,31,57,0,11.7,S,Cerah,0,2026-10-20T00:00:00Z
-35.28,2026-10-21,2026-10-21 11:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,35,42,0,8.9,SE,Cerah,0,2026-10-20T00:00:00Z
-35.28,2026-10-21,2026-10-21 14:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,34,45,0,36.4,E,Cerah,0,2026-10-20T00:00:00Z
-35.28,2026-10-21,2026-10-21 17:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,30,68,0,17.3,E,Cerah Berawan,2,2026-10-20T00:00:00Z
-35.28,2026-10-21,2026-10-21 20:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,29,65,0,11.6,E,Cerah,0,2026-10-20T00:00:00Z
-35.28,2026-10-21,2026-10-21 23:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,28,71,0,6.4,NE,Cerah,1,2026-10-20T00:00:00Z
-35.28,2026-10-22,2026-10-22 02:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,27,77,0,0.7,NW,Cerah,1,2026-10-20T00:00:00Z
-35.28,2026-10-22,2026-10-22 05:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,26,79,0,4.8,SW,Cerah,0,2026-10-20T00:00:00Z
-35.28,2026-10-22,2026-10-22 08:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,31,55,0,12.3,S,Cerah,1,2026-10-20T00:00:00Z
-35.28,2026-10-22,2026-10-22 11:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,34,44,0,33,E,Cerah,0,2026-10-20T00:00:00Z
-35.28,2026-10-22,2026-10-22 14:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,34,44,0,33,E,Cerah,1,2026-10-20T00:00:00Z
-35.28,2026-10-22,2026-10-22 17:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,30,55,0,9.1,E,Berawan,3,2026-10-20T00:00:00Z
-35.28,2026-10-22,2026-10-22 20:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,29,66,0,9.1,E,Berawan,3,2026-10-20T00:00:00Z
-35.28,2026-10-22,2026-10-22 23:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,28,74,0,5,SW,Cerah Berawan,2,2026-10-20T00:00:00Z
 35.29,2026-10-20,2026-10-20 14:00:00,Jawa Timur,Sumenep,Kota Sumenep,Kepanjin,35.29.01.1015,36,40,0,34.3,E,Cerah,1,2026-10-20T00:00:00Z
 35.29,2026-10-20,2026-10-20 17:00:00,Jawa Timur,Sumenep,Kota Sumenep,Kepanjin,35.29.01.1015,31,58,0,14.5,E,Cerah,0,2026-10-20T00:00:00Z
 35.29,2026-10-20,2026-10-20 20:00:00,Jawa Timur,Sumenep,Kota Sumenep,Kepanjin,35.29.01.1015,28,77,0,8.6,NE,Cerah,0,2026-10-20T00:00:00Z
@@ -7302,25 +7284,6 @@ kode_kab,tanggal,waktu_lokal,provinsi,kotkab,kecamatan,desa,adm4,suhu_c,kelembap
 65.71,2026-10-22,2026-10-22 15:00:00,Kalimantan Utara,Kota Tarakan,Tarakan Barat,Karang Anyar,65.71.01.1001,31,70,0.3,5.2,E,Cerah,0,2026-10-20T00:00:00Z
 65.71,2026-10-22,2026-10-22 18:00:00,Kalimantan Utara,Kota Tarakan,Tarakan Barat,Karang Anyar,65.71.01.1001,28,86,0.3,1.9,NW,Cerah,1,2026-10-20T00:00:00Z
 65.71,2026-10-22,2026-10-22 21:00:00,Kalimantan Utara,Kota Tarakan,Tarakan Barat,Karang Anyar,65.71.01.1001,27,95,0,1.9,NW,Cerah Berawan,2,2026-10-20T00:00:00Z
-71.01,2026-10-20,2026-10-20 15:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,29,58,0,10.6,S,Cerah,0,2026-10-20T00:00:00Z
-71.01,2026-10-20,2026-10-20 18:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,23,90,0,6.2,S,Cerah,0,2026-10-20T00:00:00Z
-71.01,2026-10-20,2026-10-20 21:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,20,98,0,2.2,S,Cerah Berawan,2,2026-10-20T00:00:00Z
-71.01,2026-10-21,2026-10-21 00:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,19,99,0,4.6,SW,Cerah,1,2026-10-20T00:00:00Z
-71.01,2026-10-21,2026-10-21 03:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,18,99,0,4.5,SW,Cerah Berawan,2,2026-10-20T00:00:00Z
-71.01,2026-10-21,2026-10-21 06:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,19,99,0,7.3,S,Cerah,1,2026-10-20T00:00:00Z
-71.01,2026-10-21,2026-10-21 09:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,26,63,0,10.9,S,Cerah,1,2026-10-20T00:00:00Z
-71.01,2026-10-21,2026-10-21 12:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,29,49,0,13.5,S,Cerah,1,2026-10-20T00:00:00Z
-71.01,2026-10-21,2026-10-21 15:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,28,49,0,13.1,S,Cerah,1,2026-10-20T00:00:00Z
-71.01,2026-10-21,2026-10-21 18:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,23,75,0,8.6,S,Cerah,1,2026-10-20T00:00:00Z
-71.01,2026-10-21,2026-10-21 21:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,20,87,0,5.7,S,Cerah Berawan,2,2026-10-20T00:00:00Z
-71.01,2026-10-22,2026-10-22 00:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,19,91,0,4.6,SW,Cerah,1,2026-10-20T00:00:00Z
-71.01,2026-10-22,2026-10-22 03:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,19,91,0,3.7,SW,Cerah Berawan,2,2026-10-20T00:00:00Z
-71.01,2026-10-22,2026-10-22 06:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,20,92,0,3.7,S,Cerah Berawan,2,2026-10-20T00:00:00Z
-71.01,2026-10-22,2026-10-22 09:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,27,64,0,7.5,S,Cerah,1,2026-10-20T00:00:00Z
-71.01,2026-10-22,2026-10-22 12:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,29,53,0,9.7,S,Cerah,1,2026-10-20T00:00:00Z
-71.01,2026-10-22,2026-10-22 15:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,28,61,0,9.7,S,Cerah,1,2026-10-20T00:00:00Z
-71.01,2026-10-22,2026-10-22 18:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,23,88,0,3.4,SW,Cerah,1,2026-10-20T00:00:00Z
-71.01,2026-10-22,2026-10-22 21:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,21,98,0,3.4,SW,Cerah,1,2026-10-20T00:00:00Z
 71.02,2026-10-20,2026-10-20 15:00:00,Sulawesi Utara,Minahasa,Tondano Barat,Masarang,71.02.01.1007,28,65,0.1,4.7,N,Cerah Berawan,2,2026-10-20T00:00:00Z
 71.02,2026-10-20,2026-10-20 18:00:00,Sulawesi Utara,Minahasa,Tondano Barat,Masarang,71.02.01.1007,22,92,0.1,4.7,N,Berawan,3,2026-10-20T00:00:00Z
 71.02,2026-10-20,2026-10-20 21:00:00,Sulawesi Utara,Minahasa,Tondano Barat,Masarang,71.02.01.1007,22,97,0,2.7,NE,Cerah,1,2026-10-20T00:00:00Z
@@ -8559,6 +8522,25 @@ kode_kab,tanggal,waktu_lokal,provinsi,kotkab,kecamatan,desa,adm4,suhu_c,kelembap
 74.14,2026-10-22,2026-10-22 15:00:00,Sulawesi Tenggara,Buton Tengah,Lakudo,Lakudo,74.14.01.1007,34,43,0,8.7,NE,Cerah Berawan,2,2026-10-20T00:00:00Z
 74.14,2026-10-22,2026-10-22 18:00:00,Sulawesi Tenggara,Buton Tengah,Lakudo,Lakudo,74.14.01.1007,29,64,0,8.1,E,Cerah,1,2026-10-20T00:00:00Z
 74.14,2026-10-22,2026-10-22 21:00:00,Sulawesi Tenggara,Buton Tengah,Lakudo,Lakudo,74.14.01.1007,26,78,0,8.1,E,Cerah,1,2026-10-20T00:00:00Z
+74.15,2026-10-20,2026-10-20 15:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,32,46,0,21,SE,Cerah,0,2026-10-20T00:00:00Z
+74.15,2026-10-20,2026-10-20 18:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,27,68,0,16.6,E,Cerah,1,2026-10-20T00:00:00Z
+74.15,2026-10-20,2026-10-20 21:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,24,84,0,9.4,E,Cerah Berawan,2,2026-10-20T00:00:00Z
+74.15,2026-10-21,2026-10-21 00:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,24,90,0,9.6,E,Cerah Berawan,2,2026-10-20T00:00:00Z
+74.15,2026-10-21,2026-10-21 03:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,24,91,0,10.9,E,Cerah,1,2026-10-20T00:00:00Z
+74.15,2026-10-21,2026-10-21 06:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,23,92,0,8.8,E,Cerah,1,2026-10-20T00:00:00Z
+74.15,2026-10-21,2026-10-21 09:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,29,58,0,4.6,NE,Cerah,1,2026-10-20T00:00:00Z
+74.15,2026-10-21,2026-10-21 12:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,32,47,0,6.3,SE,Cerah,0,2026-10-20T00:00:00Z
+74.15,2026-10-21,2026-10-21 15:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,32,45,0,20.6,E,Cerah,1,2026-10-20T00:00:00Z
+74.15,2026-10-21,2026-10-21 18:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,27,68,0,15.7,E,Cerah,1,2026-10-20T00:00:00Z
+74.15,2026-10-21,2026-10-21 21:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,25,83,0,12.7,E,Cerah,0,2026-10-20T00:00:00Z
+74.15,2026-10-22,2026-10-22 00:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,24,89,0,10.9,NE,Cerah,1,2026-10-20T00:00:00Z
+74.15,2026-10-22,2026-10-22 03:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,22,97,0,4.8,NE,Berawan,3,2026-10-20T00:00:00Z
+74.15,2026-10-22,2026-10-22 06:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,23,94,0,4.5,N,Cerah Berawan,2,2026-10-20T00:00:00Z
+74.15,2026-10-22,2026-10-22 09:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,29,60,0,8.6,E,Berawan,3,2026-10-20T00:00:00Z
+74.15,2026-10-22,2026-10-22 12:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,31,54,0,13.2,E,Berawan,3,2026-10-20T00:00:00Z
+74.15,2026-10-22,2026-10-22 15:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,31,55,0,13.2,E,Berawan,3,2026-10-20T00:00:00Z
+74.15,2026-10-22,2026-10-22 18:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,27,72,0,14.4,E,Cerah,1,2026-10-20T00:00:00Z
+74.15,2026-10-22,2026-10-22 21:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,25,81,0,14.4,E,Cerah,1,2026-10-20T00:00:00Z
 74.71,2026-10-20,2026-10-20 15:00:00,Sulawesi Tenggara,Kota Kendari,Mandonga,Mandonga,74.71.01.1005,32,49,0,14.6,E,Cerah,0,2026-10-20T00:00:00Z
 74.71,2026-10-20,2026-10-20 18:00:00,Sulawesi Tenggara,Kota Kendari,Mandonga,Mandonga,74.71.01.1005,28,68,0,8.9,E,Cerah,0,2026-10-20T00:00:00Z
 74.71,2026-10-20,2026-10-20 21:00:00,Sulawesi Tenggara,Kota Kendari,Mandonga,Mandonga,74.71.01.1005,26,81,0,1,S,Cerah,0,2026-10-20T00:00:00Z
@@ -9946,62 +9928,82 @@ kode_kab,tanggal,waktu_lokal,provinsi,kotkab,kecamatan,desa,adm4,suhu_c,kelembap
 96.71,2026-10-22,2026-10-22 16:00:00,Papua Barat Daya,Kota Sorong,Sorong,Remu Utara,96.71.01.1001,28,83,0.2,4.5,SW,Udara Kabur,10,2026-10-20T00:00:00Z
 96.71,2026-10-22,2026-10-22 19:00:00,Papua Barat Daya,Kota Sorong,Sorong,Remu Utara,96.71.01.1001,26,93,0.2,8.6,E,Udara Kabur,10,2026-10-20T00:00:00Z
 96.71,2026-10-22,2026-10-22 22:00:00,Papua Barat Daya,Kota Sorong,Sorong,Remu Utara,96.71.01.1001,25,93,0,8.6,E,Udara Kabur,10,2026-10-20T00:00:00Z
-18.13,2026-10-20,2026-10-20 14:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,28,79,0.1,11.5,S,Cerah,1,2026-10-20T00:00:00Z
-18.13,2026-10-20,2026-10-20 17:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,27,82,0,7.6,SE,Cerah,1,2026-10-20T00:00:00Z
-18.13,2026-10-20,2026-10-20 20:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,24,94,0,1.7,NE,Cerah,1,2026-10-20T00:00:00Z
-18.13,2026-10-20,2026-10-20 23:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,24,94,0,2.8,NE,Cerah,1,2026-10-20T00:00:00Z
-18.13,2026-10-21,2026-10-21 02:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,23,91,0,2.7,N,Cerah,1,2026-10-20T00:00:00Z
-18.13,2026-10-21,2026-10-21 05:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,22,90,0,2.5,NE,Cerah Berawan,2,2026-10-20T00:00:00Z
-18.13,2026-10-21,2026-10-21 08:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,26,81,0,2.7,NE,Cerah,1,2026-10-20T00:00:00Z
-18.13,2026-10-21,2026-10-21 11:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,28,76,0.2,10.8,S,Cerah,1,2026-10-20T00:00:00Z
-18.13,2026-10-21,2026-10-21 14:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,27,81,0.1,10.2,S,Cerah,1,2026-10-20T00:00:00Z
-18.13,2026-10-21,2026-10-21 17:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,26,83,0,7.5,SE,Cerah,1,2026-10-20T00:00:00Z
-18.13,2026-10-21,2026-10-21 20:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,24,94,0,3.4,NE,Cerah,1,2026-10-20T00:00:00Z
-18.13,2026-10-21,2026-10-21 23:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,24,91,0,6.1,NE,Cerah,0,2026-10-20T00:00:00Z
-18.13,2026-10-22,2026-10-22 02:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,22,91,0,6.4,E,Cerah,1,2026-10-20T00:00:00Z
-18.13,2026-10-22,2026-10-22 05:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,22,89,0,5.8,NE,Berawan,3,2026-10-20T00:00:00Z
-18.13,2026-10-22,2026-10-22 08:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,26,79,0.1,7.2,E,Cerah,1,2026-10-20T00:00:00Z
-18.13,2026-10-22,2026-10-22 11:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,28,75,0.1,12.9,S,Cerah Berawan,2,2026-10-20T00:00:00Z
-18.13,2026-10-22,2026-10-22 14:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,27,81,0.1,12.9,S,Berawan,3,2026-10-20T00:00:00Z
-18.13,2026-10-22,2026-10-22 17:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,26,83,0.1,3.4,SE,Cerah Berawan,2,2026-10-20T00:00:00Z
-18.13,2026-10-22,2026-10-22 20:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,24,93,0,3.4,SE,Cerah Berawan,2,2026-10-20T00:00:00Z
-18.13,2026-10-22,2026-10-22 23:00:00,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui,18.13.01.1005,24,91,0,5.3,E,Cerah Berawan,2,2026-10-20T00:00:00Z
-33.14,2026-10-20,2026-10-20 14:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,37,33,0,14.4,N,Cerah,0,2026-10-20T00:00:00Z
-33.14,2026-10-20,2026-10-20 17:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,32,50,0,7.2,N,Cerah,0,2026-10-20T00:00:00Z
-33.14,2026-10-20,2026-10-20 20:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,28,69,0,0.5,SE,Cerah,1,2026-10-20T00:00:00Z
-33.14,2026-10-20,2026-10-20 23:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,26,78,0,3.6,S,Cerah,0,2026-10-20T00:00:00Z
-33.14,2026-10-21,2026-10-21 02:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,25,82,0,3.2,S,Cerah,0,2026-10-20T00:00:00Z
-33.14,2026-10-21,2026-10-21 05:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,25,84,0,3.7,S,Cerah,0,2026-10-20T00:00:00Z
-33.14,2026-10-21,2026-10-21 08:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,30,63,0.1,4.8,SW,Cerah,0,2026-10-20T00:00:00Z
-33.14,2026-10-21,2026-10-21 11:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,35,45,0.2,9,W,Cerah,1,2026-10-20T00:00:00Z
-33.14,2026-10-21,2026-10-21 14:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,36,38,0.1,4.8,W,Cerah,1,2026-10-20T00:00:00Z
-33.14,2026-10-21,2026-10-21 17:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,32,49,0,14.1,S,Cerah,1,2026-10-20T00:00:00Z
-33.14,2026-10-21,2026-10-21 20:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,27,64,0,5.7,S,Cerah,1,2026-10-20T00:00:00Z
-33.14,2026-10-21,2026-10-21 23:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,25,72,0,3.7,S,Cerah,0,2026-10-20T00:00:00Z
-33.14,2026-10-22,2026-10-22 02:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,24,78,0,4.6,S,Cerah,0,2026-10-20T00:00:00Z
-33.14,2026-10-22,2026-10-22 05:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,24,80,0,5,S,Cerah,0,2026-10-20T00:00:00Z
-33.14,2026-10-22,2026-10-22 08:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,29,60,0,5.2,W,Cerah,0,2026-10-20T00:00:00Z
-33.14,2026-10-22,2026-10-22 11:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,34,41,0,9.7,NW,Cerah,0,2026-10-20T00:00:00Z
-33.14,2026-10-22,2026-10-22 14:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,35,37,0,9.7,NW,Cerah,1,2026-10-20T00:00:00Z
-33.14,2026-10-22,2026-10-22 17:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,31,52,0,2.7,SW,Berawan,3,2026-10-20T00:00:00Z
-33.14,2026-10-22,2026-10-22 20:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,28,68,0,2.7,SW,Cerah Berawan,2,2026-10-20T00:00:00Z
-33.14,2026-10-22,2026-10-22 23:00:00,Jawa Tengah,Sragen,Karangmalang,Plumbungan,33.14.09.1009,26,77,0,5.7,S,Cerah Berawan,2,2026-10-20T00:00:00Z
-74.15,2026-10-20,2026-10-20 15:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,32,46,0,21,SE,Cerah,0,2026-10-20T00:00:00Z
-74.15,2026-10-20,2026-10-20 18:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,27,68,0,16.6,E,Cerah,1,2026-10-20T00:00:00Z
-74.15,2026-10-20,2026-10-20 21:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,24,84,0,9.4,E,Cerah Berawan,2,2026-10-20T00:00:00Z
-74.15,2026-10-21,2026-10-21 00:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,24,90,0,9.6,E,Cerah Berawan,2,2026-10-20T00:00:00Z
-74.15,2026-10-21,2026-10-21 03:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,24,91,0,10.9,E,Cerah,1,2026-10-20T00:00:00Z
-74.15,2026-10-21,2026-10-21 06:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,23,92,0,8.8,E,Cerah,1,2026-10-20T00:00:00Z
-74.15,2026-10-21,2026-10-21 09:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,29,58,0,4.6,NE,Cerah,1,2026-10-20T00:00:00Z
-74.15,2026-10-21,2026-10-21 12:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,32,47,0,6.3,SE,Cerah,0,2026-10-20T00:00:00Z
-74.15,2026-10-21,2026-10-21 15:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,32,45,0,20.6,E,Cerah,1,2026-10-20T00:00:00Z
-74.15,2026-10-21,2026-10-21 18:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,27,68,0,15.7,E,Cerah,1,2026-10-20T00:00:00Z
-74.15,2026-10-21,2026-10-21 21:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,25,83,0,12.7,E,Cerah,0,2026-10-20T00:00:00Z
-74.15,2026-10-22,2026-10-22 00:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,24,89,0,10.9,NE,Cerah,1,2026-10-20T00:00:00Z
-74.15,2026-10-22,2026-10-22 03:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,22,97,0,4.8,NE,Berawan,3,2026-10-20T00:00:00Z
-74.15,2026-10-22,2026-10-22 06:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,23,94,0,4.5,N,Cerah Berawan,2,2026-10-20T00:00:00Z
-74.15,2026-10-22,2026-10-22 09:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,29,60,0,8.6,E,Berawan,3,2026-10-20T00:00:00Z
-74.15,2026-10-22,2026-10-22 12:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,31,54,0,13.2,E,Berawan,3,2026-10-20T00:00:00Z
-74.15,2026-10-22,2026-10-22 15:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,31,55,0,13.2,E,Berawan,3,2026-10-20T00:00:00Z
-74.15,2026-10-22,2026-10-22 18:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,27,72,0,14.4,E,Cerah,1,2026-10-20T00:00:00Z
-74.15,2026-10-22,2026-10-22 21:00:00,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa,74.15.01.1002,25,81,0,14.4,E,Cerah,1,2026-10-20T00:00:00Z
+12.21,2026-10-20,2026-10-20 13:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,27,75,2.3,3.3,NE,Hujan Ringan,61,2026-10-20T00:00:00Z
+12.21,2026-10-20,2026-10-20 16:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,26,79,4.6,0.7,S,Hujan Ringan,61,2026-10-20T00:00:00Z
+12.21,2026-10-20,2026-10-20 19:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,24,96,4.6,1.6,S,Hujan Ringan,61,2026-10-20T00:00:00Z
+12.21,2026-10-20,2026-10-20 22:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,23,96,0.3,0.9,SE,Berawan,3,2026-10-20T00:00:00Z
+12.21,2026-10-21,2026-10-21 01:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,22,94,0.1,2,S,Berawan,3,2026-10-20T00:00:00Z
+12.21,2026-10-21,2026-10-21 04:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,22,91,0.1,1.2,SE,Berawan,3,2026-10-20T00:00:00Z
+12.21,2026-10-21,2026-10-21 07:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,22,95,0,3.2,NE,Berawan,3,2026-10-20T00:00:00Z
+12.21,2026-10-21,2026-10-21 10:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,26,81,0,5.4,NE,Berawan,3,2026-10-20T00:00:00Z
+12.21,2026-10-21,2026-10-21 13:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,28,73,0.2,5.1,N,Berawan,3,2026-10-20T00:00:00Z
+12.21,2026-10-21,2026-10-21 16:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,28,73,0.8,7.3,NE,Cerah,1,2026-10-20T00:00:00Z
+12.21,2026-10-21,2026-10-21 19:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,24,93,0.4,1.7,SE,Cerah,1,2026-10-20T00:00:00Z
+12.21,2026-10-21,2026-10-21 22:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,22,98,0.5,1.7,N,Berawan,3,2026-10-20T00:00:00Z
+12.21,2026-10-22,2026-10-22 01:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,22,99,0,2.9,NE,Berawan,3,2026-10-20T00:00:00Z
+12.21,2026-10-22,2026-10-22 04:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,22,99,0,2.1,NE,Berawan,3,2026-10-20T00:00:00Z
+12.21,2026-10-22,2026-10-22 07:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,22,97,0,0.8,NE,Cerah Berawan,2,2026-10-20T00:00:00Z
+12.21,2026-10-22,2026-10-22 10:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,26,78,0.1,0.8,NE,Cerah,1,2026-10-20T00:00:00Z
+12.21,2026-10-22,2026-10-22 13:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,28,73,0.1,8,NE,Berawan,3,2026-10-20T00:00:00Z
+12.21,2026-10-22,2026-10-22 16:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,28,72,2.8,8,NE,Hujan Ringan,61,2026-10-20T00:00:00Z
+12.21,2026-10-22,2026-10-22 19:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,24,92,2.8,1.2,S,Hujan Ringan,61,2026-10-20T00:00:00Z
+12.21,2026-10-22,2026-10-22 22:00:00,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan,12.21.07.1001,23,97,0.5,1.2,S,Cerah Berawan,2,2026-10-20T00:00:00Z
+35.24,2026-10-20,2026-10-20 14:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,34,53,0.2,26.4,E,Cerah,1,2026-10-20T00:00:00Z
+35.24,2026-10-20,2026-10-20 17:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,30,67,0,14.1,N,Cerah,0,2026-10-20T00:00:00Z
+35.24,2026-10-20,2026-10-20 20:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,28,74,0,2,SW,Cerah,0,2026-10-20T00:00:00Z
+35.24,2026-10-20,2026-10-20 23:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,26,79,0,6,S,Cerah,0,2026-10-20T00:00:00Z
+35.24,2026-10-21,2026-10-21 02:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,26,83,0,8.9,S,Cerah,0,2026-10-20T00:00:00Z
+35.24,2026-10-21,2026-10-21 05:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,25,85,0,9.4,S,Cerah,0,2026-10-20T00:00:00Z
+35.24,2026-10-21,2026-10-21 08:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,31,62,0,8.8,S,Cerah,0,2026-10-20T00:00:00Z
+35.24,2026-10-21,2026-10-21 11:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,35,44,0,2.6,SE,Cerah,1,2026-10-20T00:00:00Z
+35.24,2026-10-21,2026-10-21 14:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,34,51,0.4,20.3,E,Cerah,1,2026-10-20T00:00:00Z
+35.24,2026-10-21,2026-10-21 17:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,31,63,0,10.1,N,Cerah Berawan,2,2026-10-20T00:00:00Z
+35.24,2026-10-21,2026-10-21 20:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,28,77,0,3.5,E,Cerah,1,2026-10-20T00:00:00Z
+35.24,2026-10-21,2026-10-21 23:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,26,75,0,7.8,S,Cerah,0,2026-10-20T00:00:00Z
+35.24,2026-10-22,2026-10-22 02:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,25,80,0,9.5,S,Cerah,0,2026-10-20T00:00:00Z
+35.24,2026-10-22,2026-10-22 05:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,25,82,0,7,S,Cerah,0,2026-10-20T00:00:00Z
+35.24,2026-10-22,2026-10-22 08:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,30,60,0,8.8,S,Cerah,0,2026-10-20T00:00:00Z
+35.24,2026-10-22,2026-10-22 11:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,34,49,0,20,E,Cerah,1,2026-10-20T00:00:00Z
+35.24,2026-10-22,2026-10-22 14:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,35,41,0,20,E,Cerah Berawan,2,2026-10-20T00:00:00Z
+35.24,2026-10-22,2026-10-22 17:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,30,64,0,3.4,N,Berawan,3,2026-10-20T00:00:00Z
+35.24,2026-10-22,2026-10-22 20:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,28,77,0,3.4,N,Berawan,3,2026-10-20T00:00:00Z
+35.24,2026-10-22,2026-10-22 23:00:00,Jawa Timur,Lamongan,Babat,Banaran,35.24.05.1001,27,79,0,6.6,S,Cerah Berawan,2,2026-10-20T00:00:00Z
+35.28,2026-10-20,2026-10-20 14:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,34,46,0,32.5,E,Cerah,0,2026-10-20T00:00:00Z
+35.28,2026-10-20,2026-10-20 17:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,30,67,0,17.1,E,Cerah,0,2026-10-20T00:00:00Z
+35.28,2026-10-20,2026-10-20 20:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,29,75,0,11,E,Cerah,0,2026-10-20T00:00:00Z
+35.28,2026-10-20,2026-10-20 23:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,28,82,0,3.3,S,Cerah,0,2026-10-20T00:00:00Z
+35.28,2026-10-21,2026-10-21 02:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,27,82,0,7,S,Cerah,0,2026-10-20T00:00:00Z
+35.28,2026-10-21,2026-10-21 05:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,27,80,0,16.4,S,Cerah,0,2026-10-20T00:00:00Z
+35.28,2026-10-21,2026-10-21 08:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,31,57,0,11.7,S,Cerah,0,2026-10-20T00:00:00Z
+35.28,2026-10-21,2026-10-21 11:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,35,42,0,8.9,SE,Cerah,0,2026-10-20T00:00:00Z
+35.28,2026-10-21,2026-10-21 14:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,34,45,0,36.4,E,Cerah,0,2026-10-20T00:00:00Z
+35.28,2026-10-21,2026-10-21 17:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,30,68,0,17.3,E,Cerah Berawan,2,2026-10-20T00:00:00Z
+35.28,2026-10-21,2026-10-21 20:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,29,65,0,11.6,E,Cerah,0,2026-10-20T00:00:00Z
+35.28,2026-10-21,2026-10-21 23:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,28,71,0,6.4,NE,Cerah,1,2026-10-20T00:00:00Z
+35.28,2026-10-22,2026-10-22 02:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,27,77,0,0.7,NW,Cerah,1,2026-10-20T00:00:00Z
+35.28,2026-10-22,2026-10-22 05:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,26,79,0,4.8,SW,Cerah,0,2026-10-20T00:00:00Z
+35.28,2026-10-22,2026-10-22 08:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,31,55,0,12.3,S,Cerah,1,2026-10-20T00:00:00Z
+35.28,2026-10-22,2026-10-22 11:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,34,44,0,33,E,Cerah,0,2026-10-20T00:00:00Z
+35.28,2026-10-22,2026-10-22 14:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,34,44,0,33,E,Cerah,1,2026-10-20T00:00:00Z
+35.28,2026-10-22,2026-10-22 17:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,30,55,0,9.1,E,Berawan,3,2026-10-20T00:00:00Z
+35.28,2026-10-22,2026-10-22 20:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,29,66,0,9.1,E,Berawan,3,2026-10-20T00:00:00Z
+35.28,2026-10-22,2026-10-22 23:00:00,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur,35.28.02.1018,28,74,0,5,SW,Cerah Berawan,2,2026-10-20T00:00:00Z
+71.01,2026-10-20,2026-10-20 15:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,29,58,0,10.6,S,Cerah,0,2026-10-20T00:00:00Z
+71.01,2026-10-20,2026-10-20 18:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,23,90,0,6.2,S,Cerah,0,2026-10-20T00:00:00Z
+71.01,2026-10-20,2026-10-20 21:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,20,98,0,2.2,S,Cerah Berawan,2,2026-10-20T00:00:00Z
+71.01,2026-10-21,2026-10-21 00:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,19,99,0,4.6,SW,Cerah,1,2026-10-20T00:00:00Z
+71.01,2026-10-21,2026-10-21 03:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,18,99,0,4.5,SW,Cerah Berawan,2,2026-10-20T00:00:00Z
+71.01,2026-10-21,2026-10-21 06:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,19,99,0,7.3,S,Cerah,1,2026-10-20T00:00:00Z
+71.01,2026-10-21,2026-10-21 09:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,26,63,0,10.9,S,Cerah,1,2026-10-20T00:00:00Z
+71.01,2026-10-21,2026-10-21 12:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,29,49,0,13.5,S,Cerah,1,2026-10-20T00:00:00Z
+71.01,2026-10-21,2026-10-21 15:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,28,49,0,13.1,S,Cerah,1,2026-10-20T00:00:00Z
+71.01,2026-10-21,2026-10-21 18:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,23,75,0,8.6,S,Cerah,1,2026-10-20T00:00:00Z
+71.01,2026-10-21,2026-10-21 21:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,20,87,0,5.7,S,Cerah Berawan,2,2026-10-20T00:00:00Z
+71.01,2026-10-22,2026-10-22 00:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,19,91,0,4.6,SW,Cerah,1,2026-10-20T00:00:00Z
+71.01,2026-10-22,2026-10-22 03:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,19,91,0,3.7,SW,Cerah Berawan,2,2026-10-20T00:00:00Z
+71.01,2026-10-22,2026-10-22 06:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,20,92,0,3.7,S,Cerah Berawan,2,2026-10-20T00:00:00Z
+71.01,2026-10-22,2026-10-22 09:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,27,64,0,7.5,S,Cerah,1,2026-10-20T00:00:00Z
+71.01,2026-10-22,2026-10-22 12:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,29,53,0,9.7,S,Cerah,1,2026-10-20T00:00:00Z
+71.01,2026-10-22,2026-10-22 15:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,28,61,0,9.7,S,Cerah,1,2026-10-20T00:00:00Z
+71.01,2026-10-22,2026-10-22 18:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,23,88,0,3.4,SW,Cerah,1,2026-10-20T00:00:00Z
+71.01,2026-10-22,2026-10-22 21:00:00,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi,71.01.10.1003,21,98,0,3.4,SW,Cerah,1,2026-10-20T00:00:00Z
