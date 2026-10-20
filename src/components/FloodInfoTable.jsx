@@ -422,3 +422,34 @@ export function NowcastCrossTab({ rows }) {
     </div>
   );
 }
+
+export function HujanPembandingTabel({ rows, tampilProvinsi = false, nilai, catatan }) {
+  const ordered = rows ?? [];
+  return (
+    <div className="table-wrap">
+      <table>
+        <caption>{catatan}</caption>
+        <thead>
+          <tr>
+            <th scope="col">No.</th>
+            <th scope="col">Kab/kota</th>
+            {tampilProvinsi ? <th scope="col">Provinsi</th> : null}
+            <th scope="col">mm</th>
+            <th scope="col">Jenis data</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ordered.map((row, index) => (
+            <tr key={row.kode || index}>
+              <td>{index + 1}</td>
+              <th scope="row">{row.nama}</th>
+              {tampilProvinsi ? <td>{row.provinsi || "—"}</td> : null}
+              <td>{nilai?.get(row.kode) || "belum tersedia"}</td>
+              <td>prakiraan model, bukan BMKG</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}

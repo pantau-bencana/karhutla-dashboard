@@ -16,6 +16,16 @@ import {
   legendClass,
 } from "../lib/floodMatrix.js";
 import { BAHAYA_SERVICE, LEGEND_IMAGE, RISIKO_SERVICE, exportImageUrl, identifyUrl } from "../lib/floodServices.js";
+import {
+  HUJAN_KELAS,
+  HUJAN_PEMBANDING_BADGE,
+  HUJAN_PEMBANDING_JENIS,
+  HUJAN_PEMBANDING_MODEL,
+  HUJAN_PEMBANDING_SUMBER,
+  mmPada,
+  teksMm,
+  warnaHujan,
+} from "../lib/hujanPembanding.js";
 import { InfoTip } from "./InfoTip.jsx";
 
 function envelopeOf(features) {
@@ -123,7 +133,20 @@ function pasangArsir(map, layer) {
   svg.insertBefore(defs, svg.firstChild);
 }
 
-function tooltipFor(feature, kabPaint) {
+function barisHujan(feature, hujan) {
+  if (!hujan?.aktif) return [];
+  const item = hujan.indeks?.get(kodeFitur(feature));
+  const mm = mmPada(item, hujan.tanggal);
+  const angka = mm === undefined || mm == null ? "belum tersedia" : teksMm(mm);
+  return [
+    `Hujan model: ${angka}`,
+    HUJAN_PEMBANDING_JENIS,
+    `Jumlah hujan harian. Sumber: ${HUJAN_PEMBANDING_SUMBER}. Diambil ${hujan.waktu}.`,
+    hujan.catatan,
+  ].filter(Boolean);
+}
+
+function tooltipFor(feature, kabPaint, hujan) {
   const nama = feature?.properties?.nama || feature?.properties?.wadmkk || feature?.properties?.provinsi || feature?.properties?.wadmpr;
   const paint = paintOf(feature, kabPaint);
   const lines = [nama];
@@ -134,7 +157,23 @@ function tooltipFor(feature, kabPaint) {
   else if (paint?.kind === "nodata") lines.push("Tanpa data");
   if (paint?.kind === "tak-dikenal" && paint.cuacaMentah?.length) lines.push(...paint.cuacaMentah);
   if (paint?.status && paint.pendudukBaris?.length) lines.push(...paint.pendudukBaris);
+  lines.push(...barisHujan(feature, hujan));
   return lines.filter(Boolean).map(escapeHtml).join("<br>");
+}
+
+function tooltipTitik(titik, hujan) {
+  return [
+    titik.nama,
+    teksMm(titik.mm),
+    HUJAN_PEMBANDING_JENIS,
+    `Jumlah hujan harian ${titik.tanggal || ""}. Sumber: ${HUJAN_PEMBANDING_SUMBER}, model ${HUJAN_PEMBANDING_MODEL}.`,
+    `Diambil ${hujan.waktu}.`,
+    titik.adm4 ? `Titik adm4 ${titik.adm4}` : "",
+    hujan.catatan,
+  ]
+    .filter(Boolean)
+    .map(escapeHtml)
+    .join("<br>");
 }
 
 export function FloodRiskMap({
@@ -146,6 +185,9 @@ export function FloodRiskMap({
   bolehKosong = false,
   catatan = [],
   waktuLabel = "—",
+  showHujan = false,
+  onShowHujan,
+  hujan = null,
 }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
@@ -155,6 +197,7 @@ export function FloodRiskMap({
   const lineRef = useRef(null);
   const geomRef = useRef(null);
   const labelRef = useRef(null);
+  const hujanRef = useRef(null);
   const tokenRef = useRef(0);
   const identifyRef = useRef(0);
   const identifyHandler = useRef(() => {});
@@ -292,7 +335,7 @@ export function FloodRiskMap({
             pane: "flood-lines",
             style: (feature) => gayaWilayah(resolvePaint(feature, kabPaint, tab, bolehKosong), Boolean(province), showPeringatan),
             onEachFeature(feature, layer) {
-              const tip = tooltipFor(feature, kabPaint);
+              const tip = tooltipFor(feature, kabPaint, hujan);
               if (tip) layer.bindTooltip(tip, { sticky: true, className: "flood-tip" });
               if (!province) {
                 layer.on("click", (event) => {
@@ -344,11 +387,45 @@ export function FloodRiskMap({
       const feature = layer.feature;
       const paint = resolvePaint(feature, kabPaint, tab, bolehKosong);
       layer.setStyle(gayaWilayah(paint, Boolean(province), showPeringatan));
-      const tip = tooltipFor(feature, kabPaint);
+      const tip = tooltipFor(feature, kabPaint, hujan);
       if (tip) layer.bindTooltip(tip, { sticky: true, className: "flood-tip" });
       else layer.unbindTooltip();
     });
-  }, [province, kabPaint, loadingMap, tab, bolehKosong, showPeringatan]);
+  }, [province, kabPaint, loadingMap, tab, bolehKosong, showPeringatan, hujan]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    hujanRef.current?.remove();
+    hujanRef.current = null;
+    if (!map || !showHujan || !hujan?.indeks) return undefined;
+    if (!map.getPane("hujan-pembanding")) {
+      map.createPane("hujan-pembanding");
+      map.getPane("hujan-pembanding").style.zIndex = 460;
+    }
+    const group = L.layerGroup();
+    for (const item of hujan.indeks.values()) {
+      const mm = mmPada(item, hujan.tanggal);
+      if (!Number.isFinite(item.lintang) || !Number.isFinite(item.bujur) || !Number.isFinite(mm)) continue;
+      if (hujan.kodeTampil && !hujan.kodeTampil.has(item.kode)) continue;
+      const marker = L.circleMarker([item.lintang, item.bujur], {
+        pane: "hujan-pembanding",
+        radius: 5,
+        color: "#1c3f66",
+        weight: 1,
+        fillColor: warnaHujan(mm),
+        fillOpacity: 0.92,
+      });
+      marker.bindTooltip(tooltipTitik({ ...item, mm, tanggal: hujan.tanggal }, hujan), { className: "flood-tip" });
+      marker.on("click", (event) => L.DomEvent.stopPropagation(event));
+      group.addLayer(marker);
+    }
+    group.addTo(map);
+    hujanRef.current = group;
+    return () => {
+      group.remove();
+      hujanRef.current = null;
+    };
+  }, [showHujan, hujan, province, loadingMap]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -512,6 +589,25 @@ export function FloodRiskMap({
           Batas provinsi
         </label>
       </fieldset>
+      <fieldset className="layer-checks layer-pembanding">
+        <legend>Data Pembanding</legend>
+        <span className="status-pill status-pembanding">{HUJAN_PEMBANDING_BADGE}</span>
+        <span className="layer-with-info">
+          <label>
+            <input type="checkbox" checked={showHujan} onChange={(event) => onShowHujan?.(event.target.checked)} />
+            Curah hujan model
+          </label>
+          <InfoTip label="Penjelasan lapisan Data Pembanding curah hujan">
+            <p>{HUJAN_PEMBANDING_BADGE}. {HUJAN_PEMBANDING_JENIS}.</p>
+            <p>Jumlah hujan harian Open-Meteo, model {HUJAN_PEMBANDING_MODEL}, pada titik adm4 yang sama. Satuan mm. Bukan skala Awas, Siaga, atau Waspada, dan tidak masuk matriks.</p>
+            <p>Diambil {hujan?.waktu || "—"}.</p>
+            <p>{hujan?.gpm}</p>
+            <p>
+              <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
+            </p>
+          </InfoTip>
+        </span>
+      </fieldset>
       <p className="fine">{FLOOD_PERMISSION} Overlay inaRISK mati sampai dinyalakan. Status peta inaRISK belum Aktif.</p>
       {mapError ? (
         <p className="banner warn" role="status">
@@ -543,6 +639,16 @@ export function FloodRiskMap({
           <i className="swatch-hatch" /> Tanpa data
         </span>
       </div>
+      {showHujan ? (
+        <div className="flood-legend" aria-label="Legenda hujan model">
+          {HUJAN_KELAS.map((kelas) => (
+            <span key={kelas.id}>
+              <i className="swatch-hujan" style={{ background: kelas.warna }} /> {kelas.label}
+            </span>
+          ))}
+          <span>{HUJAN_PEMBANDING_JENIS}. Bukan warna peringatan.</span>
+        </div>
+      ) : null}
       <p className="fine">{tab === "cap" ? CATATAN_ABU : CATATAN_ABU_HARI} {CATATAN_ARSIR}</p>
       <p className="fine">{BATAS_KAB_SUMBER}</p>
       {catatan.map((baris) => (

@@ -34,6 +34,10 @@ Daftar publikasi proyeksi per provinsi: https://sensus.bps.go.id/publikasi/index
 
 Rumah tangga disalin manual dari tabel BPS provinsi. Tidak ada kunci API, dan workflow tidak mengambil berkas ini. Jangan memakai kisi penduduk global.
 
+## Koordinat titik adm4
+
+`prakiraan-adm4-koordinat.csv` menyimpan lintang dan bujur dari bidang `lokasi` API prakiraan BMKG untuk kode adm4 yang statusnya `ok` di `prakiraan-sampel-adm4.csv`. Itu titik yang sama dengan prakiraan 3 hari, bukan pusat poligon kabupaten. Koordinat tidak diambil ulang tiap jadwal hujan. Kabupaten yang API-nya 404 tidak punya baris.
+
 ## Batas kabupaten/kota
 
 `batas-kabkota.topojson` menyimpan 514 kabupaten/kota untuk peta Banjir. Geometri diambil dari layanan publik BIG `PUBLIK/BATAS_WILAYAH` layer kabupaten/kota (`kdpkab`, `wadmkk`, `wadmpr`) dengan toleransi 0,001 derajat, lalu dikuantisasi TopoJSON 1e5. Kode dicocokkan ke `irbi-2025-banjir.csv`. Satu kode ganda pada layanan (`71.05`/`71.10`) tidak masuk karena tidak ada di tabel IRBI.

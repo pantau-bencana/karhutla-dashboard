@@ -613,6 +613,31 @@
       "file": null,
       "content_hash": null,
       "kept_previous": false
+    },
+    "hujan_pembanding_banjir": {
+      "id": "hujan_pembanding_banjir",
+      "nama": "Curah hujan model pada titik adm4",
+      "instansi": "Open-Meteo",
+      "source": "Open-Meteo Forecast API",
+      "url": "https://api.open-meteo.com/v1/forecast",
+      "license": "CC BY 4.0. Cantumkan Open-Meteo.",
+      "mode": "pembanding",
+      "update_type": "Harian",
+      "access": "API",
+      "frequency": "Harian",
+      "limitation": "prakiraan model, bukan BMKG. NASA GPM IMERG tidak dipakai. Unduhan Early/Late di PPS mengembalikan HTTP 401 tanpa akun, dan jalur yang terdokumentasi memakai registrasi Earthdata atau PPS. Tidak ada berkas observasi yang diunduh.",
+      "fungsi": "Jumlah hujan harian pada titik adm4. Tidak masuk matriks Awas/Siaga/Waspada.",
+      "expected_max_age_hours": 36,
+      "fetched_at": "2026-10-20T06:38:58.586Z",
+      "observed_at": "2026-10-20T00:00:00+07:00",
+      "observed_label": "prakiraan model, bukan BMKG",
+      "source_updated_at": "2026-10-20T00:00:00+07:00",
+      "record_count": 1530,
+      "status": "ok",
+      "error": null,
+      "file": "data/live/hujan-pembanding-kab.csv",
+      "kept_previous": false,
+      "content_hash": null
     }
   }
 }

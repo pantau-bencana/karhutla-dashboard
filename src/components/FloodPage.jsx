@@ -1,5 +1,5 @@
 import { Component, useCallback, useEffect, useMemo, useState } from "react";
-import { FloodInfoTable, FloodKabDaftar, PrakiraanTigaHari } from "./FloodInfoTable.jsx";
+import { FloodInfoTable, FloodKabDaftar, HujanPembandingTabel, PrakiraanTigaHari } from "./FloodInfoTable.jsx";
 import { FloodRiskMap } from "./FloodRiskMap.jsx";
 import { ANALISIS_BUKAN_RESMI, ANALISIS_NAMA, CATATAN_ALASAN, applyAnalisis, catWilayah } from "../lib/analisisPantauBencana.js";
 import { DISCLAIMER_UNDUH, barisXlsx, csvUnduh } from "../lib/banjirExport.js";
@@ -33,6 +33,17 @@ import {
   lampirkanPenduduk,
   ringkasPendudukBerstatus,
 } from "../lib/pendudukKab.js";
+import {
+  HUJAN_GPM_CATATAN,
+  HUJAN_PEMBANDING_FILE,
+  HUJAN_PEMBANDING_JENIS,
+  HUJAN_PEMBANDING_META,
+  HUJAN_PEMBANDING_MODEL,
+  HUJAN_PEMBANDING_SUMBER,
+  indeksHujan,
+  mmPada,
+  teksMm,
+} from "../lib/hujanPembanding.js";
 import { PEMETAAN_CUACA, indeksPrakiraan, periodeTigaHari, ringkasPrakiraan, terapkanHari } from "../lib/prakiraanHujan.js";
 import { PROVINSI, SEMUA_PROVINSI } from "../lib/provinsi.js";
 
@@ -152,6 +163,8 @@ function FloodBody() {
   const [penduduk, setPenduduk] = useState({ status: "memuat", indeks: new Map(), jumlah: 0 });
   const [tab, setTab] = useState("cap");
   const [lihatSemuaBaris, setLihatSemuaBaris] = useState(false);
+  const [showHujan, setShowHujan] = useState(false);
+  const [hujan, setHujan] = useState({ status: "memuat", rows: [], meta: {} });
   const pilihProvinsi = useCallback((nama) => setProvince(nama || ""), []);
 
   useEffect(() => {
@@ -215,6 +228,15 @@ function FloodBody() {
         }
       } catch {
         if (!cancelled) setPrakiraan({ status: "gagal", rows: [], fetchedAt: "", observedAt: "" });
+      }
+      try {
+        const [rows, meta] = await Promise.all([
+          loadCsv(HUJAN_PEMBANDING_FILE),
+          loadJson(HUJAN_PEMBANDING_META).catch(() => ({})),
+        ]);
+        if (!cancelled) setHujan({ status: rows.length ? "ok" : "gagal", rows, meta: meta ?? {} });
+      } catch {
+        if (!cancelled) setHujan({ status: "gagal", rows: [], meta: {} });
       }
     })();
     return () => {
@@ -307,6 +329,32 @@ function FloodBody() {
   }, [prakiraan, periode, province, urut]);
   const barisBerstatus = urut.filter((row) => row.peta?.kind === "status");
   const barisTabel = province || lihatSemuaBaris || barisBerstatus.length === 0 ? urut : barisBerstatus;
+  const hujanTanggal = tab === "cap" ? periode.hari[0] : periode.hari[tab];
+  const hujanIndeks = useMemo(() => indeksHujan(hujan.status === "ok" ? hujan.rows : []), [hujan]);
+  const hujanNilai = useMemo(() => {
+    const map = new Map();
+    for (const row of urut) {
+      const mm = mmPada(hujanIndeks.get(row.kode), hujanTanggal);
+      map.set(row.kode, mm === undefined || mm == null ? "belum tersedia" : teksMm(mm));
+    }
+    return map;
+  }, [urut, hujanIndeks, hujanTanggal]);
+  const hujanWaktu = hujan.meta?.fetched_at ? formatWib(hujan.meta.fetched_at) : "—";
+  const hujanCatatan = tab === "cap"
+    ? "Jumlah harian untuk hari ini. Bukan data 0–3 jam dan bukan peringatan BMKG."
+    : `Jumlah harian ${["Hari ini", "Besok", "Lusa"][tab]}. Bukan prakiraan BMKG dan bukan status analisis.`;
+  const hujanLapisan = useMemo(
+    () => ({
+      aktif: showHujan,
+      indeks: hujanIndeks,
+      tanggal: hujanTanggal,
+      waktu: hujanWaktu,
+      catatan: hujanCatatan,
+      gpm: HUJAN_GPM_CATATAN,
+      kodeTampil: province ? new Set(urut.map((row) => row.kode)) : null,
+    }),
+    [showHujan, hujanIndeks, hujanTanggal, hujanWaktu, hujanCatatan, province, urut],
+  );
   const hariTab = tab === "cap" ? null : periode.hari[tab];
   const namaHari = tab === "cap" ? "" : ["Hari ini", "Besok", "Lusa"][tab];
   const sumberPrakiraan = titik.find((item) => item.analysisUtc)?.analysisUtc || prakiraan.observedAt;
@@ -466,6 +514,9 @@ function FloodBody() {
                     ? formatWib(prakiraan.fetchedAt)
                     : "—"
               }
+              showHujan={showHujan}
+              onShowHujan={setShowHujan}
+              hujan={hujanLapisan}
             />
             <div>
               <h3>{province || SEMUA_PROVINSI}</h3>
@@ -496,6 +547,21 @@ function FloodBody() {
               ) : null}
             </div>
           </div>
+          {showHujan ? (
+            <section className="card hujan-pembanding-card">
+              <h3>Data Pembanding — curah hujan</h3>
+              <p className="fine">
+                {HUJAN_PEMBANDING_JENIS}. Sumber: {HUJAN_PEMBANDING_SUMBER}, model {HUJAN_PEMBANDING_MODEL}. Diambil {hujanWaktu}.
+                {hujan.meta?.kept_previous ? " Data terakhir. Pengambilan baru gagal." : ""} {hujanCatatan} Urutan mengikuti tabel analisis, bukan peringkat hujan. Tabel mengikuti baris yang sedang dibuka. Peta menandai setiap titik yang punya angka.
+              </p>
+              <HujanPembandingTabel
+                rows={province ? urut : barisTabel}
+                tampilProvinsi={!province}
+                nilai={hujanNilai}
+                catatan={`${HUJAN_PEMBANDING_JENIS}. Satuan mm. Tidak masuk matriks Awas, Siaga, atau Waspada.`}
+              />
+            </section>
+          ) : null}
           {urut.length ? (
             <>
               <p>

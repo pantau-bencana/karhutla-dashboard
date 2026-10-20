@@ -43,7 +43,7 @@ import {
   tampilanPrioritas,
 } from "../src/lib/aplus.js";
 import { CAP_CRON, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
-import { ANALISIS_MATRIKS, ANALISIS_NAMA, analisisStatus, applyAnalisis, catWilayah, keparahanCuaca, keparahanTerburuk } from "../src/lib/analisisPantauBencana.js";
+import { ANALISIS_MATRIKS, ANALISIS_NAMA, ANALISIS_WARNA, analisisStatus, applyAnalisis, catWilayah, keparahanCuaca, keparahanTerburuk } from "../src/lib/analisisPantauBencana.js";
 import {
   BPS_PROYEKSI_URL,
   PENDUDUK_ABSENT,
@@ -73,6 +73,15 @@ import {
   labelSlotHujan,
   terapkanHari,
 } from "../src/lib/prakiraanHujan.js";
+import {
+  HUJAN_GAP_MS,
+  HUJAN_GPM_CATATAN,
+  HUJAN_KELAS,
+  HUJAN_PEMBANDING_BADGE,
+  HUJAN_PEMBANDING_JENIS,
+  gabungHujan,
+  warnaHujan,
+} from "../src/lib/hujanPembanding.js";
 import { PROVINSI, SEMUA_PROVINSI } from "../src/lib/provinsi.js";
 import { CAP_DATA_TERAKHIR, severityLabel } from "../src/lib/capKab.js";
 import { xlsxBytes } from "../src/lib/xlsxMini.js";
@@ -1268,6 +1277,30 @@ assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Penjelasa
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /#\/sumber-metode\/petunjuk-banjir/);
 assert.match(readFileSync("src/components/FloodInfoTable.jsx", "utf8"), /Provinsi/);
 assert.match(readFileSync("src/components/GwisFwiToggle.jsx", "utf8"), /Penjelasan lapisan Data Pembanding/);
+const hujanGabung = gabungHujan(
+  [{ kode_kab: "11.01", tanggal: "2026-10-20", curah_hujan_mm: 3 }],
+  [{ kode_kab: "11.02", tanggal: "2026-10-20", curah_hujan_mm: 4 }],
+  ["11.01"],
+);
+assert.equal(hujanGabung.kept, 1);
+assert.deepEqual(hujanGabung.rows.map((row) => row.kode_kab).sort(), ["11.01", "11.02"]);
+const warnaAnalisis = new Set(Object.values(ANALISIS_WARNA));
+for (const kelas of HUJAN_KELAS) assert.equal(warnaAnalisis.has(kelas.warna), false);
+assert.equal(warnaHujan(0).startsWith("#"), true);
+assert.equal(warnaHujan(null), "");
+assert.equal(HUJAN_PEMBANDING_BADGE, "Pembanding (data terbuka, bukan resmi)");
+assert.equal(HUJAN_GAP_MS >= 1000, true);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Curah hujan model/);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /HUJAN_PEMBANDING_BADGE/);
+assert.equal(HUJAN_PEMBANDING_JENIS, "prakiraan model, bukan BMKG");
+assert.equal(readFileSync("src/lib/analisisPantauBencana.js", "utf8").includes("hujanPembanding"), false);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HUJAN_PEMBANDING_JENIS/);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HUJAN_GPM_CATATAN/);
+assert.match(HUJAN_GPM_CATATAN, /tidak dipakai/i);
+assert.match(readFileSync("scripts/hujan-pembanding.mjs", "utf8"), /kept_previous/);
+assert.match(readFileSync("scripts/hujan-pembanding.mjs", "utf8"), /ecmwf_ifs/);
+assert.equal(readFileSync("scripts/hujan-pembanding.mjs", "utf8").includes("jsimpson"), false);
+assert.match(readFileSync(".github/workflows/refresh-data.yml", "utf8"), /hujan-pembanding\.mjs/);
 const petunjuk = readFileSync("src/components/MetodePage.jsx", "utf8");
 assert.match(petunjuk, /CUACA_RUJUKAN/);
 assert.match(petunjuk, /CUACA_DISCLAIMER/);

@@ -25,6 +25,10 @@ Teks `weather_desc` dipetakan di dasbor. Cerah, berawan, udara kabur, asap, dan 
 
 Pengambilan kab/kota ada di workflow CAP (menit 12 dan 42) lewat `scripts/prakiraan-kab.mjs`, jeda 1,1 detik, di bawah 60 permintaan per menit. Cron `17 */3 * * *` dan `47 1-23/3 * * *` tidak dipindah.
 
+## Data Pembanding curah hujan
+
+Lapisan terpisah, mati secara bawaan. Jumlah harian `precipitation_sum` (mm) dari Open-Meteo, model ECMWF IFS, pada koordinat titik adm4 yang sama. Labelnya `prakiraan model, bukan BMKG`. Angka itu tidak masuk matriks dan tidak mengubah Awas, Siaga, atau Waspada. Pengambilan ada di workflow data (bukan tiap 30 menit) lewat `scripts/hujan-pembanding.mjs`, 20 titik per permintaan, jeda 1,5 detik. Bila gagal, cuplikan terakhir tetap. NASA GPM IMERG tidak diunduh karena membutuhkan akun.
+
 ## Penduduk dan rumah tangga
 
 Hanya total satu kabupaten/kota, dan hanya pada baris yang punya status analisis. Labelnya `potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar`. Berkas `data/static/penduduk-kabkota.csv` menyimpan proyeksi penduduk 2026; rumah tangga hanya DKI Jakarta, Banten, dan Jawa Timur. Tidak ada WorldPop atau GHSL. Dropdown DAS berstatus **Dalam pengembangan** dan tidak memuat data DAS.

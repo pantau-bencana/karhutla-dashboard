@@ -8,6 +8,7 @@ import { BATAS_KAB_SUMBER } from "../lib/batasKab.js";
 import { BIG_SERVICE } from "../lib/bigWilayah.js";
 import { BPS_PENDUDUK_URL, PENDUDUK_BUKAN_TERPAPAR, RUMAH_BELUM } from "../lib/pendudukKab.js";
 import { IRBI_BANJIR_TERVERIFIKASI, IRBI_BUKU_BANJIR_URL, IRBI_PENGGUNAAN_INTERNAL } from "../lib/floodMatrix.js";
+import { HUJAN_GPM_CATATAN, HUJAN_PEMBANDING_JENIS, HUJAN_PEMBANDING_URL } from "../lib/hujanPembanding.js";
 import { CUACA_DISCLAIMER, CUACA_RUJUKAN, PEMETAAN_CUACA, PRAKIRAAN_BATAS } from "../lib/prakiraanHujan.js";
 import { decorateSources } from "../lib/sourceCatalog.js";
 import { GlossaryPage } from "./GlossaryPage.jsx";
@@ -159,6 +160,12 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
           <li>0–3 jam: nowcast CAP. Berlaku kira-kira dari waktu terbit sampai kedaluwarsa pada berkas CAP, biasanya beberapa jam. Bukan status 3 hari.</li>
           <li>Hari ini, Besok, Lusa: prakiraan cuaca resmi 3 hari pada satu titik per kab/kota. Tanggal tab dihitung dari hari ini zona WIB. Slot yang dihitung adalah slot yang tanggal local_datetime-nya sama dengan tanggal tab. Waktu pada titik tidak ditulis ulang menjadi WIB.</li>
         </ul>
+        <h3>Data Pembanding curah hujan</h3>
+        <p>
+          Lapisan ini terpisah dari warna Awas, Siaga, dan Waspada. Angkanya jumlah hujan harian pada koordinat titik adm4 yang sama, dari{" "}
+          <a href={HUJAN_PEMBANDING_URL} target="_blank" rel="noopener noreferrer">Open-Meteo</a>
+          , model ECMWF IFS. Jenis datanya {HUJAN_PEMBANDING_JENIS}. Satuan mm. Nilai itu tidak masuk matriks dan tidak mengubah status. Pada tab 0–3 jam angka yang tampil adalah jumlah harian hari ini, bukan peringatan nowcast. {HUJAN_GPM_CATATAN} Bila pengambilan gagal, cuplikan terakhir tetap ditampilkan beserta waktu ambilnya.
+        </p>
         <h3>Satu titik per kabupaten/kota</h3>
         <p>{PRAKIRAAN_BATAS}</p>
         <p>{PEMETAAN_CUACA}</p>

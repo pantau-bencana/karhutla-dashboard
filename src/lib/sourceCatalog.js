@@ -379,6 +379,27 @@ export const SOURCES = [
     limitation:
       "514 kabupaten/kota. Penduduk adalah proyeksi BPS 2026. potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar. Rumah tangga hanya DKI Jakarta, Banten, dan Jawa Timur; sel lain belum tersedia dan bukan nol. Kode mengikuti batas BIG, bukan kode BPS di dalam kalimat sumber. Tidak ada kunci API.",
   },
+  {
+    id: "hujan_pembanding_banjir",
+    nama: "Curah hujan model pada titik adm4",
+    instansi: "Open-Meteo",
+    fungsi:
+      "Jumlah hujan harian pada titik adm4 yang sama dengan prakiraan BMKG, hanya sebagai lapisan pembanding di halaman Banjir.",
+    officialUrl: "https://open-meteo.com/en/docs",
+    officialLabel: "Open-Meteo Forecast API",
+    extraUrls: [
+      ["Lisensi Open-Meteo", "https://open-meteo.com/en/licence"],
+      ["NASA GPM IMERG", "https://gpm.nasa.gov/data/directory"],
+    ],
+    access: "API",
+    needsKey: false,
+    kind: "dinamis",
+    updateType: "Harian",
+    expectedMaxAgeHours: 36,
+    file: "data/live/hujan-pembanding-kab.csv",
+    limitation:
+      "Pembanding (data terbuka, bukan resmi). prakiraan model, bukan BMKG. Model ECMWF IFS, precipitation_sum, mm, zona Asia/Jakarta, tiga hari. Tidak masuk matriks Awas/Siaga/Waspada. NASA GPM IMERG tidak diunduh karena membutuhkan akun Earthdata atau PPS. Lisensi CC BY 4.0, pemakaian nonkomersial.",
+  },
 ];
 
 export function officialLinks(id) {
