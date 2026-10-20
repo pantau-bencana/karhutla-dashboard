@@ -297,8 +297,11 @@ a.button {
   border-radius: 8px;
   box-shadow: 0 8px 24px rgba(28, 25, 21, 0.16);
   font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
   line-height: 1.45;
   text-align: left;
+  text-transform: none;
 }
 .info-tip-panel p { margin: 0 0 8px; }
 .info-tip-panel p:last-child { margin-bottom: 0; }
