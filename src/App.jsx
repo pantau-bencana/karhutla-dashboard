@@ -170,6 +170,7 @@ export function App() {
           manifest={manifest}
           anchor={page === "glosarium" ? "glosarium" : location.anchor}
           term={location.term}
+          prioritas={feeds.prioritas}
         />
       ) : null}
       {hazard === "gunung-api" && page !== "glosarium" && page !== "metode" ? <VolcanoPage /> : null}

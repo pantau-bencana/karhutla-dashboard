@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import { contohSkorUtama } from "../lib/aplus.js";
+import { formatAngka, formatWib } from "../lib/format.js";
 import { Term } from "./Term.jsx";
 
 const RUJUKAN = [
@@ -7,8 +9,9 @@ const RUJUKAN = [
     tautan: [
       ["DOI 10.1007/s11027-006-9043-8", "https://doi.org/10.1007/s11027-006-9043-8"],
       ["PDF penulis", "http://www.columbia.edu/~rf2426/index_files/deGrootetal2006MITI.pdf"],
+      ["Van Wagner 1987", "https://ostrnrcan-dostrncan.canada.ca/entities/publication/d96e56aa-e836-4394-ba29-3afe91c3aa6c"],
     ],
-    catatan: "Ambang FFMC dan DC pada tabel di atas. Van Wagner (1987), Development and structure of the Canadian Forest Fire Weather Index System, Forestry Technical Report 35, dikutip lewat makalah ini; dokumen aslinya tidak ditautkan karena tidak dibuka.",
+    catatan: "Ambang FFMC dan DC pada tabel di atas. Van Wagner (1987), Development and structure of the Canadian Forest Fire Weather Index System, Forestry Technical Report 35, adalah dokumen sistem FWI Kanada. Dasbor tidak menghitung komponen FWI sendiri.",
   },
   {
     judul: "Field, R.D., Wang, Y., Roswintiarti, O., Guswanto (2004). A drought-based predictor of recent haze events in western Indonesia.",
@@ -128,6 +131,243 @@ const FAQ = [
   },
 ];
 
+const DIGIT_NILAI = { I1: 3, I2: 3, I3: 2, I4: 0 };
+
+function angka(value, digits) {
+  return formatAngka(value, digits);
+}
+
+function pecahanPeringkat(item) {
+  if (item.peringkat == null) return "—";
+  if (item.n <= 1) return "1";
+  const atas = item.urutan - 1;
+  const bawah = item.n - 1;
+  if (Number.isInteger(atas) && Number.isInteger(bawah)) return `${atas}/${bawah}`;
+  return angka(item.peringkat, 6);
+}
+
+function KolomDanGerbang() {
+  return (
+    <>
+      <h3>Kolom pada tabel</h3>
+      <p>Angka di daftar prioritas dihitung seperti ini. <Term id="ffmc">FFMC</Term> dan <Term id="dc">DC</Term> hanya gerbang. Keduanya tidak masuk skor.</p>
+      <div className="table-wrap wrap-cells">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Kolom</th>
+              <th scope="col">Cara hitung</th>
+              <th scope="col">Peran</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Titik</th>
+              <td>Paling banyak 5 simpul pada grid 0,25° yang jatuh di dalam batas <Term id="kabkota">kabupaten/kota</Term> <Term id="big">BIG</Term>. Simpul pertama yang paling dekat ke pusat kumpulan, lalu yang paling jauh dari simpul yang sudah dipilih. Bila tidak ada simpul di dalam batas, dipakai 1 titik wakil.</td>
+              <td>Sampel. Bukan indikator.</td>
+            </tr>
+            <tr>
+              <th scope="row"><Term id="fwi">FWI</Term> <Term id="p75">P75</Term></th>
+              <td>Pada tiap hari prakiraan GWIS, FWI di titik kabupaten itu diringkas menjadi P75. P75 memakai persentil tipe 7: posisi (n−1)×0,75, lalu interpolasi linier. I1 adalah rata-rata P75 harian itu, paling banyak 9 hari.</td>
+              <td>Masuk skor (I1).</td>
+            </tr>
+            <tr>
+              <th scope="row">FWI (Maks)</th>
+              <td>FWI tertinggi pada satu titik, pada salah satu hari prakiraan.</td>
+              <td>Informasi saja. Tidak masuk skor.</td>
+            </tr>
+            <tr>
+              <th scope="row">Hari <Term id="ffmc">FFMC</Term>≥78</th>
+              <td>Jumlah hari yang P75 FFMC-nya minimal 78.</td>
+              <td>Gerbang cuaca. Tidak masuk skor.</td>
+            </tr>
+            <tr>
+              <th scope="row"><Term id="dc">DC</Term> maks</th>
+              <td>Nilai tertinggi dari P75 DC harian.</td>
+              <td>Gerbang cuaca. Tidak masuk skor.</td>
+            </tr>
+            <tr>
+              <th scope="row"><Term id="ensemble">P(14 hari tanpa &gt;20 mm)</Term></th>
+              <td>Pada tiap titik, bagian anggota ensemble ECMWF IFS 0,25° (Open-Meteo, model ecmwf_ifs025) yang tidak punya satu hari hujan harian di atas 20 mm selama 14 hari, zona waktu Asia/Jakarta. Titik dengan kurang dari 14 hari atau kurang dari 51 anggota dibuang. I2 adalah P75 dari bagian itu antar titik.</td>
+              <td>Masuk skor (I2).</td>
+            </tr>
+            <tr>
+              <th scope="row"><Term id="irbi">IRBI 2025</Term></th>
+              <td>Indeks karhutla dari buku IRBI BNPB 2025, data statis, disambungkan menurut nama provinsi dan kabupaten. Nilainya tidak diubah.</td>
+              <td>Masuk skor (I3).</td>
+            </tr>
+            <tr>
+              <th scope="row"><Term id="hotspot">Hotspot</Term></th>
+              <td>Jumlah deteksi NASA FIRMS dengan keyakinan nominal atau tinggi pada cuplikan. Bila berkas hotspot ada tetapi kabupaten tidak muncul, jumlahnya 0. Bukan kebakaran terkonfirmasi.</td>
+              <td>Masuk skor (I4).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Gerbang</h3>
+      <p>Baris masuk daftar hanya bila ketiga gerbang terpenuhi. Peringkat dihitung di antara kabupaten/kota yang lolos gerbang data, termasuk yang tidak lolos gerbang kering atau cuaca.</p>
+      <div className="table-wrap wrap-cells">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Gerbang</th>
+              <th scope="col">Syarat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Data lengkap (data_ok)</th>
+              <td>Hari GWIS minimal 5, I2 ada, dan I3 atau I4 ada.</td>
+            </tr>
+            <tr>
+              <th scope="row">Kering</th>
+              <td>I2 minimal 0,5.</td>
+            </tr>
+            <tr>
+              <th scope="row">Cuaca</th>
+              <td>P75 FFMC minimal 78 pada minimal 3 hari, atau DC maks minimal 260.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Skor</h3>
+      <p>Di antara kabupaten/kota yang data lengkap, tiap indikator diubah menjadi <Term id="peringkat">peringkat</Term> persen. Nilai diurutkan dari kecil ke besar. Urutan adalah posisi mulai dari 1; nilai yang sama mendapat rata-rata urutan. Peringkat = (urutan−1)/(n−1). Kabupaten yang tidak punya indikator itu tidak masuk n indikator tersebut. Skor adalah rata-rata peringkat yang tersedia, bobot sama. Baris yang lolos ketiga gerbang diurutkan menurut skor menurun; bila skor sama, menurut kode. Daftar menampilkan 15 teratas, atau lebih pendek bila yang lolos lebih sedikit.</p>
+      <p>Skor ini relatif terhadap kabupaten/kota pada cuplikan hari yang sama. Skor hari ini tidak dibandingkan dengan skor hari lain.</p>
+    </>
+  );
+}
+
+function ContohHitung({ prioritas }) {
+  const contoh = contohSkorUtama(prioritas);
+  const terpakai = contoh.indikator.filter((item) => item.peringkat != null);
+  return (
+    <div id="contoh-hitung">
+      <h3>Contoh hitung pada cuplikan ini</h3>
+      {!contoh.ada ? (
+        <p>Contoh hitung belum dapat disusun: cuplikan prioritas belum ada, atau tidak ada kabupaten/kota yang lolos gerbang.</p>
+      ) : (
+        <>
+          <p>
+            Dihitung ulang dari <code>data/live/prioritas_aplus.json</code> saat halaman dibuka, untuk baris peringkat 1.
+            Cuplikan {formatWib(contoh.tanggal)}. Open-Meteo {formatWib(contoh.ensemble_fetched_at)}. GWIS {formatWib(contoh.gwis_fetched_at)}
+            {contoh.gwis_fetched_until ? `–${formatWib(contoh.gwis_fetched_until)}` : ""}. Hotspot {formatWib(contoh.firms_observed_at)}.
+          </p>
+          <p>
+            <strong>{contoh.kab}</strong> ({contoh.prov}) memakai {angka(contoh.n_titik, 0)} titik {contoh.src === "titik_wakil" || contoh.n_titik === 1 ? "wakil" : "grid 0,25° di dalam batas BIG"}.
+            FWI maks satu titik {angka(contoh.fwi_titik_maks, 3)}, hanya informasi.
+            Gerbang terpenuhi: hari GWIS {angka(contoh.gwis_hari_baris, 0)} (minimal 5), I2 {angka(contoh.indikator.find((item) => item.kunci === "I2")?.nilai, 3)} (minimal 0,5), hari FFMC≥78 = {angka(contoh.ffmc78_hari, 0)} (minimal 3), DC maks {angka(contoh.dc_maks, 3)} (minimal 260). FFMC dan DC tidak masuk skor.
+          </p>
+          <div className="table-wrap wrap-cells">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Indikator</th>
+                  <th scope="col">Nilai</th>
+                  <th scope="col">Di bawah</th>
+                  <th scope="col">n</th>
+                  <th scope="col">Urutan</th>
+                  <th scope="col">(urutan−1)/(n−1)</th>
+                  <th scope="col">Peringkat</th>
+                </tr>
+              </thead>
+              <tbody>
+                {contoh.indikator.map((item) => (
+                  <tr key={item.kunci}>
+                    <th scope="row">{item.kode} {item.nama}</th>
+                    <td>{item.nilai == null ? "—" : angka(item.nilai, DIGIT_NILAI[item.kunci])}</td>
+                    <td>{item.diBawah == null ? "—" : `${angka(item.diBawah, 0)} dari ${angka(item.n, 0)}`}</td>
+                    <td>{item.n ? angka(item.n, 0) : "—"}</td>
+                    <td>{item.urutan == null ? "—" : angka(item.urutan, Number.isInteger(item.urutan) ? 0 : 1)}</td>
+                    <td>{pecahanPeringkat(item)}</td>
+                    <td>{item.peringkat == null ? "—" : angka(item.peringkat, 3)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {contoh.indikator.some((item) => item.tanpa > 0) ? (
+            <p className="fine">
+              {contoh.indikator.filter((item) => item.tanpa > 0).map((item) => `${angka(item.tanpa, 0)} kab/kota lengkap tanpa ${item.nama}, jadi n ${item.kode} = ${angka(item.n, 0)}`).join(". ")}.
+            </p>
+          ) : null}
+          <p>
+            Skor = ({terpakai.map((item) => pecahanPeringkat(item)).join(" + ")}) / {terpakai.length} = {angka(contoh.skor_tampil, 3)}.
+            Peringkat pada tabel dibulatkan tiga desimal ({terpakai.map((item) => angka(item.peringkat, 3)).join(", ")}). Rata-rata dihitung sebelum pembulatan itu.
+          </p>
+        </>
+      )}
+      <h3>Kenapa pakai peringkat</h3>
+      <p>Satuan indikator tidak sama. FWI tidak bersatuan, peluang berada di antara 0 dan 1, IRBI bernilai puluhan, dan hotspot bisa mencapai ribuan. Jumlah mentah akan didominasi hotspot. Peringkat menyamakan skala sebelum dirata-rata.</p>
+    </div>
+  );
+}
+
+const SUMBER_HITUNG = [
+  {
+    judul: "Van Wagner, C.E. (1987). Development and structure of the Canadian Forest Fire Weather Index System. Canadian Forestry Service, Forestry Technical Report 35.",
+    tautan: [["Repositori NRCan", "https://ostrnrcan-dostrncan.canada.ca/entities/publication/d96e56aa-e836-4394-ba29-3afe91c3aa6c"]],
+    catatan: "Dokumen sistem FWI Kanada. Dasbor tidak menghitung FFMC, DMC, DC, ISI, BUI, atau FWI sendiri.",
+  },
+  {
+    judul: "de Groot, W.J., Field, R.D., Brady, M.A., Roswintiarti, O., Mohamad, M. Development of the Indonesian and Malaysian Fire Danger Rating Systems. Mitigation and Adaptation Strategies for Global Change 12, 165–180.",
+    tautan: [["DOI 10.1007/s11027-006-9043-8", "https://doi.org/10.1007/s11027-006-9043-8"]],
+    catatan: "Ambang FFMC dan DC kelas Tinggi (78 dan 260) yang dipakai sebagai gerbang. Diterapkan pada nilai model, bukan kelas BMKG.",
+  },
+  {
+    judul: "Copernicus EMS, GWIS — Fire Danger Forecast.",
+    tautan: [["Dokumentasi GWIS", "https://gwis.jrc.ec.europa.eu/about-gwis/technical-background/fire-danger-forecast"]],
+    catatan: "Sumber angka FWI, FFMC, dan DC model ECMWF pada daftar.",
+  },
+  {
+    judul: "Copernicus EMS, EFFIS — Fire Danger Forecast.",
+    tautan: [["Dokumentasi EFFIS", "https://forest-fire.emergency.copernicus.eu/about-effis/technical-background/fire-danger-forecast"]],
+    catatan: "Latar sistem FWI pada rantai EFFIS/GWIS. Kelas global tidak dipakai sebagai ambang Indonesia.",
+  },
+  {
+    judul: "Open-Meteo Ensemble API, model ECMWF IFS 0.25 (ecmwf_ifs025).",
+    tautan: [["Dokumentasi Ensemble API", "https://open-meteo.com/en/docs/ensemble-api"]],
+    catatan: "Hujan harian 14 hari untuk peluang tanpa hari di atas 20 mm. Lisensi CC BY 4.0, nonkomersial.",
+  },
+  {
+    judul: "NASA LANCE FIRMS, termasuk penjelasan confidence.",
+    tautan: [
+      ["FIRMS", "https://firms.modaps.eosdis.nasa.gov/"],
+      ["FIRMS FAQ", "https://www.earthdata.nasa.gov/data/tools/firms/faq"],
+    ],
+    catatan: "Deteksi panas satelit. Yang dihitung keyakinan nominal dan tinggi, bukan kebakaran terkonfirmasi.",
+  },
+  {
+    judul: "BNPB, Buku IRBI 2025, halaman 294.",
+    tautan: [["IRBI 2025", "https://inarisk.bnpb.go.id/IRBI-2025/files/basic-html/page294.html"]],
+    catatan: "Indeks risiko tahunan, data statis. Bukan prakiraan 14 hari.",
+  },
+  {
+    judul: "Hyndman, R.J. dan Fan, Y. (1996). Sample Quantiles in Statistical Packages. The American Statistician 50(4), 361–365.",
+    tautan: [["DOI 10.1080/00031305.1996.10473566", "https://doi.org/10.1080/00031305.1996.10473566"]],
+    catatan: "Definisi persentil tipe 7 yang dipakai untuk P75.",
+  },
+];
+
+function SumberHitung() {
+  return (
+    <>
+      <h3>Sumber perhitungan</h3>
+      <p>Tautan berikut dipakai untuk rumus dan ambang pada contoh hitung. Diperiksa 19 Oktober 2026.</p>
+      <ul className="plain-list source-notes">
+        {SUMBER_HITUNG.map((item) => (
+          <li key={item.judul}>
+            {item.judul}{" "}
+            {item.tautan.map(([label, href]) => (
+              <a key={href} href={href} target="_blank" rel="noopener noreferrer"> {label}</a>
+            ))}
+            <small>{item.catatan}</small>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
 function jangkarDariHash() {
   const parts = String(window.location.hash ?? "")
     .replace(/^#/, "")
@@ -138,7 +378,7 @@ function jangkarDariHash() {
   return anchor === "cara-hitung" || anchor === "rujukan" || anchor === "faq" ? anchor : "";
 }
 
-export function MetodeAplus({ anchor = "" }) {
+export function MetodeAplus({ anchor = "", prioritas = null }) {
   useEffect(() => {
     const id = jangkarDariHash() || anchor;
     if (!id) return undefined;
@@ -171,13 +411,17 @@ export function MetodeAplus({ anchor = "" }) {
           <li><span>5</span><div><strong>Blok hotspot</strong><p>Nasional dan terpisah. Jumlah nominal+tinggi minimal maksimum dari persentil-95 kabupaten/kota yang punya hotspot dan 50 titik, serta terdeteksi pada minimal 2 hari berturut-turut. Tiap baris menyebut peringkat, tidak lolos syarat, atau di luar cakupan. Hotspot dapat berasal dari sumber panas lain.</p></div></li>
           <li><span>6</span><div><strong>Belum tersedia</strong><p>Seluruh daftar diganti Belum tersedia bila ensemble lebih dari 36 jam, FWI diambil lebih dari 48 jam lalu atau kurang dari 5 hari, atau kabupaten/kota lengkap kurang dari 30. Blok hotspot disembunyikan bila cuplikan FIRMS lebih dari 24 jam.</p></div></li>
         </ol>
-        <pre className="formula">{`P75 = persentil-75 antartitik pada kabupaten/kota itu
-I1 = rata-rata harian P75(FWI)   (hingga 9 hari)
-I2 = P75( anggota tanpa hari > 20 mm / 51 )
-I3 = IRBI 2025
-I4 = jumlah hotspot nominal + tinggi
-r  = peringkat persentil antar kabupaten/kota
-skor = (rI1 + rI2 + rI3 + rI4) / 4`}</pre>
+        <pre className="formula">{`P75 = persentil-75 antartitik (Hyndman–Fan tipe 7)
+I1 = rata-rata harian P75(FWI)          masuk skor
+I2 = P75(anggota tanpa hari > 20 mm)    masuk skor
+I3 = IRBI 2025                          masuk skor
+I4 = jumlah hotspot nominal + tinggi    masuk skor
+Hari FFMC≥78 dan DC maks                gerbang saja
+r  = (urutan − 1) / (n − 1)
+     nilai sama: urutan dirata-rata
+skor = rata-rata r yang ada`}</pre>
+        <KolomDanGerbang />
+        <ContohHitung prioritas={prioritas} />
         <h3>Ambang FFMC dan DC</h3>
         <p>Angka berikut dari literatur FDRS ASEAN (de Groot dkk. 2007, Tabel 1 dan 2), bukan kelas BMKG. Syarat memakai batas bawah kelas Tinggi: FFMC minimal 78 dan DC minimal 260.</p>
         <div className="table-wrap">
@@ -214,6 +458,7 @@ skor = (rI1 + rI2 + rI3 + rI4) / 4`}</pre>
           </table>
         </div>
         <p>Pada data 1995–2000, 73% hotspot terjadi saat FFMC minimal 83. Asap berat mungkin terjadi di atas DC sekitar 388 (Field dkk. 2004; selang 95% 377–399). Ambang de Groot dikalibrasi pada cuaca stasiun pukul 12.00 waktu lokal, lalu di dasbor diterapkan pada nilai model GWIS. Hasilnya indikatif, bukan kelas BMKG, dan bukan ukuran muka air gambut.</p>
+        <SumberHitung />
       </section>
 
       <section className="card" id="rujukan">

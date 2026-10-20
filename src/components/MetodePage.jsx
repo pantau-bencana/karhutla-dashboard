@@ -22,7 +22,7 @@ function badgeKind(status) {
   return "tau";
 }
 
-export function MetodePage({ manifest, anchor = "", term = "" }) {
+export function MetodePage({ manifest, anchor = "", term = "", prioritas = null }) {
   const sources = decorateSources(manifest);
   return (
     <main className="wrap main">
@@ -77,7 +77,7 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
         </div>
       </section>
 
-      <MetodeAplus anchor={anchor} />
+      <MetodeAplus anchor={anchor} prioritas={prioritas} />
 
       <GlossaryPage embedded term={term} />
 

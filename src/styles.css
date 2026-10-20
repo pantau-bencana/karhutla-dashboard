@@ -708,6 +708,7 @@ tbody th { font-weight: 700; text-transform: none; letter-spacing: 0; font-size:
 }
 
 .plain-list li + li { margin-top: 6px; }
+.source-notes small { display: block; margin-top: 2px; color: var(--muted); }
 
 .plan-list {
   list-style: none;
@@ -1077,7 +1078,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   line-height: 1.5;
   white-space: pre-wrap;
 }
-#cara-hitung, #rujukan, #faq, #glosarium, .glossary-list article { scroll-margin-top: 88px; }
+#cara-hitung, #contoh-hitung, #rujukan, #faq, #glosarium, .glossary-list article { scroll-margin-top: 88px; }
 thead th a.term { color: inherit; font-weight: 700; }
 .faq-list { display: grid; gap: 8px; }
 .faq-list details {
