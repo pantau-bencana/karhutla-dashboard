@@ -16,7 +16,8 @@ Stack this skill assumes: Vite static site, no application server. Scheduled Git
 ## Architecture
 
 - Crons in `refresh-data.yml` are `17 */3 * * *` and `47 1-23/3 * * *` UTC. Keep them equal to `REFRESH_CRON` and `REFRESH_CRON_CADANGAN` in `src/lib/schedule.js`. Display the sooner next run in WIB (Asia/Jakarta, UTC+7). Do not move either cron back to minute 0; GitHub can drop a schedule without creating a run.
-- `refresh-watchdog.yml` cron is `7 * * * *`. It dispatches `refresh-data.yml` only when the live manifest is older than 4 hours and no refresh run is already active. It uses `actions: write` and its own concurrency group, not `pages`.
+- `refresh-watchdog.yml` cron is `7 * * * *`. It dispatches `refresh-data.yml` only when the live manifest is older than 4 hours and no refresh run is already active. It also dispatches `refresh-cap.yml` when that workflow has no run newer than `CAP_WATCH_MINUTES` in `src/lib/schedule.js`. It uses `actions: write` and its own concurrency group, not `pages`.
+- After `git pull --rebase` or `git reset --hard`, the refresh and CAP workflows run `npm ci` again before `npm run build`. A rebase onto `main` can add a dependency the first install did not have.
 - The commit step must `git fetch` and `git pull --rebase` before push, retry when the push is rejected, and regenerate the snapshot if rebase conflicts. Never force-push. Push the checked-out branch, not `main`, when the dispatch is on another branch.
 - A data commit by `github-actions[bot]` does not trigger `pages.yml`. Keep the `deploy-pages` job inside `refresh-data.yml`.
 - Concurrency group `pages` uses `cancel-in-progress: false` and `queue: max`.

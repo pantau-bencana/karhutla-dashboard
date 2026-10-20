@@ -1,7 +1,9 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { feature as topoFeature } from "topojson-client";
 import { BIG_SERVICE } from "../src/lib/bigWilayah.js";
+import { BATAS_KAB_FILE } from "../src/lib/batasKab.js";
 import { warningActive } from "../src/lib/capKab.js";
 import { INDONESIA_FRAME } from "../src/lib/geo.js";
 import { kodeWilayah } from "../src/lib/floodMatrix.js";
@@ -262,6 +264,11 @@ export function capKabMeta(snapshot) {
       jumlah_alert: snapshot.jumlahAlert ?? null,
       jumlah_prov: snapshot.status === "ok" ? provinsi.size : null,
       baris: snapshot.status === "ok" ? (snapshot.rows ?? []).length : null,
+      penempatan: snapshot.status === "ok" ? snapshot.penempatan || "kueri-big" : "",
+      catatan:
+        snapshot.status === "ok" && snapshot.penempatan === "batas-tersimpan"
+          ? "Kueri BIG gagal. Kabupaten/kota dipadankan pada batas tersimpan, bukan kotak koordinat."
+          : undefined,
       error: snapshot.error || null,
     },
     null,
@@ -326,6 +333,90 @@ async function fetchText(url, timeoutMs) {
   return text;
 }
 
+const QUERY_BACKOFF_MS = [1000, 3000];
+
+function delay(ms) {
+  return new Promise((resolveDelay) => setTimeout(resolveDelay, ms));
+}
+
+function pointInRing(x, y, ring) {
+  let inside = false;
+  for (let index = 0, previous = ring.length - 1; index < ring.length; previous = index++) {
+    const xi = ring[index][0];
+    const yi = ring[index][1];
+    const xj = ring[previous][0];
+    const yj = ring[previous][1];
+    if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
+function segmentsIntersect(a, b, c, d) {
+  const rx = b[0] - a[0];
+  const ry = b[1] - a[1];
+  const sx = d[0] - c[0];
+  const sy = d[1] - c[1];
+  const denom = rx * sy - ry * sx;
+  if (denom === 0) return false;
+  const qpx = c[0] - a[0];
+  const qpy = c[1] - a[1];
+  const t = (qpx * sy - qpy * sx) / denom;
+  const u = (qpx * ry - qpy * rx) / denom;
+  return t >= 0 && t <= 1 && u >= 0 && u <= 1;
+}
+
+export function ringsIntersect(left, right) {
+  if (!left?.length || !right?.length) return false;
+  if (!boxesOverlap(ringBbox(left), ringBbox(right))) return false;
+  for (const point of left) {
+    if (pointInRing(point[0], point[1], right)) return true;
+  }
+  for (const point of right) {
+    if (pointInRing(point[0], point[1], left)) return true;
+  }
+  for (let i = 0; i < left.length - 1; i += 1) {
+    for (let j = 0; j < right.length - 1; j += 1) {
+      if (segmentsIntersect(left[i], left[i + 1], right[j], right[j + 1])) return true;
+    }
+  }
+  return false;
+}
+
+export function exteriorRings(geometry) {
+  if (geometry?.type === "Polygon") return geometry.coordinates?.[0] ? [geometry.coordinates[0]] : [];
+  if (geometry?.type === "MultiPolygon") {
+    return (geometry.coordinates ?? []).map((polygon) => polygon?.[0]).filter((ring) => ring?.length);
+  }
+  return [];
+}
+
+let storedKabCache;
+
+export function loadStoredKabFeatures() {
+  if (storedKabCache) return storedKabCache;
+  const topology = JSON.parse(readFileSync(resolve(root, BATAS_KAB_FILE), "utf8"));
+  storedKabCache = topoFeature(topology, topology.objects.kabupaten).features ?? [];
+  return storedKabCache;
+}
+
+export function rowsFromStoredBoundaries(alert, rings, features) {
+  const targets = targetRings(rings)
+    .map((ring) => (ring.length > 180 ? simplifyRing(ring, 80) : ring))
+    .filter((ring) => ring.length >= 3);
+  if (!targets.length) return [];
+  const hits = [];
+  for (const feature of features ?? []) {
+    const props = feature?.properties ?? {};
+    const kode = kodeWilayah(props.kode);
+    if (!/^\d{2}\.\d{2}$/.test(kode)) continue;
+    const kabRings = exteriorRings(feature.geometry);
+    const hit = targets.some((ring) => kabRings.some((kabRing) => ringsIntersect(ring, kabRing)));
+    if (!hit) continue;
+    hits.push({ attributes: { kdpkab: props.kode, wadmkk: props.nama, wadmpr: props.provinsi } });
+  }
+  return rowsFromFeatures(alert, hits);
+}
+
 async function queryOnce(rings) {
   const body = new URLSearchParams({
     f: "json",
@@ -352,32 +443,70 @@ async function queryOnce(rings) {
   return payload.features ?? [];
 }
 
-async function queryReliable(rings) {
+async function tryQuery(query, rings) {
   try {
-    return await queryOnce(rings);
-  } catch {
-    await new Promise((resolveDelay) => setTimeout(resolveDelay, 500));
-    try {
-      return await queryOnce(rings);
-    } catch (error) {
-      if (rings.length === 1) throw error;
-      const features = [];
-      for (const ring of rings) {
-        try {
-          features.push(...(await queryOnce([ring])));
-        } catch {
-          await new Promise((resolveDelay) => setTimeout(resolveDelay, 500));
-          features.push(...(await queryOnce([ring])));
-        }
-      }
-      return features;
+    return { ok: true, features: (await query(rings)) ?? [] };
+  } catch (error) {
+    return { ok: false, error };
+  }
+}
+
+export async function queryReliable(rings, options = {}) {
+  const query = options.query ?? queryOnce;
+  const wait = options.wait ?? delay;
+  const source = rings ?? [];
+  let lastError = null;
+  const first = await tryQuery(query, source);
+  if (first.ok) return first.features;
+  lastError = first.error;
+  await wait(QUERY_BACKOFF_MS[0]);
+  const second = await tryQuery(query, source);
+  if (second.ok) return second.features;
+  lastError = second.error;
+  await wait(QUERY_BACKOFF_MS[1]);
+
+  const collected = [];
+  let any = false;
+  const candidates = source.length > 1 ? source.map((ring) => [ring]) : [];
+  for (const candidate of candidates) {
+    let attempt = await tryQuery(query, candidate);
+    if (!attempt.ok) {
+      lastError = attempt.error;
+      await wait(QUERY_BACKOFF_MS[0]);
+      attempt = await tryQuery(query, candidate);
+    }
+    if (attempt.ok) {
+      any = true;
+      collected.push(...attempt.features);
+    } else {
+      lastError = attempt.error;
     }
   }
+  if (any) return collected;
+
+  for (const ring of source) {
+    const simple = simplifyRing(ring, 24);
+    if (simple.length < 3 || simple.length === ring.length) continue;
+    let attempt = await tryQuery(query, [simple]);
+    if (!attempt.ok) {
+      lastError = attempt.error;
+      await wait(QUERY_BACKOFF_MS[0]);
+      attempt = await tryQuery(query, [simple]);
+    }
+    if (attempt.ok) {
+      any = true;
+      collected.push(...attempt.features);
+    } else {
+      lastError = attempt.error;
+    }
+  }
+  if (any) return collected;
+  throw lastError ?? new Error("BIG menolak kueri poligon CAP");
 }
 
 export async function assignKabupaten(alerts, options = {}) {
   const now = options.now ? new Date(options.now) : new Date();
-  const query = options.query ?? queryReliable;
+  const query = options.query ?? ((rings) => queryReliable(rings));
   const jobs = [];
   for (const alert of alerts ?? []) {
     if (!warningActive(alert, now)) continue;
@@ -385,14 +514,49 @@ export async function assignKabupaten(alerts, options = {}) {
     if (!rings.length) continue;
     jobs.push({ alert, rings });
   }
-  const lists = await mapPool(jobs, 4, async (job) => rowsFromFeatures(job.alert, await query(job.rings)));
+  let storedPromise;
+  const storedFeatures = () => {
+    if (options.storedFeatures) return Promise.resolve(options.storedFeatures);
+    if (!storedPromise) {
+      storedPromise = Promise.resolve().then(() => {
+        try {
+          return loadStoredKabFeatures();
+        } catch {
+          return [];
+        }
+      });
+    }
+    return storedPromise;
+  };
+  const lists = await mapPool(jobs, 4, async (job) => {
+    try {
+      return { rows: rowsFromFeatures(job.alert, await query(job.rings)), via: "kueri-big", error: null };
+    } catch (error) {
+      const rows = rowsFromStoredBoundaries(job.alert, job.rings, await storedFeatures());
+      if (rows.length) return { rows, via: "batas-tersimpan", error };
+      return { rows: [], via: "gagal", error };
+    }
+  });
   const merged = new Map();
+  let penempatan = "kueri-big";
+  let bigError = null;
+  let failedJobs = 0;
   for (const list of lists) {
-    for (const row of list) merged.set(`${row.kode}|${row.cap_id}`, row);
+    if (list.via === "batas-tersimpan") penempatan = "batas-tersimpan";
+    if (list.error) bigError = list.error;
+    if (list.via === "gagal") {
+      failedJobs += 1;
+      continue;
+    }
+    for (const row of list.rows) merged.set(`${row.kode}|${row.cap_id}`, row);
   }
-  return [...merged.values()].sort(
+  if (!merged.size && failedJobs > 0) throw bigError ?? new Error("Failed to execute query.");
+  const rows = [...merged.values()].sort(
     (left, right) => left.kode.localeCompare(right.kode, "id") || String(left.cap_id).localeCompare(String(right.cap_id), "id"),
   );
+  rows.penempatan = penempatan;
+  rows.bigError = bigError ? String(bigError.message || bigError) : null;
+  return rows;
 }
 
 export async function loadCapAlerts() {
@@ -438,14 +602,17 @@ async function main() {
       jumlahAlert: loaded.alerts.length,
       rssPublished: loaded.rssPublished,
       fetchedAt: new Date().toISOString(),
+      penempatan: rows.penempatan,
       error: null,
     });
     if (written.kept_previous) {
       console.log("Cuplikan CAP sebelumnya dipertahankan.");
       return;
     }
+    const via = rows.penempatan === "batas-tersimpan" ? " Penempatan: batas tersimpan." : "";
+    const bigNote = rows.bigError ? ` ${rows.bigError}` : "";
     console.log(
-      `CAP kabupaten ok: ${rows.length} baris, ${provRows.length} baris provinsi. RSS ${loaded.rssPublished || "tanpa pubDate"}.`,
+      `CAP kabupaten ok: ${rows.length} baris, ${provRows.length} baris provinsi.${via}${bigNote} RSS ${loaded.rssPublished || "tanpa pubDate"}.`,
     );
   } catch (error) {
     if (previousCapUsable(live)) {

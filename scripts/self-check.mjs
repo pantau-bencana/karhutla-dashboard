@@ -44,7 +44,7 @@ import {
   susunPrioritas,
   tampilanPrioritas,
 } from "../src/lib/aplus.js";
-import { CAP_CRON, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
+import { CAP_CRON, CAP_WATCH_MINUTES, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
 import { ANALISIS_MATRIKS, ANALISIS_NAMA, ANALISIS_WARNA, analisisStatus, applyAnalisis, catWilayah, keparahanCuaca, keparahanTerburuk } from "../src/lib/analisisPantauBencana.js";
 import {
   BPS_PROYEKSI_URL,
@@ -117,13 +117,16 @@ import {
   capKabCsv,
   capKabMeta,
   previousCapUsable,
+  queryReliable,
+  ringsIntersect,
+  rowsFromStoredBoundaries,
   writeCapKabFiles,
   BMKG_REQUEST_GAP_MS,
   ringsFromXml,
   rowsFromFeatures,
   targetRings,
 } from "./cap-kab.mjs";
-import { manifestNeedsRefresh } from "./refresh-watchdog.mjs";
+import { capRunMissed, manifestNeedsRefresh } from "./refresh-watchdog.mjs";
 import { monitoringSources } from "../src/lib/sourceStatus.js";
 import { aggregateCells, gfwedCsv, latestDailyStamp } from "./gfwed-kabupaten.mjs";
 import { GFWED_LABEL, GFWED_UNAVAILABLE } from "../src/lib/gfwed.js";
@@ -441,7 +444,21 @@ assert.equal(ispuFromPm25(15.5), 50);
 assert.equal(REFRESH_CRON, "17 */3 * * *");
 assert.equal(REFRESH_CRON_CADANGAN, "47 1-23/3 * * *");
 assert.equal(CAP_CRON, "12,42 * * * *");
+assert.equal(CAP_WATCH_MINUTES, 50);
 assert.equal(readFileSync(".github/workflows/refresh-cap.yml", "utf8").includes(`"${CAP_CRON}"`), true);
+assert.equal(capRunMissed([], new Date("2026-10-20T07:07:00.000Z")), true);
+assert.equal(
+  capRunMissed([{ status: "completed", createdAt: "2026-10-20T06:42:00.000Z" }], new Date("2026-10-20T07:07:00.000Z")),
+  false,
+);
+assert.equal(
+  capRunMissed([{ status: "completed", createdAt: "2026-10-20T06:12:00.000Z" }], new Date("2026-10-20T07:07:00.000Z")),
+  true,
+);
+assert.equal(
+  capRunMissed([{ status: "queued", createdAt: "2026-10-20T05:12:00.000Z" }], new Date("2026-10-20T07:07:00.000Z")),
+  false,
+);
 assert.match(nextScheduledRun(new Date("2026-10-17T16:30:00.000Z")), /^2026-10-17T16:47:00/);
 assert.match(nextScheduledRun(new Date("2026-10-17T18:10:00.000Z")), /^2026-10-17T18:17:00/);
 assert.match(nextScheduledRun(new Date("2026-10-17T18:20:00.000Z")), /^2026-10-17T19:47:00/);
@@ -463,11 +480,15 @@ assert.equal(workflow.includes("git push -f"), false);
 assert.match(workflow, /wilayah_gagal/);
 assert.match(workflow, /big_queries/);
 assert.match(workflow, /FIRMS_MAP_KEY/);
+assert.match(workflow, /git reset --hard[\s\S]*npm ci/);
+assert.match(workflow, /npm ci\n\s*npm run check && npm run build/);
 assert.equal(workflow.includes("eyJ"), false);
 const watchdog = readFileSync(".github/workflows/refresh-watchdog.yml", "utf8");
 assert.match(watchdog, /7 \* \* \* \*/);
 assert.match(watchdog, /actions: write/);
 assert.match(watchdog, /gh workflow run refresh-data\.yml --ref main/);
+assert.match(watchdog, /gh workflow run refresh-cap\.yml --ref main/);
+assert.match(watchdog, /CAP_RUNS_JSON/);
 assert.match(watchdog, /cancel-in-progress: false/);
 assert.match(watchdog, /group: refresh-watchdog/);
 assert.equal(watchdog.includes("group: pages"), false);
@@ -554,8 +575,10 @@ const pagesWorkflow = readFileSync(".github/workflows/pages.yml", "utf8");
 assert.match(pagesWorkflow, /github\.event_name != 'pull_request' && github\.ref == 'refs\/heads\/main'/);
 assert.match(pagesWorkflow, /queue: max/);
 assert.match(pagesWorkflow, /GITHUB_TOKEN/);
-assert.match(pagesWorkflow, /Deploy dilewati/);
-assert.match(pagesWorkflow, /steps\.head\.outputs\.skip != 'true'/);
+assert.match(pagesWorkflow, /Ujung main sudah berpindah/);
+assert.match(pagesWorkflow, /Bangun ulang dari ujung main/);
+assert.match(pagesWorkflow, /steps\.head\.outputs\.rebuild == 'true'/);
+assert.equal(pagesWorkflow.includes("steps.head.outputs.skip != 'true'"), false);
 const windowed = filterHotspotWindow([
   { tanggal: "2026-10-17", waktu: "1200", satelit: "N", kelasKepercayaan: "nominal", provinsi: "Riau" },
   { tanggal: "2026-10-16", waktu: "1200", satelit: "N", kelasKepercayaan: "tinggi", provinsi: "Aceh" },
@@ -1465,6 +1488,74 @@ assert.equal(capSimpanHasil.kept_previous, true);
 assert.equal(JSON.parse(readFileSync(join(capSimpan, "bmkg-cap-kab-meta.json"), "utf8")).fetched_at, "2026-10-20T01:17:04.008Z");
 assert.equal(readFileSync(join(capSimpan, "bmkg-cap-kab.csv"), "utf8").includes("11.01"), true);
 rmSync(capSimpan, { recursive: true, force: true });
+const squareKab = {
+  type: "Feature",
+  properties: { kode: "11.01", nama: "Aceh Selatan", provinsi: "Aceh" },
+  geometry: { type: "Polygon", coordinates: [[[97, 2], [98, 2], [98, 4], [97, 4], [97, 2]]] },
+};
+const insideRing = [[97.2, 2.2], [97.4, 2.2], [97.4, 2.5], [97.2, 2.2]];
+const crossingRing = [[96.5, 3], [98.5, 3], [98.5, 3.2], [96.5, 3.2], [96.5, 3]];
+const storedAlert = {
+  id: "CAP-SIMPAN",
+  event: "Hujan Lebat",
+  deskripsi: "uji",
+  onset: "",
+  effective: "2026-10-18T18:00:00+07:00",
+  expires: "2099-01-01T00:00:00Z",
+  severity: "Moderate",
+  urgency: "Immediate",
+  certainty: "Observed",
+  url: "https://www.bmkg.go.id/alerts/nowcast/id/CAP-SIMPAN_alert.xml",
+  rings: [insideRing],
+};
+assert.equal(rowsFromStoredBoundaries(storedAlert, [insideRing], [squareKab]).length, 1);
+assert.equal(rowsFromStoredBoundaries(storedAlert, [insideRing], [squareKab])[0].kode, "11.01");
+assert.equal(rowsFromStoredBoundaries(storedAlert, [[[120, 10], [120.2, 10], [120.2, 10.2], [120, 10]]], [squareKab]).length, 0);
+assert.equal(ringsIntersect(crossingRing, squareKab.geometry.coordinates[0]), true);
+const fallbackRows = await assignKabupaten([storedAlert], {
+  now: new Date("2026-10-18T13:00:00Z"),
+  storedFeatures: [squareKab],
+  query: async () => {
+    throw new Error("Failed to execute query.");
+  },
+});
+assert.equal(fallbackRows.length, 1);
+assert.equal(fallbackRows.penempatan, "batas-tersimpan");
+assert.equal(fallbackRows.bigError, "Failed to execute query.");
+assert.match(capKabMeta({ status: "ok", rows: fallbackRows, penempatan: "batas-tersimpan" }), /batas tersimpan/);
+await assert.rejects(
+  () =>
+    assignKabupaten([storedAlert], {
+      now: new Date("2026-10-18T13:00:00Z"),
+      storedFeatures: [],
+      query: async () => {
+        throw new Error("Failed to execute query.");
+      },
+    }),
+  /Failed to execute query/,
+);
+let reliableCalls = 0;
+const reliable = await queryReliable(
+  [
+    [[0, 0], [1, 0], [1, 1], [0, 0]],
+    [[2, 0], [3, 0], [3, 1], [2, 0]],
+  ],
+  {
+    wait: async () => {},
+    query: async (rings) => {
+      reliableCalls += 1;
+      if (rings.length > 1 || rings[0][0][0] === 0) throw new Error("Failed to execute query.");
+      return [{ attributes: { kdpkab: "11.01", wadmkk: "Aceh Selatan", wadmpr: "Aceh" } }];
+    },
+  },
+);
+assert.equal(reliable.length, 1);
+assert.equal(reliableCalls >= 3, true);
+const capWorkflow = readFileSync(".github/workflows/refresh-cap.yml", "utf8");
+assert.match(capWorkflow, /git reset --hard[\s\S]*npm ci/);
+assert.match(capWorkflow, /npm ci\n\s*npm run check && npm run build/);
+assert.match(capScript, /batas-tersimpan/);
+assert.match(capScript, /QUERY_BACKOFF_MS/);
 const halamanBanjirLetak = readFileSync("src/components/FloodPage.jsx", "utf8");
 const judulBanjir = halamanBanjirLetak.indexOf("<h1>Banjir");
 const petaBanjir = halamanBanjirLetak.indexOf("<FloodRiskMap");

@@ -820,14 +820,20 @@ async function fetchCap() {
       url: alert.url,
     });
   }
-  let kabupaten = { status: "gagal", rows: [], error: "Irisan kabupaten tidak dijalankan." };
+  let kabupaten = { status: "gagal", rows: [], error: "Irisan kabupaten tidak dijalankan.", penempatan: "", bigError: null };
   let geom = [];
   try {
     const kabRows = await assignKabupaten(loaded.alerts);
-    kabupaten = { status: "ok", rows: kabRows, error: null };
+    kabupaten = {
+      status: "ok",
+      rows: kabRows,
+      error: null,
+      penempatan: kabRows.penempatan || "kueri-big",
+      bigError: kabRows.bigError || null,
+    };
     geom = geomFromAlerts(loaded.alerts);
   } catch (error) {
-    kabupaten = { status: "gagal", rows: [], error: error.message };
+    kabupaten = { status: "gagal", rows: [], error: error.message, penempatan: "", bigError: error.message };
   } finally {
     for (const alert of loaded.alerts) delete alert.rings;
   }
@@ -1104,12 +1110,15 @@ async function main() {
       jumlahAlert: result.jumlahAlert,
       rssPublished: result.rssPublished,
       fetchedAt: nowIso,
-      error: result.kabupaten.error,
+      penempatan: result.kabupaten.penempatan,
+      error: result.kabupaten.rows.length ? null : result.kabupaten.bigError || result.kabupaten.error,
     });
+    const bigNote = result.kabupaten.bigError ? ` ${result.kabupaten.bigError}` : "";
+    const via = result.kabupaten.penempatan === "batas-tersimpan" ? " Penempatan: batas tersimpan." : "";
     console.log(
       kabTulis.kept_previous
-        ? "CAP kabupaten: cuplikan sebelumnya dipertahankan."
-        : `CAP kabupaten: ${result.kabupaten.status}, ${result.kabupaten.rows.length} baris.`,
+        ? `CAP kabupaten: cuplikan sebelumnya dipertahankan.${bigNote}`
+        : `CAP kabupaten: ${result.kabupaten.status}, ${result.kabupaten.rows.length} baris.${via}${bigNote}`,
     );
   } catch (error) {
     Object.assign(capEntry, keepPrevious(capEntry, previousEntry(previous, "bmkg_cap"), error.message));

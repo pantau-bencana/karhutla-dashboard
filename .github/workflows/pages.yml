@@ -2,8 +2,9 @@
 # Source Pages repositori ini adalah GitHub Actions.
 # Hanya push ke main (dan workflow_dispatch pada main) yang mengunggah artefak dan men-deploy.
 # Push dari GITHUB_TOKEN, termasuk commit data oleh github-actions[bot], tidak memicu workflow ini.
-# Cuplikan baru di-deploy dari dalam refresh-data.yml pada run yang sama.
-# Deploy ini dilewati bila ujung main sudah berpindah, supaya artefak lama tidak menimpa cuplikan yang lebih baru.
+# Cuplikan baru juga di-deploy dari dalam refresh-data.yml dan refresh-cap.yml pada run yang sama.
+# Bila ujung main sudah berpindah saat deploy, job ini membangun ulang SHA ujung itu lalu men-deploy-nya.
+# Artefak commit lama tidak diunggah lagi, supaya situs tidak tertinggal di belakang push bot.
 # Pull request, termasuk cabang cursor/*, hanya membangun dan memeriksa. Job deploy dilewati.
 # https://rixaga.github.io/karhutla-dashboard/
 name: Deploy GitHub Pages
@@ -70,25 +71,78 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     permissions:
+      actions: write
       contents: read
       pages: write
       id-token: write
     steps:
-      - name: Lewati bila commit ini bukan ujung main
+      - name: Cek ujung main
         id: head
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           current="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_REF_NAME}" --jq .sha)"
+          echo "tip=${current}" >> "$GITHUB_OUTPUT"
           if [ "$current" != "$GITHUB_SHA" ]; then
-            echo "skip=true" >> "$GITHUB_OUTPUT"
-            echo "Deploy dilewati. main=${current} run=${GITHUB_SHA}"
+            echo "rebuild=true" >> "$GITHUB_OUTPUT"
+            echo "Ujung main sudah berpindah. main=${current} run=${GITHUB_SHA}. Membangun ujung main."
           else
-            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "rebuild=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Checkout ujung main
+        if: steps.head.outputs.rebuild == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.head.outputs.tip }}
+
+      - name: Setup Node
+        if: steps.head.outputs.rebuild == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup Pages
+        if: steps.head.outputs.rebuild == 'true'
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Bangun ulang dari ujung main
+        if: steps.head.outputs.rebuild == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run check && npm run build
+          node scripts/verify-pages-build.mjs "$VITE_BASE_PATH"
+          tip_now="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_REF_NAME}" --jq .sha)"
+          if [ "$tip_now" != "${{ steps.head.outputs.tip }}" ]; then
+            echo "Ujung main berpindah lagi ke ${tip_now}. Memicu deploy baru."
+            gh workflow run pages.yml --ref main
+          fi
+
+      - name: Ganti artefak Pages dengan ujung main
+        if: steps.head.outputs.rebuild == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          ids="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts" --jq '.artifacts[] | select(.name=="github-pages" and .expired==false) | .id')"
+          for id in $ids; do
+            gh api --method DELETE "repos/${GITHUB_REPOSITORY}/actions/artifacts/${id}"
+          done
+          sleep 2
+
+      - name: Upload artefak ujung main
+        if: steps.head.outputs.rebuild == 'true'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
       - name: Deploy to GitHub Pages
-        if: steps.head.outputs.skip != 'true'
         id: deployment
         uses: actions/deploy-pages@v5
