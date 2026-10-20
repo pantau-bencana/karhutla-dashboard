@@ -1,0 +1,515 @@
+kode_kab,nama_kab,adm4,cara,status,http,provinsi_api,kotkab_api,kecamatan_api,desa_api
+11.01,Aceh Selatan,11.01.01.2001,desa-terkecil,ok,200,Aceh,Aceh Selatan,Bakongan,Keude Bakongan
+11.02,Aceh Tenggara,11.02.01.2001,desa-terkecil,ok,200,Aceh,Aceh Tenggara,Lawe Alas,Engkeran
+11.03,Aceh Timur,11.03.01.2001,desa-terkecil,ok,200,Aceh,Aceh Timur,Darul Aman,Alue Luddin Sa
+11.04,Aceh Tengah,11.04.01.2003,desa-terkecil,ok,200,Aceh,Aceh Tengah,Linge,Delung Sekinel
+11.05,Aceh Barat,11.05.01.2001,desa-terkecil,ok,200,Aceh,Aceh Barat,Johan Pahlawan,Suak Indrapuri
+11.06,Aceh Besar,11.06.01.2001,desa-terkecil,ok,200,Aceh,Aceh Besar,Lhoong,Meunasah Krueng Kala
+11.07,Pidie,11.07.03.2001,desa-terkecil,ok,200,Aceh,Pidie,Batee,Dayah Tuha
+11.08,Aceh Utara,11.08.01.2001,desa-terkecil,ok,200,Aceh,Aceh Utara,Baktiya,Keude Alue Ie Puteh
+11.09,Simeulue,11.09.01.2007,desa-terkecil,ok,200,Aceh,Simeulue,Simeulue Tengah,Wel Wel
+11.10,Aceh Singkil,11.10.01.2001,desa-terkecil,ok,200,Aceh,Aceh Singkil,Pulau Banyak,Pulau Balai
+11.11,Bireuen,11.11.01.2001,desa-terkecil,ok,200,Aceh,Bireuen,Samalanga,Keude Aceh
+11.12,Aceh Barat Daya,11.12.01.2006,desa-terkecil,ok,200,Aceh,Aceh Barat Daya,Blangpidie,Guhang
+11.13,Gayo Lues,11.13.01.2001,desa-terkecil,ok,200,Aceh,Gayo Lues,Blangkejeren,Blangkejeren
+11.14,Aceh Jaya,11.14.01.2001,desa-terkecil,ok,200,Aceh,Aceh Jaya,Teunom,Keude Teunom
+11.15,Nagan Raya,11.15.01.2003,desa-terkecil,ok,200,Aceh,Nagan Raya,Kuala,Lawa Batu
+11.16,Aceh Tamiang,11.16.01.2001,desa-terkecil,ok,200,Aceh,Aceh Tamiang,Manyak Payed,Simpang Lhee
+11.17,Bener Meriah,11.17.01.2001,desa-terkecil,ok,200,Aceh,Bener Meriah,Pintu Rime Gayo,Blang Rakal
+11.18,Pidie Jaya,11.18.01.2001,desa-terkecil,ok,200,Aceh,Pidie Jaya,Meureudu,Meunasah Balek
+11.71,Kota Banda Aceh,11.71.01.2001,desa-terkecil,ok,200,Aceh,Kota Banda Aceh,Baiturrahman,Kampung Baru
+11.72,Kota Sabang,11.72.01.2004,desa-terkecil,ok,200,Aceh,Kota Sabang,Sukakarya,Krueng Raya
+11.73,Kota Lhokseumawe,11.73.01.2002,desa-terkecil,ok,200,Aceh,Kota Lhokseumawe,Muara Dua,Alue Awe
+11.74,Kota Langsa,11.74.01.2007,desa-terkecil,ok,200,Aceh,Kota Langsa,Langsa Timur,Buket Medang Ara
+11.75,Kota Subulussalam,11.75.01.2001,desa-terkecil,ok,200,Aceh,Kota Subulussalam,Simpang Kiri,Subulussalam
+12.01,Tapanuli Tengah,12.01.01.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Tapanuli Tengah,Barus,Pasar Batu Gerigis
+12.02,Tapanuli Utara,12.02.01.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Tapanuli Utara,Tarutung,Partoli Toruan
+12.03,Tapanuli Selatan,12.03.01.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Tapanuli Selatan,Angkola Barat,Sitinjak
+12.04,Nias,12.04.05.2001,desa-terkecil,ok,200,Sumatera Utara,Nias,Hiliduho,Ononamolo I Bot
+12.05,Langkat,12.05.01.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Langkat,Bahorok,Pekan Bahorok
+12.06,Karo,12.06.01.1009,kelurahan-terkecil,ok,200,Sumatera Utara,Karo,Kabanjahe,Padang Mas
+12.07,Deli Serdang,12.07.02.1026,kelurahan-terkecil,ok,200,Sumatera Utara,Deli Serdang,Tanjung Morawa,Pekan Tanjung Morawa
+12.08,Simalungun,12.08.04.1011,kelurahan-terkecil,ok,200,Sumatera Utara,Simalungun,Panei,Panei Tongah
+12.09,Asahan,12.09.09.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Asahan,Air Joman,Binjai Serbangan
+12.10,Labuhanbatu,12.10.01.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Labuhanbatu,Rantau Utara,Padang Matinggi
+12.11,Dairi,12.11.01.1005,kelurahan-terkecil,ok,200,Sumatera Utara,Dairi,Sidikalang,Kuta Gambir
+12.12,Toba,12.12.01.1034,kelurahan-terkecil,ok,200,Sumatera Utara,Toba,Balige,Balige I
+12.13,Mandailing Natal,12.13.01.1011,kelurahan-terkecil,ok,200,Sumatera Utara,Mandailing Natal,Panyabungan,Kota Siantar
+12.14,Nias Selatan,12.14.05.1046,kelurahan-terkecil,ok,200,Sumatera Utara,Nias Selatan,Pulau-Pulau Batu,Pasar Pulau Tello
+12.15,Pakpak Bharat,12.15.01.2001,desa-terkecil,ok,200,Sumatera Utara,Pakpak Bharat,Sitelu Tali Urang Jehe,Tanjung Meriah
+12.16,Humbang Hasundutan,12.16.06.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Humbang Hasundutan,Dolok Sanggul,Pasar Dolok Sanggul
+12.17,Samosir,12.17.01.1016,kelurahan-terkecil,ok,200,Sumatera Utara,Samosir,Simanindo,Tuktuk Siadong
+12.18,Serdang Bedagai,12.18.02.1038,kelurahan-terkecil,ok,200,Sumatera Utara,Serdang Bedagai,Perbaungan,Melati I
+12.19,Batu Bara,12.19.01.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Batu Bara,Medang Deras,Pangkalan Dodek
+12.20,Padang Lawas Utara,12.20.04.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Padang Lawas Utara,Padang Bolak,Pasar Gunung Tua
+12.21,Padang Lawas,12.21.07.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Padang Lawas,Barumun,Pasar Sibuhuan
+12.22,Labuhanbatu Selatan,12.22.01.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Labuhanbatu Selatan,Kotapinang,Kotapinang
+12.23,Labuhanbatu Utara,12.23.01.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Labuhanbatu Utara,Kualuh Hulu,Aek Kanopan
+12.24,Nias Utara,12.24.10.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Nias Utara,Lahewa,Pasar Lahewa
+12.25,Nias Barat,12.25.01.2001,desa-terkecil,ok,200,Sumatera Utara,Nias Barat,Lahomi,Sisobaoho
+12.71,Kota Medan,12.71.01.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Kota Medan,Medan Kota,Pasar Baru
+12.72,Kota Pematangsiantar,12.72.01.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Kota Pematangsiantar,Siantar Timur,Kebun Sayur
+12.73,Kota Sibolga,12.73.01.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Kota Sibolga,Sibolga Utara,Huta Barangan
+12.74,Kota Tanjung Balai,12.74.01.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Kota Tanjung Balai,Tanjungbalai Selatan,Tanjungbalai Kota I
+12.75,Kota Binjai,12.75.01.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Kota Binjai,Binjai Utara,Pahlawan
+12.76,Kota Tebing Tinggi,12.76.01.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Kota Tebing Tinggi,Padang Hulu,Pabatu
+12.77,Kota Padang Sidempuan,12.77.01.1001,kelurahan-terkecil,ok,200,Sumatera Utara,Kota Padang Sidempuan,Padangsidimpuan Utara,Wek I
+12.78,Kota Gunungsitoli,12.78.01.1030,kelurahan-terkecil,ok,200,Sumatera Utara,Kota Gunungsitoli,Gunungsitoli,Pasar Gunungsitoli
+13.01,Pesisir Selatan,13.01.01.2001,desa-terkecil,ok,200,Sumatera Barat,Pesisir Selatan,Pancung Soal,Inderapura
+13.02,Solok,13.02.03.2001,desa-terkecil,ok,200,Sumatera Barat,Solok,Pantai Cermin,Lolo
+13.03,Sijunjung,13.03.03.2001,desa-terkecil,ok,200,Sumatera Barat,Sijunjung,Tanjung Gadang,Timbulun
+13.04,Tanah Datar,13.04.01.2001,desa-terkecil,ok,200,Sumatera Barat,Tanah Datar,X Koto,Tambangan
+13.05,Padang Pariaman,13.05.01.2001,desa-terkecil,ok,200,Sumatera Barat,Padang Pariaman,Lubuk Alung,Lubuk Alung
+13.06,Agam,13.06.01.2001,desa-terkecil,ok,200,Sumatera Barat,Agam,Tanjung Mutiara,Tiku Selatan
+13.07,Lima Puluh Kota,13.07.01.2001,desa-terkecil,ok,200,Sumatera Barat,Lima Puluh Kota,Suliki,Kurai
+13.08,Pasaman,13.08.04.2001,desa-terkecil,ok,200,Sumatera Barat,Pasaman,Bonjol,Limo Koto
+13.09,Kepulauan Mentawai,13.09.01.2007,desa-terkecil,ok,200,Sumatera Barat,Kepulauan Mentawai,Pagai Utara,Betumonga
+13.10,Dharmasraya,13.10.01.2002,desa-terkecil,ok,200,Sumatera Barat,Dharmasraya,Koto Baru,Koto Baru
+13.11,Solok Selatan,13.11.01.2001,desa-terkecil,ok,200,Sumatera Barat,Solok Selatan,Sangir,Lubuk Gadang
+13.12,Pasaman Barat,13.12.01.2001,desa-terkecil,ok,200,Sumatera Barat,Pasaman Barat,Sungai Beremas,Aia Bangih
+13.71,Kota Padang,13.71.01.1001,kelurahan-terkecil,ok,200,Sumatera Barat,Kota Padang,Padang Selatan,Belakang Pondok
+13.72,Kota Solok,13.72.01.1001,kelurahan-terkecil,ok,200,Sumatera Barat,Kota Solok,Lubuk Sikarah,Tanah Garam
+13.73,Kota Sawahlunto,13.73.01.1001,kelurahan-terkecil,ok,200,Sumatera Barat,Kota Sawahlunto,Lembah Segar,Aur Mulio
+13.74,Kota Padang Panjang,13.74.01.1001,kelurahan-terkecil,ok,200,Sumatera Barat,Kota Padang Panjang,Padang Panjang Timur,Ganting
+13.75,Kota Bukittinggi,13.75.01.1001,kelurahan-terkecil,ok,200,Sumatera Barat,Kota Bukittinggi,Guguak Panjang,Tarok Dipo
+13.76,Kota Payakumbuh,13.76.01.1002,kelurahan-terkecil,ok,200,Sumatera Barat,Kota Payakumbuh,Payakumbuh Barat,Pakan Sinayan
+13.77,Kota Pariaman,13.77.01.1001,kelurahan-terkecil,ok,200,Sumatera Barat,Kota Pariaman,Pariaman Tengah,Karan Aur
+14.01,Kampar,14.01.01.1011,kelurahan-terkecil,ok,200,Riau,Kampar,Bangkinang Kota,Bangkinang
+14.02,Indragiri Hulu,14.02.01.1004,kelurahan-terkecil,ok,200,Riau,Indragiri Hulu,Rengat,Kampung Dagang
+14.03,Bengkalis,14.03.01.1001,kelurahan-terkecil,ok,200,Riau,Bengkalis,Bengkalis,Bengkalis Kota
+14.04,Indragiri Hilir,14.04.01.1001,kelurahan-terkecil,ok,200,Riau,Indragiri Hilir,Reteh,Pulaukijang
+14.05,Pelalawan,14.05.01.1010,kelurahan-terkecil,ok,200,Riau,Pelalawan,Ukui,Ukui I
+14.06,Rokan Hulu,14.06.01.1001,kelurahan-terkecil,ok,200,Riau,Rokan Hulu,Ujung Batu,Ujung Batu
+14.07,Rokan Hilir,14.07.01.1010,kelurahan-terkecil,ok,200,Riau,Rokan Hilir,Kubu,Telukmerbau
+14.08,Siak,14.08.01.1001,kelurahan-terkecil,ok,200,Riau,Siak,Siak,Kampung Dalam
+14.09,Kuantan Singingi,14.09.01.1012,kelurahan-terkecil,ok,200,Riau,Kuantan Singingi,Kuantan Mudik,Pasar Lubuk Jambi
+14.10,Kepulauan Meranti,14.10.01.1001,kelurahan-terkecil,ok,200,Riau,Kepulauan Meranti,Tebing Tinggi,Selatpanjang Kota
+14.71,Kota Pekanbaru,14.71.05.1001,terverifikasi,ok,200,Riau,Kota Pekanbaru,Senapelan,Padang Bulan
+14.72,Kota Dumai,14.72.01.1003,kelurahan-terkecil,ok,200,Riau,Kota Dumai,Dumai Barat,Pangkalan Sesai
+15.01,Kerinci,15.01.01.1004,kelurahan-terkecil,ok,200,Jambi,Kerinci,Gunung Raya,Lempur Tengah
+15.02,Merangin,15.02.02.1009,kelurahan-terkecil,ok,200,Jambi,Merangin,Bangko,Pasar Atas
+15.03,Sarolangun,15.03.03.1001,kelurahan-terkecil,ok,200,Jambi,Sarolangun,Sarolangun,Dusun Sarolangun
+15.04,Batanghari,15.04.01.1001,kelurahan-terkecil,ok,200,Jambi,Batanghari,Mersam,Kembang Paseban
+15.05,Muaro Jambi,15.05.01.1003,kelurahan-terkecil,ok,200,Jambi,Muaro Jambi,Jambi Luar Kota,Pijoan
+15.06,Tanjung Jabung Barat,15.06.01.1005,kelurahan-terkecil,ok,200,Jambi,Tanjung Jabung Barat,Tungkal Ulu,Pelabuhan Dagang
+15.07,Tanjung Jabung Timur,15.07.01.1010,kelurahan-terkecil,ok,200,Jambi,Tanjung Jabung Timur,Muara Sabak Timur,Muara Sabak Ilir
+15.08,Bungo,15.08.03.1006,kelurahan-terkecil,ok,200,Jambi,Bungo,Pasar Muaro Bungo,Tanjung Gedang
+15.09,Tebo,15.09.01.1001,kelurahan-terkecil,ok,200,Jambi,Tebo,Tebo Tengah,Muara Tebo
+15.71,Kota Jambi,15.71.01.1001,terverifikasi,ok,200,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin
+15.72,Kota Sungai Penuh,15.72.01.1001,kelurahan-terkecil,ok,200,Jambi,Kota Sungai Penuh,Sungai Penuh,Sungai Penuh
+16.01,Ogan Komering Ulu,16.01.13.1003,kelurahan-terkecil,ok,200,Sumatera Selatan,Ogan Komering Ulu,Baturaja Barat,Tanjungagung
+16.02,Ogan Komering Ilir,16.02.02.1011,kelurahan-terkecil,ok,200,Sumatera Selatan,Ogan Komering Ilir,Tanjung Lubuk,Tanjung Lubuk
+16.03,Muara Enim,16.03.02.1006,kelurahan-terkecil,ok,200,Sumatera Selatan,Muara Enim,Muara Enim,Tungkal
+16.04,Lahat,16.04.10.1031,kelurahan-terkecil,ok,200,Sumatera Selatan,Lahat,Lahat,Lahat Tengah
+16.05,Musi Rawas,16.05.01.1001,kelurahan-terkecil,ok,200,Sumatera Selatan,Musi Rawas,Tugumulyo,B. Srikaton
+16.06,Musi Banyuasin,16.06.01.1009,kelurahan-terkecil,ok,200,Sumatera Selatan,Musi Banyuasin,Sekayu,Kayu Ara
+16.07,Banyuasin,16.07.01.1016,kelurahan-terkecil,ok,200,Sumatera Selatan,Banyuasin,Banyuasin I,Mariana
+16.08,Ogan Komering Ulu Timur,16.08.01.1007,kelurahan-terkecil,ok,200,Sumatera Selatan,Ogan Komering Ulu Timur,Martapura,Dusun Martapura
+16.09,Ogan Komering Ulu Selatan,16.09.01.1013,kelurahan-terkecil,ok,200,Sumatera Selatan,Ogan Komering Ulu Selatan,Muara Dua,Batu Belang Jaya
+16.10,Ogan Ilir,16.10.01.1011,kelurahan-terkecil,ok,200,Sumatera Selatan,Ogan Ilir,Muara Kuang,Muara Kuang
+16.11,Empat Lawang,16.11.02.1018,kelurahan-terkecil,ok,200,Sumatera Selatan,Empat Lawang,Pendopo,Beruge Ilir
+16.12,Penukal Abab Lematang Ilir,16.12.01.1003,kelurahan-terkecil,ok,200,Sumatera Selatan,Penukal Abab Lematang Ilir,Talang Ubi,Talang Ubi Timur
+16.13,Musi Rawas Utara,16.13.01.1007,kelurahan-terkecil,ok,200,Sumatera Selatan,Musi Rawas Utara,Rupit,Muara Rupit
+16.71,Kota Palembang,16.71.01.1001,terverifikasi,ok,200,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir
+16.72,Kota Pagar Alam,16.72.01.1001,kelurahan-terkecil,ok,200,Sumatera Selatan,Kota Pagar Alam,Pagar Alam Utara,Sukorejo
+16.73,Kota Lubuk Linggau,16.73.01.1001,kelurahan-terkecil,ok,200,Sumatera Selatan,Kota Lubuk Linggau,Lubuk Linggau Timur I,Air Kuti
+16.74,Kota Prabumulih,16.74.01.1001,kelurahan-terkecil,ok,200,Sumatera Selatan,Kota Prabumulih,Prabumulih Barat,Prabumulih
+17.01,Bengkulu Selatan,17.01.02.1024,kelurahan-terkecil,ok,200,Bengkulu,Bengkulu Selatan,Seginim,Pasar Baru
+17.02,Rejang Lebong,17.02.06.1004,kelurahan-terkecil,ok,200,Bengkulu,Rejang Lebong,Kota Padang,Kota Padang
+17.03,Bengkulu Utara,17.03.06.1009,kelurahan-terkecil,ok,200,Bengkulu,Bengkulu Utara,Kerkap,Lubuk Durian
+17.04,Kaur,17.04.03.1010,kelurahan-terkecil,ok,200,Bengkulu,Kaur,Kaur Utara,Simpang Tiga
+17.05,Seluma,17.05.01.1001,kelurahan-terkecil,ok,200,Bengkulu,Seluma,Sukaraja,Babatan
+17.06,Muko Muko,17.06.02.1009,kelurahan-terkecil,ok,200,Bengkulu,Muko Muko,Kota Mukomuko,Pasar Muko-Muko
+17.07,Lebong,17.07.01.1004,kelurahan-terkecil,ok,200,Bengkulu,Lebong,Lebong Utara,Kampung Jawa
+17.08,Kepahiang,17.08.01.1007,kelurahan-terkecil,ok,200,Bengkulu,Kepahiang,Bermani Ilir,Keban Agung
+17.09,Bengkulu Tengah,17.09.06.1007,kelurahan-terkecil,ok,200,Bengkulu,Bengkulu Tengah,Taba Penanjung,Taba Penanjung
+17.71,Kota Bengkulu,17.71.01.1001,kelurahan-terkecil,ok,200,Bengkulu,Kota Bengkulu,Selebar,Pagar Dewa
+18.01,Lampung Selatan,18.01.06.1006,kelurahan-terkecil,ok,200,Lampung,Lampung Selatan,Kalianda,Bumi Agung
+18.02,Lampung Tengah,18.02.04.1005,kelurahan-terkecil,ok,200,Lampung,Lampung Tengah,Gunung Sugih,Gunung Sugih
+18.03,Lampung Utara,18.03.01.1001,kelurahan-terkecil,ok,200,Lampung,Lampung Utara,Bukit Kemuning,Bukit Kemuning
+18.04,Lampung Barat,18.04.04.1001,kelurahan-terkecil,ok,200,Lampung,Lampung Barat,Balik Bukit,Pasar Liwa
+18.05,Tulang Bawang,18.05.02.1008,kelurahan-terkecil,ok,200,Lampung,Tulang Bawang,Menggala,Menggala Selatan
+18.06,Tanggamus,18.06.01.1001,kelurahan-terkecil,ok,200,Lampung,Tanggamus,Kota Agung,Baros
+18.07,Lampung Timur,18.07.01.2001,desa-terkecil,ok,200,Lampung,Lampung Timur,Sukadana,Sukadana
+18.08,Way Kanan,18.08.01.1005,kelurahan-terkecil,ok,200,Lampung,Way Kanan,Blambangan Umpu,Blambangan Umpu
+18.09,Pesawaran,18.09.01.2001,desa-terkecil,ok,200,Lampung,Pesawaran,Gedong Tataan,Padang Ratu
+18.10,Pringsewu,18.10.01.1001,kelurahan-terkecil,ok,200,Lampung,Pringsewu,Pringsewu,Fajaresuk
+18.11,Mesuji,18.11.01.2001,desa-terkecil,ok,200,Lampung,Mesuji,Mesuji,Wiralaga I
+18.12,Tulang Bawang Barat,18.12.01.1001,kelurahan-terkecil,ok,200,Lampung,Tulang Bawang Barat,Tulang Bawang Tengah,Mulyo Asri
+18.13,Pesisir Barat,18.13.01.1005,kelurahan-terkecil,ok,200,Lampung,Pesisir Barat,Pesisir Tengah,Pasar Krui
+18.71,Kota Bandar Lampung,18.71.01.1003,kelurahan-terkecil,ok,200,Lampung,Kota Bandar Lampung,Kedaton,Kedaton
+18.72,Kota Metro,18.72.01.1001,kelurahan-terkecil,ok,200,Lampung,Kota Metro,Metro Pusat,Metro
+19.01,Bangka,19.01.01.1001,kelurahan-terkecil,ok,200,Kepulauan Bangka Belitung,Bangka,Sungailiat,Sungailiat
+19.02,Belitung,19.02.01.1001,kelurahan-terkecil,ok,200,Kepulauan Bangka Belitung,Belitung,Tanjung Pandan,Kota
+19.03,Bangka Selatan,19.03.01.1001,kelurahan-terkecil,ok,200,Kepulauan Bangka Belitung,Bangka Selatan,Toboali,Toboali
+19.04,Bangka Tengah,19.04.01.1001,kelurahan-terkecil,ok,200,Kepulauan Bangka Belitung,Bangka Tengah,Koba,Koba
+19.05,Bangka Barat,19.05.01.1001,kelurahan-terkecil,ok,200,Kepulauan Bangka Belitung,Bangka Barat,Mentok,Tanjung
+19.06,Belitung Timur,19.06.01.2001,desa-terkecil,ok,200,Kepulauan Bangka Belitung,Belitung Timur,Manggar,Lalang Jaya
+19.71,Kota Pangkal Pinang,19.71.01.1004,kelurahan-terkecil,ok,200,Kepulauan Bangka Belitung,Kota Pangkal Pinang,Bukit Intan,Semabung Lama
+21.01,Bintan,21.01.04.1005,kelurahan-terkecil,ok,200,Kepulauan Riau,Bintan,Gunung Kijang,Kawal
+21.02,Karimun,21.02.01.1003,kelurahan-terkecil,ok,200,Kepulauan Riau,Karimun,Moro,Moro
+21.03,Natuna,21.03.04.1003,kelurahan-terkecil,ok,200,Kepulauan Riau,Natuna,Midai,Sabang Barat
+21.04,Lingga,21.04.01.1001,kelurahan-terkecil,ok,200,Kepulauan Riau,Lingga,Singkep,Dabo
+21.05,Kepulauan Anambas,21.05.01.1001,kelurahan-terkecil,ok,200,Kepulauan Riau,Kepulauan Anambas,Siantan,Terempa
+21.71,Kota Batam,21.71.01.1002,kelurahan-terkecil,ok,200,Kepulauan Riau,Kota Batam,Belakang Padang,Pemping
+21.72,Kota Tanjung Pinang,21.72.01.1001,kelurahan-terkecil,ok,200,Kepulauan Riau,Kota Tanjung Pinang,Tanjung Pinang Barat,Tanjung Pinang Barat
+31.01,Adm. Kep. Seribu,31.01.01.1001,kelurahan-terkecil,ok,200,DKI Jakarta,Administrasi Kepulauan Seribu,Kepulauan Seribu Utara,Pulau Panggang
+31.71,Kota Adm. Jakarta Pusat,31.71.01.1001,kelurahan-terkecil,ok,200,DKI Jakarta,Kota Adm. Jakarta Pusat,Gambir,Gambir
+31.72,Kota Adm. Jakarta Utara,31.72.01.1001,kelurahan-terkecil,ok,200,DKI Jakarta,Kota Adm. Jakarta Utara,Penjaringan,Penjaringan
+31.73,Kota Adm. Jakarta Barat,31.73.01.1001,kelurahan-terkecil,ok,200,DKI Jakarta,Kota Adm. Jakarta Barat,Cengkareng,Cengkareng Barat
+31.74,Kota Adm. Jakarta Selatan,31.74.01.1001,kelurahan-terkecil,ok,200,DKI Jakarta,Kota Adm. Jakarta Selatan,Tebet,Tebet Timur
+31.75,Kota Adm. Jakarta Timur,31.75.01.1001,kelurahan-terkecil,ok,200,DKI Jakarta,Kota Adm. Jakarta Timur,Matraman,Pisangan Baru
+32.01,Bogor,32.01.01.1001,kelurahan-terkecil,ok,200,Jawa Barat,Bogor,Cibinong,Pondok Rajeg
+32.02,Sukabumi,32.02.01.1001,kelurahan-terkecil,ok,200,Jawa Barat,Sukabumi,Palabuhanratu,Palabuhanratu
+32.03,Cianjur,32.03.01.1006,kelurahan-terkecil,ok,200,Jawa Barat,Cianjur,Cianjur,Pamoyanan
+32.04,Bandung,32.04.06.1001,kelurahan-terkecil,ok,200,Jawa Barat,Bandung,Cimenyan,Padasuka
+32.05,Garut,32.05.01.1001,kelurahan-terkecil,ok,200,Jawa Barat,Garut,Garut Kota,Kota Kulon
+32.06,Tasikmalaya,32.06.01.2001,desa-terkecil,ok,200,Jawa Barat,Tasikmalaya,Cipatujah,Ciheras
+32.07,Ciamis,32.07.01.1001,kelurahan-terkecil,ok,200,Jawa Barat,Ciamis,Ciamis,Ciamis
+32.08,Kuningan,32.08.09.1001,kelurahan-terkecil,ok,200,Jawa Barat,Kuningan,Kuningan,Citangtu
+32.09,Cirebon,32.09.15.1003,kelurahan-terkecil,ok,200,Jawa Barat,Cirebon,Sumber,Babakan
+32.10,Majalengka,32.10.07.1001,kelurahan-terkecil,ok,200,Jawa Barat,Majalengka,Majalengka,Munjul
+32.11,Sumedang,32.11.17.1001,kelurahan-terkecil,ok,200,Jawa Barat,Sumedang,Sumedang Selatan,Pasanggrahan Baru
+32.12,Indramayu,32.12.15.1001,kelurahan-terkecil,ok,200,Jawa Barat,Indramayu,Indramayu,Bojongsari
+32.13,Subang,32.13.03.1001,kelurahan-terkecil,ok,200,Jawa Barat,Subang,Subang,Parung
+32.14,Purwakarta,32.14.01.1001,kelurahan-terkecil,ok,200,Jawa Barat,Purwakarta,Purwakarta,Nagri Kidul
+32.15,Karawang,32.15.01.1001,kelurahan-terkecil,ok,200,Jawa Barat,Karawang,Karawang Barat,Karawang Kulon
+32.16,Bekasi,32.16.01.1007,kelurahan-terkecil,ok,200,Jawa Barat,Bekasi,Tarumajaya,Setia Asih
+32.17,Bandung Barat,32.17.01.2001,desa-terkecil,ok,200,Jawa Barat,Bandung Barat,Lembang,Pagerwangi
+32.18,Pangandaran,32.18.01.2001,desa-terkecil,ok,200,Jawa Barat,Pangandaran,Parigi,Parigi
+32.71,Kota Bogor,32.71.01.1001,kelurahan-terkecil,ok,200,Jawa Barat,Kota Bogor,Bogor Selatan,Batu Tulis
+32.72,Kota Sukabumi,32.72.01.1001,kelurahan-terkecil,ok,200,Jawa Barat,Kota Sukabumi,Gunung Puyuh,Gunung Puyuh
+32.73,Kota Bandung,32.73.01.1001,kelurahan-terkecil,ok,200,Jawa Barat,Kota Bandung,Sukasari,Sukarasa
+32.74,Kota Cirebon,32.74.01.1001,kelurahan-terkecil,ok,200,Jawa Barat,Kota Cirebon,Kejaksan,Kejaksan
+32.75,Kota Bekasi,32.75.01.1001,kelurahan-terkecil,ok,200,Jawa Barat,Kota Bekasi,Bekasi Timur,Bekasijaya
+32.76,Kota Depok,32.76.01.1006,kelurahan-terkecil,ok,200,Jawa Barat,Kota Depok,Pancoran Mas,Depok
+32.77,Kota Cimahi,32.77.01.1001,kelurahan-terkecil,ok,200,Jawa Barat,Kota Cimahi,Cimahi Selatan,Melong
+32.78,Kota Tasikmalaya,32.78.01.1001,kelurahan-terkecil,ok,200,Jawa Barat,Kota Tasikmalaya,Cihideung,Yudanagara
+32.79,Kota Banjar,32.79.01.1001,kelurahan-terkecil,ok,200,Jawa Barat,Kota Banjar,Banjar,Banjar
+33.01,Cilacap,33.01.21.1001,kelurahan-terkecil,ok,200,Jawa Tengah,Cilacap,Cilacap selatan,Sidakaya
+33.02,Banyumas,33.02.07.1012,kelurahan-terkecil,ok,200,Jawa Tengah,Banyumas,Sumpiuh,Kebokura
+33.03,Purbalingga,33.03.05.1001,kelurahan-terkecil,ok,200,Jawa Tengah,Purbalingga,Purbalingga,Bojong
+33.04,Banjarnegara,33.04.06.1001,kelurahan-terkecil,ok,200,Jawa Tengah,Banjarnegara,Banjarnegara,Argasoka
+33.05,Kebumen,33.05.12.1010,kelurahan-terkecil,ok,200,Jawa Tengah,Kebumen,Kebumen,Selang
+33.06,Purworejo,33.06.06.1007,kelurahan-terkecil,ok,200,Jawa Tengah,Purworejo,Purworejo,Cangkrepkidul
+33.07,Wonosobo,33.07.01.1007,kelurahan-terkecil,ok,200,Jawa Tengah,Wonosobo,Wadaslintang,Wadaslintang
+33.08,Magelang,33.08.08.1014,kelurahan-terkecil,ok,200,Jawa Tengah,Magelang,Muntilan,Muntilan
+33.09,Boyolali,33.09.05.1001,kelurahan-terkecil,ok,200,Jawa Tengah,Boyolali,Boyolali,Pulisen
+33.10,Klaten,33.10.20.1015,kelurahan-terkecil,ok,200,Jawa Tengah,Klaten,Jatinom,Jatinom
+33.11,Sukoharjo,33.11.04.1001,kelurahan-terkecil,ok,200,Jawa Tengah,Sukoharjo,Sukoharjo,Kenep
+33.12,Wonogiri,33.12.01.1009,kelurahan-terkecil,ok,200,Jawa Tengah,Wonogiri,Pracimantoro,Gedong
+33.13,Karanganyar,33.13.06.1002,kelurahan-terkecil,ok,200,Jawa Tengah,Karanganyar,Tawangmangu,Blumbang
+33.14,Sragen,33.14.09.1009,kelurahan-terkecil,ok,200,Jawa Tengah,Sragen,Karangmalang,Plumbungan
+33.15,Grobogan,33.15.10.1006,kelurahan-terkecil,ok,200,Jawa Tengah,Grobogan,Wirosari,Wirosari
+33.16,Blora,33.16.02.1005,kelurahan-terkecil,ok,200,Jawa Tengah,Blora,Randublatung,Randublatung
+33.17,Rembang,33.17.10.1019,kelurahan-terkecil,ok,200,Jawa Tengah,Rembang,Rembang,Magersari
+33.18,Pati,33.18.10.1005,kelurahan-terkecil,ok,200,Jawa Tengah,Pati,Pati,Pati Wetan
+33.19,Kudus,33.19.02.1001,kelurahan-terkecil,ok,200,Jawa Tengah,Kudus,Kota Kudus,Purwosari
+33.20,Jepara,33.20.06.1001,kelurahan-terkecil,ok,200,Jawa Tengah,Jepara,Jepara,Karangkebagusan
+33.21,Demak,33.21.11.1014,kelurahan-terkecil,ok,200,Jawa Tengah,Demak,Demak,Mangunjiwan
+33.22,Semarang,33.22.08.1006,kelurahan-terkecil,ok,200,Jawa Tengah,Semarang,Jambu,Gondoriyo
+33.23,Temanggung,33.23.03.1001,kelurahan-terkecil,ok,200,Jawa Tengah,Temanggung,Temanggung,Temanggung I
+33.24,Kendal,33.24.15.1001,kelurahan-terkecil,ok,200,Jawa Tengah,Kendal,Kendal,Candiroto
+33.25,Batang,33.25.11.1013,kelurahan-terkecil,ok,200,Jawa Tengah,Batang,Batang,Watesalit
+33.26,Pekalongan,33.26.08.1016,kelurahan-terkecil,ok,200,Jawa Tengah,Pekalongan,Kajen,Kajen
+33.27,Pemalang,33.27.08.1004,kelurahan-terkecil,ok,200,Jawa Tengah,Pemalang,Pemalang,Paduraksa
+33.28,Tegal,33.28.10.1006,kelurahan-terkecil,ok,200,Jawa Tengah,Tegal,Slawi,Pakembaran
+33.29,Brebes,33.29.09.1002,kelurahan-terkecil,ok,200,Jawa Tengah,Brebes,Brebes,Brebes
+33.71,Kota Magelang,33.71.01.1003,kelurahan-terkecil,ok,200,Jawa Tengah,Kota Magelang,Magelang Selatan,Rejowinangun Selatan
+33.72,Kota Surakarta,33.72.01.1001,kelurahan-terkecil,ok,200,Jawa Tengah,Kota Surakarta,Laweyan,Pajang
+33.73,Kota Salatiga,33.73.01.1001,kelurahan-terkecil,ok,200,Jawa Tengah,Kota Salatiga,Sidorejo,Blotongan
+33.74,Kota Semarang,33.74.01.1001,kelurahan-terkecil,ok,200,Jawa Tengah,Kota Semarang,Semarang Tengah,Miroto
+33.75,Kota Pekalongan,33.75.01.1002,kelurahan-terkecil,ok,200,Jawa Tengah,Kota Pekalongan,Pekalongan Barat,Medono
+33.76,Kota Tegal,33.76.01.1001,kelurahan-terkecil,ok,200,Jawa Tengah,Kota Tegal,Tegal Barat,Pesurungan Kidul
+34.01,Kulon Progo,34.01.02.1008,kelurahan-terkecil,ok,200,Daerah Istimewa Yogyakarta,Kulon Progo,Wates,Wates
+34.02,Bantul,34.02.01.2001,desa-terkecil,ok,200,Daerah Istimewa Yogyakarta,Bantul,Srandakan,Poncosari
+34.03,Gunungkidul,34.03.01.2001,desa-terkecil,ok,200,Daerah Istimewa Yogyakarta,Gunungkidul,Wonosari,Wonosari
+34.04,Sleman,34.04.01.2001,desa-terkecil,ok,200,Daerah Istimewa Yogyakarta,Sleman,Gamping,Balecatur
+34.71,Kota Yogyakarta,34.71.01.1001,kelurahan-terkecil,ok,200,Daerah Istimewa Yogyakarta,Kota Yogyakarta,Tegalrejo,Kricak
+35.01,Pacitan,35.01.04.1001,kelurahan-terkecil,ok,200,Jawa Timur,Pacitan,Pacitan,Sidoharjo
+35.02,Ponorogo,35.02.10.1017,kelurahan-terkecil,ok,200,Jawa Timur,Ponorogo,Siman,Ronowijayan
+35.03,Trenggalek,35.03.11.1002,kelurahan-terkecil,ok,200,Jawa Timur,Trenggalek,Trenggalek,Tamanan
+35.04,Tulungagung,35.04.01.1001,kelurahan-terkecil,ok,200,Jawa Timur,Tulungagung,Tulungagung,Kedungsoko
+35.05,Blitar,35.05.03.1004,kelurahan-terkecil,ok,200,Jawa Timur,Blitar,Srengat,Togogan
+35.06,Kediri,35.06.17.1009,kelurahan-terkecil,ok,200,Jawa Timur,Kediri,Pare,Pare
+35.07,Malang,35.07.05.1007,kelurahan-terkecil,ok,200,Jawa Timur,Malang,Dampit,Dampit
+35.08,Lumajang,35.08.10.1003,kelurahan-terkecil,ok,200,Jawa Timur,Lumajang,Lumajang,Citrodiwangsan
+35.09,Jember,35.09.19.1001,kelurahan-terkecil,ok,200,Jawa Timur,Jember,Kaliwates,Mangli
+35.10,Banyuwangi,35.10.15.1002,kelurahan-terkecil,ok,200,Jawa Timur,Banyuwangi,Glagah,Bakungan
+35.11,Bondowoso,35.11.07.1009,kelurahan-terkecil,ok,200,Jawa Timur,Bondowoso,Curahdami,Curahdami
+35.12,Situbondo,35.12.07.1002,kelurahan-terkecil,ok,200,Jawa Timur,Situbondo,Situbondo,Patokan
+35.13,Probolinggo,35.13.14.1003,kelurahan-terkecil,ok,200,Jawa Timur,Probolinggo,Kraksaan,Semampir
+35.14,Pasuruan,35.14.06.1024,kelurahan-terkecil,ok,200,Jawa Timur,Pasuruan,Kejayan,Kejayan
+35.15,Sidoarjo,35.15.04.1003,kelurahan-terkecil,ok,200,Jawa Timur,Sidoarjo,Porong,Porong
+35.16,Mojokerto,35.16.08.1004,kelurahan-terkecil,ok,200,Jawa Timur,Mojokerto,Mojosari,Kauman
+35.17,Jombang,35.17.09.1002,kelurahan-terkecil,ok,200,Jawa Timur,Jombang,Jombang,Jombatan
+35.18,Nganjuk,35.18.08.1011,kelurahan-terkecil,ok,200,Jawa Timur,Nganjuk,Kertosono,Banaran
+35.19,Madiun,35.19.02.1002,kelurahan-terkecil,ok,200,Jawa Timur,Madiun,Dolopo,Mlilir
+35.20,Magetan,35.20.01.1005,kelurahan-terkecil,ok,200,Jawa Timur,Magetan,Poncol,Alastuwo
+35.21,Ngawi,35.21.09.1013,kelurahan-terkecil,ok,200,Jawa Timur,Ngawi,Ngawi,Margomulyo
+35.22,Bojonegoro,35.22.15.1001,kelurahan-terkecil,ok,200,Jawa Timur,Bojonegoro,Bojonegoro,Jetak
+35.23,Tuban,35.23.15.1006,kelurahan-terkecil,ok,200,Jawa Timur,Tuban,Semanding,Karang
+35.24,Lamongan,35.24.05.1001,kelurahan-terkecil,ok,200,Jawa Timur,Lamongan,Babat,Banaran
+35.25,Gresik,35.25.14.1006,kelurahan-terkecil,ok,200,Jawa Timur,Gresik,Kebomas,Gulomantung
+35.26,Bangkalan,35.26.01.1001,kelurahan-terkecil,ok,200,Jawa Timur,Bangkalan,Bangkalan,Mlajah
+35.27,Sampang,35.27.03.1003,kelurahan-terkecil,ok,200,Jawa Timur,Sampang,Sampang,Polagan
+35.28,Pamekasan,35.28.02.1018,kelurahan-terkecil,ok,200,Jawa Timur,Pamekasan,Pademawu,Barurambat Timur
+35.29,Sumenep,35.29.01.1015,kelurahan-terkecil,ok,200,Jawa Timur,Sumenep,Kota Sumenep,Kepanjin
+35.71,Kota Kediri,35.71.01.1001,kelurahan-terkecil,ok,200,Jawa Timur,Kota Kediri,Mojoroto,Bandar Lor
+35.72,Kota Blitar,35.72.01.1001,kelurahan-terkecil,ok,200,Jawa Timur,Kota Blitar,Kepanjenkidul,Kepanjenkidul
+35.73,Kota Malang,35.73.01.1001,kelurahan-terkecil,ok,200,Jawa Timur,Kota Malang,Blimbing,Balearjosari
+35.74,Kota Probolinggo,35.74.01.1001,kelurahan-terkecil,ok,200,Jawa Timur,Kota Probolinggo,Kademangan,Ketapang
+35.75,Kota Pasuruan,35.75.01.1001,kelurahan-terkecil,ok,200,Jawa Timur,Kota Pasuruan,Gadingrejo,Karangketug
+35.76,Kota Mojokerto,35.76.01.1003,kelurahan-terkecil,ok,200,Jawa Timur,Kota Mojokerto,Prajuritkulon,Mentikan
+35.77,Kota Madiun,35.77.01.1001,kelurahan-terkecil,ok,200,Jawa Timur,Kota Madiun,Kartoharjo,Oro-oro Ombo
+35.78,Kota Surabaya,35.78.01.1001,kelurahan-terkecil,ok,200,Jawa Timur,Kota Surabaya,Karang Pilang,Karang Pilang
+35.79,Kota Batu,35.79.01.1001,kelurahan-terkecil,ok,200,Jawa Timur,Kota Batu,Batu,Temas
+36.01,Pandeglang,36.01.21.1002,kelurahan-terkecil,ok,200,Banten,Pandeglang,Pandeglang,Kadomas
+36.02,Lebak,36.02.14.1002,kelurahan-terkecil,ok,200,Banten,Lebak,Rangkasbitung,Rangkasbitung Barat
+36.03,Tangerang,36.03.01.1001,kelurahan-terkecil,ok,200,Banten,Tangerang,Balaraja,Balaraja
+36.04,Serang,36.04.05.2001,desa-terkecil,ok,200,Banten,Serang,Kramatwatu,Kramatwatu
+36.71,Kota Tangerang,36.71.01.1001,kelurahan-terkecil,ok,200,Banten,Kota Tangerang,Tangerang,Sukarasa
+36.72,Kota Cilegon,36.72.01.1001,kelurahan-terkecil,ok,200,Banten,Kota Cilegon,Cibeber,Cibeber
+36.73,Kota Serang,36.73.01.1001,kelurahan-terkecil,ok,200,Banten,Kota Serang,Serang,Serang
+36.74,Kota Tangerang Selatan,36.74.01.1001,kelurahan-terkecil,ok,200,Banten,Kota Tangerang Selatan,Serpong,Ciater
+51.01,Jembrana,51.01.01.1006,kelurahan-terkecil,ok,200,Bali,Jembrana,Negara,Baler Bale Agung
+51.02,Tabanan,51.02.01.2001,desa-terkecil,ok,200,Bali,Tabanan,Selemadeg,Bajera
+51.03,Badung,51.03.01.1001,kelurahan-terkecil,ok,200,Bali,Badung,Kuta,Tuban
+51.04,Gianyar,51.04.03.1003,kelurahan-terkecil,ok,200,Bali,Gianyar,Gianyar,Samplangan
+51.05,Klungkung,51.05.03.1008,kelurahan-terkecil,ok,200,Bali,Klungkung,Klungkung,Semarapura Kaja
+51.06,Bangli,51.06.02.1003,kelurahan-terkecil,ok,200,Bali,Bangli,Bangli,Bebalang
+51.07,Karangasem,51.07.04.1002,kelurahan-terkecil,ok,200,Bali,Karangasem,Karangasem,Subagan
+51.08,Buleleng,51.08.02.1015,kelurahan-terkecil,ok,200,Bali,Buleleng,Seririt,Seririt
+51.71,Kota Denpasar,51.71.01.1001,kelurahan-terkecil,ok,200,Bali,Kota Denpasar,Denpasar Selatan,Serangan
+52.01,Lombok Barat,52.01.01.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Barat,Lombok Barat,Gerung,Gerung Utara
+52.02,Lombok Tengah,52.02.01.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Barat,Lombok Tengah,Praya,Praya
+52.03,Lombok Timur,52.03.07.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Barat,Lombok Timur,Selong,Pancor
+52.04,Sumbawa,52.04.08.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Barat,Sumbawa,Sumbawa,Samapuin
+52.05,Dompu,52.05.01.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Barat,Dompu,Dompu,Bada
+52.06,Bima,52.06.01.2005,desa-terkecil,ok,200,Nusa Tenggara Barat,Bima,Monta,Tolotangga
+52.07,Sumbawa Barat,52.07.02.1004,kelurahan-terkecil,ok,200,Nusa Tenggara Barat,Sumbawa Barat,Taliwang,Menala
+52.08,Lombok Utara,52.08.01.2001,desa-terkecil,ok,200,Nusa Tenggara Barat,Lombok Utara,Tanjung,Tanjung
+52.71,Kota Mataram,52.71.01.1004,kelurahan-terkecil,ok,200,Nusa Tenggara Barat,Kota Mataram,Ampenan,Ampenan Selatan
+52.72,Kota Bima,52.72.01.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Barat,Kota Bima,Rasanae Barat,Paruga
+53.01,Kupang,53.01.05.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Kupang,Kupang Barat,Oenesu
+53.02,Timor Tengah Selatan,53.02.01.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Timor Tengah Selatan,Kota Soe,SoE
+53.03,Timor Tengah Utara,53.03.05.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Timor Tengah Utara,Kota Kefamenanu,Kefamenanu Utara
+53.04,Belu,53.04.12.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Belu,Kota Atambua,Kota Atambua
+53.05,Alor,53.05.01.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Alor,Teluk Mutiara,Kalabahi Barat
+53.06,Flores Timur,53.06.03.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Flores Timur,Larantuka,Waibalun
+53.07,Sikka,53.07.05.1006,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Sikka,Alok,Madawat
+53.08,Ende,53.08.01.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Ende,Nangapanda,Ndorurea
+53.09,Ngada,53.09.01.1002,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Ngada,Aimere,Aimere
+53.10,Manggarai,53.10.03.1005,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Manggarai,Ruteng,Wae Belang
+53.11,Sumba Timur,53.11.01.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Sumba Timur,Kota Waingapu,Kambajawa
+53.12,Sumba Barat,53.12.10.1007,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Sumba Barat,Loli,Wee Karou
+53.13,Lembata,53.13.05.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Lembata,Nubatukan,Lewoleba
+53.14,Rote Ndao,53.14.02.1008,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Rote Ndao,Rote Barat Laut,Busalangga
+53.15,Manggarai Barat,53.15.02.1022,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Manggarai Barat,Kuwus,Golo Ru'u
+53.16,Nagekeo,53.16.01.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Nagekeo,Aesesa,Dhawe
+53.17,Sumba Tengah,53.17.01.2001,desa-terkecil,ok,200,Nusa Tenggara Timur,Sumba Tengah,Katiku Tana,Makata Keri
+53.18,Sumba Barat Daya,53.18.09.1003,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Sumba Barat Daya,Kota Tambolaka,Langga Lero
+53.19,Manggarai Timur,53.19.01.1020,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Manggarai Timur,Borong,Kota Ndora
+53.20,Sabu Raijua,53.20.01.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Sabu Raijua,Sabu Barat,Mebba
+53.21,Malaka,53.21.01.2001,desa-terkecil,ok,200,Nusa Tenggara Timur,Malaka,Malaka Tengah,Barene
+53.71,Kota Kupang,53.71.01.1001,kelurahan-terkecil,ok,200,Nusa Tenggara Timur,Kota Kupang,Alak,Namosain
+61.01,Sambas,61.01.01.2001,desa-terkecil,ok,200,Kalimantan Barat,Sambas,Sambas,Dalam Kaum
+61.02,Mempawah,61.02.01.1006,kelurahan-terkecil,ok,200,Kalimantan Barat,Mempawah,Mempawah Hilir,Tanjung
+61.03,Sanggau,61.03.01.1001,kelurahan-terkecil,ok,200,Kalimantan Barat,Sanggau,Kapuas,Tanjung Kapuas
+61.04,Ketapang,61.04.16.1001,kelurahan-terkecil,ok,200,Kalimantan Barat,Ketapang,Delta Pawan,Kantor
+61.05,Sintang,61.05.01.1001,kelurahan-terkecil,ok,200,Kalimantan Barat,Sintang,Sintang,Ladang
+61.06,Kapuas Hulu,61.06.01.1001,kelurahan-terkecil,ok,200,Kalimantan Barat,Kapuas Hulu,Putussibau Utara,Putussibau Kota
+61.07,Bengkayang,61.07.04.1001,kelurahan-terkecil,ok,200,Kalimantan Barat,Bengkayang,Bengkayang,Bumi Emas
+61.08,Landak,61.08.01.2001,desa-terkecil,ok,200,Kalimantan Barat,Landak,Ngabang,Hilir Kantor
+61.09,Sekadau,61.09.01.2001,desa-terkecil,ok,200,Kalimantan Barat,Sekadau,Sekadau Hilir,Sungai Ringin
+61.10,Melawi,61.10.01.2001,desa-terkecil,ok,200,Kalimantan Barat,Melawi,Belimbing,Pemuar
+61.11,Kayong Utara,61.11.01.2001,desa-terkecil,ok,200,Kalimantan Barat,Kayong Utara,Sukadana,Sutera
+61.12,Kubu Raya,61.12.01.2001,desa-terkecil,ok,200,Kalimantan Barat,Kubu Raya,Sungai Raya,Sungai Raya
+61.71,Kota Pontianak,61.71.05.1001,terverifikasi,ok,200,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong
+61.72,Kota Singkawang,61.72.01.1001,kelurahan-terkecil,ok,200,Kalimantan Barat,Kota Singkawang,Singkawang Tengah,Roban
+62.01,Kotawaringin Barat,62.01.01.1011,kelurahan-terkecil,ok,200,Kalimantan Tengah,Kotawaringin Barat,Kumai,Candi
+62.02,Kotawaringin Timur,62.02.01.1009,kelurahan-terkecil,ok,200,Kalimantan Tengah,Kotawaringin Timur,Kota Besi,Kota Besi Hulu
+62.03,Kapuas,62.03.01.1006,kelurahan-terkecil,ok,200,Kalimantan Tengah,Kapuas,Selat,Murung Keramat
+62.04,Barito Selatan,62.04.01.1003,kelurahan-terkecil,ok,200,Kalimantan Tengah,Barito Selatan,Jenamas,Rantau Kujang
+62.05,Barito Utara,62.05.01.1001,kelurahan-terkecil,ok,200,Kalimantan Tengah,Barito Utara,Montallat,Montallat I
+62.06,Katingan,62.06.02.1003,kelurahan-terkecil,ok,200,Kalimantan Tengah,Katingan,Katingan Hilir,Kasongan Baru
+62.07,Seruyan,62.07.01.1001,kelurahan-terkecil,ok,200,Kalimantan Tengah,Seruyan,Seruyan Hilir,Kuala Pembuang I
+62.08,Sukamara,62.08.01.1003,kelurahan-terkecil,ok,200,Kalimantan Tengah,Sukamara,Sukamara,Mendawai
+62.09,Lamandau,62.09.01.1012,kelurahan-terkecil,ok,200,Kalimantan Tengah,Lamandau,Lamandau,Tapin Bini
+62.10,Gunung Mas,62.10.01.1001,kelurahan-terkecil,ok,200,Kalimantan Tengah,Gunung Mas,Sepang,Sepang Simin
+62.11,Pulang Pisau,62.11.02.1018,kelurahan-terkecil,ok,200,Kalimantan Tengah,Pulang Pisau,Kahayan Kuala,Bahaur Basantan
+62.12,Murung Raya,62.12.01.1012,kelurahan-terkecil,ok,200,Kalimantan Tengah,Murung Raya,Murung,Puruk Cahu
+62.13,Barito Timur,62.13.01.1012,kelurahan-terkecil,ok,200,Kalimantan Tengah,Barito Timur,Dusun Timur,Tamiang Layang
+62.71,Kota Palangkaraya,62.71.01.1001,terverifikasi,ok,200,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut
+63.01,Tanah Laut,63.01.03.1001,kelurahan-terkecil,ok,200,Kalimantan Selatan,Tanah Laut,Pelaihari,Sarang Halang
+63.02,Kotabaru,63.02.06.1001,kelurahan-terkecil,ok,200,Kalimantan Selatan,Kotabaru,Pulaulaut Utara,Kotabaru Hulu
+63.03,Banjar,63.03.02.1001,kelurahan-terkecil,ok,200,Kalimantan Selatan,Banjar,Kertak Hanyar,Kertak Hanyar I
+63.04,Barito Kuala,63.04.05.1001,kelurahan-terkecil,ok,200,Kalimantan Selatan,Barito Kuala,Alalak,Berangas Barat
+63.05,Tapin,63.05.01.1001,kelurahan-terkecil,ok,200,Kalimantan Selatan,Tapin,Binuang,Binuang
+63.06,Hulu Sungai Selatan,63.06.05.1001,kelurahan-terkecil,ok,200,Kalimantan Selatan,Hulu Sungai Selatan,Kandangan,Kandangan Kota
+63.07,Hulu Sungai Tengah,63.07.03.1001,kelurahan-terkecil,ok,200,Kalimantan Selatan,Hulu Sungai Tengah,Labuan Amas Selatan,Pantai Hambawang Barat
+63.08,Hulu Sungai Utara,63.08.05.1001,kelurahan-terkecil,ok,200,Kalimantan Selatan,Hulu Sungai Utara,Amuntai Tengah,Antasari
+63.09,Tabalong,63.09.02.1001,kelurahan-terkecil,ok,200,Kalimantan Selatan,Tabalong,Kelua,Pulau
+63.10,Tanah Bumbu,63.10.01.1007,kelurahan-terkecil,ok,200,Kalimantan Selatan,Tanah Bumbu,Batu Licin,Batulicin
+63.11,Balangan,63.11.06.1019,kelurahan-terkecil,ok,200,Kalimantan Selatan,Balangan,Paringin,Paringin Timur
+63.71,Kota Banjarmasin,63.71.01.1001,terverifikasi,ok,200,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil
+63.72,Kota Banjarbaru,63.72.02.1003,kelurahan-terkecil,ok,200,Kalimantan Selatan,Kota Banjarbaru,Landasan Ulin,Landasan Ulin Timur
+64.01,Paser,64.01.04.1001,kelurahan-terkecil,ok,200,Kalimantan Timur,Paser,Tanah Grogot,Tanah Grogot
+64.02,Kutai Kartanegara,64.02.06.1001,kelurahan-terkecil,ok,200,Kalimantan Timur,Kutai Kartanegara,Tenggarong,Jahab
+64.03,Berau,64.03.03.1013,kelurahan-terkecil,ok,200,Kalimantan Timur,Berau,Sambaliung,Sambaliung
+64.07,Kutai Barat,64.07.06.1006,kelurahan-terkecil,ok,200,Kalimantan Timur,Kutai Barat,Melak,Melak Ilir
+64.08,Kutai Timur,64.08.04.1010,kelurahan-terkecil,ok,200,Kalimantan Timur,Kutai Timur,Sangatta Utara,Teluk Lingga
+64.09,Penajam Paser Utara,64.09.01.1001,kelurahan-terkecil,ok,200,Kalimantan Timur,Penajam Paser Utara,Penajam,Tanjung Tengah
+64.11,Mahakam Ulu,64.11.01.2001,desa-terkecil,ok,200,Kalimantan Timur,Mahakam Ulu,Long Bagun,Long Hurai
+64.71,Kota Balikpapan,64.71.01.1001,kelurahan-terkecil,ok,200,Kalimantan Timur,Kota Balikpapan,Balikpapan Timur,Manggar
+64.72,Kota Samarinda,64.72.01.1001,kelurahan-terkecil,ok,200,Kalimantan Timur,Kota Samarinda,Palaran,Rawa Makmur
+64.74,Kota Bontang,64.74.01.1001,kelurahan-terkecil,ok,200,Kalimantan Timur,Kota Bontang,Bontang Utara,Bontang Kuala
+65.01,Bulungan,65.01.01.1001,kelurahan-terkecil,ok,200,Kalimantan Utara,Bulungan,Tanjung Palas,Tanjung Palas Hulu
+65.02,Malinau,65.02.01.2002,desa-terkecil,ok,200,Kalimantan Utara,Malinau,Mentarang,Long Bisai
+65.03,Nunukan,65.03.02.1001,kelurahan-terkecil,ok,200,Kalimantan Utara,Nunukan,Nunukan,Nunukan Timur
+65.04,Tana Tidung,65.04.01.2001,desa-terkecil,ok,200,Kalimantan Utara,Tana Tidung,Sesayap,Tideng Pale
+65.71,Kota Tarakan,65.71.01.1001,kelurahan-terkecil,ok,200,Kalimantan Utara,Kota Tarakan,Tarakan Barat,Karang Anyar
+71.01,Bolaang Mongondow,71.01.10.1003,kelurahan-terkecil,ok,200,Sulawesi Utara,Bolaang Mongondow,Dumoga Timur,Imandi
+71.02,Minahasa,71.02.01.1007,kelurahan-terkecil,ok,200,Sulawesi Utara,Minahasa,Tondano Barat,Masarang
+71.03,Kepulauan Sangihe,71.03.17.1006,kelurahan-terkecil,ok,200,Sulawesi Utara,Kepulauan Sangihe,Tahuna,Sawang Bendar
+71.04,Kepulauan Talaud,71.04.01.1005,kelurahan-terkecil,ok,200,Sulawesi Utara,Kepulauan Talaud,Lirung,Lirung
+71.05,Minahasa Selatan,71.05.10.1004,kelurahan-terkecil,ok,200,Sulawesi Utara,Minahasa Selatan,Amurang,Buyungon
+71.06,Minahasa Utara,71.06.03.1005,kelurahan-terkecil,ok,200,Sulawesi Utara,Minahasa Utara,Airmadidi,Airmadidi Bawah
+71.07,Minahasa Tenggara,71.07.01.1004,kelurahan-terkecil,ok,200,Sulawesi Utara,Minahasa Tenggara,Ratahan,Tosuraya
+71.08,Bolaang Mongondow Utara,71.08.02.1001,kelurahan-terkecil,ok,200,Sulawesi Utara,Bolaang Mongondow Utara,Bintauna,Bintauna
+71.09,Kep. Siau Tagulandang Biaro,71.09.01.1009,kelurahan-terkecil,ok,200,Sulawesi Utara,Kep. Siau Tagulandang Biaro,Siau Timur,Bebali
+71.10,Bolaang Mongondow Timur,71.10.01.2001,desa-terkecil,ok,200,Sulawesi Utara,Bolaang Mongondow Timur,Tutuyan,Kayumoyondi
+71.11,Bolaang Mongondow Selatan,71.11.01.2004,desa-terkecil,ok,200,Sulawesi Utara,Bolaang Mongondow Selatan,Bolaang Uki,Tangagah
+71.71,Kota Manado,71.71.01.1001,kelurahan-terkecil,ok,200,Sulawesi Utara,Kota Manado,Bunaken,Molas
+71.72,Kota Bitung,71.72.01.1001,kelurahan-terkecil,ok,200,Sulawesi Utara,Kota Bitung,Lembeh Selatan,Pasir Panjang
+71.73,Kota Tomohon,71.73.01.1001,kelurahan-terkecil,ok,200,Sulawesi Utara,Kota Tomohon,Tomohon Selatan,Pinaras
+71.74,Kota Kotamobagu,71.74.01.1005,kelurahan-terkecil,ok,200,Sulawesi Utara,Kota Kotamobagu,Kotamobagu Utara,Biga
+72.01,Banggai,72.01.01.1006,kelurahan-terkecil,ok,200,Sulawesi Tengah,Banggai,Batui,Bugis
+72.02,Poso,72.02.01.1001,kelurahan-terkecil,ok,200,Sulawesi Tengah,Poso,Poso Kota,Moengko Lama
+72.03,Donggala,72.03.08.1020,kelurahan-terkecil,ok,200,Sulawesi Tengah,Donggala,Banawa,Ganti
+72.04,Toli Toli,72.04.07.1001,kelurahan-terkecil,ok,200,Sulawesi Tengah,Toli Toli,Baolan,Tambun
+72.05,Buol,72.05.06.1001,kelurahan-terkecil,ok,200,Sulawesi Tengah,Buol,Biau,Buol
+72.06,Morowali,72.06.05.1014,kelurahan-terkecil,ok,200,Sulawesi Tengah,Morowali,Bungku Tengah,Mendui
+72.07,Banggai Kepulauan,72.07.04.1015,kelurahan-terkecil,ok,200,Sulawesi Tengah,Banggai Kepulauan,Tinangkung,Salakan
+72.08,Parigi Moutong,72.08.01.1017,kelurahan-terkecil,ok,200,Sulawesi Tengah,Parigi Moutong,Parigi,Masigi
+72.09,Tojo Una Una,72.09.05.1002,kelurahan-terkecil,ok,200,Sulawesi Tengah,Tojo Una Una,Ampana Kota,Malotong
+72.10,Sigi,72.10.01.2001,desa-terkecil,ok,200,Sulawesi Tengah,Sigi,Sigi Biromaru,Sidondo II
+72.11,Banggai Laut,72.11.01.1005,kelurahan-terkecil,ok,200,Sulawesi Tengah,Banggai Laut,Banggai,Lompio
+72.12,Morowali Utara,72.12.01.1001,kelurahan-terkecil,ok,200,Sulawesi Tengah,Morowali Utara,Petasia,Kolonodale
+72.71,Kota Palu,72.71.01.1004,kelurahan-terkecil,ok,200,Sulawesi Tengah,Kota Palu,Palu Timur,Besusu Barat
+73.01,Kepulauan Selayar,73.01.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Kepulauan Selayar,Benteng,Benteng Utara
+73.02,Bulukumba,73.02.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Bulukumba,Gantarang,Matekko
+73.03,Bantaeng,73.03.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Bantaeng,Bissappu,Bonto Manai
+73.04,Jeneponto,73.04.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Jeneponto,Bangkala,Benteng
+73.05,Takalar,73.05.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Takalar,Mappakasunggu,Takalar
+73.06,Gowa,73.06.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Gowa,Bontonompo,Bontonompo
+73.07,Sinjai,73.07.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Sinjai,Sinjai Barat,Tassililu
+73.08,Bone,73.08.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Bone,Bontocani,Kahu
+73.09,Maros,73.09.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Maros,Mandai,Hasanuddin
+73.10,Pangkajene Dan Kepulauan,73.10.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Pangkajene dan Kepulauan,Liukang Tangaya,Sapuka
+73.11,Barru,73.11.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Barru,Tanete Riaja,Lompo Riaja
+73.12,Soppeng,73.12.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Soppeng,Marioriwawo,Labessi
+73.13,Wajo,73.13.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Wajo,Sabangparu,Walennae
+73.14,Sidenreng Rappang,73.14.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Sidenreng Rappang,Panca Lautang,Bilokka
+73.15,Pinrang,73.15.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Pinrang,Mattiro Sompe,Langnga
+73.16,Enrekang,73.16.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Enrekang,Maiwa,Bangkala
+73.17,Luwu,73.17.02.1003,kelurahan-terkecil,ok,200,Sulawesi Selatan,Luwu,Larompong,Larompong
+73.18,Tana Toraja,73.18.01.1009,kelurahan-terkecil,ok,200,Sulawesi Selatan,Tana Toraja,Saluputi,Pattan Ulusalu
+73.22,Luwu Utara,73.22.02.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Luwu Utara,Bone Bone,Bone Bone
+73.24,Luwu Timur,73.24.02.1007,kelurahan-terkecil,ok,200,Sulawesi Selatan,Luwu Timur,Nuha,Magani
+73.26,Toraja Utara,73.26.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Toraja Utara,Rantepao,Laang Tanduk
+73.71,Kota Makassar,73.71.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Kota Makassar,Mariso,Bontorannu
+73.72,Kota Parepare,73.72.01.1004,kelurahan-terkecil,ok,200,Sulawesi Selatan,Kota Parepare,Bacukiki,Lompoe
+73.73,Kota Palopo,73.73.01.1001,kelurahan-terkecil,ok,200,Sulawesi Selatan,Kota Palopo,Wara,Tompotikka
+74.01,Kolaka,74.01.01.1001,kelurahan-terkecil,ok,200,Sulawesi Tenggara,Kolaka,Wundulako,19 Nopember
+74.02,Konawe,74.02.01.1001,kelurahan-terkecil,ok,200,Sulawesi Tenggara,Konawe,Lambuya,Lambuya
+74.03,Muna,74.03.06.1004,kelurahan-terkecil,ok,200,Sulawesi Tenggara,Muna,Napabalano,Napabalano
+74.04,Buton,74.04.11.1005,kelurahan-terkecil,ok,200,Sulawesi Tenggara,Buton,Pasarwajo,Wakoko
+74.05,Konawe Selatan,74.05.01.1001,kelurahan-terkecil,ok,200,Sulawesi Tenggara,Konawe Selatan,Tinanggea,Tinanggea
+74.06,Bombana,74.06.01.1007,kelurahan-terkecil,ok,200,Sulawesi Tenggara,Bombana,Poleang,Boeara
+74.07,Wakatobi,74.07.01.1002,kelurahan-terkecil,ok,200,Sulawesi Tenggara,Wakatobi,Wangi-Wangi,Pongo
+74.08,Kolaka Utara,74.08.01.1001,kelurahan-terkecil,ok,200,Sulawesi Tenggara,Kolaka Utara,Lasusua,Lasusua
+74.09,Konawe Utara,74.09.01.1005,kelurahan-terkecil,ok,200,Sulawesi Tenggara,Konawe Utara,Asera,Wanggudu
+74.10,Buton Utara,74.10.01.1008,kelurahan-terkecil,ok,200,Sulawesi Tenggara,Buton Utara,Kulisusu,Bangkudu
+74.11,Kolaka Timur,74.11.01.1002,kelurahan-terkecil,ok,200,Sulawesi Tenggara,Kolaka Timur,Tirawuta,Rate-rate
+74.12,Konawe Kepulauan,74.12.01.1001,kelurahan-terkecil,ok,200,Sulawesi Tenggara,Konawe Kepulauan,Wawonii Barat,Langara Laut
+74.13,Muna Barat,74.13.03.1007,kelurahan-terkecil,ok,200,Sulawesi Tenggara,Muna Barat,Lawa,Wamelai
+74.14,Buton Tengah,74.14.01.1007,kelurahan-terkecil,ok,200,Sulawesi Tenggara,Buton Tengah,Lakudo,Lakudo
+74.15,Buton Selatan,74.15.01.1002,kelurahan-terkecil,ok,200,Sulawesi Tenggara,Buton Selatan,Batauga,Busoa
+74.71,Kota Kendari,74.71.01.1005,kelurahan-terkecil,ok,200,Sulawesi Tenggara,Kota Kendari,Mandonga,Mandonga
+74.72,Kota Bau Bau,74.72.01.1007,kelurahan-terkecil,ok,200,Sulawesi Tenggara,Kota Bau Bau,Betoambari,Katobengke
+75.01,Gorontalo,75.01.01.1001,kelurahan-terkecil,ok,200,Gorontalo,Gorontalo,Limboto,Kayubulan
+75.02,Boalemo,75.02.01.2004,desa-terkecil,ok,200,Gorontalo,Boalemo,Paguyaman,Bongo Nol
+75.03,Bone Bolango,75.03.02.1008,kelurahan-terkecil,ok,200,Gorontalo,Bone Bolango,Kabila,Padengo
+75.04,Pohuwato,75.04.05.1001,kelurahan-terkecil,ok,200,Gorontalo,Pohuwato,Paguat,Libuo
+75.05,Gorontalo Utara,75.05.01.2003,desa-terkecil,ok,200,Gorontalo,Gorontalo Utara,Atinggola,Imana
+75.71,Kota Gorontalo,75.71.01.1001,kelurahan-terkecil,ok,200,Gorontalo,Kota Gorontalo,Kota Barat,Dembe I
+76.01,Pasangkayu,76.01.01.1006,kelurahan-terkecil,ok,200,Sulawesi Barat,Pasangkayu,Bambalamotu,Bambalamotu
+76.02,Mamuju,76.02.01.1002,kelurahan-terkecil,ok,200,Sulawesi Barat,Mamuju,Mamuju,Binanga
+76.03,Mamasa,76.03.01.1001,kelurahan-terkecil,ok,200,Sulawesi Barat,Mamasa,Mambi,Mambi
+76.04,Polewali Mandar,76.04.01.1001,kelurahan-terkecil,ok,200,Sulawesi Barat,Polewali Mandar,Tinambung,Tinambung
+76.05,Majene,76.05.01.1001,kelurahan-terkecil,ok,200,Sulawesi Barat,Majene,Banggae,Banggae
+76.06,Mamuju Tengah,76.06.01.2001,desa-terkecil,ok,200,Sulawesi Barat,Mamuju Tengah,Tobadak,Mahahe
+81.01,Maluku Tengah,81.01.01.1009,kelurahan-terkecil,ok,200,Maluku,Maluku Tengah,Amahai,Hollo
+81.02,Maluku Tenggara,81.02.01.1013,kelurahan-terkecil,ok,200,Maluku,Maluku Tenggara,Kei Kecil,Ohoijang Watdek
+81.03,Kepulauan Tanimbar,81.03.01.1001,kelurahan-terkecil,ok,200,Maluku,Kepulauan Tanimbar,Tanimbar Selatan,Saumlaki
+81.04,Buru,81.04.01.2001,desa-terkecil,ok,200,Maluku,Buru,Namlea,Namlea
+81.05,Seram Bagian Timur,81.05.01.2003,desa-terkecil,ok,200,Maluku,Seram Bagian Timur,Bula,Bula
+81.06,Seram Bagian Barat,81.06.01.2008,desa-terkecil,ok,200,Maluku,Seram Bagian Barat,Kairatu,Kamarian
+81.07,Kepulauan Aru,81.07.01.1012,kelurahan-terkecil,ok,200,Maluku,Kepulauan Aru,Pulau-Pulau Aru,Galai Dubu
+81.08,Maluku Barat Daya,81.08.01.1001,kelurahan-terkecil,ok,200,Maluku,Maluku Barat Daya,Moa,Tiakur
+81.09,Buru Selatan,81.09.01.2001,desa-terkecil,ok,200,Maluku,Buru Selatan,Namrole,Wamkana
+81.71,Kota Ambon,81.71.01.1006,kelurahan-terkecil,ok,200,Maluku,Kota Ambon,Nusaniwe,Nusaniwe
+81.72,Kota Tual,81.72.02.1003,kelurahan-terkecil,ok,200,Maluku,Kota Tual,Pulau Dullah Selatan,Ketsoblak
+82.01,Halmahera Barat,82.01.01.2001,desa-terkecil,ok,200,Maluku Utara,Halmahera Barat,Jailolo,Gufasa
+82.02,Halmahera Tengah,82.02.01.2004,desa-terkecil,ok,200,Maluku Utara,Halmahera Tengah,Weda,Nusliko
+82.03,Halmahera Utara,82.03.04.2001,desa-terkecil,ok,200,Maluku Utara,Halmahera Utara,Galela,Soa-Sio
+82.04,Halmahera Selatan,82.04.01.2001,desa-terkecil,ok,200,Maluku Utara,Halmahera Selatan,Pulau Makian,Rabutdaiyo
+82.05,Kepulauan Sula,82.05.01.2001,desa-terkecil,ok,200,Maluku Utara,Kepulauan Sula,Mangoli Timur,Waitina
+82.06,Halmahera Timur,82.06.01.2006,desa-terkecil,ok,200,Maluku Utara,Halmahera Timur,Wasile,Subaim
+82.07,Pulau Morotai,82.07.01.2001,desa-terkecil,ok,200,Maluku Utara,Pulau Morotai,Morotai Selatan,Gotalamo
+82.08,Pulau Taliabu,82.08.01.2001,desa-terkecil,ok,200,Maluku Utara,Pulau Taliabu,Taliabu Barat,Bobong
+82.71,Kota Ternate,82.71.01.1001,kelurahan-terkecil,ok,200,Maluku Utara,Kota Ternate,Pulau Ternate,Jambula
+82.72,Kota Tidore Kepulauan,82.72.01.1001,kelurahan-terkecil,ok,200,Maluku Utara,Kota Tidore Kepulauan,Tidore,Soasio
+91.03,Jayapura,91.03.01.1001,kelurahan-terkecil,ok,200,Papua,Jayapura,Sentani,Sentani Kota
+91.05,Kepulauan Yapen,91.05.01.1004,kelurahan-terkecil,ok,200,Papua,Kepulauan Yapen,Yapen Selatan,Tarau
+91.06,Biak Numfor,91.06.01.1001,kelurahan-terkecil,ok,200,Papua,Biak Numfor,Biak Kota,Sorido
+91.10,Sarmi,91.10.01.1001,kelurahan-terkecil,ok,200,Papua,Sarmi,Sarmi,Mararena
+91.11,Keerom,91.11.01.2001,desa-terkecil,ok,200,Papua,Keerom,Waris,Banda
+91.15,Waropen,91.15.01.2003,desa-terkecil,ok,200,Papua,Waropen,Waropen Bawah,Waren I
+91.19,Supiori,91.19.01.2003,desa-terkecil,ok,200,Papua,Supiori,Supiori Selatan,Fanindi
+91.20,Mamberamo Raya,91.20.01.2001,desa-terkecil,ok,200,Papua,Mamberamo Raya,Mamberamo Tengah,Burmeso
+91.71,Kota Jayapura,91.71.01.1001,kelurahan-terkecil,ok,200,Papua,Kota Jayapura,Jayapura Utara,Gurabesi
+92.02,Manokwari,92.02.12.1001,kelurahan-terkecil,ok,200,Papua Barat,Manokwari,Manokwari Barat,Manokwari Barat
+92.03,Fak Fak,92.03.01.1001,kelurahan-terkecil,ok,200,Papua Barat,Fak Fak,Fak-Fak,Fak Fak Selatan
+92.06,Teluk Bintuni,92.06.01.1001,kelurahan-terkecil,ok,200,Papua Barat,Teluk Bintuni,Bintuni,Bintuni Timur
+92.07,Teluk Wondama,92.07.01.1001,kelurahan-terkecil,ok,200,Papua Barat,Teluk Wondama,Wasior,Wasior I
+92.08,Kaimana,92.08.01.1001,kelurahan-terkecil,ok,200,Papua Barat,Kaimana,Kaimana,Kaimana Kota
+92.11,Manokwari Selatan,92.11.01.2001,desa-terkecil,ok,200,Papua Barat,Manokwari Selatan,Ransiki,Ransiki
+92.12,Pegunungan Arfak,92.12.01.2001,desa-terkecil,ok,200,Papua Barat,Pegunungan Arfak,Anggi,Iraiweri
+93.01,Merauke,93.01.01.1002,kelurahan-terkecil,ok,200,Papua Selatan,Merauke,Merauke,Samkai
+93.02,Boven Digoel,93.02.01.2001,desa-terkecil,ok,200,Papua Selatan,Boven Digoel,Mandobo,Ampera
+93.03,Mappi,93.03.01.1013,kelurahan-terkecil,ok,200,Papua Selatan,Mappi,Obaa,Kepi
+93.04,Asmat,93.04.01.2001,desa-terkecil,ok,200,Papua Selatan,Asmat,Agats,Yomoth
+94.01,Nabire,94.01.01.1001,kelurahan-terkecil,ok,200,Papua Tengah,Nabire,Nabire,Wonorejo
+94.02,Puncak Jaya,94.02.01.1010,kelurahan-terkecil,ok,200,Papua Tengah,Puncak Jaya,Mulia,Wuyukwi
+94.03,Paniai,94.03.01.1001,kelurahan-terkecil,ok,200,Papua Tengah,Paniai,Paniai Timur,Enarotali
+94.04,Mimika,94.04.01.1001,kelurahan-terkecil,ok,200,Papua Tengah,Mimika,Mimika Baru,Koperapoka
+94.05,Puncak,94.05.01.2001,desa-terkecil,ok,200,Papua Tengah,Puncak,Ilaga,Kago
+94.06,Dogiyai,94.06.01.2001,desa-terkecil,ok,200,Papua Tengah,Dogiyai,Kamu,Ikebo
+94.07,Intan Jaya,94.07.01.2001,desa-terkecil,ok,200,Papua Tengah,Intan Jaya,Sugapa,Emondi
+94.08,Deiyai,94.08.01.2001,desa-terkecil,ok,200,Papua Tengah,Deiyai,Tigi,Waghete I
+95.01,Jayawijaya,95.01.01.1001,kelurahan-terkecil,ok,200,Papua Pegunungan,Jayawijaya,Wamena,Wamena Kota
+95.02,Pegunungan Bintang,95.02.01.2001,desa-terkecil,ok,200,Papua Pegunungan,Pegunungan Bintang,Oksibil,Kabiding
+95.03,Yahukimo,95.03.01.1001,kelurahan-terkecil,ok,200,Papua Pegunungan,Yahukimo,Kurima,Obolma
+95.04,Tolikara,95.04.01.1001,kelurahan-terkecil,ok,200,Papua Pegunungan,Tolikara,Karubaga,Karubaga
+95.05,Mamberamo Tengah,95.05.01.2001,desa-terkecil,ok,200,Papua Pegunungan,Mamberamo Tengah,Kobakma,Kobakma
+95.06,Yalimo,95.06.01.2001,desa-terkecil,ok,200,Papua Pegunungan,Yalimo,Elelim,Elelim
+95.07,Lanny Jaya,95.07.01.1001,kelurahan-terkecil,ok,200,Papua Pegunungan,Lanny Jaya,Tiom,Bokon
+95.08,Nduga,95.08.01.2001,desa-terkecil,ok,200,Papua Pegunungan,Nduga,Kenyam,Kenyam
+96.01,Sorong,96.01.01.1001,kelurahan-terkecil,ok,200,Papua Barat Daya,Sorong,Makbon,Makbon
+96.02,Sorong Selatan,96.02.01.1002,kelurahan-terkecil,http-404,404,,,,
+96.03,Raja Ampat,96.03.17.1001,kelurahan-terkecil,http-404,404,,,,
+96.04,Tambrauw,96.04.01.2001,desa-terkecil,http-404,404,,,,
+96.05,Maybrat,96.05.08.1001,kelurahan-terkecil,http-404,404,,,,
+96.71,Kota Sorong,96.71.01.1001,kelurahan-terkecil,ok,200,Papua Barat Daya,Kota Sorong,Sorong,Remu Utara

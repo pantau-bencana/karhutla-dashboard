@@ -1,0 +1,137 @@
+# Nowcast CAP BMKG berumur kira-kira 0–3 jam.
+# Jadwal terpisah tiap 30 menit: menit 12 dan 42 UTC, di luar menit 0.
+# String cron harus sama dengan CAP_CRON di src/lib/schedule.js.
+# Tidak memakai secret. Jeda antar permintaan BMKG ada di scripts/cap-kab.mjs (di bawah 60/menit).
+# Push dari GITHUB_TOKEN tidak memicu pages.yml, jadi deploy dilakukan di sini
+# hanya bila berkas CAP berubah dan ref-nya persis refs/heads/main.
+name: Perbarui CAP nowcast
+
+on:
+  schedule:
+    - cron: "12,42 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Ambil CAP nowcast
+        run: node scripts/cap-kab.mjs || echo "Pengambilan CAP gagal. Meta tetap dipakai bila skrip sempat menulisnya."
+
+      - name: Ambil prakiraan satu titik per kab/kota
+        run: node scripts/prakiraan-kab.mjs || echo "Pengambilan prakiraan kab/kota gagal. Cuplikan sebelumnya tetap dipakai bila ada."
+
+      - name: Commit bila cuplikan CAP berubah
+        id: commit
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          branch="${GITHUB_REF_NAME}"
+
+          commit_snapshot() {
+            git add data/live/bmkg-cap-kab.csv data/live/bmkg-cap-prov.csv data/live/bmkg-cap-kab-meta.json
+            if [[ -f data/live/bmkg-prakiraan-kab.csv ]]; then
+              git add data/live/bmkg-prakiraan-kab.csv data/live/bmkg-prakiraan-kab-meta.json
+            fi
+            if [[ -f data/live/bmkg-cap-geom.json ]]; then
+              git add data/live/bmkg-cap-geom.json
+            fi
+            if git diff --cached --quiet; then
+              return 1
+            fi
+            git commit -m "Perbarui cuplikan CAP dan prakiraan kab/kota"
+          }
+
+          if ! commit_snapshot; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Tidak ada perubahan CAP."
+            exit 0
+          fi
+
+          for attempt in 1 2 3 4; do
+            git fetch origin "$branch"
+            if git pull --rebase origin "$branch"; then
+              if git push origin "HEAD:${branch}"; then
+                echo "changed=true" >> "$GITHUB_OUTPUT"
+                echo "Cuplikan CAP terdorong ke ${branch} (percobaan ${attempt})."
+                exit 0
+              fi
+              echo "Push ditolak (percobaan ${attempt}). Ambil ulang lalu coba lagi."
+            else
+              echo "Rebase bentrok (percobaan ${attempt}). Cuplikan CAP dibuat ulang."
+              git rebase --abort || true
+              git reset --hard "origin/${branch}"
+              node scripts/cap-kab.mjs || true
+              node scripts/prakiraan-kab.mjs || true
+              if ! commit_snapshot; then
+                echo "changed=false" >> "$GITHUB_OUTPUT"
+                echo "Tidak ada perubahan CAP setelah dibuat ulang."
+                exit 0
+              fi
+            fi
+          done
+          echo "Gagal mendorong cuplikan CAP setelah 4 percobaan."
+          exit 1
+
+      - name: Setup Pages
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Build
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        env:
+          VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: npm run check && npm run build
+
+      - name: Verify Pages paths and public config
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        run: node scripts/verify-pages-build.mjs "${{ steps.pages.outputs.base_path }}"
+
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && needs.refresh.outputs.changed == 'true'
+    needs: refresh
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

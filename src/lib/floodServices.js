@@ -36,19 +36,20 @@ export function identifyUrl(lng, lat) {
   return `${RISIKO_SERVICE}/identify?${params}`;
 }
 
-export function bigQueryUrl(layer, where, { geometry = true, offset = 0 } = {}) {
+export function bigQueryUrl(layer, where, { geometry = true, offset = 0, recordCount = 1000, allowableOffset = "0.02" } = {}) {
   const params = new URLSearchParams({
     where,
-    outFields: layer === 0 ? "namobj,wapro1,wapro2" : "kdpkab,wadmkk,wadmpr",
+    outFields: layer === 0 ? "namobj,wapro1,wapro2" : "kdpkab,wadmkk,wadmpr,kdppum",
     returnGeometry: geometry ? "true" : "false",
     outSR: "4326",
-    maxAllowableOffset: "0.02",
     f: "geojson",
   });
   if (geometry) {
-    params.set("resultOffset", String(offset));
-    params.set("resultRecordCount", "1000");
+    params.set("maxAllowableOffset", allowableOffset);
+    params.set("geometryPrecision", "2");
   }
+  params.set("resultOffset", String(offset));
+  params.set("resultRecordCount", String(recordCount));
   return `${BIG_SERVICE}/${layer}/query?${params}`;
 }
 

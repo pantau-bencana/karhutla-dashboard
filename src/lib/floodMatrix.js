@@ -1,12 +1,19 @@
 export const FLOOD_PERMISSION = "Prototipe internal – menunggu izin tertulis BNPB";
-export const MISSING_DIBI = "Tidak tercantum di tabel DIBI 2024";
+export const IRBI_BUKU_BANJIR_URL = "https://inarisk.bnpb.go.id/IRBI-2025/files/basic-html/page212.html";
+export const IRBI_TIDAK_TERSEDIA = "IRBI tidak tersedia";
+export const IRBI_BANJIR_TERVERIFIKASI =
+  "510 kabupaten/kota punya skor dan kelas banjir dari Buku IRBI 2025, halaman 212–227 (282 Tinggi, 221 Sedang, 7 Rendah). Empat kabupaten/kota tidak ada di tabel banjir itu dan dikosongkan: Adm. Kep. Seribu, Bangli, Kep. Siau Tagulandang Biaro, dan Kota Ternate. Padanan nama yang dipakai: Mamuju Utara = Pasangkayu, Toba Samosir = Toba, Padangsidimpuan = Kota Padang Sidempuan, Maluku Tenggara Barat = Kepulauan Tanimbar. Skor IRB total dan tabel banjir bandang tidak dipakai.";
+export const DIBI_LUAR_CUPLIKAN =
+  "Cuplikan kejadian 2024 yang tersimpan tidak mencakup provinsi ini";
+export const IRBI_PENGGUNAAN_INTERNAL =
+  "Penggunaan internal. Data IRBI 2025 bersumber dari Buku IRBI 2025 (BNPB, Januari 2026). Buku ini melarang pengutipan atau perbanyakan tanpa izin tertulis BNPB; izin belum diperoleh, jadi halaman ini tidak untuk publikasi. Status Awas/Siaga/Waspada adalah Analisis Pantau Bencana (gabungan BMKG × IRBI BNPB), bukan status resmi.";
+export const MISSING_DIBI = "Tidak tercantum di tabel BNPB 2024";
 export const DIBI_UNAVAILABLE = "Cuplikan DIBI belum tersedia";
 export const NODATA_LABEL = "Di luar area bahaya banjir yang dipetakan inaRISK";
 export const IDENTIFY_FAIL = "Nilai tidak tersedia (layanan BNPB tidak merespons)";
 export const RISK_ATTRIBUTION =
   "Indeks risiko banjir inaRISK BNPB, KRB 2021, piksel 100 m. Bukan peringatan dini. Bukan IRBI 2025.";
-export const IRBI_PERMISSION =
-  "Tabel IRBI dikutip dari buku IRBI 2025 BNPB; penggunaan publik menunggu izin tertulis BNPB (hal. ii).";
+export const IRBI_PERMISSION = IRBI_BANJIR_TERVERIFIKASI;
 export const DIBI_RESOURCE = "a4daec53-1119-43ef-b05e-00ec3a4c42a4";
 export const INARISK_PORTAL = "https://inarisk.bnpb.go.id/";
 
@@ -17,26 +24,41 @@ export const RAIN_RISK_MATRIX = {
     { id: "hujan", sumber: "BMKG", kelas: "Nowcast peringatan dini cuaca 0–3 jam" },
     { id: "risiko", sumber: "IRBI 2025", kelas: "kelas risiko banjir" },
   ],
-  note: "Sumbu hujan adalah nowcast BMKG 0–3 jam per kabupaten/kota. Sumbu risiko adalah kelas banjir IRBI 2025 apa adanya. Bukan peringatan dasarian, bukan IBF, dan bukan prakiraan adm4. Tidak ada skor gabungan.",
+  note: "Sumbu hujan pada tab 0–3 jam adalah nowcast BMKG per kabupaten/kota. Pada tab Hari ini, Besok, dan Lusa sumbu hujan adalah pemetaan teks cuaca BMKG di satu titik sampel: Extreme untuk hujan sangat lebat atau hujan ekstrem, Severe untuk hujan lebat atau petir, Moderate untuk hujan sedang. Sumbu risiko adalah kelas banjir IRBI 2025 apa adanya. Analisis Pantau Bencana memetakan kedua sumbu menjadi Awas, Siaga, atau Waspada. Itu analisis dasbor, bukan status resmi, bukan skor angka, bukan peringatan dasarian, bukan IBF, dan bukan peringatan resmi 3 hari.",
 };
 
 export const FLOOD_INFO_COLUMNS = [
-  { id: "wilayah", label: "Kode dan nama", detail: "BIG, edisi 2022", sortKey: "kode" },
-  { id: "irbi-banjir", label: "Kelas risiko banjir IRBI 2025", detail: "Data statis. Skor dan halaman apa adanya.", sortKey: "banjir" },
+  { id: "wilayah", label: "Kab/kota", detail: "Batas BIG. Urutan kode wilayah, bukan peringkat.", sortKey: "kode" },
   {
     id: "nowcast",
-    label: "Peringatan hujan lebat BMKG aktif (0–3 jam)",
-    detail: "Nowcast CAP. Bukan dasarian dan bukan IBF.",
+    label: "Peringatan BMKG aktif (0–3 jam)",
+    detail: "Resmi, jangka pendek. Istilah CAP apa adanya.",
+  },
+  { id: "berlaku", label: "Berlaku sampai", detail: "WIB" },
+  { id: "dibi", label: "Kejadian banjir 2024 (BNPB)", detail: "Historis. Sel kosong bukan nol.", sortKey: "dibi" },
+  {
+    id: "irbi-banjir",
+    label: "Kelas risiko banjir IRBI 2025",
+    detail: "Statis. 510 baris dari Buku IRBI 2025, halaman 212–227. Tanpa kelas: IRBI tidak tersedia.",
+    sortKey: "banjir",
+  },
+  { id: "analisis", label: "Analisis Pantau Bencana", detail: "Bukan status resmi." },
+  {
+    id: "penduduk",
+    label: "Penduduk kab/kota",
+    detail: "BPS, proyeksi. Total kab/kota, bukan jumlah terpapar.",
+  },
+  {
+    id: "rumah-tangga",
+    label: "Rumah tangga/KK",
+    detail: "Total kab/kota, bukan jumlah terpapar.",
   },
   {
     id: "dasarian",
-    label: "Peringatan Dini Curah Hujan Tinggi dasarian (BMKG, diisi manual)",
-    detail: "Disalin manual dari halaman resmi BMKG; bukan integrasi data otomatis",
+    label: "Dasarian (diisi manual)",
+    detail: "Bukan prakiraan harian.",
   },
-  { id: "irbi-multi", label: "IRBI 2025 multi-bahaya", detail: "Data statis. Kelas dan halaman. Bukan khusus banjir.", sortKey: "multi" },
-  { id: "dibi", label: "Kejadian banjir 2024", detail: "Data statis. DIBI, ODC-BY.", sortKey: "dibi" },
-  { id: "kajian", label: "Ringkasan kajian inaRISK", detail: "Belum terhubung" },
-  { id: "krb", label: "Dokumen KRB", detail: "Tautan saja" },
+  { id: "tautan", label: "Tautan", detail: "Sumber" },
 ];
 
 export const KRB_LINKS = {
@@ -100,10 +122,29 @@ function byKode(rows) {
   return [...rows].sort((a, b) => a.kode.localeCompare(b.kode, "id") || a.nama.localeCompare(b.nama, "id"));
 }
 
-export function buildFloodRows({ banjir, multi, dibi, dibiLoaded }) {
+export function buildFloodRows({ banjir, multi, dibi, dibiLoaded, wilayah }) {
+  const irbiByKode = new Map((banjir ?? []).map((row) => [kodeWilayah(row.kode_wilayah), row]));
+  const source = wilayah?.length
+    ? wilayah.map((item) => {
+        const quoted = irbiByKode.get(kodeWilayah(item.kode));
+        if (quoted) return { ...quoted, provinsi: quoted.provinsi || item.provinsi, nama_big: quoted.nama_big || item.nama };
+        return {
+          kode_wilayah: item.kode,
+          provinsi: item.provinsi,
+          kabupaten_irbi: "",
+          nama_big: item.nama,
+          skor: "",
+          kelas: "",
+          halaman: "",
+        };
+      })
+    : (banjir ?? []);
   const multiByName = new Map((multi ?? []).map((row) => [nameKey(row.kabupaten_irbi || row.kabupaten_kota), row]));
   const dibiByKode = new Map((dibi ?? []).map((row) => [kodeWilayah(row.kode_wilayah), row]));
-  const rows = (banjir ?? []).map((row) => {
+  const cakupanDibi = new Set(
+    (dibi ?? []).map((row) => kodeWilayah(row.kode_wilayah).slice(0, 2)).filter((kode) => kode),
+  );
+  const rows = source.map((row) => {
     const kode = kodeWilayah(row.kode_wilayah);
     const key = nameKey(row.kabupaten_irbi || row.kabupaten_kota);
     const total = multiByName.get(key);
@@ -111,7 +152,9 @@ export function buildFloodRows({ banjir, multi, dibi, dibiLoaded }) {
     let dibiTeks = DIBI_UNAVAILABLE;
     let dibiAngka = null;
     if (dibiLoaded) {
-      if (!kejadian) dibiTeks = MISSING_DIBI;
+      if (!cakupanDibi.size) dibiTeks = DIBI_UNAVAILABLE;
+      else if (!cakupanDibi.has(kode.slice(0, 2))) dibiTeks = DIBI_LUAR_CUPLIKAN;
+      else if (!kejadian) dibiTeks = MISSING_DIBI;
       else {
         dibiAngka = Number(kejadian.banjir_2024);
         dibiTeks = Number.isFinite(dibiAngka) ? String(dibiAngka) : MISSING_DIBI;

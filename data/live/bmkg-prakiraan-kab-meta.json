@@ -1,0 +1,12 @@
+{
+  "status": "ok",
+  "fetched_at": "2026-10-20T04:48:27.093Z",
+  "observed_at": "2026-10-20T00:00:00Z",
+  "kept_previous": false,
+  "diminta": 514,
+  "berhasil": 510,
+  "gagal": 4,
+  "record_count": 10255,
+  "titik": "satu adm4 per kab/kota",
+  "error": "4 kab/kota tanpa prakiraan"
+}

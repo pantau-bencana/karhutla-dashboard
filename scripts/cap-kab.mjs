@@ -3,6 +3,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { BIG_SERVICE } from "../src/lib/bigWilayah.js";
 import { warningActive } from "../src/lib/capKab.js";
+import { INDONESIA_FRAME } from "../src/lib/geo.js";
 import { kodeWilayah } from "../src/lib/floodMatrix.js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -26,10 +27,29 @@ export const CAP_KAB_HEADERS = [
   "url",
 ];
 
-export const TARGET_BOXES = [
-  { xmin: 94.9, ymin: 1.6, xmax: 98.8, ymax: 6.4 },
-  { xmin: 100.9, ymin: -5.8, xmax: 103.9, ymax: -2.2 },
+export const CAP_PROV_HEADERS = [
+  "kode_prov",
+  "provinsi",
+  "cap_id",
+  "event",
+  "headline",
+  "effective",
+  "expires",
+  "severity",
+  "urgency",
+  "certainty",
+  "jumlah_kab",
+  "url",
 ];
+
+export const BMKG_REQUEST_GAP_MS = 1100;
+
+const INDONESIA_BOX = {
+  xmin: INDONESIA_FRAME.west,
+  ymin: INDONESIA_FRAME.south,
+  xmax: INDONESIA_FRAME.east,
+  ymax: INDONESIA_FRAME.north,
+};
 
 function decodeXml(value) {
   return String(value)
@@ -89,7 +109,7 @@ function boxesOverlap(left, right) {
 }
 
 export function targetRings(rings) {
-  return (rings ?? []).filter((ring) => TARGET_BOXES.some((box) => boxesOverlap(ringBbox(ring), box)));
+  return (rings ?? []).filter((ring) => boxesOverlap(ringBbox(ring), INDONESIA_BOX));
 }
 
 export function parseCapAlert(xml, url = "") {
@@ -125,7 +145,7 @@ export function rowsFromFeatures(alert, features) {
   for (const feature of features ?? []) {
     const attributes = feature?.attributes ?? feature ?? {};
     const kode = kodeWilayah(attributes.kdpkab);
-    if (!kode.startsWith("11.") && !kode.startsWith("17.")) continue;
+    if (!/^\d{2}\.\d{2}$/.test(kode)) continue;
     const key = `${kode}|${alert.id}`;
     if (seen.has(key)) continue;
     seen.add(key);
@@ -160,7 +180,77 @@ export function capKabCsv(rows) {
   return `${lines.join("\n")}\n`;
 }
 
+export function aggregateProvinsi(kabRows, alerts = []) {
+  const byId = new Map((alerts ?? []).map((alert) => [alert.id || alert.cap_id, alert]));
+  const groups = new Map();
+  for (const row of kabRows ?? []) {
+    const kodeProv = String(row.kode ?? "").split(".")[0];
+    if (!kodeProv) continue;
+    const key = `${kodeProv}|${row.cap_id}`;
+    const current = groups.get(key) ?? {
+      kode_prov: kodeProv,
+      provinsi: row.provinsi,
+      cap_id: row.cap_id,
+      event: row.event,
+      headline: byId.get(row.cap_id)?.headline || "",
+      effective: row.effective,
+      expires: row.expires,
+      severity: row.severity,
+      urgency: row.urgency,
+      certainty: row.certainty,
+      kab: new Set(),
+      url: row.url,
+    };
+    if (row.kode) current.kab.add(row.kode);
+    groups.set(key, current);
+  }
+  return [...groups.values()]
+    .map(({ kab, ...rest }) => ({ ...rest, jumlah_kab: kab.size }))
+    .sort(
+      (left, right) =>
+        left.kode_prov.localeCompare(right.kode_prov, "id") || String(left.cap_id).localeCompare(String(right.cap_id), "id"),
+    );
+}
+
+export function capProvCsv(rows) {
+  const lines = [CAP_PROV_HEADERS.join(",")];
+  for (const row of rows ?? []) lines.push(CAP_PROV_HEADERS.map((header) => csvCell(row[header])).join(","));
+  return `${lines.join("\n")}\n`;
+}
+
+function round2(value) {
+  return Math.round(Number(value) * 100) / 100;
+}
+
+export function simplifyRing(ring, maxPoints = 40) {
+  const source = ring ?? [];
+  if (source.length < 3) return [];
+  const step = Math.max(1, Math.ceil((source.length - 1) / Math.max(2, maxPoints - 1)));
+  const points = [];
+  for (let index = 0; index < source.length - 1; index += step) {
+    points.push([round2(source[index][0]), round2(source[index][1])]);
+  }
+  const last = source[source.length - 1];
+  const end = [round2(last[0]), round2(last[1])];
+  const prev = points[points.length - 1];
+  if (!prev || prev[0] !== end[0] || prev[1] !== end[1]) points.push(end);
+  return points.length >= 3 ? points : [];
+}
+
+export function geomFromAlerts(alerts) {
+  return (alerts ?? [])
+    .map((alert) => ({
+      cap_id: alert.id,
+      event: alert.event,
+      severity: alert.severity,
+      rings: targetRings(alert.rings).map((ring) => simplifyRing(ring)).filter((ring) => ring.length >= 3),
+    }))
+    .filter((alert) => alert.rings.length);
+}
+
 export function capKabMeta(snapshot) {
+  const provRows = snapshot.provRows ?? aggregateProvinsi(snapshot.rows, snapshot.alerts);
+  const provinsi = new Set((provRows ?? []).map((row) => row.kode_prov).filter(Boolean));
   return `${JSON.stringify(
     {
       status: snapshot.status === "ok" ? "ok" : "gagal",
@@ -168,6 +258,9 @@ export function capKabMeta(snapshot) {
       rss_published: snapshot.rssPublished || "",
       sumber: "BMKG",
       dasar: "Nowcast BMKG, dasar waktu 0–3 jam.",
+      cakupan: "nasional",
+      jumlah_alert: snapshot.jumlahAlert ?? null,
+      jumlah_prov: snapshot.status === "ok" ? provinsi.size : null,
       baris: snapshot.status === "ok" ? (snapshot.rows ?? []).length : null,
       error: snapshot.error || null,
     },
@@ -177,7 +270,14 @@ export function capKabMeta(snapshot) {
 }
 
 export function writeCapKabFiles(directory, snapshot) {
-  if (snapshot.status === "ok") writeFileSync(resolve(directory, "bmkg-cap-kab.csv"), capKabCsv(snapshot.rows));
+  if (snapshot.status === "ok") {
+    const provRows = snapshot.provRows ?? aggregateProvinsi(snapshot.rows, snapshot.alerts);
+    writeFileSync(resolve(directory, "bmkg-cap-kab.csv"), capKabCsv(snapshot.rows));
+    writeFileSync(resolve(directory, "bmkg-cap-prov.csv"), capProvCsv(provRows));
+    if (snapshot.geom) {
+      writeFileSync(resolve(directory, "bmkg-cap-geom.json"), `${JSON.stringify({ caps: snapshot.geom })}\n`);
+    }
+  }
   writeFileSync(resolve(directory, "bmkg-cap-kab-meta.json"), capKabMeta(snapshot));
 }
 
@@ -288,7 +388,7 @@ export async function loadCapAlerts() {
   for (const link of links) {
     const xml = await fetchText(link, 20000);
     alerts.push(parseCapAlert(xml, link));
-    await new Promise((resolveDelay) => setTimeout(resolveDelay, 150));
+    await new Promise((resolveDelay) => setTimeout(resolveDelay, BMKG_REQUEST_GAP_MS));
   }
   return { alerts, rssPublished };
 }
@@ -298,18 +398,27 @@ async function main() {
   const loaded = await loadCapAlerts();
   try {
     const rows = await assignKabupaten(loaded.alerts);
+    const provRows = aggregateProvinsi(rows, loaded.alerts);
     writeCapKabFiles(live, {
       status: "ok",
       rows,
+      provRows,
+      alerts: loaded.alerts,
+      geom: geomFromAlerts(loaded.alerts),
+      jumlahAlert: loaded.alerts.length,
       rssPublished: loaded.rssPublished,
       fetchedAt: new Date().toISOString(),
       error: null,
     });
-    console.log(`CAP kabupaten ok: ${rows.length} baris. RSS ${loaded.rssPublished || "tanpa pubDate"}.`);
+    console.log(
+      `CAP kabupaten ok: ${rows.length} baris, ${provRows.length} baris provinsi. RSS ${loaded.rssPublished || "tanpa pubDate"}.`,
+    );
   } catch (error) {
     writeCapKabFiles(live, {
       status: "gagal",
       rows: [],
+      alerts: loaded.alerts,
+      jumlahAlert: loaded.alerts.length,
       rssPublished: loaded.rssPublished,
       fetchedAt: new Date().toISOString(),
       error: error.message,
