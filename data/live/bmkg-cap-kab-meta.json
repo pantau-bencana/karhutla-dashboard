@@ -1,11 +1,11 @@
 {
   "status": "gagal",
-  "fetched_at": "2026-10-20T05:58:41.283Z",
-  "rss_published": "2026-10-20T06:15:27.000Z",
+  "fetched_at": "2026-10-20T06:37:17.308Z",
+  "rss_published": "2026-10-20T07:00:29.000Z",
   "sumber": "BMKG",
   "dasar": "Nowcast BMKG, dasar waktu 0–3 jam.",
   "cakupan": "nasional",
-  "jumlah_alert": 11,
+  "jumlah_alert": 10,
   "jumlah_prov": null,
   "baris": null,
   "error": "Failed to execute query."
