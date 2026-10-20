@@ -42,6 +42,8 @@ import {
   susunPrioritas,
   tampilanPrioritas,
 } from "../src/lib/aplus.js";
+import { ambilTeks, jedaCobaLagi, parseRetryAfter, tandaiCuplikanUsang } from "./build-prioritas-aplus.mjs";
+import { integrationStatus } from "../src/lib/sourceCatalog.js";
 import { REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
 import { buildHotspotTree } from "../src/lib/hotspotTree.js";
 import { FLOOD_INFO_COLUMNS, RAIN_RISK_MATRIX, buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI } from "../src/lib/floodMatrix.js";
@@ -1247,6 +1249,134 @@ assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /<GlossaryPa
 assert.match(readFileSync("src/lib/route.js", "utf8"), /#\/sumber-metode\/glosarium\/\$\{id\}/);
 assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), />Rujukan</);
 assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /bukan resmi BMKG\/BNPB/);
+assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /Gagal\/stale/);
+assert.match(readFileSync("src/components/PrioritasPanel.jsx", "utf8"), /tidak mengganti angka/);
+assert.match(aplusScript, /retry-after/);
+assert.match(aplusScript, /OPEN_METEO_BATCH = 10/);
+assert.match(aplusScript, /OPEN_METEO_JEDA_MS = 2000/);
+assert.match(aplusScript, /GWIS_KONKURENSI = 2/);
+assert.match(aplusScript, /CC BY 4.0, nonkomersial\. Wajib menyebut Open-Meteo\./);
+assert.match(aplusWorkflow, /Pertahankan cuplikan prioritas A\+ karena pengambilan gagal/);
+assert.equal(integrationStatus({ kind: "dinamis" }, { status: "failed", kept_previous: true }), "Gagal/stale");
+assert.equal(parseRetryAfter("2"), 2000);
+assert.equal(parseRetryAfter("0"), 0);
+assert.equal(parseRetryAfter(""), null);
+assert.equal(parseRetryAfter(null), null);
+assert.equal(parseRetryAfter("bukan-tanggal"), null);
+assert.equal(parseRetryAfter("Mon, 19 Oct 2026 18:54:20 GMT", Date.parse("2026-10-19T18:53:50.000Z")), 30000);
+assert.equal(jedaCobaLagi(1, null, () => 0), 1000);
+assert.equal(jedaCobaLagi(2, null, () => 0), 2000);
+assert.equal(jedaCobaLagi(3, 500, () => 0), 4000);
+assert.equal(jedaCobaLagi(1, 8000, () => 0), 8000);
+assert.equal(jedaCobaLagi(1, null, () => 1), 1400);
+assert.equal(jedaCobaLagi(20, 999999, () => 0), 120000);
+
+function jawabanHttp(status, body, retryAfter) {
+  return {
+    ok: status >= 200 && status < 300,
+    status,
+    headers: { get: (name) => (String(name).toLowerCase() === "retry-after" ? retryAfter ?? null : null) },
+    text: async () => body,
+  };
+}
+
+const jedaUji = [];
+let panggilanEnsemble = 0;
+const teksEnsemble = await ambilTeks("https://ensemble-api.open-meteo.com/v1/ensemble?latitude=1&longitude=1", {
+  fetchImpl: async () => {
+    panggilanEnsemble += 1;
+    if (panggilanEnsemble < 3) return jawabanHttp(429, "", "0");
+    return jawabanHttp(200, "ok");
+  },
+  sleepImpl: async (ms) => {
+    jedaUji.push(ms);
+  },
+  random: () => 0,
+});
+assert.equal(teksEnsemble, "ok");
+assert.equal(panggilanEnsemble, 3);
+assert.deepEqual(jedaUji, [1000, 2000]);
+
+let panggilan400 = 0;
+await assert.rejects(
+  () =>
+    ambilTeks("https://ensemble-api.open-meteo.com/v1/ensemble?latitude=rahasia", {
+      fetchImpl: async () => {
+        panggilan400 += 1;
+        return jawabanHttp(400, "tolak");
+      },
+      sleepImpl: async () => {
+        throw new Error("tidak boleh jeda");
+      },
+    }),
+  (error) => {
+    assert.match(error.message, /ensemble-api\.open-meteo\.com HTTP 400/);
+    assert.equal(error.message.includes("latitude"), false);
+    assert.equal(error.message.includes("rahasia"), false);
+    return true;
+  },
+);
+assert.equal(panggilan400, 1);
+
+await assert.rejects(
+  () =>
+    ambilTeks("https://ensemble-api.open-meteo.com/v1/ensemble", {
+      maxAttempts: 3,
+      fetchImpl: async () => jawabanHttp(429, "", "1"),
+      sleepImpl: async () => {},
+      random: () => 0,
+    }),
+  /ensemble-api\.open-meteo\.com HTTP 429/,
+);
+
+let panggilanJaringan = 0;
+const pulih = await ambilTeks("https://maps.effis.emergency.copernicus.eu/gwis", {
+  fetchImpl: async () => {
+    panggilanJaringan += 1;
+    if (panggilanJaringan === 1) throw new Error("reset");
+    return jawabanHttp(200, "<html>");
+  },
+  sleepImpl: async () => {},
+  random: () => 0,
+});
+assert.equal(pulih, "<html>");
+assert.equal(panggilanJaringan, 2);
+
+const cuplikanPagi = {
+  generated_at: "2026-10-19T03:47:00.000Z",
+  baris: [{ kab: "Ogan Komering Ilir", skor: 0.841 }],
+  daftar: [{ kab: "Ogan Komering Ilir" }],
+  lisensi_open_meteo: "CC BY 4.0, nonkomersial. Wajib menyebut Open-Meteo.",
+};
+const ditandai = tandaiCuplikanUsang(cuplikanPagi, "2026-10-19T18:53:52.000Z", "ensemble-api.open-meteo.com HTTP 429");
+assert.equal(ditandai.stale, true);
+assert.equal(ditandai.generated_at, "2026-10-19T03:47:00.000Z");
+assert.equal(ditandai.stale_at, "2026-10-19T18:53:52.000Z");
+assert.equal(ditandai.stale_alasan, "ensemble-api.open-meteo.com HTTP 429");
+assert.equal(ditandai.baris[0].skor, 0.841);
+assert.match(ditandai.lisensi_open_meteo, /Open-Meteo/);
+assert.equal(tandaiCuplikanUsang({ baris: [] }, "2026-10-19T18:53:52.000Z", "x"), null);
+assert.equal(tandaiCuplikanUsang(null, "2026-10-19T18:53:52.000Z", "x"), null);
+
+const tampilanUsang = tampilanPrioritas(
+  {
+    ...hitungUlang,
+    generated_at: "2026-10-19T03:47:00.000Z",
+    stale: true,
+    stale_at: "2026-10-19T18:53:52.000Z",
+    stale_alasan: "ensemble-api.open-meteo.com HTTP 429",
+  },
+  new Date("2026-10-21T10:00:00.000Z"),
+);
+assert.equal(tampilanUsang.tersedia, true);
+assert.equal(tampilanUsang.usang, true);
+assert.equal(tampilanUsang.daftar[0].kab, "Ogan Komering Ilir");
+assert.equal(tampilanUsang.generated_at, "2026-10-19T03:47:00.000Z");
+assert.equal(tampilanUsang.blok_alasan, "");
+assert.equal(tampilanUsang.blok.length > 0, true);
+assert.equal(segar.usang, false);
+assert.equal(basi.usang, false);
+assert.equal(basi.tersedia, false);
 assert.match(readFileSync("src/App.jsx", "utf8"), /location\.anchor/);
 assert.match(readFileSync("src/components/MetodeAplus.jsx", "utf8"), /Peringkat prioritas karhutla – cara menghitung/);
 assert.match(readFileSync("src/components/MetodeAplus.jsx", "utf8"), /78–82/);

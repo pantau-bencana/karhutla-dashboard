@@ -381,15 +381,20 @@ export function tampilanPrioritas(snapshot, now = new Date()) {
   const cuplikan = {
     catatan_cuplikan: snapshot?.catatan_cuplikan || "",
     gwis_fetched_until: snapshot?.gwis_fetched_until || null,
+    generated_at: snapshot?.generated_at || null,
+    stale_at: snapshot?.stale_at || null,
+    stale_alasan: snapshot?.stale_alasan || "",
   };
-  if (alasan.length) {
-    return { ...dasar, ...cuplikan, tersedia: false, alasan, daftar: [], blok: [], blok_alasan: "" };
+  const usang = snapshot?.stale === true && Array.isArray(snapshot?.daftar);
+  if (alasan.length && !usang) {
+    return { ...dasar, ...cuplikan, tersedia: false, usang: false, alasan, daftar: [], blok: [], blok_alasan: "" };
   }
-  const blokAlasan = firmsBlokUsang(snapshot, now);
+  const blokAlasan = usang ? "" : firmsBlokUsang(snapshot, now);
   return {
     ...dasar,
     tersedia: true,
-    alasan: [],
+    usang,
+    alasan: usang ? alasan : [],
     daftar: snapshot.daftar ?? [],
     blok: blokAlasan ? [] : snapshot.blok ?? [],
     blok_alasan: blokAlasan,

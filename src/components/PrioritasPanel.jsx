@@ -41,6 +41,13 @@ export function PrioritasPanel({ snapshot, now }) {
         {" "}
         <a href="#/sumber-metode/cara-hitung">Cara hitung & rujukan</a>
       </p>
+      {view.usang ? (
+        <p>
+          <Badge kind="tun">Gagal/stale</Badge>{" "}
+          Daftar ini memakai cuplikan {formatWib(view.generated_at)}. Pengambilan {formatWib(view.stale_at)} gagal
+          {view.stale_alasan ? ` (${view.stale_alasan})` : ""} dan tidak mengganti angka.
+        </p>
+      ) : null}
       {view.catatan_cuplikan ? <p>{view.catatan_cuplikan}</p> : null}
       {view.tersedia ? (
         <p className="fine">
