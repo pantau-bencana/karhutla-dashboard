@@ -36,6 +36,24 @@ export const INDONESIA_PAN_LIMIT = Object.freeze({
   east: 143.0,
 });
 
+// Bingkai awal peta Banjir: Sumatra sampai Papua, rapat.
+// Bukan batas administrasi. Hanya untuk fitBounds.
+export const BANJIR_FRAME = Object.freeze({
+  south: -11.5,
+  west: 94.5,
+  north: 6.5,
+  east: 141.5,
+});
+
+// Geser longgar di sekitar bingkai, supaya Australia dan Papua Nugini
+// tidak menjadi tujuan geser, tetapi tepi pulau masih bisa digeser sedikit.
+export const BANJIR_PAN_LIMIT = Object.freeze({
+  south: -14.5,
+  west: 91.5,
+  north: 9.5,
+  east: 144.5,
+});
+
 export function areaContains(outer, inner) {
   return (
     outer.south <= inner.south &&

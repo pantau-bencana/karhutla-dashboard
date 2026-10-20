@@ -975,8 +975,14 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 }
 .conf-chip.conf-nominal { color: #1c1915; }
 
+.flood-map-block { container-type: inline-size; }
 .flood-map,
-.flood-map.leaflet-container { height: min(72vh, 720px); min-height: 560px; max-height: none; }
+.flood-map.leaflet-container {
+  height: 280px;
+  height: clamp(168px, calc(100cqw / 2.6), 520px);
+  min-height: 168px;
+  max-height: none;
+}
 .flood-legend { display: flex; flex-wrap: wrap; gap: 10px 14px; margin-top: 8px; }
 .flood-legend span { display: inline-flex; align-items: center; gap: 6px; }
 .flood-legend i { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
@@ -1093,7 +1099,12 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   .map-canvas.hotspot-map,
   .map-canvas.hotspot-map.leaflet-container { height: 320px; max-height: 320px; }
   .map-canvas.flood-map,
-  .map-canvas.flood-map.leaflet-container { height: 420px; min-height: 0; max-height: 420px; }
+  .map-canvas.flood-map.leaflet-container {
+    height: 220px;
+    height: clamp(168px, calc(100cqw / 2.6), 280px);
+    min-height: 0;
+    max-height: none;
+  }
   .flood-layout { grid-template-columns: minmax(0, 1fr); }
   .flood-kab table { display: none; }
   .flood-cards { display: grid; gap: 10px; }
@@ -1106,7 +1117,12 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   .acc-row { padding: 8px 6px; gap: 6px; }
   .acc-children { padding-left: 8px; }
   .map-canvas.flood-map,
-  .map-canvas.flood-map.leaflet-container { height: 340px; min-height: 0; max-height: 340px; }
+  .map-canvas.flood-map.leaflet-container {
+    height: 180px;
+    height: clamp(150px, calc(100cqw / 2.6), 220px);
+    min-height: 0;
+    max-height: none;
+  }
   .flood-side table { font-size: 11px; table-layout: fixed; width: 100%; }
   .flood-side th, .flood-side td { padding: 6px 4px; }
   .flood-side .analisis-pill { font-size: 11px; padding: 2px 6px; }

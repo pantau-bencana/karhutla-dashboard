@@ -3,7 +3,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "no
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { deriveDashboard, defaultRange } from "../src/lib/derive.js";
-import { areaContains, assignProvince, INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../src/lib/geo.js";
+import { areaContains, assignProvince, BANJIR_FRAME, BANJIR_PAN_LIMIT, INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../src/lib/geo.js";
 import { looksLikeCsv, parseCsv } from "../src/lib/csv.js";
 import { fetchCsv, loadAll, normalizeHotspotRow, normalizeRecords, redactFirmsUrl } from "../src/lib/loadData.js";
 import { GLOSSARY } from "../src/lib/glossary.js";
@@ -361,6 +361,14 @@ for (const file of ["README.md", "src/components/Footer.jsx", "public/config.jso
 const firmsArea = { west: 95, south: -11, east: 141, north: 6 };
 assert.equal(areaContains(INDONESIA_FRAME, firmsArea), true);
 assert.equal(areaContains(INDONESIA_PAN_LIMIT, INDONESIA_FRAME), true);
+assert.deepEqual(BANJIR_FRAME, { south: -11.5, west: 94.5, north: 6.5, east: 141.5 });
+assert.equal(areaContains(BANJIR_PAN_LIMIT, BANJIR_FRAME), true);
+const petaBanjirSumber = readFileSync("src/components/FloodRiskMap.jsx", "utf8");
+assert.match(petaBanjirSumber, /BANJIR_FRAME/);
+assert.match(petaBanjirSumber, /fitBounds\(frame, \{ padding: BANJIR_PADDING/);
+assert.match(petaBanjirSumber, /ResizeObserver/);
+assert.equal(petaBanjirSumber.includes("setView([-2.2, 118]"), false);
+assert.match(readFileSync("src/styles.css", "utf8"), /100cqw \/ 2\.6/);
 for (const edge of ["south", "west"]) {
   const margin = INDONESIA_FRAME[edge] - INDONESIA_PAN_LIMIT[edge];
   assert.ok(margin >= 1 && margin <= 4, `${edge} ${margin}`);

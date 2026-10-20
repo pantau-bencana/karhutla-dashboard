@@ -4,7 +4,7 @@ import { feature as topoFeature, mesh as topoMesh } from "topojson-client";
 import { BATAS_KAB_FILE, BATAS_KAB_SUMBER } from "../lib/batasKab.js";
 import { barisDampakHistoris } from "../lib/bnpbBanjir.js";
 import { osmTileLayer } from "../lib/basemap.js";
-import { INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../lib/geo.js";
+import { BANJIR_FRAME, BANJIR_PAN_LIMIT } from "../lib/geo.js";
 import { ANALISIS_WARNA, CATATAN_ABU, CATATAN_ABU_HARI, CATATAN_ARSIR, WARNA_TANPA_PERINGATAN } from "../lib/analisisPantauBencana.js";
 import {
   FLOOD_PERMISSION,
@@ -181,6 +181,37 @@ function tooltipTitik(titik, hujan) {
     .join("<br>");
 }
 
+const BANJIR_PADDING = [10, 10];
+
+function banjirBounds() {
+  return L.latLngBounds(
+    [BANJIR_FRAME.south, BANJIR_FRAME.west],
+    [BANJIR_FRAME.north, BANJIR_FRAME.east],
+  );
+}
+
+function petaSiap(map) {
+  const size = map?.getSize?.();
+  return Boolean(size && size.x >= 80 && size.y >= 80);
+}
+
+function frameBanjir(map) {
+  if (!petaSiap(map)) return false;
+  const frame = banjirBounds();
+  map.stop();
+  map.setMinZoom(0);
+  map.fitBounds(frame, { padding: BANJIR_PADDING, animate: false });
+  const zoom = map.getZoom();
+  if (Number.isFinite(zoom)) map.setMinZoom(zoom);
+  map.setMaxBounds(
+    L.latLngBounds(
+      [BANJIR_PAN_LIMIT.south, BANJIR_PAN_LIMIT.west],
+      [BANJIR_PAN_LIMIT.north, BANJIR_PAN_LIMIT.east],
+    ),
+  );
+  return true;
+}
+
 export function FloodRiskMap({
   province = "",
   onProvince,
@@ -227,27 +258,41 @@ export function FloodRiskMap({
       zoomControl: true,
       zoomAnimation: false,
       fadeAnimation: false,
-      minZoom: 4,
-      maxBounds: [
-        [INDONESIA_PAN_LIMIT.south, INDONESIA_PAN_LIMIT.west],
-        [INDONESIA_PAN_LIMIT.north, INDONESIA_PAN_LIMIT.east],
-      ],
+      zoomSnap: 0,
+      zoomDelta: 0.5,
+      minZoom: 0,
+      maxBoundsViscosity: 1,
     });
     osmTileLayer(L).addTo(map);
     map.createPane("flood-lines");
     map.getPane("flood-lines").style.zIndex = 450;
-    map.fitBounds(
-      [
-        [INDONESIA_FRAME.south, INDONESIA_FRAME.west],
-        [INDONESIA_FRAME.north, INDONESIA_FRAME.east],
-      ],
-      { animate: false },
-    );
+    const pasang = () => {
+      map.invalidateSize({ animate: false, pan: false });
+      const batasProv = provinceRef.current ? kabRef.current?.getBounds?.() : null;
+      if (batasProv?.isValid?.()) {
+        map.fitBounds(batasProv, { padding: [16, 16], animate: false });
+        return;
+      }
+      frameBanjir(map);
+    };
+    pasang();
+    let sizeKey = "";
+    const onResize = () => {
+      const size = map.getSize();
+      const key = `${Math.round(size.x)}x${Math.round(size.y)}`;
+      if (!key || key === sizeKey) return;
+      sizeKey = key;
+      pasang();
+    };
+    map.on("resize", onResize);
+    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(onResize) : null;
+    observer?.observe(containerRef.current);
     map.on("click", (event) => {
       if (provinceRef.current && inariskRef.current) identifyHandler.current(event);
     });
     mapRef.current = map;
     return () => {
+      observer?.disconnect();
       map.remove();
       mapRef.current = null;
     };
@@ -366,13 +411,7 @@ export function FloodRiskMap({
             { padding: [16, 16], animate: false },
           );
         } else if (!province) {
-          map.fitBounds(
-            [
-              [INDONESIA_FRAME.south, INDONESIA_FRAME.west],
-              [INDONESIA_FRAME.north, INDONESIA_FRAME.east],
-            ],
-            { animate: false },
-          );
+          frameBanjir(map);
         }
       } catch {
         if (!cancelled) setBigNote("Berkas batas kabupaten/kota tidak dapat dimuat. Peta wilayah tidak digambar pada pembaruan ini.");
