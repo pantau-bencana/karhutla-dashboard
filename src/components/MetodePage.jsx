@@ -174,7 +174,7 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
           <a href={HUJAN_PEMBANDING_URL} target="_blank" rel="noopener noreferrer">Open-Meteo</a>
           , model {HUJAN_PEMBANDING_MODEL}. Jenis datanya {HUJAN_PEMBANDING_JENIS}. Satuan mm. Lisensi{" "}
           <a href={HUJAN_PEMBANDING_LISENSI} target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
-          . Nilai itu tidak masuk matriks dan tidak menetapkan Awas, Siaga, atau Waspada. {HUJAN_TANPA_NOWCAST} {HUJAN_TITIK_BATAS} Pada tab 0–3 jam angka yang tampil saat lapisan dinyalakan adalah jumlah harian hari ini. Bila prakiraan BMKG untuk hari itu tidak ada, angka mm tetap tampil pada tabel dan tooltip tanpa mewarnai poligon. {HUJAN_GPM_CATATAN} Bila pengambilan gagal, cuplikan model yang sama tetap ditampilkan beserta waktu ambilnya.
+          . Nilai itu tidak masuk matriks dan tidak menetapkan Awas, Siaga, atau Waspada. {HUJAN_TANPA_NOWCAST} {HUJAN_TITIK_BATAS} Bila prakiraan BMKG untuk Hari ini, Besok, atau Lusa tidak ada, angka mm tetap tampil pada tabel dan tooltip tanpa mewarnai poligon. {HUJAN_GPM_CATATAN} Bila pengambilan gagal, cuplikan model yang sama tetap ditampilkan beserta waktu ambilnya.
         </p>
         <h3>Satu titik per kabupaten/kota</h3>
         <p>{PRAKIRAAN_BATAS}</p>

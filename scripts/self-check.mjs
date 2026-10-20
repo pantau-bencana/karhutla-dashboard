@@ -1380,6 +1380,11 @@ assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /HUJAN_PEM
 assert.equal(HUJAN_PEMBANDING_JENIS, "prakiraan model ECMWF (via Open-Meteo), bukan BMKG");
 assert.equal(HUJAN_PEMBANDING_MODEL, "ecmwf_ifs025");
 assert.match(HUJAN_TANPA_NOWCAST, /tidak punya nowcast 0–3 jam/);
+assert.match(HUJAN_TANPA_NOWCAST, /Hari ini, Besok, dan Lusa/);
+assert.match(HUJAN_TANPA_NOWCAST, /Tab 0–3 jam hanya memuat peringatan CAP BMKG/);
+assert.equal(readFileSync("src/components/FloodPage.jsx", "utf8").includes("Jumlah yang tampil pada tab ini adalah jumlah harian"), false);
+assert.match(readFileSync("src/components/FloodPage.jsx", "utf8"), /tab !== "cap" && showHujan/);
+assert.equal(readFileSync("src/components/MetodePage.jsx", "utf8").includes("Pada tab 0–3 jam angka yang tampil"), false);
 assert.equal(readFileSync("src/lib/analisisPantauBencana.js", "utf8").includes("hujanPembanding"), false);
 assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HUJAN_PEMBANDING_JENIS/);
 assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HUJAN_PEMBANDING_MODEL/);

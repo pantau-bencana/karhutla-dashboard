@@ -449,7 +449,7 @@ export function FloodRiskMap({
     const map = mapRef.current;
     hujanRef.current?.remove();
     hujanRef.current = null;
-    if (!map || !showHujan || !hujan?.indeks) return undefined;
+    if (!map || tab === "cap" || !showHujan || !hujan?.indeks) return undefined;
     if (!map.getPane("hujan-pembanding")) {
       map.createPane("hujan-pembanding");
       map.getPane("hujan-pembanding").style.zIndex = 460;
@@ -477,7 +477,7 @@ export function FloodRiskMap({
       group.remove();
       hujanRef.current = null;
     };
-  }, [showHujan, hujan, province, loadingMap]);
+  }, [tab, showHujan, hujan, province, loadingMap]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -641,6 +641,9 @@ export function FloodRiskMap({
           Batas provinsi
         </label>
       </fieldset>
+      {tab === "cap" ? (
+        <p className="fine">{HUJAN_TANPA_NOWCAST}</p>
+      ) : (
       <fieldset className="layer-checks layer-pembanding">
         <legend>Data Pembanding</legend>
         <span className="status-pill status-pembanding">{HUJAN_PEMBANDING_BADGE}</span>
@@ -662,6 +665,7 @@ export function FloodRiskMap({
           </InfoTip>
         </span>
       </fieldset>
+      )}
       <p className="fine">{FLOOD_PERMISSION} Overlay inaRISK mati sampai dinyalakan. Status peta inaRISK belum Aktif.</p>
       {mapError ? (
         <p className="banner warn" role="status">

@@ -356,7 +356,7 @@ export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null
           })}
         </tbody>
       </table>
-      <p className="fine">Tingkat kabupaten/kota. Kecamatan tidak ditampilkan. Rincian memuat masa berlaku, prakiraan, penduduk terdampak, rumah terdampak, potensi BPS, dan hujan model bila lapisan itu nyala atau prakiraan BMKG untuk hari itu tidak ada.</p>
+      <p className="fine">Tingkat kabupaten/kota. Kecamatan tidak ditampilkan. Rincian memuat masa berlaku, prakiraan, penduduk terdampak, rumah terdampak, dan potensi BPS. Hujan model hanya pada tab Hari ini, Besok, atau Lusa, bila lapisan itu nyala atau prakiraan BMKG untuk hari itu tidak ada.</p>
     </div>
   );
 }

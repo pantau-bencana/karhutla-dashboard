@@ -5,7 +5,7 @@ export const HUJAN_PEMBANDING_JENIS = "prakiraan model ECMWF (via Open-Meteo), b
 export const HUJAN_PEMBANDING_SUMBER = "Open-Meteo";
 export const HUJAN_PEMBANDING_MODEL = "ecmwf_ifs025";
 export const HUJAN_TANPA_NOWCAST =
-  "Model ECMWF tidak punya nowcast 0–3 jam. Angka Hari ini, Besok, dan Lusa adalah jumlah hujan harian, bukan peringatan BMKG.";
+  "Model ECMWF tidak punya nowcast 0–3 jam. Angka model hanya tampil pada tab Hari ini, Besok, dan Lusa. Tab 0–3 jam hanya memuat peringatan CAP BMKG.";
 export const HUJAN_TITIK_BATAS =
   "Kabupaten tanpa koordinat prakiraan BMKG memakai pusat poligon terbesar pada batas administrasi tersimpan, bukan titik kelurahan BMKG.";
 export const HUJAN_PEMBANDING_VARIABEL = "precipitation_sum";

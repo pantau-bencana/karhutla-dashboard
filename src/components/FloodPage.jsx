@@ -353,7 +353,7 @@ function FloodBody() {
     return semua.filter((item) => item.provinsi === province || kodeProv.has(item.kodeKab));
   }, [prakiraan, periode, province, urut]);
   const jumlahBerstatus = urut.filter((row) => row.peta?.kind === "status").length;
-  const hujanTanggal = tab === "cap" ? periode.hari[0] : periode.hari[tab];
+  const hujanTanggal = tab === "cap" ? "" : periode.hari[tab];
   const hujanNilai = useMemo(() => {
     const map = new Map();
     for (const row of urut) {
@@ -363,11 +363,11 @@ function FloodBody() {
     return map;
   }, [urut, hujanIndeks, hujanTanggal]);
   const hujanCatatan = tab === "cap"
-    ? `${HUJAN_TANPA_NOWCAST} Jumlah yang tampil pada tab ini adalah jumlah harian hari ini.`
+    ? HUJAN_TANPA_NOWCAST
     : `Jumlah harian ${["Hari ini", "Besok", "Lusa"][tab]}. ${HUJAN_PEMBANDING_JENIS}. Bukan status analisis.`;
   const hujanLapisan = useMemo(
     () => ({
-      aktif: showHujan,
+      aktif: tab !== "cap" && showHujan,
       indeks: hujanIndeks,
       tanggal: hujanTanggal,
       waktu: hujanWaktu,
@@ -375,7 +375,7 @@ function FloodBody() {
       gpm: HUJAN_GPM_CATATAN,
       kodeTampil: province ? new Set(urut.map((row) => row.kode)) : null,
     }),
-    [showHujan, hujanIndeks, hujanTanggal, hujanWaktu, hujanCatatan, province, urut],
+    [tab, showHujan, hujanIndeks, hujanTanggal, hujanWaktu, hujanCatatan, province, urut],
   );
   const hariTab = tab === "cap" ? null : periode.hari[tab];
   const namaHari = tab === "cap" ? "" : ["Hari ini", "Besok", "Lusa"][tab];
@@ -481,7 +481,7 @@ function FloodBody() {
                     ? formatWib(prakiraan.fetchedAt)
                     : "—"
               }
-              showHujan={showHujan}
+              showHujan={tab !== "cap" && showHujan}
               onShowHujan={setShowHujan}
               hujan={hujanLapisan}
             />
@@ -498,7 +498,7 @@ function FloodBody() {
               <FloodKabDaftar
                 rows={urut}
                 tampilProvinsi={!province}
-                hujanNilai={showHujan ? hujanNilai : null}
+                hujanNilai={tab !== "cap" && showHujan ? hujanNilai : null}
               />
               {!province ? (
                 <p className="fine">
