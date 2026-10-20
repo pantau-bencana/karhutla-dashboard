@@ -12,7 +12,7 @@ export const HAZARDS = [
     siap: false,
     status: "Prototipe internal – menunggu izin tertulis BNPB",
     catatan:
-      "Peta nasional dan tabel kabupaten adalah prototipe internal. IRBI 2025 yang tersimpan mencakup Aceh dan Bengkulu; provinsi lain tidak diisi angka. Izin tertulis BNPB belum ada.",
+      "Peta nasional dan tabel kabupaten adalah prototipe internal. 33 baris kelas banjir Aceh dan Bengkulu sudah dicocokkan dengan Buku IRBI 2025, halaman 212–227. Provinsi lain tidak diisi angka. Izin tertulis BNPB belum ada, jadi halaman ini tidak untuk publikasi.",
     indikator: [
       "Potensi hujan ekstrem BMKG. Halaman HTML dan citra hanya ditautkan. Bukan prakiraan 14 hari per kabupaten.",
       "Prediksi hujan dasarian (3 dasarian) dan peringatan dini curah hujan tinggi. Tautan saja. Citra tidak diunduh dan tidak dipotong.",

@@ -6,6 +6,7 @@ import { BMKG_DOCS_URL } from "../lib/bmkgForecast.js";
 import { IKLIM_BMKG_URL } from "../lib/dasarianManual.js";
 import { BIG_SERVICE } from "../lib/bigWilayah.js";
 import { BPS_PENDUDUK_URL, PENDUDUK_BUKAN_TERPAPAR, RUMAH_BELUM } from "../lib/pendudukKab.js";
+import { IRBI_BANJIR_TERVERIFIKASI, IRBI_BUKU_BANJIR_URL, IRBI_PENGGUNAAN_INTERNAL } from "../lib/floodMatrix.js";
 import { PRAKIRAAN_BATAS } from "../lib/prakiraanHujan.js";
 import { decorateSources } from "../lib/sourceCatalog.js";
 import { GlossaryPage } from "./GlossaryPage.jsx";
@@ -87,6 +88,10 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
 
       <section className="card" id="petunjuk-banjir">
         <h2>Petunjuk perhitungan banjir</h2>
+        <p className="banner warn" role="note">
+          <strong>Penggunaan internal.</strong>
+          <span> {IRBI_PENGGUNAAN_INTERNAL.replace(/^Penggunaan internal\.\s*/, "")}</span>
+        </p>
         <p>
           {ANALISIS_NAMA}. {ANALISIS_BUKAN_RESMI}
         </p>
@@ -159,7 +164,13 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
             </a>
             . {PRAKIRAAN_BATAS}
           </li>
-          <li>IRBI 2025: tabel dikutip dari buku BNPB yang sudah ada di repositori (Aceh dan Bengkulu, dengan halaman). Provinsi lain tidak diisi.</li>
+          <li>
+            IRBI 2025 banjir: {IRBI_BANJIR_TERVERIFIKASI}{" "}
+            <a href={IRBI_BUKU_BANJIR_URL} target="_blank" rel="noopener noreferrer">
+              Buku IRBI 2025, tabel banjir
+            </a>
+            .
+          </li>
           <li>
             Kejadian banjir 2024:{" "}
             <a href={BNPB_RESOURCE_URL} target="_blank" rel="noopener noreferrer">
@@ -215,8 +226,8 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
             </a>
           </li>
           <li>
-            <a href="https://inarisk.bnpb.go.id/IRBI-2025/files/basic-html/page294.html" target="_blank" rel="noopener noreferrer">
-              Buku IRBI 2025, halaman bahaya kebakaran dan tabel banjir yang dikutip
+            <a href={IRBI_BUKU_BANJIR_URL} target="_blank" rel="noopener noreferrer">
+              Buku IRBI 2025, tabel banjir halaman 212–227
             </a>
           </li>
           <li>

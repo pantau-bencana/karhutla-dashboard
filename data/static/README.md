@@ -1,4 +1,10 @@
-# Penduduk dan rumah tangga kabupaten/kota
+# Data statis
+
+## IRBI 2025 banjir, Aceh dan Bengkulu
+
+`irbi-2025-banjir-aceh-bengkulu.csv` berisi 33 kabupaten/kota. Skor, kelas, dan halaman sudah dicocokkan dengan Buku IRBI 2025 (BNPB, Januari 2026), halaman 212–227. Semua baris cocok. Provinsi lain tidak diisi. Buku melarang pengutipan atau perbanyakan tanpa izin tertulis BNPB; izin belum diperoleh.
+
+## Penduduk dan rumah tangga kabupaten/kota
 
 Berkas `penduduk-kabkota.csv` menyimpan total satu kabupaten/kota. Angka itu bukan jumlah penduduk atau rumah tangga yang terpapar banjir. Sel rumah tangga yang kosong berarti belum tersedia, bukan nol.
 

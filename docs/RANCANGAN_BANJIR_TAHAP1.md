@@ -7,7 +7,7 @@ Keputusan yang dipakai (menggantikan draf yang masih menyebut IRBI 2024, warna d
 1. Peta provinsi nasional. Klik provinsi, atau pilih dari daftar yang memuat setiap provinsi plus **Semua provinsi**, membuka peta kab/kota dan tabel.
 2. CAP nowcast BMKG dari RSS resmi, tanpa kunci. `scripts/cap-kab.mjs` tidak lagi menyaring Aceh/Bengkulu. Ada keluaran `data/live/bmkg-cap-prov.csv`. Workflow `.github/workflows/refresh-cap.yml` berjalan pada menit 12 dan 42 UTC. Jeda antar permintaan BMKG 1,1 detik.
 3. Istilah `severity` dan `event` CAP ditampilkan apa adanya. Warna Awas / Siaga / Waspada hanya dari **Analisis Pantau Bencana (gabungan BMKG × IRBI BNPB)** di `src/lib/analisisPantauBencana.js`. Tanpa peringatan yang masih berlaku, wilayah tidak diwarnai. Bukan status resmi.
-4. IRBI 2025 memakai tabel buku yang sudah ada (Aceh dan Bengkulu). Provinsi lain kosong. Angka tidak dikarang.
+4. IRBI 2025 banjir memakai 33 baris Aceh dan Bengkulu yang sudah dicocokkan dengan Buku IRBI 2025, halaman 212–227. Semua baris cocok. Provinsi lain kosong. Angka tidak dikarang dan tabel nasional tidak ditambahkan.
 5. Kejadian BNPB 2024 dibaca dari `data/bnpb/banjir-2024.csv` bila ada. Sebelum berkas itu ada, keadaan kosong dan tautan resource `a4daec53-1119-43ef-b05e-00ec3a4c42a4`.
 6. Overlay inaRISK punya tombol nyala/mati dan mati secara bawaan.
 7. Kolom dasarian tetap manual, dengan tanggal acuan dan tautan https://iklim.bmkg.go.id/.

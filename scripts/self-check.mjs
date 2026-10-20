@@ -64,7 +64,7 @@ import { jenisHujan, labelSlotHujan, periodeTigaHari } from "../src/lib/prakiraa
 import { PROVINSI, SEMUA_PROVINSI } from "../src/lib/provinsi.js";
 import { severityLabel } from "../src/lib/capKab.js";
 import { buildHotspotTree } from "../src/lib/hotspotTree.js";
-import { FLOOD_INFO_COLUMNS, RAIN_RISK_MATRIX, buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI } from "../src/lib/floodMatrix.js";
+import { FLOOD_INFO_COLUMNS, IRBI_BANJIR_TERVERIFIKASI, IRBI_PENGGUNAAN_INTERNAL, RAIN_RISK_MATRIX, buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI } from "../src/lib/floodMatrix.js";
 import {
   DASARIAN_NOTE,
   MATRIX_PERMISSION,
@@ -861,6 +861,12 @@ const irbiBanjir = parseCsv(readFileSync("data/static/irbi-2025-banjir-aceh-beng
 const irbiMulti = parseCsv(readFileSync("data/static/irbi-2025-multibahaya-aceh-bengkulu.csv", "utf8"));
 const dibiBanjir = parseCsv(readFileSync("data/live/dibi-banjir-2024.csv", "utf8"));
 assert.equal(irbiBanjir.length, 33);
+assert.equal(irbiBanjir.every((row) => Number(row.halaman) >= 212 && Number(row.halaman) <= 227), true);
+assert.match(IRBI_BANJIR_TERVERIFIKASI, /33 baris/);
+assert.match(IRBI_BANJIR_TERVERIFIKASI, /halaman 212–227/);
+assert.match(IRBI_PENGGUNAAN_INTERNAL, /Penggunaan internal/);
+assert.match(IRBI_PENGGUNAAN_INTERNAL, /tidak untuk publikasi/);
+assert.match(IRBI_PENGGUNAAN_INTERNAL, /bukan status resmi/);
 assert.equal(irbiMulti.length, 33);
 assert.equal(dibiBanjir.length, 28);
 const floodRows = buildFloodRows({ banjir: irbiBanjir, multi: irbiMulti, dibi: dibiBanjir, dibiLoaded: true });
@@ -1117,6 +1123,9 @@ assert.equal(catWilayah({ nowcastStatus: "ok", nowcastAda: true, analisisStatus:
 assert.equal(catWilayah({ nowcastStatus: "ok", nowcastAda: false, analisisStatus: null }, { tab: "cap", cakupan: "nasional" }).kind, "kosong");
 assert.equal(catWilayah({ nowcastStatus: "ok", nowcastAda: true, analisisStatus: "Awas" }, { tab: 0 }).alasan, "hari");
 assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /Petunjuk perhitungan banjir/);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /IRBI_PENGGUNAAN_INTERNAL/);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /IRBI_BANJIR_TERVERIFIKASI/);
+assert.match(floodSource, /IRBI_PENGGUNAAN_INTERNAL/);
 assert.match(floodSource, /petunjuk-banjir/);
 assert.match(floodSource, /Hari ini/);
 assert.match(floodSource, /Besok/);

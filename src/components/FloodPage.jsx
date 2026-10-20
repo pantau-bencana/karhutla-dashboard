@@ -20,7 +20,7 @@ import { DASARIAN_FILE, DASARIAN_GUIDE_URL, IKLIM_BMKG_URL, applyDasarian, today
 import { formatTanggalPendek, formatUsia, formatWib } from "../lib/format.js";
 import { bigQueryUrl } from "../lib/floodServices.js";
 import { BMKG_DOCS_URL } from "../lib/bmkgForecast.js";
-import { FLOOD_PERMISSION, IRBI_PERMISSION, buildFloodRows, kodeWilayah } from "../lib/floodMatrix.js";
+import { FLOOD_PERMISSION, IRBI_PENGGUNAAN_INTERNAL, IRBI_PERMISSION, buildFloodRows, kodeWilayah } from "../lib/floodMatrix.js";
 import {
   BPS_PROYEKSI_URL,
   PENDUDUK_ABSENT,
@@ -303,6 +303,10 @@ function FloodBody() {
         <strong>{FLOOD_PERMISSION}</strong>
         <span> {IRBI_PERMISSION}</span>
       </p>
+      <p className="banner warn" role="note">
+        <strong>Penggunaan internal.</strong>
+        <span> {IRBI_PENGGUNAAN_INTERNAL.replace(/^Penggunaan internal\.\s*/, "")}</span>
+      </p>
       <p className="flood-summary" role="status">
         {ringkas.status === "memuat"
           ? "Memuat peringatan BMKG…"
@@ -582,7 +586,7 @@ function FloodBody() {
           <p>{IRBI_PERMISSION} Provinsi yang tidak ada di tabel buku yang tersimpan tidak diisi angka.</p>
           <p>Batas wilayah: Badan Informasi Geospasial.</p>
           <p>
-            Penduduk dan rumah tangga: BPS, unduhan manual ke {PENDUDUK_FILE}. Status saat berkas kosong: Tautan saja.{" "}
+            Penduduk dan rumah tangga: BPS, salinan statis di {PENDUDUK_FILE}, proyeksi 2026. Rumah tangga hanya DKI Jakarta, Banten, dan Jawa Timur.{" "}
             <a href={BPS_PROYEKSI_URL} target="_blank" rel="noopener noreferrer">
               Publikasi proyeksi penduduk kabupaten/kota
             </a>

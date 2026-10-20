@@ -1,12 +1,16 @@
 export const FLOOD_PERMISSION = "Prototipe internal – menunggu izin tertulis BNPB";
+export const IRBI_BUKU_BANJIR_URL = "https://inarisk.bnpb.go.id/IRBI-2025/files/basic-html/page212.html";
+export const IRBI_BANJIR_TERVERIFIKASI =
+  "33 baris kelas banjir Aceh dan Bengkulu sudah dicocokkan dengan Buku IRBI 2025, halaman 212–227. Semua baris cocok. Provinsi lain tidak diisi.";
+export const IRBI_PENGGUNAAN_INTERNAL =
+  "Penggunaan internal. Data IRBI 2025 bersumber dari Buku IRBI 2025 (BNPB, Januari 2026). Buku ini melarang pengutipan atau perbanyakan tanpa izin tertulis BNPB; izin belum diperoleh, jadi halaman ini tidak untuk publikasi. Status Awas/Siaga/Waspada adalah Analisis Pantau Bencana (gabungan BMKG × IRBI BNPB), bukan status resmi.";
 export const MISSING_DIBI = "Tidak tercantum di tabel BNPB 2024";
 export const DIBI_UNAVAILABLE = "Cuplikan DIBI belum tersedia";
 export const NODATA_LABEL = "Di luar area bahaya banjir yang dipetakan inaRISK";
 export const IDENTIFY_FAIL = "Nilai tidak tersedia (layanan BNPB tidak merespons)";
 export const RISK_ATTRIBUTION =
   "Indeks risiko banjir inaRISK BNPB, KRB 2021, piksel 100 m. Bukan peringatan dini. Bukan IRBI 2025.";
-export const IRBI_PERMISSION =
-  "Tabel IRBI dikutip dari buku IRBI 2025 BNPB; penggunaan publik menunggu izin tertulis BNPB (hal. ii).";
+export const IRBI_PERMISSION = IRBI_BANJIR_TERVERIFIKASI;
 export const DIBI_RESOURCE = "a4daec53-1119-43ef-b05e-00ec3a4c42a4";
 export const INARISK_PORTAL = "https://inarisk.bnpb.go.id/";
 
@@ -32,7 +36,7 @@ export const FLOOD_INFO_COLUMNS = [
   {
     id: "irbi-banjir",
     label: "Kelas risiko banjir IRBI 2025",
-    detail: "Statis. Dikutip dari buku.",
+    detail: "Statis. Dicocokkan dengan Buku IRBI 2025, halaman 212–227.",
     sortKey: "banjir",
   },
   { id: "analisis", label: "Analisis Pantau Bencana", detail: "Bukan status resmi." },
