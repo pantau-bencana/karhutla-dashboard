@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import { osmTileLayer } from "../lib/basemap.js";
 import { INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../lib/geo.js";
-import { ANALISIS_WARNA } from "../lib/analisisPantauBencana.js";
+import { ANALISIS_WARNA, CATATAN_ABU, CATATAN_ARSIR, WARNA_TANPA_PERINGATAN } from "../lib/analisisPantauBencana.js";
 import { kodeWilayah } from "../lib/floodMatrix.js";
 import {
   FLOOD_PERMISSION,
@@ -20,8 +20,6 @@ import {
   exportImageUrl,
   identifyUrl,
 } from "../lib/floodServices.js";
-
-const PERINGATAN_TANPA_IRBI = "#c4b49a";
 
 function envelopeOf(features) {
   let south = 90;
@@ -94,6 +92,53 @@ function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);
 }
 
+function resolvePaint(province, feature, kabPaint, provPaint, tab, bolehKosong) {
+  const paint = paintOf(province, feature, kabPaint, provPaint);
+  if (paint?.kind) return paint;
+  if (tab !== "cap" || !bolehKosong) return { kind: "nodata", fill: "", status: "", alasan: tab === "cap" ? "cakupan" : "hari" };
+  return { kind: "kosong", fill: WARNA_TANPA_PERINGATAN, status: "", alasan: "" };
+}
+
+function gayaWilayah(paint, selected, peringatan) {
+  if (!peringatan) {
+    return { color: "#d6d3d1", weight: selected ? 1 : 0.4, fillColor: "#f4f1ea", fillOpacity: 0.5, dashArray: null };
+  }
+  if (paint?.kind === "status" && paint.fill) {
+    return { color: "#3f3a34", weight: selected ? 1.1 : 0.45, fillColor: paint.fill, fillOpacity: 0.78, dashArray: null };
+  }
+  if (paint?.kind === "kosong") {
+    return { color: "#6f6a62", weight: selected ? 1 : 0.45, fillColor: WARNA_TANPA_PERINGATAN, fillOpacity: 0.9, dashArray: null };
+  }
+  return { color: "#6f6a62", weight: selected ? 1 : 0.4, fillColor: "url(#flood-hatch)", fillOpacity: 1, dashArray: null };
+}
+
+function pasangArsir(map, layer) {
+  const sample = layer?.getLayers?.()[0];
+  if (!map || !sample) return;
+  const renderer = map.getRenderer(sample);
+  const svg = renderer?._container;
+  if (!svg || svg.querySelector("#flood-hatch")) return;
+  const ns = "http://www.w3.org/2000/svg";
+  const defs = document.createElementNS(ns, "defs");
+  const pattern = document.createElementNS(ns, "pattern");
+  pattern.setAttribute("id", "flood-hatch");
+  pattern.setAttribute("patternUnits", "userSpaceOnUse");
+  pattern.setAttribute("width", "8");
+  pattern.setAttribute("height", "8");
+  pattern.setAttribute("patternTransform", "rotate(40)");
+  const rect = document.createElementNS(ns, "rect");
+  rect.setAttribute("width", "8");
+  rect.setAttribute("height", "8");
+  rect.setAttribute("fill", "#efeae2");
+  const line = document.createElementNS(ns, "path");
+  line.setAttribute("d", "M0 0 L0 8");
+  line.setAttribute("stroke", "#8d877c");
+  line.setAttribute("stroke-width", "2");
+  pattern.append(rect, line);
+  defs.append(pattern);
+  svg.insertBefore(defs, svg.firstChild);
+}
+
 function tooltipFor(province, feature, kabPaint, provPaint) {
   const nama = province ? feature?.properties?.wadmkk : feature?.properties?.wadmpr;
   const paint = paintOf(province, feature, kabPaint, provPaint);
@@ -103,7 +148,16 @@ function tooltipFor(province, feature, kabPaint, provPaint) {
   return nama ? escapeHtml(nama) : "";
 }
 
-export function FloodRiskMap({ province = "", onProvince, kabPaint, provPaint }) {
+export function FloodRiskMap({
+  province = "",
+  onProvince,
+  kabPaint,
+  provPaint,
+  nomor,
+  tab = "cap",
+  bolehKosong = false,
+  catatan = [],
+}) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const riskRef = useRef(null);
@@ -111,6 +165,7 @@ export function FloodRiskMap({ province = "", onProvince, kabPaint, provPaint })
   const kabRef = useRef(null);
   const lineRef = useRef(null);
   const geomRef = useRef(null);
+  const labelRef = useRef(null);
   const tokenRef = useRef(0);
   const identifyRef = useRef(0);
   const identifyHandler = useRef(() => {});
@@ -118,6 +173,8 @@ export function FloodRiskMap({ province = "", onProvince, kabPaint, provPaint })
   const inariskRef = useRef(false);
   const [showInarisk, setShowInarisk] = useState(false);
   const [showBahaya, setShowBahaya] = useState(false);
+  const [showPeringatan, setShowPeringatan] = useState(true);
+  const [showBatas, setShowBatas] = useState(true);
   const [mapError, setMapError] = useState("");
   const [bigNote, setBigNote] = useState("");
   const [identify, setIdentify] = useState("");
@@ -246,17 +303,7 @@ export function FloodRiskMap({ province = "", onProvince, kabPaint, provPaint })
           { type: "FeatureCollection", features: drawn },
           {
             pane: "flood-lines",
-            style: (feature) => {
-              const paint = paintOf(province, feature, kabPaint, provPaint);
-              const fill = paint?.fill || "#f4f1ea";
-              return {
-                color: paint?.fill ? "#57534e" : "#d6d3d1",
-                weight: province ? 1 : 0.4,
-                fillColor: fill,
-                fillOpacity: paint?.fill ? 0.72 : 0.35,
-                dashArray: paint?.hatch ? "4 3" : null,
-              };
-            },
+            style: (feature) => gayaWilayah(resolvePaint(province, feature, kabPaint, provPaint, tab, bolehKosong), Boolean(province), showPeringatan),
             onEachFeature(feature, layer) {
               const tip = tooltipFor(province, feature, kabPaint, provPaint);
               if (tip) layer.bindTooltip(tip, { sticky: true, className: "flood-tip" });
@@ -270,6 +317,10 @@ export function FloodRiskMap({ province = "", onProvince, kabPaint, provPaint })
             },
           },
         ).addTo(map);
+        pasangArsir(map, kabRef.current);
+        kabRef.current.setStyle((feature) =>
+          gayaWilayah(resolvePaint(province, feature, kabPaint, provPaint, tab, bolehKosong), Boolean(province), showPeringatan),
+        );
         const extent = envelopeOf(drawn);
         if (province && extent) {
           map.fitBounds(
@@ -288,20 +339,6 @@ export function FloodRiskMap({ province = "", onProvince, kabPaint, provPaint })
             { animate: false },
           );
         }
-        if (province) {
-          try {
-            const lines = await readJson(bigQueryUrl(0, `wapro1='${province.replaceAll("'", "''")}' OR wapro2='${province.replaceAll("'", "''")}'`), 20000);
-            if (!cancelled) {
-              lineRef.current = L.geoJSON(lines, {
-                pane: "flood-lines",
-                interactive: false,
-                style: { color: "#143028", weight: 1.6, opacity: 0.9 },
-              }).addTo(map);
-            }
-          } catch {
-            if (!cancelled) setBigNote("Garis batas provinsi BIG tidak tersedia. Wilayah kabupaten tetap ditampilkan.");
-          }
-        }
       } catch {
         if (!cancelled) setBigNote("Batas BIG tidak tersedia. Peta wilayah tidak dapat digambar pada pembaruan ini.");
       } finally {
@@ -314,22 +351,85 @@ export function FloodRiskMap({ province = "", onProvince, kabPaint, provPaint })
   }, [province, onProvince]);
 
   useEffect(() => {
+    const map = mapRef.current;
+    if (kabRef.current && map) pasangArsir(map, kabRef.current);
     kabRef.current?.eachLayer((layer) => {
       const feature = layer.feature;
-      const paint = paintOf(province, feature, kabPaint, provPaint);
-      const fill = paint?.fill || "#f4f1ea";
-      layer.setStyle({
-        color: paint?.fill ? "#57534e" : "#d6d3d1",
-        weight: province ? 1 : 0.4,
-        fillColor: fill,
-        fillOpacity: paint?.fill ? 0.72 : 0.35,
-        dashArray: paint?.hatch ? "4 3" : null,
-      });
+      const paint = resolvePaint(province, feature, kabPaint, provPaint, tab, bolehKosong);
+      layer.setStyle(gayaWilayah(paint, Boolean(province), showPeringatan));
       const tip = tooltipFor(province, feature, kabPaint, provPaint);
       if (tip) layer.bindTooltip(tip, { sticky: true, className: "flood-tip" });
       else layer.unbindTooltip();
     });
-  }, [province, kabPaint, provPaint, loadingMap]);
+  }, [province, kabPaint, provPaint, loadingMap, tab, bolehKosong, showPeringatan]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    labelRef.current?.remove();
+    labelRef.current = null;
+    if (!map || !province || !kabRef.current) return undefined;
+    const group = L.layerGroup();
+    const seen = new Set();
+    kabRef.current.eachLayer((layer) => {
+      const kode = kodeWilayah(layer.feature?.properties?.kdpkab);
+      if (!kode || seen.has(kode)) return;
+      const n = nomor?.get(kode);
+      if (!n) return;
+      seen.add(kode);
+      let center = null;
+      try {
+        center = layer.getCenter();
+      } catch {
+        center = null;
+      }
+      if (!center) return;
+      group.addLayer(
+        L.marker(center, {
+          interactive: false,
+          keyboard: false,
+          icon: L.divIcon({
+            className: "flood-num",
+            html: `<span>${n}</span>`,
+            iconSize: [22, 22],
+            iconAnchor: [11, 11],
+          }),
+        }),
+      );
+    });
+    group.addTo(map);
+    labelRef.current = group;
+    return () => {
+      group.remove();
+      if (labelRef.current === group) labelRef.current = null;
+    };
+  }, [province, nomor, loadingMap]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return undefined;
+    lineRef.current?.remove();
+    lineRef.current = null;
+    if (!showBatas) return undefined;
+    let cancelled = false;
+    const esc = province.replaceAll("'", "''");
+    const where = province ? `wapro1='${esc}' OR wapro2='${esc}'` : "1=1";
+    (async () => {
+      try {
+        const lines = await readJson(bigQueryUrl(0, where, { offset: 0, recordCount: 300, allowableOffset: province ? "0.02" : "0.2" }), 25000);
+        if (cancelled || !mapRef.current) return;
+        lineRef.current = L.geoJSON(lines, {
+          pane: "flood-lines",
+          interactive: false,
+          style: { color: "#143028", weight: province ? 1.8 : 0.7, opacity: 0.9, fillOpacity: 0 },
+        }).addTo(mapRef.current);
+      } catch {
+        if (!cancelled) setBigNote("Garis batas provinsi BIG tidak tersedia. Wilayah kabupaten tetap ditampilkan.");
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [showBatas, province]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -391,16 +491,27 @@ export function FloodRiskMap({ province = "", onProvince, kabPaint, provPaint })
 
   return (
     <div className="flood-map-block">
-      <div className="province-filter" role="group" aria-label="Lapisan peta banjir">
-        <button type="button" aria-pressed={showInarisk} onClick={() => setShowInarisk((value) => !value)}>
+      <fieldset className="layer-checks">
+        <legend>Lapisan</legend>
+        <label>
+          <input type="checkbox" checked={showPeringatan} onChange={(event) => setShowPeringatan(event.target.checked)} />
+          Peringatan
+        </label>
+        <label>
+          <input type="checkbox" checked={showInarisk} onChange={(event) => setShowInarisk(event.target.checked)} />
           Overlay inaRISK
-        </button>
+        </label>
         {showInarisk ? (
-          <button type="button" aria-pressed={showBahaya} onClick={() => setShowBahaya((value) => !value)}>
+          <label>
+            <input type="checkbox" checked={showBahaya} onChange={(event) => setShowBahaya(event.target.checked)} />
             Bahaya banjir
-          </button>
+          </label>
         ) : null}
-      </div>
+        <label>
+          <input type="checkbox" checked={showBatas} onChange={(event) => setShowBatas(event.target.checked)} />
+          Batas provinsi
+        </label>
+      </fieldset>
       <p className="fine">{FLOOD_PERMISSION} Overlay inaRISK mati sampai dinyalakan. Status peta inaRISK belum Aktif.</p>
       {mapError ? (
         <p className="banner warn" role="status">
@@ -420,15 +531,16 @@ export function FloodRiskMap({ province = "", onProvince, kabPaint, provPaint })
           </span>
         ))}
         <span>
-          <i style={{ background: PERINGATAN_TANPA_IRBI }} /> Peringatan aktif, kelas IRBI belum ada
+          <i style={{ background: WARNA_TANPA_PERINGATAN }} /> Tidak ada peringatan
         </span>
         <span>
-          <i style={{ background: "#f4f1ea", border: "1px solid #d6d3d1" }} /> Tidak ada peringatan aktif
+          <i className="swatch-hatch" /> Tanpa data
         </span>
       </div>
-      <p className="fine">
-        Warna Awas, Siaga, dan Waspada adalah analisis dasbor, bukan status resmi. Tanpa peringatan yang masih berlaku, wilayah tidak diwarnai.
-      </p>
+      <p className="fine">{CATATAN_ABU} {CATATAN_ARSIR}</p>
+      {catatan.map((baris) => (
+        <p key={baris} className="fine">{baris}</p>
+      ))}
       {showInarisk ? (
         <>
           <p className="fine">{RISK_ATTRIBUTION}</p>

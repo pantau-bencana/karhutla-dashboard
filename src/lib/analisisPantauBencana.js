@@ -61,6 +61,57 @@ export function analisisTertinggi(statuses) {
   return best;
 }
 
+export const WARNA_TANPA_PERINGATAN = "#c5c1b8";
+
+export const CATATAN_ARSIR =
+  "Arsir berarti tanpa data untuk tab yang dipilih. Bukan angka nol dan bukan status aman.";
+export const CATATAN_ABU = "Abu-abu berarti tidak ada peringatan CAP yang masih berlaku.";
+export const CATATAN_HARI =
+  "Pada tab Hari ini, Besok, dan Lusa matriks Awas/Siaga/Waspada tidak dihitung. Matriks itu hanya memakai peringatan CAP 0–3 jam dan kelas IRBI. Prakiraan per kab/kota belum tersedia, jadi wilayah diarsir.";
+export const CATATAN_IRBI =
+  "Peringatan aktif tanpa kelas IRBI, atau keparahan di luar matriks, diarsir.";
+export const CATATAN_CAP = "Peringatan CAP tidak dapat dimuat. Wilayah diarsir.";
+export const CATATAN_TERTUNDA =
+  "Cuplikan CAP lebih tua dari 90 menit. Wilayah tanpa peringatan yang masih berlaku diarsir, bukan dinyatakan aman.";
+export const CATATAN_CAKUPAN =
+  "Cuplikan CAP belum bertanda cakupan nasional. Kabupaten/kota yang tidak tercantum di cuplikan diarsir.";
+export const CATATAN_ALASAN = Object.freeze({
+  hari: CATATAN_HARI,
+  irbi: CATATAN_IRBI,
+  cap: CATATAN_CAP,
+  tertunda: CATATAN_TERTUNDA,
+  cakupan: CATATAN_CAKUPAN,
+});
+
+export function catWilayah(row, { tab = "cap", cakupan = "", tertunda = false } = {}) {
+  if (tab !== "cap") return { kind: "nodata", fill: "", status: "", alasan: "hari" };
+  if (row?.nowcastStatus !== "ok") return { kind: "nodata", fill: "", status: "", alasan: "cap" };
+  if (row.analisisStatus && ANALISIS_WARNA[row.analisisStatus]) {
+    return { kind: "status", fill: ANALISIS_WARNA[row.analisisStatus], status: row.analisisStatus, alasan: "" };
+  }
+  if (row.nowcastAda) return { kind: "nodata", fill: "", status: "", alasan: "irbi" };
+  if (tertunda) return { kind: "nodata", fill: "", status: "", alasan: "tertunda" };
+  if (cakupan === "nasional" || row.nowcastExpired) {
+    return { kind: "kosong", fill: WARNA_TANPA_PERINGATAN, status: "", alasan: "" };
+  }
+  return { kind: "nodata", fill: "", status: "", alasan: "cakupan" };
+}
+
+const URUT_ALASAN = ["hari", "cap", "tertunda", "irbi", "cakupan"];
+
+export function gabungCat(rows, konteks) {
+  const cats = (rows ?? []).map((row) => catWilayah(row, konteks));
+  const status = analisisTertinggi(cats.map((cat) => cat.status));
+  if (status) return { kind: "status", fill: ANALISIS_WARNA[status], status, alasan: "" };
+  const nodata = cats.filter((cat) => cat.kind === "nodata");
+  if (nodata.length) {
+    const alasan = URUT_ALASAN.find((key) => nodata.some((cat) => cat.alasan === key)) || "cakupan";
+    return { kind: "nodata", fill: "", status: "", alasan };
+  }
+  if (cats.length) return { kind: "kosong", fill: WARNA_TANPA_PERINGATAN, status: "", alasan: "" };
+  return { kind: "nodata", fill: "", status: "", alasan: "cakupan" };
+}
+
 export function applyAnalisis(rows) {
   return (rows ?? []).map((row) => {
     if (!row?.nowcastAda) return { ...row, analisisStatus: null };

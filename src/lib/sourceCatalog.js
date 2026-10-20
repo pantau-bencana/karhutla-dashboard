@@ -371,12 +371,13 @@ export const SOURCES = [
       "Total penduduk dan rumah tangga satu kabupaten/kota, hanya pada baris yang punya status analisis. Bukan jumlah terpapar.",
     officialUrl: "https://sensus.bps.go.id/publikasi/index/sp2020",
     officialLabel: "Publikasi Proyeksi Penduduk Kabupaten/Kota, Sensus Penduduk 2020",
-    access: "Unduhan manual",
+    access: "Data statis",
     needsKey: false,
-    kind: "tautan",
-    updateType: "",
+    kind: "statis",
+    updateType: "Tahunan / statis",
+    file: "data/static/penduduk-kabkota.csv",
     limitation:
-      "Berkas data/static/penduduk-kabkota.csv hanya header. Angka diisi manual dari tabel BPS, tanpa kunci API. Sel kosong bukan nol. Bukan kisi penduduk global. Bukan jumlah penduduk atau rumah tangga yang terpapar.",
+      "514 kabupaten/kota. Penduduk adalah proyeksi BPS 2026, total kab/kota, bukan jumlah terpapar. Rumah tangga hanya DKI Jakarta, Banten, dan Jawa Timur; sel lain belum tersedia dan bukan nol. Kode mengikuti batas BIG, bukan kode BPS di dalam kalimat sumber. Tidak ada kunci API.",
   },
 ];
 

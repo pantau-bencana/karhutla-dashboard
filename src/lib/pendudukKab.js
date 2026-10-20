@@ -19,6 +19,9 @@ export const PENDUDUK_BUKAN_TERPAPAR = "total kab/kota, bukan jumlah terpapar";
 export const PENDUDUK_ABSENT =
   "Angka penduduk dan rumah tangga kabupaten/kota belum diisi dari tabel BPS. Sel kosong bukan nol dan bukan jumlah terpapar.";
 export const BPS_PROYEKSI_URL = "https://sensus.bps.go.id/publikasi/index/sp2020";
+export const BPS_PENDUDUK_URL =
+  "https://www.bps.go.id/id/statistics-table/2/Mjc5MCMy/-jumlah-penduduk-menurut-kabupaten-kota-dan-kelompok-umur.html";
+export const RUMAH_BELUM = "belum tersedia";
 
 export function angkaUtuh(value) {
   const text = String(value ?? "").trim();
@@ -63,10 +66,19 @@ export function teksAngkaPenduduk(value) {
   return formatAngka(value);
 }
 
+export function teksRumahTangga(item) {
+  if (item?.rumahTangga == null) return RUMAH_BELUM;
+  return formatAngka(item.rumahTangga);
+}
+
 export function barisTooltip(item) {
+  const rumah =
+    item?.rumahTangga == null
+      ? `Jumlah rumah tangga/KK: ${RUMAH_BELUM}`
+      : `${labelRumahTangga(item)}: ${teksAngkaPenduduk(item.rumahTangga)}`;
   return [
     `${labelPenduduk(item)}: ${teksAngkaPenduduk(item?.penduduk ?? null)}`,
-    `${labelRumahTangga(item)}: ${teksAngkaPenduduk(item?.rumahTangga ?? null)}`,
+    rumah,
     PENDUDUK_BUKAN_TERPAPAR,
   ];
 }

@@ -22,6 +22,7 @@ import {
   labelPenduduk,
   labelRumahTangga,
   teksAngkaPenduduk,
+  teksRumahTangga,
 } from "../lib/pendudukKab.js";
 import { labelSlotHujan } from "../lib/prakiraanHujan.js";
 import { FLOOD_INFO_COLUMNS, RAIN_RISK_MATRIX, krbLinksFor, skorTeks, sortFloodRows } from "../lib/floodMatrix.js";
@@ -30,11 +31,19 @@ function selPenduduk(row, jenis) {
   if (!row.pendudukTampil) return "—";
   if (row.pendudukStatus === "memuat") return "Memuat angka penduduk…";
   const item = row.pendudukItem;
-  const angka = jenis === "penduduk" ? item?.penduduk : item?.rumahTangga;
+  if (jenis === "rumah" && item?.rumahTangga == null) {
+    return (
+      <>
+        {teksRumahTangga(item)}
+        <small>{PENDUDUK_BUKAN_TERPAPAR}</small>
+      </>
+    );
+  }
+  const angka = jenis === "penduduk" ? teksAngkaPenduduk(item?.penduduk ?? null) : teksRumahTangga(item);
   const label = jenis === "penduduk" ? labelPenduduk(item) : labelRumahTangga(item);
   return (
     <>
-      {teksAngkaPenduduk(angka ?? null)}
+      {angka}
       <small>{label}</small>
       <small>{PENDUDUK_BUKAN_TERPAPAR}</small>
     </>
@@ -246,6 +255,55 @@ export function FloodInfoTable({ rows, columns = FLOOD_INFO_COLUMNS }) {
       </div>
     </div>
   );
+}
+
+export function FloodKabDaftar({ rows }) {
+  const ordered = rows ?? [];
+  return (
+    <div className="table-wrap flood-side wrap-cells">
+      <table>
+        <caption>Kabupaten/kota. Nomor mengikuti kode wilayah, bukan peringkat.</caption>
+        <thead>
+          <tr>
+            <th scope="col">No.</th>
+            <th scope="col">Kab/kota</th>
+            <th scope="col">Status</th>
+            <th scope="col">Riwayat</th>
+            <th scope="col">IRBI</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ordered.map((row, index) => (
+            <tr key={row.kode}>
+              <td>{index + 1}</td>
+              <th scope="row">
+                {row.nama}
+                <small>{row.kode}</small>
+              </th>
+              <td>{selStatusPeta(row)}</td>
+              <td>{row.dibiTeks || "—"}</td>
+              <td>{row.banjirKelas || "Belum tersedia di tabel IRBI 2025 yang tersimpan."}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="fine">Tingkat kabupaten/kota. Kecamatan tidak ditampilkan.</p>
+    </div>
+  );
+}
+
+function selStatusPeta(row) {
+  const peta = row.peta;
+  if (peta?.kind === "status" && peta.status) {
+    const warna = ANALISIS_WARNA[peta.status];
+    return (
+      <span className="analisis-pill" style={{ background: warna, color: peta.status === "Awas" ? "#fff" : "#1c1915" }}>
+        {peta.status}
+      </span>
+    );
+  }
+  if (peta?.kind === "kosong") return "Tidak ada peringatan";
+  return "Tanpa data";
 }
 
 export function PrakiraanTigaHari({ titik, hari, periodeLabel }) {

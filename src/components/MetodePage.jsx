@@ -4,6 +4,8 @@ import { BNPB_RESOURCE_URL } from "../lib/bnpbBanjir.js";
 import { BMKG_CAP_DOCS, BMKG_CAP_RSS } from "../lib/capKab.js";
 import { BMKG_DOCS_URL } from "../lib/bmkgForecast.js";
 import { IKLIM_BMKG_URL } from "../lib/dasarianManual.js";
+import { BIG_SERVICE } from "../lib/bigWilayah.js";
+import { BPS_PENDUDUK_URL, PENDUDUK_BUKAN_TERPAPAR, RUMAH_BELUM } from "../lib/pendudukKab.js";
 import { PRAKIRAAN_BATAS } from "../lib/prakiraanHujan.js";
 import { decorateSources } from "../lib/sourceCatalog.js";
 import { GlossaryPage } from "./GlossaryPage.jsx";
@@ -83,37 +85,61 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
         </div>
       </section>
 
-      <section className="card" id="analisis-banjir">
-        <h2>{ANALISIS_NAMA}</h2>
-        <p>{ANALISIS_BUKAN_RESMI} Nowcast CAP hanya berlaku kira-kira 0–3 jam dan tidak diubah menjadi status 3 hari.</p>
+      <section className="card" id="petunjuk-banjir">
+        <h2>Petunjuk perhitungan banjir</h2>
+        <p>
+          {ANALISIS_NAMA}. {ANALISIS_BUKAN_RESMI}
+        </p>
+        <h3>Langkah</h3>
+        <ol className="plain-list">
+          <li>Buka tab 0–3 jam. Ambil peringatan CAP BMKG yang masih berlaku. Istilah severity dan event dibiarkan apa adanya.</li>
+          <li>Cocokkan kabupaten/kota ke kelas banjir IRBI 2025 bila kode itu ada di tabel buku yang tersimpan.</li>
+          <li>Pasangkan keparahan CAP dan kelas IRBI pada matriks di bawah. Hasilnya Awas, Siaga, atau Waspada.</li>
+          <li>Tanpa peringatan yang masih berlaku, wilayah diwarnai abu-abu. Itu bukan pernyataan aman.</li>
+          <li>Tanpa data — kelas IRBI belum ada, keparahan di luar matriks, cuplikan CAP belum nasional, atau tab hari — wilayah diarsir. Arsir bukan angka nol.</li>
+          <li>Tab Hari ini, Besok, dan Lusa tidak memakai matriks ini. Prakiraan 3 hari tetap terpisah dan hanya enam kelurahan sampel.</li>
+        </ol>
+        <h3>Matriks 3×3</h3>
+        <p>Baris adalah keparahan CAP. Kolom kelas IRBI menghasilkan status analisis.</p>
         <div className="table-wrap">
           <table>
             <thead>
               <tr>
-                <th scope="col">Keparahan CAP (istilah asli)</th>
-                <th scope="col">Kelas banjir IRBI 2025</th>
-                <th scope="col">Analisis</th>
+                <th scope="col">Keparahan CAP</th>
+                <th scope="col">IRBI Tinggi</th>
+                <th scope="col">IRBI Sedang</th>
+                <th scope="col">IRBI Rendah</th>
               </tr>
             </thead>
             <tbody>
-              {ANALISIS_MATRIKS.map((row) => (
-                <tr key={`${row.severity}-${row.kelas}`}>
-                  <th scope="row">{row.severity}</th>
-                  <td>{row.kelas}</td>
-                  <td>
-                    <span
-                      className="analisis-pill"
-                      style={{ background: ANALISIS_WARNA[row.status], color: row.status === "Awas" ? "#fff" : "#1c1915" }}
-                    >
-                      {row.status}
-                    </span>
-                  </td>
+              {["Extreme", "Severe", "Moderate"].map((severity) => (
+                <tr key={severity}>
+                  <th scope="row">{severity}</th>
+                  {["Tinggi", "Sedang", "Rendah"].map((kelas) => {
+                    const hit = ANALISIS_MATRIKS.find((row) => row.severity === severity && row.kelas === kelas);
+                    return (
+                      <td key={kelas}>
+                        <span
+                          className="analisis-pill"
+                          style={{ background: ANALISIS_WARNA[hit.status], color: hit.status === "Awas" ? "#fff" : "#1c1915" }}
+                        >
+                          {hit.status}
+                        </span>
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p>Keparahan Minor, Unknown, atau sel tanpa kelas IRBI tidak masuk matriks dan tidak diwarnai. Tanpa peringatan yang masih berlaku, wilayah tidak diwarnai.</p>
+        <p>Keparahan Minor dan Unknown tidak masuk matriks. Sel tanpa kelas IRBI tidak diwarnai sebagai Awas, Siaga, atau Waspada.</p>
+        <h3>Waktu yang sah</h3>
+        <ul className="plain-list">
+          <li>0–3 jam: nowcast CAP. Berlaku kira-kira dari waktu terbit sampai kedaluwarsa pada berkas CAP, biasanya beberapa jam. Bukan status 3 hari.</li>
+          <li>Hari ini, Besok, Lusa: prakiraan cuaca resmi 3 hari. Tanggal dihitung dari hari ini zona WIB. Waktu pada titik mengikuti local_datetime, tidak ditulis ulang menjadi WIB.</li>
+        </ul>
+        <h3>Sumber</h3>
         <ul className="plain-list">
           <li>
             CAP nowcast:{" "}
@@ -148,7 +174,66 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
             </a>
             .
           </li>
-          <li>Batas wilayah diminta ke layanan BIG saat peta dibuka. Berkas batas tidak disimpan di repositori.</li>
+          <li>
+            Penduduk kabupaten/kota, proyeksi 2026:{" "}
+            <a href={BPS_PENDUDUK_URL} target="_blank" rel="noopener noreferrer">
+              Jumlah Penduduk menurut Kabupaten/Kota, BPS
+            </a>
+            . Tiap baris menyimpan URL sumbernya. Rumah tangga/KK hanya terisi untuk DKI Jakarta, Banten, dan Jawa Timur. Selain itu tertulis {RUMAH_BELUM}. Angka yang tampil adalah {PENDUDUK_BUKAN_TERPAPAR}.
+          </li>
+          <li>
+            Batas wilayah diminta ke layanan BIG saat peta dibuka:{" "}
+            <a href={BIG_SERVICE} target="_blank" rel="noopener noreferrer">
+              BATAS_WILAYAH
+            </a>
+            . Berkas batas tidak disimpan di repositori. Kode pada berkas penduduk mengikuti kode kabupaten di layanan itu, bukan kode BPS yang tertulis di dalam kalimat sumber.
+          </li>
+        </ul>
+        <h3>Batasan</h3>
+        <ul className="plain-list">
+          <li>Awas, Siaga, dan Waspada pada peta ini adalah analisis dasbor, bukan status resmi BMKG atau BNPB.</li>
+          <li>IRBI 2025 yang tersimpan hanya mencakup Aceh dan Bengkulu. Provinsi lain tidak diisi angka.</li>
+          <li>Penduduk dan rumah tangga adalah total kab/kota, bukan jumlah terpapar.</li>
+          <li>Cuplikan CAP yang belum bertanda cakupan nasional tidak dipakai untuk menyatakan suatu kabupaten aman.</li>
+          <li>Dropdown DAS bertuliskan Dalam pengembangan dan tidak memuat data DAS.</li>
+        </ul>
+        <h3>Rujukan</h3>
+        <ul className="plain-list">
+          <li>
+            <a href={BMKG_CAP_DOCS} target="_blank" rel="noopener noreferrer">
+              Data Peringatan Dini Cuaca BMKG
+            </a>
+          </li>
+          <li>
+            <a href={BMKG_CAP_RSS} target="_blank" rel="noopener noreferrer">
+              RSS nowcast BMKG
+            </a>
+          </li>
+          <li>
+            <a href={BMKG_DOCS_URL} target="_blank" rel="noopener noreferrer">
+              Dokumentasi prakiraan cuaca BMKG
+            </a>
+          </li>
+          <li>
+            <a href="https://inarisk.bnpb.go.id/IRBI-2025/files/basic-html/page294.html" target="_blank" rel="noopener noreferrer">
+              Buku IRBI 2025, halaman bahaya kebakaran dan tabel banjir yang dikutip
+            </a>
+          </li>
+          <li>
+            <a href={BNPB_RESOURCE_URL} target="_blank" rel="noopener noreferrer">
+              Resource kejadian bencana kabupaten 2024, BNPB
+            </a>
+          </li>
+          <li>
+            <a href={BPS_PENDUDUK_URL} target="_blank" rel="noopener noreferrer">
+              Tabel proyeksi penduduk kabupaten/kota, BPS
+            </a>
+          </li>
+          <li>
+            <a href={IKLIM_BMKG_URL} target="_blank" rel="noopener noreferrer">
+              Iklim BMKG
+            </a>
+          </li>
         </ul>
       </section>
 

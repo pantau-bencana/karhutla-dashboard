@@ -1,7 +1,7 @@
 import { Component, useCallback, useEffect, useMemo, useState } from "react";
-import { FloodInfoTable, PrakiraanTigaHari } from "./FloodInfoTable.jsx";
+import { FloodInfoTable, FloodKabDaftar, PrakiraanTigaHari } from "./FloodInfoTable.jsx";
 import { FloodRiskMap } from "./FloodRiskMap.jsx";
-import { ANALISIS_BUKAN_RESMI, ANALISIS_NAMA, ANALISIS_WARNA, analisisTertinggi, applyAnalisis } from "../lib/analisisPantauBencana.js";
+import { ANALISIS_BUKAN_RESMI, ANALISIS_NAMA, CATATAN_ALASAN, applyAnalisis, catWilayah, gabungCat } from "../lib/analisisPantauBencana.js";
 import { BNPB_ABSENT, BNPB_FILE, BNPB_RESOURCE_URL, bnpbAsDibi } from "../lib/bnpbBanjir.js";
 import { parseCsv } from "../lib/csv.js";
 import {
@@ -17,7 +17,7 @@ import {
   severityLabel,
 } from "../lib/capKab.js";
 import { DASARIAN_FILE, DASARIAN_GUIDE_URL, IKLIM_BMKG_URL, applyDasarian, todayWib } from "../lib/dasarianManual.js";
-import { formatUsia, formatWib } from "../lib/format.js";
+import { formatTanggalPendek, formatUsia, formatWib } from "../lib/format.js";
 import { bigQueryUrl } from "../lib/floodServices.js";
 import { BMKG_DOCS_URL } from "../lib/bmkgForecast.js";
 import { FLOOD_PERMISSION, IRBI_PERMISSION, buildFloodRows, kodeWilayah } from "../lib/floodMatrix.js";
@@ -99,17 +99,14 @@ function wilayahDari(banjir, alerts, bigNames, province) {
   return [...map.values()];
 }
 
-function catWarna(rows, indeks) {
+function catWarna(rows, indeks, konteks) {
   const kab = new Map();
   const grouped = new Map();
   for (const row of rows ?? []) {
-    const status = row.analisisStatus;
-    const fill = status ? ANALISIS_WARNA[status] : row.nowcastAda ? "#c4b49a" : "";
+    const cat = catWilayah(row, konteks);
     kab.set(row.kode, {
-      fill,
-      hatch: Boolean(row.nowcastAda),
-      status: status || "",
-      pendudukBaris: status ? barisTooltip(indeks?.get(row.kode)) : [],
+      ...cat,
+      pendudukBaris: cat.status ? barisTooltip(indeks?.get(row.kode)) : [],
     });
     if (!row.provinsi) continue;
     const list = grouped.get(row.provinsi) ?? [];
@@ -118,9 +115,7 @@ function catWarna(rows, indeks) {
   }
   const prov = new Map();
   for (const [nama, list] of grouped) {
-    const status = analisisTertinggi(list.map((row) => row.analisisStatus));
-    const ada = list.some((row) => row.nowcastAda);
-    prov.set(nama, { fill: status ? ANALISIS_WARNA[status] : ada ? "#c4b49a" : "", status: status || "" });
+    prov.set(nama, gabungCat(list, konteks));
   }
   return { kab, prov };
 }
@@ -137,6 +132,7 @@ function FloodBody() {
   const [bigNames, setBigNames] = useState([]);
   const [dasarianDate, setDasarianDate] = useState(() => todayWib());
   const [penduduk, setPenduduk] = useState({ status: "memuat", indeks: new Map(), jumlah: 0 });
+  const [tab, setTab] = useState("cap");
   const pilihProvinsi = useCallback((nama) => setProvince(nama || ""), []);
 
   useEffect(() => {
@@ -239,7 +235,15 @@ function FloodBody() {
     const rows = buildFloodRows({ banjir, multi: [], dibi, dibiLoaded, wilayah });
     return applyAnalisis(applyNowcast(rows, cap.alerts, { ...cap.meta, status: cap.status }));
   }, [banjir, cap, dibi, dibiLoaded]);
-  const cat = useMemo(() => catWarna(nasional, penduduk.indeks), [nasional, penduduk.indeks]);
+  const konteks = useMemo(
+    () => ({
+      tab,
+      cakupan: cap.status === "ok" ? cap.meta?.cakupan || "" : "",
+      tertunda: Boolean(ringkas.tertunda),
+    }),
+    [tab, cap.status, cap.meta, ringkas.tertunda],
+  );
+  const cat = useMemo(() => catWarna(nasional, penduduk.indeks, konteks), [nasional, penduduk.indeks, konteks]);
   const ringkasPenduduk = useMemo(
     () => ringkasPendudukBerstatus(nasional, penduduk.indeks),
     [nasional, penduduk.indeks],
@@ -259,11 +263,31 @@ function FloodBody() {
     const withDasarian = applyDasarian(withNowcast, dasarian.rows, { status: dasarian.status, now: dasarianNow });
     return lampirkanPenduduk(withDasarian, penduduk.indeks, penduduk.status);
   }, [province, banjir, cap, bigNames, dibi, dibiLoaded, dasarian, dasarianNow, penduduk]);
+  const urut = useMemo(() => {
+    return [...shown]
+      .map((row) => ({ ...row, peta: catWilayah(row, konteks) }))
+      .sort((left, right) => left.kode.localeCompare(right.kode, "id"));
+  }, [shown, konteks]);
+  const nomor = useMemo(() => {
+    const map = new Map();
+    urut.forEach((row, index) => map.set(row.kode, index + 1));
+    return map;
+  }, [urut]);
+  const kabPaint = useMemo(() => (province ? catWarna(shown, penduduk.indeks, konteks).kab : cat.kab), [province, shown, penduduk.indeks, konteks, cat.kab]);
+  const bolehKosong = tab === "cap" && cap.status === "ok" && cap.meta?.cakupan === "nasional" && !ringkas.tertunda;
+  const catatanPeta = useMemo(() => {
+    const cats = province ? urut.map((row) => row.peta) : [...cat.prov.values()];
+    const alasan = new Set(cats.filter((cat) => cat?.kind === "nodata").map((cat) => cat.alasan));
+    return [...alasan].map((key) => CATATAN_ALASAN[key]).filter(Boolean);
+  }, [province, urut, cat.prov]);
   const titik = useMemo(() => {
     const semua = prakiraan.status === "ok" ? ringkasPrakiraan(prakiraan.rows, periode) : [];
     return province ? semua.filter((item) => item.provinsi === province) : semua;
   }, [prakiraan, periode, province]);
   const kabProvinsi = shown.length;
+  const hariTab = tab === "cap" ? null : periode.hari[tab];
+  const namaHari = tab === "cap" ? "" : ["Hari ini", "Besok", "Lusa"][tab];
+  const sumberPrakiraan = titik.find((item) => item.analysisUtc)?.analysisUtc || prakiraan.observedAt;
 
   return (
     <main className="wrap main">
@@ -314,6 +338,36 @@ function FloodBody() {
           </div>
         </header>
         <div className="logic-body">
+          <div className="time-toggle" role="tablist" aria-label="Jangka waktu peta">
+            <button type="button" role="tab" aria-selected={tab === "cap"} onClick={() => setTab("cap")}>
+              0–3 jam
+              <small>Nowcast CAP</small>
+            </button>
+            {periode.hari.map((iso, index) => (
+              <button key={iso} type="button" role="tab" aria-selected={tab === index} onClick={() => setTab(index)}>
+                {["Hari ini", "Besok", "Lusa"][index]}
+                <small>
+                  {formatTanggalPendek(iso)} {iso.slice(0, 4)}
+                </small>
+              </button>
+            ))}
+          </div>
+          <p className="fine">
+            {tab === "cap" ? (
+              <>
+                Sumber: BMKG. Nowcast CAP, berlaku sekitar 0–3 jam. Bukan status 3 hari. Diambil{" "}
+                {cap.meta.fetched_at ? formatWib(cap.meta.fetched_at) : "—"}. Berlaku sampai{" "}
+                {ringkas.berlakuSampai ? formatWib(ringkas.berlakuSampai) : "—"}.
+              </>
+            ) : (
+              <>
+                Sumber: BMKG. Prakiraan cuaca 3 hari untuk {namaHari}, {formatTanggalPendek(hariTab)} {hariTab.slice(0, 4)}.
+                Waktu sah mengikuti <code>local_datetime</code> pada titik sampel, bukan nowcast 0–3 jam. Diambil{" "}
+                {prakiraan.fetchedAt ? formatWib(prakiraan.fetchedAt) : "—"}. Dikeluarkan{" "}
+                {sumberPrakiraan ? formatWib(sumberPrakiraan) : "—"}. Matriks Awas/Siaga/Waspada tidak dipakai pada tab ini.
+              </>
+            )}
+          </p>
           <div className="flood-toolbar">
             <label className="filter-field">
               Provinsi
@@ -342,8 +396,27 @@ function FloodBody() {
             ) : null}
           </div>
           <div className="flood-layout">
-            <FloodRiskMap province={province} onProvince={pilihProvinsi} kabPaint={cat.kab} provPaint={cat.prov} />
+            <FloodRiskMap
+              province={province}
+              onProvince={pilihProvinsi}
+              kabPaint={kabPaint}
+              provPaint={cat.prov}
+              nomor={nomor}
+              tab={tab}
+              bolehKosong={bolehKosong}
+              catatan={catatanPeta}
+            />
             <div>
+              {province ? (
+                <>
+                  <h3>{province}</h3>
+                  <p className="fine">
+                    {urut.length} kab/kota. Nomor pada peta sama dengan nomor tabel.
+                  </p>
+                  <FloodKabDaftar rows={urut} />
+                </>
+              ) : (
+                <>
               <h3>Provinsi dengan peringatan aktif</h3>
               {daftarProv.length ? (
                 <ul className="plain-list">
@@ -374,6 +447,8 @@ function FloodBody() {
                 </a>
                 .
               </p>
+                </>
+              )}
             </div>
           </div>
           {province ? (
@@ -415,6 +490,9 @@ function FloodBody() {
           ) : (
             <p className="fine">Pilih provinsi pada peta atau pada daftar untuk membuka kabupaten/kota.</p>
           )}
+          <p>
+            <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
+          </p>
         </div>
       </section>
 

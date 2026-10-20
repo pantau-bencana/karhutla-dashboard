@@ -43,19 +43,21 @@ import {
   tampilanPrioritas,
 } from "../src/lib/aplus.js";
 import { CAP_CRON, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
-import { ANALISIS_MATRIKS, ANALISIS_NAMA, analisisStatus } from "../src/lib/analisisPantauBencana.js";
+import { ANALISIS_MATRIKS, ANALISIS_NAMA, analisisStatus, catWilayah } from "../src/lib/analisisPantauBencana.js";
 import {
   BPS_PROYEKSI_URL,
   PENDUDUK_ABSENT,
   PENDUDUK_BUKAN_TERPAPAR,
   PENDUDUK_FILE,
   PENDUDUK_HEADER,
+  RUMAH_BELUM,
   angkaUtuh,
   bacaPenduduk,
   kalimatJumlahPenduduk,
   labelPenduduk,
   labelRumahTangga,
   ringkasPendudukBerstatus,
+  teksRumahTangga,
 } from "../src/lib/pendudukKab.js";
 import { BNPB_ABSENT, BNPB_RESOURCE_URL } from "../src/lib/bnpbBanjir.js";
 import { jenisHujan, labelSlotHujan, periodeTigaHari } from "../src/lib/prakiraanHujan.js";
@@ -1090,9 +1092,37 @@ assert.deepEqual(infoColumnIds, [
   "dasarian",
   "tautan",
 ]);
-const pendudukCsv = readFileSync(PENDUDUK_FILE, "utf8").trim();
-assert.equal(pendudukCsv, PENDUDUK_HEADER.join(","));
-assert.equal(parseCsv(`${pendudukCsv}\n`).length, 0);
+const pendudukCsv = readFileSync(PENDUDUK_FILE, "utf8");
+assert.equal(pendudukCsv.split("\n")[0].trim(), PENDUDUK_HEADER.join(","));
+const pendudukBerkas = parseCsv(pendudukCsv);
+assert.equal(pendudukBerkas.length, 514);
+const pendudukByKode = new Map(pendudukBerkas.map((row) => [row.kode, row]));
+assert.equal(pendudukByKode.get("31.72").nama, "Kota Adm. Jakarta Utara");
+assert.equal(pendudukByKode.get("31.74").nama, "Kota Adm. Jakarta Selatan");
+assert.equal(pendudukByKode.get("31.71").nama, "Kota Adm. Jakarta Pusat");
+assert.equal(pendudukByKode.get("31.73").nama, "Kota Adm. Jakarta Barat");
+assert.equal(pendudukByKode.get("31.75").nama, "Kota Adm. Jakarta Timur");
+assert.equal(pendudukByKode.get("31.01").nama, "Adm. Kep. Seribu");
+const hotspotJakarta = readFileSync("data/live/hotspot.csv", "utf8")
+  .split("\n")
+  .find((line) => line.includes("DKI Jakarta,Kota Adm. Jakarta Utara"));
+assert.match(hotspotJakarta, /Cilincing,31\.72\.04,31\.72,31/);
+assert.match(readFileSync("scripts/self-check.mjs", "utf8"), /Kota Adm\. Jakarta Selatan/);
+assert.match(readFileSync("scripts/self-check.mjs", "utf8"), /31\.74\.02/);
+const rumahProv = [...new Set(pendudukBerkas.filter((row) => String(row.rumah_tangga || "").trim()).map((row) => row.kode.slice(0, 2)))].sort();
+assert.deepEqual(rumahProv, ["31", "35", "36"]);
+assert.equal(teksRumahTangga(bacaPenduduk([pendudukByKode.get("11.13")]).get("11.13")), RUMAH_BELUM);
+assert.equal(bacaPenduduk([pendudukByKode.get("31.74")]).get("31.74").rumahTangga, 582718);
+assert.equal(catWilayah({ nowcastStatus: "ok", nowcastAda: true, analisisStatus: "Awas" }, { tab: "cap", cakupan: "nasional" }).kind, "status");
+assert.equal(catWilayah({ nowcastStatus: "ok", nowcastAda: false, analisisStatus: null }, { tab: "cap", cakupan: "nasional" }).kind, "kosong");
+assert.equal(catWilayah({ nowcastStatus: "ok", nowcastAda: true, analisisStatus: "Awas" }, { tab: 0 }).alasan, "hari");
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /Petunjuk perhitungan banjir/);
+assert.match(floodSource, /petunjuk-banjir/);
+assert.match(floodSource, /Hari ini/);
+assert.match(floodSource, /Besok/);
+assert.match(floodSource, /Lusa/);
+assert.equal(RUMAH_BELUM, "belum tersedia");
+assert.match(readFileSync("src/components/FloodInfoTable.jsx", "utf8"), /RUMAH_BELUM|teksRumahTangga/);
 assert.equal(angkaUtuh(""), null);
 assert.equal(angkaUtuh("1.234"), null);
 assert.equal(angkaUtuh("100"), 100);

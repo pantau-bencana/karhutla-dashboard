@@ -1,6 +1,6 @@
 # Penduduk dan rumah tangga kabupaten/kota
 
-Berkas `penduduk-kabkota.csv` sengaja hanya berisi header. Jangan mengisi angka yang tidak disalin dari tabel resmi. Sel kosong bukan nol dan bukan jumlah penduduk atau rumah tangga yang terpapar banjir.
+Berkas `penduduk-kabkota.csv` menyimpan total satu kabupaten/kota. Angka itu bukan jumlah penduduk atau rumah tangga yang terpapar banjir. Sel rumah tangga yang kosong berarti belum tersedia, bukan nol.
 
 Header:
 
@@ -8,22 +8,14 @@ Header:
 kode,nama,penduduk,tahun_penduduk,sumber_penduduk,rumah_tangga,tahun_rt,sumber_rt
 ```
 
-- `kode` — kode kabupaten/kota Kemendagri, bentuk `11.13`.
-- `penduduk` — bilangan utuh tanpa pemisah ribuan. Kosongkan bila tidak ada.
-- `tahun_penduduk` dan `sumber_penduduk` — tahun proyeksi dan nama tabel BPS yang disalin.
-- `rumah_tangga` — bilangan utuh rumah tangga atau KK, sesuai tabel yang disalin.
-- `tahun_rt` dan `sumber_rt` — tahun dan nama tabel. Tulis di `sumber_rt` apakah angkanya rumah tangga atau KK.
+- `kode` mengikuti kode kabupaten pada batas BIG, bentuk `31.74`. Kode BPS yang tertulis di dalam `sumber_penduduk` boleh berbeda.
+- `penduduk` adalah proyeksi BPS tahun 2026, bilangan utuh tanpa pemisah ribuan.
+- `rumah_tangga` terisi untuk DKI Jakarta, Banten, dan Jawa Timur. Provinsi lain dikosongkan.
 
-## Dari mana angkanya
+Sumber penduduk: tabel BPS “Jumlah Penduduk menurut Kabupaten/Kota (Proyeksi Penduduk hasil SP2020)”.
 
-Unduhan dilakukan orang. Tidak ada kunci API, dan workflow tidak mengambil berkas ini.
+https://www.bps.go.id/id/statistics-table/2/Mjc5MCMy/-jumlah-penduduk-menurut-kabupaten-kota-dan-kelompok-umur.html
 
-Penduduk: publikasi BPS “Proyeksi Penduduk Kabupaten/Kota” hasil Sensus Penduduk 2020, satu buku per provinsi. Daftar publikasi yang dibuka pada 20 Oktober 2026:
+Daftar publikasi proyeksi per provinsi: https://sensus.bps.go.id/publikasi/index/sp2020
 
-https://sensus.bps.go.id/publikasi/index/sp2020
-
-Rumah tangga: tabel BPS provinsi “Jumlah Rumah Tangga menurut Kabupaten/Kota”. Tidak ada satu berkas nasional kabupaten/kota yang disimpan di sini. Tabel Long Form yang hanya sampai provinsi jangan disalin ke baris kabupaten.
-
-Jangan memakai kisi penduduk global. Angka hanya dari tabel BPS yang disalin ke berkas ini.
-
-Setelah angka disalin, status sumber dapat menjadi **Data statis**. Sampai isi itu ada, dasbor berstatus **Tautan saja** dan menulis “Belum diisi”.
+Rumah tangga disalin manual dari tabel BPS provinsi. Tidak ada kunci API, dan workflow tidak mengambil berkas ini. Jangan memakai kisi penduduk global.
