@@ -3,7 +3,7 @@ import { FloodInfoTable, FloodKabDaftar, PrakiraanTigaHari } from "./FloodInfoTa
 import { FloodRiskMap } from "./FloodRiskMap.jsx";
 import { ANALISIS_BUKAN_RESMI, ANALISIS_NAMA, CATATAN_ALASAN, applyAnalisis, catWilayah } from "../lib/analisisPantauBencana.js";
 import { BNPB_ABSENT, BNPB_FILE, BNPB_RESOURCE_URL, bnpbAsDibi } from "../lib/bnpbBanjir.js";
-import { parseCsv } from "../lib/csv.js";
+import { looksLikeCsv, parseCsv } from "../lib/csv.js";
 import {
   BMKG_ATTRIBUTION,
   BMKG_CAP_DOCS,
@@ -28,7 +28,7 @@ import {
   lampirkanPenduduk,
   ringkasPendudukBerstatus,
 } from "../lib/pendudukKab.js";
-import { PEMETAAN_CUACA, PRAKIRAAN_BATAS, indeksPrakiraan, periodeTigaHari, ringkasPrakiraan, terapkanHari } from "../lib/prakiraanHujan.js";
+import { PEMETAAN_CUACA, indeksPrakiraan, periodeTigaHari, ringkasPrakiraan, terapkanHari } from "../lib/prakiraanHujan.js";
 import { PROVINSI, SEMUA_PROVINSI } from "../lib/provinsi.js";
 
 const BANJIR_CSV = "data/static/irbi-2025-banjir.csv";
@@ -44,7 +44,10 @@ function assetUrl(path) {
 async function loadCsv(path) {
   const response = await fetch(assetUrl(path), { cache: "no-store" });
   if (!response.ok) throw new Error(`${path} HTTP ${response.status}`);
-  return parseCsv(await response.text());
+  const text = await response.text();
+  const check = looksLikeCsv(text);
+  if (!check.ok) throw new Error(`${path}: ${check.reason}`);
+  return parseCsv(text);
 }
 
 async function loadJson(path) {
@@ -486,7 +489,10 @@ function FloodBody() {
             </a>
             .
           </p>
-          <p className="fine">{PRAKIRAAN_BATAS}</p>
+          <p className="fine">
+            Nama kelurahan, kode yang gagal, dan batas pengambilan ada di{" "}
+            <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>. Halaman ini tidak menampilkan kecamatan atau kelurahan.
+          </p>
           {prakiraan.status === "gagal" ? <p className="banner warn">Prakiraan 3 hari tidak dapat dimuat.</p> : null}
           {prakiraan.status === "ok" ? <PrakiraanTigaHari titik={titik} hari={periode.hari} periodeLabel={periode.label} /> : null}
         </div>

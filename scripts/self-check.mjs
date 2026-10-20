@@ -64,7 +64,7 @@ import { jenisHujan, labelSlotHujan, periodeTigaHari } from "../src/lib/prakiraa
 import { PROVINSI, SEMUA_PROVINSI } from "../src/lib/provinsi.js";
 import { severityLabel } from "../src/lib/capKab.js";
 import { buildHotspotTree } from "../src/lib/hotspotTree.js";
-import { DIBI_LUAR_CUPLIKAN, FLOOD_INFO_COLUMNS, IRBI_BANJIR_TERVERIFIKASI, IRBI_PENGGUNAAN_INTERNAL, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI } from "../src/lib/floodMatrix.js";
+import { DIBI_LUAR_CUPLIKAN, DIBI_UNAVAILABLE, FLOOD_INFO_COLUMNS, IRBI_BANJIR_TERVERIFIKASI, IRBI_PENGGUNAAN_INTERNAL, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI } from "../src/lib/floodMatrix.js";
 import {
   DASARIAN_NOTE,
   MATRIX_PERMISSION,
@@ -1187,6 +1187,13 @@ const luarCuplikan = buildFloodRows({
   dibiLoaded: true,
 });
 assert.equal(luarCuplikan[0].dibiTeks, DIBI_LUAR_CUPLIKAN);
+const dibiKosong = buildFloodRows({
+  banjir: [{ kode_wilayah: "32.01", provinsi: "Jawa Barat", nama_big: "Bogor", skor: "1", kelas: "RENDAH", halaman: "226" }],
+  multi: [],
+  dibi: [],
+  dibiLoaded: true,
+});
+assert.equal(dibiKosong[0].dibiTeks, DIBI_UNAVAILABLE);
 assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /Petunjuk perhitungan banjir/);
 assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /IRBI_PENGGUNAAN_INTERNAL/);
 assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /IRBI_BANJIR_TERVERIFIKASI/);

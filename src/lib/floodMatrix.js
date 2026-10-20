@@ -152,8 +152,8 @@ export function buildFloodRows({ banjir, multi, dibi, dibiLoaded, wilayah }) {
     let dibiTeks = DIBI_UNAVAILABLE;
     let dibiAngka = null;
     if (dibiLoaded) {
-      const dalamCuplikan = !cakupanDibi.size || cakupanDibi.has(kode.slice(0, 2));
-      if (!dalamCuplikan) dibiTeks = DIBI_LUAR_CUPLIKAN;
+      if (!cakupanDibi.size) dibiTeks = DIBI_UNAVAILABLE;
+      else if (!cakupanDibi.has(kode.slice(0, 2))) dibiTeks = DIBI_LUAR_CUPLIKAN;
       else if (!kejadian) dibiTeks = MISSING_DIBI;
       else {
         dibiAngka = Number(kejadian.banjir_2024);
