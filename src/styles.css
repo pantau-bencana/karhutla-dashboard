@@ -1016,6 +1016,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   overflow-wrap: break-word;
 }
 .flood-side .analisis-pill { font-size: 11px; white-space: normal; max-width: 100%; padding: 1px 4px; box-sizing: border-box; }
+.th-with-info { display: inline-flex; align-items: center; gap: 4px; flex-wrap: wrap; }
 .flood-disclaimer { margin-top: 16px; }
 .flood-disclaimer h2 { margin: 0 0 8px; font-size: 1.05rem; }
 .flood-layout > * { min-width: 0; }

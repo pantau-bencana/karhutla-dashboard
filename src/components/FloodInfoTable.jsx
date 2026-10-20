@@ -24,7 +24,8 @@ import {
   teksAngkaPenduduk,
   teksRumahTangga,
 } from "../lib/pendudukKab.js";
-import { barisDampakHistoris } from "../lib/bnpbBanjir.js";
+import { HISTORIS_DISCLAIMER, barisDampakHistoris } from "../lib/bnpbBanjir.js";
+import { InfoTip } from "./InfoTip.jsx";
 import { DIBI_UNAVAILABLE, FLOOD_INFO_COLUMNS, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, krbLinksFor, skorTeks, sortFloodRows } from "../lib/floodMatrix.js";
 
 function selPenduduk(row, jenis) {
@@ -305,7 +306,14 @@ export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null
             <th scope="col">Kab/Kota</th>
             {tampilProvinsi ? <th scope="col">Provinsi</th> : null}
             <th scope="col">Status</th>
-            <th scope="col">Historis</th>
+            <th scope="col">
+              <span className="th-with-info">
+                Historis
+                <InfoTip label="Penjelasan kolom Historis" align="end">
+                  <p>{HISTORIS_DISCLAIMER}</p>
+                </InfoTip>
+              </span>
+            </th>
             <th scope="col">IRBI</th>
           </tr>
         </thead>

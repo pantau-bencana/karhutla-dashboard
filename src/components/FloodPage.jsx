@@ -4,7 +4,7 @@ import { FloodRiskMap } from "./FloodRiskMap.jsx";
 import { ANALISIS_BUKAN_RESMI, ANALISIS_NAMA, CATATAN_ALASAN, applyAnalisis, catWilayah } from "../lib/analisisPantauBencana.js";
 import { DISCLAIMER_UNDUH, barisXlsx, csvUnduh } from "../lib/banjirExport.js";
 import { xlsxBytes } from "../lib/xlsxMini.js";
-import { BNPB_ABSENT, BNPB_FILE, BNPB_RESOURCE_URL, HISTORIS_BANJIR_CATATAN, bnpbAsDibi } from "../lib/bnpbBanjir.js";
+import { BNPB_ABSENT, BNPB_FILE, BNPB_RESOURCE_URL, HISTORIS_BANJIR_CATATAN, HISTORIS_DISCLAIMER, bnpbAsDibi } from "../lib/bnpbBanjir.js";
 import { looksLikeCsv, parseCsv } from "../lib/csv.js";
 import {
   BMKG_ATTRIBUTION,
@@ -694,6 +694,7 @@ function FloodBody() {
             <strong>Penggunaan internal.</strong>
             <span> {IRBI_PENGGUNAAN_INTERNAL.replace(/^Penggunaan internal\.\s*/, "")}</span>
           </p>
+          <p>{HISTORIS_DISCLAIMER}</p>
         </div>
       </section>
     </main>

@@ -61,7 +61,8 @@ import {
   ringkasPendudukBerstatus,
   teksRumahTangga,
 } from "../src/lib/pendudukKab.js";
-import { BNPB_ABSENT, BNPB_RESOURCE_URL, DAMPAK_HISTORIS_CATATAN, HISTORIS_BANJIR_CATATAN, barisDampakHistoris } from "../src/lib/bnpbBanjir.js";
+import { BNPB_ABSENT, BNPB_RESOURCE_URL, DAMPAK_HISTORIS_CATATAN, HISTORIS_BANJIR_CATATAN, HISTORIS_CUPLIKAN_DIAMBIL, HISTORIS_DISCLAIMER, barisDampakHistoris } from "../src/lib/bnpbBanjir.js";
+import { formatWib } from "../src/lib/format.js";
 import {
   LABEL_TAK_DIKENAL,
   LABEL_TIDAK_BERPOTENSI,
@@ -1312,7 +1313,17 @@ assert.equal(readFileSync("src/components/FloodRiskMap.jsx", "utf8").includes("C
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Penjelasan lapisan peringatan/);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /#\/sumber-metode\/petunjuk-banjir/);
 const daftarSumber = readFileSync("src/components/FloodInfoTable.jsx", "utf8");
-assert.match(daftarSumber, /<th scope="col">No<\/th>[\s\S]*<th scope="col">Kab\/Kota<\/th>[\s\S]*<th scope="col">Provinsi<\/th>[\s\S]*<th scope="col">Status<\/th>[\s\S]*<th scope="col">Historis<\/th>[\s\S]*<th scope="col">IRBI<\/th>/);
+assert.match(daftarSumber, /<th scope="col">No<\/th>[\s\S]*<th scope="col">Kab\/Kota<\/th>[\s\S]*<th scope="col">Provinsi<\/th>[\s\S]*<th scope="col">Status<\/th>[\s\S]*<th scope="col">[\s\S]*Historis[\s\S]*<th scope="col">IRBI<\/th>/);
+assert.match(daftarSumber, /Penjelasan kolom Historis/);
+assert.match(daftarSumber, /HISTORIS_DISCLAIMER/);
+assert.match(HISTORIS_DISCLAIMER, /tercatat di DIBI BNPB/);
+assert.match(HISTORIS_DISCLAIMER, /tahun 2024/);
+assert.match(HISTORIS_DISCLAIMER, /a4daec53-1119-43ef-b05e-00ec3a4c42a4/);
+assert.match(HISTORIS_DISCLAIMER, new RegExp(formatWib(HISTORIS_CUPLIKAN_DIAMBIL).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+assert.match(HISTORIS_DISCLAIMER, /20 Oktober 2026/);
+assert.match(HISTORIS_DISCLAIMER, /tidak lengkap atau kurang dilaporkan/);
+assert.match(HISTORIS_DISCLAIMER, /bukan jumlah seluruh kejadian yang benar-benar terjadi/);
+assert.match(HISTORIS_DISCLAIMER, /tidak mengubah status Awas, Siaga, atau Waspada/);
 assert.match(daftarSumber, /tampilProvinsi \? <th scope="col">Provinsi<\/th>/);
 assert.equal(daftarSumber.includes("<th scope=\"col\">Riwayat</th>"), false);
 assert.match(daftarSumber, /DIBI_UNAVAILABLE/);
@@ -1335,6 +1346,8 @@ assert.match(HISTORIS_BANJIR_CATATAN, /5ff9f41f-8312-4b7c-aa18-fdbedac6ee7e/);
 assert.equal(DIBI_UNAVAILABLE, "Cuplikan DIBI belum tersedia");
 assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HISTORIS_BANJIR_CATATAN/);
 assert.match(readFileSync("src/components/FloodPage.jsx", "utf8"), /HISTORIS_BANJIR_CATATAN/);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HISTORIS_DISCLAIMER/);
+assert.match(readFileSync("src/components/FloodPage.jsx", "utf8"), /flood-disclaimer[\s\S]*HISTORIS_DISCLAIMER/);
 assert.equal(readFileSync("src/lib/floodMatrix.js", "utf8").includes("kejadian (2011"), false);
 const halamanBanjir = readFileSync("src/components/FloodPage.jsx", "utf8");
 assert.equal(halamanBanjir.includes("Tampilkan semua kab/kota"), false);
