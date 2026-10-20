@@ -42,7 +42,25 @@ import {
   susunPrioritas,
   tampilanPrioritas,
 } from "../src/lib/aplus.js";
-import { REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
+import { CAP_CRON, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
+import { ANALISIS_MATRIKS, ANALISIS_NAMA, analisisStatus } from "../src/lib/analisisPantauBencana.js";
+import {
+  BPS_PROYEKSI_URL,
+  PENDUDUK_ABSENT,
+  PENDUDUK_BUKAN_TERPAPAR,
+  PENDUDUK_FILE,
+  PENDUDUK_HEADER,
+  angkaUtuh,
+  bacaPenduduk,
+  kalimatJumlahPenduduk,
+  labelPenduduk,
+  labelRumahTangga,
+  ringkasPendudukBerstatus,
+} from "../src/lib/pendudukKab.js";
+import { BNPB_ABSENT, BNPB_RESOURCE_URL } from "../src/lib/bnpbBanjir.js";
+import { jenisHujan, labelSlotHujan, periodeTigaHari } from "../src/lib/prakiraanHujan.js";
+import { PROVINSI, SEMUA_PROVINSI } from "../src/lib/provinsi.js";
+import { severityLabel } from "../src/lib/capKab.js";
 import { buildHotspotTree } from "../src/lib/hotspotTree.js";
 import { FLOOD_INFO_COLUMNS, RAIN_RISK_MATRIX, buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI } from "../src/lib/floodMatrix.js";
 import {
@@ -66,7 +84,16 @@ import {
   applyDasarian,
   validateDasarian,
 } from "../src/lib/dasarianManual.js";
-import { assignKabupaten, capKabCsv, ringsFromXml, rowsFromFeatures, targetRings } from "./cap-kab.mjs";
+import {
+  assignKabupaten,
+  aggregateProvinsi,
+  capKabCsv,
+  capKabMeta,
+  BMKG_REQUEST_GAP_MS,
+  ringsFromXml,
+  rowsFromFeatures,
+  targetRings,
+} from "./cap-kab.mjs";
 import { manifestNeedsRefresh } from "./refresh-watchdog.mjs";
 import { monitoringSources } from "../src/lib/sourceStatus.js";
 import { aggregateCells, gfwedCsv, latestDailyStamp } from "./gfwed-kabupaten.mjs";
@@ -384,6 +411,8 @@ assert.equal(ispuFromPm25(31.4), 70);
 assert.equal(ispuFromPm25(15.5), 50);
 assert.equal(REFRESH_CRON, "17 */3 * * *");
 assert.equal(REFRESH_CRON_CADANGAN, "47 1-23/3 * * *");
+assert.equal(CAP_CRON, "12,42 * * * *");
+assert.equal(readFileSync(".github/workflows/refresh-cap.yml", "utf8").includes(`"${CAP_CRON}"`), true);
 assert.match(nextScheduledRun(new Date("2026-10-17T16:30:00.000Z")), /^2026-10-17T16:47:00/);
 assert.match(nextScheduledRun(new Date("2026-10-17T18:10:00.000Z")), /^2026-10-17T18:17:00/);
 assert.match(nextScheduledRun(new Date("2026-10-17T18:20:00.000Z")), /^2026-10-17T19:47:00/);
@@ -861,10 +890,16 @@ assert.match(floodSource, /3857/);
 assert.match(floodSource, /Prototipe internal – menunggu izin tertulis BNPB/);
 assert.match(floodSource, /Di luar area bahaya banjir yang dipetakan inaRISK/);
 assert.match(floodSource, /Nilai tidak tersedia \(layanan BNPB tidak merespons\)/);
-assert.match(floodSource, /Konteks risiko banjir jangka panjang per kabupaten\/kota \(bukan prioritas, bukan prakiraan\)/);
+assert.match(floodSource, /Banjir · Indonesia/);
+assert.match(floodSource, /SEMUA_PROVINSI/);
+assert.match(floodSource, /IKLIM_BMKG_URL/);
+assert.match(readFileSync("src/lib/dasarianManual.js", "utf8"), /iklim\.bmkg\.go\.id/);
+assert.match(floodSource, /0–3 jam/);
+assert.match(floodSource, /ANALISIS_NAMA/);
+assert.equal(ANALISIS_NAMA, "Analisis Pantau Bencana (gabungan BMKG × IRBI BNPB)");
 assert.equal(
   RAIN_RISK_MATRIX.note,
-  "Sumbu hujan adalah nowcast BMKG 0–3 jam per kabupaten/kota. Sumbu risiko adalah kelas banjir IRBI 2025 apa adanya. Bukan peringatan dasarian, bukan IBF, dan bukan prakiraan adm4. Tidak ada skor gabungan.",
+  "Sumbu hujan adalah nowcast BMKG 0–3 jam per kabupaten/kota. Sumbu risiko adalah kelas banjir IRBI 2025 apa adanya. Analisis Pantau Bencana memetakan keparahan CAP dan kelas IRBI menjadi Awas, Siaga, atau Waspada. Itu analisis dasbor, bukan status resmi, bukan skor angka, bukan peringatan dasarian, bukan IBF, dan bukan prakiraan 3 hari.",
 );
 assert.equal(RAIN_RISK_MATRIX.ready, true);
 assert.deepEqual(
@@ -947,7 +982,8 @@ const capRings = ringsFromXml("<alert><polygon>2.923,97.515 2.930,97.520 2.910,9
 assert.deepEqual(capRings[0][0], [97.515, 2.923]);
 assert.deepEqual(capRings[0][3], [97.515, 2.923]);
 assert.equal(targetRings(capRings).length, 1);
-assert.equal(targetRings([[[101, 0], [101.2, 0], [101.2, 0.2], [101, 0]]]).length, 0);
+assert.equal(targetRings([[[101, 0], [101.2, 0], [101.2, 0.2], [101, 0]]]).length, 1);
+assert.equal(targetRings([[[20, 0], [20.2, 0], [20.2, 0.2], [20, 0]]]).length, 0);
 const capRows = rowsFromFeatures(
   {
     id: "CAH20261018004",
@@ -967,7 +1003,8 @@ const capRows = rowsFromFeatures(
     { attributes: { kdpkab: "14.01", wadmkk: "Lain", wadmpr: "Riau" } },
   ],
 );
-assert.equal(capRows.length, 1);
+assert.equal(capRows.length, 2);
+assert.equal(capRows[1].provinsi, "Riau");
 assert.equal(capRows[0].provinsi, "Aceh");
 assert.equal(capRows[0].kabupaten, "Aceh Selatan");
 assert.equal(Object.hasOwn(capRows[0], "areaDesc"), false);
@@ -987,7 +1024,7 @@ const assigned = await assignKabupaten(
     {
       id: "JAUH",
       expires: "2099-01-01T00:00:00Z",
-      rings: [[[101, 0], [101.2, 0], [101.2, 0.2], [101, 0]]],
+      rings: [[[20, 0], [20.2, 0], [20.2, 0.2], [20, 0]]],
     },
     {
       id: "CAH20261018004",
@@ -1041,7 +1078,70 @@ const failedTab = nowcastCrossTab(applyNowcast(floodRows, [], { status: "gagal" 
 assert.equal(failedTab.ok, false);
 assert.equal(failedTab.cell("TINGGI", false).length, 0);
 const infoColumnIds = FLOOD_INFO_COLUMNS.map((column) => column.id);
-assert.deepEqual(infoColumnIds, ["wilayah", "irbi-banjir", "nowcast", "dasarian", "irbi-multi", "dibi", "kajian", "krb"]);
+assert.deepEqual(infoColumnIds, [
+  "wilayah",
+  "nowcast",
+  "berlaku",
+  "dibi",
+  "irbi-banjir",
+  "analisis",
+  "penduduk",
+  "rumah-tangga",
+  "dasarian",
+  "tautan",
+]);
+const pendudukCsv = readFileSync(PENDUDUK_FILE, "utf8").trim();
+assert.equal(pendudukCsv, PENDUDUK_HEADER.join(","));
+assert.equal(parseCsv(`${pendudukCsv}\n`).length, 0);
+assert.equal(angkaUtuh(""), null);
+assert.equal(angkaUtuh("1.234"), null);
+assert.equal(angkaUtuh("100"), 100);
+const pendudukKosong = bacaPenduduk([
+  { kode: "11.13", nama: "Gayo Lues", penduduk: "", rumah_tangga: "", tahun_penduduk: "", sumber_rt: "" },
+]);
+assert.equal(pendudukKosong.get("11.13").penduduk, null);
+assert.equal(pendudukKosong.get("11.13").rumahTangga, null);
+const tanpaAngka = ringkasPendudukBerstatus([{ kode: "11.13", analisisStatus: "Awas" }], pendudukKosong);
+assert.equal(tanpaAngka.lengkap, false);
+assert.equal(tanpaAngka.penduduk, null);
+assert.match(kalimatJumlahPenduduk(tanpaAngka), /belum dapat dijumlahkan/);
+assert.match(kalimatJumlahPenduduk(tanpaAngka), new RegExp(PENDUDUK_BUKAN_TERPAPAR));
+const pendudukIsi = bacaPenduduk([
+  {
+    kode: "11.13",
+    nama: "Gayo Lues",
+    penduduk: "100",
+    tahun_penduduk: "2025",
+    sumber_penduduk: "BPS",
+    rumah_tangga: "25",
+    tahun_rt: "2020",
+    sumber_rt: "BPS SP2020",
+  },
+]);
+assert.equal(
+  ringkasPendudukBerstatus(
+    [
+      { kode: "11.13", analisisStatus: "Awas" },
+      { kode: "11.01", analisisStatus: null },
+    ],
+    pendudukIsi,
+  ).penduduk,
+  100,
+);
+assert.equal(ringkasPendudukBerstatus([{ kode: "11.13", analisisStatus: null }], pendudukIsi).adaStatus, false);
+assert.equal(labelPenduduk(pendudukIsi.get("11.13")), "Penduduk kab/kota (BPS, proyeksi 2025)");
+assert.equal(labelRumahTangga(pendudukIsi.get("11.13")), "Jumlah rumah tangga/KK (BPS SP2020, 2020)");
+assert.equal(labelPenduduk(null), "Penduduk kab/kota (BPS, proyeksi tahun belum diisi)");
+assert.match(PENDUDUK_ABSENT, /bukan jumlah terpapar/);
+assert.equal(BPS_PROYEKSI_URL, "https://sensus.bps.go.id/publikasi/index/sp2020");
+assert.match(floodSource, /PENDUDUK_FILE/);
+assert.match(floodSource, /Dalam pengembangan/);
+assert.equal(readFileSync("src/components/FloodRiskMap.jsx", "utf8").includes("dasQueryUrl"), false);
+for (const pendudukFile of ["src/lib/pendudukKab.js", "data/static/penduduk-kabkota.csv", "data/static/README.md"]) {
+  const pendudukText = readFileSync(pendudukFile, "utf8").toLowerCase();
+  assert.equal(pendudukText.includes("worldpop"), false, pendudukFile);
+  assert.equal(pendudukText.includes("ghsl"), false, pendudukFile);
+}
 assert.equal(infoColumnIds.includes("hujan"), false);
 const capScript = readFileSync("scripts/cap-kab.mjs", "utf8");
 assert.match(capScript, /esriSpatialRelIntersects/);
@@ -1051,6 +1151,40 @@ assert.equal(capScript.includes("gis.bmkg.go.id"), false);
 assert.equal(capScript.toLowerCase().includes("open-meteo"), false);
 assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /writeCapKabFiles/);
 assert.match(capScript, /bmkg-cap-kab\.csv/);
+assert.match(capScript, /bmkg-cap-prov\.csv/);
+assert.equal(BMKG_REQUEST_GAP_MS >= 1000, true);
+assert.equal(analisisStatus("Extreme", "Tinggi"), "Awas");
+assert.equal(analisisStatus("Extreme", "Sedang"), "Awas");
+assert.equal(analisisStatus("Extreme", "Rendah"), "Siaga");
+assert.equal(analisisStatus("Severe", "Tinggi"), "Awas");
+assert.equal(analisisStatus("Severe", "Sedang"), "Siaga");
+assert.equal(analisisStatus("Severe", "Rendah"), "Waspada");
+assert.equal(analisisStatus("Moderate", "Tinggi"), "Siaga");
+assert.equal(analisisStatus("Moderate", "Sedang"), "Waspada");
+assert.equal(analisisStatus("Moderate", "Rendah"), "Waspada");
+assert.equal(analisisStatus("Minor", "Tinggi"), null);
+assert.equal(analisisStatus("", "Tinggi"), null);
+assert.equal(ANALISIS_MATRIKS.length, 9);
+assert.equal(severityLabel("Severe"), "Parah (Severe)");
+assert.equal(periodeTigaHari(new Date("2026-10-20T03:00:00.000Z")).label, "Periode: 20–22 Oktober 2026 (WIB)");
+assert.equal(periodeTigaHari(new Date("2026-10-20T17:30:00.000Z")).label, "Periode: 21–23 Oktober 2026 (WIB)");
+assert.equal(jenisHujan("Hujan Petir").petir, true);
+assert.equal(jenisHujan("Hujan Lebat").lebat, true);
+assert.equal(jenisHujan("Hujan Ringan").lebat, false);
+assert.equal(labelSlotHujan({ ada: true, lebat: false, petir: false }), "Tidak ada hujan lebat atau petir pada slot ini");
+assert.equal(PROVINSI.length, 38);
+assert.equal(SEMUA_PROVINSI, "Semua provinsi");
+assert.equal(BNPB_ABSENT.includes("data/bnpb/"), true);
+assert.equal(BNPB_RESOURCE_URL.includes("a4daec53-1119-43ef-b05e-00ec3a4c42a4"), true);
+const provinsiCap = aggregateProvinsi(capRows, [{ id: "CAH20261018004", headline: "Hujan di selatan" }]);
+assert.equal(provinsiCap.length, 2);
+assert.equal(provinsiCap[0].kode_prov, "11");
+assert.equal(provinsiCap[0].headline, "Hujan di selatan");
+assert.equal(provinsiCap[0].jumlah_kab, 1);
+const capMeta = JSON.parse(capKabMeta({ status: "ok", rows: capRows, provRows: provinsiCap, jumlahAlert: 4, fetchedAt: "2026-10-20T01:00:00.000Z", rssPublished: "" }));
+assert.equal(capMeta.cakupan, "nasional");
+assert.equal(capMeta.jumlah_alert, 4);
+assert.equal(capMeta.jumlah_prov, 2);
 assert.match(floodSource, /DASARIAN_NOTE/);
 assert.match(floodSource, /Cara membaca/);
 assert.match(floodSource, /Sumber: BMKG|BMKG_ATTRIBUTION/);

@@ -1,5 +1,5 @@
 export const FLOOD_PERMISSION = "Prototipe internal – menunggu izin tertulis BNPB";
-export const MISSING_DIBI = "Tidak tercantum di tabel DIBI 2024";
+export const MISSING_DIBI = "Tidak tercantum di tabel BNPB 2024";
 export const DIBI_UNAVAILABLE = "Cuplikan DIBI belum tersedia";
 export const NODATA_LABEL = "Di luar area bahaya banjir yang dipetakan inaRISK";
 export const IDENTIFY_FAIL = "Nilai tidak tersedia (layanan BNPB tidak merespons)";
@@ -17,26 +17,41 @@ export const RAIN_RISK_MATRIX = {
     { id: "hujan", sumber: "BMKG", kelas: "Nowcast peringatan dini cuaca 0–3 jam" },
     { id: "risiko", sumber: "IRBI 2025", kelas: "kelas risiko banjir" },
   ],
-  note: "Sumbu hujan adalah nowcast BMKG 0–3 jam per kabupaten/kota. Sumbu risiko adalah kelas banjir IRBI 2025 apa adanya. Bukan peringatan dasarian, bukan IBF, dan bukan prakiraan adm4. Tidak ada skor gabungan.",
+  note: "Sumbu hujan adalah nowcast BMKG 0–3 jam per kabupaten/kota. Sumbu risiko adalah kelas banjir IRBI 2025 apa adanya. Analisis Pantau Bencana memetakan keparahan CAP dan kelas IRBI menjadi Awas, Siaga, atau Waspada. Itu analisis dasbor, bukan status resmi, bukan skor angka, bukan peringatan dasarian, bukan IBF, dan bukan prakiraan 3 hari.",
 };
 
 export const FLOOD_INFO_COLUMNS = [
-  { id: "wilayah", label: "Kode dan nama", detail: "BIG, edisi 2022", sortKey: "kode" },
-  { id: "irbi-banjir", label: "Kelas risiko banjir IRBI 2025", detail: "Data statis. Skor dan halaman apa adanya.", sortKey: "banjir" },
+  { id: "wilayah", label: "Kab/kota", detail: "Batas BIG. Urutan kode wilayah, bukan peringkat.", sortKey: "kode" },
   {
     id: "nowcast",
-    label: "Peringatan hujan lebat BMKG aktif (0–3 jam)",
-    detail: "Nowcast CAP. Bukan dasarian dan bukan IBF.",
+    label: "Peringatan BMKG aktif (0–3 jam)",
+    detail: "Resmi, jangka pendek. Istilah CAP apa adanya.",
+  },
+  { id: "berlaku", label: "Berlaku sampai", detail: "WIB" },
+  { id: "dibi", label: "Kejadian banjir 2024 (BNPB)", detail: "Historis. Sel kosong bukan nol.", sortKey: "dibi" },
+  {
+    id: "irbi-banjir",
+    label: "Kelas risiko banjir IRBI 2025",
+    detail: "Statis. Dikutip dari buku.",
+    sortKey: "banjir",
+  },
+  { id: "analisis", label: "Analisis Pantau Bencana", detail: "Bukan status resmi." },
+  {
+    id: "penduduk",
+    label: "Penduduk kab/kota",
+    detail: "BPS, proyeksi. Total kab/kota, bukan jumlah terpapar.",
+  },
+  {
+    id: "rumah-tangga",
+    label: "Rumah tangga/KK",
+    detail: "Total kab/kota, bukan jumlah terpapar.",
   },
   {
     id: "dasarian",
-    label: "Peringatan Dini Curah Hujan Tinggi dasarian (BMKG, diisi manual)",
-    detail: "Disalin manual dari halaman resmi BMKG; bukan integrasi data otomatis",
+    label: "Dasarian (diisi manual)",
+    detail: "Bukan prakiraan harian.",
   },
-  { id: "irbi-multi", label: "IRBI 2025 multi-bahaya", detail: "Data statis. Kelas dan halaman. Bukan khusus banjir.", sortKey: "multi" },
-  { id: "dibi", label: "Kejadian banjir 2024", detail: "Data statis. DIBI, ODC-BY.", sortKey: "dibi" },
-  { id: "kajian", label: "Ringkasan kajian inaRISK", detail: "Belum terhubung" },
-  { id: "krb", label: "Dokumen KRB", detail: "Tautan saja" },
+  { id: "tautan", label: "Tautan", detail: "Sumber" },
 ];
 
 export const KRB_LINKS = {
@@ -100,10 +115,26 @@ function byKode(rows) {
   return [...rows].sort((a, b) => a.kode.localeCompare(b.kode, "id") || a.nama.localeCompare(b.nama, "id"));
 }
 
-export function buildFloodRows({ banjir, multi, dibi, dibiLoaded }) {
+export function buildFloodRows({ banjir, multi, dibi, dibiLoaded, wilayah }) {
+  const irbiByKode = new Map((banjir ?? []).map((row) => [kodeWilayah(row.kode_wilayah), row]));
+  const source = wilayah?.length
+    ? wilayah.map((item) => {
+        const quoted = irbiByKode.get(kodeWilayah(item.kode));
+        if (quoted) return { ...quoted, provinsi: quoted.provinsi || item.provinsi, nama_big: quoted.nama_big || item.nama };
+        return {
+          kode_wilayah: item.kode,
+          provinsi: item.provinsi,
+          kabupaten_irbi: "",
+          nama_big: item.nama,
+          skor: "",
+          kelas: "",
+          halaman: "",
+        };
+      })
+    : (banjir ?? []);
   const multiByName = new Map((multi ?? []).map((row) => [nameKey(row.kabupaten_irbi || row.kabupaten_kota), row]));
   const dibiByKode = new Map((dibi ?? []).map((row) => [kodeWilayah(row.kode_wilayah), row]));
-  const rows = (banjir ?? []).map((row) => {
+  const rows = source.map((row) => {
     const kode = kodeWilayah(row.kode_wilayah);
     const key = nameKey(row.kabupaten_irbi || row.kabupaten_kota);
     const total = multiByName.get(key);

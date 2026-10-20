@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import { osmTileLayer } from "../lib/basemap.js";
-import { INDONESIA_FRAME } from "../lib/geo.js";
+import { INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../lib/geo.js";
+import { ANALISIS_WARNA } from "../lib/analisisPantauBencana.js";
+import { kodeWilayah } from "../lib/floodMatrix.js";
 import {
   FLOOD_PERMISSION,
   IDENTIFY_FAIL,
@@ -10,11 +12,18 @@ import {
   RISK_ATTRIBUTION,
   legendClass,
 } from "../lib/floodMatrix.js";
-import { BAHAYA_SERVICE, LEGEND_IMAGE, RISIKO_SERVICE, bigQueryUrl, dasQueryUrl, exportImageUrl, identifyUrl } from "../lib/floodServices.js";
+import {
+  BAHAYA_SERVICE,
+  LEGEND_IMAGE,
+  RISIKO_SERVICE,
+  bigQueryUrl,
+  exportImageUrl,
+  identifyUrl,
+} from "../lib/floodServices.js";
 
-const PROVINCES = ["Aceh", "Bengkulu"];
+const PERINGATAN_TANPA_IRBI = "#c4b49a";
 
-function envelopeOf(collection) {
+function envelopeOf(features) {
   let south = 90;
   let north = -90;
   let west = 180;
@@ -32,26 +41,9 @@ function envelopeOf(collection) {
     }
     coords.forEach(walk);
   };
-  for (const feature of collection?.features ?? []) walk(feature.geometry?.coordinates);
+  for (const feature of features ?? []) walk(feature.geometry?.coordinates);
   if (south > north) return null;
   return { south, north, west, east };
-}
-
-function holesFrom(collection) {
-  const holes = [];
-  for (const feature of collection?.features ?? []) {
-    const geometry = feature.geometry;
-    const rings =
-      geometry?.type === "Polygon"
-        ? [geometry.coordinates?.[0]]
-        : geometry?.type === "MultiPolygon"
-          ? geometry.coordinates.map((polygon) => polygon[0])
-          : [];
-    for (const ring of rings) {
-      if (ring?.length > 2) holes.push(ring.map(([lon, lat]) => [lat, lon]));
-    }
-  }
-  return holes;
 }
 
 async function readJson(url, timeoutMs) {
@@ -62,26 +54,78 @@ async function readJson(url, timeoutMs) {
   return payload;
 }
 
-export function FloodRiskMap() {
+let nationalCache = null;
+let nationalLoad = null;
+
+async function loadNationalKab() {
+  if (nationalCache) return nationalCache;
+  if (!nationalLoad) {
+    nationalLoad = (async () => {
+      const features = [];
+      let offset = 0;
+      for (let page = 0; page < 8; page += 1) {
+        const payload = await readJson(bigQueryUrl(2, "1=1", { offset, recordCount: 250, allowableOffset: "0.45" }), 40000);
+        const list = payload.features ?? [];
+        features.push(...list);
+        if (!list.length || payload.exceededTransferLimit === false) break;
+        if (list.length < 250 && !payload.exceededTransferLimit) break;
+        offset += list.length;
+        if (!payload.exceededTransferLimit && list.length < 250) break;
+      }
+      nationalCache = features;
+      return features;
+    })().catch((error) => {
+      nationalLoad = null;
+      throw error;
+    });
+  }
+  return nationalLoad;
+}
+
+function paintOf(province, feature, kabPaint, provPaint) {
+  if (province) {
+    const kode = kodeWilayah(feature?.properties?.kdpkab);
+    return kabPaint?.get(kode) ?? null;
+  }
+  return provPaint?.get(feature?.properties?.wadmpr) ?? null;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);
+}
+
+function tooltipFor(province, feature, kabPaint, provPaint) {
+  const nama = province ? feature?.properties?.wadmkk : feature?.properties?.wadmpr;
+  const paint = paintOf(province, feature, kabPaint, provPaint);
+  if (province && paint?.status && paint.pendudukBaris?.length) {
+    return [nama, paint.status, ...paint.pendudukBaris].filter(Boolean).map(escapeHtml).join("<br>");
+  }
+  return nama ? escapeHtml(nama) : "";
+}
+
+export function FloodRiskMap({ province = "", onProvince, kabPaint, provPaint }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const riskRef = useRef(null);
   const bahayaRef = useRef(null);
   const kabRef = useRef(null);
   const lineRef = useRef(null);
-  const maskRef = useRef(null);
-  const dasRef = useRef(null);
+  const geomRef = useRef(null);
   const tokenRef = useRef(0);
   const identifyRef = useRef(0);
   const identifyHandler = useRef(() => {});
-  const [province, setProvince] = useState("Aceh");
+  const provinceRef = useRef(province);
+  const inariskRef = useRef(false);
+  const [showInarisk, setShowInarisk] = useState(false);
   const [showBahaya, setShowBahaya] = useState(false);
-  const [showDas, setShowDas] = useState(false);
   const [mapError, setMapError] = useState("");
   const [bigNote, setBigNote] = useState("");
-  const [dasNote, setDasNote] = useState("");
   const [identify, setIdentify] = useState("");
   const [legendOk, setLegendOk] = useState(true);
+  const [loadingMap, setLoadingMap] = useState(false);
+
+  provinceRef.current = province;
+  inariskRef.current = showInarisk;
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return undefined;
@@ -90,14 +134,14 @@ export function FloodRiskMap() {
       zoomAnimation: false,
       fadeAnimation: false,
       minZoom: 4,
+      maxBounds: [
+        [INDONESIA_PAN_LIMIT.south, INDONESIA_PAN_LIMIT.west],
+        [INDONESIA_PAN_LIMIT.north, INDONESIA_PAN_LIMIT.east],
+      ],
     });
     osmTileLayer(L).addTo(map);
-    map.createPane("flood-mask");
-    map.getPane("flood-mask").style.zIndex = 420;
     map.createPane("flood-lines");
     map.getPane("flood-lines").style.zIndex = 450;
-    map.createPane("flood-das");
-    map.getPane("flood-das").style.zIndex = 410;
     map.fitBounds(
       [
         [INDONESIA_FRAME.south, INDONESIA_FRAME.west],
@@ -105,7 +149,9 @@ export function FloodRiskMap() {
       ],
       { animate: false },
     );
-    map.on("click", (event) => identifyHandler.current(event));
+    map.on("click", (event) => {
+      if (provinceRef.current && inariskRef.current) identifyHandler.current(event);
+    });
     mapRef.current = map;
     return () => {
       map.remove();
@@ -115,7 +161,13 @@ export function FloodRiskMap() {
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map) return undefined;
+    if (!map || !showInarisk) {
+      riskRef.current?.remove();
+      bahayaRef.current?.remove();
+      riskRef.current = null;
+      bahayaRef.current = null;
+      return undefined;
+    }
     let timer = 0;
     const draw = () => {
       const size = map.getSize();
@@ -146,7 +198,7 @@ export function FloodRiskMap() {
         layerRef.current.setUrl(url);
         layerRef.current.setBounds(bounds);
       };
-      place(riskRef, RISIKO_SERVICE, showBahaya ? 0.55 : 0.9);
+      place(riskRef, RISIKO_SERVICE, showBahaya ? 0.55 : 0.75);
       if (showBahaya) place(bahayaRef, BAHAYA_SERVICE, 0.85);
       else if (bahayaRef.current) {
         map.removeLayer(bahayaRef.current);
@@ -163,7 +215,7 @@ export function FloodRiskMap() {
       window.clearTimeout(timer);
       map.off("moveend", schedule);
     };
-  }, [showBahaya]);
+  }, [showInarisk, showBahaya]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -171,37 +223,55 @@ export function FloodRiskMap() {
     let cancelled = false;
     kabRef.current?.remove();
     lineRef.current?.remove();
-    maskRef.current?.remove();
+    geomRef.current?.remove();
     kabRef.current = null;
     lineRef.current = null;
-    maskRef.current = null;
+    geomRef.current = null;
     setBigNote("");
+    setLoadingMap(true);
+    const where = province ? `wadmpr='${province.replaceAll("'", "''")}'` : "1=1";
     (async () => {
       try {
-        const kabupaten = await readJson(bigQueryUrl(2, `wadmpr='${province}'`), 20000);
+        const features = province
+          ? (await readJson(bigQueryUrl(2, where, { offset: 0, recordCount: 300, allowableOffset: "0.05" }), 30000)).features ?? []
+          : await loadNationalKab();
         if (cancelled) return;
-        const extent = envelopeOf(kabupaten);
-        kabRef.current = L.geoJSON(kabupaten, {
-          pane: "flood-lines",
-          interactive: false,
-          style: { color: "#57534e", weight: 1, fillOpacity: 0 },
-        }).addTo(map);
-        const holes = holesFrom(kabupaten);
-        if (holes.length) {
-          maskRef.current = L.polygon(
-            [
-              [
-                [20, 80],
-                [20, 150],
-                [-20, 150],
-                [-20, 80],
-              ],
-              ...holes,
-            ],
-            { pane: "flood-mask", stroke: false, fillColor: "#1c1915", fillOpacity: 0.45, interactive: false },
-          ).addTo(map);
+        const drawn = province ? features.filter((feature) => feature?.properties?.wadmpr === province) : features;
+        if (!drawn.length) {
+          setBigNote("Batas kabupaten dari BIG tidak tersedia untuk tampilan ini.");
+          setLoadingMap(false);
+          return;
         }
-        if (extent) {
+        kabRef.current = L.geoJSON(
+          { type: "FeatureCollection", features: drawn },
+          {
+            pane: "flood-lines",
+            style: (feature) => {
+              const paint = paintOf(province, feature, kabPaint, provPaint);
+              const fill = paint?.fill || "#f4f1ea";
+              return {
+                color: paint?.fill ? "#57534e" : "#d6d3d1",
+                weight: province ? 1 : 0.4,
+                fillColor: fill,
+                fillOpacity: paint?.fill ? 0.72 : 0.35,
+                dashArray: paint?.hatch ? "4 3" : null,
+              };
+            },
+            onEachFeature(feature, layer) {
+              const tip = tooltipFor(province, feature, kabPaint, provPaint);
+              if (tip) layer.bindTooltip(tip, { sticky: true, className: "flood-tip" });
+              if (!province) {
+                layer.on("click", (event) => {
+                  L.DomEvent.stopPropagation(event);
+                  const next = feature?.properties?.wadmpr;
+                  if (next) onProvince?.(next);
+                });
+              }
+            },
+          },
+        ).addTo(map);
+        const extent = envelopeOf(drawn);
+        if (province && extent) {
           map.fitBounds(
             [
               [extent.south, extent.west],
@@ -209,77 +279,97 @@ export function FloodRiskMap() {
             ],
             { padding: [16, 16], animate: false },
           );
+        } else if (!province) {
+          map.fitBounds(
+            [
+              [INDONESIA_FRAME.south, INDONESIA_FRAME.west],
+              [INDONESIA_FRAME.north, INDONESIA_FRAME.east],
+            ],
+            { animate: false },
+          );
         }
-        const lines = await readJson(bigQueryUrl(0, `wapro1='${province}' OR wapro2='${province}'`), 20000);
-        if (cancelled) return;
-        lineRef.current = L.geoJSON(lines, {
-          pane: "flood-lines",
-          interactive: false,
-          style: { color: "#143028", weight: 1.6, opacity: 0.9 },
-        }).addTo(map);
+        if (province) {
+          try {
+            const lines = await readJson(bigQueryUrl(0, `wapro1='${province.replaceAll("'", "''")}' OR wapro2='${province.replaceAll("'", "''")}'`), 20000);
+            if (!cancelled) {
+              lineRef.current = L.geoJSON(lines, {
+                pane: "flood-lines",
+                interactive: false,
+                style: { color: "#143028", weight: 1.6, opacity: 0.9 },
+              }).addTo(map);
+            }
+          } catch {
+            if (!cancelled) setBigNote("Garis batas provinsi BIG tidak tersedia. Wilayah kabupaten tetap ditampilkan.");
+          }
+        }
       } catch {
-        if (!cancelled) setBigNote("Batas BIG tidak tersedia. Raster inaRISK tetap diminta tanpa pemotongan provinsi.");
+        if (!cancelled) setBigNote("Batas BIG tidak tersedia. Peta wilayah tidak dapat digambar pada pembaruan ini.");
+      } finally {
+        if (!cancelled) setLoadingMap(false);
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [province]);
+  }, [province, onProvince]);
+
+  useEffect(() => {
+    kabRef.current?.eachLayer((layer) => {
+      const feature = layer.feature;
+      const paint = paintOf(province, feature, kabPaint, provPaint);
+      const fill = paint?.fill || "#f4f1ea";
+      layer.setStyle({
+        color: paint?.fill ? "#57534e" : "#d6d3d1",
+        weight: province ? 1 : 0.4,
+        fillColor: fill,
+        fillOpacity: paint?.fill ? 0.72 : 0.35,
+        dashArray: paint?.hatch ? "4 3" : null,
+      });
+      const tip = tooltipFor(province, feature, kabPaint, provPaint);
+      if (tip) layer.bindTooltip(tip, { sticky: true, className: "flood-tip" });
+      else layer.unbindTooltip();
+    });
+  }, [province, kabPaint, provPaint, loadingMap]);
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map) return undefined;
-    dasRef.current?.remove();
-    dasRef.current = null;
-    if (!showDas) {
-      setDasNote("");
-      return undefined;
-    }
+    if (!map || !province) return undefined;
     let cancelled = false;
-    setDasNote("Memuat Klasifikasi DAS KLHK…");
     (async () => {
       try {
-        const kabupaten = await readJson(bigQueryUrl(2, `wadmpr='${province}'`), 20000);
-        const box = envelopeOf(kabupaten);
-        if (!box) throw new Error("extent");
-        const page = await readJson(dasQueryUrl(box), 20000);
-        const features = page.features ?? [];
+        const response = await fetch(new URL("data/live/bmkg-cap-geom.json", document.baseURI).href, { cache: "no-store" });
+        if (!response.ok) return;
+        const payload = await response.json();
         if (cancelled) return;
-        dasRef.current = L.geoJSON(
+        const features = [];
+        for (const cap of payload?.caps ?? []) {
+          for (const ring of cap.rings ?? []) {
+            if (ring.length < 3) continue;
+            features.push({
+              type: "Feature",
+              properties: { cap_id: cap.cap_id, event: cap.event, severity: cap.severity },
+              geometry: { type: "Polygon", coordinates: [ring] },
+            });
+          }
+        }
+        if (!features.length) return;
+        geomRef.current = L.geoJSON(
           { type: "FeatureCollection", features },
           {
-            pane: "flood-das",
-            style: (feature) => {
-              const kriteria = feature?.properties?.KRITERIA || feature?.properties?.kriteria || "";
-              const dipulihkan = kriteria === "DIPULIHKAN";
-              return {
-                color: dipulihkan ? "#9a3412" : "#1d4ed8",
-                weight: 1.2,
-                fillColor: dipulihkan ? "#9a3412" : "#1d4ed8",
-                fillOpacity: 0.08,
-              };
-            },
-            onEachFeature(feature, layer) {
-              const nama = feature?.properties?.NAMA_DAS || feature?.properties?.nama_das || "DAS";
-              const kriteria = feature?.properties?.KRITERIA || feature?.properties?.kriteria || "";
-              layer.bindTooltip(`${nama} — ${kriteria}`, { sticky: true });
-            },
+            interactive: false,
+            style: { color: "#9a3412", weight: 1.2, fillOpacity: 0, dashArray: "2 3" },
           },
         ).addTo(map);
-        const cap = features.length >= 1000 ? " Layanan membatasi 1000 DAS pada jendela ini." : "";
-        setDasNote(
-          features.length
-            ? `${features.length} DAS pada jendela provinsi. Label mengikuti kolom KRITERIA.${cap}`
-            : "Tidak ada DAS pada jendela ini.",
-        );
       } catch {
-        if (!cancelled) setDasNote("Klasifikasi DAS KLHK tidak tersedia. Peta risiko tetap ditampilkan.");
+        /* poligon CAP tidak wajib ada pada cuplikan */
       }
     })();
     return () => {
       cancelled = true;
+      geomRef.current?.remove();
+      geomRef.current = null;
     };
-  }, [showDas, province]);
+  }, [province]);
 
   identifyHandler.current = async (event) => {
     const token = ++identifyRef.current;
@@ -300,63 +390,57 @@ export function FloodRiskMap() {
   };
 
   return (
-    <section className="card">
-      <header className="card-head">
-        <div>
-          <h2>Peta Risiko Banjir</h2>
-          <p>{FLOOD_PERMISSION}</p>
-        </div>
-      </header>
-      <div className="logic-body">
-        <p>
-          <a href={INARISK_PORTAL} target="_blank" rel="noopener noreferrer">
-            Portal inaRISK
-          </a>
-          . Status peta ini belum Aktif. Izin tertulis BNPB menyusul.
-        </p>
-        <div className="province-filter" role="group" aria-label="Provinsi peta banjir">
-          {PROVINCES.map((name) => (
-            <button key={name} type="button" aria-pressed={province === name} onClick={() => setProvince(name)}>
-              {name}
-            </button>
-          ))}
-        </div>
-        <div className="province-filter" role="group" aria-label="Lapisan tambahan">
-          <button type="button" aria-pressed={showDas} onClick={() => setShowDas((value) => !value)}>
-            Klasifikasi DAS KLHK
-          </button>
+    <div className="flood-map-block">
+      <div className="province-filter" role="group" aria-label="Lapisan peta banjir">
+        <button type="button" aria-pressed={showInarisk} onClick={() => setShowInarisk((value) => !value)}>
+          Overlay inaRISK
+        </button>
+        {showInarisk ? (
           <button type="button" aria-pressed={showBahaya} onClick={() => setShowBahaya((value) => !value)}>
             Bahaya banjir
           </button>
-        </div>
-        <p className="fine">
-          DAS memakai label layanan apa adanya: DIPULIHKAN atau DIPERTAHANKAN. Lapisan bahaya adalah tampilan bawaan
-          layanan, bukan indeks risiko, dan tidak punya kelas legenda pada metadata layanan.
-        </p>
-        {mapError ? (
-          <p className="banner warn" role="status">
-            <strong>{mapError}</strong>
-            <p>
-              <a href={INARISK_PORTAL} target="_blank" rel="noopener noreferrer">
-                Portal inaRISK
-              </a>
-            </p>
-          </p>
         ) : null}
-        {bigNote ? <p className="fine">{bigNote}</p> : null}
-        {dasNote ? <p className="fine">{dasNote}</p> : null}
-        <div ref={containerRef} className="map-canvas flood-map" role="application" aria-label="Peta indeks risiko banjir" />
-        <p className="fine">{RISK_ATTRIBUTION}</p>
-        <div className="flood-legend">
-          {legendOk ? (
-            <img src={LEGEND_IMAGE} alt="Legenda indeks risiko inaRISK" onError={() => setLegendOk(false)} />
-          ) : null}
-          <p>0–0,3 Rendah. 0,3–0,6 Sedang. 0,6–1,0 Tinggi.</p>
-        </div>
-        <p className="fine" role="status">
-          {identify || "Klik peta untuk membaca indeks pada titik itu."}
-        </p>
       </div>
-    </section>
+      <p className="fine">{FLOOD_PERMISSION} Overlay inaRISK mati sampai dinyalakan. Status peta inaRISK belum Aktif.</p>
+      {mapError ? (
+        <p className="banner warn" role="status">
+          <strong>{mapError}</strong>{" "}
+          <a href={INARISK_PORTAL} target="_blank" rel="noopener noreferrer">
+            Portal inaRISK
+          </a>
+        </p>
+      ) : null}
+      {loadingMap ? <p className="fine">Memuat batas wilayah dari BIG…</p> : null}
+      {bigNote ? <p className="fine">{bigNote}</p> : null}
+      <div ref={containerRef} className="map-canvas flood-map" role="application" aria-label="Peta banjir Indonesia" />
+      <div className="flood-legend" aria-label="Legenda peta">
+        {Object.entries(ANALISIS_WARNA).map(([nama, warna]) => (
+          <span key={nama}>
+            <i style={{ background: warna }} /> {nama}
+          </span>
+        ))}
+        <span>
+          <i style={{ background: PERINGATAN_TANPA_IRBI }} /> Peringatan aktif, kelas IRBI belum ada
+        </span>
+        <span>
+          <i style={{ background: "#f4f1ea", border: "1px solid #d6d3d1" }} /> Tidak ada peringatan aktif
+        </span>
+      </div>
+      <p className="fine">
+        Warna Awas, Siaga, dan Waspada adalah analisis dasbor, bukan status resmi. Tanpa peringatan yang masih berlaku, wilayah tidak diwarnai.
+      </p>
+      {showInarisk ? (
+        <>
+          <p className="fine">{RISK_ATTRIBUTION}</p>
+          <div className="flood-legend">
+            {legendOk ? <img src={LEGEND_IMAGE} alt="Legenda indeks risiko inaRISK" onError={() => setLegendOk(false)} /> : null}
+            <p>0–0,3 Rendah. 0,3–0,6 Sedang. 0,6–1,0 Tinggi.</p>
+          </div>
+          <p className="fine" role="status">
+            {province ? identify || "Klik peta untuk membaca indeks pada titik itu." : "Pilih provinsi, lalu klik peta untuk membaca indeks."}
+          </p>
+        </>
+      ) : null}
+    </div>
   );
 }

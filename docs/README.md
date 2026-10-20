@@ -4,3 +4,4 @@
 - [Cara mengisi peringatan dasarian](PANDUAN_ISI_DASARIAN.md)
 - [Inspeksi dasbor](INSPEKSI_DASHBOARD.md)
 - [Laporan aplikasi](REPORT_APLIKASI_v0.1.md)
+- [Rancangan banjir tahap 1](RANCANGAN_BANJIR_TAHAP1.md)

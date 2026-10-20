@@ -9,7 +9,7 @@ import { parseFirmsCoordinate } from "./indonesia-land.mjs";
 import { BIG_EDITION_NOTE, BIG_SOURCE_LABEL, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
 import { annotatePoints, rowsToHotspotCsv } from "./big-wilayah.mjs";
 import { fetchGfwedKabupaten } from "./gfwed-kabupaten.mjs";
-import { assignKabupaten, loadCapAlerts, writeCapKabFiles } from "./cap-kab.mjs";
+import { assignKabupaten, geomFromAlerts, loadCapAlerts, writeCapKabFiles } from "./cap-kab.mjs";
 import { provinceCenters } from "../src/lib/geo.js";
 import { REFRESH_CRON, REFRESH_CRON_CADANGAN, REFRESH_INTERVAL_HOURS, nextScheduledRun } from "../src/lib/schedule.js";
 import { SMOKE_IMAGE_URL, SMOKE_URL, SOURCES } from "../src/lib/sourceCatalog.js";
@@ -819,9 +819,11 @@ async function fetchCap() {
     });
   }
   let kabupaten = { status: "gagal", rows: [], error: "Irisan kabupaten tidak dijalankan." };
+  let geom = [];
   try {
     const kabRows = await assignKabupaten(loaded.alerts);
     kabupaten = { status: "ok", rows: kabRows, error: null };
+    geom = geomFromAlerts(loaded.alerts);
   } catch (error) {
     kabupaten = { status: "gagal", rows: [], error: error.message };
   } finally {
@@ -837,6 +839,9 @@ async function fetchCap() {
     sourceUpdatedAt: newest ? new Date(newest).toISOString() : null,
     rssPublished: loaded.rssPublished,
     kabupaten,
+    alerts: loaded.alerts,
+    jumlahAlert: loaded.alerts.length,
+    geom,
   };
 }
 
@@ -1085,6 +1090,9 @@ async function main() {
     writeCapKabFiles(liveDir, {
       status: result.kabupaten.status,
       rows: result.kabupaten.rows,
+      alerts: result.alerts,
+      geom: result.geom,
+      jumlahAlert: result.jumlahAlert,
       rssPublished: result.rssPublished,
       fetchedAt: nowIso,
       error: result.kabupaten.error,
@@ -1095,6 +1103,8 @@ async function main() {
     writeCapKabFiles(liveDir, {
       status: "gagal",
       rows: [],
+      alerts: [],
+      jumlahAlert: null,
       rssPublished: "",
       fetchedAt: nowIso,
       error: error.message,

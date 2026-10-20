@@ -363,6 +363,21 @@ export const SOURCES = [
     limitation:
       "Open-Meteo CC BY 4.0, nonkomersial. FWI hanya 9 hari. Ambang FFMC/DC dari literatur, diterapkan pada nilai model, bukan kelas BMKG. Geometri BIG tidak disimpan.",
   },
+  {
+    id: "penduduk_kabkota",
+    nama: "Penduduk dan rumah tangga kabupaten/kota",
+    instansi: "BPS",
+    fungsi:
+      "Total penduduk dan rumah tangga satu kabupaten/kota, hanya pada baris yang punya status analisis. Bukan jumlah terpapar.",
+    officialUrl: "https://sensus.bps.go.id/publikasi/index/sp2020",
+    officialLabel: "Publikasi Proyeksi Penduduk Kabupaten/Kota, Sensus Penduduk 2020",
+    access: "Unduhan manual",
+    needsKey: false,
+    kind: "tautan",
+    updateType: "",
+    limitation:
+      "Berkas data/static/penduduk-kabkota.csv hanya header. Angka diisi manual dari tabel BPS, tanpa kunci API. Sel kosong bukan nol. Bukan kisi penduduk global. Bukan jumlah penduduk atau rumah tangga yang terpapar.",
+  },
 ];
 
 export function officialLinks(id) {

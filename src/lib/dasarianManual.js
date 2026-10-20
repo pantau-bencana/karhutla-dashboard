@@ -9,6 +9,7 @@ export const DASARIAN_UNLISTED = "Tidak tercantum di peringatan BMKG dasarian in
 export const DASARIAN_EXPIRED = "Kedaluwarsa – perlu diperbarui";
 export const DASARIAN_MANUAL_LABEL = "Disalin manual dari halaman resmi BMKG; bukan integrasi data otomatis";
 export const DASARIAN_BMKG_URL = "https://www.bmkg.go.id/iklim/peringatan-dini-hujan-tinggi";
+export const IKLIM_BMKG_URL = "https://iklim.bmkg.go.id/";
 export const DASARIAN_GUIDE_URL = "https://github.com/rixaga/karhutla-dashboard/blob/main/docs/PANDUAN_ISI_DASARIAN.md";
 export const DASARIAN_CSV_URL =
   "https://github.com/rixaga/karhutla-dashboard/blob/main/data/manual/bmkg-pdcht-dasarian.csv";
