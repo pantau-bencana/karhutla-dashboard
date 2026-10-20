@@ -9,6 +9,9 @@ export const REFRESH_CRON_CADANGAN = "47 1-23/3 * * *";
 // CAP nowcast berumur 0–3 jam. Jadwal terpisah tiap 30 menit, di luar menit 0
 // dan di luar slot 7, 17, serta 47 yang sudah dipakai workflow lain.
 export const CAP_CRON = "12,42 * * * *";
+// Penjaga berjalan di menit 7. Slot CAP yang sehat terakhir adalah menit 42, umur sekitar 25 menit.
+// Lebih dari 50 menit berarti sedikitnya satu slot 30 menit tidak meninggalkan run.
+export const CAP_WATCH_MINUTES = 50;
 export const REFRESH_CRONS = [REFRESH_CRON, REFRESH_CRON_CADANGAN];
 export const REFRESH_INTERVAL_HOURS = 3;
 export const REFRESH_MINUTE = 17;

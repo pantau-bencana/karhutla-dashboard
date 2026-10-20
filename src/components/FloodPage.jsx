@@ -4,7 +4,7 @@ import { FloodRiskMap } from "./FloodRiskMap.jsx";
 import { ANALISIS_BUKAN_RESMI, ANALISIS_NAMA, CATATAN_ALASAN, applyAnalisis, catWilayah } from "../lib/analisisPantauBencana.js";
 import { DISCLAIMER_UNDUH, barisXlsx, csvUnduh } from "../lib/banjirExport.js";
 import { xlsxBytes } from "../lib/xlsxMini.js";
-import { BNPB_ABSENT, BNPB_FILE, BNPB_RESOURCE_URL, bnpbAsDibi } from "../lib/bnpbBanjir.js";
+import { BNPB_ABSENT, BNPB_FILE, BNPB_RESOURCE_URL, HISTORIS_BANJIR_CATATAN, HISTORIS_DISCLAIMER, bnpbAsDibi } from "../lib/bnpbBanjir.js";
 import { looksLikeCsv, parseCsv } from "../lib/csv.js";
 import {
   BMKG_ATTRIBUTION,
@@ -15,6 +15,7 @@ import {
   NOWCAST_BUKAN_TIGA_HARI,
   PEMBARUAN_TERAKHIR_LABEL,
   applyNowcast,
+  cakupanTersimpan,
   ringkasanNowcast,
 } from "../lib/capKab.js";
 import { DASARIAN_FILE, DASARIAN_GUIDE_URL, IKLIM_BMKG_URL, applyDasarian, todayWib } from "../lib/dasarianManual.js";
@@ -36,7 +37,11 @@ import {
 import {
   HUJAN_GPM_CATATAN,
   HUJAN_PEMBANDING_FILE,
+  HUJAN_PEMBANDING_JENIS,
+  HUJAN_PEMBANDING_LISENSI,
   HUJAN_PEMBANDING_META,
+  HUJAN_PEMBANDING_MODEL,
+  HUJAN_TANPA_NOWCAST,
   indeksHujan,
   mmPada,
   teksMm,
@@ -191,14 +196,13 @@ function FloodBody() {
         }
         if (cancelled) return;
         if (alerts.length || meta?.status === "ok") {
-          const cuplikanUtuh = meta?.status === "ok";
           setCap({
             status: "ok",
             alerts,
             meta: {
               ...(meta ?? {}),
               status: "ok",
-              cakupan: cuplikanUtuh ? meta?.cakupan || "" : "",
+              cakupan: cakupanTersimpan(meta),
             },
           });
         } else {
@@ -240,7 +244,14 @@ function FloodBody() {
           loadCsv(HUJAN_PEMBANDING_FILE),
           loadJson(HUJAN_PEMBANDING_META).catch(() => ({})),
         ]);
-        if (!cancelled) setHujan({ status: rows.length ? "ok" : "gagal", rows, meta: meta ?? {} });
+        const modelCocok = !meta?.model || meta.model === HUJAN_PEMBANDING_MODEL;
+        if (!cancelled) {
+          setHujan({
+            status: rows.length && meta?.status !== "gagal" && modelCocok ? "ok" : "gagal",
+            rows: modelCocok && meta?.status !== "gagal" ? rows : [],
+            meta: meta ?? {},
+          });
+        }
       } catch {
         if (!cancelled) setHujan({ status: "gagal", rows: [], meta: {} });
       }
@@ -281,6 +292,8 @@ function FloodBody() {
 
   const periode = useMemo(() => periodeTigaHari(), []);
   const ringkas = ringkasanNowcast(cap.alerts, { ...cap.meta, status: cap.status });
+  const hujanIndeks = useMemo(() => indeksHujan(hujan.status === "ok" ? hujan.rows : []), [hujan]);
+  const hujanWaktu = hujan.meta?.fetched_at ? formatWib(hujan.meta.fetched_at) : "—";
   const konteks = useMemo(
     () => ({
       tab,
@@ -305,10 +318,16 @@ function FloodBody() {
     const withDasarian = applyDasarian(withHari, dasarian.rows, { status: dasarian.status, now: dasarianNow });
     const bertanda = withDasarian.map((row) => {
       const peta = catWilayah(row, konteks);
-      return { ...row, peta, statusTab: peta.status || null };
+      const tanggalTab = tab === "cap" ? "" : periode.hari[tab];
+      const mm = tanggalTab ? mmPada(hujanIndeks.get(row.kode), tanggalTab) : undefined;
+      const hujanFallback =
+        tab !== "cap" && !row.prakiraanAda
+          ? { teks: mm === undefined || mm == null ? "belum tersedia" : teksMm(mm), waktu: hujanWaktu }
+          : null;
+      return { ...row, peta, statusTab: peta.status || null, hujanFallback };
     });
     return urutStatusKab(lampirkanPenduduk(bertanda, penduduk.indeks, penduduk.status));
-  }, [province, banjir, cap, bigNames, dibi, dibiLoaded, dasarian, dasarianNow, penduduk, tab, konteks, indeksCuaca, periode.hari]);
+  }, [province, banjir, cap, bigNames, dibi, dibiLoaded, dasarian, dasarianNow, penduduk, tab, konteks, indeksCuaca, periode.hari, hujanIndeks, hujanWaktu]);
   const ringkasPenduduk = useMemo(
     () => ringkasPendudukBerstatus(urut, penduduk.indeks),
     [urut, penduduk.indeks],
@@ -334,8 +353,7 @@ function FloodBody() {
     return semua.filter((item) => item.provinsi === province || kodeProv.has(item.kodeKab));
   }, [prakiraan, periode, province, urut]);
   const jumlahBerstatus = urut.filter((row) => row.peta?.kind === "status").length;
-  const hujanTanggal = tab === "cap" ? periode.hari[0] : periode.hari[tab];
-  const hujanIndeks = useMemo(() => indeksHujan(hujan.status === "ok" ? hujan.rows : []), [hujan]);
+  const hujanTanggal = tab === "cap" ? "" : periode.hari[tab];
   const hujanNilai = useMemo(() => {
     const map = new Map();
     for (const row of urut) {
@@ -344,13 +362,12 @@ function FloodBody() {
     }
     return map;
   }, [urut, hujanIndeks, hujanTanggal]);
-  const hujanWaktu = hujan.meta?.fetched_at ? formatWib(hujan.meta.fetched_at) : "—";
   const hujanCatatan = tab === "cap"
-    ? "Jumlah harian untuk hari ini. Bukan data 0–3 jam dan bukan peringatan BMKG."
-    : `Jumlah harian ${["Hari ini", "Besok", "Lusa"][tab]}. Bukan prakiraan BMKG dan bukan status analisis.`;
+    ? HUJAN_TANPA_NOWCAST
+    : `Jumlah harian ${["Hari ini", "Besok", "Lusa"][tab]}. ${HUJAN_PEMBANDING_JENIS}. Bukan status analisis.`;
   const hujanLapisan = useMemo(
     () => ({
-      aktif: showHujan,
+      aktif: tab !== "cap" && showHujan,
       indeks: hujanIndeks,
       tanggal: hujanTanggal,
       waktu: hujanWaktu,
@@ -358,7 +375,7 @@ function FloodBody() {
       gpm: HUJAN_GPM_CATATAN,
       kodeTampil: province ? new Set(urut.map((row) => row.kode)) : null,
     }),
-    [showHujan, hujanIndeks, hujanTanggal, hujanWaktu, hujanCatatan, province, urut],
+    [tab, showHujan, hujanIndeks, hujanTanggal, hujanWaktu, hujanCatatan, province, urut],
   );
   const hariTab = tab === "cap" ? null : periode.hari[tab];
   const namaHari = tab === "cap" ? "" : ["Hari ini", "Besok", "Lusa"][tab];
@@ -431,12 +448,6 @@ function FloodBody() {
                 <option value="Dalam pengembangan">Dalam pengembangan</option>
               </select>
             </label>
-            <button type="button" className="button" onClick={() => unduhTabel("csv")}>
-              Unduh CSV
-            </button>
-            <button type="button" className="button" onClick={() => unduhTabel("xlsx")}>
-              Unduh XLSX
-            </button>
             {province ? (
               <p className="breadcrumb">
                 <button type="button" onClick={() => pilihProvinsi("")}>
@@ -464,11 +475,19 @@ function FloodBody() {
                     ? formatWib(prakiraan.fetchedAt)
                     : "—"
               }
-              showHujan={showHujan}
+              showHujan={tab !== "cap" && showHujan}
               onShowHujan={setShowHujan}
               hujan={hujanLapisan}
             />
-            <div>
+            <div className="flood-bawah-peta">
+              <div className="flood-unduh">
+                <button type="button" className="button" onClick={() => unduhTabel("csv")}>
+                  Unduh CSV
+                </button>
+                <button type="button" className="button" onClick={() => unduhTabel("xlsx")}>
+                  Unduh XLSX
+                </button>
+              </div>
               <h3>{province || SEMUA_PROVINSI}</h3>
               <p className="fine">
                 {urut.length} kab/kota
@@ -481,7 +500,7 @@ function FloodBody() {
               <FloodKabDaftar
                 rows={urut}
                 tampilProvinsi={!province}
-                hujanNilai={showHujan ? hujanNilai : null}
+                hujanNilai={tab !== "cap" && showHujan ? hujanNilai : null}
               />
               {!province ? (
                 <p className="fine">
@@ -671,6 +690,7 @@ function FloodBody() {
             </a>
             .
           </p>
+          <p>{HISTORIS_BANJIR_CATATAN}</p>
           <p>{IRBI_PERMISSION} Tanpa kelas, tulisannya {IRBI_TIDAK_TERSEDIA} dan sel tidak diwarnai.</p>
           <p>Batas wilayah: Badan Informasi Geospasial.</p>
           <p>
@@ -692,6 +712,14 @@ function FloodBody() {
           <p>
             <strong>Penggunaan internal.</strong>
             <span> {IRBI_PENGGUNAAN_INTERNAL.replace(/^Penggunaan internal\.\s*/, "")}</span>
+          </p>
+          <p>{HISTORIS_DISCLAIMER}</p>
+          <p>
+            {HUJAN_PEMBANDING_JENIS}. Model {HUJAN_PEMBANDING_MODEL}. Lisensi{" "}
+            <a href={HUJAN_PEMBANDING_LISENSI} target="_blank" rel="noopener noreferrer">
+              CC BY 4.0
+            </a>
+            . {HUJAN_TANPA_NOWCAST} Angka milimeter itu tidak menetapkan Awas, Siaga, atau Waspada.
           </p>
         </div>
       </section>

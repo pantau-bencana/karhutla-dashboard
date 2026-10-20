@@ -12,6 +12,11 @@ export const CAP_DATA_TERAKHIR =
   "Data terakhir — masa berlaku sudah lewat, menunggu pembaruan BMKG";
 export const PEMBARUAN_TERAKHIR_LABEL = "Pembaruan terakhir";
 
+export function cakupanTersimpan(meta) {
+  if (meta?.status !== "ok") return "";
+  return meta.cakupan || "nasional";
+}
+
 const SEVERITY_LABEL = {
   Extreme: "Ekstrem (Extreme)",
   Severe: "Parah (Severe)",

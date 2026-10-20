@@ -1,7 +1,9 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { feature as topoFeature } from "topojson-client";
 import { parseCsv } from "../src/lib/csv.js";
+import { INDONESIA_FRAME } from "../src/lib/geo.js";
 import {
   HUJAN_CHUNK,
   HUJAN_GAP_MS,
@@ -11,16 +13,19 @@ import {
   HUJAN_PEMBANDING_SATUAN,
   HUJAN_PEMBANDING_SUMBER,
   HUJAN_PEMBANDING_VARIABEL,
+  HUJAN_TITIK_BATAS,
   gabungHujan,
 } from "../src/lib/hujanPembanding.js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const KOORDINAT = resolve(root, "data/static/prakiraan-adm4-koordinat.csv");
+const SAMPEL = resolve(root, "data/static/prakiraan-sampel-adm4.csv");
+const BATAS = resolve(root, "data/static/batas-kabkota.topojson");
 const OUT = resolve(root, "data/live/hujan-pembanding-kab.csv");
 const META = resolve(root, "data/live/hujan-pembanding-kab-meta.json");
 const API = "https://api.open-meteo.com/v1/forecast";
 
-const HEADERS = ["kode_kab", "provinsi", "nama", "adm4", "lintang", "bujur", "tanggal", "curah_hujan_mm"];
+const HEADERS = ["kode_kab", "provinsi", "nama", "adm4", "lintang", "bujur", "tanggal", "curah_hujan_mm", "asal_koordinat"];
 
 function sleep(ms) {
   return new Promise((resolveSleep) => setTimeout(resolveSleep, ms));
@@ -60,6 +65,10 @@ function previousUsable() {
   const meta = readMeta();
   const rows = previousRows();
   return Boolean(meta?.status === "ok" && meta.fetched_at && rows.length);
+}
+
+function previousModelCocok() {
+  return readMeta()?.model === HUJAN_PEMBANDING_MODEL;
 }
 
 function tulisMeta(meta) {
@@ -147,7 +156,7 @@ async function ambilKelompok(chunk) {
   url.searchParams.set("daily", HUJAN_PEMBANDING_VARIABEL);
   url.searchParams.set("timezone", "Asia/Jakarta");
   url.searchParams.set("forecast_days", "3");
-  url.searchParams.set("models", "ecmwf_ifs");
+  url.searchParams.set("models", HUJAN_PEMBANDING_MODEL);
   let response;
   try {
     response = await fetch(url, {
@@ -189,10 +198,80 @@ async function ambilKelompok(chunk) {
         bujur: chunk[index].bujur,
         tanggal: time,
         curah_hujan_mm: angkaAtauKosong(sums[dayIndex]),
+        asal_koordinat: chunk[index].asal || "adm4-bmkg",
       });
     });
   });
   return { rows, tanggal: [...tanggal].sort() };
+}
+
+function pusatCincin(ring) {
+  let luas = 0;
+  let x = 0;
+  let y = 0;
+  for (let index = 0; index < ring.length - 1; index += 1) {
+    const silang = ring[index][0] * ring[index + 1][1] - ring[index + 1][0] * ring[index][1];
+    luas += silang;
+    x += (ring[index][0] + ring[index + 1][0]) * silang;
+    y += (ring[index][1] + ring[index + 1][1]) * silang;
+  }
+  if (!luas) return null;
+  return [x / (3 * luas), y / (3 * luas)];
+}
+
+function pusatGeometri(geometry) {
+  const cincin = [];
+  if (geometry?.type === "Polygon") cincin.push(geometry.coordinates?.[0]);
+  if (geometry?.type === "MultiPolygon") {
+    for (const bagian of geometry.coordinates ?? []) cincin.push(bagian?.[0]);
+  }
+  let terbaik = null;
+  let luasTerbaik = 0;
+  for (const ring of cincin) {
+    if (!ring || ring.length < 4) continue;
+    let luas = 0;
+    for (let index = 0; index < ring.length - 1; index += 1) {
+      luas += ring[index][0] * ring[index + 1][1] - ring[index + 1][0] * ring[index][1];
+    }
+    luas = Math.abs(luas);
+    if (luas <= luasTerbaik) continue;
+    const pusat = pusatCincin(ring);
+    if (!pusat) continue;
+    luasTerbaik = luas;
+    terbaik = pusat;
+  }
+  return terbaik;
+}
+
+function dalamIndonesia(lintang, bujur) {
+  return lintang >= INDONESIA_FRAME.south && lintang <= INDONESIA_FRAME.north && bujur >= INDONESIA_FRAME.west && bujur <= INDONESIA_FRAME.east;
+}
+
+function titikPusatYangHilang(ada) {
+  if (!existsSync(SAMPEL) || !existsSync(BATAS)) return [];
+  const hilang = parseCsv(readFileSync(SAMPEL, "utf8")).filter((row) => row.kode_kab && !ada.has(row.kode_kab));
+  if (!hilang.length) return [];
+  const topo = JSON.parse(readFileSync(BATAS, "utf8"));
+  const geo = topoFeature(topo, topo.objects.kabupaten);
+  const batas = new Map((geo.features ?? []).map((item) => [String(item.properties?.kode || ""), item]));
+  const tambahan = [];
+  for (const row of hilang) {
+    const fitur = batas.get(row.kode_kab);
+    const pusat = pusatGeometri(fitur?.geometry);
+    if (!pusat) continue;
+    const [bujur, lintang] = pusat;
+    if (!dalamIndonesia(lintang, bujur)) continue;
+    tambahan.push({
+      kode_kab: row.kode_kab,
+      adm4: row.adm4 || "",
+      lintang: String(lintang),
+      bujur: String(bujur),
+      provinsi: fitur?.properties?.provinsi || "",
+      kotkab: row.nama_kab || fitur?.properties?.nama || "",
+      asal: "pusat-batas",
+    });
+  }
+  return tambahan;
 }
 
 async function main() {
@@ -202,6 +281,8 @@ async function main() {
     const lon = Number(row.bujur);
     return row.kode_kab && row.adm4 && Number.isFinite(lat) && Number.isFinite(lon);
   });
+  for (const point of points) point.asal = "adm4-bmkg";
+  points.push(...titikPusatYangHilang(new Set(points.map((point) => point.kode_kab))));
   if (!points.length) throw new Error("Tidak ada koordinat titik adm4.");
   const baru = [];
   const gagal = [];
@@ -218,7 +299,7 @@ async function main() {
     }
     if (start + HUJAN_CHUNK < points.length) await sleep(HUJAN_GAP_MS);
   }
-  const sebelum = previousRows();
+  const sebelum = previousModelCocok() ? previousRows() : [];
   if (!baru.length) throw new Error(gagal.length ? `${gagal.length} kelompok gagal dan tidak ada baris baru.` : "Open-Meteo tidak mengembalikan hujan.");
   const merged = gabungHujan(sebelum, baru, gagal);
   const hari = [...tanggal].sort();
@@ -241,8 +322,14 @@ async function main() {
     satuan: HUJAN_PEMBANDING_SATUAN,
     timezone: "Asia/Jakarta",
     lisensi: "CC BY 4.0",
+    lisensi_url: "https://open-meteo.com/en/licence",
     url: API,
     titik: "koordinat lokasi API prakiraan BMKG pada adm4 yang sama, bukan rata-rata kabupaten",
+    titik_batas: points
+      .filter((point) => point.asal === "pusat-batas")
+      .map((point) => point.kode_kab)
+      .sort(),
+    titik_batas_catatan: HUJAN_TITIK_BATAS,
     error: gagal.length ? `${gagal.length} kab/kota gagal; cuplikan sebelumnya dipertahankan bila ada.` : null,
     gpm: HUJAN_GPM_CATATAN,
   });

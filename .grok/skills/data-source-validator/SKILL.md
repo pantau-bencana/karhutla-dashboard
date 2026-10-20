@@ -48,6 +48,7 @@ Do not reopen these without a new official document:
 - `datacuaca.bmkg.go.id` behind a Cloudflare challenge is not a usable API.
 - MAGMA `https://magma.esdm.go.id/` is **Tautan saja**. Paths `/api`, `/docs`, and `/rss` are not a documented feed. Volcano levels need a letter to PVMBG / Badan Geologi through `https://ppid.esdm.go.id/`.
 - A 14-day kab/kota karhutla ranking has no verified BMKG product. Status **menunggu data resmi BMKG (FDRS/potensi karhutla per kab/kota)**. Permission request: `https://ptsp.bmkg.go.id/`.
+- Checked 20 Oct 2026: no public no-login BNPB series of banjir counts per kabupaten/kota for 2011–2025. The 2010–2024 kabupaten table and the 2010–2023 `stat_by_wil` workbooks are all-hazard totals. The only BANJIR column per kabupaten is the 2024 table (451 rows). Do not invent the missing years or treat a missing row as zero.
 
 ## Workflow
 

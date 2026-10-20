@@ -3,7 +3,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "no
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { deriveDashboard, defaultRange } from "../src/lib/derive.js";
-import { areaContains, assignProvince, INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../src/lib/geo.js";
+import { areaContains, assignProvince, BANJIR_FRAME, BANJIR_PAN_LIMIT, INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../src/lib/geo.js";
 import { looksLikeCsv, parseCsv } from "../src/lib/csv.js";
 import { fetchCsv, loadAll, normalizeHotspotRow, normalizeRecords, redactFirmsUrl } from "../src/lib/loadData.js";
 import { GLOSSARY } from "../src/lib/glossary.js";
@@ -44,7 +44,7 @@ import {
   susunPrioritas,
   tampilanPrioritas,
 } from "../src/lib/aplus.js";
-import { CAP_CRON, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
+import { CAP_CRON, CAP_WATCH_MINUTES, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
 import { ANALISIS_MATRIKS, ANALISIS_NAMA, ANALISIS_WARNA, analisisStatus, applyAnalisis, catWilayah, keparahanCuaca, keparahanTerburuk } from "../src/lib/analisisPantauBencana.js";
 import {
   BPS_PROYEKSI_URL,
@@ -61,7 +61,8 @@ import {
   ringkasPendudukBerstatus,
   teksRumahTangga,
 } from "../src/lib/pendudukKab.js";
-import { BNPB_ABSENT, BNPB_RESOURCE_URL, DAMPAK_HISTORIS_CATATAN, barisDampakHistoris } from "../src/lib/bnpbBanjir.js";
+import { BNPB_ABSENT, BNPB_RESOURCE_URL, DAMPAK_HISTORIS_CATATAN, HISTORIS_BANJIR_CATATAN, HISTORIS_CUPLIKAN_DIAMBIL, HISTORIS_DISCLAIMER, barisDampakHistoris } from "../src/lib/bnpbBanjir.js";
+import { formatWib } from "../src/lib/format.js";
 import {
   LABEL_TAK_DIKENAL,
   LABEL_TIDAK_BERPOTENSI,
@@ -81,11 +82,13 @@ import {
   HUJAN_KELAS,
   HUJAN_PEMBANDING_BADGE,
   HUJAN_PEMBANDING_JENIS,
+  HUJAN_PEMBANDING_MODEL,
+  HUJAN_TANPA_NOWCAST,
   gabungHujan,
   warnaHujan,
 } from "../src/lib/hujanPembanding.js";
 import { PROVINSI, SEMUA_PROVINSI } from "../src/lib/provinsi.js";
-import { CAP_DATA_TERAKHIR, severityLabel } from "../src/lib/capKab.js";
+import { CAP_DATA_TERAKHIR, cakupanTersimpan, severityLabel } from "../src/lib/capKab.js";
 import { xlsxBytes } from "../src/lib/xlsxMini.js";
 import { buildHotspotTree } from "../src/lib/hotspotTree.js";
 import { DIBI_LUAR_CUPLIKAN, DIBI_UNAVAILABLE, FLOOD_INFO_COLUMNS, IRBI_BANJIR_TERVERIFIKASI, IRBI_PENGGUNAAN_INTERNAL, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI, peringkatTampil, urutStatusKab } from "../src/lib/floodMatrix.js";
@@ -116,14 +119,18 @@ import {
   capCsvUsable,
   capKabCsv,
   capKabMeta,
+  lengkapiCakupanMeta,
   previousCapUsable,
+  queryReliable,
+  ringsIntersect,
+  rowsFromStoredBoundaries,
   writeCapKabFiles,
   BMKG_REQUEST_GAP_MS,
   ringsFromXml,
   rowsFromFeatures,
   targetRings,
 } from "./cap-kab.mjs";
-import { manifestNeedsRefresh } from "./refresh-watchdog.mjs";
+import { capRunMissed, manifestNeedsRefresh } from "./refresh-watchdog.mjs";
 import { monitoringSources } from "../src/lib/sourceStatus.js";
 import { aggregateCells, gfwedCsv, latestDailyStamp } from "./gfwed-kabupaten.mjs";
 import { GFWED_LABEL, GFWED_UNAVAILABLE } from "../src/lib/gfwed.js";
@@ -358,6 +365,14 @@ for (const file of ["README.md", "src/components/Footer.jsx", "public/config.jso
 const firmsArea = { west: 95, south: -11, east: 141, north: 6 };
 assert.equal(areaContains(INDONESIA_FRAME, firmsArea), true);
 assert.equal(areaContains(INDONESIA_PAN_LIMIT, INDONESIA_FRAME), true);
+assert.deepEqual(BANJIR_FRAME, { south: -11.5, west: 94.5, north: 6.5, east: 141.5 });
+assert.equal(areaContains(BANJIR_PAN_LIMIT, BANJIR_FRAME), true);
+const petaBanjirSumber = readFileSync("src/components/FloodRiskMap.jsx", "utf8");
+assert.match(petaBanjirSumber, /BANJIR_FRAME/);
+assert.match(petaBanjirSumber, /fitBounds\(frame, \{ padding: BANJIR_PADDING/);
+assert.match(petaBanjirSumber, /ResizeObserver/);
+assert.equal(petaBanjirSumber.includes("setView([-2.2, 118]"), false);
+assert.match(readFileSync("src/styles.css", "utf8"), /100cqw \/ 2\.6/);
 for (const edge of ["south", "west"]) {
   const margin = INDONESIA_FRAME[edge] - INDONESIA_PAN_LIMIT[edge];
   assert.ok(margin >= 1 && margin <= 4, `${edge} ${margin}`);
@@ -441,7 +456,21 @@ assert.equal(ispuFromPm25(15.5), 50);
 assert.equal(REFRESH_CRON, "17 */3 * * *");
 assert.equal(REFRESH_CRON_CADANGAN, "47 1-23/3 * * *");
 assert.equal(CAP_CRON, "12,42 * * * *");
+assert.equal(CAP_WATCH_MINUTES, 50);
 assert.equal(readFileSync(".github/workflows/refresh-cap.yml", "utf8").includes(`"${CAP_CRON}"`), true);
+assert.equal(capRunMissed([], new Date("2026-10-20T07:07:00.000Z")), true);
+assert.equal(
+  capRunMissed([{ status: "completed", createdAt: "2026-10-20T06:42:00.000Z" }], new Date("2026-10-20T07:07:00.000Z")),
+  false,
+);
+assert.equal(
+  capRunMissed([{ status: "completed", createdAt: "2026-10-20T06:12:00.000Z" }], new Date("2026-10-20T07:07:00.000Z")),
+  true,
+);
+assert.equal(
+  capRunMissed([{ status: "queued", createdAt: "2026-10-20T05:12:00.000Z" }], new Date("2026-10-20T07:07:00.000Z")),
+  false,
+);
 assert.match(nextScheduledRun(new Date("2026-10-17T16:30:00.000Z")), /^2026-10-17T16:47:00/);
 assert.match(nextScheduledRun(new Date("2026-10-17T18:10:00.000Z")), /^2026-10-17T18:17:00/);
 assert.match(nextScheduledRun(new Date("2026-10-17T18:20:00.000Z")), /^2026-10-17T19:47:00/);
@@ -463,11 +492,15 @@ assert.equal(workflow.includes("git push -f"), false);
 assert.match(workflow, /wilayah_gagal/);
 assert.match(workflow, /big_queries/);
 assert.match(workflow, /FIRMS_MAP_KEY/);
+assert.match(workflow, /git reset --hard[\s\S]*npm ci/);
+assert.match(workflow, /npm ci\n\s*npm run check && npm run build/);
 assert.equal(workflow.includes("eyJ"), false);
 const watchdog = readFileSync(".github/workflows/refresh-watchdog.yml", "utf8");
 assert.match(watchdog, /7 \* \* \* \*/);
 assert.match(watchdog, /actions: write/);
 assert.match(watchdog, /gh workflow run refresh-data\.yml --ref main/);
+assert.match(watchdog, /gh workflow run refresh-cap\.yml --ref main/);
+assert.match(watchdog, /CAP_RUNS_JSON/);
 assert.match(watchdog, /cancel-in-progress: false/);
 assert.match(watchdog, /group: refresh-watchdog/);
 assert.equal(watchdog.includes("group: pages"), false);
@@ -554,8 +587,10 @@ const pagesWorkflow = readFileSync(".github/workflows/pages.yml", "utf8");
 assert.match(pagesWorkflow, /github\.event_name != 'pull_request' && github\.ref == 'refs\/heads\/main'/);
 assert.match(pagesWorkflow, /queue: max/);
 assert.match(pagesWorkflow, /GITHUB_TOKEN/);
-assert.match(pagesWorkflow, /Deploy dilewati/);
-assert.match(pagesWorkflow, /steps\.head\.outputs\.skip != 'true'/);
+assert.match(pagesWorkflow, /Ujung main sudah berpindah/);
+assert.match(pagesWorkflow, /Bangun ulang dari ujung main/);
+assert.match(pagesWorkflow, /steps\.head\.outputs\.rebuild == 'true'/);
+assert.equal(pagesWorkflow.includes("steps.head.outputs.skip != 'true'"), false);
 const windowed = filterHotspotWindow([
   { tanggal: "2026-10-17", waktu: "1200", satelit: "N", kelasKepercayaan: "nominal", provinsi: "Riau" },
   { tanggal: "2026-10-16", waktu: "1200", satelit: "N", kelasKepercayaan: "tinggi", provinsi: "Aceh" },
@@ -1281,7 +1316,17 @@ assert.equal(readFileSync("src/components/FloodRiskMap.jsx", "utf8").includes("C
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Penjelasan lapisan peringatan/);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /#\/sumber-metode\/petunjuk-banjir/);
 const daftarSumber = readFileSync("src/components/FloodInfoTable.jsx", "utf8");
-assert.match(daftarSumber, /<th scope="col">No<\/th>[\s\S]*<th scope="col">Kab\/Kota<\/th>[\s\S]*<th scope="col">Provinsi<\/th>[\s\S]*<th scope="col">Status<\/th>[\s\S]*<th scope="col">Historis<\/th>[\s\S]*<th scope="col">IRBI<\/th>/);
+assert.match(daftarSumber, /<th scope="col">No<\/th>[\s\S]*<th scope="col">Kab\/Kota<\/th>[\s\S]*<th scope="col">Provinsi<\/th>[\s\S]*<th scope="col">Status<\/th>[\s\S]*<th scope="col">[\s\S]*Historis[\s\S]*<th scope="col">IRBI<\/th>/);
+assert.match(daftarSumber, /Penjelasan kolom Historis/);
+assert.match(daftarSumber, /HISTORIS_DISCLAIMER/);
+assert.match(HISTORIS_DISCLAIMER, /tercatat di DIBI BNPB/);
+assert.match(HISTORIS_DISCLAIMER, /tahun 2024/);
+assert.match(HISTORIS_DISCLAIMER, /a4daec53-1119-43ef-b05e-00ec3a4c42a4/);
+assert.match(HISTORIS_DISCLAIMER, new RegExp(formatWib(HISTORIS_CUPLIKAN_DIAMBIL).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+assert.match(HISTORIS_DISCLAIMER, /20 Oktober 2026/);
+assert.match(HISTORIS_DISCLAIMER, /tidak lengkap atau kurang dilaporkan/);
+assert.match(HISTORIS_DISCLAIMER, /bukan jumlah seluruh kejadian yang benar-benar terjadi/);
+assert.match(HISTORIS_DISCLAIMER, /tidak mengubah status Awas, Siaga, atau Waspada/);
 assert.match(daftarSumber, /tampilProvinsi \? <th scope="col">Provinsi<\/th>/);
 assert.equal(daftarSumber.includes("<th scope=\"col\">Riwayat</th>"), false);
 assert.match(daftarSumber, /DIBI_UNAVAILABLE/);
@@ -1296,6 +1341,17 @@ assert.equal(daftarSumber.includes('<th scope="col">Penduduk terdampak</th>'), f
 assert.equal(daftarSumber.includes('<th scope="col">Rumah terdampak</th>'), false);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /barisDampakHistoris/);
 assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /DAMPAK_HISTORIS_CATATAN/);
+assert.match(HISTORIS_BANJIR_CATATAN, /2011–2025/);
+assert.match(HISTORIS_BANJIR_CATATAN, /20 Oktober 2026/);
+assert.match(HISTORIS_BANJIR_CATATAN, /21044ffd-c397-4b3c-acbd-5adaa03d79e3/);
+assert.match(HISTORIS_BANJIR_CATATAN, /semua jenis/);
+assert.match(HISTORIS_BANJIR_CATATAN, /5ff9f41f-8312-4b7c-aa18-fdbedac6ee7e/);
+assert.equal(DIBI_UNAVAILABLE, "Cuplikan DIBI belum tersedia");
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HISTORIS_BANJIR_CATATAN/);
+assert.match(readFileSync("src/components/FloodPage.jsx", "utf8"), /HISTORIS_BANJIR_CATATAN/);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HISTORIS_DISCLAIMER/);
+assert.match(readFileSync("src/components/FloodPage.jsx", "utf8"), /flood-disclaimer[\s\S]*HISTORIS_DISCLAIMER/);
+assert.equal(readFileSync("src/lib/floodMatrix.js", "utf8").includes("kejadian (2011"), false);
 const halamanBanjir = readFileSync("src/components/FloodPage.jsx", "utf8");
 assert.equal(halamanBanjir.includes("Tampilkan semua kab/kota"), false);
 assert.match(halamanBanjir, /rows=\{urut\}/);
@@ -1320,14 +1376,39 @@ assert.equal(warnaHujan(null), "");
 assert.equal(HUJAN_PEMBANDING_BADGE, "Pembanding (data terbuka, bukan resmi)");
 assert.equal(HUJAN_GAP_MS >= 1000, true);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Curah hujan model/);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /position: "topright"/);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /hujan-kontrol/);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Lapisan Peta/);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Data Pembanding/);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Tingkat Peringatan/);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Tidak ada status/);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Tidak ada data/);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /position: "bottomleft"/);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /position: "topleft"/);
+assert.equal(readFileSync("src/components/FloodRiskMap.jsx", "utf8").includes("layer-checks"), false);
+assert.equal(readFileSync("src/components/FloodRiskMap.jsx", "utf8").includes("layer-pembanding"), false);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /HUJAN_PEMBANDING_BADGE/);
-assert.equal(HUJAN_PEMBANDING_JENIS, "prakiraan model, bukan BMKG");
+assert.equal(HUJAN_PEMBANDING_JENIS, "prakiraan model ECMWF (via Open-Meteo), bukan BMKG");
+assert.equal(HUJAN_PEMBANDING_MODEL, "ecmwf_ifs025");
+assert.match(HUJAN_TANPA_NOWCAST, /tidak punya nowcast 0–3 jam/);
+assert.match(HUJAN_TANPA_NOWCAST, /Hari ini, Besok, dan Lusa/);
+assert.match(HUJAN_TANPA_NOWCAST, /Tab 0–3 jam hanya memuat peringatan CAP BMKG/);
+assert.equal(readFileSync("src/components/FloodPage.jsx", "utf8").includes("Jumlah yang tampil pada tab ini adalah jumlah harian"), false);
+assert.match(readFileSync("src/components/FloodPage.jsx", "utf8"), /tab !== "cap" && showHujan/);
+assert.equal(readFileSync("src/components/MetodePage.jsx", "utf8").includes("Pada tab 0–3 jam angka yang tampil"), false);
 assert.equal(readFileSync("src/lib/analisisPantauBencana.js", "utf8").includes("hujanPembanding"), false);
 assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HUJAN_PEMBANDING_JENIS/);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HUJAN_PEMBANDING_MODEL/);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HUJAN_TANPA_NOWCAST/);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /HUJAN_TANPA_NOWCAST/);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /CC BY 4\.0/);
+assert.match(readFileSync("src/components/FloodPage.jsx", "utf8"), /flood-disclaimer[\s\S]*HUJAN_PEMBANDING_JENIS/);
+assert.match(readFileSync("src/components/FloodInfoTable.jsx", "utf8"), /hujanFallback/);
 assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HUJAN_GPM_CATATAN/);
 assert.match(HUJAN_GPM_CATATAN, /tidak dipakai/i);
 assert.match(readFileSync("scripts/hujan-pembanding.mjs", "utf8"), /kept_previous/);
-assert.match(readFileSync("scripts/hujan-pembanding.mjs", "utf8"), /ecmwf_ifs/);
+assert.match(readFileSync("scripts/hujan-pembanding.mjs", "utf8"), /HUJAN_PEMBANDING_MODEL/);
+assert.equal(readFileSync("scripts/hujan-pembanding.mjs", "utf8").includes('"ecmwf_ifs"'), false);
 assert.equal(readFileSync("scripts/hujan-pembanding.mjs", "utf8").includes("jsimpson"), false);
 assert.match(readFileSync(".github/workflows/refresh-data.yml", "utf8"), /hujan-pembanding\.mjs/);
 const petunjuk = readFileSync("src/components/MetodePage.jsx", "utf8");
@@ -1463,8 +1544,111 @@ const capSimpanHasil = writeCapKabFiles(capSimpan, {
 });
 assert.equal(capSimpanHasil.kept_previous, true);
 assert.equal(JSON.parse(readFileSync(join(capSimpan, "bmkg-cap-kab-meta.json"), "utf8")).fetched_at, "2026-10-20T01:17:04.008Z");
+assert.equal(JSON.parse(readFileSync(join(capSimpan, "bmkg-cap-kab-meta.json"), "utf8")).cakupan, undefined);
 assert.equal(readFileSync(join(capSimpan, "bmkg-cap-kab.csv"), "utf8").includes("11.01"), true);
 rmSync(capSimpan, { recursive: true, force: true });
+const capHeal = mkdtempSync(join(tmpdir(), "cap-cakupan-"));
+writeFileSync(join(capHeal, "bmkg-cap-kab.csv"), "kode,kabupaten\n11.01,Aceh Selatan\n");
+writeFileSync(
+  join(capHeal, "bmkg-cap-kab-meta.json"),
+  `${JSON.stringify({ status: "ok", fetched_at: "2026-10-20T01:17:04.008Z", baris: 8, error: null })}\n`,
+);
+assert.equal(lengkapiCakupanMeta(capHeal), true);
+assert.equal(JSON.parse(readFileSync(join(capHeal, "bmkg-cap-kab-meta.json"), "utf8")).cakupan, "nasional");
+assert.equal(JSON.parse(readFileSync(join(capHeal, "bmkg-cap-kab-meta.json"), "utf8")).fetched_at, "2026-10-20T01:17:04.008Z");
+assert.equal(lengkapiCakupanMeta(capHeal), false);
+const capHealHasil = writeCapKabFiles(capHeal, {
+  status: "gagal",
+  rows: [],
+  error: "Failed to execute query.",
+  fetchedAt: "2026-10-20T06:37:17.308Z",
+});
+assert.equal(capHealHasil.kept_previous, true);
+assert.equal(JSON.parse(readFileSync(join(capHeal, "bmkg-cap-kab-meta.json"), "utf8")).fetched_at, "2026-10-20T01:17:04.008Z");
+assert.equal(readFileSync(join(capHeal, "bmkg-cap-kab.csv"), "utf8").includes("11.01"), true);
+rmSync(capHeal, { recursive: true, force: true });
+assert.equal(cakupanTersimpan({ status: "ok", baris: 8, error: null }), "nasional");
+assert.equal(cakupanTersimpan({ status: "ok", cakupan: "nasional" }), "nasional");
+assert.equal(cakupanTersimpan({ status: "gagal", error: "Failed to execute query." }), "");
+assert.equal(cakupanTersimpan(null), "");
+const capLive = JSON.parse(readFileSync("data/live/bmkg-cap-kab-meta.json", "utf8"));
+assert.equal(capLive.status, "ok");
+assert.equal(capLive.cakupan, "nasional");
+assert.equal(capLive.error, null);
+const hujanLive = JSON.parse(readFileSync("data/live/hujan-pembanding-kab-meta.json", "utf8"));
+assert.equal(hujanLive.status, "ok");
+assert.equal(hujanLive.lisensi, "CC BY 4.0");
+assert.equal(hujanLive.variabel, "precipitation_sum");
+assert.ok(Number(hujanLive.record_count) > 0);
+assert.ok(hujanLive.model === HUJAN_PEMBANDING_MODEL || hujanLive.model === "ECMWF IFS");
+const squareKab = {
+  type: "Feature",
+  properties: { kode: "11.01", nama: "Aceh Selatan", provinsi: "Aceh" },
+  geometry: { type: "Polygon", coordinates: [[[97, 2], [98, 2], [98, 4], [97, 4], [97, 2]]] },
+};
+const insideRing = [[97.2, 2.2], [97.4, 2.2], [97.4, 2.5], [97.2, 2.2]];
+const crossingRing = [[96.5, 3], [98.5, 3], [98.5, 3.2], [96.5, 3.2], [96.5, 3]];
+const storedAlert = {
+  id: "CAP-SIMPAN",
+  event: "Hujan Lebat",
+  deskripsi: "uji",
+  onset: "",
+  effective: "2026-10-18T18:00:00+07:00",
+  expires: "2099-01-01T00:00:00Z",
+  severity: "Moderate",
+  urgency: "Immediate",
+  certainty: "Observed",
+  url: "https://www.bmkg.go.id/alerts/nowcast/id/CAP-SIMPAN_alert.xml",
+  rings: [insideRing],
+};
+assert.equal(rowsFromStoredBoundaries(storedAlert, [insideRing], [squareKab]).length, 1);
+assert.equal(rowsFromStoredBoundaries(storedAlert, [insideRing], [squareKab])[0].kode, "11.01");
+assert.equal(rowsFromStoredBoundaries(storedAlert, [[[120, 10], [120.2, 10], [120.2, 10.2], [120, 10]]], [squareKab]).length, 0);
+assert.equal(ringsIntersect(crossingRing, squareKab.geometry.coordinates[0]), true);
+const fallbackRows = await assignKabupaten([storedAlert], {
+  now: new Date("2026-10-18T13:00:00Z"),
+  storedFeatures: [squareKab],
+  query: async () => {
+    throw new Error("Failed to execute query.");
+  },
+});
+assert.equal(fallbackRows.length, 1);
+assert.equal(fallbackRows.penempatan, "batas-tersimpan");
+assert.equal(fallbackRows.bigError, "Failed to execute query.");
+assert.match(capKabMeta({ status: "ok", rows: fallbackRows, penempatan: "batas-tersimpan" }), /batas tersimpan/);
+await assert.rejects(
+  () =>
+    assignKabupaten([storedAlert], {
+      now: new Date("2026-10-18T13:00:00Z"),
+      storedFeatures: [],
+      query: async () => {
+        throw new Error("Failed to execute query.");
+      },
+    }),
+  /Failed to execute query/,
+);
+let reliableCalls = 0;
+const reliable = await queryReliable(
+  [
+    [[0, 0], [1, 0], [1, 1], [0, 0]],
+    [[2, 0], [3, 0], [3, 1], [2, 0]],
+  ],
+  {
+    wait: async () => {},
+    query: async (rings) => {
+      reliableCalls += 1;
+      if (rings.length > 1 || rings[0][0][0] === 0) throw new Error("Failed to execute query.");
+      return [{ attributes: { kdpkab: "11.01", wadmkk: "Aceh Selatan", wadmpr: "Aceh" } }];
+    },
+  },
+);
+assert.equal(reliable.length, 1);
+assert.equal(reliableCalls >= 3, true);
+const capWorkflow = readFileSync(".github/workflows/refresh-cap.yml", "utf8");
+assert.match(capWorkflow, /git reset --hard[\s\S]*npm ci/);
+assert.match(capWorkflow, /npm ci\n\s*npm run check && npm run build/);
+assert.match(capScript, /batas-tersimpan/);
+assert.match(capScript, /QUERY_BACKOFF_MS/);
 const halamanBanjirLetak = readFileSync("src/components/FloodPage.jsx", "utf8");
 const judulBanjir = halamanBanjirLetak.indexOf("<h1>Banjir");
 const petaBanjir = halamanBanjirLetak.indexOf("<FloodRiskMap");

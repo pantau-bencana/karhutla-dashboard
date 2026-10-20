@@ -326,7 +326,7 @@ export const SOURCES = [
     expectedMaxAgeHours: 24 * 30 * 18,
     file: "data/live/dibi-banjir-2024.csv",
     limitation:
-      "Lisensi ODC-BY. Hanya kolom BANJIR pada resource a4daec53-1119-43ef-b05e-00ec3a4c42a4 untuk kode wilayah 11 dan 17. Baris yang tidak tercantum bukan nol. Koordinat tidak disimpan. Bukan rangkaian 2010–2024. Tabel kabupaten ini tidak memuat korban atau rumah rusak. Angka korban terdampak dan rumah rusak pada paket yang sama hanya nasional atau provinsi, jadi tidak disalin ke kabupaten.",
+      "Lisensi ODC-BY. Hanya kolom BANJIR pada resource a4daec53-1119-43ef-b05e-00ec3a4c42a4 untuk kode wilayah 11 dan 17. Baris yang tidak tercantum bukan nol. Koordinat tidak disimpan. Bukan rangkaian 2010–2024. Tabel kabupaten ini tidak memuat korban atau rumah rusak. Angka korban terdampak dan rumah rusak pada paket yang sama hanya nasional atau provinsi, jadi tidak disalin ke kabupaten. Pemeriksaan 20 Oktober 2026 tidak menemukan rangkaian publik kejadian banjir per kabupaten untuk 2011–2025. Tabel kabupaten 2010–2024 (resource 21044ffd-c397-4b3c-acbd-5adaa03d79e3) dan berkas tahunan 2010–2023 menjumlahkan semua jenis bencana, jadi tidak dipakai sebagai jumlah banjir.",
   },
   {
     id: "dibi_karhutla",
@@ -398,7 +398,7 @@ export const SOURCES = [
     expectedMaxAgeHours: 36,
     file: "data/live/hujan-pembanding-kab.csv",
     limitation:
-      "Pembanding (data terbuka, bukan resmi). prakiraan model, bukan BMKG. Model ECMWF IFS, precipitation_sum, mm, zona Asia/Jakarta, tiga hari. Tidak masuk matriks Awas/Siaga/Waspada. NASA GPM IMERG tidak diunduh karena membutuhkan akun Earthdata atau PPS. Lisensi CC BY 4.0, pemakaian nonkomersial.",
+      "Pembanding (data terbuka, bukan resmi). prakiraan model ECMWF (via Open-Meteo), bukan BMKG. Model ecmwf_ifs025, precipitation_sum, mm, zona Asia/Jakarta, hanya tab Hari ini, Besok, dan Lusa. Tab 0–3 jam hanya memuat peringatan CAP BMKG. Tidak masuk matriks Awas/Siaga/Waspada. NASA GPM IMERG tidak diunduh karena membutuhkan akun Earthdata atau PPS. Lisensi CC BY 4.0, pemakaian nonkomersial.",
   },
 ];
 

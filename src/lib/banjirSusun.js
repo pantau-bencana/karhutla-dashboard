@@ -1,5 +1,7 @@
 import { applyAnalisis, catWilayah } from "./analisisPantauBencana.js";
-import { CAP_DATA_TERAKHIR, PEMBARUAN_TERAKHIR_LABEL, applyNowcast, ringkasanNowcast } from "./capKab.js";
+import { CAP_DATA_TERAKHIR, PEMBARUAN_TERAKHIR_LABEL, applyNowcast, cakupanTersimpan, ringkasanNowcast } from "./capKab.js";
+import { formatWib } from "./format.js";
+import { indeksHujan, mmPada, teksMm } from "./hujanPembanding.js";
 import { applyDasarian } from "./dasarianManual.js";
 import { DISCLAIMER_UNDUH, teksStatusUnduh } from "./banjirExport.js";
 import { bnpbAsDibi } from "./bnpbBanjir.js";
@@ -15,6 +17,7 @@ export function susunRingkasan(input, now = new Date()) {
   const capAlerts = input.capAlerts ?? [];
   const capMeta = { ...(input.capMeta ?? {}) };
   const capStatus = capAlerts.length || capMeta.status === "ok" ? "ok" : "gagal";
+  const cakupan = cakupanTersimpan(capMeta);
   capMeta.status = capStatus;
   const dibi = bnpbAsDibi(input.dibiRows ?? []);
   const dasar = buildFloodRows({
@@ -32,6 +35,8 @@ export function susunRingkasan(input, now = new Date()) {
   const periode = periodeTigaHari(now);
   const indeks = indeksPrakiraan(input.prakiraanStatus === "ok" ? input.prakiraanRows ?? [] : []);
   const penduduk = bacaPenduduk(input.pendudukRows ?? []);
+  const hujanIndeks = indeksHujan(input.hujanStatus === "ok" ? input.hujanRows ?? [] : []);
+  const hujanWaktu = input.hujanFetchedAt ? formatWib(input.hujanFetchedAt) : "—";
   const ringkas = ringkasanNowcast(capAlerts, capMeta, now);
   const tabs = [
     { id: "0-3-jam", tab: "cap", label: "0–3 jam", tanggal: "" },
@@ -41,7 +46,7 @@ export function susunRingkasan(input, now = new Date()) {
   ].map((spec) => {
     const konteks = {
       tab: spec.tab,
-      cakupan: capStatus === "ok" ? capMeta.cakupan || "" : "",
+      cakupan,
       tertunda: spec.tab === "cap" && Boolean(ringkas.tertunda),
     };
     const withHari = spec.tab === "cap" ? withNowcast : terapkanHari(withNowcast, indeks, spec.tanggal, periode.hari);
@@ -51,7 +56,12 @@ export function susunRingkasan(input, now = new Date()) {
     });
     const bertanda = withDasarian.map((row) => {
       const peta = catWilayah(row, konteks);
-      return { ...row, peta, statusTab: peta.status || null };
+      const mm = spec.tab === "cap" ? undefined : mmPada(hujanIndeks.get(row.kode), spec.tanggal);
+      const hujanFallback =
+        spec.tab !== "cap" && !row.prakiraanAda
+          ? { teks: mm === undefined || mm == null ? "belum tersedia" : teksMm(mm), waktu: hujanWaktu }
+          : null;
+      return { ...row, peta, statusTab: peta.status || null, hujanFallback };
     });
     const urut = urutStatusKab(lampirkanPenduduk(bertanda, penduduk, "ok"));
     const total = ringkasPendudukBerstatus(urut, penduduk);
@@ -101,7 +111,7 @@ export function susunRingkasan(input, now = new Date()) {
     cap: {
       fetched_at: ringkas.fetchedAt || "",
       rss_published: capMeta.rss_published || "",
-      cakupan: capMeta.cakupan || "",
+      cakupan,
       kedaluwarsa: Boolean(ringkas.kedaluwarsa),
       tertunda: Boolean(ringkas.tertunda),
       catatan: ringkas.kedaluwarsa ? CAP_DATA_TERAKHIR : "",

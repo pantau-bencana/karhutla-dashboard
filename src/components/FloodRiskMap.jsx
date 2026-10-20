@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import L from "leaflet";
 import { feature as topoFeature, mesh as topoMesh } from "topojson-client";
 import { BATAS_KAB_FILE, BATAS_KAB_SUMBER } from "../lib/batasKab.js";
 import { barisDampakHistoris } from "../lib/bnpbBanjir.js";
 import { osmTileLayer } from "../lib/basemap.js";
-import { INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../lib/geo.js";
+import { BANJIR_FRAME, BANJIR_PAN_LIMIT } from "../lib/geo.js";
 import { ANALISIS_WARNA, CATATAN_ABU, CATATAN_ABU_HARI, CATATAN_ARSIR, WARNA_TANPA_PERINGATAN } from "../lib/analisisPantauBencana.js";
 import {
   FLOOD_PERMISSION,
@@ -21,8 +22,11 @@ import {
   HUJAN_KELAS,
   HUJAN_PEMBANDING_BADGE,
   HUJAN_PEMBANDING_JENIS,
+  HUJAN_PEMBANDING_LISENSI,
   HUJAN_PEMBANDING_MODEL,
   HUJAN_PEMBANDING_SUMBER,
+  HUJAN_TANPA_NOWCAST,
+  HUJAN_TITIK_BATAS,
   mmPada,
   teksMm,
   warnaHujan,
@@ -154,15 +158,20 @@ function tooltipFor(feature, kabPaint, hujan) {
   if (paint?.status) lines.push(paint.status);
   else if (paint?.kind === "kosong" || paint?.kind === "tak-dikenal") lines.push(paint.kosongLabel || "Tidak ada peringatan");
   else if (paint?.alasan === "irbi") lines.push(IRBI_TIDAK_TERSEDIA);
-  else if (paint?.kind === "nodata") lines.push("Tanpa data");
-  if (paint?.rincian?.length) lines.push(...paint.rincian);
-  else {
-    if (paint?.lampau) lines.push("Data terakhir — masa berlaku sudah lewat, menunggu pembaruan BMKG");
-    if (paint?.kind === "tak-dikenal" && paint.cuacaMentah?.length) lines.push(...paint.cuacaMentah);
-    if (paint?.status && paint.pendudukBaris?.length) lines.push(...paint.pendudukBaris);
-    lines.push(...barisDampakHistoris());
+  const adaModel = paint?.rincian?.some((line) => String(line).startsWith("Hujan model:"));
+  if (paint?.kind === "nodata" && !adaModel) lines.push("Tanpa data");
+  if (paint?.kind === "nodata" && adaModel) {
+    lines.push(...paint.rincian);
+  } else {
+    if (paint?.rincian?.length) lines.push(...paint.rincian);
+    else {
+      if (paint?.lampau) lines.push("Data terakhir — masa berlaku sudah lewat, menunggu pembaruan BMKG");
+      if (paint?.kind === "tak-dikenal" && paint.cuacaMentah?.length) lines.push(...paint.cuacaMentah);
+      if (paint?.status && paint.pendudukBaris?.length) lines.push(...paint.pendudukBaris);
+      lines.push(...barisDampakHistoris());
+    }
+    if (!adaModel) lines.push(...barisHujan(feature, hujan));
   }
-  lines.push(...barisHujan(feature, hujan));
   return lines.filter(Boolean).map(escapeHtml).join("<br>");
 }
 
@@ -181,6 +190,41 @@ function tooltipTitik(titik, hujan) {
     .join("<br>");
 }
 
+const BANJIR_PADDING = [10, 10];
+
+function banjirBounds() {
+  return L.latLngBounds(
+    [BANJIR_FRAME.south, BANJIR_FRAME.west],
+    [BANJIR_FRAME.north, BANJIR_FRAME.east],
+  );
+}
+
+function petaSiap(map) {
+  const size = map?.getSize?.();
+  return Boolean(size && size.x >= 80 && size.y >= 80);
+}
+
+function frameBanjir(map) {
+  if (!petaSiap(map)) return false;
+  const frame = banjirBounds();
+  map.stop();
+  map.setMinZoom(0);
+  map.fitBounds(frame, { padding: BANJIR_PADDING, animate: false });
+  const zoom = map.getZoom();
+  if (Number.isFinite(zoom)) map.setMinZoom(zoom);
+  map.setMaxBounds(
+    L.latLngBounds(
+      [BANJIR_PAN_LIMIT.south, BANJIR_PAN_LIMIT.west],
+      [BANJIR_PAN_LIMIT.north, BANJIR_PAN_LIMIT.east],
+    ),
+  );
+  return true;
+}
+
+function layarSempit() {
+  return typeof window !== "undefined" && window.matchMedia("(max-width: 640px)").matches;
+}
+
 export function FloodRiskMap({
   province = "",
   onProvince,
@@ -196,6 +240,11 @@ export function FloodRiskMap({
 }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
+  const kontrolRef = useRef(null);
+  const legendaRef = useRef(null);
+  const [kontrolSiap, setKontrolSiap] = useState(false);
+  const [kartuBuka, setKartuBuka] = useState(() => !layarSempit());
+  const [legendaBuka, setLegendaBuka] = useState(() => !layarSempit());
   const riskRef = useRef(null);
   const bahayaRef = useRef(null);
   const kabRef = useRef(null);
@@ -222,32 +271,87 @@ export function FloodRiskMap({
   inariskRef.current = showInarisk;
 
   useEffect(() => {
+    const media = window.matchMedia("(max-width: 640px)");
+    const terapkan = () => {
+      const sempit = media.matches;
+      setKartuBuka(!sempit);
+      setLegendaBuka(!sempit);
+    };
+    terapkan();
+    media.addEventListener("change", terapkan);
+    return () => media.removeEventListener("change", terapkan);
+  }, []);
+
+  useEffect(() => {
     if (!containerRef.current || mapRef.current) return undefined;
     const map = L.map(containerRef.current, {
-      zoomControl: true,
+      zoomControl: false,
       zoomAnimation: false,
       fadeAnimation: false,
-      minZoom: 4,
-      maxBounds: [
-        [INDONESIA_PAN_LIMIT.south, INDONESIA_PAN_LIMIT.west],
-        [INDONESIA_PAN_LIMIT.north, INDONESIA_PAN_LIMIT.east],
-      ],
+      zoomSnap: 0,
+      zoomDelta: 0.5,
+      minZoom: 0,
+      maxBoundsViscosity: 1,
     });
     osmTileLayer(L).addTo(map);
     map.createPane("flood-lines");
     map.getPane("flood-lines").style.zIndex = 450;
-    map.fitBounds(
-      [
-        [INDONESIA_FRAME.south, INDONESIA_FRAME.west],
-        [INDONESIA_FRAME.north, INDONESIA_FRAME.east],
-      ],
-      { animate: false },
-    );
+    const pasang = () => {
+      map.invalidateSize({ animate: false, pan: false });
+      const batasProv = provinceRef.current ? kabRef.current?.getBounds?.() : null;
+      if (batasProv?.isValid?.()) {
+        map.fitBounds(batasProv, { padding: [16, 16], animate: false });
+        return;
+      }
+      frameBanjir(map);
+    };
+    pasang();
+    let sizeKey = "";
+    const onResize = () => {
+      const size = map.getSize();
+      const key = `${Math.round(size.x)}x${Math.round(size.y)}`;
+      if (!key || key === sizeKey) return;
+      sizeKey = key;
+      pasang();
+    };
+    const batasKontrol = () => {
+      const tinggi = map.getSize()?.y || 0;
+      if (tinggi < 40) return;
+      const batas = `${Math.max(88, Math.round(tinggi - 28))}px`;
+      if (kontrolRef.current) kontrolRef.current.style.maxHeight = batas;
+      if (legendaRef.current) legendaRef.current.style.maxHeight = batas;
+    };
+    map.on("resize", onResize);
+    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(onResize) : null;
+    observer?.observe(containerRef.current);
     map.on("click", (event) => {
       if (provinceRef.current && inariskRef.current) identifyHandler.current(event);
     });
+    L.control.zoom({ position: "topleft" }).addTo(map);
+    const kontrol = L.control({ position: "topright" });
+    kontrol.onAdd = () => {
+      const div = L.DomUtil.create("div", "hujan-kontrol");
+      L.DomEvent.disableClickPropagation(div);
+      L.DomEvent.disableScrollPropagation(div);
+      kontrolRef.current = div;
+      return div;
+    };
+    kontrol.addTo(map);
+    const legenda = L.control({ position: "bottomleft" });
+    legenda.onAdd = () => {
+      const div = L.DomUtil.create("div", "legenda-peta");
+      L.DomEvent.disableClickPropagation(div);
+      L.DomEvent.disableScrollPropagation(div);
+      legendaRef.current = div;
+      return div;
+    };
+    legenda.addTo(map);
+    batasKontrol();
+    map.on("resize", batasKontrol);
     mapRef.current = map;
+    setKontrolSiap(true);
     return () => {
+      observer?.disconnect();
       map.remove();
       mapRef.current = null;
     };
@@ -255,7 +359,7 @@ export function FloodRiskMap({
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !showInarisk) {
+    if (!map || (!showInarisk && !showBahaya)) {
       riskRef.current?.remove();
       bahayaRef.current?.remove();
       riskRef.current = null;
@@ -292,7 +396,11 @@ export function FloodRiskMap({
         layerRef.current.setUrl(url);
         layerRef.current.setBounds(bounds);
       };
-      place(riskRef, RISIKO_SERVICE, showBahaya ? 0.55 : 0.75);
+      if (showInarisk) place(riskRef, RISIKO_SERVICE, showBahaya ? 0.55 : 0.75);
+      else if (riskRef.current) {
+        map.removeLayer(riskRef.current);
+        riskRef.current = null;
+      }
       if (showBahaya) place(bahayaRef, BAHAYA_SERVICE, 0.85);
       else if (bahayaRef.current) {
         map.removeLayer(bahayaRef.current);
@@ -366,13 +474,7 @@ export function FloodRiskMap({
             { padding: [16, 16], animate: false },
           );
         } else if (!province) {
-          map.fitBounds(
-            [
-              [INDONESIA_FRAME.south, INDONESIA_FRAME.west],
-              [INDONESIA_FRAME.north, INDONESIA_FRAME.east],
-            ],
-            { animate: false },
-          );
+          frameBanjir(map);
         }
       } catch {
         if (!cancelled) setBigNote("Berkas batas kabupaten/kota tidak dapat dimuat. Peta wilayah tidak digambar pada pembaruan ini.");
@@ -402,7 +504,7 @@ export function FloodRiskMap({
     const map = mapRef.current;
     hujanRef.current?.remove();
     hujanRef.current = null;
-    if (!map || !showHujan || !hujan?.indeks) return undefined;
+    if (!map || tab === "cap" || !showHujan || !hujan?.indeks) return undefined;
     if (!map.getPane("hujan-pembanding")) {
       map.createPane("hujan-pembanding");
       map.getPane("hujan-pembanding").style.zIndex = 460;
@@ -430,7 +532,7 @@ export function FloodRiskMap({
       group.remove();
       hujanRef.current = null;
     };
-  }, [showHujan, hujan, province, loadingMap]);
+  }, [tab, showHujan, hujan, province, loadingMap]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -558,61 +660,7 @@ export function FloodRiskMap({
 
   return (
     <div className="flood-map-block">
-      <fieldset className="layer-checks">
-        <legend>Lapisan</legend>
-        <span className="layer-with-info">
-          <label>
-            <input type="checkbox" checked={showPeringatan} onChange={(event) => setShowPeringatan(event.target.checked)} />
-            Peringatan
-          </label>
-          <InfoTip label="Penjelasan lapisan peringatan">
-            <p>Awas, Siaga, dan Waspada adalah analisis proyek ini, bukan status resmi BMKG atau BNPB.</p>
-            <p>
-              {tab === "cap"
-                ? "Tab 0–3 jam memasangkan peringatan dini cuaca BMKG (0–3 jam) per kab/kota dengan kelas risiko banjir IRBI 2025 BNPB lewat matriks proyek."
-                : "Tab hari memasangkan prakiraan cuaca 3 hari BMKG per kab/kota dengan kelas risiko banjir IRBI 2025 BNPB lewat matriks proyek, termasuk aturan kode cuaca."}
-            </p>
-            <p>Poligon adalah batas administrasi kab/kota. Merah Awas, jingga Siaga, kuning Waspada, abu-abu tidak ada status, arsir tanpa data.</p>
-            <p>Pembaruan terakhir: {waktuLabel}.</p>
-            <p>
-              <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
-            </p>
-          </InfoTip>
-        </span>
-        <label>
-          <input type="checkbox" checked={showInarisk} onChange={(event) => setShowInarisk(event.target.checked)} />
-          Overlay inaRISK
-        </label>
-        {showInarisk ? (
-          <label>
-            <input type="checkbox" checked={showBahaya} onChange={(event) => setShowBahaya(event.target.checked)} />
-            Bahaya banjir
-          </label>
-        ) : null}
-        <label>
-          <input type="checkbox" checked={showBatas} onChange={(event) => setShowBatas(event.target.checked)} />
-          Batas provinsi
-        </label>
-      </fieldset>
-      <fieldset className="layer-checks layer-pembanding">
-        <legend>Data Pembanding</legend>
-        <span className="status-pill status-pembanding">{HUJAN_PEMBANDING_BADGE}</span>
-        <span className="layer-with-info">
-          <label>
-            <input type="checkbox" checked={showHujan} onChange={(event) => onShowHujan?.(event.target.checked)} />
-            Curah hujan model
-          </label>
-          <InfoTip label="Penjelasan lapisan Data Pembanding curah hujan">
-            <p>{HUJAN_PEMBANDING_BADGE}. {HUJAN_PEMBANDING_JENIS}.</p>
-            <p>Jumlah hujan harian Open-Meteo, model {HUJAN_PEMBANDING_MODEL}, pada titik adm4 yang sama. Satuan mm. Bukan skala Awas, Siaga, atau Waspada, dan tidak masuk matriks.</p>
-            <p>Diambil {hujan?.waktu || "—"}.</p>
-            <p>{hujan?.gpm}</p>
-            <p>
-              <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
-            </p>
-          </InfoTip>
-        </span>
-      </fieldset>
+      {tab === "cap" ? <p className="fine">{HUJAN_TANPA_NOWCAST}</p> : null}
       <p className="fine">{FLOOD_PERMISSION} Overlay inaRISK mati sampai dinyalakan. Status peta inaRISK belum Aktif.</p>
       {mapError ? (
         <p className="banner warn" role="status">
@@ -625,35 +673,101 @@ export function FloodRiskMap({
       {loadingMap ? <p className="fine">Memuat batas kabupaten/kota…</p> : null}
       {bigNote ? <p className="fine">{bigNote}</p> : null}
       <div ref={containerRef} className="map-canvas flood-map" role="application" aria-label="Peta banjir Indonesia" />
-      <div className="flood-legend" aria-label="Legenda peta">
-        {Object.entries(ANALISIS_WARNA).map(([nama, warna]) => (
-          <span key={nama}>
-            <i style={{ background: warna }} /> {nama}
-          </span>
-        ))}
-        <span>
-          <i style={{ background: WARNA_TANPA_PERINGATAN }} />{" "}
-          {tab === "cap" ? "Tidak ada peringatan" : "Tidak ada status (cuaca tidak berpotensi banjir)"}
-        </span>
-        {tab === "cap" ? null : (
-          <span>
-            <i style={{ background: WARNA_TANPA_PERINGATAN }} /> Tidak terklasifikasi (kode cuaca BMKG belum dikenali)
-          </span>
-        )}
-        <span>
-          <i className="swatch-hatch" /> Tanpa data
-        </span>
-      </div>
-      {showHujan ? (
-        <div className="flood-legend" aria-label="Legenda hujan model">
-          {HUJAN_KELAS.map((kelas) => (
-            <span key={kelas.id}>
-              <i className="swatch-hujan" style={{ background: kelas.warna }} /> {kelas.label}
-            </span>
-          ))}
-          <span>{HUJAN_PEMBANDING_JENIS}. Bukan warna peringatan.</span>
-        </div>
-      ) : null}
+      {kontrolSiap && kontrolRef.current
+        ? createPortal(
+            <details className="peta-kartu" open={kartuBuka} onToggle={(event) => setKartuBuka(event.currentTarget.open)}>
+              <summary>Lapisan Peta</summary>
+              <div className="peta-kartu-isi">
+                <span className="layer-with-info">
+                  <label>
+                    <input type="checkbox" checked={showPeringatan} onChange={(event) => setShowPeringatan(event.target.checked)} />
+                    Peringatan
+                  </label>
+                  <InfoTip label="Penjelasan lapisan peringatan" align="end">
+                    <p>Awas, Siaga, dan Waspada adalah analisis proyek ini, bukan status resmi BMKG atau BNPB.</p>
+                    <p>
+                      {tab === "cap"
+                        ? "Tab 0–3 jam memasangkan peringatan dini cuaca BMKG (0–3 jam) per kab/kota dengan kelas risiko banjir IRBI 2025 BNPB lewat matriks proyek."
+                        : "Tab hari memasangkan prakiraan cuaca 3 hari BMKG per kab/kota dengan kelas risiko banjir IRBI 2025 BNPB lewat matriks proyek, termasuk aturan kode cuaca."}
+                    </p>
+                    <p>Poligon adalah batas administrasi kab/kota. Merah Awas, jingga Siaga, kuning Waspada, abu-abu tidak ada status, arsir tanpa data.</p>
+                    <p>Pembaruan terakhir: {waktuLabel}.</p>
+                    <p>
+                      <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
+                    </p>
+                  </InfoTip>
+                </span>
+                <label>
+                  <input type="checkbox" checked={showInarisk} onChange={(event) => setShowInarisk(event.target.checked)} />
+                  Overlay inaRISK
+                </label>
+                <label>
+                  <input type="checkbox" checked={showBahaya} onChange={(event) => setShowBahaya(event.target.checked)} />
+                  Bahaya banjir
+                </label>
+                <label>
+                  <input type="checkbox" checked={showBatas} onChange={(event) => setShowBatas(event.target.checked)} />
+                  Batas provinsi
+                </label>
+                {tab === "cap" ? null : (
+                  <>
+                    <p className="peta-sub">Data Pembanding</p>
+                    <span className="layer-with-info">
+                      <label>
+                        <input type="checkbox" checked={showHujan} onChange={(event) => onShowHujan?.(event.target.checked)} />
+                        Curah hujan model
+                      </label>
+                      <InfoTip label="Penjelasan lapisan Data Pembanding curah hujan" align="end">
+                        <p>{HUJAN_PEMBANDING_BADGE}. {HUJAN_PEMBANDING_JENIS}.</p>
+                        <p>Jumlah hujan harian Open-Meteo, model {HUJAN_PEMBANDING_MODEL}, pada titik adm4 yang sama. Satuan mm. Bukan skala Awas, Siaga, atau Waspada, dan tidak masuk matriks.</p>
+                        <p>{HUJAN_TANPA_NOWCAST} {HUJAN_TITIK_BATAS}</p>
+                        <p>Bila prakiraan BMKG untuk Hari ini, Besok, atau Lusa tidak ada, angka mm tetap tampil pada tabel dan tooltip. Angka itu tidak menetapkan Awas, Siaga, atau Waspada, dan tidak mewarnai poligon.</p>
+                        <p>Diambil {hujan?.waktu || "—"}. Lisensi <a href={HUJAN_PEMBANDING_LISENSI} target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</p>
+                        <p>{hujan?.gpm}</p>
+                        <p>
+                          <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
+                        </p>
+                      </InfoTip>
+                    </span>
+                  </>
+                )}
+              </div>
+            </details>,
+            kontrolRef.current,
+          )
+        : null}
+      {kontrolSiap && legendaRef.current
+        ? createPortal(
+            <details className="peta-kartu" open={legendaBuka} onToggle={(event) => setLegendaBuka(event.currentTarget.open)}>
+              <summary>Tingkat Peringatan</summary>
+              <ul className="legenda-daftar">
+                {Object.entries(ANALISIS_WARNA).map(([nama, warna]) => (
+                  <li key={nama}>
+                    <i className="legenda-dot" style={{ background: warna }} /> {nama}
+                  </li>
+                ))}
+                <li title={tab === "cap" ? CATATAN_ABU : CATATAN_ABU_HARI}>
+                  <i className="legenda-dot" style={{ background: WARNA_TANPA_PERINGATAN }} /> Tidak ada status
+                </li>
+                <li title={CATATAN_ARSIR}>
+                  <i className="legenda-dot swatch-hatch" /> Tidak ada data
+                </li>
+                <li>
+                  <i className="legenda-garis" /> Batas provinsi
+                </li>
+                {showHujan
+                  ? HUJAN_KELAS.map((kelas) => (
+                      <li key={kelas.id}>
+                        <i className="legenda-dot swatch-hujan" style={{ background: kelas.warna }} /> {kelas.label}
+                      </li>
+                    ))
+                  : null}
+              </ul>
+              {showHujan ? <p className="peta-catatan">{HUJAN_PEMBANDING_JENIS}. Bukan warna peringatan.</p> : null}
+            </details>,
+            legendaRef.current,
+          )
+        : null}
       <p className="fine">{tab === "cap" ? CATATAN_ABU : CATATAN_ABU_HARI} {CATATAN_ARSIR}</p>
       <p className="fine">{BATAS_KAB_SUMBER}</p>
       {catatan.map((baris) => (

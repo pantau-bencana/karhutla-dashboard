@@ -24,7 +24,9 @@ import {
   teksAngkaPenduduk,
   teksRumahTangga,
 } from "../lib/pendudukKab.js";
-import { barisDampakHistoris } from "../lib/bnpbBanjir.js";
+import { HISTORIS_DISCLAIMER, barisDampakHistoris } from "../lib/bnpbBanjir.js";
+import { HUJAN_PEMBANDING_JENIS, barisHujanModel } from "../lib/hujanPembanding.js";
+import { InfoTip } from "./InfoTip.jsx";
 import { DIBI_UNAVAILABLE, FLOOD_INFO_COLUMNS, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, krbLinksFor, skorTeks, sortFloodRows } from "../lib/floodMatrix.js";
 
 function selPenduduk(row, jenis) {
@@ -277,7 +279,8 @@ export function rincianKab(row, hujanTeks) {
       `Penduduk ${teksAngkaPenduduk(row.pendudukItem?.penduduk)} · rumah tangga ${teksRumahTangga(row.pendudukItem)} · ${PENDUDUK_BUKAN_TERPAPAR}`,
     );
   }
-  if (hujanTeks) lines.push(`Hujan model: ${hujanTeks}. prakiraan model, bukan BMKG.`);
+  if (row?.hujanFallback) lines.push(...barisHujanModel(row.hujanFallback.teks, row.hujanFallback.waktu));
+  else if (hujanTeks) lines.push(`Hujan model: ${hujanTeks}. ${HUJAN_PEMBANDING_JENIS}.`);
   return lines;
 }
 
@@ -305,7 +308,14 @@ export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null
             <th scope="col">Kab/Kota</th>
             {tampilProvinsi ? <th scope="col">Provinsi</th> : null}
             <th scope="col">Status</th>
-            <th scope="col">Historis</th>
+            <th scope="col">
+              <span className="th-with-info">
+                Historis
+                <InfoTip label="Penjelasan kolom Historis" align="end">
+                  <p>{HISTORIS_DISCLAIMER}</p>
+                </InfoTip>
+              </span>
+            </th>
             <th scope="col">IRBI</th>
           </tr>
         </thead>
@@ -346,7 +356,7 @@ export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null
           })}
         </tbody>
       </table>
-      <p className="fine">Tingkat kabupaten/kota. Kecamatan tidak ditampilkan. Rincian memuat masa berlaku, prakiraan, penduduk terdampak, rumah terdampak, potensi BPS, dan hujan model bila lapisan itu nyala.</p>
+      <p className="fine">Tingkat kabupaten/kota. Kecamatan tidak ditampilkan. Rincian memuat masa berlaku, prakiraan, penduduk terdampak, rumah terdampak, dan potensi BPS. Hujan model hanya pada tab Hari ini, Besok, atau Lusa, bila lapisan itu nyala atau prakiraan BMKG untuk hari itu tidak ada.</p>
     </div>
   );
 }
@@ -368,6 +378,16 @@ function selStatusPeta(row) {
   }
   if (peta?.kind === "kosong" || peta?.kind === "tak-dikenal") return peta.kosongLabel || "Tidak ada peringatan";
   if (peta?.alasan === "irbi") return IRBI_TIDAK_TERSEDIA;
+  if (row?.hujanFallback && peta?.alasan === "prakiraan") {
+    return (
+      <span className="hujan-fallback">
+        {row.hujanFallback.teks}
+        <small>
+          {HUJAN_PEMBANDING_JENIS}. Diambil {row.hujanFallback.waktu}.
+        </small>
+      </span>
+    );
+  }
   return "Tanpa data";
 }
 
