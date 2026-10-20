@@ -2,6 +2,8 @@ import { Component, useCallback, useEffect, useMemo, useState } from "react";
 import { FloodInfoTable, FloodKabDaftar, PrakiraanTigaHari } from "./FloodInfoTable.jsx";
 import { FloodRiskMap } from "./FloodRiskMap.jsx";
 import { ANALISIS_BUKAN_RESMI, ANALISIS_NAMA, CATATAN_ALASAN, applyAnalisis, catWilayah } from "../lib/analisisPantauBencana.js";
+import { DISCLAIMER_UNDUH, barisXlsx, csvUnduh } from "../lib/banjirExport.js";
+import { xlsxBytes } from "../lib/xlsxMini.js";
 import { BNPB_ABSENT, BNPB_FILE, BNPB_RESOURCE_URL, bnpbAsDibi } from "../lib/bnpbBanjir.js";
 import { looksLikeCsv, parseCsv } from "../lib/csv.js";
 import {
@@ -9,7 +11,9 @@ import {
   BMKG_CAP_DOCS,
   DASARIAN_LINKS,
   DASARIAN_NOTE,
+  CAP_DATA_TERAKHIR,
   NOWCAST_BUKAN_TIGA_HARI,
+  PEMBARUAN_TERAKHIR_LABEL,
   applyNowcast,
   ringkasanNowcast,
 } from "../lib/capKab.js";
@@ -17,11 +21,12 @@ import { DASARIAN_FILE, DASARIAN_GUIDE_URL, IKLIM_BMKG_URL, applyDasarian, today
 import { formatTanggalPendek, formatUsia, formatWib } from "../lib/format.js";
 import { bigQueryUrl } from "../lib/floodServices.js";
 import { BMKG_DOCS_URL } from "../lib/bmkgForecast.js";
-import { FLOOD_PERMISSION, IRBI_PENGGUNAAN_INTERNAL, IRBI_PERMISSION, IRBI_TIDAK_TERSEDIA, buildFloodRows, kodeWilayah } from "../lib/floodMatrix.js";
+import { FLOOD_PERMISSION, IRBI_PENGGUNAAN_INTERNAL, IRBI_PERMISSION, IRBI_TIDAK_TERSEDIA, buildFloodRows, kodeWilayah, urutStatusKab } from "../lib/floodMatrix.js";
 import {
   BPS_PROYEKSI_URL,
   PENDUDUK_ABSENT,
   PENDUDUK_FILE,
+  POTENSI_LABEL,
   bacaPenduduk,
   barisTooltip,
   kalimatJumlahPenduduk,
@@ -78,6 +83,28 @@ class FloodBoundary extends Component {
     }
     return this.props.children;
   }
+}
+
+function kalimatCap(ringkas) {
+  const waktu = ringkas.fetchedAt ? formatWib(ringkas.fetchedAt) : "—";
+  const kepala = `${PEMBARUAN_TERAKHIR_LABEL}: ${waktu}`;
+  if (ringkas.status === "memuat") return "Memuat peringatan BMKG…";
+  if (ringkas.status !== "ok") return `${kepala}. Peringatan BMKG tidak dapat diambil dan tidak ada cuplikan tersimpan.`;
+  if (ringkas.kedaluwarsa) {
+    return `${kepala}. ${CAP_DATA_TERAKHIR}. ${ringkas.kabupaten} kab/kota pada cuplikan terakhir${ringkas.berlakuSampai ? `, masa berlaku sampai ${formatWib(ringkas.berlakuSampai)}` : ""}.`;
+  }
+  if (ringkas.kosong) return `${kepala}. Tidak ada peringatan cuaca pada cuplikan ini. Ini bukan berarti aman dari banjir.`;
+  const tunda = ringkas.tertunda ? ` Data tertunda (${formatUsia(Date.now() - new Date(ringkas.fetchedAt).getTime())}).` : "";
+  return `${kepala}. ${ringkas.provinsi} provinsi dengan peringatan yang masih berlaku. ${ringkas.kabupaten} kab/kota. Masa berlaku sampai ${ringkas.berlakuSampai ? formatWib(ringkas.berlakuSampai) : "—"}.${tunda}`;
+}
+
+function simpanBerkas(filename, blob) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
 }
 
 function wilayahDari(banjir, alerts, bigNames, province) {
@@ -144,12 +171,18 @@ function FloodBody() {
         if (!cancelled) setDibiLoaded(false);
       }
       try {
-        const meta = await loadJson(CAP_META);
+        const meta = await loadJson(CAP_META).catch(() => null);
+        let alerts = [];
+        try {
+          alerts = await loadCsv(CAP_CSV);
+        } catch {
+          alerts = [];
+        }
         if (cancelled) return;
-        if (meta?.status !== "ok") setCap({ status: "gagal", alerts: [], meta: meta ?? {} });
-        else {
-          const alerts = await loadCsv(CAP_CSV);
-          if (!cancelled) setCap({ status: "ok", alerts, meta });
+        if (alerts.length || meta?.status === "ok") {
+          setCap({ status: "ok", alerts, meta: { ...(meta ?? {}), status: "ok" } });
+        } else {
+          setCap({ status: "gagal", alerts: [], meta: meta ?? {} });
         }
       } catch {
         if (!cancelled) setCap({ status: "gagal", alerts: [], meta: {} });
@@ -239,15 +272,13 @@ function FloodBody() {
     const wilayah = wilayahDari(banjir, cap.alerts, province ? bigNames : [], province);
     const rows = buildFloodRows({ banjir, multi: [], dibi, dibiLoaded, wilayah });
     const withNowcast = applyAnalisis(applyNowcast(rows, cap.alerts, { ...cap.meta, status: cap.status }));
-    const withHari = tab === "cap" ? withNowcast : terapkanHari(withNowcast, indeksCuaca, periode.hari[tab]);
+    const withHari = tab === "cap" ? withNowcast : terapkanHari(withNowcast, indeksCuaca, periode.hari[tab], periode.hari);
     const withDasarian = applyDasarian(withHari, dasarian.rows, { status: dasarian.status, now: dasarianNow });
     const bertanda = withDasarian.map((row) => {
       const peta = catWilayah(row, konteks);
       return { ...row, peta, statusTab: peta.status || null };
     });
-    return lampirkanPenduduk(bertanda, penduduk.indeks, penduduk.status).sort((left, right) =>
-      left.kode.localeCompare(right.kode, "id"),
-    );
+    return urutStatusKab(lampirkanPenduduk(bertanda, penduduk.indeks, penduduk.status));
   }, [province, banjir, cap, bigNames, dibi, dibiLoaded, dasarian, dasarianNow, penduduk, tab, konteks, indeksCuaca, periode.hari]);
   const ringkasPenduduk = useMemo(
     () => ringkasPendudukBerstatus(urut, penduduk.indeks),
@@ -262,7 +293,7 @@ function FloodBody() {
     return map;
   }, [urut]);
   const kabPaint = useMemo(() => catWarna(urut, penduduk.indeks, konteks), [urut, penduduk.indeks, konteks]);
-  const bolehKosong = tab === "cap" && cap.status === "ok" && cap.meta?.cakupan === "nasional" && !ringkas.tertunda;
+  const bolehKosong = tab === "cap" && cap.status === "ok" && cap.meta?.cakupan === "nasional";
   const catatanPeta = useMemo(() => {
     const alasan = new Set(urut.filter((row) => row.peta?.kind === "nodata").map((row) => row.peta.alasan));
     return [...alasan].map((key) => CATATAN_ALASAN[key]).filter(Boolean);
@@ -276,6 +307,29 @@ function FloodBody() {
   const hariTab = tab === "cap" ? null : periode.hari[tab];
   const namaHari = tab === "cap" ? "" : ["Hari ini", "Besok", "Lusa"][tab];
   const sumberPrakiraan = titik.find((item) => item.analysisUtc)?.analysisUtc || prakiraan.observedAt;
+  const kepalaUnduh = [
+    tab === "cap"
+      ? `Periode: 0–3 jam. ${PEMBARUAN_TERAKHIR_LABEL}: ${cap.meta.fetched_at ? formatWib(cap.meta.fetched_at) : "—"}.`
+      : `${periode.label}. Tab ${namaHari}${hariTab ? `, ${formatTanggalPendek(hariTab)} ${hariTab.slice(0, 4)}` : ""}.`,
+    tab === "cap"
+      ? `Sumber: BMKG. ${PEMBARUAN_TERAKHIR_LABEL}: ${cap.meta.fetched_at ? formatWib(cap.meta.fetched_at) : "—"}.${ringkas.berlakuSampai ? ` Masa berlaku sampai ${formatWib(ringkas.berlakuSampai)}.` : ""}${ringkas.kedaluwarsa ? ` ${CAP_DATA_TERAKHIR}.` : ""}`
+      : `Sumber: BMKG. Diambil ${prakiraan.fetchedAt ? formatWib(prakiraan.fetchedAt) : "—"}. Dikeluarkan ${sumberPrakiraan ? formatWib(sumberPrakiraan) : "—"}.`,
+    `Cakupan: ${province || SEMUA_PROVINSI}.`,
+    DISCLAIMER_UNDUH,
+  ];
+  function unduhTabel(jenis) {
+    const slug = `${tab === "cap" ? "0-3-jam" : ["hari-ini", "besok", "lusa"][tab]}-${(province || "indonesia").toLowerCase().replaceAll(" ", "-")}`;
+    if (jenis === "xlsx") {
+      simpanBerkas(
+        `banjir-${slug}.xlsx`,
+        new Blob([xlsxBytes(barisXlsx(kepalaUnduh, urut))], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        }),
+      );
+      return;
+    }
+    simpanBerkas(`banjir-${slug}.csv`, new Blob([csvUnduh(kepalaUnduh, urut)], { type: "text/csv;charset=utf-8" }));
+  }
 
   return (
     <main className="wrap main">
@@ -296,13 +350,7 @@ function FloodBody() {
         <span> {IRBI_PENGGUNAAN_INTERNAL.replace(/^Penggunaan internal\.\s*/, "")}</span>
       </p>
       <p className="flood-summary" role="status">
-        {ringkas.status === "memuat"
-          ? "Memuat peringatan BMKG…"
-          : ringkas.status !== "ok"
-            ? `Peringatan BMKG tidak dapat diambil pada pembaruan terakhir${ringkas.fetchedAt ? ` (${formatWib(ringkas.fetchedAt)})` : ""}. Peta tidak menampilkan status.`
-            : `Pembaruan data ${ringkas.fetchedAt ? formatWib(ringkas.fetchedAt) : "—"} · ${ringkas.provinsi} provinsi dengan peringatan aktif · ${ringkas.kabupaten} kab/kota terdampak${ringkas.berlakuSampai ? ` · berlaku sampai paling lambat ${formatWib(ringkas.berlakuSampai)}` : ""}${ringkas.tertunda ? ` · Data tertunda (${formatUsia(Date.now() - new Date(ringkas.fetchedAt).getTime())})` : ""}`}
-        {" "}
-        {kalimatPenduduk}
+        {kalimatCap(ringkas)} {kalimatPenduduk}
       </p>
       {penduduk.status !== "memuat" && penduduk.jumlah === 0 ? (
         <p className="banner">
@@ -316,7 +364,9 @@ function FloodBody() {
         <p className="banner">Tidak ada peringatan cuaca aktif dari BMKG saat diambil ({ringkas.fetchedAt ? formatWib(ringkas.fetchedAt) : "—"}). Ini bukan berarti aman dari banjir.</p>
       ) : null}
       {ringkas.kedaluwarsa ? (
-        <p className="banner">Peringatan sudah lewat masa berlaku; menunggu pembaruan berikutnya (jadwal tiap 30 menit).</p>
+        <p className="banner warn" role="status">
+          <strong>{CAP_DATA_TERAKHIR}</strong>
+        </p>
       ) : null}
       {cap.status === "ok" && cap.meta?.cakupan !== "nasional" ? (
         <p className="fine">Cuplikan CAP yang tersimpan belum bertanda cakupan nasional. Provinsi di luar cuplikan lama bisa tidak muncul sampai pembaruan berikutnya.</p>
@@ -347,9 +397,10 @@ function FloodBody() {
           <p className="fine">
             {tab === "cap" ? (
               <>
-                Sumber: BMKG. Nowcast CAP, berlaku sekitar 0–3 jam. Bukan status 3 hari. Diambil{" "}
-                {cap.meta.fetched_at ? formatWib(cap.meta.fetched_at) : "—"}. Berlaku sampai{" "}
-                {ringkas.berlakuSampai ? formatWib(ringkas.berlakuSampai) : "—"}.
+                Sumber: BMKG. Nowcast CAP, berlaku sekitar 0–3 jam. Bukan status 3 hari. {PEMBARUAN_TERAKHIR_LABEL}:{" "}
+                {cap.meta.fetched_at ? formatWib(cap.meta.fetched_at) : "—"}. Masa berlaku pada cuplikan
+                {ringkas.berlakuSampai ? ` sampai ${formatWib(ringkas.berlakuSampai)}` : " tidak tercantum"}.
+                {ringkas.kedaluwarsa ? ` ${CAP_DATA_TERAKHIR}.` : ""}
               </>
             ) : (
               <>
@@ -379,6 +430,12 @@ function FloodBody() {
                 <option value="Dalam pengembangan">Dalam pengembangan</option>
               </select>
             </label>
+            <button type="button" className="button" onClick={() => unduhTabel("csv")}>
+              Unduh CSV
+            </button>
+            <button type="button" className="button" onClick={() => unduhTabel("xlsx")}>
+              Unduh XLSX
+            </button>
             {province ? (
               <p className="breadcrumb">
                 <button type="button" onClick={() => pilihProvinsi("")}>
@@ -560,7 +617,7 @@ function FloodBody() {
             <a href={BPS_PROYEKSI_URL} target="_blank" rel="noopener noreferrer">
               Publikasi proyeksi penduduk kabupaten/kota
             </a>
-            . Angka yang tampil pada kab/kota berstatus adalah total kab/kota, bukan jumlah terpapar.
+            . Angka yang tampil pada kab/kota berstatus adalah {POTENSI_LABEL}.
           </p>
           <p>Pantau Bencana v0.1 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH.</p>
         </div>

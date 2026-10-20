@@ -165,6 +165,7 @@ async function fetchBmkg() {
     "kec_angin_kmj",
     "arah_angin",
     "cuaca",
+    "kode_cuaca",
     "analysis_utc",
   ];
   const body = toCsv(
@@ -183,6 +184,7 @@ async function fetchBmkg() {
       kec_angin_kmj: slot.anginKmj,
       arah_angin: slot.arahAngin,
       cuaca: slot.cuaca,
+      kode_cuaca: slot.kodeCuaca,
       analysis_utc: slot.analysisUtc,
     })),
   );
@@ -1086,9 +1088,16 @@ async function main() {
     capEntry.observed_at = result.observedAt;
     capEntry.observed_label = result.observedLabel;
     capEntry.source_updated_at = result.sourceUpdatedAt;
-    writeIfChanged("data/live/bmkg-cap.csv", result.body, capEntry, previousEntry(previous, "bmkg_cap"));
-    writeCapKabFiles(liveDir, {
-      status: result.kabupaten.status,
+    if ((result.jumlahAlert ?? 0) > 0) {
+      writeIfChanged("data/live/bmkg-cap.csv", result.body, capEntry, previousEntry(previous, "bmkg_cap"));
+    } else {
+      Object.assign(
+        capEntry,
+        keepPrevious(capEntry, previousEntry(previous, "bmkg_cap"), "RSS nowcast tidak memuat peringatan baru."),
+      );
+    }
+    const kabTulis = writeCapKabFiles(liveDir, {
+      status: result.kabupaten.rows.length ? result.kabupaten.status : "gagal",
       rows: result.kabupaten.rows,
       alerts: result.alerts,
       geom: result.geom,
@@ -1097,10 +1106,14 @@ async function main() {
       fetchedAt: nowIso,
       error: result.kabupaten.error,
     });
-    console.log(`CAP kabupaten: ${result.kabupaten.status}, ${result.kabupaten.rows.length} baris.`);
+    console.log(
+      kabTulis.kept_previous
+        ? "CAP kabupaten: cuplikan sebelumnya dipertahankan."
+        : `CAP kabupaten: ${result.kabupaten.status}, ${result.kabupaten.rows.length} baris.`,
+    );
   } catch (error) {
     Object.assign(capEntry, keepPrevious(capEntry, previousEntry(previous, "bmkg_cap"), error.message));
-    writeCapKabFiles(liveDir, {
+    const kabTulis = writeCapKabFiles(liveDir, {
       status: "gagal",
       rows: [],
       alerts: [],
@@ -1109,6 +1122,7 @@ async function main() {
       fetchedAt: nowIso,
       error: error.message,
     });
+    if (kabTulis.kept_previous) console.log("CAP kabupaten gagal. Cuplikan sebelumnya dipertahankan.");
   }
   datasets.bmkg_cap = capEntry;
 

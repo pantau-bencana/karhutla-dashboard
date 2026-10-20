@@ -978,6 +978,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 }
 .flood-group th { background: #f4f1ea; text-align: left; }
 .nowcast-item { display: block; margin-bottom: 8px; }
+.nowcast-lampau-label { display: block; font-weight: 700; color: #7a4b12; }
 .nowcast-item strong { font-weight: 700; }
 .nowcast-cross { margin: 12px 0; overflow: auto; }
 .nowcast-cross table { width: 100%; min-width: 0; border-collapse: collapse; }

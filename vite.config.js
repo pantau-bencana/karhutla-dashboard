@@ -26,7 +26,7 @@ function dataMiddleware() {
         next();
         return;
       }
-      const type = resolved.endsWith(".json")
+      const type = resolved.endsWith(".json") || resolved.endsWith(".topojson")
         ? "application/json; charset=utf-8"
         : resolved.endsWith(".png")
           ? "image/png"

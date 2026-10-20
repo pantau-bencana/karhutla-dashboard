@@ -368,7 +368,7 @@ export const SOURCES = [
     nama: "Penduduk dan rumah tangga kabupaten/kota",
     instansi: "BPS",
     fungsi:
-      "Total penduduk dan rumah tangga satu kabupaten/kota, hanya pada baris yang punya status analisis. Bukan jumlah terpapar.",
+      "Potensi penduduk terdampak dan potensi rumah terdampak: total satu kabupaten/kota, hanya pada baris berstatus Awas, Siaga, atau Waspada. potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar.",
     officialUrl: "https://sensus.bps.go.id/publikasi/index/sp2020",
     officialLabel: "Publikasi Proyeksi Penduduk Kabupaten/Kota, Sensus Penduduk 2020",
     access: "Data statis",
@@ -377,7 +377,7 @@ export const SOURCES = [
     updateType: "Tahunan / statis",
     file: "data/static/penduduk-kabkota.csv",
     limitation:
-      "514 kabupaten/kota. Penduduk adalah proyeksi BPS 2026, total kab/kota, bukan jumlah terpapar. Rumah tangga hanya DKI Jakarta, Banten, dan Jawa Timur; sel lain belum tersedia dan bukan nol. Kode mengikuti batas BIG, bukan kode BPS di dalam kalimat sumber. Tidak ada kunci API.",
+      "514 kabupaten/kota. Penduduk adalah proyeksi BPS 2026. potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar. Rumah tangga hanya DKI Jakarta, Banten, dan Jawa Timur; sel lain belum tersedia dan bukan nol. Kode mengikuti batas BIG, bukan kode BPS di dalam kalimat sumber. Tidak ada kunci API.",
   },
 ];
 

@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
+import { feature as topoFeature, mesh as topoMesh } from "topojson-client";
+import { BATAS_KAB_FILE, BATAS_KAB_SUMBER } from "../lib/batasKab.js";
 import { osmTileLayer } from "../lib/basemap.js";
 import { INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../lib/geo.js";
 import { ANALISIS_WARNA, CATATAN_ABU, CATATAN_ABU_HARI, CATATAN_ARSIR, WARNA_TANPA_PERINGATAN } from "../lib/analisisPantauBencana.js";
@@ -13,14 +15,7 @@ import {
   kodeWilayah,
   legendClass,
 } from "../lib/floodMatrix.js";
-import {
-  BAHAYA_SERVICE,
-  LEGEND_IMAGE,
-  RISIKO_SERVICE,
-  bigQueryUrl,
-  exportImageUrl,
-  identifyUrl,
-} from "../lib/floodServices.js";
+import { BAHAYA_SERVICE, LEGEND_IMAGE, RISIKO_SERVICE, exportImageUrl, identifyUrl } from "../lib/floodServices.js";
 
 function envelopeOf(features) {
   let south = 90;
@@ -53,37 +48,25 @@ async function readJson(url, timeoutMs) {
   return payload;
 }
 
-let nationalCache = null;
-let nationalLoad = null;
+let batasCache = null;
 
-async function loadNationalKab() {
-  if (nationalCache) return nationalCache;
-  if (!nationalLoad) {
-    nationalLoad = (async () => {
-      const features = [];
-      let offset = 0;
-      for (let page = 0; page < 8; page += 1) {
-        const payload = await readJson(bigQueryUrl(2, "1=1", { offset, recordCount: 250, allowableOffset: "0.45" }), 40000);
-        const list = payload.features ?? [];
-        features.push(...list);
-        if (!list.length || payload.exceededTransferLimit === false) break;
-        if (list.length < 250 && !payload.exceededTransferLimit) break;
-        offset += list.length;
-        if (!payload.exceededTransferLimit && list.length < 250) break;
-      }
-      nationalCache = features;
-      return features;
-    })().catch((error) => {
-      nationalLoad = null;
-      throw error;
-    });
-  }
-  return nationalLoad;
+async function loadBatas() {
+  if (batasCache) return batasCache;
+  const response = await fetch(new URL(BATAS_KAB_FILE, document.baseURI).href);
+  if (!response.ok) throw new Error(`Batas kabupaten HTTP ${response.status}`);
+  const topo = await response.json();
+  const geo = topoFeature(topo, topo.objects.kabupaten);
+  const provinsi = topoMesh(topo, topo.objects.kabupaten, (left, right) => left?.properties?.provinsi !== right?.properties?.provinsi);
+  batasCache = { geo, provinsi };
+  return batasCache;
+}
+
+function kodeFitur(feature) {
+  return kodeWilayah(feature?.properties?.kode || feature?.properties?.kdpkab);
 }
 
 function paintOf(feature, kabPaint) {
-  const kode = kodeWilayah(feature?.properties?.kdpkab);
-  return kabPaint?.get(kode) ?? null;
+  return kabPaint?.get(kodeFitur(feature)) ?? null;
 }
 
 function escapeHtml(value) {
@@ -106,7 +89,7 @@ function gayaWilayah(paint, selected, peringatan) {
   if (paint?.kind === "status" && paint.fill) {
     return { color: "#3f3a34", weight: selected ? 1.1 : 0.45, fillColor: paint.fill, fillOpacity: 0.78, dashArray: null };
   }
-  if (paint?.kind === "kosong") {
+  if (paint?.kind === "kosong" || paint?.kind === "tak-dikenal") {
     return { color: "#6f6a62", weight: selected ? 1 : 0.45, fillColor: WARNA_TANPA_PERINGATAN, fillOpacity: 0.9, dashArray: null };
   }
   return { color: "#6f6a62", weight: selected ? 1 : 0.4, fillColor: "url(#flood-hatch)", fillOpacity: 1, dashArray: null };
@@ -140,13 +123,15 @@ function pasangArsir(map, layer) {
 }
 
 function tooltipFor(feature, kabPaint) {
-  const nama = feature?.properties?.wadmkk || feature?.properties?.wadmpr;
+  const nama = feature?.properties?.nama || feature?.properties?.wadmkk || feature?.properties?.provinsi || feature?.properties?.wadmpr;
   const paint = paintOf(feature, kabPaint);
   const lines = [nama];
   if (paint?.status) lines.push(paint.status);
-  else if (paint?.kind === "kosong") lines.push(paint.kosongLabel || "Tidak ada peringatan");
+  if (paint?.lampau) lines.push("Data terakhir — masa berlaku sudah lewat, menunggu pembaruan BMKG");
+  else if (paint?.kind === "kosong" || paint?.kind === "tak-dikenal") lines.push(paint.kosongLabel || "Tidak ada peringatan");
   else if (paint?.alasan === "irbi") lines.push(IRBI_TIDAK_TERSEDIA);
   else if (paint?.kind === "nodata") lines.push("Tanpa data");
+  if (paint?.kind === "tak-dikenal" && paint.cuacaMentah?.length) lines.push(...paint.cuacaMentah);
   if (paint?.status && paint.pendudukBaris?.length) lines.push(...paint.pendudukBaris);
   return lines.filter(Boolean).map(escapeHtml).join("<br>");
 }
@@ -288,16 +273,14 @@ export function FloodRiskMap({
     geomRef.current = null;
     setBigNote("");
     setLoadingMap(true);
-    const where = province ? `wadmpr='${province.replaceAll("'", "''")}'` : "1=1";
     (async () => {
       try {
-        const features = province
-          ? (await readJson(bigQueryUrl(2, where, { offset: 0, recordCount: 300, allowableOffset: "0.05" }), 30000)).features ?? []
-          : await loadNationalKab();
+        const batas = await loadBatas();
         if (cancelled) return;
-        const drawn = province ? features.filter((feature) => feature?.properties?.wadmpr === province) : features;
+        const features = batas.geo?.features ?? [];
+        const drawn = province ? features.filter((feature) => feature?.properties?.provinsi === province) : features;
         if (!drawn.length) {
-          setBigNote("Batas kabupaten dari BIG tidak tersedia untuk tampilan ini.");
+          setBigNote("Batas kabupaten/kota tidak tersedia untuk tampilan ini.");
           setLoadingMap(false);
           return;
         }
@@ -342,7 +325,7 @@ export function FloodRiskMap({
           );
         }
       } catch {
-        if (!cancelled) setBigNote("Batas BIG tidak tersedia. Peta wilayah tidak dapat digambar pada pembaruan ini.");
+        if (!cancelled) setBigNote("Berkas batas kabupaten/kota tidak dapat dimuat. Peta wilayah tidak digambar pada pembaruan ini.");
       } finally {
         if (!cancelled) setLoadingMap(false);
       }
@@ -373,7 +356,7 @@ export function FloodRiskMap({
     const group = L.layerGroup();
     const seen = new Set();
     kabRef.current.eachLayer((layer) => {
-      const kode = kodeWilayah(layer.feature?.properties?.kdpkab);
+      const kode = kodeFitur(layer.feature);
       if (!kode || seen.has(kode)) return;
       const n = nomor?.get(kode);
       if (!n) return;
@@ -413,19 +396,17 @@ export function FloodRiskMap({
     lineRef.current = null;
     if (!showBatas) return undefined;
     let cancelled = false;
-    const esc = province.replaceAll("'", "''");
-    const where = province ? `wapro1='${esc}' OR wapro2='${esc}'` : "1=1";
     (async () => {
       try {
-        const lines = await readJson(bigQueryUrl(0, where, { offset: 0, recordCount: 300, allowableOffset: province ? "0.02" : "0.2" }), 25000);
+        const batas = await loadBatas();
         if (cancelled || !mapRef.current) return;
-        lineRef.current = L.geoJSON(lines, {
+        lineRef.current = L.geoJSON(batas.provinsi, {
           pane: "flood-lines",
           interactive: false,
-          style: { color: "#143028", weight: province ? 1.8 : 0.7, opacity: 0.9, fillOpacity: 0 },
+          style: { color: "#143028", weight: province ? 1.6 : 0.8, opacity: 0.9, fillOpacity: 0 },
         }).addTo(mapRef.current);
       } catch {
-        if (!cancelled) setBigNote("Garis batas provinsi BIG tidak tersedia. Wilayah kabupaten tetap ditampilkan.");
+        if (!cancelled) setBigNote("Garis batas provinsi tidak tersedia. Wilayah kabupaten tetap ditampilkan.");
       }
     })();
     return () => {
@@ -523,7 +504,7 @@ export function FloodRiskMap({
           </a>
         </p>
       ) : null}
-      {loadingMap ? <p className="fine">Memuat batas wilayah dari BIG…</p> : null}
+      {loadingMap ? <p className="fine">Memuat batas kabupaten/kota…</p> : null}
       {bigNote ? <p className="fine">{bigNote}</p> : null}
       <div ref={containerRef} className="map-canvas flood-map" role="application" aria-label="Peta banjir Indonesia" />
       <div className="flood-legend" aria-label="Legenda peta">
@@ -533,13 +514,20 @@ export function FloodRiskMap({
           </span>
         ))}
         <span>
-          <i style={{ background: WARNA_TANPA_PERINGATAN }} /> {tab === "cap" ? "Tidak ada peringatan" : "Cuaca di luar matriks"}
+          <i style={{ background: WARNA_TANPA_PERINGATAN }} />{" "}
+          {tab === "cap" ? "Tidak ada peringatan" : "Tidak ada status (cuaca tidak berpotensi banjir)"}
         </span>
+        {tab === "cap" ? null : (
+          <span>
+            <i style={{ background: WARNA_TANPA_PERINGATAN }} /> Tidak terklasifikasi (kode cuaca BMKG belum dikenali)
+          </span>
+        )}
         <span>
           <i className="swatch-hatch" /> Tanpa data
         </span>
       </div>
       <p className="fine">{tab === "cap" ? CATATAN_ABU : CATATAN_ABU_HARI} {CATATAN_ARSIR}</p>
+      <p className="fine">{BATAS_KAB_SUMBER}</p>
       {catatan.map((baris) => (
         <p key={baris} className="fine">{baris}</p>
       ))}

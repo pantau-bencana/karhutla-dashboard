@@ -58,6 +58,9 @@ jobs:
           FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
         run: node scripts/refresh-live-data.mjs
 
+      - name: Tulis ringkasan banjir
+        run: node scripts/banjir-ringkasan.mjs || echo "Ringkasan banjir gagal. Berkas sebelumnya tetap dipakai bila ada."
+
       - name: Commit bila isi data berubah
         id: commit
         env:
@@ -118,6 +121,7 @@ jobs:
               git rebase --abort || true
               git reset --hard "origin/${branch}"
               node scripts/refresh-live-data.mjs
+              node scripts/banjir-ringkasan.mjs || true
               if ! commit_snapshot; then
                 echo "changed=false" >> "$GITHUB_OUTPUT"
                 echo "Tidak ada perubahan data setelah dibuat ulang."

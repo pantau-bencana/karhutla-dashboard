@@ -6,7 +6,7 @@ Keputusan yang dipakai (menggantikan draf yang masih menyebut IRBI 2024, warna d
 
 1. Peta provinsi nasional. Klik provinsi, atau pilih dari daftar yang memuat setiap provinsi plus **Semua provinsi**, membuka peta kab/kota dan tabel.
 2. CAP nowcast BMKG dari RSS resmi, tanpa kunci. `scripts/cap-kab.mjs` tidak lagi menyaring Aceh/Bengkulu. Ada keluaran `data/live/bmkg-cap-prov.csv`. Workflow `.github/workflows/refresh-cap.yml` berjalan pada menit 12 dan 42 UTC. Jeda antar permintaan BMKG 1,1 detik.
-3. Istilah `severity` dan `event` CAP ditampilkan apa adanya. Warna Awas / Siaga / Waspada hanya dari **Analisis Pantau Bencana (gabungan BMKG × IRBI BNPB)** di `src/lib/analisisPantauBencana.js`. Tanpa peringatan yang masih berlaku, wilayah tidak diwarnai. Bukan status resmi.
+3. Istilah `severity` dan `event` CAP ditampilkan apa adanya. Warna Awas / Siaga / Waspada hanya dari **Analisis Pantau Bencana (gabungan BMKG × IRBI BNPB)** di `src/lib/analisisPantauBencana.js`. Cuplikan terakhir tetap diwarnai bila pembaruan gagal atau kosong. Setelah masa berlaku lewat, labelnya `Data terakhir — masa berlaku sudah lewat, menunggu pembaruan BMKG`. Itu bukan peringatan yang masih berlaku dan bukan status resmi.
 4. IRBI 2025 banjir memakai 510 kabupaten/kota dari Buku IRBI 2025, halaman 212–227. Empat kabupaten/kota tanpa kelas banjir dikosongkan. Skor tidak dikarang. Tabel banjir bandang dan skor IRB total tidak dipakai.
 5. Kejadian BNPB 2024 dibaca dari `data/bnpb/banjir-2024.csv` bila ada. Sebelum berkas itu ada, keadaan kosong dan tautan resource `a4daec53-1119-43ef-b05e-00ec3a4c42a4`.
 6. Overlay inaRISK punya tombol nyala/mati dan mati secara bawaan.
@@ -21,13 +21,13 @@ Angka 3 hari datang dari API `https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4
 
 Enam kota prioritas memakai kelurahan yang sudah dicek. Kabupaten/kota lain memakai satu kode kelurahan terkecil, atau desa terkecil bila tidak ada kelurahan, dan hanya disimpan bila API mengembalikan HTTP 200. Itu bukan ibu kota yang diverifikasi dan bukan rata-rata kabupaten. Kode `14.71.01.1001` tidak dipakai. Kecamatan dan kelurahan tidak ditampilkan di halaman Banjir.
 
-Teks `weather_desc` dipetakan di dasbor: Extreme (hujan sangat lebat / hujan ekstrem), Severe (hujan lebat atau petir), Moderate (hujan sedang). Di luar itu, wilayah abu-abu. Keparahan terburuk pada tanggal `local_datetime` dipasangkan dengan kelas IRBI pada matriks yang sama. Tab 0–3 jam tetap CAP, terpisah.
+Teks `weather_desc` dipetakan di dasbor. Cerah, berawan, udara kabur, asap, dan kabut berlabel `Tidak ada status (cuaca tidak berpotensi banjir)`. Hujan ringan dan hujan lokal tidak berstatus, kecuali Waspada bila IRBI Tinggi dan hujan ada pada ketiga hari prakiraan. Hujan sedang, hujan lebat, dan hujan petir (sekurang-kurangnya setara hujan lebat) memakai matriks. Kode yang belum dikenali berlabel `Tidak terklasifikasi (kode cuaca BMKG belum dikenali)`. Tab 0–3 jam tetap CAP, terpisah. Pada API 20 Oktober 2026, weather 61 berteks Hujan Ringan dan 63 berteks Hujan Sedang; dasbor mengikuti teks itu.
 
 Pengambilan kab/kota ada di workflow CAP (menit 12 dan 42) lewat `scripts/prakiraan-kab.mjs`, jeda 1,1 detik, di bawah 60 permintaan per menit. Cron `17 */3 * * *` dan `47 1-23/3 * * *` tidak dipindah.
 
 ## Penduduk dan rumah tangga
 
-Hanya total satu kabupaten/kota, dan hanya pada baris yang punya status analisis. Labelnya `total kab/kota, bukan jumlah terpapar`. Berkas `data/static/penduduk-kabkota.csv` hanya header sampai ada salinan manual dari tabel BPS. Tidak ada WorldPop atau GHSL. Dropdown DAS berstatus **Dalam pengembangan** dan tidak memuat data DAS.
+Hanya total satu kabupaten/kota, dan hanya pada baris yang punya status analisis. Labelnya `potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar`. Berkas `data/static/penduduk-kabkota.csv` menyimpan proyeksi penduduk 2026; rumah tangga hanya DKI Jakarta, Banten, dan Jawa Timur. Tidak ada WorldPop atau GHSL. Dropdown DAS berstatus **Dalam pengembangan** dan tidak memuat data DAS.
 
 ## Sumber
 
@@ -35,4 +35,4 @@ Hanya total satu kabupaten/kota, dan hanya pada baris yang punya status analisis
 - Prakiraan: https://data.bmkg.go.id/prakiraan-cuaca/
 - BNPB 2024: https://data.bnpb.go.id/dataset/data-bencana-indonesia/resource/a4daec53-1119-43ef-b05e-00ec3a4c42a4
 - Iklim: https://iklim.bmkg.go.id/
-- Batas: layanan BIG yang sudah dipakai dasbor, diminta saat peta dibuka
+- Batas peta Banjir: `data/static/batas-kabkota.topojson`, diambil dari layanan publik BIG BATAS_WILAYAH (toleransi 0,001°) lalu disimpan sebagai TopoJSON. Bukan batas hukum. geoBoundaries ADM2 tidak dipakai karena tidak memuat kode Kemendagri. Nama hotspot tetap dari kueri saat pembaruan, tanpa geometri.

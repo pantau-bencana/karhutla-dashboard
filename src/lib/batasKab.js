@@ -1,0 +1,3 @@
+export const BATAS_KAB_FILE = "data/static/batas-kabkota.topojson";
+export const BATAS_KAB_SUMBER =
+  "Batas kabupaten/kota berasal dari layanan publik BIG BATAS_WILAYAH, layer kabupaten/kota, kode kdpkab. Geometri diambil dengan toleransi 0,001 derajat lalu disimpan sebagai TopoJSON (kuantisasi 1e5) agar pantai dan batas tetap dikenali di web. Ini bukan salinan shapefile resmi dan bukan batas untuk keperluan hukum. Layanan itu tidak menyatakan lisensi CC; pemakaian di sini hanya untuk tampilan dasbor. geoBoundaries ADM2 (CC BY 3.0 IGO, BPS/WFP/OCHA) tidak dipakai karena berkasnya tidak memuat kode Kemendagri.";

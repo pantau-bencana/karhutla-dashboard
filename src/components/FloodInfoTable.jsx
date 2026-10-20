@@ -2,12 +2,12 @@ import { useMemo, useState } from "react";
 import { ANALISIS_NAMA, ANALISIS_WARNA, keparahanTerburuk } from "../lib/analisisPantauBencana.js";
 import {
   BMKG_ATTRIBUTION,
+  CAP_DATA_TERAKHIR,
   DASARIAN_NOTE,
   NOWCAST_FAIL,
   NOWCAST_LOADING,
   nowcastAbsent,
   nowcastCrossTab,
-  nowcastExpiredText,
   severityLabel,
 } from "../lib/capKab.js";
 import {
@@ -95,11 +95,13 @@ const CELLS = {
           </span>
         ))}
         {lampau.map((alert) => (
-          <span key={`lampau-${alert.cap_id || alert.url}`} className="nowcast-item">
-            <strong>{nowcastExpiredText(row.nowcastJam)}</strong>
+          <span key={`lampau-${alert.cap_id || alert.url}`} className="nowcast-item nowcast-lampau">
+            <strong>{alert.event || "Peringatan"}</strong>
+            <small>{severityLabel(alert.severity)}</small>
             <small>
-              {alert.event} · {severityLabel(alert.severity)}
+              Berlaku {formatWib(alert.effective)} sampai {formatWib(alert.expires)}
             </small>
+            <small className="nowcast-lampau-label">{CAP_DATA_TERAKHIR}</small>
           </span>
         ))}
       </>
@@ -114,12 +116,15 @@ const CELLS = {
     if (!row.analisisStatus) return "—";
     const warna = ANALISIS_WARNA[row.analisisStatus];
     return (
-      <span
-        className="analisis-pill"
-        style={{ background: warna, color: row.analisisStatus === "Awas" ? "#fff" : "#1c1915" }}
-      >
-        {row.analisisStatus}
-      </span>
+      <>
+        <span
+          className="analisis-pill"
+          style={{ background: warna, color: row.analisisStatus === "Awas" ? "#fff" : "#1c1915" }}
+        >
+          {row.analisisStatus}
+        </span>
+        {row.analisisLampau ? <small>{CAP_DATA_TERAKHIR}</small> : null}
+      </>
     );
   },
   penduduk: (row) => selPenduduk(row, "penduduk"),
@@ -157,7 +162,7 @@ const CELLS = {
   dibi: (row) => row.dibiTeks,
   tautan: (row) => {
     const links = [];
-    for (const alert of row.nowcastAlerts ?? []) {
+    for (const alert of [...(row.nowcastAlerts ?? []), ...(row.nowcastLampau ?? [])]) {
       if (alert.url) links.push({ nama: "Berkas CAP", url: alert.url });
     }
     for (const link of krbLinksFor(row)) links.push(link);
@@ -171,7 +176,7 @@ const CELLS = {
 };
 
 export function FloodInfoTable({ rows, columns = FLOOD_INFO_COLUMNS }) {
-  const [sort, setSort] = useState({ key: "kode", direction: "asc" });
+  const [sort, setSort] = useState({ key: "status", direction: "asc" });
   const ordered = useMemo(() => sortFloodRows(rows, sort.key, sort.direction), [rows, sort]);
   const grouped = sort.key === "kode";
 
@@ -261,7 +266,7 @@ export function FloodKabDaftar({ rows }) {
   return (
     <div className="table-wrap flood-side wrap-cells">
       <table>
-        <caption>Kabupaten/kota. Nomor mengikuti kode wilayah, bukan peringkat.</caption>
+        <caption>Kabupaten/kota. Nomor mengikuti urutan Awas, Siaga, Waspada, lalu tanpa status. Bukan peringkat prioritas.</caption>
         <thead>
           <tr>
             <th scope="col">No.</th>
@@ -281,6 +286,10 @@ export function FloodKabDaftar({ rows }) {
               </th>
               <td>
                 {selStatusPeta(row)}
+                {row.peta?.lampau ? <small>{CAP_DATA_TERAKHIR}</small> : null}
+                {masaBerlaku(row).map((teks) => (
+                  <small key={teks}>{teks}</small>
+                ))}
                 {row.cuacaHari?.length ? <small>{row.cuacaHari.join(", ")}</small> : null}
               </td>
               <td>{row.dibiTeks || "—"}</td>
@@ -301,6 +310,11 @@ export function FloodKabDaftar({ rows }) {
   );
 }
 
+function masaBerlaku(row) {
+  const alerts = [...(row.nowcastAlerts ?? []), ...(row.nowcastLampau ?? [])];
+  return alerts.map((alert) => `Berlaku ${formatWib(alert.effective)} sampai ${formatWib(alert.expires)}`);
+}
+
 function selStatusPeta(row) {
   const peta = row.peta;
   if (peta?.kind === "status" && peta.status) {
@@ -311,7 +325,14 @@ function selStatusPeta(row) {
       </span>
     );
   }
-  if (peta?.kind === "kosong") return peta.kosongLabel || "Tidak ada peringatan";
+  if (peta?.kind === "kosong" || peta?.kind === "tak-dikenal") {
+    return (
+      <>
+        {peta.kosongLabel || "Tidak ada peringatan"}
+        {peta.kind === "tak-dikenal" && peta.cuacaMentah?.length ? <small>{peta.cuacaMentah.join(", ")}</small> : null}
+      </>
+    );
+  }
   if (peta?.alasan === "irbi") return IRBI_TIDAK_TERSEDIA;
   return "Tanpa data";
 }
