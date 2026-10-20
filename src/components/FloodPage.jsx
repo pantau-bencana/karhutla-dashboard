@@ -15,6 +15,7 @@ import {
   NOWCAST_BUKAN_TIGA_HARI,
   PEMBARUAN_TERAKHIR_LABEL,
   applyNowcast,
+  cakupanTersimpan,
   ringkasanNowcast,
 } from "../lib/capKab.js";
 import { DASARIAN_FILE, DASARIAN_GUIDE_URL, IKLIM_BMKG_URL, applyDasarian, todayWib } from "../lib/dasarianManual.js";
@@ -36,7 +37,11 @@ import {
 import {
   HUJAN_GPM_CATATAN,
   HUJAN_PEMBANDING_FILE,
+  HUJAN_PEMBANDING_JENIS,
+  HUJAN_PEMBANDING_LISENSI,
   HUJAN_PEMBANDING_META,
+  HUJAN_PEMBANDING_MODEL,
+  HUJAN_TANPA_NOWCAST,
   indeksHujan,
   mmPada,
   teksMm,
@@ -191,14 +196,13 @@ function FloodBody() {
         }
         if (cancelled) return;
         if (alerts.length || meta?.status === "ok") {
-          const cuplikanUtuh = meta?.status === "ok";
           setCap({
             status: "ok",
             alerts,
             meta: {
               ...(meta ?? {}),
               status: "ok",
-              cakupan: cuplikanUtuh ? meta?.cakupan || "" : "",
+              cakupan: cakupanTersimpan(meta),
             },
           });
         } else {
@@ -240,7 +244,14 @@ function FloodBody() {
           loadCsv(HUJAN_PEMBANDING_FILE),
           loadJson(HUJAN_PEMBANDING_META).catch(() => ({})),
         ]);
-        if (!cancelled) setHujan({ status: rows.length ? "ok" : "gagal", rows, meta: meta ?? {} });
+        const modelCocok = !meta?.model || meta.model === HUJAN_PEMBANDING_MODEL;
+        if (!cancelled) {
+          setHujan({
+            status: rows.length && meta?.status !== "gagal" && modelCocok ? "ok" : "gagal",
+            rows: modelCocok && meta?.status !== "gagal" ? rows : [],
+            meta: meta ?? {},
+          });
+        }
       } catch {
         if (!cancelled) setHujan({ status: "gagal", rows: [], meta: {} });
       }
@@ -281,6 +292,8 @@ function FloodBody() {
 
   const periode = useMemo(() => periodeTigaHari(), []);
   const ringkas = ringkasanNowcast(cap.alerts, { ...cap.meta, status: cap.status });
+  const hujanIndeks = useMemo(() => indeksHujan(hujan.status === "ok" ? hujan.rows : []), [hujan]);
+  const hujanWaktu = hujan.meta?.fetched_at ? formatWib(hujan.meta.fetched_at) : "—";
   const konteks = useMemo(
     () => ({
       tab,
@@ -305,10 +318,16 @@ function FloodBody() {
     const withDasarian = applyDasarian(withHari, dasarian.rows, { status: dasarian.status, now: dasarianNow });
     const bertanda = withDasarian.map((row) => {
       const peta = catWilayah(row, konteks);
-      return { ...row, peta, statusTab: peta.status || null };
+      const tanggalTab = tab === "cap" ? "" : periode.hari[tab];
+      const mm = tanggalTab ? mmPada(hujanIndeks.get(row.kode), tanggalTab) : undefined;
+      const hujanFallback =
+        tab !== "cap" && !row.prakiraanAda
+          ? { teks: mm === undefined || mm == null ? "belum tersedia" : teksMm(mm), waktu: hujanWaktu }
+          : null;
+      return { ...row, peta, statusTab: peta.status || null, hujanFallback };
     });
     return urutStatusKab(lampirkanPenduduk(bertanda, penduduk.indeks, penduduk.status));
-  }, [province, banjir, cap, bigNames, dibi, dibiLoaded, dasarian, dasarianNow, penduduk, tab, konteks, indeksCuaca, periode.hari]);
+  }, [province, banjir, cap, bigNames, dibi, dibiLoaded, dasarian, dasarianNow, penduduk, tab, konteks, indeksCuaca, periode.hari, hujanIndeks, hujanWaktu]);
   const ringkasPenduduk = useMemo(
     () => ringkasPendudukBerstatus(urut, penduduk.indeks),
     [urut, penduduk.indeks],
@@ -335,7 +354,6 @@ function FloodBody() {
   }, [prakiraan, periode, province, urut]);
   const jumlahBerstatus = urut.filter((row) => row.peta?.kind === "status").length;
   const hujanTanggal = tab === "cap" ? periode.hari[0] : periode.hari[tab];
-  const hujanIndeks = useMemo(() => indeksHujan(hujan.status === "ok" ? hujan.rows : []), [hujan]);
   const hujanNilai = useMemo(() => {
     const map = new Map();
     for (const row of urut) {
@@ -344,10 +362,9 @@ function FloodBody() {
     }
     return map;
   }, [urut, hujanIndeks, hujanTanggal]);
-  const hujanWaktu = hujan.meta?.fetched_at ? formatWib(hujan.meta.fetched_at) : "—";
   const hujanCatatan = tab === "cap"
-    ? "Jumlah harian untuk hari ini. Bukan data 0–3 jam dan bukan peringatan BMKG."
-    : `Jumlah harian ${["Hari ini", "Besok", "Lusa"][tab]}. Bukan prakiraan BMKG dan bukan status analisis.`;
+    ? `${HUJAN_TANPA_NOWCAST} Jumlah yang tampil pada tab ini adalah jumlah harian hari ini.`
+    : `Jumlah harian ${["Hari ini", "Besok", "Lusa"][tab]}. ${HUJAN_PEMBANDING_JENIS}. Bukan status analisis.`;
   const hujanLapisan = useMemo(
     () => ({
       aktif: showHujan,
@@ -695,6 +712,13 @@ function FloodBody() {
             <span> {IRBI_PENGGUNAAN_INTERNAL.replace(/^Penggunaan internal\.\s*/, "")}</span>
           </p>
           <p>{HISTORIS_DISCLAIMER}</p>
+          <p>
+            {HUJAN_PEMBANDING_JENIS}. Model {HUJAN_PEMBANDING_MODEL}. Lisensi{" "}
+            <a href={HUJAN_PEMBANDING_LISENSI} target="_blank" rel="noopener noreferrer">
+              CC BY 4.0
+            </a>
+            . {HUJAN_TANPA_NOWCAST} Angka milimeter itu tidak menetapkan Awas, Siaga, atau Waspada.
+          </p>
         </div>
       </section>
     </main>

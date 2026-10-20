@@ -82,11 +82,13 @@ import {
   HUJAN_KELAS,
   HUJAN_PEMBANDING_BADGE,
   HUJAN_PEMBANDING_JENIS,
+  HUJAN_PEMBANDING_MODEL,
+  HUJAN_TANPA_NOWCAST,
   gabungHujan,
   warnaHujan,
 } from "../src/lib/hujanPembanding.js";
 import { PROVINSI, SEMUA_PROVINSI } from "../src/lib/provinsi.js";
-import { CAP_DATA_TERAKHIR, severityLabel } from "../src/lib/capKab.js";
+import { CAP_DATA_TERAKHIR, cakupanTersimpan, severityLabel } from "../src/lib/capKab.js";
 import { xlsxBytes } from "../src/lib/xlsxMini.js";
 import { buildHotspotTree } from "../src/lib/hotspotTree.js";
 import { DIBI_LUAR_CUPLIKAN, DIBI_UNAVAILABLE, FLOOD_INFO_COLUMNS, IRBI_BANJIR_TERVERIFIKASI, IRBI_PENGGUNAAN_INTERNAL, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI, peringkatTampil, urutStatusKab } from "../src/lib/floodMatrix.js";
@@ -117,6 +119,7 @@ import {
   capCsvUsable,
   capKabCsv,
   capKabMeta,
+  lengkapiCakupanMeta,
   previousCapUsable,
   queryReliable,
   ringsIntersect,
@@ -1374,13 +1377,22 @@ assert.equal(HUJAN_PEMBANDING_BADGE, "Pembanding (data terbuka, bukan resmi)");
 assert.equal(HUJAN_GAP_MS >= 1000, true);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Curah hujan model/);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /HUJAN_PEMBANDING_BADGE/);
-assert.equal(HUJAN_PEMBANDING_JENIS, "prakiraan model, bukan BMKG");
+assert.equal(HUJAN_PEMBANDING_JENIS, "prakiraan model ECMWF (via Open-Meteo), bukan BMKG");
+assert.equal(HUJAN_PEMBANDING_MODEL, "ecmwf_ifs025");
+assert.match(HUJAN_TANPA_NOWCAST, /tidak punya nowcast 0–3 jam/);
 assert.equal(readFileSync("src/lib/analisisPantauBencana.js", "utf8").includes("hujanPembanding"), false);
 assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HUJAN_PEMBANDING_JENIS/);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HUJAN_PEMBANDING_MODEL/);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HUJAN_TANPA_NOWCAST/);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /HUJAN_TANPA_NOWCAST/);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /CC BY 4\.0/);
+assert.match(readFileSync("src/components/FloodPage.jsx", "utf8"), /flood-disclaimer[\s\S]*HUJAN_PEMBANDING_JENIS/);
+assert.match(readFileSync("src/components/FloodInfoTable.jsx", "utf8"), /hujanFallback/);
 assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HUJAN_GPM_CATATAN/);
 assert.match(HUJAN_GPM_CATATAN, /tidak dipakai/i);
 assert.match(readFileSync("scripts/hujan-pembanding.mjs", "utf8"), /kept_previous/);
-assert.match(readFileSync("scripts/hujan-pembanding.mjs", "utf8"), /ecmwf_ifs/);
+assert.match(readFileSync("scripts/hujan-pembanding.mjs", "utf8"), /HUJAN_PEMBANDING_MODEL/);
+assert.equal(readFileSync("scripts/hujan-pembanding.mjs", "utf8").includes('"ecmwf_ifs"'), false);
 assert.equal(readFileSync("scripts/hujan-pembanding.mjs", "utf8").includes("jsimpson"), false);
 assert.match(readFileSync(".github/workflows/refresh-data.yml", "utf8"), /hujan-pembanding\.mjs/);
 const petunjuk = readFileSync("src/components/MetodePage.jsx", "utf8");
@@ -1516,8 +1528,44 @@ const capSimpanHasil = writeCapKabFiles(capSimpan, {
 });
 assert.equal(capSimpanHasil.kept_previous, true);
 assert.equal(JSON.parse(readFileSync(join(capSimpan, "bmkg-cap-kab-meta.json"), "utf8")).fetched_at, "2026-10-20T01:17:04.008Z");
+assert.equal(JSON.parse(readFileSync(join(capSimpan, "bmkg-cap-kab-meta.json"), "utf8")).cakupan, undefined);
 assert.equal(readFileSync(join(capSimpan, "bmkg-cap-kab.csv"), "utf8").includes("11.01"), true);
 rmSync(capSimpan, { recursive: true, force: true });
+const capHeal = mkdtempSync(join(tmpdir(), "cap-cakupan-"));
+writeFileSync(join(capHeal, "bmkg-cap-kab.csv"), "kode,kabupaten\n11.01,Aceh Selatan\n");
+writeFileSync(
+  join(capHeal, "bmkg-cap-kab-meta.json"),
+  `${JSON.stringify({ status: "ok", fetched_at: "2026-10-20T01:17:04.008Z", baris: 8, error: null })}\n`,
+);
+assert.equal(lengkapiCakupanMeta(capHeal), true);
+assert.equal(JSON.parse(readFileSync(join(capHeal, "bmkg-cap-kab-meta.json"), "utf8")).cakupan, "nasional");
+assert.equal(JSON.parse(readFileSync(join(capHeal, "bmkg-cap-kab-meta.json"), "utf8")).fetched_at, "2026-10-20T01:17:04.008Z");
+assert.equal(lengkapiCakupanMeta(capHeal), false);
+const capHealHasil = writeCapKabFiles(capHeal, {
+  status: "gagal",
+  rows: [],
+  error: "Failed to execute query.",
+  fetchedAt: "2026-10-20T06:37:17.308Z",
+});
+assert.equal(capHealHasil.kept_previous, true);
+assert.equal(JSON.parse(readFileSync(join(capHeal, "bmkg-cap-kab-meta.json"), "utf8")).fetched_at, "2026-10-20T01:17:04.008Z");
+assert.equal(readFileSync(join(capHeal, "bmkg-cap-kab.csv"), "utf8").includes("11.01"), true);
+rmSync(capHeal, { recursive: true, force: true });
+assert.equal(cakupanTersimpan({ status: "ok", baris: 8, error: null }), "nasional");
+assert.equal(cakupanTersimpan({ status: "ok", cakupan: "nasional" }), "nasional");
+assert.equal(cakupanTersimpan({ status: "gagal", error: "Failed to execute query." }), "");
+assert.equal(cakupanTersimpan(null), "");
+const capLive = JSON.parse(readFileSync("data/live/bmkg-cap-kab-meta.json", "utf8"));
+assert.equal(capLive.status, "ok");
+assert.equal(capLive.cakupan, "nasional");
+assert.equal(capLive.error, null);
+const hujanLive = JSON.parse(readFileSync("data/live/hujan-pembanding-kab-meta.json", "utf8"));
+assert.equal(hujanLive.model, HUJAN_PEMBANDING_MODEL);
+assert.equal(hujanLive.status, "ok");
+assert.equal(hujanLive.lisensi, "CC BY 4.0");
+assert.deepEqual(hujanLive.titik_batas, ["96.02", "96.03", "96.04", "96.05"]);
+const hujanCsv = readFileSync("data/live/hujan-pembanding-kab.csv", "utf8");
+for (const kode of ["96.02", "96.03", "96.04", "96.05"]) assert.equal(hujanCsv.includes(`\n${kode},`), true);
 const squareKab = {
   type: "Feature",
   properties: { kode: "11.01", nama: "Aceh Selatan", provinsi: "Aceh" },

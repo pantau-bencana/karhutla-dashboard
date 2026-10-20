@@ -294,9 +294,27 @@ export function previousCapUsable(directory) {
   }
 }
 
+export function lengkapiCakupanMeta(directory) {
+  const metaPath = resolve(directory, "bmkg-cap-kab-meta.json");
+  if (!existsSync(metaPath)) return false;
+  let meta;
+  try {
+    meta = JSON.parse(readFileSync(metaPath, "utf8"));
+  } catch {
+    return false;
+  }
+  if (meta?.status !== "ok" || meta.cakupan) return false;
+  meta.cakupan = "nasional";
+  writeFileSync(metaPath, `${JSON.stringify(meta, null, 2)}\n`);
+  return true;
+}
+
 export function writeCapKabFiles(directory, snapshot) {
   const hasNew = snapshot.status === "ok" && (snapshot.rows ?? []).length > 0;
-  if (!hasNew && previousCapUsable(directory)) return { kept_previous: true };
+  if (!hasNew && previousCapUsable(directory)) {
+    lengkapiCakupanMeta(directory);
+    return { kept_previous: true };
+  }
   if (snapshot.status === "ok") {
     const provRows = snapshot.provRows ?? aggregateProvinsi(snapshot.rows, snapshot.alerts);
     writeFileSync(resolve(directory, "bmkg-cap-kab.csv"), capKabCsv(snapshot.rows));

@@ -398,7 +398,7 @@ export const SOURCES = [
     expectedMaxAgeHours: 36,
     file: "data/live/hujan-pembanding-kab.csv",
     limitation:
-      "Pembanding (data terbuka, bukan resmi). prakiraan model, bukan BMKG. Model ECMWF IFS, precipitation_sum, mm, zona Asia/Jakarta, tiga hari. Tidak masuk matriks Awas/Siaga/Waspada. NASA GPM IMERG tidak diunduh karena membutuhkan akun Earthdata atau PPS. Lisensi CC BY 4.0, pemakaian nonkomersial.",
+      "Pembanding (data terbuka, bukan resmi). prakiraan model ECMWF (via Open-Meteo), bukan BMKG. Model ecmwf_ifs025, precipitation_sum, mm, zona Asia/Jakarta, tiga hari. Tidak punya nowcast 0–3 jam dan tidak masuk matriks Awas/Siaga/Waspada. NASA GPM IMERG tidak diunduh karena membutuhkan akun Earthdata atau PPS. Lisensi CC BY 4.0, pemakaian nonkomersial.",
   },
 ];
 

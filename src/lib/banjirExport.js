@@ -1,4 +1,5 @@
 import { IRBI_TIDAK_TERSEDIA } from "./floodMatrix.js";
+import { HUJAN_PEMBANDING_JENIS } from "./hujanPembanding.js";
 import { POTENSI_LABEL } from "./pendudukKab.js";
 
 export const KOLOM_UNDUH = [
@@ -21,6 +22,9 @@ export function teksStatusUnduh(row) {
   }
   if (row?.peta?.kind === "tak-dikenal") return row.peta.kosongLabel || "Tidak terklasifikasi (kode cuaca BMKG belum dikenali)";
   if (row?.peta?.kind === "kosong") return row.peta.kosongLabel || "Tidak ada peringatan";
+  if (row?.hujanFallback && row.peta?.alasan === "prakiraan") {
+    return `${row.hujanFallback.teks}. ${HUJAN_PEMBANDING_JENIS}. Diambil ${row.hujanFallback.waktu}.`;
+  }
   return "Tanpa data";
 }
 

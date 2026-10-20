@@ -21,8 +21,11 @@ import {
   HUJAN_KELAS,
   HUJAN_PEMBANDING_BADGE,
   HUJAN_PEMBANDING_JENIS,
+  HUJAN_PEMBANDING_LISENSI,
   HUJAN_PEMBANDING_MODEL,
   HUJAN_PEMBANDING_SUMBER,
+  HUJAN_TANPA_NOWCAST,
+  HUJAN_TITIK_BATAS,
   mmPada,
   teksMm,
   warnaHujan,
@@ -154,15 +157,20 @@ function tooltipFor(feature, kabPaint, hujan) {
   if (paint?.status) lines.push(paint.status);
   else if (paint?.kind === "kosong" || paint?.kind === "tak-dikenal") lines.push(paint.kosongLabel || "Tidak ada peringatan");
   else if (paint?.alasan === "irbi") lines.push(IRBI_TIDAK_TERSEDIA);
-  else if (paint?.kind === "nodata") lines.push("Tanpa data");
-  if (paint?.rincian?.length) lines.push(...paint.rincian);
-  else {
-    if (paint?.lampau) lines.push("Data terakhir — masa berlaku sudah lewat, menunggu pembaruan BMKG");
-    if (paint?.kind === "tak-dikenal" && paint.cuacaMentah?.length) lines.push(...paint.cuacaMentah);
-    if (paint?.status && paint.pendudukBaris?.length) lines.push(...paint.pendudukBaris);
-    lines.push(...barisDampakHistoris());
+  const adaModel = paint?.rincian?.some((line) => String(line).startsWith("Hujan model:"));
+  if (paint?.kind === "nodata" && !adaModel) lines.push("Tanpa data");
+  if (paint?.kind === "nodata" && adaModel) {
+    lines.push(...paint.rincian);
+  } else {
+    if (paint?.rincian?.length) lines.push(...paint.rincian);
+    else {
+      if (paint?.lampau) lines.push("Data terakhir — masa berlaku sudah lewat, menunggu pembaruan BMKG");
+      if (paint?.kind === "tak-dikenal" && paint.cuacaMentah?.length) lines.push(...paint.cuacaMentah);
+      if (paint?.status && paint.pendudukBaris?.length) lines.push(...paint.pendudukBaris);
+      lines.push(...barisDampakHistoris());
+    }
+    if (!adaModel) lines.push(...barisHujan(feature, hujan));
   }
-  lines.push(...barisHujan(feature, hujan));
   return lines.filter(Boolean).map(escapeHtml).join("<br>");
 }
 
@@ -644,7 +652,9 @@ export function FloodRiskMap({
           <InfoTip label="Penjelasan lapisan Data Pembanding curah hujan">
             <p>{HUJAN_PEMBANDING_BADGE}. {HUJAN_PEMBANDING_JENIS}.</p>
             <p>Jumlah hujan harian Open-Meteo, model {HUJAN_PEMBANDING_MODEL}, pada titik adm4 yang sama. Satuan mm. Bukan skala Awas, Siaga, atau Waspada, dan tidak masuk matriks.</p>
-            <p>Diambil {hujan?.waktu || "—"}.</p>
+            <p>{HUJAN_TANPA_NOWCAST} {HUJAN_TITIK_BATAS}</p>
+            <p>Bila prakiraan BMKG untuk Hari ini, Besok, atau Lusa tidak ada, angka mm tetap tampil pada tabel dan tooltip. Angka itu tidak menetapkan Awas, Siaga, atau Waspada, dan tidak mewarnai poligon.</p>
+            <p>Diambil {hujan?.waktu || "—"}. Lisensi <a href={HUJAN_PEMBANDING_LISENSI} target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</p>
             <p>{hujan?.gpm}</p>
             <p>
               <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>

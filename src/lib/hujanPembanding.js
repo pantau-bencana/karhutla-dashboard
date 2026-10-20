@@ -1,9 +1,13 @@
 import { kodeWilayah } from "./floodMatrix.js";
 
 export const HUJAN_PEMBANDING_BADGE = "Pembanding (data terbuka, bukan resmi)";
-export const HUJAN_PEMBANDING_JENIS = "prakiraan model, bukan BMKG";
+export const HUJAN_PEMBANDING_JENIS = "prakiraan model ECMWF (via Open-Meteo), bukan BMKG";
 export const HUJAN_PEMBANDING_SUMBER = "Open-Meteo";
-export const HUJAN_PEMBANDING_MODEL = "ECMWF IFS";
+export const HUJAN_PEMBANDING_MODEL = "ecmwf_ifs025";
+export const HUJAN_TANPA_NOWCAST =
+  "Model ECMWF tidak punya nowcast 0–3 jam. Angka Hari ini, Besok, dan Lusa adalah jumlah hujan harian, bukan peringatan BMKG.";
+export const HUJAN_TITIK_BATAS =
+  "Kabupaten tanpa koordinat prakiraan BMKG memakai pusat poligon terbesar pada batas administrasi tersimpan, bukan titik kelurahan BMKG.";
 export const HUJAN_PEMBANDING_VARIABEL = "precipitation_sum";
 export const HUJAN_PEMBANDING_SATUAN = "mm";
 export const HUJAN_PEMBANDING_URL = "https://open-meteo.com/en/docs";
@@ -62,6 +66,14 @@ export function indeksHujan(rows) {
 export function mmPada(item, tanggal) {
   if (!item || !tanggal || !item.hari?.has(tanggal)) return undefined;
   return item.hari.get(tanggal);
+}
+
+export function barisHujanModel(teks, waktu) {
+  return [
+    `Hujan model: ${teks}. ${HUJAN_PEMBANDING_JENIS}.`,
+    `Diambil ${waktu}. Model ${HUJAN_PEMBANDING_MODEL}. Lisensi CC BY 4.0.`,
+    HUJAN_TANPA_NOWCAST,
+  ];
 }
 
 export function gabungHujan(sebelum, baru, gagalKode) {
