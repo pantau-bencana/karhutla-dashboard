@@ -260,35 +260,35 @@ a.button {
   width: max-content;
   max-width: min(210px, calc(100% - 16px));
   overflow: auto;
-  padding: 4px 6px;
+  padding: 3px 6px;
   background: #fff;
   color: #1c1915;
   border: 2px solid rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-  font-size: 12px;
-  line-height: 1.2;
+  font-size: 11px;
+  line-height: 1.15;
 }
 .leaflet-control.hujan-kontrol:empty { display: none; }
 .hujan-kontrol fieldset {
   display: grid;
-  gap: 2px;
+  gap: 1px;
   border: 0;
   margin: 0;
   padding: 0;
   min-width: 0;
 }
 .hujan-kontrol fieldset + fieldset {
-  margin-top: 4px;
-  padding-top: 4px;
+  margin-top: 3px;
+  padding-top: 3px;
   border-top: 1px solid #e7e5e4;
 }
 .hujan-kontrol legend {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.15;
   padding: 0;
-  margin: 0 0 2px;
+  margin: 0 0 1px;
 }
 .hujan-kontrol label {
   display: flex;
@@ -296,6 +296,19 @@ a.button {
   gap: 4px;
   margin: 0;
   cursor: pointer;
+  white-space: nowrap;
+}
+.hujan-kontrol input[type="checkbox"] {
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  flex: 0 0 auto;
+}
+.hujan-kontrol .info-tip-button {
+  width: 15px;
+  height: 15px;
+  font-size: 10px;
+  line-height: 13px;
 }
 .hujan-kontrol .layer-with-info {
   display: flex;
