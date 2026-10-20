@@ -1275,7 +1275,12 @@ assert.equal(peringkatTampil({ peta: catTak }), 4);
 assert.equal(readFileSync("src/components/FloodRiskMap.jsx", "utf8").includes("Cuaca di luar matriks"), false);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Penjelasan lapisan peringatan/);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /#\/sumber-metode\/petunjuk-banjir/);
-assert.match(readFileSync("src/components/FloodInfoTable.jsx", "utf8"), /Provinsi/);
+const daftarSumber = readFileSync("src/components/FloodInfoTable.jsx", "utf8");
+assert.match(daftarSumber, /<th scope="col">No<\/th>[\s\S]*<th scope="col">Kab\/Kota<\/th>[\s\S]*<th scope="col">Status<\/th>[\s\S]*<th scope="col">Historis<\/th>[\s\S]*<th scope="col">IRBI<\/th>/);
+assert.equal(daftarSumber.includes("<th scope=\"col\">Provinsi</th>"), false);
+assert.equal(daftarSumber.includes("<th scope=\"col\">Riwayat</th>"), false);
+assert.match(daftarSumber, /DIBI_UNAVAILABLE/);
+assert.match(daftarSumber, /Provinsi:/);
 assert.match(readFileSync("src/components/GwisFwiToggle.jsx", "utf8"), /Penjelasan lapisan Data Pembanding/);
 const hujanGabung = gabungHujan(
   [{ kode_kab: "11.01", tanggal: "2026-10-20", curah_hujan_mm: 3 }],

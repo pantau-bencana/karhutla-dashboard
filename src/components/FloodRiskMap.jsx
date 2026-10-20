@@ -151,12 +151,15 @@ function tooltipFor(feature, kabPaint, hujan) {
   const paint = paintOf(feature, kabPaint);
   const lines = [nama];
   if (paint?.status) lines.push(paint.status);
-  if (paint?.lampau) lines.push("Data terakhir — masa berlaku sudah lewat, menunggu pembaruan BMKG");
   else if (paint?.kind === "kosong" || paint?.kind === "tak-dikenal") lines.push(paint.kosongLabel || "Tidak ada peringatan");
   else if (paint?.alasan === "irbi") lines.push(IRBI_TIDAK_TERSEDIA);
   else if (paint?.kind === "nodata") lines.push("Tanpa data");
-  if (paint?.kind === "tak-dikenal" && paint.cuacaMentah?.length) lines.push(...paint.cuacaMentah);
-  if (paint?.status && paint.pendudukBaris?.length) lines.push(...paint.pendudukBaris);
+  if (paint?.rincian?.length) lines.push(...paint.rincian);
+  else {
+    if (paint?.lampau) lines.push("Data terakhir — masa berlaku sudah lewat, menunggu pembaruan BMKG");
+    if (paint?.kind === "tak-dikenal" && paint.cuacaMentah?.length) lines.push(...paint.cuacaMentah);
+    if (paint?.status && paint.pendudukBaris?.length) lines.push(...paint.pendudukBaris);
+  }
   lines.push(...barisHujan(feature, hujan));
   return lines.filter(Boolean).map(escapeHtml).join("<br>");
 }

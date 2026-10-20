@@ -1,5 +1,5 @@
 import { Component, useCallback, useEffect, useMemo, useState } from "react";
-import { FloodInfoTable, FloodKabDaftar, HujanPembandingTabel, PrakiraanTigaHari } from "./FloodInfoTable.jsx";
+import { FloodInfoTable, FloodKabDaftar, PrakiraanTigaHari, rincianKab } from "./FloodInfoTable.jsx";
 import { FloodRiskMap } from "./FloodRiskMap.jsx";
 import { ANALISIS_BUKAN_RESMI, ANALISIS_NAMA, CATATAN_ALASAN, applyAnalisis, catWilayah } from "../lib/analisisPantauBencana.js";
 import { DISCLAIMER_UNDUH, barisXlsx, csvUnduh } from "../lib/banjirExport.js";
@@ -36,10 +36,7 @@ import {
 import {
   HUJAN_GPM_CATATAN,
   HUJAN_PEMBANDING_FILE,
-  HUJAN_PEMBANDING_JENIS,
   HUJAN_PEMBANDING_META,
-  HUJAN_PEMBANDING_MODEL,
-  HUJAN_PEMBANDING_SUMBER,
   indeksHujan,
   mmPada,
   teksMm,
@@ -144,6 +141,7 @@ function catWarna(rows, indeks, konteks) {
     kab.set(row.kode, {
       ...cat,
       pendudukBaris: cat.status ? barisTooltip(indeks?.get(row.kode)) : [],
+      rincian: rincianKab(row),
     });
   }
   return kab;
@@ -534,7 +532,11 @@ function FloodBody() {
                     : `Tampilkan semua kab/kota (${urut.length})`}
                 </button>
               )}
-              <FloodKabDaftar rows={province ? urut : barisTabel} tampilProvinsi={!province} />
+              <FloodKabDaftar
+                rows={province ? urut : barisTabel}
+                tampilProvinsi={!province}
+                hujanNilai={showHujan ? hujanNilai : null}
+              />
               {!province ? (
                 <p className="fine">
                   {BMKG_ATTRIBUTION}. RSS {cap.meta.rss_published ? formatWib(cap.meta.rss_published) : "—"}. Diambil{" "}
@@ -547,21 +549,6 @@ function FloodBody() {
               ) : null}
             </div>
           </div>
-          {showHujan ? (
-            <section className="card hujan-pembanding-card">
-              <h3>Data Pembanding — curah hujan</h3>
-              <p className="fine">
-                {HUJAN_PEMBANDING_JENIS}. Sumber: {HUJAN_PEMBANDING_SUMBER}, model {HUJAN_PEMBANDING_MODEL}. Diambil {hujanWaktu}.
-                {hujan.meta?.kept_previous ? " Data terakhir. Pengambilan baru gagal." : ""} {hujanCatatan} Urutan mengikuti tabel analisis, bukan peringkat hujan. Tabel mengikuti baris yang sedang dibuka. Peta menandai setiap titik yang punya angka.
-              </p>
-              <HujanPembandingTabel
-                rows={province ? urut : barisTabel}
-                tampilProvinsi={!province}
-                nilai={hujanNilai}
-                catatan={`${HUJAN_PEMBANDING_JENIS}. Satuan mm. Tidak masuk matriks Awas, Siaga, atau Waspada.`}
-              />
-            </section>
-          ) : null}
           {urut.length ? (
             <>
               <p>

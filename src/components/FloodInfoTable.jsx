@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { ANALISIS_NAMA, ANALISIS_WARNA, keparahanTerburuk } from "../lib/analisisPantauBencana.js";
 import {
   BMKG_ATTRIBUTION,
@@ -24,7 +24,7 @@ import {
   teksAngkaPenduduk,
   teksRumahTangga,
 } from "../lib/pendudukKab.js";
-import { FLOOD_INFO_COLUMNS, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, krbLinksFor, skorTeks, sortFloodRows } from "../lib/floodMatrix.js";
+import { DIBI_UNAVAILABLE, FLOOD_INFO_COLUMNS, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, krbLinksFor, skorTeks, sortFloodRows } from "../lib/floodMatrix.js";
 
 function selPenduduk(row, jenis) {
   if (!row.pendudukTampil) return "—";
@@ -261,56 +261,81 @@ export function FloodInfoTable({ rows, columns = FLOOD_INFO_COLUMNS }) {
   );
 }
 
-export function FloodKabDaftar({ rows, tampilProvinsi = false }) {
+export function rincianKab(row, hujanTeks) {
+  const lines = [];
+  if (row?.provinsi) lines.push(`Provinsi: ${row.provinsi}`);
+  if (row?.peta?.lampau) lines.push(CAP_DATA_TERAKHIR);
+  lines.push(...masaBerlaku(row));
+  if (row?.cuacaHari?.length) lines.push(`Prakiraan: ${row.cuacaHari.join(", ")}`);
+  if (row?.peta?.kind === "tak-dikenal" && row.peta.cuacaMentah?.length) {
+    lines.push(`Kode cuaca: ${row.peta.cuacaMentah.join(", ")}`);
+  }
+  if (row?.pendudukTampil) {
+    lines.push(
+      `Penduduk ${teksAngkaPenduduk(row.pendudukItem?.penduduk)} · rumah tangga ${teksRumahTangga(row.pendudukItem)} · ${PENDUDUK_BUKAN_TERPAPAR}`,
+    );
+  }
+  if (hujanTeks) lines.push(`Hujan model: ${hujanTeks}. prakiraan model, bukan BMKG.`);
+  return lines;
+}
+
+export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null }) {
   const ordered = rows ?? [];
+  const [buka, setBuka] = useState("");
   return (
     <div className="table-wrap flood-side wrap-cells">
       <table>
         <caption>
-          Kabupaten/kota. Nomor mengikuti urutan Awas, Siaga, Waspada, tanpa status, lalu tidak terklasifikasi atau tanpa data.
-          Bukan peringkat prioritas.
+          Kolom: No, Kab/Kota, Status, Historis, IRBI. Nomor mengikuti urutan Awas, Siaga, Waspada, tanpa status, lalu tidak terklasifikasi atau tanpa data.
+          Bukan peringkat prioritas. Ketuk nama untuk rincian.
         </caption>
         <thead>
           <tr>
-            <th scope="col">No.</th>
-            <th scope="col">Kab/kota</th>
-            {tampilProvinsi ? <th scope="col">Provinsi</th> : null}
+            <th scope="col">No</th>
+            <th scope="col">Kab/Kota</th>
             <th scope="col">Status</th>
-            <th scope="col">Riwayat</th>
+            <th scope="col">Historis</th>
             <th scope="col">IRBI</th>
           </tr>
         </thead>
         <tbody>
-          {ordered.map((row, index) => (
-            <tr key={row.kode}>
-              <td>{index + 1}</td>
-              <th scope="row">
-                {row.nama}
-                <small>{row.kode}</small>
-              </th>
-              {tampilProvinsi ? <td>{row.provinsi || "—"}</td> : null}
-              <td>
-                {selStatusPeta(row)}
-                {row.peta?.lampau ? <small>{CAP_DATA_TERAKHIR}</small> : null}
-                {masaBerlaku(row).map((teks) => (
-                  <small key={teks}>{teks}</small>
-                ))}
-                {row.cuacaHari?.length ? <small>{row.cuacaHari.join(", ")}</small> : null}
-              </td>
-              <td>{row.dibiTeks || "—"}</td>
-              <td>
-                {row.banjirKelas || IRBI_TIDAK_TERSEDIA}
-                {row.pendudukTampil ? (
-                  <small>
-                    Penduduk {teksAngkaPenduduk(row.pendudukItem?.penduduk)} · rumah tangga {teksRumahTangga(row.pendudukItem)} · {PENDUDUK_BUKAN_TERPAPAR}
-                  </small>
+          {ordered.map((row, index) => {
+            const terbuka = buka === row.kode;
+            const hujanTeks = hujanNilai ? hujanNilai.get(row.kode) || "belum tersedia" : "";
+            const rincian = rincianKab(row, hujanTeks);
+            return (
+              <Fragment key={row.kode}>
+                <tr>
+                  <td>{index + 1}</td>
+                  <th scope="row">
+                    <button
+                      type="button"
+                      className="row-detail-toggle"
+                      aria-expanded={terbuka}
+                      onClick={() => setBuka(terbuka ? "" : row.kode)}
+                    >
+                      {row.nama}
+                      {tampilProvinsi && row.provinsi ? <small>{row.provinsi}</small> : null}
+                      <small>{row.kode}</small>
+                    </button>
+                  </th>
+                  <td>{selStatusPeta(row)}</td>
+                  <td>{row.dibiTeks || DIBI_UNAVAILABLE}</td>
+                  <td>{selIrbi(row)}</td>
+                </tr>
+                {terbuka ? (
+                  <tr className="flood-row-detail">
+                    <td colSpan={5}>
+                      {rincian.length ? rincian.map((baris) => <p key={baris}>{baris}</p>) : <p>Tidak ada rincian tambahan.</p>}
+                    </td>
+                  </tr>
                 ) : null}
-              </td>
-            </tr>
-          ))}
+              </Fragment>
+            );
+          })}
         </tbody>
       </table>
-      <p className="fine">Tingkat kabupaten/kota. Kecamatan tidak ditampilkan.</p>
+      <p className="fine">Tingkat kabupaten/kota. Kecamatan tidak ditampilkan. Rincian memuat masa berlaku, prakiraan, potensi BPS, dan hujan model bila lapisan itu nyala.</p>
     </div>
   );
 }
@@ -330,16 +355,20 @@ function selStatusPeta(row) {
       </span>
     );
   }
-  if (peta?.kind === "kosong" || peta?.kind === "tak-dikenal") {
-    return (
-      <>
-        {peta.kosongLabel || "Tidak ada peringatan"}
-        {peta.kind === "tak-dikenal" && peta.cuacaMentah?.length ? <small>{peta.cuacaMentah.join(", ")}</small> : null}
-      </>
-    );
-  }
+  if (peta?.kind === "kosong" || peta?.kind === "tak-dikenal") return peta.kosongLabel || "Tidak ada peringatan";
   if (peta?.alasan === "irbi") return IRBI_TIDAK_TERSEDIA;
   return "Tanpa data";
+}
+
+function selIrbi(row) {
+  if (!row.banjirKelas) return IRBI_TIDAK_TERSEDIA;
+  const skor = row.banjirSkor === "" || row.banjirSkor == null ? "" : skorTeks(row.banjirSkor);
+  return (
+    <>
+      {row.banjirKelas}
+      {skor ? <small>Skor {skor}</small> : null}
+    </>
+  );
 }
 
 export function PrakiraanTigaHari({ titik, hari, periodeLabel }) {
@@ -423,33 +452,3 @@ export function NowcastCrossTab({ rows }) {
   );
 }
 
-export function HujanPembandingTabel({ rows, tampilProvinsi = false, nilai, catatan }) {
-  const ordered = rows ?? [];
-  return (
-    <div className="table-wrap">
-      <table>
-        <caption>{catatan}</caption>
-        <thead>
-          <tr>
-            <th scope="col">No.</th>
-            <th scope="col">Kab/kota</th>
-            {tampilProvinsi ? <th scope="col">Provinsi</th> : null}
-            <th scope="col">mm</th>
-            <th scope="col">Jenis data</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ordered.map((row, index) => (
-            <tr key={row.kode || index}>
-              <td>{index + 1}</td>
-              <th scope="row">{row.nama}</th>
-              {tampilProvinsi ? <td>{row.provinsi || "—"}</td> : null}
-              <td>{nilai?.get(row.kode) || "belum tersedia"}</td>
-              <td>prakiraan model, bukan BMKG</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}

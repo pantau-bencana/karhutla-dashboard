@@ -324,6 +324,21 @@ a.button {
 .flood-side { max-height: 520px; }
 .flood-side table { min-width: 0; }
 .flood-side caption { caption-side: bottom; text-align: left; color: var(--muted); padding-top: 6px; }
+.row-detail-toggle {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.row-detail-toggle small { display: block; font-weight: 500; color: var(--muted); }
+.flood-row-detail td { background: #f7f4ee; font-size: 13px; }
+.flood-row-detail p { margin: 0 0 6px; }
 .map-toolbar { margin: 10px 0; }
 .logic-body h3 { margin: 16px 0 0; font-size: 1.05rem; }
 .date-filter label {
@@ -1073,6 +1088,10 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   .acc-children { padding-left: 8px; }
   .map-canvas.flood-map,
   .map-canvas.flood-map.leaflet-container { height: 260px; max-height: 260px; }
+  .flood-side table { font-size: 12px; table-layout: fixed; width: 100%; }
+  .flood-side th, .flood-side td { padding: 6px 4px; }
+  .flood-side .analisis-pill { font-size: 11px; padding: 2px 6px; }
+  .flood-row-detail td { font-size: 12px; }
 }
 
 .topbar, .subnav, .notice, .tabbar, .menu-panel { font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif; }
