@@ -295,6 +295,12 @@ export function FloodRiskMap({
       sizeKey = key;
       pasang();
     };
+    const batasKontrol = () => {
+      const div = kontrolRef.current;
+      const tinggi = map.getSize()?.y || 0;
+      if (!div || tinggi < 40) return;
+      div.style.maxHeight = `${Math.max(88, Math.round(tinggi - 36))}px`;
+    };
     map.on("resize", onResize);
     const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(onResize) : null;
     observer?.observe(containerRef.current);
@@ -304,12 +310,16 @@ export function FloodRiskMap({
     const kontrol = L.control({ position: "topright" });
     kontrol.onAdd = () => {
       const div = L.DomUtil.create("div", "hujan-kontrol");
+      div.setAttribute("role", "group");
+      div.setAttribute("aria-label", "Lapisan peta");
       L.DomEvent.disableClickPropagation(div);
       L.DomEvent.disableScrollPropagation(div);
       kontrolRef.current = div;
       return div;
     };
     kontrol.addTo(map);
+    batasKontrol();
+    map.on("resize", batasKontrol);
     mapRef.current = map;
     setKontrolSiap(true);
     return () => {
@@ -618,42 +628,6 @@ export function FloodRiskMap({
 
   return (
     <div className="flood-map-block">
-      <fieldset className="layer-checks">
-        <legend>Lapisan</legend>
-        <span className="layer-with-info">
-          <label>
-            <input type="checkbox" checked={showPeringatan} onChange={(event) => setShowPeringatan(event.target.checked)} />
-            Peringatan
-          </label>
-          <InfoTip label="Penjelasan lapisan peringatan">
-            <p>Awas, Siaga, dan Waspada adalah analisis proyek ini, bukan status resmi BMKG atau BNPB.</p>
-            <p>
-              {tab === "cap"
-                ? "Tab 0–3 jam memasangkan peringatan dini cuaca BMKG (0–3 jam) per kab/kota dengan kelas risiko banjir IRBI 2025 BNPB lewat matriks proyek."
-                : "Tab hari memasangkan prakiraan cuaca 3 hari BMKG per kab/kota dengan kelas risiko banjir IRBI 2025 BNPB lewat matriks proyek, termasuk aturan kode cuaca."}
-            </p>
-            <p>Poligon adalah batas administrasi kab/kota. Merah Awas, jingga Siaga, kuning Waspada, abu-abu tidak ada status, arsir tanpa data.</p>
-            <p>Pembaruan terakhir: {waktuLabel}.</p>
-            <p>
-              <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
-            </p>
-          </InfoTip>
-        </span>
-        <label>
-          <input type="checkbox" checked={showInarisk} onChange={(event) => setShowInarisk(event.target.checked)} />
-          Overlay inaRISK
-        </label>
-        {showInarisk ? (
-          <label>
-            <input type="checkbox" checked={showBahaya} onChange={(event) => setShowBahaya(event.target.checked)} />
-            Bahaya banjir
-          </label>
-        ) : null}
-        <label>
-          <input type="checkbox" checked={showBatas} onChange={(event) => setShowBatas(event.target.checked)} />
-          Batas provinsi
-        </label>
-      </fieldset>
       {tab === "cap" ? <p className="fine">{HUJAN_TANPA_NOWCAST}</p> : null}
       <p className="fine">{FLOOD_PERMISSION} Overlay inaRISK mati sampai dinyalakan. Status peta inaRISK belum Aktif.</p>
       {mapError ? (
@@ -669,25 +643,66 @@ export function FloodRiskMap({
       <div ref={containerRef} className="map-canvas flood-map" role="application" aria-label="Peta banjir Indonesia" />
       {kontrolSiap && kontrolRef.current
         ? createPortal(
-            tab === "cap" ? null : (
-              <>
+            <>
+              <fieldset>
+                <legend>Lapisan</legend>
+                <span className="layer-with-info">
+                  <label>
+                    <input type="checkbox" checked={showPeringatan} onChange={(event) => setShowPeringatan(event.target.checked)} />
+                    Peringatan
+                  </label>
+                  <InfoTip label="Penjelasan lapisan peringatan" align="end">
+                    <p>Awas, Siaga, dan Waspada adalah analisis proyek ini, bukan status resmi BMKG atau BNPB.</p>
+                    <p>
+                      {tab === "cap"
+                        ? "Tab 0–3 jam memasangkan peringatan dini cuaca BMKG (0–3 jam) per kab/kota dengan kelas risiko banjir IRBI 2025 BNPB lewat matriks proyek."
+                        : "Tab hari memasangkan prakiraan cuaca 3 hari BMKG per kab/kota dengan kelas risiko banjir IRBI 2025 BNPB lewat matriks proyek, termasuk aturan kode cuaca."}
+                    </p>
+                    <p>Poligon adalah batas administrasi kab/kota. Merah Awas, jingga Siaga, kuning Waspada, abu-abu tidak ada status, arsir tanpa data.</p>
+                    <p>Pembaruan terakhir: {waktuLabel}.</p>
+                    <p>
+                      <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
+                    </p>
+                  </InfoTip>
+                </span>
                 <label>
-                  <input type="checkbox" checked={showHujan} onChange={(event) => onShowHujan?.(event.target.checked)} />
-                  Curah hujan model
+                  <input type="checkbox" checked={showInarisk} onChange={(event) => setShowInarisk(event.target.checked)} />
+                  Overlay inaRISK
                 </label>
-                <InfoTip label="Penjelasan lapisan Data Pembanding curah hujan" align="end">
-                  <p>{HUJAN_PEMBANDING_BADGE}. {HUJAN_PEMBANDING_JENIS}.</p>
-                  <p>Jumlah hujan harian Open-Meteo, model {HUJAN_PEMBANDING_MODEL}, pada titik adm4 yang sama. Satuan mm. Bukan skala Awas, Siaga, atau Waspada, dan tidak masuk matriks.</p>
-                  <p>{HUJAN_TANPA_NOWCAST} {HUJAN_TITIK_BATAS}</p>
-                  <p>Bila prakiraan BMKG untuk Hari ini, Besok, atau Lusa tidak ada, angka mm tetap tampil pada tabel dan tooltip. Angka itu tidak menetapkan Awas, Siaga, atau Waspada, dan tidak mewarnai poligon.</p>
-                  <p>Diambil {hujan?.waktu || "—"}. Lisensi <a href={HUJAN_PEMBANDING_LISENSI} target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</p>
-                  <p>{hujan?.gpm}</p>
-                  <p>
-                    <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
-                  </p>
-                </InfoTip>
-              </>
-            ),
+                {showInarisk ? (
+                  <label>
+                    <input type="checkbox" checked={showBahaya} onChange={(event) => setShowBahaya(event.target.checked)} />
+                    Bahaya banjir
+                  </label>
+                ) : null}
+                <label>
+                  <input type="checkbox" checked={showBatas} onChange={(event) => setShowBatas(event.target.checked)} />
+                  Batas provinsi
+                </label>
+              </fieldset>
+              {tab === "cap" ? null : (
+                <fieldset>
+                  <legend>Data Pembanding</legend>
+                  <span className="layer-with-info">
+                    <label>
+                      <input type="checkbox" checked={showHujan} onChange={(event) => onShowHujan?.(event.target.checked)} />
+                      Curah hujan model
+                    </label>
+                    <InfoTip label="Penjelasan lapisan Data Pembanding curah hujan" align="end">
+                      <p>{HUJAN_PEMBANDING_BADGE}. {HUJAN_PEMBANDING_JENIS}.</p>
+                      <p>Jumlah hujan harian Open-Meteo, model {HUJAN_PEMBANDING_MODEL}, pada titik adm4 yang sama. Satuan mm. Bukan skala Awas, Siaga, atau Waspada, dan tidak masuk matriks.</p>
+                      <p>{HUJAN_TANPA_NOWCAST} {HUJAN_TITIK_BATAS}</p>
+                      <p>Bila prakiraan BMKG untuk Hari ini, Besok, atau Lusa tidak ada, angka mm tetap tampil pada tabel dan tooltip. Angka itu tidak menetapkan Awas, Siaga, atau Waspada, dan tidak mewarnai poligon.</p>
+                      <p>Diambil {hujan?.waktu || "—"}. Lisensi <a href={HUJAN_PEMBANDING_LISENSI} target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</p>
+                      <p>{hujan?.gpm}</p>
+                      <p>
+                        <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
+                      </p>
+                    </InfoTip>
+                  </span>
+                </fieldset>
+              )}
+            </>,
             kontrolRef.current,
           )
         : null}
