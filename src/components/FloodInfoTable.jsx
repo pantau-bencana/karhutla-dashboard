@@ -261,16 +261,20 @@ export function FloodInfoTable({ rows, columns = FLOOD_INFO_COLUMNS }) {
   );
 }
 
-export function FloodKabDaftar({ rows }) {
+export function FloodKabDaftar({ rows, tampilProvinsi = false }) {
   const ordered = rows ?? [];
   return (
     <div className="table-wrap flood-side wrap-cells">
       <table>
-        <caption>Kabupaten/kota. Nomor mengikuti urutan Awas, Siaga, Waspada, lalu tanpa status. Bukan peringkat prioritas.</caption>
+        <caption>
+          Kabupaten/kota. Nomor mengikuti urutan Awas, Siaga, Waspada, tanpa status, lalu tidak terklasifikasi atau tanpa data.
+          Bukan peringkat prioritas.
+        </caption>
         <thead>
           <tr>
             <th scope="col">No.</th>
             <th scope="col">Kab/kota</th>
+            {tampilProvinsi ? <th scope="col">Provinsi</th> : null}
             <th scope="col">Status</th>
             <th scope="col">Riwayat</th>
             <th scope="col">IRBI</th>
@@ -284,6 +288,7 @@ export function FloodKabDaftar({ rows }) {
                 {row.nama}
                 <small>{row.kode}</small>
               </th>
+              {tampilProvinsi ? <td>{row.provinsi || "—"}</td> : null}
               <td>
                 {selStatusPeta(row)}
                 {row.peta?.lampau ? <small>{CAP_DATA_TERAKHIR}</small> : null}

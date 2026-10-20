@@ -16,6 +16,7 @@ import {
   legendClass,
 } from "../lib/floodMatrix.js";
 import { BAHAYA_SERVICE, LEGEND_IMAGE, RISIKO_SERVICE, exportImageUrl, identifyUrl } from "../lib/floodServices.js";
+import { InfoTip } from "./InfoTip.jsx";
 
 function envelopeOf(features) {
   let south = 90;
@@ -144,6 +145,7 @@ export function FloodRiskMap({
   tab = "cap",
   bolehKosong = false,
   catatan = [],
+  waktuLabel = "—",
 }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
@@ -476,10 +478,25 @@ export function FloodRiskMap({
     <div className="flood-map-block">
       <fieldset className="layer-checks">
         <legend>Lapisan</legend>
-        <label>
-          <input type="checkbox" checked={showPeringatan} onChange={(event) => setShowPeringatan(event.target.checked)} />
-          Peringatan
-        </label>
+        <span className="layer-with-info">
+          <label>
+            <input type="checkbox" checked={showPeringatan} onChange={(event) => setShowPeringatan(event.target.checked)} />
+            Peringatan
+          </label>
+          <InfoTip label="Penjelasan lapisan peringatan">
+            <p>Awas, Siaga, dan Waspada adalah analisis proyek ini, bukan status resmi BMKG atau BNPB.</p>
+            <p>
+              {tab === "cap"
+                ? "Tab 0–3 jam memasangkan peringatan dini cuaca BMKG (0–3 jam) per kab/kota dengan kelas risiko banjir IRBI 2025 BNPB lewat matriks proyek."
+                : "Tab hari memasangkan prakiraan cuaca 3 hari BMKG per kab/kota dengan kelas risiko banjir IRBI 2025 BNPB lewat matriks proyek, termasuk aturan kode cuaca."}
+            </p>
+            <p>Poligon adalah batas administrasi kab/kota. Merah Awas, jingga Siaga, kuning Waspada, abu-abu tidak ada status, arsir tanpa data.</p>
+            <p>Pembaruan terakhir: {waktuLabel}.</p>
+            <p>
+              <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
+            </p>
+          </InfoTip>
+        </span>
         <label>
           <input type="checkbox" checked={showInarisk} onChange={(event) => setShowInarisk(event.target.checked)} />
           Overlay inaRISK

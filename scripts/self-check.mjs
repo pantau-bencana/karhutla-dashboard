@@ -1264,6 +1264,10 @@ const urutCuaca = urutStatusKab([
 assert.deepEqual(urutCuaca.map((row) => row.kode), ["11.03", "11.01", "11.02"]);
 assert.equal(peringkatTampil({ peta: catTak }), 4);
 assert.equal(readFileSync("src/components/FloodRiskMap.jsx", "utf8").includes("Cuaca di luar matriks"), false);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Penjelasan lapisan peringatan/);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /#\/sumber-metode\/petunjuk-banjir/);
+assert.match(readFileSync("src/components/FloodInfoTable.jsx", "utf8"), /Provinsi/);
+assert.match(readFileSync("src/components/GwisFwiToggle.jsx", "utf8"), /Penjelasan lapisan Data Pembanding/);
 const petunjuk = readFileSync("src/components/MetodePage.jsx", "utf8");
 assert.match(petunjuk, /CUACA_RUJUKAN/);
 assert.match(petunjuk, /CUACA_DISCLAIMER/);

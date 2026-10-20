@@ -151,6 +151,7 @@ function FloodBody() {
   const [dasarianDate, setDasarianDate] = useState(() => todayWib());
   const [penduduk, setPenduduk] = useState({ status: "memuat", indeks: new Map(), jumlah: 0 });
   const [tab, setTab] = useState("cap");
+  const [lihatSemuaBaris, setLihatSemuaBaris] = useState(false);
   const pilihProvinsi = useCallback((nama) => setProvince(nama || ""), []);
 
   useEffect(() => {
@@ -304,6 +305,8 @@ function FloodBody() {
     const kodeProv = new Set(urut.map((row) => row.kode));
     return semua.filter((item) => item.provinsi === province || kodeProv.has(item.kodeKab));
   }, [prakiraan, periode, province, urut]);
+  const barisBerstatus = urut.filter((row) => row.peta?.kind === "status");
+  const barisTabel = province || lihatSemuaBaris || barisBerstatus.length === 0 ? urut : barisBerstatus;
   const hariTab = tab === "cap" ? null : periode.hari[tab];
   const namaHari = tab === "cap" ? "" : ["Hari ini", "Besok", "Lusa"][tab];
   const sumberPrakiraan = titik.find((item) => item.analysisUtc)?.analysisUtc || prakiraan.observedAt;
@@ -454,6 +457,15 @@ function FloodBody() {
               tab={tab}
               bolehKosong={bolehKosong}
               catatan={catatanPeta}
+              waktuLabel={
+                tab === "cap"
+                  ? cap.meta.fetched_at
+                    ? formatWib(cap.meta.fetched_at)
+                    : "—"
+                  : prakiraan.fetchedAt
+                    ? formatWib(prakiraan.fetchedAt)
+                    : "—"
+              }
             />
             <div>
               <h3>{province || SEMUA_PROVINSI}</h3>
@@ -461,10 +473,17 @@ function FloodBody() {
                 {urut.length} kab/kota.
                 {province
                   ? " Nomor pada peta sama dengan nomor tabel."
-                  : " Nomor peta dimatikan pada Semua provinsi agar tidak bertumpuk."}{" "}
+                  : ` ${barisBerstatus.length} berstatus ditampilkan dulu. Nomor mengikuti urutan penuh.`}{" "}
                 Tingkat kabupaten/kota. Kecamatan dan kelurahan tidak ditampilkan.
               </p>
-              <FloodKabDaftar rows={urut} />
+              {province ? null : (
+                <button type="button" className="button" onClick={() => setLihatSemuaBaris((current) => !current)}>
+                  {lihatSemuaBaris || barisBerstatus.length === 0
+                    ? "Tampilkan yang berstatus saja"
+                    : `Tampilkan semua kab/kota (${urut.length})`}
+                </button>
+              )}
+              <FloodKabDaftar rows={province ? urut : barisTabel} tampilProvinsi={!province} />
               {!province ? (
                 <p className="fine">
                   {BMKG_ATTRIBUTION}. RSS {cap.meta.rss_published ? formatWib(cap.meta.rss_published) : "—"}. Diambil{" "}
@@ -511,7 +530,9 @@ function FloodBody() {
                 </>
               ) : (
                 <p className="fine">
-                  Pilih provinsi untuk membuka tabel rinci, isian dasarian, dan tautan KRB. Peta serta tabel samping sudah memuat kab/kota.
+                  Tabel Semua provinsi memuat kab/kota pada tab ini, urut Awas, Siaga, Waspada, tanpa status, lalu tidak
+                  terklasifikasi atau tanpa data. Unduh CSV dan XLSX memuat seluruh {urut.length} baris, termasuk yang
+                  belum dibuka di tabel.
                 </p>
               )}
             </>

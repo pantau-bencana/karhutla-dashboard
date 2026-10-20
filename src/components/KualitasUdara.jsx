@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Badge } from "./Badge.jsx";
+import { InfoTip } from "./InfoTip.jsx";
 import { StationMap } from "./StationMap.jsx";
 import { parseCsv } from "../lib/csv.js";
 import { formatAngka, formatTanggal, formatWib } from "../lib/format.js";
@@ -473,7 +474,16 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
       <article className="card">
         <header className="card-head">
           <div>
-            <h2>Data Pembanding – pengukuran stasiun</h2>
+            <h2>
+              Data Pembanding – pengukuran stasiun{" "}
+              <InfoTip label="Penjelasan Data Pembanding">
+                <p>Pembanding (data terbuka, bukan resmi). Pengukuran stasiun dalam µg/m³, bukan ISPU KemenLH.</p>
+                <p>Angka ini tidak masuk skor peringatan dan tidak diubah menjadi kategori ISPU.</p>
+                <p>
+                  <a href="#/sumber-metode">Sumber dan batasan data</a>
+                </p>
+              </InfoTip>
+            </h2>
             <p>Nilai dalam µg/m³. Tidak diubah menjadi angka ISPU atau kategori ISPU.</p>
           </div>
         </header>
