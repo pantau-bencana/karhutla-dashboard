@@ -54,7 +54,11 @@ jobs:
             echo "Tidak ada perubahan prioritas."
             exit 0
           fi
-          git commit -m "Perbarui prioritas kesiapsiagaan A+"
+          if grep -q '"stale": true' data/live/prioritas_aplus.json; then
+            git commit -m "Pertahankan cuplikan prioritas A+ karena pengambilan gagal"
+          else
+            git commit -m "Perbarui prioritas kesiapsiagaan A+"
+          fi
           for attempt in 1 2 3 4; do
             git fetch origin "$branch"
             if git pull --rebase origin "$branch"; then
@@ -71,7 +75,11 @@ jobs:
                 echo "changed=false" >> "$GITHUB_OUTPUT"
                 exit 0
               fi
-              git commit -m "Perbarui prioritas kesiapsiagaan A+"
+              if grep -q '"stale": true' data/live/prioritas_aplus.json; then
+                git commit -m "Pertahankan cuplikan prioritas A+ karena pengambilan gagal"
+              else
+                git commit -m "Perbarui prioritas kesiapsiagaan A+"
+              fi
             fi
           done
           echo "Gagal mendorong prioritas setelah 4 percobaan."

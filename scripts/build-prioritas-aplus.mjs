@@ -42,13 +42,69 @@ function sleep(ms) {
   return new Promise((resolvePromise) => setTimeout(resolvePromise, ms));
 }
 
-async function getText(url, timeoutMs) {
-  const response = await fetch(url, {
-    headers: { accept: "*/*", "user-agent": USER_AGENT },
-    signal: AbortSignal.timeout(timeoutMs),
-  });
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return response.text();
+const RETRY_STATUS = new Set([429, 502, 503, 504]);
+const MAX_JEDA_MS = 120_000;
+const OPEN_METEO_BATCH = 10;
+const OPEN_METEO_JEDA_MS = 2000;
+const GWIS_KONKURENSI = 2;
+const GWIS_JEDA_MS = 250;
+
+export function parseRetryAfter(header, nowMs = Date.now()) {
+  if (header == null || String(header).trim() === "") return null;
+  const seconds = Number(header);
+  if (Number.isFinite(seconds) && seconds >= 0) return Math.round(seconds * 1000);
+  const when = Date.parse(String(header));
+  if (!Number.isFinite(when)) return null;
+  return Math.max(0, when - nowMs);
+}
+
+export function jedaCobaLagi(attempt, retryAfterMs, random = Math.random) {
+  const exp = Math.min(MAX_JEDA_MS, 1000 * 2 ** Math.max(0, attempt - 1));
+  const header = Number.isFinite(retryAfterMs) ? retryAfterMs : 0;
+  const jitter = Math.floor(Math.max(0, Number(random()) || 0) * 400);
+  return Math.min(MAX_JEDA_MS, Math.max(exp, header) + jitter);
+}
+
+export async function ambilTeks(url, options = {}) {
+  const timeoutMs = options.timeoutMs ?? 30000;
+  const maxAttempts = options.maxAttempts ?? 5;
+  const fetchImpl = options.fetchImpl ?? fetch;
+  const sleepImpl = options.sleepImpl ?? sleep;
+  const random = options.random ?? Math.random;
+  const target = String(url);
+  const host = new URL(target).host;
+  let lastStatus = 0;
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    let response;
+    try {
+      response = await fetchImpl(target, {
+        headers: { accept: "*/*", "user-agent": USER_AGENT },
+        signal: AbortSignal.timeout(timeoutMs),
+      });
+    } catch {
+      if (attempt === maxAttempts) throw new Error(`${host} tidak menjawab`);
+      const wait = jedaCobaLagi(attempt, null, random);
+      console.error(`${host} tidak menjawab, jeda ${Math.round(wait / 1000)} dtk, percobaan ${attempt}/${maxAttempts}`);
+      await sleepImpl(wait);
+      continue;
+    }
+    if (response.ok) return response.text();
+    lastStatus = Number(response.status) || 0;
+    const retryAfter = parseRetryAfter(response.headers?.get?.("retry-after") ?? null);
+    if (!RETRY_STATUS.has(lastStatus) || attempt === maxAttempts) {
+      throw new Error(`${host} HTTP ${lastStatus}`);
+    }
+    const wait = jedaCobaLagi(attempt, retryAfter, random);
+    console.error(`${host} HTTP ${lastStatus}, jeda ${Math.round(wait / 1000)} dtk, percobaan ${attempt}/${maxAttempts}`);
+    await sleepImpl(wait);
+  }
+  throw new Error(`${host} HTTP ${lastStatus || 429}`);
+}
+
+export function tandaiCuplikanUsang(snapshot, saat, alasan) {
+  if (!snapshot || !Array.isArray(snapshot.baris) || snapshot.baris.length === 0) return null;
+  const text = String(alasan || "pengambilan gagal").replace(/\s+/g, " ").slice(0, 300);
+  return { ...snapshot, stale: true, stale_at: saat, stale_alasan: text };
 }
 
 async function mapPool(items, limit, task) {
@@ -103,6 +159,31 @@ function parseGwisHtml(html) {
   };
 }
 
+async function fetchBig(body) {
+  const url = `${BIG_SERVICE}/${KAB_LAYER}/query`;
+  const host = new URL(url).host;
+  let lastStatus = 0;
+  for (let attempt = 1; attempt <= 5; attempt += 1) {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        accept: "application/json",
+        "user-agent": USER_AGENT,
+      },
+      body,
+      signal: AbortSignal.timeout(60000),
+    });
+    if (response.ok) return response;
+    lastStatus = response.status;
+    if (!RETRY_STATUS.has(response.status) || attempt === 5) break;
+    const wait = jedaCobaLagi(attempt, parseRetryAfter(response.headers.get("retry-after")));
+    console.error(`${host} HTTP ${response.status}, jeda ${Math.round(wait / 1000)} dtk, percobaan ${attempt}/5`);
+    await sleep(wait);
+  }
+  throw new Error(`${host} HTTP ${lastStatus}`);
+}
+
 async function queryProvinsi(provinsi) {
   const features = [];
   let offset = 0;
@@ -116,17 +197,7 @@ async function queryProvinsi(provinsi) {
       resultOffset: String(offset),
       resultRecordCount: "15",
     });
-    const response = await fetch(`${BIG_SERVICE}/${KAB_LAYER}/query`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/x-www-form-urlencoded",
-        accept: "application/json",
-        "user-agent": USER_AGENT,
-      },
-      body,
-      signal: AbortSignal.timeout(60000),
-    });
-    if (!response.ok) throw new Error(`BIG HTTP ${response.status}`);
+    const response = await fetchBig(body);
     const payload = await response.json();
     if (payload.error) throw new Error(payload.error.message || "BIG menolak kueri");
     const batch = payload.features ?? [];
@@ -234,7 +305,7 @@ async function tanggalGwis(point) {
   let misses = 0;
   for (let offset = 0; offset < 12 && dates.length < 9; offset += 1) {
     const time = addDays(today, offset);
-    const html = await getText(gwisInfoUrl(point.lintang, point.bujur, time), 30000);
+    const html = await ambilTeks(gwisInfoUrl(point.lintang, point.bujur, time), { timeoutMs: 30000 });
     const value = parseGwisHtml(html);
     if (!value) {
       misses += 1;
@@ -256,10 +327,10 @@ async function ambilGwis(wilayah, dates) {
     }
   }
   let failures = 0;
-  const found = await mapPool(jobs, 4, async (job) => {
+  const found = await mapPool(jobs, GWIS_KONKURENSI, async (job) => {
     try {
-      const html = await getText(gwisInfoUrl(job.point.lintang, job.point.bujur, job.time), 30000);
-      await sleep(120);
+      const html = await ambilTeks(gwisInfoUrl(job.point.lintang, job.point.bujur, job.time), { timeoutMs: 30000 });
+      await sleep(GWIS_JEDA_MS);
       return { ...job, value: parseGwisHtml(html) };
     } catch {
       failures += 1;
@@ -317,8 +388,8 @@ async function ambilEnsemble(wilayah) {
     for (const point of item.titik) points.push({ ...point, kode: item.kode });
   }
   const peluang = new Map();
-  for (let start = 0; start < points.length; start += 10) {
-    const chunk = points.slice(start, start + 10);
+  for (let start = 0; start < points.length; start += OPEN_METEO_BATCH) {
+    const chunk = points.slice(start, start + OPEN_METEO_BATCH);
     const url = new URL("https://ensemble-api.open-meteo.com/v1/ensemble");
     url.searchParams.set("latitude", chunk.map((point) => point.lintang).join(","));
     url.searchParams.set("longitude", chunk.map((point) => point.bujur).join(","));
@@ -326,7 +397,7 @@ async function ambilEnsemble(wilayah) {
     url.searchParams.set("models", "ecmwf_ifs025");
     url.searchParams.set("forecast_days", "14");
     url.searchParams.set("timezone", "Asia/Jakarta");
-    const text = await getText(url, 60000);
+    const text = await ambilTeks(url, { timeoutMs: 60000 });
     const payload = JSON.parse(text);
     const blocks = Array.isArray(payload) ? payload : [payload];
     blocks.forEach((block, index) => {
@@ -349,7 +420,7 @@ async function ambilEnsemble(wilayah) {
       list.push(dry / keys.length);
       peluang.set(chunk[index].kode, list);
     });
-    await sleep(200);
+    if (start + OPEN_METEO_BATCH < points.length) await sleep(OPEN_METEO_JEDA_MS);
   }
   return peluang;
 }
@@ -433,7 +504,7 @@ async function smokeRun() {
   const titik = farthestPointSample(inside, TITIK_MAKS);
   if (!titik.length) throw new Error("Uji asap tidak menemukan titik grid.");
   const dates = await tanggalGwis(titik[0]);
-  const html = await getText(gwisInfoUrl(titik[0].lintang, titik[0].bujur, dates[0] || jakartaToday()), 30000);
+  const html = await ambilTeks(gwisInfoUrl(titik[0].lintang, titik[0].bujur, dates[0] || jakartaToday()), { timeoutMs: 30000 });
   const gwis = parseGwisHtml(html);
   const url = new URL("https://ensemble-api.open-meteo.com/v1/ensemble");
   url.searchParams.set("latitude", String(titik[0].lintang));
@@ -442,17 +513,48 @@ async function smokeRun() {
   url.searchParams.set("models", "ecmwf_ifs025");
   url.searchParams.set("forecast_days", "14");
   url.searchParams.set("timezone", "Asia/Jakarta");
-  const payload = JSON.parse(await getText(url, 60000));
+  const payload = JSON.parse(await ambilTeks(url, { timeoutMs: 60000 }));
   const members = Object.keys(payload.daily ?? {}).filter((key) => key.startsWith("precipitation_sum")).length;
   console.log(`Uji asap ${feature.attributes?.wadmkk}: titik grid ${titik.length}/${inside.length}, hari GWIS ${dates.length}, FWI ${gwis?.fwi}, anggota hujan ${members}.`);
   if (!gwis || members < 51) throw new Error("Uji asap tidak lengkap.");
 }
 
-async function main() {
-  if (smoke) {
-    await smokeRun();
-    return;
+function simpanCuplikanUsang(alasan) {
+  const path = resolve(root, JSON_PATH);
+  if (!existsSync(path)) return false;
+  let snapshot;
+  try {
+    snapshot = JSON.parse(readFileSync(path, "utf8"));
+  } catch {
+    return false;
   }
+  const saat = new Date().toISOString();
+  const next = tandaiCuplikanUsang(snapshot, saat, alasan);
+  if (!next) return false;
+  writeFileSync(path, `${JSON.stringify(next, null, 2)}\n`);
+  const manifestPath = resolve(root, "data/live/manifest.json");
+  if (existsSync(manifestPath)) {
+    const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+    const previous = manifest.datasets?.prioritas_aplus ?? {};
+    manifest.datasets = manifest.datasets ?? {};
+    manifest.datasets.prioritas_aplus = {
+      ...previous,
+      id: "prioritas_aplus",
+      nama: previous.nama || "Prioritas kesiapsiagaan 14 hari (FWI hanya 9 hari)",
+      file: JSON_PATH,
+      status: "failed",
+      error: next.stale_alasan,
+      kept_previous: true,
+      fetched_at: saat,
+      observed_at: previous.observed_at || snapshot.generated_at || null,
+      source_updated_at: previous.source_updated_at || snapshot.generated_at || null,
+    };
+    writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+  }
+  return true;
+}
+
+async function susunDanTulis() {
   const now = new Date().toISOString();
   const wilayah = await pilihTitik();
   if (wilayah.length < 15) throw new Error(`Titik kab/kota hanya ${wilayah.length}.`);
@@ -500,7 +602,23 @@ async function main() {
   console.log(`Prioritas tertulis. Lengkap ${hasil.kab_lengkap}, lolos ${hasil.lolos}, daftar ${hasil.daftar.length}, blok ${hasil.blok.length}.`);
 }
 
-main().catch((error) => {
-  console.error(error.message || error);
-  process.exitCode = 1;
-});
+async function main() {
+  try {
+    if (smoke) {
+      await smokeRun();
+      return;
+    }
+    await susunDanTulis();
+  } catch (error) {
+    const message = error?.message || String(error);
+    console.error(message);
+    if (simpanCuplikanUsang(message)) {
+      console.error("Cuplikan sebelumnya dipertahankan dan ditandai usang.");
+      return;
+    }
+    process.exitCode = 1;
+  }
+}
+
+const executedDirectly = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (executedDirectly) main();
