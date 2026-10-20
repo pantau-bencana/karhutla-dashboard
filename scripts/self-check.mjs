@@ -1276,8 +1276,8 @@ assert.equal(readFileSync("src/components/FloodRiskMap.jsx", "utf8").includes("C
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Penjelasan lapisan peringatan/);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /#\/sumber-metode\/petunjuk-banjir/);
 const daftarSumber = readFileSync("src/components/FloodInfoTable.jsx", "utf8");
-assert.match(daftarSumber, /<th scope="col">No<\/th>[\s\S]*<th scope="col">Kab\/Kota<\/th>[\s\S]*<th scope="col">Status<\/th>[\s\S]*<th scope="col">Historis<\/th>[\s\S]*<th scope="col">IRBI<\/th>/);
-assert.equal(daftarSumber.includes("<th scope=\"col\">Provinsi</th>"), false);
+assert.match(daftarSumber, /<th scope="col">No<\/th>[\s\S]*<th scope="col">Kab\/Kota<\/th>[\s\S]*<th scope="col">Provinsi<\/th>[\s\S]*<th scope="col">Status<\/th>[\s\S]*<th scope="col">Historis<\/th>[\s\S]*<th scope="col">IRBI<\/th>/);
+assert.match(daftarSumber, /tampilProvinsi \? <th scope="col">Provinsi<\/th>/);
 assert.equal(daftarSumber.includes("<th scope=\"col\">Riwayat</th>"), false);
 assert.match(daftarSumber, /DIBI_UNAVAILABLE/);
 assert.match(daftarSumber, /Provinsi:/);
@@ -1291,6 +1291,15 @@ assert.equal(daftarSumber.includes('<th scope="col">Penduduk terdampak</th>'), f
 assert.equal(daftarSumber.includes('<th scope="col">Rumah terdampak</th>'), false);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /barisDampakHistoris/);
 assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /DAMPAK_HISTORIS_CATATAN/);
+const halamanBanjir = readFileSync("src/components/FloodPage.jsx", "utf8");
+assert.equal(halamanBanjir.includes("Tampilkan semua kab/kota"), false);
+assert.match(halamanBanjir, /rows=\{urut\}/);
+assert.match(halamanBanjir, /formatWib\(cap\.meta\.fetched_at\)/);
+assert.match(readFileSync("src/lib/format.js", "utf8"), /timeZone: "Asia\/Jakarta"/);
+assert.match(readFileSync("src/lib/format.js", "utf8"), /\$\{formatted\} WIB/);
+const petaSumber = readFileSync("src/components/FloodRiskMap.jsx", "utf8");
+assert.match(petaSumber, /Pembaruan terakhir: \{waktuLabel\}\./);
+assert.equal(petaSumber.includes("Pembaruan terakhir: {waktuLabel} WIB"), false);
 assert.match(readFileSync("src/components/GwisFwiToggle.jsx", "utf8"), /Penjelasan lapisan Data Pembanding/);
 const hujanGabung = gabungHujan(
   [{ kode_kab: "11.01", tanggal: "2026-10-20", curah_hujan_mm: 3 }],

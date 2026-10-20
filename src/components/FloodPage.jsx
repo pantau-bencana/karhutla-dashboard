@@ -160,7 +160,6 @@ function FloodBody() {
   const [dasarianDate, setDasarianDate] = useState(() => todayWib());
   const [penduduk, setPenduduk] = useState({ status: "memuat", indeks: new Map(), jumlah: 0 });
   const [tab, setTab] = useState("cap");
-  const [lihatSemuaBaris, setLihatSemuaBaris] = useState(false);
   const [showHujan, setShowHujan] = useState(false);
   const [hujan, setHujan] = useState({ status: "memuat", rows: [], meta: {} });
   const pilihProvinsi = useCallback((nama) => setProvince(nama || ""), []);
@@ -325,8 +324,7 @@ function FloodBody() {
     const kodeProv = new Set(urut.map((row) => row.kode));
     return semua.filter((item) => item.provinsi === province || kodeProv.has(item.kodeKab));
   }, [prakiraan, periode, province, urut]);
-  const barisBerstatus = urut.filter((row) => row.peta?.kind === "status");
-  const barisTabel = province || lihatSemuaBaris || barisBerstatus.length === 0 ? urut : barisBerstatus;
+  const jumlahBerstatus = urut.filter((row) => row.peta?.kind === "status").length;
   const hujanTanggal = tab === "cap" ? periode.hari[0] : periode.hari[tab];
   const hujanIndeks = useMemo(() => indeksHujan(hujan.status === "ok" ? hujan.rows : []), [hujan]);
   const hujanNilai = useMemo(() => {
@@ -519,21 +517,15 @@ function FloodBody() {
             <div>
               <h3>{province || SEMUA_PROVINSI}</h3>
               <p className="fine">
-                {urut.length} kab/kota.
+                {urut.length} kab/kota
+                {province ? "" : `, ${jumlahBerstatus} berstatus`}.
                 {province
                   ? " Nomor pada peta sama dengan nomor tabel."
-                  : ` ${barisBerstatus.length} berstatus ditampilkan dulu. Nomor mengikuti urutan penuh.`}{" "}
+                  : " Seluruh baris ditampilkan, urut Awas, Siaga, Waspada, tanpa status, lalu tidak terklasifikasi atau tanpa data."}{" "}
                 Tingkat kabupaten/kota. Kecamatan dan kelurahan tidak ditampilkan.
               </p>
-              {province ? null : (
-                <button type="button" className="button" onClick={() => setLihatSemuaBaris((current) => !current)}>
-                  {lihatSemuaBaris || barisBerstatus.length === 0
-                    ? "Tampilkan yang berstatus saja"
-                    : `Tampilkan semua kab/kota (${urut.length})`}
-                </button>
-              )}
               <FloodKabDaftar
-                rows={province ? urut : barisTabel}
+                rows={urut}
                 tampilProvinsi={!province}
                 hujanNilai={showHujan ? hujanNilai : null}
               />
@@ -583,9 +575,8 @@ function FloodBody() {
                 </>
               ) : (
                 <p className="fine">
-                  Tabel Semua provinsi memuat kab/kota pada tab ini, urut Awas, Siaga, Waspada, tanpa status, lalu tidak
-                  terklasifikasi atau tanpa data. Unduh CSV dan XLSX memuat seluruh {urut.length} baris, termasuk yang
-                  belum dibuka di tabel.
+                  Tabel Semua provinsi memuat seluruh {urut.length} kab/kota pada tab ini, urut Awas, Siaga, Waspada, tanpa
+                  status, lalu tidak terklasifikasi atau tanpa data. Unduh CSV dan XLSX memuat urutan yang sama.
                 </p>
               )}
             </>

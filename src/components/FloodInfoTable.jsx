@@ -288,13 +288,14 @@ export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null
     <div className="table-wrap flood-side wrap-cells">
       <table>
         <caption>
-          Kolom: No, Kab/Kota, Status, Historis, IRBI. Nomor mengikuti urutan Awas, Siaga, Waspada, tanpa status, lalu tidak terklasifikasi atau tanpa data.
+          Kolom: No, Kab/Kota{tampilProvinsi ? ", Provinsi" : ""}, Status, Historis, IRBI. Nomor mengikuti urutan Awas, Siaga, Waspada, tanpa status, lalu tidak terklasifikasi atau tanpa data.
           Bukan peringkat prioritas. Ketuk nama untuk rincian.
         </caption>
         <thead>
           <tr>
             <th scope="col">No</th>
             <th scope="col">Kab/Kota</th>
+            {tampilProvinsi ? <th scope="col">Provinsi</th> : null}
             <th scope="col">Status</th>
             <th scope="col">Historis</th>
             <th scope="col">IRBI</th>
@@ -317,17 +318,17 @@ export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null
                       onClick={() => setBuka(terbuka ? "" : row.kode)}
                     >
                       {row.nama}
-                      {tampilProvinsi && row.provinsi ? <small>{row.provinsi}</small> : null}
                       <small>{row.kode}</small>
                     </button>
                   </th>
+                  {tampilProvinsi ? <td>{row.provinsi || "—"}</td> : null}
                   <td>{selStatusPeta(row)}</td>
                   <td>{row.dibiTeks || DIBI_UNAVAILABLE}</td>
                   <td>{selIrbi(row)}</td>
                 </tr>
                 {terbuka ? (
                   <tr className="flood-row-detail">
-                    <td colSpan={5}>
+                    <td colSpan={tampilProvinsi ? 6 : 5}>
                       {rincian.length ? rincian.map((baris) => <p key={baris}>{baris}</p>) : <p>Tidak ada rincian tambahan.</p>}
                     </td>
                   </tr>
