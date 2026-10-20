@@ -221,6 +221,10 @@ function frameBanjir(map) {
   return true;
 }
 
+function layarSempit() {
+  return typeof window !== "undefined" && window.matchMedia("(max-width: 640px)").matches;
+}
+
 export function FloodRiskMap({
   province = "",
   onProvince,
@@ -237,7 +241,10 @@ export function FloodRiskMap({
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const kontrolRef = useRef(null);
+  const legendaRef = useRef(null);
   const [kontrolSiap, setKontrolSiap] = useState(false);
+  const [kartuBuka, setKartuBuka] = useState(() => !layarSempit());
+  const [legendaBuka, setLegendaBuka] = useState(() => !layarSempit());
   const riskRef = useRef(null);
   const bahayaRef = useRef(null);
   const kabRef = useRef(null);
@@ -264,9 +271,21 @@ export function FloodRiskMap({
   inariskRef.current = showInarisk;
 
   useEffect(() => {
+    const media = window.matchMedia("(max-width: 640px)");
+    const terapkan = () => {
+      const sempit = media.matches;
+      setKartuBuka(!sempit);
+      setLegendaBuka(!sempit);
+    };
+    terapkan();
+    media.addEventListener("change", terapkan);
+    return () => media.removeEventListener("change", terapkan);
+  }, []);
+
+  useEffect(() => {
     if (!containerRef.current || mapRef.current) return undefined;
     const map = L.map(containerRef.current, {
-      zoomControl: true,
+      zoomControl: false,
       zoomAnimation: false,
       fadeAnimation: false,
       zoomSnap: 0,
@@ -296,10 +315,11 @@ export function FloodRiskMap({
       pasang();
     };
     const batasKontrol = () => {
-      const div = kontrolRef.current;
       const tinggi = map.getSize()?.y || 0;
-      if (!div || tinggi < 40) return;
-      div.style.maxHeight = `${Math.max(88, Math.round(tinggi - 36))}px`;
+      if (tinggi < 40) return;
+      const batas = `${Math.max(88, Math.round(tinggi - 28))}px`;
+      if (kontrolRef.current) kontrolRef.current.style.maxHeight = batas;
+      if (legendaRef.current) legendaRef.current.style.maxHeight = batas;
     };
     map.on("resize", onResize);
     const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(onResize) : null;
@@ -307,17 +327,25 @@ export function FloodRiskMap({
     map.on("click", (event) => {
       if (provinceRef.current && inariskRef.current) identifyHandler.current(event);
     });
+    L.control.zoom({ position: "topleft" }).addTo(map);
     const kontrol = L.control({ position: "topright" });
     kontrol.onAdd = () => {
       const div = L.DomUtil.create("div", "hujan-kontrol");
-      div.setAttribute("role", "group");
-      div.setAttribute("aria-label", "Lapisan peta");
       L.DomEvent.disableClickPropagation(div);
       L.DomEvent.disableScrollPropagation(div);
       kontrolRef.current = div;
       return div;
     };
     kontrol.addTo(map);
+    const legenda = L.control({ position: "bottomleft" });
+    legenda.onAdd = () => {
+      const div = L.DomUtil.create("div", "legenda-peta");
+      L.DomEvent.disableClickPropagation(div);
+      L.DomEvent.disableScrollPropagation(div);
+      legendaRef.current = div;
+      return div;
+    };
+    legenda.addTo(map);
     batasKontrol();
     map.on("resize", batasKontrol);
     mapRef.current = map;
@@ -331,7 +359,7 @@ export function FloodRiskMap({
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !showInarisk) {
+    if (!map || (!showInarisk && !showBahaya)) {
       riskRef.current?.remove();
       bahayaRef.current?.remove();
       riskRef.current = null;
@@ -368,7 +396,11 @@ export function FloodRiskMap({
         layerRef.current.setUrl(url);
         layerRef.current.setBounds(bounds);
       };
-      place(riskRef, RISIKO_SERVICE, showBahaya ? 0.55 : 0.75);
+      if (showInarisk) place(riskRef, RISIKO_SERVICE, showBahaya ? 0.55 : 0.75);
+      else if (riskRef.current) {
+        map.removeLayer(riskRef.current);
+        riskRef.current = null;
+      }
       if (showBahaya) place(bahayaRef, BAHAYA_SERVICE, 0.85);
       else if (bahayaRef.current) {
         map.removeLayer(bahayaRef.current);
@@ -643,9 +675,9 @@ export function FloodRiskMap({
       <div ref={containerRef} className="map-canvas flood-map" role="application" aria-label="Peta banjir Indonesia" />
       {kontrolSiap && kontrolRef.current
         ? createPortal(
-            <>
-              <fieldset>
-                <legend>Lapisan</legend>
+            <details className="peta-kartu" open={kartuBuka} onToggle={(event) => setKartuBuka(event.currentTarget.open)}>
+              <summary>Lapisan Peta</summary>
+              <div className="peta-kartu-isi">
                 <span className="layer-with-info">
                   <label>
                     <input type="checkbox" checked={showPeringatan} onChange={(event) => setShowPeringatan(event.target.checked)} />
@@ -669,72 +701,73 @@ export function FloodRiskMap({
                   <input type="checkbox" checked={showInarisk} onChange={(event) => setShowInarisk(event.target.checked)} />
                   Overlay inaRISK
                 </label>
-                {showInarisk ? (
-                  <label>
-                    <input type="checkbox" checked={showBahaya} onChange={(event) => setShowBahaya(event.target.checked)} />
-                    Bahaya banjir
-                  </label>
-                ) : null}
+                <label>
+                  <input type="checkbox" checked={showBahaya} onChange={(event) => setShowBahaya(event.target.checked)} />
+                  Bahaya banjir
+                </label>
                 <label>
                   <input type="checkbox" checked={showBatas} onChange={(event) => setShowBatas(event.target.checked)} />
                   Batas provinsi
                 </label>
-              </fieldset>
-              {tab === "cap" ? null : (
-                <fieldset>
-                  <legend>Data Pembanding</legend>
-                  <span className="layer-with-info">
-                    <label>
-                      <input type="checkbox" checked={showHujan} onChange={(event) => onShowHujan?.(event.target.checked)} />
-                      Curah hujan model
-                    </label>
-                    <InfoTip label="Penjelasan lapisan Data Pembanding curah hujan" align="end">
-                      <p>{HUJAN_PEMBANDING_BADGE}. {HUJAN_PEMBANDING_JENIS}.</p>
-                      <p>Jumlah hujan harian Open-Meteo, model {HUJAN_PEMBANDING_MODEL}, pada titik adm4 yang sama. Satuan mm. Bukan skala Awas, Siaga, atau Waspada, dan tidak masuk matriks.</p>
-                      <p>{HUJAN_TANPA_NOWCAST} {HUJAN_TITIK_BATAS}</p>
-                      <p>Bila prakiraan BMKG untuk Hari ini, Besok, atau Lusa tidak ada, angka mm tetap tampil pada tabel dan tooltip. Angka itu tidak menetapkan Awas, Siaga, atau Waspada, dan tidak mewarnai poligon.</p>
-                      <p>Diambil {hujan?.waktu || "—"}. Lisensi <a href={HUJAN_PEMBANDING_LISENSI} target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</p>
-                      <p>{hujan?.gpm}</p>
-                      <p>
-                        <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
-                      </p>
-                    </InfoTip>
-                  </span>
-                </fieldset>
-              )}
-            </>,
+                {tab === "cap" ? null : (
+                  <>
+                    <p className="peta-sub">Data Pembanding</p>
+                    <span className="layer-with-info">
+                      <label>
+                        <input type="checkbox" checked={showHujan} onChange={(event) => onShowHujan?.(event.target.checked)} />
+                        Curah hujan model
+                      </label>
+                      <InfoTip label="Penjelasan lapisan Data Pembanding curah hujan" align="end">
+                        <p>{HUJAN_PEMBANDING_BADGE}. {HUJAN_PEMBANDING_JENIS}.</p>
+                        <p>Jumlah hujan harian Open-Meteo, model {HUJAN_PEMBANDING_MODEL}, pada titik adm4 yang sama. Satuan mm. Bukan skala Awas, Siaga, atau Waspada, dan tidak masuk matriks.</p>
+                        <p>{HUJAN_TANPA_NOWCAST} {HUJAN_TITIK_BATAS}</p>
+                        <p>Bila prakiraan BMKG untuk Hari ini, Besok, atau Lusa tidak ada, angka mm tetap tampil pada tabel dan tooltip. Angka itu tidak menetapkan Awas, Siaga, atau Waspada, dan tidak mewarnai poligon.</p>
+                        <p>Diambil {hujan?.waktu || "—"}. Lisensi <a href={HUJAN_PEMBANDING_LISENSI} target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</p>
+                        <p>{hujan?.gpm}</p>
+                        <p>
+                          <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
+                        </p>
+                      </InfoTip>
+                    </span>
+                  </>
+                )}
+              </div>
+            </details>,
             kontrolRef.current,
           )
         : null}
-      <div className="flood-legend" aria-label="Legenda peta">
-        {Object.entries(ANALISIS_WARNA).map(([nama, warna]) => (
-          <span key={nama}>
-            <i style={{ background: warna }} /> {nama}
-          </span>
-        ))}
-        <span>
-          <i style={{ background: WARNA_TANPA_PERINGATAN }} />{" "}
-          {tab === "cap" ? "Tidak ada peringatan" : "Tidak ada status (cuaca tidak berpotensi banjir)"}
-        </span>
-        {tab === "cap" ? null : (
-          <span>
-            <i style={{ background: WARNA_TANPA_PERINGATAN }} /> Tidak terklasifikasi (kode cuaca BMKG belum dikenali)
-          </span>
-        )}
-        <span>
-          <i className="swatch-hatch" /> Tanpa data
-        </span>
-      </div>
-      {showHujan ? (
-        <div className="flood-legend" aria-label="Legenda hujan model">
-          {HUJAN_KELAS.map((kelas) => (
-            <span key={kelas.id}>
-              <i className="swatch-hujan" style={{ background: kelas.warna }} /> {kelas.label}
-            </span>
-          ))}
-          <span>{HUJAN_PEMBANDING_JENIS}. Bukan warna peringatan.</span>
-        </div>
-      ) : null}
+      {kontrolSiap && legendaRef.current
+        ? createPortal(
+            <details className="peta-kartu" open={legendaBuka} onToggle={(event) => setLegendaBuka(event.currentTarget.open)}>
+              <summary>Tingkat Peringatan</summary>
+              <ul className="legenda-daftar">
+                {Object.entries(ANALISIS_WARNA).map(([nama, warna]) => (
+                  <li key={nama}>
+                    <i className="legenda-dot" style={{ background: warna }} /> {nama}
+                  </li>
+                ))}
+                <li title={tab === "cap" ? CATATAN_ABU : CATATAN_ABU_HARI}>
+                  <i className="legenda-dot" style={{ background: WARNA_TANPA_PERINGATAN }} /> Tidak ada status
+                </li>
+                <li title={CATATAN_ARSIR}>
+                  <i className="legenda-dot swatch-hatch" /> Tidak ada data
+                </li>
+                <li>
+                  <i className="legenda-garis" /> Batas provinsi
+                </li>
+                {showHujan
+                  ? HUJAN_KELAS.map((kelas) => (
+                      <li key={kelas.id}>
+                        <i className="legenda-dot swatch-hujan" style={{ background: kelas.warna }} /> {kelas.label}
+                      </li>
+                    ))
+                  : null}
+              </ul>
+              {showHujan ? <p className="peta-catatan">{HUJAN_PEMBANDING_JENIS}. Bukan warna peringatan.</p> : null}
+            </details>,
+            legendaRef.current,
+          )
+        : null}
       <p className="fine">{tab === "cap" ? CATATAN_ABU : CATATAN_ABU_HARI} {CATATAN_ARSIR}</p>
       <p className="fine">{BATAS_KAB_SUMBER}</p>
       {catatan.map((baris) => (

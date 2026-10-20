@@ -448,12 +448,6 @@ function FloodBody() {
                 <option value="Dalam pengembangan">Dalam pengembangan</option>
               </select>
             </label>
-            <button type="button" className="button" onClick={() => unduhTabel("csv")}>
-              Unduh CSV
-            </button>
-            <button type="button" className="button" onClick={() => unduhTabel("xlsx")}>
-              Unduh XLSX
-            </button>
             {province ? (
               <p className="breadcrumb">
                 <button type="button" onClick={() => pilihProvinsi("")}>
@@ -485,7 +479,15 @@ function FloodBody() {
               onShowHujan={setShowHujan}
               hujan={hujanLapisan}
             />
-            <div>
+            <div className="flood-bawah-peta">
+              <div className="flood-unduh">
+                <button type="button" className="button" onClick={() => unduhTabel("csv")}>
+                  Unduh CSV
+                </button>
+                <button type="button" className="button" onClick={() => unduhTabel("xlsx")}>
+                  Unduh XLSX
+                </button>
+              </div>
               <h3>{province || SEMUA_PROVINSI}</h3>
               <p className="fine">
                 {urut.length} kab/kota
