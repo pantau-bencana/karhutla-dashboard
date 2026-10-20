@@ -25,6 +25,7 @@ const HEADERS = [
   "kec_angin_kmj",
   "arah_angin",
   "cuaca",
+  "kode_cuaca",
   "analysis_utc",
 ];
 
@@ -62,6 +63,7 @@ function slotRow(kode, slot) {
     kec_angin_kmj: slot.anginKmj,
     arah_angin: slot.arahAngin,
     cuaca: slot.cuaca,
+    kode_cuaca: slot.kodeCuaca,
     analysis_utc: slot.analysisUtc,
   };
 }

@@ -326,7 +326,7 @@ export const SOURCES = [
     expectedMaxAgeHours: 24 * 30 * 18,
     file: "data/live/dibi-banjir-2024.csv",
     limitation:
-      "Lisensi ODC-BY. Hanya kolom BANJIR pada resource a4daec53-1119-43ef-b05e-00ec3a4c42a4 untuk kode wilayah 11 dan 17. Baris yang tidak tercantum bukan nol. Koordinat tidak disimpan. Bukan rangkaian 2010–2024.",
+      "Lisensi ODC-BY. Hanya kolom BANJIR pada resource a4daec53-1119-43ef-b05e-00ec3a4c42a4 untuk kode wilayah 11 dan 17. Baris yang tidak tercantum bukan nol. Koordinat tidak disimpan. Bukan rangkaian 2010–2024. Tabel kabupaten ini tidak memuat korban atau rumah rusak. Angka korban terdampak dan rumah rusak pada paket yang sama hanya nasional atau provinsi, jadi tidak disalin ke kabupaten.",
   },
   {
     id: "dibi_karhutla",
@@ -368,7 +368,7 @@ export const SOURCES = [
     nama: "Penduduk dan rumah tangga kabupaten/kota",
     instansi: "BPS",
     fungsi:
-      "Total penduduk dan rumah tangga satu kabupaten/kota, hanya pada baris yang punya status analisis. Bukan jumlah terpapar.",
+      "Potensi penduduk terdampak dan potensi rumah terdampak: total satu kabupaten/kota, hanya pada baris berstatus Awas, Siaga, atau Waspada. potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar.",
     officialUrl: "https://sensus.bps.go.id/publikasi/index/sp2020",
     officialLabel: "Publikasi Proyeksi Penduduk Kabupaten/Kota, Sensus Penduduk 2020",
     access: "Data statis",
@@ -377,7 +377,28 @@ export const SOURCES = [
     updateType: "Tahunan / statis",
     file: "data/static/penduduk-kabkota.csv",
     limitation:
-      "514 kabupaten/kota. Penduduk adalah proyeksi BPS 2026, total kab/kota, bukan jumlah terpapar. Rumah tangga hanya DKI Jakarta, Banten, dan Jawa Timur; sel lain belum tersedia dan bukan nol. Kode mengikuti batas BIG, bukan kode BPS di dalam kalimat sumber. Tidak ada kunci API.",
+      "514 kabupaten/kota. Penduduk adalah proyeksi BPS 2026. potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar. Rumah tangga hanya DKI Jakarta, Banten, dan Jawa Timur; sel lain belum tersedia dan bukan nol. Kode mengikuti batas BIG, bukan kode BPS di dalam kalimat sumber. Tidak ada kunci API.",
+  },
+  {
+    id: "hujan_pembanding_banjir",
+    nama: "Curah hujan model pada titik adm4",
+    instansi: "Open-Meteo",
+    fungsi:
+      "Jumlah hujan harian pada titik adm4 yang sama dengan prakiraan BMKG, hanya sebagai lapisan pembanding di halaman Banjir.",
+    officialUrl: "https://open-meteo.com/en/docs",
+    officialLabel: "Open-Meteo Forecast API",
+    extraUrls: [
+      ["Lisensi Open-Meteo", "https://open-meteo.com/en/licence"],
+      ["NASA GPM IMERG", "https://gpm.nasa.gov/data/directory"],
+    ],
+    access: "API",
+    needsKey: false,
+    kind: "dinamis",
+    updateType: "Harian",
+    expectedMaxAgeHours: 36,
+    file: "data/live/hujan-pembanding-kab.csv",
+    limitation:
+      "Pembanding (data terbuka, bukan resmi). prakiraan model, bukan BMKG. Model ECMWF IFS, precipitation_sum, mm, zona Asia/Jakarta, tiga hari. Tidak masuk matriks Awas/Siaga/Waspada. NASA GPM IMERG tidak diunduh karena membutuhkan akun Earthdata atau PPS. Lisensi CC BY 4.0, pemakaian nonkomersial.",
   },
 ];
 

@@ -1,13 +1,13 @@
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { ANALISIS_NAMA, ANALISIS_WARNA, keparahanTerburuk } from "../lib/analisisPantauBencana.js";
 import {
   BMKG_ATTRIBUTION,
+  CAP_DATA_TERAKHIR,
   DASARIAN_NOTE,
   NOWCAST_FAIL,
   NOWCAST_LOADING,
   nowcastAbsent,
   nowcastCrossTab,
-  nowcastExpiredText,
   severityLabel,
 } from "../lib/capKab.js";
 import {
@@ -24,7 +24,8 @@ import {
   teksAngkaPenduduk,
   teksRumahTangga,
 } from "../lib/pendudukKab.js";
-import { FLOOD_INFO_COLUMNS, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, krbLinksFor, skorTeks, sortFloodRows } from "../lib/floodMatrix.js";
+import { barisDampakHistoris } from "../lib/bnpbBanjir.js";
+import { DIBI_UNAVAILABLE, FLOOD_INFO_COLUMNS, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, krbLinksFor, skorTeks, sortFloodRows } from "../lib/floodMatrix.js";
 
 function selPenduduk(row, jenis) {
   if (!row.pendudukTampil) return "—";
@@ -95,11 +96,13 @@ const CELLS = {
           </span>
         ))}
         {lampau.map((alert) => (
-          <span key={`lampau-${alert.cap_id || alert.url}`} className="nowcast-item">
-            <strong>{nowcastExpiredText(row.nowcastJam)}</strong>
+          <span key={`lampau-${alert.cap_id || alert.url}`} className="nowcast-item nowcast-lampau">
+            <strong>{alert.event || "Peringatan"}</strong>
+            <small>{severityLabel(alert.severity)}</small>
             <small>
-              {alert.event} · {severityLabel(alert.severity)}
+              Berlaku {formatWib(alert.effective)} sampai {formatWib(alert.expires)}
             </small>
+            <small className="nowcast-lampau-label">{CAP_DATA_TERAKHIR}</small>
           </span>
         ))}
       </>
@@ -114,12 +117,15 @@ const CELLS = {
     if (!row.analisisStatus) return "—";
     const warna = ANALISIS_WARNA[row.analisisStatus];
     return (
-      <span
-        className="analisis-pill"
-        style={{ background: warna, color: row.analisisStatus === "Awas" ? "#fff" : "#1c1915" }}
-      >
-        {row.analisisStatus}
-      </span>
+      <>
+        <span
+          className="analisis-pill"
+          style={{ background: warna, color: row.analisisStatus === "Awas" ? "#fff" : "#1c1915" }}
+        >
+          {row.analisisStatus}
+        </span>
+        {row.analisisLampau ? <small>{CAP_DATA_TERAKHIR}</small> : null}
+      </>
     );
   },
   penduduk: (row) => selPenduduk(row, "penduduk"),
@@ -157,7 +163,7 @@ const CELLS = {
   dibi: (row) => row.dibiTeks,
   tautan: (row) => {
     const links = [];
-    for (const alert of row.nowcastAlerts ?? []) {
+    for (const alert of [...(row.nowcastAlerts ?? []), ...(row.nowcastLampau ?? [])]) {
       if (alert.url) links.push({ nama: "Berkas CAP", url: alert.url });
     }
     for (const link of krbLinksFor(row)) links.push(link);
@@ -171,7 +177,7 @@ const CELLS = {
 };
 
 export function FloodInfoTable({ rows, columns = FLOOD_INFO_COLUMNS }) {
-  const [sort, setSort] = useState({ key: "kode", direction: "asc" });
+  const [sort, setSort] = useState({ key: "status", direction: "asc" });
   const ordered = useMemo(() => sortFloodRows(rows, sort.key, sort.direction), [rows, sort]);
   const grouped = sort.key === "kode";
 
@@ -256,49 +262,90 @@ export function FloodInfoTable({ rows, columns = FLOOD_INFO_COLUMNS }) {
   );
 }
 
-export function FloodKabDaftar({ rows }) {
+export function rincianKab(row, hujanTeks) {
+  const lines = [];
+  if (row?.provinsi) lines.push(`Provinsi: ${row.provinsi}`);
+  if (row?.peta?.lampau) lines.push(CAP_DATA_TERAKHIR);
+  lines.push(...masaBerlaku(row));
+  if (row?.cuacaHari?.length) lines.push(`Prakiraan: ${row.cuacaHari.join(", ")}`);
+  if (row?.peta?.kind === "tak-dikenal" && row.peta.cuacaMentah?.length) {
+    lines.push(`Kode cuaca: ${row.peta.cuacaMentah.join(", ")}`);
+  }
+  lines.push(...barisDampakHistoris());
+  if (row?.pendudukTampil) {
+    lines.push(
+      `Penduduk ${teksAngkaPenduduk(row.pendudukItem?.penduduk)} · rumah tangga ${teksRumahTangga(row.pendudukItem)} · ${PENDUDUK_BUKAN_TERPAPAR}`,
+    );
+  }
+  if (hujanTeks) lines.push(`Hujan model: ${hujanTeks}. prakiraan model, bukan BMKG.`);
+  return lines;
+}
+
+export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null }) {
   const ordered = rows ?? [];
+  const [buka, setBuka] = useState("");
   return (
     <div className="table-wrap flood-side wrap-cells">
       <table>
-        <caption>Kabupaten/kota. Nomor mengikuti kode wilayah, bukan peringkat.</caption>
+        <caption>
+          Kolom: No, Kab/Kota{tampilProvinsi ? ", Provinsi" : ""}, Status, Historis, IRBI. Nomor mengikuti urutan Awas, Siaga, Waspada, tanpa status, lalu tidak terklasifikasi atau tanpa data.
+          Bukan peringkat prioritas. Ketuk nama untuk rincian.
+        </caption>
         <thead>
           <tr>
-            <th scope="col">No.</th>
-            <th scope="col">Kab/kota</th>
+            <th scope="col">No</th>
+            <th scope="col">Kab/Kota</th>
+            {tampilProvinsi ? <th scope="col">Provinsi</th> : null}
             <th scope="col">Status</th>
-            <th scope="col">Riwayat</th>
+            <th scope="col">Historis</th>
             <th scope="col">IRBI</th>
           </tr>
         </thead>
         <tbody>
-          {ordered.map((row, index) => (
-            <tr key={row.kode}>
-              <td>{index + 1}</td>
-              <th scope="row">
-                {row.nama}
-                <small>{row.kode}</small>
-              </th>
-              <td>
-                {selStatusPeta(row)}
-                {row.cuacaHari?.length ? <small>{row.cuacaHari.join(", ")}</small> : null}
-              </td>
-              <td>{row.dibiTeks || "—"}</td>
-              <td>
-                {row.banjirKelas || IRBI_TIDAK_TERSEDIA}
-                {row.pendudukTampil ? (
-                  <small>
-                    Penduduk {teksAngkaPenduduk(row.pendudukItem?.penduduk)} · rumah tangga {teksRumahTangga(row.pendudukItem)} · {PENDUDUK_BUKAN_TERPAPAR}
-                  </small>
+          {ordered.map((row, index) => {
+            const terbuka = buka === row.kode;
+            const hujanTeks = hujanNilai ? hujanNilai.get(row.kode) || "belum tersedia" : "";
+            const rincian = rincianKab(row, hujanTeks);
+            return (
+              <Fragment key={row.kode}>
+                <tr>
+                  <td>{index + 1}</td>
+                  <th scope="row">
+                    <button
+                      type="button"
+                      className="row-detail-toggle"
+                      aria-expanded={terbuka}
+                      onClick={() => setBuka(terbuka ? "" : row.kode)}
+                    >
+                      {row.nama}
+                      <small>{row.kode}</small>
+                    </button>
+                  </th>
+                  {tampilProvinsi ? <td>{row.provinsi || "—"}</td> : null}
+                  <td>{selStatusPeta(row)}</td>
+                  <td>{row.dibiTeks || DIBI_UNAVAILABLE}</td>
+                  <td>{selIrbi(row)}</td>
+                </tr>
+                {terbuka ? (
+                  <tr className="flood-row-detail">
+                    <td colSpan={tampilProvinsi ? 6 : 5}>
+                      {rincian.length ? rincian.map((baris) => <p key={baris}>{baris}</p>) : <p>Tidak ada rincian tambahan.</p>}
+                    </td>
+                  </tr>
                 ) : null}
-              </td>
-            </tr>
-          ))}
+              </Fragment>
+            );
+          })}
         </tbody>
       </table>
-      <p className="fine">Tingkat kabupaten/kota. Kecamatan tidak ditampilkan.</p>
+      <p className="fine">Tingkat kabupaten/kota. Kecamatan tidak ditampilkan. Rincian memuat masa berlaku, prakiraan, penduduk terdampak, rumah terdampak, potensi BPS, dan hujan model bila lapisan itu nyala.</p>
     </div>
   );
+}
+
+function masaBerlaku(row) {
+  const alerts = [...(row.nowcastAlerts ?? []), ...(row.nowcastLampau ?? [])];
+  return alerts.map((alert) => `Berlaku ${formatWib(alert.effective)} sampai ${formatWib(alert.expires)}`);
 }
 
 function selStatusPeta(row) {
@@ -311,9 +358,20 @@ function selStatusPeta(row) {
       </span>
     );
   }
-  if (peta?.kind === "kosong") return peta.kosongLabel || "Tidak ada peringatan";
+  if (peta?.kind === "kosong" || peta?.kind === "tak-dikenal") return peta.kosongLabel || "Tidak ada peringatan";
   if (peta?.alasan === "irbi") return IRBI_TIDAK_TERSEDIA;
   return "Tanpa data";
+}
+
+function selIrbi(row) {
+  if (!row.banjirKelas) return IRBI_TIDAK_TERSEDIA;
+  const skor = row.banjirSkor === "" || row.banjirSkor == null ? "" : skorTeks(row.banjirSkor);
+  return (
+    <>
+      {row.banjirKelas}
+      {skor ? <small>Skor {skor}</small> : null}
+    </>
+  );
 }
 
 export function PrakiraanTigaHari({ titik, hari, periodeLabel }) {
@@ -396,3 +454,4 @@ export function NowcastCrossTab({ rows }) {
     </div>
   );
 }
+

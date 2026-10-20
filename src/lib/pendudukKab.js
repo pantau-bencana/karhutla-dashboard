@@ -15,9 +15,12 @@ export const PENDUDUK_HEADER = Object.freeze([
   "tahun_rt",
   "sumber_rt",
 ]);
-export const PENDUDUK_BUKAN_TERPAPAR = "total kab/kota, bukan jumlah terpapar";
+export const POTENSI_PENDUDUK = "Potensi penduduk terdampak";
+export const POTENSI_RUMAH = "Potensi rumah terdampak";
+export const POTENSI_LABEL = "potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar";
+export const PENDUDUK_BUKAN_TERPAPAR = POTENSI_LABEL;
 export const PENDUDUK_ABSENT =
-  "Angka penduduk dan rumah tangga kabupaten/kota belum diisi dari tabel BPS. Sel kosong bukan nol dan bukan jumlah terpapar.";
+  "Angka penduduk dan rumah tangga kabupaten/kota belum diisi dari tabel BPS. Sel kosong bukan nol. potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar.";
 export const BPS_PROYEKSI_URL = "https://sensus.bps.go.id/publikasi/index/sp2020";
 export const BPS_PENDUDUK_URL =
   "https://www.bps.go.id/id/statistics-table/2/Mjc5MCMy/-jumlah-penduduk-menurut-kabupaten-kota-dan-kelompok-umur.html";
@@ -52,13 +55,13 @@ export function bacaPenduduk(rows) {
 
 export function labelPenduduk(item) {
   const tahun = item?.tahunPenduduk || "tahun belum diisi";
-  return `Penduduk kab/kota (BPS, proyeksi ${tahun})`;
+  return `${POTENSI_PENDUDUK} (BPS, proyeksi ${tahun})`;
 }
 
 export function labelRumahTangga(item) {
   const sumber = item?.sumberRt || "sumber belum diisi";
   const tahun = item?.tahunRt || "tahun belum diisi";
-  return `Jumlah rumah tangga/KK (${sumber}, ${tahun})`;
+  return `${POTENSI_RUMAH} (${sumber}, ${tahun})`;
 }
 
 export function teksAngkaPenduduk(value) {
@@ -74,12 +77,12 @@ export function teksRumahTangga(item) {
 export function barisTooltip(item) {
   const rumah =
     item?.rumahTangga == null
-      ? `Jumlah rumah tangga/KK: ${RUMAH_BELUM}`
+      ? `${POTENSI_RUMAH}: ${RUMAH_BELUM}`
       : `${labelRumahTangga(item)}: ${teksAngkaPenduduk(item.rumahTangga)}`;
   return [
     `${labelPenduduk(item)}: ${teksAngkaPenduduk(item?.penduduk ?? null)}`,
     rumah,
-    PENDUDUK_BUKAN_TERPAPAR,
+    POTENSI_LABEL,
   ];
 }
 
@@ -103,29 +106,48 @@ export function lampirkanPenduduk(rows, indeks, status = "kosong") {
 export function ringkasPendudukBerstatus(rows, indeks) {
   const berstatus = (rows ?? []).filter((row) => statusYangDitampilkan(row));
   if (!berstatus.length) {
-    return { adaStatus: false, lengkap: false, penduduk: null, kurang: 0, jumlahStatus: 0 };
+    return {
+      adaStatus: false,
+      lengkap: false,
+      penduduk: null,
+      kurang: 0,
+      rumahLengkap: false,
+      rumah: null,
+      rumahKurang: 0,
+      jumlahStatus: 0,
+    };
   }
   let penduduk = 0;
   let kurang = 0;
+  let rumah = 0;
+  let rumahKurang = 0;
   for (const row of berstatus) {
-    const angka = indeks?.get(row.kode)?.penduduk;
-    if (angka == null) kurang += 1;
-    else penduduk += angka;
+    const item = indeks?.get(row.kode);
+    if (item?.penduduk == null) kurang += 1;
+    else penduduk += item.penduduk;
+    if (item?.rumahTangga == null) rumahKurang += 1;
+    else rumah += item.rumahTangga;
   }
   return {
     adaStatus: true,
     lengkap: kurang === 0,
     penduduk: kurang === 0 ? penduduk : null,
     kurang,
+    rumahLengkap: rumahKurang === 0,
+    rumah: rumahKurang === 0 ? rumah : null,
+    rumahKurang,
     jumlahStatus: berstatus.length,
   };
 }
 
 export function kalimatJumlahPenduduk(ringkas, { memuat = false } = {}) {
-  if (memuat) return "Jumlah penduduk kab/kota yang berstatus menunggu data peringatan.";
-  if (!ringkas?.adaStatus) return "Tidak ada kab/kota berstatus, jadi jumlah penduduk tidak dijumlahkan.";
-  if (!ringkas.lengkap) {
-    return `Jumlah penduduk kab/kota yang berstatus belum dapat dijumlahkan. ${ringkas.kurang} dari ${ringkas.jumlahStatus} kab/kota berstatus belum punya angka BPS. ${PENDUDUK_BUKAN_TERPAPAR}.`;
-  }
-  return `Jumlah penduduk kab/kota yang berstatus: ${teksAngkaPenduduk(ringkas.penduduk)}. ${PENDUDUK_BUKAN_TERPAPAR}.`;
+  if (memuat) return `${POTENSI_PENDUDUK} pada kab/kota berstatus menunggu data peringatan. ${POTENSI_LABEL}.`;
+  if (!ringkas?.adaStatus) return "Tidak ada kab/kota berstatus, jadi potensi penduduk dan potensi rumah tidak dijumlahkan.";
+  const penduduk = ringkas.lengkap
+    ? `${POTENSI_PENDUDUK}: ${teksAngkaPenduduk(ringkas.penduduk)}.`
+    : `${POTENSI_PENDUDUK} belum dapat dijumlahkan. ${ringkas.kurang} dari ${ringkas.jumlahStatus} kab/kota berstatus belum punya angka BPS.`;
+  const rumah = ringkas.rumahLengkap
+    ? `${POTENSI_RUMAH}: ${teksAngkaPenduduk(ringkas.rumah)}.`
+    : `${POTENSI_RUMAH} belum dapat dijumlahkan. ${ringkas.rumahKurang} dari ${ringkas.jumlahStatus} kab/kota berstatus belum punya angka rumah tangga BPS.`;
+  return `${penduduk} ${rumah} ${POTENSI_LABEL}.`;
 }

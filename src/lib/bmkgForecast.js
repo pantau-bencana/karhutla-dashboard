@@ -44,6 +44,7 @@ export function flattenBmkgForecast(payload) {
           anginKmj: numberOrBlank(item.ws),
           arahAngin: item.wd || "",
           cuaca: item.weather_desc || "",
+          kodeCuaca: kodeCuaca(item.weather),
           analysisUtc: analysis ? `${analysis.replace(" ", "T")}Z`.replace("ZZ", "Z") : "",
         });
       }
@@ -55,4 +56,11 @@ export function flattenBmkgForecast(payload) {
 function numberOrBlank(value) {
   const number = Number(value);
   return Number.isFinite(number) ? number : "";
+}
+
+function kodeCuaca(value) {
+  if (value == null || value === "") return "";
+  const number = Number(value);
+  if (!Number.isInteger(number) || number < 0) return "";
+  return String(number);
 }

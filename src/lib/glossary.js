@@ -56,7 +56,7 @@ export const GLOSSARY = [
     penjelasan:
       "Format peringatan yang dipakai BMKG pada berkas XML nowcast. RSS resmi ada di halaman peringatan dini cuaca. Dasar waktunya sekitar 0–3 jam, berbeda dari peringatan dasarian dan dari prakiraan berbasis dampak.",
     penggunaan:
-      "Pada modul Banjir, peringatan yang masih berlaku dipasangkan ke kabupaten/kota lewat irisan poligon dengan BIG. Yang tersimpan hanya kode, nama, dan teks peringatan. Geometri batas tidak disimpan. areaDesc adalah kantor penerbit, bukan provinsi terdampak. Peringatan yang sudah berakhir tidak ditampilkan sebagai aktif.",
+      "Pada modul Banjir, peringatan CAP dipasangkan ke kabupaten/kota lewat irisan poligon dengan BIG. Yang tersimpan hanya kode, nama, dan teks peringatan. areaDesc adalah kantor penerbit, bukan provinsi terdampak. Bila tidak ada cuplikan yang lebih baru, peringatan terakhir tetap ditampilkan beserta masa berlakunya. Setelah masa berlaku lewat, labelnya data terakhir, bukan peringatan yang masih berlaku.",
     rujukan: "https://www.bmkg.go.id/alerts/nowcast/id",
     rujukanLabel: "BMKG — RSS nowcast",
   },

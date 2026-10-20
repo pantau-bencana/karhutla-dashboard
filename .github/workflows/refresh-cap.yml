@@ -47,6 +47,9 @@ jobs:
       - name: Ambil prakiraan satu titik per kab/kota
         run: node scripts/prakiraan-kab.mjs || echo "Pengambilan prakiraan kab/kota gagal. Cuplikan sebelumnya tetap dipakai bila ada."
 
+      - name: Tulis ringkasan banjir
+        run: node scripts/banjir-ringkasan.mjs || echo "Ringkasan banjir gagal. Berkas sebelumnya tetap dipakai bila ada."
+
       - name: Commit bila cuplikan CAP berubah
         id: commit
         run: |
@@ -62,6 +65,9 @@ jobs:
             fi
             if [[ -f data/live/bmkg-cap-geom.json ]]; then
               git add data/live/bmkg-cap-geom.json
+            fi
+            if [[ -f data/live/banjir-ringkasan.json ]]; then
+              git add data/live/banjir-ringkasan.json
             fi
             if git diff --cached --quiet; then
               return 1
@@ -90,6 +96,7 @@ jobs:
               git reset --hard "origin/${branch}"
               node scripts/cap-kab.mjs || true
               node scripts/prakiraan-kab.mjs || true
+              node scripts/banjir-ringkasan.mjs || true
               if ! commit_snapshot; then
                 echo "changed=false" >> "$GITHUB_OUTPUT"
                 echo "Tidak ada perubahan CAP setelah dibuat ulang."

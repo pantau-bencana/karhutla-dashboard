@@ -43,7 +43,7 @@ import {
   tampilanPrioritas,
 } from "../src/lib/aplus.js";
 import { CAP_CRON, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
-import { ANALISIS_MATRIKS, ANALISIS_NAMA, analisisStatus, catWilayah, keparahanCuaca, keparahanTerburuk } from "../src/lib/analisisPantauBencana.js";
+import { ANALISIS_MATRIKS, ANALISIS_NAMA, ANALISIS_WARNA, analisisStatus, applyAnalisis, catWilayah, keparahanCuaca, keparahanTerburuk } from "../src/lib/analisisPantauBencana.js";
 import {
   BPS_PROYEKSI_URL,
   PENDUDUK_ABSENT,
@@ -59,12 +59,34 @@ import {
   ringkasPendudukBerstatus,
   teksRumahTangga,
 } from "../src/lib/pendudukKab.js";
-import { BNPB_ABSENT, BNPB_RESOURCE_URL } from "../src/lib/bnpbBanjir.js";
-import { jenisHujan, labelSlotHujan, periodeTigaHari } from "../src/lib/prakiraanHujan.js";
+import { BNPB_ABSENT, BNPB_RESOURCE_URL, DAMPAK_HISTORIS_CATATAN, barisDampakHistoris } from "../src/lib/bnpbBanjir.js";
+import {
+  LABEL_TAK_DIKENAL,
+  LABEL_TIDAK_BERPOTENSI,
+  LABEL_TANPA_STATUS,
+  CUACA_DISCLAIMER,
+  CUACA_RUJUKAN,
+  hariPunyaHujan,
+  kelasCuacaSlot,
+  periodeTigaHari,
+  jenisHujan,
+  labelSlotHujan,
+  terapkanHari,
+} from "../src/lib/prakiraanHujan.js";
+import {
+  HUJAN_GAP_MS,
+  HUJAN_GPM_CATATAN,
+  HUJAN_KELAS,
+  HUJAN_PEMBANDING_BADGE,
+  HUJAN_PEMBANDING_JENIS,
+  gabungHujan,
+  warnaHujan,
+} from "../src/lib/hujanPembanding.js";
 import { PROVINSI, SEMUA_PROVINSI } from "../src/lib/provinsi.js";
-import { severityLabel } from "../src/lib/capKab.js";
+import { CAP_DATA_TERAKHIR, severityLabel } from "../src/lib/capKab.js";
+import { xlsxBytes } from "../src/lib/xlsxMini.js";
 import { buildHotspotTree } from "../src/lib/hotspotTree.js";
-import { DIBI_LUAR_CUPLIKAN, DIBI_UNAVAILABLE, FLOOD_INFO_COLUMNS, IRBI_BANJIR_TERVERIFIKASI, IRBI_PENGGUNAAN_INTERNAL, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI } from "../src/lib/floodMatrix.js";
+import { DIBI_LUAR_CUPLIKAN, DIBI_UNAVAILABLE, FLOOD_INFO_COLUMNS, IRBI_BANJIR_TERVERIFIKASI, IRBI_PENGGUNAAN_INTERNAL, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI, peringkatTampil, urutStatusKab } from "../src/lib/floodMatrix.js";
 import {
   DASARIAN_NOTE,
   MATRIX_PERMISSION,
@@ -930,7 +952,7 @@ assert.match(floodSource, /ANALISIS_NAMA/);
 assert.equal(ANALISIS_NAMA, "Analisis Pantau Bencana (gabungan BMKG × IRBI BNPB)");
 assert.equal(
   RAIN_RISK_MATRIX.note,
-  "Sumbu hujan pada tab 0–3 jam adalah nowcast BMKG per kabupaten/kota. Pada tab Hari ini, Besok, dan Lusa sumbu hujan adalah pemetaan teks cuaca BMKG di satu titik sampel: Extreme untuk hujan sangat lebat atau hujan ekstrem, Severe untuk hujan lebat atau petir, Moderate untuk hujan sedang. Sumbu risiko adalah kelas banjir IRBI 2025 apa adanya. Analisis Pantau Bencana memetakan kedua sumbu menjadi Awas, Siaga, atau Waspada. Itu analisis dasbor, bukan status resmi, bukan skor angka, bukan peringatan dasarian, bukan IBF, dan bukan peringatan resmi 3 hari.",
+  "Sumbu hujan pada tab 0–3 jam adalah nowcast BMKG per kabupaten/kota. Pada tab Hari ini, Besok, dan Lusa sumbu hujan adalah weather_desc BMKG di satu titik sampel: tidak ada status untuk cerah, berawan, udara kabur, asap, dan kabut; hujan ringan atau hujan lokal tidak berstatus kecuali Waspada bila IRBI Tinggi dan hujan ada pada 3 hari berturut-turut; Moderate untuk hujan sedang; Severe untuk hujan lebat atau hujan petir; Extreme untuk hujan sangat lebat atau hujan ekstrem. Kode yang belum dikenali tetap abu-abu. Sumbu risiko adalah kelas banjir IRBI 2025 apa adanya. Analisis Pantau Bencana memetakan kedua sumbu menjadi Awas, Siaga, atau Waspada. Itu analisis dasbor, bukan status resmi, bukan skor angka, bukan peringatan dasarian, dan bukan peringatan resmi 3 hari. Ambang IRBI tinggi dan 3 hari berturut-turut adalah usulan proyek ini.",
 );
 assert.equal(RAIN_RISK_MATRIX.ready, true);
 assert.deepEqual(
@@ -1105,6 +1127,25 @@ const expiredNowcast = applyNowcast(
 );
 assert.equal(expiredNowcast.find((row) => row.kode === "11.01").nowcastAda, false);
 assert.equal(expiredNowcast.find((row) => row.kode === "11.01").nowcastExpired, true);
+const lampauBerwarna = applyAnalisis(expiredNowcast).find((row) => row.kode === "11.01");
+assert.equal(lampauBerwarna.analisisLampau, false);
+const lampauDenganSeverity = applyAnalisis(
+  applyNowcast(
+    floodRows,
+    [{ kode: "11.01", expires: "2026-10-18T13:00:00Z", severity: "Severe" }],
+    { status: "ok", rss_published: "2026-10-18T12:00:00Z" },
+    new Date("2026-10-18T14:00:00Z"),
+  ),
+).find((row) => row.kode === "11.01");
+assert.equal(lampauDenganSeverity.nowcastAda, false);
+assert.equal(lampauDenganSeverity.analisisStatus, "Awas");
+assert.equal(lampauDenganSeverity.analisisLampau, true);
+assert.equal(
+  catWilayah(lampauDenganSeverity, { tab: "cap", cakupan: "nasional", tertunda: true }).kind,
+  "status",
+);
+assert.equal(catWilayah(lampauDenganSeverity, { tab: "cap", cakupan: "nasional", tertunda: true }).lampau, true);
+assert.equal(CAP_DATA_TERAKHIR, "Data terakhir — masa berlaku sudah lewat, menunggu pembaruan BMKG");
 const failedTab = nowcastCrossTab(applyNowcast(floodRows, [], { status: "gagal" }));
 assert.equal(failedTab.ok, false);
 assert.equal(failedTab.cell("TINGGI", false).length, 0);
@@ -1157,6 +1198,138 @@ assert.equal(keparahanCuaca("Hujan Ringan"), "");
 assert.equal(keparahanCuaca("Cerah Berawan"), "");
 assert.equal(keparahanCuaca("Udara Kabur"), "");
 assert.equal(keparahanCuaca("Kabut/Asap"), "");
+assert.equal(kelasCuacaSlot({ cuaca: "Cerah", kode_cuaca: "0" }).golongan, "tidak-berpotensi");
+assert.equal(kelasCuacaSlot({ cuaca: "Udara Kabur", kode_cuaca: "10" }).golongan, "tidak-berpotensi");
+assert.equal(kelasCuacaSlot({ cuaca: "Kabut/Asap" }).golongan, "tidak-berpotensi");
+assert.equal(kelasCuacaSlot({ cuaca: "Berawan Tebal", kode_cuaca: "4" }).golongan, "tidak-berpotensi");
+assert.equal(kelasCuacaSlot({ cuaca: "Hujan Ringan", kode_cuaca: "61" }).golongan, "ringan");
+assert.equal(kelasCuacaSlot({ cuaca: "Hujan Ringan", kode_cuaca: "61" }).severity, "");
+assert.equal(kelasCuacaSlot({ cuaca: "Hujan Sedang", kode_cuaca: "63" }).severity, "Moderate");
+assert.equal(kelasCuacaSlot({ cuaca: "Hujan Lebat", kode_cuaca: "63" }).severity, "Severe");
+assert.equal(kelasCuacaSlot({ cuaca: "Hujan Petir", kode_cuaca: "95" }).severity, "Severe");
+assert.equal(kelasCuacaSlot({ cuaca: "Hujan Ringan", kode_cuaca: "95" }).severity, "Severe");
+assert.equal(kelasCuacaSlot({ cuaca: "Petir", kode_cuaca: "97" }).severity, "Severe");
+assert.equal(kelasCuacaSlot({ cuaca: "Hujan Sangat Lebat" }).severity, "Extreme");
+assert.equal(kelasCuacaSlot({ kode_cuaca: "0" }).golongan, "tidak-berpotensi");
+assert.equal(kelasCuacaSlot({ kode_cuaca: "60" }).golongan, "ringan");
+assert.equal(kelasCuacaSlot({ kode_cuaca: "80" }).golongan, "ringan");
+assert.equal(kelasCuacaSlot({ kode_cuaca: "61" }).golongan, "tak-dikenal");
+assert.equal(kelasCuacaSlot({ cuaca: "Hujan Angin", kode_cuaca: "77" }).golongan, "tak-dikenal");
+assert.equal(LABEL_TIDAK_BERPOTENSI, "Tidak ada status (cuaca tidak berpotensi banjir)");
+assert.equal(LABEL_TAK_DIKENAL, "Tidak terklasifikasi (kode cuaca BMKG belum dikenali)");
+assert.equal(/\bnormal\b/i.test(`${LABEL_TIDAK_BERPOTENSI} ${LABEL_TANPA_STATUS} ${LABEL_TAK_DIKENAL} ${CUACA_DISCLAIMER}`), false);
+assert.match(CUACA_DISCLAIMER, /bukan ketentuan resmi/);
+assert.equal(CUACA_RUJUKAN.some((item) => item[1] === "https://signature.bmkg.go.id/site/prakiraan-cuaca-berbasis-dampak/"), true);
+assert.equal(CUACA_RUJUKAN.some((item) => item[1].includes("wmo_1150_en.pdf")), true);
+const hariCuaca = ["2026-10-20", "2026-10-21", "2026-10-22"];
+const indeksCuacaUji = new Map([
+  [
+    "11.01",
+    {
+      perHari: new Map([
+        ["2026-10-20", [{ cuaca: "Hujan Ringan", kode_cuaca: "61" }]],
+        ["2026-10-21", [{ cuaca: "Hujan Sedang", kode_cuaca: "63" }]],
+        ["2026-10-22", [{ cuaca: "Hujan Lokal" }]],
+      ]),
+    },
+  ],
+]);
+const dasarCuaca = [{ kode: "11.01", nama: "Aceh Selatan", banjirKelas: "TINGGI" }];
+const ringanWaspada = terapkanHari(dasarCuaca, indeksCuacaUji, "2026-10-20", hariCuaca)[0];
+assert.equal(ringanWaspada.hariStatus, "Waspada");
+assert.equal(terapkanHari([{ ...dasarCuaca[0], banjirKelas: "SEDANG" }], indeksCuacaUji, "2026-10-20", hariCuaca)[0].hariStatus, null);
+assert.equal(terapkanHari(dasarCuaca, indeksCuacaUji, "2026-10-20", ["2026-10-20", "2026-10-21"])[0].hariStatus, null);
+assert.equal(terapkanHari(dasarCuaca, indeksCuacaUji, "2026-10-21", hariCuaca)[0].hariStatus, "Siaga");
+assert.equal(hariPunyaHujan([{ cuaca: "Cerah" }]), false);
+assert.equal(hariPunyaHujan([{ cuaca: "Hujan Ringan" }]), true);
+const takDikenal = terapkanHari(
+  [{ kode: "11.01", nama: "Aceh Selatan", banjirKelas: "TINGGI" }],
+  new Map([["11.01", { perHari: new Map([["2026-10-20", [{ cuaca: "Hujan Angin", kode_cuaca: "77" }]]]) }]]),
+  "2026-10-20",
+  hariCuaca,
+)[0];
+assert.equal(takDikenal.cuacaLabel, LABEL_TAK_DIKENAL);
+assert.equal(takDikenal.cuacaMentah[0], "77 Hujan Angin");
+const catTak = catWilayah(takDikenal, { tab: 0 });
+assert.equal(catTak.kind, "tak-dikenal");
+assert.equal(catTak.fill, "#c5c1b8");
+assert.equal(catTak.kosongLabel, LABEL_TAK_DIKENAL);
+const catCerah = catWilayah(
+  terapkanHari(
+    [{ kode: "11.01", nama: "Aceh Selatan", banjirKelas: "" }],
+    new Map([["11.01", { perHari: new Map([["2026-10-20", [{ cuaca: "Cerah", kode_cuaca: "1" }]]]) }]]),
+    "2026-10-20",
+    hariCuaca,
+  )[0],
+  { tab: 0 },
+);
+assert.equal(catCerah.kind, "kosong");
+assert.equal(catCerah.kosongLabel, LABEL_TIDAK_BERPOTENSI);
+const urutCuaca = urutStatusKab([
+  { kode: "11.02", nama: "Aceh Tenggara", peta: catTak },
+  { kode: "11.01", nama: "Aceh Selatan", peta: catCerah },
+  { kode: "11.03", nama: "Aceh Timur", peta: { kind: "status", status: "Waspada" } },
+]);
+assert.deepEqual(urutCuaca.map((row) => row.kode), ["11.03", "11.01", "11.02"]);
+assert.equal(peringkatTampil({ peta: catTak }), 4);
+assert.equal(readFileSync("src/components/FloodRiskMap.jsx", "utf8").includes("Cuaca di luar matriks"), false);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Penjelasan lapisan peringatan/);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /#\/sumber-metode\/petunjuk-banjir/);
+const daftarSumber = readFileSync("src/components/FloodInfoTable.jsx", "utf8");
+assert.match(daftarSumber, /<th scope="col">No<\/th>[\s\S]*<th scope="col">Kab\/Kota<\/th>[\s\S]*<th scope="col">Provinsi<\/th>[\s\S]*<th scope="col">Status<\/th>[\s\S]*<th scope="col">Historis<\/th>[\s\S]*<th scope="col">IRBI<\/th>/);
+assert.match(daftarSumber, /tampilProvinsi \? <th scope="col">Provinsi<\/th>/);
+assert.equal(daftarSumber.includes("<th scope=\"col\">Riwayat</th>"), false);
+assert.match(daftarSumber, /DIBI_UNAVAILABLE/);
+assert.match(daftarSumber, /Provinsi:/);
+assert.match(daftarSumber, /barisDampakHistoris/);
+const dampakHistoris = barisDampakHistoris();
+assert.deepEqual(dampakHistoris.slice(0, 2), ["Penduduk terdampak: belum tersedia", "Rumah terdampak: belum tersedia"]);
+assert.equal(dampakHistoris[2], DAMPAK_HISTORIS_CATATAN);
+assert.match(DAMPAK_HISTORIS_CATATAN, /Historis, bukan prakiraan/);
+assert.equal(dampakHistoris.join(" ").includes("217009"), false);
+assert.equal(daftarSumber.includes('<th scope="col">Penduduk terdampak</th>'), false);
+assert.equal(daftarSumber.includes('<th scope="col">Rumah terdampak</th>'), false);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /barisDampakHistoris/);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /DAMPAK_HISTORIS_CATATAN/);
+const halamanBanjir = readFileSync("src/components/FloodPage.jsx", "utf8");
+assert.equal(halamanBanjir.includes("Tampilkan semua kab/kota"), false);
+assert.match(halamanBanjir, /rows=\{urut\}/);
+assert.match(halamanBanjir, /formatWib\(cap\.meta\.fetched_at\)/);
+assert.match(readFileSync("src/lib/format.js", "utf8"), /timeZone: "Asia\/Jakarta"/);
+assert.match(readFileSync("src/lib/format.js", "utf8"), /\$\{formatted\} WIB/);
+const petaSumber = readFileSync("src/components/FloodRiskMap.jsx", "utf8");
+assert.match(petaSumber, /Pembaruan terakhir: \{waktuLabel\}\./);
+assert.equal(petaSumber.includes("Pembaruan terakhir: {waktuLabel} WIB"), false);
+assert.match(readFileSync("src/components/GwisFwiToggle.jsx", "utf8"), /Penjelasan lapisan Data Pembanding/);
+const hujanGabung = gabungHujan(
+  [{ kode_kab: "11.01", tanggal: "2026-10-20", curah_hujan_mm: 3 }],
+  [{ kode_kab: "11.02", tanggal: "2026-10-20", curah_hujan_mm: 4 }],
+  ["11.01"],
+);
+assert.equal(hujanGabung.kept, 1);
+assert.deepEqual(hujanGabung.rows.map((row) => row.kode_kab).sort(), ["11.01", "11.02"]);
+const warnaAnalisis = new Set(Object.values(ANALISIS_WARNA));
+for (const kelas of HUJAN_KELAS) assert.equal(warnaAnalisis.has(kelas.warna), false);
+assert.equal(warnaHujan(0).startsWith("#"), true);
+assert.equal(warnaHujan(null), "");
+assert.equal(HUJAN_PEMBANDING_BADGE, "Pembanding (data terbuka, bukan resmi)");
+assert.equal(HUJAN_GAP_MS >= 1000, true);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Curah hujan model/);
+assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /HUJAN_PEMBANDING_BADGE/);
+assert.equal(HUJAN_PEMBANDING_JENIS, "prakiraan model, bukan BMKG");
+assert.equal(readFileSync("src/lib/analisisPantauBencana.js", "utf8").includes("hujanPembanding"), false);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HUJAN_PEMBANDING_JENIS/);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HUJAN_GPM_CATATAN/);
+assert.match(HUJAN_GPM_CATATAN, /tidak dipakai/i);
+assert.match(readFileSync("scripts/hujan-pembanding.mjs", "utf8"), /kept_previous/);
+assert.match(readFileSync("scripts/hujan-pembanding.mjs", "utf8"), /ecmwf_ifs/);
+assert.equal(readFileSync("scripts/hujan-pembanding.mjs", "utf8").includes("jsimpson"), false);
+assert.match(readFileSync(".github/workflows/refresh-data.yml", "utf8"), /hujan-pembanding\.mjs/);
+const petunjuk = readFileSync("src/components/MetodePage.jsx", "utf8");
+assert.match(petunjuk, /CUACA_RUJUKAN/);
+assert.match(petunjuk, /CUACA_DISCLAIMER/);
+assert.equal(CUACA_RUJUKAN.map((item) => item[1]).includes("https://gaw-bariri.bmkg.go.id/monitoring-hujan-harian/"), true);
+assert.equal(CUACA_RUJUKAN.map((item) => item[1]).includes("https://link.springer.com/article/10.1007/s11069-026-08365-6"), true);
 assert.equal(keparahanTerburuk(["Cerah", "Hujan Sedang", "Hujan Lebat"]), "Severe");
 const sampelAdm4 = parseCsv(readFileSync("data/static/prakiraan-sampel-adm4.csv", "utf8"));
 assert.equal(sampelAdm4.length, 514);
@@ -1216,7 +1389,7 @@ const tanpaAngka = ringkasPendudukBerstatus([{ kode: "11.13", analisisStatus: "A
 assert.equal(tanpaAngka.lengkap, false);
 assert.equal(tanpaAngka.penduduk, null);
 assert.match(kalimatJumlahPenduduk(tanpaAngka), /belum dapat dijumlahkan/);
-assert.match(kalimatJumlahPenduduk(tanpaAngka), new RegExp(PENDUDUK_BUKAN_TERPAPAR));
+assert.equal(kalimatJumlahPenduduk(tanpaAngka).includes(PENDUDUK_BUKAN_TERPAPAR), true);
 const pendudukIsi = bacaPenduduk([
   {
     kode: "11.13",
@@ -1240,10 +1413,12 @@ assert.equal(
   100,
 );
 assert.equal(ringkasPendudukBerstatus([{ kode: "11.13", analisisStatus: null }], pendudukIsi).adaStatus, false);
-assert.equal(labelPenduduk(pendudukIsi.get("11.13")), "Penduduk kab/kota (BPS, proyeksi 2025)");
-assert.equal(labelRumahTangga(pendudukIsi.get("11.13")), "Jumlah rumah tangga/KK (BPS SP2020, 2020)");
-assert.equal(labelPenduduk(null), "Penduduk kab/kota (BPS, proyeksi tahun belum diisi)");
-assert.match(PENDUDUK_ABSENT, /bukan jumlah terpapar/);
+assert.equal(labelPenduduk(pendudukIsi.get("11.13")), "Potensi penduduk terdampak (BPS, proyeksi 2025)");
+assert.equal(labelRumahTangga(pendudukIsi.get("11.13")), "Potensi rumah terdampak (BPS SP2020, 2020)");
+assert.equal(labelPenduduk(null), "Potensi penduduk terdampak (BPS, proyeksi tahun belum diisi)");
+assert.match(PENDUDUK_ABSENT, /bukan estimasi jumlah terpapar/);
+assert.equal(xlsxBytes([["No", "Kab/Kota"], ["1", "Aceh Selatan"]])[0], 0x50);
+assert.equal(xlsxBytes([["No"]])[1], 0x4b);
 assert.equal(BPS_PROYEKSI_URL, "https://sensus.bps.go.id/publikasi/index/sp2020");
 assert.match(floodSource, /PENDUDUK_FILE/);
 assert.match(floodSource, /Dalam pengembangan/);
@@ -1263,6 +1438,12 @@ assert.equal(capScript.toLowerCase().includes("open-meteo"), false);
 assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /writeCapKabFiles/);
 assert.match(capScript, /bmkg-cap-kab\.csv/);
 assert.match(capScript, /bmkg-cap-prov\.csv/);
+assert.match(capScript, /previousCapUsable/);
+assert.match(capScript, /kept_previous/);
+assert.match(readFileSync(".github/workflows/refresh-cap.yml", "utf8"), /banjir-ringkasan\.mjs/);
+assert.match(readFileSync(".github/workflows/refresh-data.yml", "utf8"), /banjir-ringkasan\.mjs/);
+const batasTopo = JSON.parse(readFileSync("data/static/batas-kabkota.topojson", "utf8"));
+assert.equal(batasTopo.objects.kabupaten.geometries.length, 514);
 assert.equal(BMKG_REQUEST_GAP_MS >= 1000, true);
 assert.equal(analisisStatus("Extreme", "Tinggi"), "Awas");
 assert.equal(analisisStatus("Extreme", "Sedang"), "Awas");

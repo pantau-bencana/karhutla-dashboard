@@ -8,6 +8,9 @@ export const NOWCAST_BASIS = "Nowcast BMKG, dasar waktu 0–3 jam.";
 export const NOWCAST_BUKAN_TIGA_HARI =
   "Peringatan cuaca jangka pendek (±0–3 jam) dari BMKG. Bukan peringatan banjir dan bukan prakiraan 3 hari.";
 export const CAP_STALE_MS = 90 * 60 * 1000;
+export const CAP_DATA_TERAKHIR =
+  "Data terakhir — masa berlaku sudah lewat, menunggu pembaruan BMKG";
+export const PEMBARUAN_TERAKHIR_LABEL = "Pembaruan terakhir";
 
 const SEVERITY_LABEL = {
   Extreme: "Ekstrem (Extreme)",
@@ -119,17 +122,17 @@ export function applyNowcast(rows, alerts, meta, now = new Date()) {
 
 export function ringkasanNowcast(rows, meta, now = new Date()) {
   const status = meta?.status === "ok" || meta?.status === "memuat" ? meta.status : "gagal";
-  const active = status === "ok" ? (rows ?? []).filter((row) => warningActive(row, now)) : [];
+  const saved = status === "ok" ? (rows ?? []) : [];
+  const active = saved.filter((row) => warningActive(row, now));
   const provinsi = new Set(active.map((row) => row.provinsi).filter(Boolean));
-  const kabupaten = new Set(active.map((row) => row.kode).filter(Boolean));
+  const kabupaten = new Set((active.length ? active : saved).map((row) => row.kode).filter(Boolean));
   let berlakuSampai = "";
-  for (const row of active) {
+  for (const row of active.length ? active : saved) {
     if ((row.expires || "") > berlakuSampai) berlakuSampai = row.expires;
   }
   const fetchedAt = meta?.fetched_at || meta?.fetchedAt || "";
   const fetchedMs = new Date(fetchedAt).getTime();
   const ageMs = fetchedAt && !Number.isNaN(fetchedMs) ? now.getTime() - fetchedMs : NaN;
-  const anyRow = status === "ok" && (rows ?? []).length > 0;
   return {
     status,
     provinsi: provinsi.size,
@@ -137,8 +140,8 @@ export function ringkasanNowcast(rows, meta, now = new Date()) {
     berlakuSampai,
     fetchedAt,
     tertunda: Number.isFinite(ageMs) && ageMs > CAP_STALE_MS,
-    kosong: status === "ok" && !anyRow,
-    kedaluwarsa: anyRow && active.length === 0,
+    kosong: status === "ok" && saved.length === 0,
+    kedaluwarsa: saved.length > 0 && active.length === 0,
     cakupan: meta?.cakupan || "",
   };
 }

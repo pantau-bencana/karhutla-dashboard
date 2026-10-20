@@ -1,4 +1,4 @@
-import { writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { BIG_SERVICE } from "../src/lib/bigWilayah.js";
@@ -269,7 +269,26 @@ export function capKabMeta(snapshot) {
   )}\n`;
 }
 
+export function previousCapUsable(directory) {
+  const csvPath = resolve(directory, "bmkg-cap-kab.csv");
+  const metaPath = resolve(directory, "bmkg-cap-kab-meta.json");
+  if (!existsSync(csvPath) || !existsSync(metaPath)) return false;
+  try {
+    const meta = JSON.parse(readFileSync(metaPath, "utf8"));
+    if (meta?.status !== "ok") return false;
+    const lines = readFileSync(csvPath, "utf8")
+      .trim()
+      .split(/\r?\n/)
+      .filter(Boolean);
+    return lines.length > 1;
+  } catch {
+    return false;
+  }
+}
+
 export function writeCapKabFiles(directory, snapshot) {
+  const hasNew = snapshot.status === "ok" && (snapshot.rows ?? []).length > 0;
+  if (!hasNew && previousCapUsable(directory)) return { kept_previous: true };
   if (snapshot.status === "ok") {
     const provRows = snapshot.provRows ?? aggregateProvinsi(snapshot.rows, snapshot.alerts);
     writeFileSync(resolve(directory, "bmkg-cap-kab.csv"), capKabCsv(snapshot.rows));
@@ -279,6 +298,7 @@ export function writeCapKabFiles(directory, snapshot) {
     }
   }
   writeFileSync(resolve(directory, "bmkg-cap-kab-meta.json"), capKabMeta(snapshot));
+  return { kept_previous: false };
 }
 
 async function mapPool(items, limit, worker) {
@@ -395,11 +415,20 @@ export async function loadCapAlerts() {
 
 async function main() {
   const live = resolve(root, "data/live");
-  const loaded = await loadCapAlerts();
+  let loaded = { alerts: [], rssPublished: "" };
   try {
+    loaded = await loadCapAlerts();
+    if (!(loaded.alerts ?? []).length && previousCapUsable(live)) {
+      console.log("RSS nowcast kosong. Cuplikan CAP sebelumnya dipertahankan.");
+      return;
+    }
     const rows = await assignKabupaten(loaded.alerts);
+    if (!rows.length && previousCapUsable(live)) {
+      console.log("Tidak ada kabupaten/kota baru pada CAP. Cuplikan sebelumnya dipertahankan.");
+      return;
+    }
     const provRows = aggregateProvinsi(rows, loaded.alerts);
-    writeCapKabFiles(live, {
+    const written = writeCapKabFiles(live, {
       status: "ok",
       rows,
       provRows,
@@ -410,15 +439,23 @@ async function main() {
       fetchedAt: new Date().toISOString(),
       error: null,
     });
+    if (written.kept_previous) {
+      console.log("Cuplikan CAP sebelumnya dipertahankan.");
+      return;
+    }
     console.log(
       `CAP kabupaten ok: ${rows.length} baris, ${provRows.length} baris provinsi. RSS ${loaded.rssPublished || "tanpa pubDate"}.`,
     );
   } catch (error) {
+    if (previousCapUsable(live)) {
+      console.log(`CAP gagal: ${error.message}. Cuplikan sebelumnya dipertahankan.`);
+      return;
+    }
     writeCapKabFiles(live, {
       status: "gagal",
       rows: [],
       alerts: loaded.alerts,
-      jumlahAlert: loaded.alerts.length,
+      jumlahAlert: loaded.alerts?.length ?? null,
       rssPublished: loaded.rssPublished,
       fetchedAt: new Date().toISOString(),
       error: error.message,
@@ -426,7 +463,7 @@ async function main() {
     console.log(`CAP kabupaten gagal: ${error.message}`);
     process.exitCode = 1;
   } finally {
-    for (const alert of loaded.alerts) delete alert.rings;
+    for (const alert of loaded.alerts ?? []) delete alert.rings;
   }
 }
 

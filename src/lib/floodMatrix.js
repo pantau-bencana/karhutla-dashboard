@@ -24,15 +24,15 @@ export const RAIN_RISK_MATRIX = {
     { id: "hujan", sumber: "BMKG", kelas: "Nowcast peringatan dini cuaca 0–3 jam" },
     { id: "risiko", sumber: "IRBI 2025", kelas: "kelas risiko banjir" },
   ],
-  note: "Sumbu hujan pada tab 0–3 jam adalah nowcast BMKG per kabupaten/kota. Pada tab Hari ini, Besok, dan Lusa sumbu hujan adalah pemetaan teks cuaca BMKG di satu titik sampel: Extreme untuk hujan sangat lebat atau hujan ekstrem, Severe untuk hujan lebat atau petir, Moderate untuk hujan sedang. Sumbu risiko adalah kelas banjir IRBI 2025 apa adanya. Analisis Pantau Bencana memetakan kedua sumbu menjadi Awas, Siaga, atau Waspada. Itu analisis dasbor, bukan status resmi, bukan skor angka, bukan peringatan dasarian, bukan IBF, dan bukan peringatan resmi 3 hari.",
+  note: "Sumbu hujan pada tab 0–3 jam adalah nowcast BMKG per kabupaten/kota. Pada tab Hari ini, Besok, dan Lusa sumbu hujan adalah weather_desc BMKG di satu titik sampel: tidak ada status untuk cerah, berawan, udara kabur, asap, dan kabut; hujan ringan atau hujan lokal tidak berstatus kecuali Waspada bila IRBI Tinggi dan hujan ada pada 3 hari berturut-turut; Moderate untuk hujan sedang; Severe untuk hujan lebat atau hujan petir; Extreme untuk hujan sangat lebat atau hujan ekstrem. Kode yang belum dikenali tetap abu-abu. Sumbu risiko adalah kelas banjir IRBI 2025 apa adanya. Analisis Pantau Bencana memetakan kedua sumbu menjadi Awas, Siaga, atau Waspada. Itu analisis dasbor, bukan status resmi, bukan skor angka, bukan peringatan dasarian, dan bukan peringatan resmi 3 hari. Ambang IRBI tinggi dan 3 hari berturut-turut adalah usulan proyek ini.",
 };
 
 export const FLOOD_INFO_COLUMNS = [
   { id: "wilayah", label: "Kab/kota", detail: "Batas BIG. Urutan kode wilayah, bukan peringkat.", sortKey: "kode" },
   {
     id: "nowcast",
-    label: "Peringatan BMKG aktif (0–3 jam)",
-    detail: "Resmi, jangka pendek. Istilah CAP apa adanya.",
+    label: "Peringatan BMKG (0–3 jam)",
+    detail: "Data terakhir tetap ditampilkan. Istilah CAP apa adanya. Bukan kejadian.",
   },
   { id: "berlaku", label: "Berlaku sampai", detail: "WIB" },
   { id: "dibi", label: "Kejadian banjir 2024 (BNPB)", detail: "Historis. Sel kosong bukan nol.", sortKey: "dibi" },
@@ -42,16 +42,16 @@ export const FLOOD_INFO_COLUMNS = [
     detail: "Statis. 510 baris dari Buku IRBI 2025, halaman 212–227. Tanpa kelas: IRBI tidak tersedia.",
     sortKey: "banjir",
   },
-  { id: "analisis", label: "Analisis Pantau Bencana", detail: "Bukan status resmi." },
+  { id: "analisis", label: "Analisis Pantau Bencana", detail: "Bukan status resmi.", sortKey: "status" },
   {
     id: "penduduk",
-    label: "Penduduk kab/kota",
-    detail: "BPS, proyeksi. Total kab/kota, bukan jumlah terpapar.",
+    label: "Potensi penduduk terdampak",
+    detail: "potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar.",
   },
   {
     id: "rumah-tangga",
-    label: "Rumah tangga/KK",
-    detail: "Total kab/kota, bukan jumlah terpapar.",
+    label: "Potensi rumah terdampak",
+    detail: "potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar.",
   },
   {
     id: "dasarian",
@@ -179,7 +179,31 @@ export function buildFloodRows({ banjir, multi, dibi, dibiLoaded, wilayah }) {
   return byKode(rows);
 }
 
+const RANK_STATUS = { Awas: 0, Siaga: 1, Waspada: 2 };
+
+export function peringkatTampil(row) {
+  const kind = row?.peta?.kind;
+  const status = row?.peta?.status || row?.statusTab || "";
+  if (kind === "status" && Object.hasOwn(RANK_STATUS, status)) return RANK_STATUS[status];
+  if (kind === "kosong") return 3;
+  return 4;
+}
+
+export function urutStatusKab(rows) {
+  return [...(rows ?? [])].sort((left, right) => {
+    const rank = peringkatTampil(left) - peringkatTampil(right);
+    if (rank) return rank;
+    const nama = String(left.nama || "").localeCompare(String(right.nama || ""), "id");
+    if (nama) return nama;
+    return String(left.kode || "").localeCompare(String(right.kode || ""), "id");
+  });
+}
+
 export function sortFloodRows(rows, key, direction = "asc") {
+  if (key === "status") {
+    const ordered = urutStatusKab(rows);
+    return direction === "desc" ? ordered.reverse() : ordered;
+  }
   const factor = direction === "desc" ? -1 : 1;
   const valueOf = (row) => {
     if (key === "banjir") return Number(row.banjirSkor);

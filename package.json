@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/banjir-ringkasan.mjs && vite build",
     "preview": "vite preview --host 127.0.0.1 --port 4173",
     "check": "node scripts/self-check.mjs",
     "refresh-data": "node scripts/refresh-live-data.mjs",
@@ -15,10 +15,12 @@
     "leaflet": "^1.9.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "recharts": "^2.15.4"
+    "recharts": "^2.15.4",
+    "topojson-client": "^3.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
+    "topojson-server": "^3.0.1",
     "vite": "^6.2.0"
   }
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { InfoTip } from "./InfoTip.jsx";
 import { formatTanggal } from "../lib/format.js";
 import {
   GWIS_ATTRIBUTION,
@@ -40,10 +41,19 @@ export function GwisFwiToggle({ date, enabled, onEnabled, onReady }) {
 
   return (
     <section className="gwis-fwi" aria-label="FWI pembanding GWIS">
-      <label className="gwis-fwi-toggle">
-        <input type="checkbox" checked={enabled} onChange={(event) => onEnabled(event.target.checked)} />
-        <span>{GWIS_LABEL}</span>
-      </label>
+      <span className="layer-with-info">
+        <label className="gwis-fwi-toggle">
+          <input type="checkbox" checked={enabled} onChange={(event) => onEnabled(event.target.checked)} />
+          <span>{GWIS_LABEL}</span>
+        </label>
+        <InfoTip label="Penjelasan lapisan Data Pembanding">
+          <p>Pembanding (data terbuka, bukan resmi). FWI model ECMWF lewat GWIS, bukan FDRS BMKG.</p>
+          <p>Lapisan ini tidak masuk skor peringatan. Tanggal mengikuti filter peta. Raster ini bukan batas kab/kota.</p>
+          <p>
+            <a href="#/sumber-metode">Sumber dan batasan data</a>
+          </p>
+        </InfoTip>
+      </span>
       <p>
         Tanggal model: <strong>{formatTanggal(date)}</strong>.
         {enabled && phase === "cek" ? " Lapisan sedang diperiksa." : null}
