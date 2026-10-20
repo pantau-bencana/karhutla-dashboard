@@ -105,7 +105,7 @@ export const GLOSSARY = [
     nama: "Data dan Informasi Bencana Indonesia",
     penjelasan:
       "Kompilasi kejadian dan dampak bencana pada Satu Data BNPB. Paket yang dipakai berlisensi ODC-BY dan memuat jumlah menurut jenis bencana pada tingkat nasional.",
-    penggunaan: "Hanya rangkaian nasional kebakaran hutan dan lahan tahun 2010–2024. Tabel kabupaten pada paket yang sama tidak memisahkan jenis bencana, jadi tidak dipakai sebagai kejadian karhutla per kabupaten.",
+    penggunaan: "Hanya rangkaian nasional kebakaran hutan dan lahan tahun 2010–2024. Tabel kabupaten pada paket yang sama tidak memisahkan jenis bencana, jadi tidak dipakai sebagai kejadian karhutla per kabupaten. Pemeriksaan 20 Oktober 2026 tidak menemukan rangkaian publik kejadian banjir per kabupaten untuk 2011–2025.",
     rujukan: "https://data.bnpb.go.id/api/3/action/package_show?id=data-bencana-indonesia",
     rujukanLabel: "Satu Data BNPB — data-bencana-indonesia",
   },

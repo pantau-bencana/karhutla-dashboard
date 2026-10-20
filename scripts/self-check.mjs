@@ -61,7 +61,7 @@ import {
   ringkasPendudukBerstatus,
   teksRumahTangga,
 } from "../src/lib/pendudukKab.js";
-import { BNPB_ABSENT, BNPB_RESOURCE_URL, DAMPAK_HISTORIS_CATATAN, barisDampakHistoris } from "../src/lib/bnpbBanjir.js";
+import { BNPB_ABSENT, BNPB_RESOURCE_URL, DAMPAK_HISTORIS_CATATAN, HISTORIS_BANJIR_CATATAN, barisDampakHistoris } from "../src/lib/bnpbBanjir.js";
 import {
   LABEL_TAK_DIKENAL,
   LABEL_TIDAK_BERPOTENSI,
@@ -1327,6 +1327,15 @@ assert.equal(daftarSumber.includes('<th scope="col">Penduduk terdampak</th>'), f
 assert.equal(daftarSumber.includes('<th scope="col">Rumah terdampak</th>'), false);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /barisDampakHistoris/);
 assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /DAMPAK_HISTORIS_CATATAN/);
+assert.match(HISTORIS_BANJIR_CATATAN, /2011–2025/);
+assert.match(HISTORIS_BANJIR_CATATAN, /20 Oktober 2026/);
+assert.match(HISTORIS_BANJIR_CATATAN, /21044ffd-c397-4b3c-acbd-5adaa03d79e3/);
+assert.match(HISTORIS_BANJIR_CATATAN, /semua jenis/);
+assert.match(HISTORIS_BANJIR_CATATAN, /5ff9f41f-8312-4b7c-aa18-fdbedac6ee7e/);
+assert.equal(DIBI_UNAVAILABLE, "Cuplikan DIBI belum tersedia");
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /HISTORIS_BANJIR_CATATAN/);
+assert.match(readFileSync("src/components/FloodPage.jsx", "utf8"), /HISTORIS_BANJIR_CATATAN/);
+assert.equal(readFileSync("src/lib/floodMatrix.js", "utf8").includes("kejadian (2011"), false);
 const halamanBanjir = readFileSync("src/components/FloodPage.jsx", "utf8");
 assert.equal(halamanBanjir.includes("Tampilkan semua kab/kota"), false);
 assert.match(halamanBanjir, /rows=\{urut\}/);

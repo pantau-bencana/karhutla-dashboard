@@ -17,7 +17,7 @@ export const HAZARDS = [
       "Potensi hujan ekstrem BMKG. Halaman HTML dan citra hanya ditautkan. Bukan prakiraan 14 hari per kabupaten.",
       "Prediksi hujan dasarian (3 dasarian) dan peringatan dini curah hujan tinggi. Tautan saja. Citra tidak diunduh dan tidak dipotong.",
       "Klasifikasi DAS KLHK pada layanan peta BNPB, sebagai lapisan opsional. Label yang dipakai adalah DIPULIHKAN dan DIPERTAHANKAN. Kegagalan layanan itu tidak boleh menghentikan Karhutla.",
-      "Kejadian banjir 2024 per kabupaten/kota dari tabel DIBI Satu Data, kolom BANJIR, resource a4daec53-1119-43ef-b05e-00ec3a4c42a4. Kompilasi 2010–2024 yang dipakai karhutla tetap menggabungkan semua jenis. Baris yang tidak ada tidak diisi nol.",
+      "Kejadian banjir 2024 per kabupaten/kota dari tabel DIBI Satu Data, kolom BANJIR, resource a4daec53-1119-43ef-b05e-00ec3a4c42a4. Kompilasi 2010–2024 yang dipakai karhutla tetap menggabungkan semua jenis. Baris yang tidak ada tidak diisi nol. Pemeriksaan 20 Oktober 2026 tidak menemukan rangkaian publik kejadian banjir per kabupaten untuk 2011–2025, dan angka semua jenis tidak dijumlahkan sebagai banjir.",
       "Kerangka 15–20 kabupaten/kota. Belum disusun. Bobot, ambang, dan periode belum disepakati.",
     ],
     sumber: [

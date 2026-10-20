@@ -4,7 +4,7 @@ import { FloodRiskMap } from "./FloodRiskMap.jsx";
 import { ANALISIS_BUKAN_RESMI, ANALISIS_NAMA, CATATAN_ALASAN, applyAnalisis, catWilayah } from "../lib/analisisPantauBencana.js";
 import { DISCLAIMER_UNDUH, barisXlsx, csvUnduh } from "../lib/banjirExport.js";
 import { xlsxBytes } from "../lib/xlsxMini.js";
-import { BNPB_ABSENT, BNPB_FILE, BNPB_RESOURCE_URL, bnpbAsDibi } from "../lib/bnpbBanjir.js";
+import { BNPB_ABSENT, BNPB_FILE, BNPB_RESOURCE_URL, HISTORIS_BANJIR_CATATAN, bnpbAsDibi } from "../lib/bnpbBanjir.js";
 import { looksLikeCsv, parseCsv } from "../lib/csv.js";
 import {
   BMKG_ATTRIBUTION,
@@ -671,6 +671,7 @@ function FloodBody() {
             </a>
             .
           </p>
+          <p>{HISTORIS_BANJIR_CATATAN}</p>
           <p>{IRBI_PERMISSION} Tanpa kelas, tulisannya {IRBI_TIDAK_TERSEDIA} dan sel tidak diwarnai.</p>
           <p>Batas wilayah: Badan Informasi Geospasial.</p>
           <p>

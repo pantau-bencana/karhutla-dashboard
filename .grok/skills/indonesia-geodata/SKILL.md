@@ -35,7 +35,7 @@ These are point samples for the 3-day forecast, not province averages. Document 
 
 IRBI names come from the 2025 book. Do not retitle a kabupaten to force a join. Component scores that the book page does not include stay blank.
 
-DIBI kabupaten rows in the Satu Data compilation are all-hazard counts. Do not aggregate them into "kejadian karhutla per kabupaten". The national series for jenis `KEBAKARAN HUTAN DAN LAHAN` is the series that may be stored.
+DIBI kabupaten rows in the Satu Data compilation are all-hazard counts. Do not aggregate them into "kejadian karhutla per kabupaten". The national series for jenis `KEBAKARAN HUTAN DAN LAHAN` is the series that may be stored. The same all-hazard rule applies to banjir: checked 20 Oct 2026, there is no public 2011–2025 banjir count per kabupaten. Do not sum the year columns or the `stat_by_wil` workbooks into a banjir series.
 
 ## Time
 
