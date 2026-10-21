@@ -104,7 +104,7 @@ Setiap objek di `datasets` punya:
 | `terakhirDiperbarui` | Tanggal `YYYY-MM-DD` yang Anda catat sendiri. Dasbor tidak bisa mengetahui tanggal ubah berkas Drive. |
 | `contoh` | `true` untuk data contoh. Set `false` setelah tautan operasional terpasang. |
 
-`provinsiPrioritas` mengisi tombol filter (enam provinsi ditambah pilihan Seluruh Indonesia). Dasbor tidak menghitung status provinsi.
+`provinsiPrioritas` tetap menjadi konteks prakiraan dan kesiapsiagaan (enam provinsi). Tombol filter cakupan mengikuti peringkat hotspot pada periode aktif, plus pilihan Seluruh Indonesia dan daftar Semua provinsi. Dasbor tidak menghitung status provinsi.
 
 Setelah mengedit config untuk situs yang sudah dibangun, jalankan `npm run build` lagi (atau biarkan GitHub Actions yang membangun saat berkas masuk ke `main`).
 

@@ -1,8 +1,11 @@
+import { useMemo, useState } from "react";
 import { OfficialLinks } from "./OfficialLinks.jsx";
 import { placeFwiTable, placeRainTable } from "../lib/attentionPrototype.js";
+import { tampilBarisFwi, urutBarisFwi } from "../lib/kabProvinsi.js";
 import { officialLinks } from "../lib/sourceCatalog.js";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { KualitasUdara } from "./KualitasUdara.jsx";
+import { labelAnalisisBmkg } from "../lib/bmkgForecast.js";
 import { formatAngka, formatTanggalPendek } from "../lib/format.js";
 
 const LAYERS = [
@@ -54,6 +57,14 @@ export function ExtraLayers({ layer, view, feeds, province, provinces = [] }) {
   const fwiGwis = rowsFor(feeds, "fwi_gwis_pembanding", province);
   const compareRain = feeds.find((feed) => feed.id === "hujan_14_pembanding");
   const compareFwi = feeds.find((feed) => feed.id === "fwi_gwis_pembanding");
+  const kalimatAnalisis = prakiraan.length
+    ? labelAnalisisBmkg({
+        analysisUtc: prakiraan.find((row) => row.analysisUtc)?.analysisUtc || forecastFeed?.observedAt,
+        fetchedAt: forecastFeed?.fetchedAt,
+        tanggal: prakiraan.map((row) => row.tanggal),
+        analyses: prakiraan.map((row) => row.analysisUtc),
+      })
+    : "";
 
   if (layer === "inarisk") {
     return (
@@ -109,11 +120,7 @@ export function ExtraLayers({ layer, view, feeds, province, provinces = [] }) {
           </p>
         </Panel>
         <Panel title="FWI ECMWF pada titik wakil" note="Bukan FDRS BMKG. Horizon mengikuti hari yang layanan isi." feed={compareFwi} compare>
-          <Simple
-            head={["Kabupaten", "FWI rata-rata", "Hari", "Periode"]}
-            empty="Snapshot FWI pembanding belum ada."
-            rows={placeFwiTable(fwiGwis).map((row) => [row.kabupaten, formatAngka(row.fwiRata, 1), String(row.hari), `${formatTanggalPendek(row.dari)}–${formatTanggalPendek(row.sampai)}`])}
-          />
+          <FwiTitikTable rows={fwiGwis} adaCuplikan={Boolean(compareFwi?.rows?.length)} />
         </Panel>
         <Panel title="Cuaca harian terbuka" note="Bukan FDRS." feed={compareWeather} compare>
           <Simple
@@ -145,6 +152,7 @@ export function ExtraLayers({ layer, view, feeds, province, provinces = [] }) {
           )}
         />
         <p className="fine">Satu kelurahan ibu kota tiap provinsi prioritas. Horizon 3 hari, bukan 14 hari.</p>
+        {kalimatAnalisis ? <p className="fine">{kalimatAnalisis}</p> : null}
       </Panel>
       {rain ? (
         <Panel title="Hujan dan angin 14 hari pada titik wakil" note="Pembanding model, bukan prakiraan BMKG. Curah hujan adalah jumlah mm. Peluang hujan di atas 0,1 mm pada berkas ini tidak ditampilkan sebagai P(>20 mm)." feed={compareRain} compare>
@@ -196,6 +204,69 @@ function Panel({ title, note, feed, compare = false, children }) {
         {children}
       </div>
     </section>
+  );
+}
+
+const KOLOM_FWI = [
+  ["kabupaten", "Kabupaten", true],
+  ["provinsi", "Provinsi", true],
+  ["fwiRata", "FWI rata-rata", false],
+  ["hari", "Hari", false],
+  ["periode", "Periode", true],
+];
+
+function FwiTitikTable({ rows, adaCuplikan = false }) {
+  const [sort, setSort] = useState({ key: "kabupaten", direction: "asc" });
+  const tampil = useMemo(() => {
+    const enriched = placeFwiTable(rows).map((row) => ({ ...row, ...tampilBarisFwi(row) }));
+    return urutBarisFwi(enriched, sort.key, sort.direction);
+  }, [rows, sort]);
+
+  function toggle(key) {
+    setSort((current) =>
+      current.key === key
+        ? { key, direction: current.direction === "asc" ? "desc" : "asc" }
+        : { key, direction: key === "fwiRata" || key === "hari" ? "desc" : "asc" },
+    );
+  }
+
+  return (
+    <div className="table-wrap short tabel-urut">
+      <table>
+        <caption>FWI rata-rata per kabupaten. Provinsi dibaca dari batas kabupaten/kota yang tersimpan.</caption>
+        <thead>
+          <tr>
+            {KOLOM_FWI.map(([key, label]) => (
+              <th key={key} scope="col" aria-sort={sort.key === key ? (sort.direction === "asc" ? "ascending" : "descending") : "none"}>
+                <button type="button" onClick={() => toggle(key)}>
+                  {label}
+                </button>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {tampil.length ? (
+            tampil.map((row) => (
+              <tr key={`${row.kode || row.kabupaten}-${row.provinsi}`}>
+                <th scope="row">{row.kabupaten}</th>
+                <td>{row.provinsi}</td>
+                <td>{formatAngka(row.fwiRata, 1)}</td>
+                <td>{row.hari}</td>
+                <td>{`${formatTanggalPendek(row.dari)}–${formatTanggalPendek(row.sampai)}`}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={5}>{adaCuplikan ? "Tidak ada baris FWI pada cakupan ini." : "Snapshot FWI pembanding belum ada."}</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      <p className="fine">
+        Nama kabupaten dan provinsi mengikuti batas kabupaten/kota yang tersimpan. Bila kode tidak ada pada batas itu, kolom provinsi berisi Tidak diketahui.
+      </p>
+    </div>
   );
 }
 

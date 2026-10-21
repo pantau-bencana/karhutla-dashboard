@@ -172,6 +172,10 @@ export async function annotatePoints(points, options = {}) {
   const concurrency = options.concurrency ?? 2;
   let finished = 0;
   await mapPool([...groups.entries()], concurrency, async ([key, group]) => {
+    if (options.deadlineAt && Date.now() > options.deadlineAt) {
+      stats.budgetHabis = true;
+      return;
+    }
     const envelope = JSON.stringify(cellEnvelope(key));
     let features;
     try {
@@ -255,8 +259,13 @@ export async function annotatePoints(points, options = {}) {
       kept.push(next);
     }
     finished += 1;
-    if (options.log && finished % 25 === 0) console.log(`sel ${finished}/${groups.size}`);
+    if (options.log && finished % 100 === 0) console.log(`BIG wilayah: sel ${finished}/${groups.size}, kueri ${stats.queries}`);
   });
+  if (stats.budgetHabis) {
+    const error = new Error(`Kueri BIG melewati batas waktu setelah ${stats.queries} kueri.`);
+    error.batasWaktu = true;
+    throw error;
+  }
   return { rows: kept, stats, source: BIG_SOURCE_LABEL, edition: BIG_EDITION_NOTE };
 }
 

@@ -102,6 +102,25 @@ function baris(nama, hasil, catatanTetap) {
   };
 }
 
+export function keadaanKategori(baris) {
+  const dinilai = (baris ?? []).filter((row) => row.status !== "belum terintegrasi");
+  if (!dinilai.length) return "sebagian";
+  const statuses = new Set(dinilai.map((row) => row.status));
+  if (statuses.size === 1 && statuses.has("tersedia")) return "berhasil";
+  if (statuses.size === 1 && statuses.has("gagal dimuat")) return "gagal";
+  if ([...statuses].every((status) => status === "tersedia" || status === "kedaluwarsa") && statuses.has("kedaluwarsa")) {
+    return "kedaluwarsa";
+  }
+  return "sebagian";
+}
+
+export function statusRingkasanSiap(manifest, { memuat = false, ...options } = {}) {
+  if (memuat) return { keadaan: "memuat", baris: [] };
+  if (!manifest) return { keadaan: "gagal", baris: [], catatan: "Manifes gagal dimuat." };
+  const baris = statusRingkasan(manifest, options);
+  return { keadaan: keadaanKategori(baris), baris, catatan: "" };
+}
+
 export function statusRingkasan(manifest, { now = new Date(), capBerakhir = [] } = {}) {
   const jam = now instanceof Date ? now : new Date(now);
   const datasets = manifest?.datasets ?? {};

@@ -23,7 +23,7 @@ Enam kota prioritas memakai kelurahan yang sudah dicek. Kabupaten/kota lain mema
 
 Teks `weather_desc` dipetakan di dasbor. Cerah, berawan, udara kabur, asap, dan kabut berlabel `Tidak ada status (cuaca tidak berpotensi banjir)`. Hujan ringan dan hujan lokal tidak berstatus, kecuali Waspada bila IRBI Tinggi dan hujan ada pada ketiga hari prakiraan. Hujan sedang, hujan lebat, dan hujan petir (sekurang-kurangnya setara hujan lebat) memakai matriks. Kode yang belum dikenali berlabel `Tidak terklasifikasi (kode cuaca BMKG belum dikenali)`. Tab 0–3 jam tetap CAP, terpisah. Pada API 20 Oktober 2026, weather 61 berteks Hujan Ringan dan 63 berteks Hujan Sedang; dasbor mengikuti teks itu.
 
-Pengambilan kab/kota ada di workflow CAP (menit 12 dan 42) lewat `scripts/prakiraan-kab.mjs`, jeda 1,1 detik, di bawah 60 permintaan per menit. Cron `17 */3 * * *` dan `47 1-23/3 * * *` tidak dipindah.
+Pengambilan kab/kota ada di workflow prakiraan (`0 0,2,12,14 * * *` UTC, yaitu 07.00, 09.00, 19.00, dan 21.00 WIB) lewat `scripts/prakiraan-kab.mjs`, jeda 1,1 detik, di bawah 60 permintaan per menit. Bila `analysis_date` tidak lebih baru, cuplikan tidak ditulis. Cron `17 */3 * * *` dan `47 1-23/3 * * *` tidak dipindah. CAP tetap menit 12 dan 42.
 
 ## Data Pembanding curah hujan
 

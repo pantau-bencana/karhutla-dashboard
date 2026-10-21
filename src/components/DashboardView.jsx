@@ -9,15 +9,14 @@ import { HotspotBoard } from "./HotspotBoard.jsx";
 import { GfwedTable } from "./GfwedTable.jsx";
 import { TrendCharts } from "./TrendCharts.jsx";
 import { defaultRange } from "../lib/derive.js";
-import { hotspotSourceLabel } from "../lib/freshness.js";
+import { hotspotSourceLabel, labelStatusFeed } from "../lib/freshness.js";
 import { formatAngka, formatTanggal } from "../lib/format.js";
+import { JENDELA_PERIODE, barisPeriodeAktif, labelJendela } from "../lib/peringkatHotspot.js";
+import { PeringkatHotspot } from "./PeringkatHotspot.jsx";
+import { FilterProvinsi } from "./FilterProvinsi.jsx";
 
 function feedStatus(feed, sumber) {
-  if (feed.asal === "snapshot") return hotspotSourceLabel(feed, sumber);
-  if (feed.status === "tautan") return "Tautan saja";
-  if (feed.status === "berhasil") return "Terhubung";
-  if (feed.status === "usang") return "Cuplikan terakhir";
-  return "Gagal";
+  return labelStatusFeed(feed, { sumber });
 }
 
 export function DashboardView({
@@ -31,6 +30,8 @@ export function DashboardView({
   setFrom,
   to,
   setTo,
+  periodeJam = 24,
+  setPeriodeJam,
   view,
   freshness,
 }) {
@@ -56,15 +57,26 @@ export function DashboardView({
       setFrom={setFrom}
       to={to}
       setTo={setTo}
+      periodeJam={periodeJam}
+      setPeriodeJam={setPeriodeJam}
       view={view}
       freshness={freshness}
     />
   );
 }
 
-function DashboardBody({ active, config, feeds, loading, province, setProvince, from, setFrom, to, setTo, view, freshness }) {
+function DashboardBody({ active, config, feeds, loading, province, setProvince, from, setFrom, to, setTo, periodeJam, setPeriodeJam, view, freshness }) {
   const [layer, setLayer] = useState("hotspot");
   const hotspotFeed = feeds.find((feed) => feed.id === "hotspot");
+  const aktif = barisPeriodeAktif(
+    hotspotFeed && !hotspotFeed.contoh && hotspotFeed.status !== "gagal" ? hotspotFeed.rows : [],
+    { from, to, province, hours: periodeJam },
+  );
+  const kelasAktif = aktif.reduce((acc, point) => {
+    const key = point.kelasKepercayaan || "tidak_diketahui";
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {});
   const sipongiFeed = feeds.find((feed) => feed.id === "sipongi");
   const irbiFeed = feeds.find((feed) => feed.id === "irbi");
   const visibleFeeds = layer === "ispu" ? feeds.filter((feed) => feed.id !== "ispu" && feed.id !== "ispu_pembanding") : feeds;
@@ -72,6 +84,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
   const fallbacks = visibleFeeds.filter((feed) => feed.status === "cadangan");
   const keySet = Boolean(String(config.firms?.mapKey ?? "").trim());
   const priority = config.provinsiPrioritas ?? [];
+  const titikNasional = hotspotFeed && !hotspotFeed.contoh && hotspotFeed.status !== "gagal" ? hotspotFeed.rows : [];
 
   function resetDates() {
     const range = defaultRange(hotspotFeed?.rows ?? [], 7);
@@ -83,6 +96,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
     const range = defaultRange(hotspotFeed?.rows ?? [], 1);
     setFrom(range.to);
     setTo(range.to);
+    setPeriodeJam?.(24);
   }
 
   function updateFrom(value) {
@@ -107,7 +121,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           </p>
         </div>
       </header>
-      {failures.length > 0 && (
+      {!loading && failures.length > 0 && (
         <div className="banner error is-sticky" role="alert">
           <strong>Sebagian sumber gagal dimuat. Bagian lain tetap ditampilkan.</strong>
           <ul>
@@ -132,16 +146,15 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
       )}
 
       <section className="filters" aria-label="Filter">
-        <div className="province-filter" role="group" aria-label="Cakupan wilayah">
-          <button type="button" aria-pressed={province === ""} onClick={() => setProvince("")}>
-            Seluruh Indonesia
-          </button>
-          {priority.map((name) => (
-            <button key={name} type="button" aria-pressed={province === name} onClick={() => setProvince(name)}>
-              {name}
-            </button>
-          ))}
-        </div>
+        <FilterProvinsi
+          province={province}
+          setProvince={setProvince}
+          points={titikNasional}
+          from={from}
+          to={to}
+          hours={periodeJam}
+          prioritas={priority}
+        />
         {layer === "ispu" ? null : <div className="date-filter">
           <label>
             Dari
@@ -154,10 +167,19 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           <button type="button" className="button ghost" onClick={latestDay}>
             Hari terakhir
           </button>
-          <button type="button" className="button ghost" onClick={resetDates}>
+          <button type="button" className="button ghost" onClick={() => { resetDates(); setPeriodeJam?.(168); }}>
             7 hari terakhir
           </button>
         </div>}
+        {layer === "ispu" ? null : (
+          <div className="province-filter" role="group" aria-label={`Jendela periode, sekarang ${labelJendela(periodeJam)}`}>
+            {JENDELA_PERIODE.map(([jam, label]) => (
+              <button key={jam} type="button" aria-pressed={periodeJam === jam} onClick={() => setPeriodeJam?.(jam)}>
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
       </section>
       <LayerBar layer={layer} setLayer={setLayer} />
       <WilayahDetail province={province} from={from} to={to} layer={layer} />
@@ -171,8 +193,10 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
 
       {layer === "hotspot" ? (
         <p className="fine">
-          {formatAngka(view.summary.hotspot)} titik pada cakupan dan rentang ini, {formatAngka(view.summary.tinggi)} confidence tinggi
-          (kelas tinggi, high, atau nilai ≥ 80). {formatAngka(view.summary.belumTerverifikasi || 0)} titik belum terverifikasi wilayah dan tidak masuk hitungan provinsi.
+          {formatAngka(aktif.length)} titik pada periode {labelJendela(periodeJam)}
+          {from && to ? ` (${formatTanggal(from)}–${formatTanggal(to)})` : ""}, cakupan {province || "seluruh Indonesia"}.
+          Merah {formatAngka(kelasAktif.tinggi || 0)}, oranye {formatAngka(kelasAktif.nominal || 0)}, kuning {formatAngka(kelasAktif.rendah || 0)}, tidak diketahui {formatAngka(kelasAktif.tidak_diketahui || 0)}.
+          Angka ini sama dengan peta dan tabel bila saringan kelas tidak diubah. Grafik tren memakai seluruh rentang tanggal.
           Data stasiun ISPU belum terintegrasi ke dashboard.
         </p>
       ) : null}
@@ -183,7 +207,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           <div>
             <h2>Sebaran titik panas</h2>
             <p>
-              {formatAngka(view.points.length)} titik
+              {formatAngka(aktif.length)} titik pada jendela {labelJendela(periodeJam)}
               {hotspotFeed?.contoh ? " · data contoh" : ""}
               {hotspotFeed ? ` · ${hotspotSourceLabel(hotspotFeed, config.firms?.sumber)}` : ""}
             </p>
@@ -193,8 +217,10 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           <p className="empty">Peta tidak diisi karena sumber titik panas gagal: {hotspotFeed.error}</p>
         ) : (
           <HotspotBoard
-            points={view.points}
+            points={aktif}
             priority={priority}
+            frame={province ? "points" : "indonesia"}
+            onKembaliIndonesia={() => setProvince("")}
             meta={feeds.find((feed) => feed.id === "hotspot_peta")?.petaMeta}
             feed={hotspotFeed}
             fetchedAt={hotspotFeed?.fetchedAt}
@@ -203,9 +229,21 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
             sumber={config.firms?.sumber}
             from={from}
             to={to}
+            periodeTeks={`${labelJendela(periodeJam)}${from && to ? `, ${formatTanggal(from)}–${formatTanggal(to)}` : ""}`}
           />
         )}
       </section>
+      <PeringkatHotspot
+        points={aktif}
+        feed={hotspotFeed}
+        memuat={Boolean(loading && !hotspotFeed)}
+        tertunda={Boolean(freshness?.tertunda)}
+        from={from}
+        to={to}
+        periodeJam={periodeJam}
+        province={province}
+        sumber={config.firms?.sumber}
+      />
 
       <TrendCharts hotspotTrend={view.hotspotTrend} hotspotSeries={view.hotspotSeries} province={province} />
 

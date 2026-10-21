@@ -9,20 +9,22 @@ export const BIG_KECAMATAN_LAYER = 3;
 export const BIG_EDITION_NOTE =
   "Layer desa (MapServer/4) berjudul Peta Batas Administrasi Desa, edisi Mei 2021, 1.419 wilayah, dan layanan ini tidak mengirim geometrinya. Layer kecamatan (MapServer/3) pada layanan yang sama memuat nama kecamatan, kabupaten/kota, dan provinsi; deskripsi layanannya menyebut revisi 27 Desember 2022. Padanan adalah pencocokan koordinat pada batas peta, bukan verifikasi lapangan. Cakupan dan batas edisi Mei 2021 tidak lengkap untuk seluruh desa di Indonesia.";
 export const CONFIDENCE_NOTE =
-  "keyakinan deteksi, bukan intensitas atau bahaya. Confidence deteksi satelit. Bukan tingkat bahaya dan bukan tingkat kebakaran. VIIRS memakai l/n/h. Nominal adalah kelas menengah; padanan katanya sedang, dan warna yang dipakai kuning. MODIS 0–100 dipetakan 0–29 rendah, 30–79 nominal, 80–100 tinggi. Nilai asli tidak diubah.";
+  "keyakinan deteksi, bukan intensitas atau bahaya. Confidence deteksi satelit. Bukan tingkat bahaya dan bukan tingkat kebakaran. VIIRS memakai l/n/h. Nominal adalah kelas menengah; padanan katanya sedang. Warna: tinggi merah, sedang oranye, rendah kuning. Nilai yang tidak terbaca ditulis Tidak diketahui, bukan kuning. MODIS 0–100 dipetakan 0–29 rendah, 30–79 nominal, 80–100 tinggi. Nilai asli tidak diubah.";
 export const DESA_LINE_ZOOM = 11;
 export const MATCH_OFFSET_DEGREES = 0.001;
 
 export const CONFIDENCE_COLORS = Object.freeze({
-  rendah: "#15803d",
-  nominal: "#ca8a04",
+  rendah: "#eab308",
+  nominal: "#ea580c",
   tinggi: "#b42318",
+  tidak_diketahui: "#78716c",
 });
 
 export const CONFIDENCE_LABELS = Object.freeze([
-  ["rendah", "Rendah (low / l)"],
-  ["nominal", "Nominal (n, padanan: sedang)"],
-  ["tinggi", "Tinggi (high / h)"],
+  ["tinggi", "Merah · tinggi (high / h)"],
+  ["nominal", "Oranye · sedang (nominal / n)"],
+  ["rendah", "Kuning · rendah (low / l)"],
+  ["tidak_diketahui", "Tidak diketahui"],
 ]);
 
 function pointInRing(x, y, ring) {

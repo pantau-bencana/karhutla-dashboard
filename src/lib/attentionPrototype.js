@@ -85,6 +85,7 @@ export function placeFwiTable(rows) {
       return {
         kabupaten: group.kabupaten,
         provinsi: group.provinsi,
+        kode: group.kode,
         fwiRata: mean(fwi),
         hari: fwi.length,
         dari: dates[0] || "",

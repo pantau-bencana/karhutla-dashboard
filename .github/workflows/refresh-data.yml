@@ -9,7 +9,9 @@
 # workflow_dispatch pada cabang lain tidak men-deploy dan tidak menulis ke main.
 # Sebelum push: git fetch, lalu git pull --rebase, diulang bila push ditolak.
 # Bila rebase bentrok, snapshot dibuat ulang. Jangan force-push.
-# queue: max supaya run yang masih pending di grup `pages` tidak dibatalkan oleh run berikutnya.
+# Grup concurrency terpisah dari Pages. Run baru membatalkan run yang masih berjalan
+# supaya antrean tidak menumpuk. pages.yml tidak diubah.
+# timeout-minutes membatasi job. Tiap sumber juga punya batas di skrip.
 name: Perbarui data
 
 on:
@@ -24,13 +26,13 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: false
-  queue: max
+  group: refresh-data
+  cancel-in-progress: true
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     outputs:
       changed: ${{ steps.commit.outputs.changed }}
       wilayah_gagal: ${{ steps.commit.outputs.wilayah_gagal }}
@@ -54,6 +56,7 @@ jobs:
         run: python3 -m pip install --user netCDF4
 
       - name: Ambil data publik
+        timeout-minutes: 50
         env:
           FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
         run: node scripts/refresh-live-data.mjs
@@ -173,6 +176,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && needs.refresh.outputs.changed == 'true'
     needs: refresh
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

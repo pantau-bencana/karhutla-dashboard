@@ -2,7 +2,6 @@ import { createHash } from "node:crypto";
 import { appendFileSync, existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { flattenBmkgForecast, bmkgForecastUrl, BMKG_LOCATIONS, BMKG_DOCS_URL } from "../src/lib/bmkgForecast.js";
 import { firmsAreaUrl, redactSecret } from "../src/lib/firms.js";
 import { writeHotspotMap } from "./build-hotspot-map.mjs";
 import { parseFirmsCoordinate } from "./indonesia-land.mjs";
@@ -139,64 +138,26 @@ function writeIfChanged(relativePath, body, entry, previous) {
   return true;
 }
 
-async function fetchBmkg() {
-  const slots = [];
-  let analysis = "";
-  for (const location of BMKG_LOCATIONS) {
-    const { text } = await getText(bmkgForecastUrl(location.adm4), 25000);
-    const payload = JSON.parse(text);
-    const flat = flattenBmkgForecast(payload);
-    if (!flat.length) throw new Error(`BMKG tidak mengembalikan slot untuk ${location.adm4}`);
-    slots.push(...flat);
-    analysis = flat.find((slot) => slot.analysisUtc)?.analysisUtc || analysis;
-    await new Promise((resolveDelay) => setTimeout(resolveDelay, 250));
+function lewatiBatas(deadlineAt, label) {
+  if (deadlineAt && Date.now() > deadlineAt) {
+    const error = new Error(`${label} melewati batas waktu.`);
+    error.batasWaktu = true;
+    throw error;
   }
-  const headers = [
-    "tanggal",
-    "waktu_lokal",
-    "provinsi",
-    "kotkab",
-    "kecamatan",
-    "desa",
-    "adm4",
-    "suhu_c",
-    "kelembapan_pct",
-    "curah_hujan_tp",
-    "kec_angin_kmj",
-    "arah_angin",
-    "cuaca",
-    "kode_cuaca",
-    "analysis_utc",
-  ];
-  const body = toCsv(
-    headers,
-    slots.map((slot) => ({
-      tanggal: slot.tanggal,
-      waktu_lokal: slot.waktuLokal,
-      provinsi: slot.provinsi,
-      kotkab: slot.kotkab,
-      kecamatan: slot.kecamatan,
-      desa: slot.desa,
-      adm4: slot.adm4,
-      suhu_c: slot.suhu,
-      kelembapan_pct: slot.kelembapan,
-      curah_hujan_tp: slot.hujan,
-      kec_angin_kmj: slot.anginKmj,
-      arah_angin: slot.arahAngin,
-      cuaca: slot.cuaca,
-      kode_cuaca: slot.kodeCuaca,
-      analysis_utc: slot.analysisUtc,
-    })),
-  );
-  const dates = [...new Set(slots.map((slot) => slot.tanggal).filter(Boolean))].sort();
-  return {
-    body,
-    observedAt: analysis || null,
-    observedLabel: analysis
-      ? `Dikeluarkan ${analysis}. Berlaku ${dates[0]}–${dates.at(-1)} (3 hari, per 3 jam).`
-      : `Berlaku ${dates[0] ?? "—"}–${dates.at(-1) ?? "—"}`,
-    sourceUpdatedAt: analysis || null,
-  };
+}
+
+async function jalankan(label, budgetMs, fn) {
+  const started = Date.now();
+  const deadlineAt = started + budgetMs;
+  console.log(`sumber ${label}: mulai, batas ${Math.round(budgetMs / 1000)} detik`);
+  try {
+    const value = await fn(deadlineAt);
+    console.log(`sumber ${label}: selesai ${Date.now() - started} ms`);
+    return value;
+  } catch (error) {
+    console.log(`sumber ${label}: gagal ${Date.now() - started} ms — ${redactSecret(error?.message || String(error), firmsKey)}`);
+    throw error;
+  }
 }
 
 async function fetchOpenMeteoWeather(names) {
@@ -469,12 +430,13 @@ async function mapPool(items, limit, task) {
   return output;
 }
 
-async function fetchGwisFwi(points) {
+async function fetchGwisFwi(points, deadlineAt = Infinity) {
   const probe = points[0];
   const today = jakartaToday();
   const dates = [];
   let misses = 0;
   for (let offset = 0; offset < 12; offset += 1) {
+    lewatiBatas(deadlineAt, "fwi_gwis_pembanding");
     const time = addCalendarDays(today, offset);
     const value = await gwisAt(probe.lintang, probe.bujur, time);
     if (!value) {
@@ -493,6 +455,7 @@ async function fetchGwisFwi(points) {
   let failures = 0;
   const found = await mapPool(jobs, 4, async (job) => {
     try {
+      lewatiBatas(deadlineAt, "fwi_gwis_pembanding");
       const value = await gwisAt(job.point.lintang, job.point.bujur, job.time);
       return { ...job, value };
     } catch {
@@ -548,7 +511,7 @@ function comparisonEntry(item, id, comparesTo) {
   };
 }
 
-async function refreshKabupatenComparison(datasets, previous) {
+async function refreshKabupatenComparison(datasets, previous, deadlineAt = Infinity) {
   const rainSource = SOURCES.find((source) => source.id === "peluang_hujan").comparisons[0];
   const fwiSource = SOURCES.find((source) => source.id === "fdrs").comparisons.find((item) => item.id === "fwi_gwis_pembanding");
   const pointEntry = {
@@ -603,7 +566,8 @@ async function refreshKabupatenComparison(datasets, previous) {
     Object.assign(fwiEntry, keepPrevious(fwiEntry, previousEntry(previous, "fwi_gwis_pembanding"), "Titik wakil tidak tersedia."));
   } else {
     try {
-      const result = await fetchGwisFwi(points);
+      lewatiBatas(deadlineAt, "fwi_gwis_pembanding");
+      const result = await fetchGwisFwi(points, deadlineAt);
       fwiEntry.observed_at = result.observedAt;
       fwiEntry.observed_label = result.observedLabel;
       fwiEntry.source_updated_at = result.sourceUpdatedAt;
@@ -634,7 +598,8 @@ async function refreshKabupatenComparison(datasets, previous) {
     official_url: "https://portal.nccs.nasa.gov/datashare/GlobalFWI/",
   };
   try {
-    const result = await fetchGfwedKabupaten();
+    lewatiBatas(deadlineAt, "gfwed_kabupaten");
+    const result = await fetchGfwedKabupaten({ deadlineAt });
     gfwedEntry.observed_at = new Date().toISOString();
     gfwedEntry.observed_label = `Tanggal data ${result.tanggal}. ${result.rows.length} kabupaten/kota. Bukan kelas BMKG.`;
     gfwedEntry.source_updated_at = `${result.tanggal}T00:00:00.000Z`;
@@ -650,7 +615,7 @@ async function refreshKabupatenComparison(datasets, previous) {
   datasets.gfwed_kabupaten = gfwedEntry;
 }
 
-async function fetchFirms() {
+async function fetchFirms(deadlineAt = Infinity) {
   const url = firmsAreaUrl(firmsKey, { days: 5 });
   let text;
   try {
@@ -698,10 +663,12 @@ async function fetchFirms() {
       keterangan: "NASA FIRMS VIIRS Suomi-NPP. Bukan kebakaran terkonfirmasi. Nama wilayah dari kueri BIG pada pembaruan ini bila layanan menjawab. Koordinat FIRMS tidak diubah.",
     });
   }
+  lewatiBatas(deadlineAt, "hotspot");
   let annotated;
   try {
-    annotated = await annotatePoints(parsed, { concurrency: 2 });
-  } catch {
+    annotated = await annotatePoints(parsed, { concurrency: 2, deadlineAt, log: true });
+  } catch (error) {
+    if (error?.batasWaktu) throw error;
     annotated = {
       rows: parsed.map((point) => ({ ...point, wilayahStatus: "gagal", desaTampilan: DESA_UNIDENTIFIED })),
       stats: { droppedOutside: 0, gagal: parsed.length, desa: 0, tanpaDesa: 0, queries: 0 },
@@ -961,29 +928,37 @@ async function main() {
   const names = config.provinsiPrioritas ?? [];
   const datasets = {};
 
-  const bmkgSource = SOURCES.find((source) => source.id === "bmkg_prakiraan");
-  const bmkgEntry = baseEntry(bmkgSource);
-  bmkgEntry.url = BMKG_DOCS_URL;
-  bmkgEntry.license = "Wajib mencantumkan BMKG sebagai sumber. Data Prakiraan Cuaca Terbuka.";
-  try {
-    const result = await fetchBmkg();
-    bmkgEntry.observed_at = result.observedAt;
-    bmkgEntry.observed_label = result.observedLabel;
-    bmkgEntry.source_updated_at = result.sourceUpdatedAt;
-    writeIfChanged("data/live/bmkg_prakiraan.csv", result.body, bmkgEntry, previousEntry(previous, "bmkg_prakiraan"));
-  } catch (error) {
-    Object.assign(bmkgEntry, keepPrevious(bmkgEntry, previousEntry(previous, "bmkg_prakiraan"), error.message));
+  const previousBmkg = previousEntry(previous, "bmkg_prakiraan");
+  const previousAngin = previousEntry(previous, "angin");
+  if (previousBmkg?.file && existsSync(resolve(root, previousBmkg.file))) {
+    datasets.bmkg_prakiraan = { ...previousBmkg };
+    datasets.angin = previousAngin?.file
+      ? { ...previousAngin }
+      : {
+          ...previousBmkg,
+          id: "angin",
+          nama: "Arah dan kecepatan angin",
+          source: "Arah dan kecepatan angin pada prakiraan cuaca BMKG",
+          fungsi: SOURCES.find((source) => source.id === "angin").fungsi,
+          limitation: SOURCES.find((source) => source.id === "angin").limitation,
+        };
+    console.log("sumber bmkg_prakiraan: cuplikan jadwal tetap, tidak diambil di pembaruan umum");
+  } else {
+    const bmkgEntry = baseEntry(SOURCES.find((source) => source.id === "bmkg_prakiraan"));
+    bmkgEntry.status = "failed";
+    bmkgEntry.error = "Cuplikan prakiraan mengikuti jadwal 07.00, 09.00, 19.00, dan 21.00 WIB.";
+    bmkgEntry.record_count = 0;
+    bmkgEntry.file = null;
+    datasets.bmkg_prakiraan = bmkgEntry;
+    datasets.angin = {
+      ...bmkgEntry,
+      id: "angin",
+      nama: "Arah dan kecepatan angin",
+      source: "Arah dan kecepatan angin pada prakiraan cuaca BMKG",
+      fungsi: SOURCES.find((source) => source.id === "angin").fungsi,
+      limitation: SOURCES.find((source) => source.id === "angin").limitation,
+    };
   }
-  datasets.bmkg_prakiraan = bmkgEntry;
-  datasets.angin = {
-    ...bmkgEntry,
-    id: "angin",
-    nama: "Arah dan kecepatan angin",
-    source: "Arah dan kecepatan angin pada prakiraan cuaca BMKG",
-    fungsi: SOURCES.find((source) => source.id === "angin").fungsi,
-    limitation: SOURCES.find((source) => source.id === "angin").limitation,
-    url: "https://data.bmkg.go.id/prakiraan-cuaca/",
-  };
 
   const compareWeather = SOURCES.find((source) => source.id === "fdrs").comparisons[0];
   const weatherEntry = {
@@ -997,7 +972,10 @@ async function main() {
     official_url: "https://spartan.bmkg.go.id/",
   };
   try {
-    const result = await fetchOpenMeteoWeather(names);
+    const result = await jalankan("fdrs_pembanding", 2 * 60 * 1000, async (deadlineAt) => {
+      lewatiBatas(deadlineAt, "fdrs_pembanding");
+      return fetchOpenMeteoWeather(names);
+    });
     weatherEntry.observed_at = result.observedAt;
     weatherEntry.observed_label = result.observedLabel;
     weatherEntry.source_updated_at = result.sourceUpdatedAt;
@@ -1020,7 +998,10 @@ async function main() {
     update_type: "Estimasi",
   };
   try {
-    const result = await fetchOpenMeteoAir(names);
+    const result = await jalankan("ispu_pembanding", 2 * 60 * 1000, async (deadlineAt) => {
+      lewatiBatas(deadlineAt, "ispu_pembanding");
+      return fetchOpenMeteoAir(names);
+    });
     airEntry.observed_at = result.observedAt;
     airEntry.observed_label = result.observedLabel;
     airEntry.source_updated_at = result.sourceUpdatedAt;
@@ -1029,7 +1010,11 @@ async function main() {
     Object.assign(airEntry, keepPrevious(airEntry, previousEntry(previous, "ispu_pembanding"), error.message));
   }
   datasets.ispu_pembanding = airEntry;
-  await refreshKabupatenComparison(datasets, previous);
+  try {
+    await jalankan("kabupaten_pembanding", 10 * 60 * 1000, (deadlineAt) => refreshKabupatenComparison(datasets, previous, deadlineAt));
+  } catch (error) {
+    console.log(`sumber kabupaten_pembanding: berhenti. Cuplikan pembanding yang sudah ada tetap dipakai. ${redactSecret(error.message, firmsKey)}`);
+  }
 
   const hotspotSource = SOURCES.find((source) => source.id === "hotspot");
   const hotspotEntry = baseEntry(hotspotSource);
@@ -1050,7 +1035,7 @@ async function main() {
     }
   } else {
     try {
-      const result = await fetchFirms();
+      const result = await jalankan("hotspot", 40 * 60 * 1000, (deadlineAt) => fetchFirms(deadlineAt));
       hotspotEntry.url = result.url;
       hotspotEntry.license = "NASA FIRMS / LANCE. Kutip NASA FIRMS. Titik panas bukan kebakaran terkonfirmasi.";
       hotspotEntry.observed_at = result.observedAt;
@@ -1090,7 +1075,10 @@ async function main() {
   const capEntry = baseEntry(capSource);
   capEntry.license = "Sumber: BMKG. RSS dan CAP nowcast.";
   try {
-    const result = await fetchCap();
+    const result = await jalankan("bmkg_cap", 4 * 60 * 1000, async (deadlineAt) => {
+      lewatiBatas(deadlineAt, "bmkg_cap");
+      return fetchCap();
+    });
     capEntry.observed_at = result.observedAt;
     capEntry.observed_label = result.observedLabel;
     capEntry.source_updated_at = result.sourceUpdatedAt;
@@ -1139,7 +1127,10 @@ async function main() {
   const dibiEntry = baseEntry(dibiSource);
   dibiEntry.mode = "statis";
   try {
-    const result = await fetchDibi();
+    const result = await jalankan("dibi_karhutla", 3 * 60 * 1000, async (deadlineAt) => {
+      lewatiBatas(deadlineAt, "dibi_karhutla");
+      return fetchDibi();
+    });
     dibiEntry.license = result.license;
     dibiEntry.observed_at = result.observedAt;
     dibiEntry.observed_label = result.observedLabel;
@@ -1154,7 +1145,10 @@ async function main() {
   const dibiBanjirEntry = baseEntry(dibiBanjirSource);
   dibiBanjirEntry.mode = "statis";
   try {
-    const result = await fetchDibiBanjir2024();
+    const result = await jalankan("dibi_banjir_2024", 3 * 60 * 1000, async (deadlineAt) => {
+      lewatiBatas(deadlineAt, "dibi_banjir_2024");
+      return fetchDibiBanjir2024();
+    });
     dibiBanjirEntry.license = result.license;
     dibiBanjirEntry.observed_at = result.observedAt;
     dibiBanjirEntry.observed_label = result.observedLabel;
@@ -1217,7 +1211,10 @@ async function comparisonOnly() {
     update_type: "Estimasi",
   };
   try {
-    const result = await fetchOpenMeteoAir(names);
+    const result = await jalankan("ispu_pembanding", 2 * 60 * 1000, async (deadlineAt) => {
+      lewatiBatas(deadlineAt, "ispu_pembanding");
+      return fetchOpenMeteoAir(names);
+    });
     airEntry.observed_at = result.observedAt;
     airEntry.observed_label = result.observedLabel;
     airEntry.source_updated_at = result.sourceUpdatedAt;
@@ -1226,7 +1223,11 @@ async function comparisonOnly() {
     Object.assign(airEntry, keepPrevious(airEntry, previousEntry(previous, "ispu_pembanding"), error.message));
   }
   datasets.ispu_pembanding = airEntry;
-  await refreshKabupatenComparison(datasets, previous);
+  try {
+    await jalankan("kabupaten_pembanding", 10 * 60 * 1000, (deadlineAt) => refreshKabupatenComparison(datasets, previous, deadlineAt));
+  } catch (error) {
+    console.log(`sumber kabupaten_pembanding: berhenti. Cuplikan pembanding yang sudah ada tetap dipakai. ${redactSecret(error.message, firmsKey)}`);
+  }
   const next = {
     generated_at: nowIso,
     schedule: previous.schedule ?? {

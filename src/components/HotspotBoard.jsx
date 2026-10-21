@@ -6,7 +6,7 @@ import { HotspotAccordion } from "./HotspotAccordion.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { formatAngka, formatWib } from "../lib/format.js";
 import { hotspotSourceLabel } from "../lib/freshness.js";
-import { countHotspots, filterHotspotWindow } from "../lib/hotspotWindow.js";
+import { countHotspots } from "../lib/hotspotWindow.js";
 import {
   BIG_EDITION_NOTE,
   BIG_SOURCE_LABEL,
@@ -22,12 +22,6 @@ import {
   unverifiedWilayahCount,
   wilayahGroupKey,
 } from "../lib/bigWilayah.js";
-
-const WINDOWS = [
-  [24, "24 jam"],
-  [48, "48 jam"],
-  [168, "7 hari"],
-];
 
 function SelectFilter({ label, value, onChange, options, empty }) {
   return (
@@ -45,9 +39,8 @@ function SelectFilter({ label, value, onChange, options, empty }) {
   );
 }
 
-export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observedAt, freshness, sumber, from = "", to = "" }) {
+export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observedAt, freshness, sumber, from = "", to = "", periodeTeks = "", frame = "indonesia", onKembaliIndonesia }) {
   const mapApi = useRef(null);
-  const [hours, setHours] = useState(24);
   const [provinceFilter, setProvinceFilter] = useState("semua");
   const [tanggal, setTanggal] = useState("");
   const [satelit, setSatelit] = useState("");
@@ -55,7 +48,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
   const [kabupaten, setKabupaten] = useState("");
   const [kecamatan, setKecamatan] = useState("");
   const [desa, setDesa] = useState("");
-  const [confidence, setConfidence] = useState(() => new Set(["rendah", "nominal", "tinggi"]));
+  const [confidence, setConfidence] = useState(() => new Set(["rendah", "nominal", "tinggi", "tidak_diketahui"]));
   const [selectedKey, setSelectedKey] = useState("");
   const [selectedGroup, setSelectedGroup] = useState("");
   const [mapReveal, setMapReveal] = useState("");
@@ -65,11 +58,16 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
   const onFwiReady = useCallback((ready) => setFwiReady(ready), []);
 
   const selectedProvinces = provinceFilter === "prioritas" ? priority : provinceFilter === "semua" ? null : [provinceFilter];
-  const windowed = filterHotspotWindow(points, { hours, provinces: selectedProvinces });
+  const scoped = useMemo(() => {
+    const rows = points ?? [];
+    if (!selectedProvinces) return rows;
+    const allow = new Set(selectedProvinces);
+    return rows.filter((point) => allow.has(point.provinsi));
+  }, [points, selectedProvinces]);
   const dated = useMemo(() => {
-    const rows = tanggal ? windowed.rows.filter((point) => point.tanggal === tanggal) : windowed.rows;
+    const rows = tanggal ? scoped.filter((point) => point.tanggal === tanggal) : scoped;
     return satelit ? rows.filter((point) => point.satelit === satelit) : rows;
-  }, [windowed.rows, tanggal, satelit]);
+  }, [scoped, tanggal, satelit]);
   const confident = useMemo(() => dated.filter((point) => confidence.has(point.kelasKepercayaan)), [dated, confidence]);
   const filtered = useMemo(
     () => filterHotspotRows(confident, { provinsi, kabupaten, kecamatan, desa }),
@@ -78,8 +76,8 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
   const tally = countHotspots(filtered);
   const desaCoverage = filtered.filter((point) => point.desa && point.desa !== DESA_UNIDENTIFIED).length;
   const unverified = unverifiedWilayahCount(filtered);
-  const dates = distinctSorted(windowed.rows, "tanggal");
-  const satellites = distinctSorted(windowed.rows, "satelit");
+  const dates = distinctSorted(scoped, "tanggal");
+  const satellites = distinctSorted(scoped, "satelit");
   const provinces = distinctSorted(confident, "provinsi").filter((name) => name !== "Belum terpetakan");
   const kabOptions = distinctSorted(filterHotspotRows(confident, { provinsi }), "kabupaten");
   const kecOptions = distinctSorted(filterHotspotRows(confident, { provinsi, kabupaten }), "kecamatan");
@@ -121,27 +119,20 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
         <p>{BIG_EDITION_NOTE}</p>
         <p>{CONFIDENCE_NOTE} Jumlah per kelas adalah jumlah deteksi, bukan tingkat keparahan.</p>
         <p>
-          Pada zoom kecil, cincin berwarna membagi petak menjadi hijau, kuning, dan merah menurut bagian kelas confidence di dalamnya. Angka di tengah adalah jumlah deteksi, bukan kelas confidence. Pada zoom 6 ke atas, atau bila petak hanya berisi satu titik, tiap titik memakai warna confidence (hijau rendah, kuning nominal, merah tinggi) dan koordinat FIRMS.
+          Pada zoom kecil, cincin berwarna membagi petak menjadi kuning (rendah), oranye (sedang), dan merah (tinggi). Abu-abu adalah tidak diketahui dan tidak dihitung sebagai kuning. Angka di tengah adalah jumlah deteksi, bukan kelas confidence. Pada zoom 6 ke atas, atau bila petak hanya berisi satu titik, tiap titik memakai warna itu dan koordinat FIRMS.
           Garis desa BIG hanya diminta untuk tampilan dekat, tidak untuk seluruh Indonesia, dan tidak disimpan.
         </p>
       </details>
       <DatasetTiming feed={feed} />
       {fetchedAt ? <p className="fine">Diambil {formatWib(fetchedAt)}. Usia cuplikan mengikuti waktu ambil itu.</p> : null}
       {filterIncomplete ? <p className="banner warn is-sticky">{FILTER_INCOMPLETE}</p> : null}
-      <div className="province-filter" role="group" aria-label="Jendela waktu hotspot">
-        {WINDOWS.map(([value, label]) => (
-          <button key={value} type="button" aria-pressed={hours === value} onClick={() => setHours(value)}>
-            {label}
-          </button>
-        ))}
-      </div>
-      <div className="province-filter" role="group" aria-label="Provinsi prioritas">
+      <div className="province-filter" role="group" aria-label="Saringan peta tambahan">
         <button type="button" aria-pressed={provinceFilter === "semua"} onClick={() => setProvinceFilter("semua")}>Semua</button>
         <button type="button" aria-pressed={provinceFilter === "prioritas"} onClick={() => setProvinceFilter("prioritas")}>Enam prioritas</button>
-        {(priority ?? []).map((name) => (
-          <button key={name} type="button" aria-pressed={provinceFilter === name} onClick={() => setProvinceFilter(name)}>{name}</button>
-        ))}
       </div>
+      <p className="fine">
+        Enam prioritas membatasi peta ke {(priority ?? []).join(", ") || "provinsi pada konfigurasi kesiapsiagaan"}. Tombol cakupan di atas mengikuti peringkat hotspot periode ini.
+      </p>
       <div className="hotspot-filters">
         <SelectFilter label="Tanggal" value={tanggal} onChange={setTanggal} options={dates} empty="Semua tanggal pada jendela" />
         <SelectFilter label="Satelit" value={satelit} onChange={setSatelit} options={satellites} empty="Semua satelit" />
@@ -162,7 +153,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
         <ClusterLegend />
       </div>
       <p className="fine">
-        {WINDOWS.find(([value]) => value === hours)?.[1]}: {formatAngka(tally.jumlah)} titik.
+        {periodeTeks || "Periode aktif"}: {formatAngka(tally.jumlah)} titik pada peta setelah saringan. Tabel peringkat tetap menghitung seluruh jendela sebelum saringan kelas, satelit, atau desa.
         nama desa tersedia untuk {formatAngka(desaCoverage)} dari {formatAngka(filtered.length)} titik.
       </p>
       <p className="lintasan-line" role="status">
@@ -173,7 +164,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
       <div className="board-split">
       <div className="board-map">
       <div className="map-toolbar">
-        <button type="button" className="button" onClick={() => mapApi.current?.showIndonesia()}>Kembali ke seluruh Indonesia</button>
+        <button type="button" className="button" onClick={() => { onKembaliIndonesia?.(); mapApi.current?.showIndonesia(); }}>Kembali ke seluruh Indonesia</button>
       </div>
       <div className="map-stage">
         {freshness?.tertunda || feed?.status === "usang" || feed?.status === "gagal" ? (
@@ -186,21 +177,21 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
             </p>
           </div>
         ) : null}
-        <HotspotMap points={filtered} frame="indonesia" mapApi={mapApi} selectedKey={selectedKey} onSelect={choosePoint} fwiDate={fwiOn && fwiReady ? modelDate : ""} />
+        <HotspotMap points={filtered} frame={frame} mapApi={mapApi} selectedKey={selectedKey} onSelect={choosePoint} fwiDate={fwiOn && fwiReady ? modelDate : ""} />
       </div>
       </div>
       <section className="hotspot-count" aria-labelledby="hotspot-count-heading">
         <h2 id="hotspot-count-heading">Jumlah deteksi hotspot (bukan status)</h2>
         <p>
-          Periode {WINDOWS.find(([value]) => value === hours)?.[1]}
-          {from && to ? ` di dalam tanggal ${from}–${to}` : ""}. Bukan status operasional.
+          Periode {periodeTeks || "aktif"}
+          {from && to ? ` di dalam tanggal ${from}–${to}` : ""}. Bukan status operasional dan bukan bahaya kebakaran.
           {unverified ? ` ${formatAngka(unverified)} titik belum terverifikasi wilayah.` : ""}
           {" "}Daftar mengikuti saringan di atas dan memusatkan peta saat baris dipilih.
         </p>
         <details className="read-help">
           <summary>Cara membaca</summary>
           <p>
-            Satelit: {hotspotSourceLabel(feed, sumber || meta?.sumber)}. Urutan provinsi mengikuti jumlah titik, dari yang terbanyak. Angka berwarna adalah confidence deteksi satelit: rendah, nominal (sedang), dan tinggi. Bukan tingkat bahaya. Membuka provinsi menampilkan kecamatan, lalu desa.
+            Satelit: {hotspotSourceLabel(feed, sumber || meta?.sumber)}. Angka berwarna adalah confidence deteksi satelit: kuning rendah, oranye sedang, merah tinggi. Tidak diketahui tidak disebut kuning. Bukan tingkat bahaya. Membuka provinsi menampilkan kecamatan, lalu desa. Urutan prioritas pelaporan ada pada tabel peringkat, bukan pada daftar ini.
           </p>
         </details>
         <HotspotAccordion points={filtered} onFocus={focusGroup} selectedKey={selectedGroup} revealKey={mapReveal} />
