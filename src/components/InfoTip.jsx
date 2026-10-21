@@ -7,7 +7,6 @@ export function InfoTip({ label, children, align = "start" }) {
   const [box, setBox] = useState(null);
   const buttonRef = useRef(null);
   const panelRef = useRef(null);
-  const kembalikan = useRef(false);
   const panelId = useId();
   const judulId = useId();
 
@@ -24,13 +23,13 @@ export function InfoTip({ label, children, align = "start" }) {
   }
 
   function tutup(kembaliFokus) {
-    kembalikan.current = kembaliFokus;
+    const tombol = buttonRef.current;
     setOpen(false);
+    if (kembaliFokus && tombol) window.setTimeout(() => tombol.focus(), 0);
   }
 
   useEffect(() => {
     if (!open) return undefined;
-    const tombol = buttonRef.current;
     const panel = panelRef.current;
     panel?.querySelector("[data-tutup]")?.focus();
 
@@ -75,8 +74,6 @@ export function InfoTip({ label, children, align = "start" }) {
       document.removeEventListener("keydown", tombolKeyboard);
       window.removeEventListener("resize", geser);
       window.removeEventListener("scroll", geser, true);
-      if (kembalikan.current && tombol) tombol.focus();
-      kembalikan.current = false;
     };
   }, [open, align]);
 
