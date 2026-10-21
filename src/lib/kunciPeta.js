@@ -22,13 +22,31 @@ function padPixel(padding) {
 
 // Zoom yang memuat seluruh kotak Indonesia pada ukuran wadah saat ini.
 // minZoom disetel 0 dulu karena getBoundsZoom tidak mengembalikan nilai di bawah lantai.
-export function zoomMuatIndonesia(map, padding = PADDING_BAWAAN) {
+export function zoomMuatIndonesia(map, padding = PADDING_BAWAAN, bounds = null) {
+  const kotak = bounds?.isValid?.() ? bounds : boundsKunciPeta();
   const sebelumnya = map.getMinZoom();
   map.options.zoomSnap = 0;
   map.setMinZoom(0);
-  const zoom = map.getBoundsZoom(boundsKunciPeta(), false, padPixel(padding));
+  const zoom = map.getBoundsZoom(kotak, false, padPixel(padding));
   map.setMinZoom(Number.isFinite(sebelumnya) ? sebelumnya : 0);
   return Number.isFinite(zoom) ? zoom : 0;
+}
+
+// Jejak geser = tampilan nasional pada lantai zoom, dipusatkan di kotak Indonesia.
+// Wadah yang lebih tinggi atau lebih lebar daripada kotak itu memperlihatkan
+// sedikit laut. Batas geser mengikuti tampilan itu supaya pulau tidak terdorong
+// keluar saat viscosity 1 (kotak yang lebih kecil daripada layar membuat
+// Leaflet menempel ke satu tepi).
+function jejakNasional(map, kotak, zoom) {
+  const tengah = kotak.getCenter();
+  const setengah = map.getSize().divideBy(2);
+  const pusat = map.project(tengah, zoom);
+  const nw = map.unproject(pusat.subtract(setengah), zoom);
+  const se = map.unproject(pusat.add(setengah), zoom);
+  const tampilan = L.latLngBounds(nw, se);
+  tampilan.extend(kotak.getSouthWest());
+  tampilan.extend(kotak.getNorthEast());
+  return tampilan.pad(0.012);
 }
 
 // Kunci geser (maxBounds + viscosity 1) dan lantai zoom.
@@ -46,15 +64,16 @@ export function kunciTampilanIndonesia(map, { muatUlang = true, padding = PADDIN
     map.setMinZoom(0);
     map.fitBounds(kotak, { padding, animate: false });
     const zoom = map.getZoom();
-    map.setMinZoom(Number.isFinite(zoom) ? zoom : 0);
-    map.setMaxBounds(kotak);
+    const lantai = Number.isFinite(zoom) ? zoom : 0;
+    map.setMinZoom(lantai);
+    map.setMaxBounds(jejakNasional(map, kotak, lantai));
     return true;
   }
   const pusat = map.getCenter();
   const zoom = map.getZoom();
-  const lantai = zoomMuatIndonesia(map, padding);
+  const lantai = zoomMuatIndonesia(map, padding, kotak);
   map.setMinZoom(lantai);
-  map.setMaxBounds(kotak);
+  map.setMaxBounds(jejakNasional(map, kotak, lantai));
   if (!Number.isFinite(zoom) || zoom < lantai) map.setView(pusat, lantai, { animate: false });
   return true;
 }

@@ -401,7 +401,7 @@ const kunciSumber = readFileSync("src/lib/kunciPeta.js", "utf8");
 assert.match(kunciSumber, /BATAS_KUNCI_PETA/);
 assert.match(kunciSumber, /fitBounds\(kotak, \{ padding, animate: false \}/);
 assert.match(kunciSumber, /setMinZoom/);
-assert.match(kunciSumber, /setMaxBounds\(kotak\)/);
+assert.match(kunciSumber, /setMaxBounds\(jejakNasional\(map, kotak, lantai\)\)/);
 assert.match(kunciSumber, /maxBoundsViscosity = 1/);
 for (const file of [
   "src/components/HotspotMap.jsx",

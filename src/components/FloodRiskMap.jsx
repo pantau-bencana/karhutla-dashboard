@@ -225,11 +225,12 @@ function fitProvinsi(map, bounds) {
   if (!petaSiap(map)) return false;
   const frame = banjirBounds();
   kunciTampilanIndonesia(map, { muatUlang: false, padding: BANJIR_PADDING, bounds: frame });
+  const lantai = map.getMinZoom();
   map.stop();
   map.setMaxBounds(null);
   map.fitBounds(bounds, { padding: PADDING_PROVINSI, animate: false });
-  map.setMaxBounds(frame);
-  map.options.maxBoundsViscosity = 1;
+  map.setMinZoom(lantai);
+  kunciTampilanIndonesia(map, { muatUlang: false, padding: BANJIR_PADDING, bounds: frame });
   return true;
 }
 
