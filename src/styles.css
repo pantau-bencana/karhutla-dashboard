@@ -181,13 +181,47 @@ a.button {
 
 .map-stage { position: relative; }
 
-.map-overlay {
+.map-badge {
   position: absolute;
-  z-index: 1000;
-  top: 10px;
-  left: 10px;
-  right: 10px;
-  pointer-events: none;
+  z-index: 450;
+  left: 8px;
+  bottom: 20px;
+  max-width: min(240px, calc(100% - 112px));
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(180, 120, 60, 0.4);
+  border-radius: 8px;
+  background: rgba(255, 247, 237, 0.82);
+  color: #1c1915;
+  font-size: 11px;
+  line-height: 1.3;
+  pointer-events: auto;
+}
+.map-badge summary {
+  display: grid;
+  gap: 1px;
+  padding: 4px 8px;
+  cursor: pointer;
+  list-style: none;
+}
+.map-badge summary::-webkit-details-marker { display: none; }
+.map-badge-judul { font-weight: 700; }
+.map-badge-ringkas { font-weight: 500; color: #57534e; }
+.map-badge p {
+  margin: 0;
+  padding: 0 8px 6px;
+  font-weight: 500;
+}
+.map-badge-gagal {
+  background: rgba(253, 236, 234, 0.88);
+  border-color: rgba(192, 80, 70, 0.45);
+}
+@media (max-width: 640px) {
+  .map-badge {
+    font-size: 10px;
+    max-width: min(210px, calc(100% - 96px));
+  }
+  .map-badge summary { min-height: 32px; }
 }
 
 .filters {

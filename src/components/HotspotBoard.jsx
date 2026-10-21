@@ -167,17 +167,20 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
         <button type="button" className="button" onClick={() => { onKembaliIndonesia?.(); mapApi.current?.showIndonesia(); }}>Kembali ke seluruh Indonesia</button>
       </div>
       <div className="map-stage">
+        <HotspotMap points={filtered} frame={frame} mapApi={mapApi} selectedKey={selectedKey} onSelect={choosePoint} fwiDate={fwiOn && fwiReady ? modelDate : ""} />
         {freshness?.tertunda || feed?.status === "usang" || feed?.status === "gagal" ? (
-          <div className="banner warn map-overlay" role="status">
-            <strong>{feed?.status === "gagal" ? "Peta kosong" : "Data tertunda"}</strong>
+          <details className={feed?.status === "gagal" ? "map-badge map-badge-gagal" : "map-badge"}>
+            <summary>
+              <span className="map-badge-judul">{feed?.status === "gagal" ? "Peta kosong" : "Data tertunda"}</span>
+              {feed?.status === "gagal" ? null : <span className="map-badge-ringkas">{observedAt ? formatWib(observedAt) : "—"}</span>}
+            </summary>
             <p>
               {feed?.status === "gagal"
                 ? feed.error
                 : `Lintasan satelit terakhir: ${observedAt ? formatWib(observedAt) : "—"}. Yang tampil adalah cuplikan, bukan permintaan peramban ke NASA FIRMS.`}
             </p>
-          </div>
+          </details>
         ) : null}
-        <HotspotMap points={filtered} frame={frame} mapApi={mapApi} selectedKey={selectedKey} onSelect={choosePoint} fwiDate={fwiOn && fwiReady ? modelDate : ""} />
       </div>
       </div>
       <section className="hotspot-count" aria-labelledby="hotspot-count-heading">

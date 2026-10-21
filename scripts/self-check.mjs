@@ -907,6 +907,9 @@ assert.equal(hotspotSourceLabel({ status: "usang", rows: [] }), "Cuplikan tidak 
 const boardSource = readFileSync("src/components/HotspotBoard.jsx", "utf8");
 assert.match(boardSource, /Confidence deteksi satelit/);
 assert.match(boardSource, /Lintasan satelit terakhir/);
+assert.match(boardSource, /map-badge/);
+assert.match(boardSource, /cuplikan, bukan permintaan peramban ke NASA FIRMS/);
+assert.equal(boardSource.includes("map-overlay"), false);
 assert.match(boardSource, /nama desa tersedia untuk/);
 assert.match(boardSource, /titik belum terverifikasi wilayah/);
 assert.match(boardSource, /keyakinan deteksi, bukan intensitas atau bahaya/);
