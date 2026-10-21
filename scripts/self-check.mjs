@@ -49,6 +49,7 @@ import {
   tampilanPrioritas,
 } from "../src/lib/aplus.js";
 import { CAP_CRON, CAP_WATCH_MINUTES, PRAKIRAAN_CRON, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
+import { susunPotensiTujuh } from "../src/lib/potensiTujuh.js";
 import {
   JARAK_ULANG_ANALISIS_MS,
   ULANG_ANALISIS_MAKS,
@@ -405,6 +406,8 @@ assert.equal(parseRoute("#/LOGIKA?x=1"), "logika");
 assert.equal(parseRoute("#/lain"), "ringkasan");
 assert.equal(parseRoute("#/banjir"), "ringkasan");
 assert.equal(parseRoute("#/glosarium/ispu"), "glosarium");
+assert.equal(parseRoute("#/karhutla/potensi"), "potensi");
+assert.equal(parseLocation("#/sumber-metode/potensi-7-hari").anchor, "potensi-7-hari");
 
 const described = monitoringSources({ config, feeds: loaded });
 assert.equal(described.find((row) => row.id === "firms-api").status, "belum terhubung");
@@ -2192,5 +2195,72 @@ assert.equal(rujukanHref.length > 0, true);
 for (const href of rujukanHref) assert.equal(rujukanBoleh.has(href), true, href);
 assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<PrioritasPanel /);
 assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /prioritas_aplus/);
+assert.match(readFileSync("src/components/SiteHeader.jsx", "utf8"), /Potensi 7 hari/);
+assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /Potensi karhutla 7 hari ke depan/);
+assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /hasil\.judul/);
+assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /Pembanding \(data terbuka, bukan resmi\)/);
+assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /belum terintegrasi/);
+assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /bukan prakiraan resmi/);
+assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /hingga H\+7 sesuai produk BMKG/);
+assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /precipitation_sum/);
+assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /bukan precipitation_probability/);
+assert.equal(readFileSync("src/lib/potensiTujuh.js", "utf8").includes("peluang_hujan"), false);
+const hariPotensi = ["2026-10-21", "2026-10-22", "2026-10-23", "2026-10-24", "2026-10-25", "2026-10-26", "2026-10-27"];
+const fwiPotensi = [];
+const hujanPotensi = [];
+for (const tanggal of hariPotensi) {
+  fwiPotensi.push({ tanggal, kode: "1504", kabupaten: "BATANGHARI", provinsi: "Jambi", fwi: 20 });
+  fwiPotensi.push({ tanggal, kode: "1408", kabupaten: "SIAK", provinsi: "Riau", fwi: 1 });
+  hujanPotensi.push({ tanggal, kode: "1504", kabupaten: "BATANGHARI", curahHujan: 0, peluang: 100 });
+  hujanPotensi.push({ tanggal, kode: "1408", kabupaten: "SIAK", curahHujan: tanggal === "2026-10-21" ? 40 : 0, peluang: 0 });
+}
+fwiPotensi.push({ tanggal: "2026-10-21", kode: "1602", kabupaten: "OGAN KOMERING ILIR", fwi: 30 });
+fwiPotensi.push({ tanggal: "2026-10-22", kode: "1602", kabupaten: "OGAN KOMERING ILIR", fwi: 30 });
+hujanPotensi.push({ tanggal: "2026-10-21", kode: "1602", curahHujan: 0, peluang: 100 });
+hujanPotensi.push({ tanggal: "2026-10-22", kode: "1602", curahHujan: 0, peluang: 100 });
+const potensiSegar = susunPotensiTujuh({
+  fwiRows: fwiPotensi,
+  hujanRows: hujanPotensi,
+  hotspotRows: [
+    { tanggal: "2026-10-20", kodeKabupaten: "15.04", kelasKepercayaan: "tinggi", wilayahStatus: "ok" },
+    { tanggal: "2026-10-20", kodeKabupaten: "15.04", kelasKepercayaan: "rendah", wilayahStatus: "ok" },
+    { tanggal: "2026-10-01", kodeKabupaten: "15.04", kelasKepercayaan: "tinggi", wilayahStatus: "ok" },
+    { tanggal: "2026-10-20", kodeKabupaten: "61.04", kelasKepercayaan: "tinggi", wilayahStatus: "ok" },
+  ],
+  irbiRows: [{ provinsi: "Jambi", kabupaten: "Batanghari", indeks: 22.5, kelas: "Tinggi" }],
+  fwiFetchedAt: "2026-10-21T00:00:00.000Z",
+  hujanFetchedAt: "2026-10-21T00:00:00.000Z",
+  hotspotFetchedAt: "2026-10-21T00:00:00.000Z",
+  now: new Date("2026-10-21T06:00:00.000Z"),
+});
+assert.equal(potensiSegar.tersedia, true);
+assert.equal(potensiSegar.dari, "2026-10-21");
+assert.equal(potensiSegar.sampai, "2026-10-27");
+assert.equal(potensiSegar.baris[0].kabupaten, "Batanghari");
+assert.equal(potensiSegar.baris[0].kelas, "Sangat tinggi");
+assert.equal(potensiSegar.baris[0].hariBasah, 0);
+assert.equal(potensiSegar.baris[0].hotspot, 1);
+assert.match(potensiSegar.baris[0].saran, /Verifikasi lapangan/);
+assert.equal(potensiSegar.baris[0].irbi, 22.5);
+const siakPotensi = potensiSegar.baris.find((row) => row.kabupaten === "Siak");
+assert.equal(siakPotensi.kelas, "Rendah");
+assert.equal(siakPotensi.hariBasah, 1);
+assert.match(siakPotensi.saran, /Pantau/);
+assert.equal(potensiSegar.baris.some((row) => row.provinsi === "Kalimantan Barat"), false);
+const okiPotensi = potensiSegar.baris.find((row) => row.kode === "16.02");
+assert.equal(okiPotensi.kelas, "Belum cukup data");
+assert.equal(okiPotensi.skor, null);
+assert.equal(potensiSegar.baris.at(-1).kode, "16.02");
+const potensiBasi = susunPotensiTujuh({
+  fwiRows: fwiPotensi,
+  hujanRows: hujanPotensi,
+  hotspotRows: [],
+  fwiFetchedAt: "2026-10-18T00:00:00.000Z",
+  hujanFetchedAt: "2026-10-21T00:00:00.000Z",
+  now: new Date("2026-10-21T06:00:00.000Z"),
+});
+assert.equal(potensiBasi.tersedia, false);
+assert.match(potensiBasi.alasan.join(" "), /FWI pembanding lebih dari 36 jam/);
+assert.match(readFileSync("src/components/PriorityIndicators.jsx", "utf8"), /menunggu data resmi|Tautan saja|belum/);
 
 console.log("Pemeriksaan prototipe lulus.");

@@ -13,6 +13,7 @@ const TOP = [
 const KARHUTLA_PAGES = [
   ["ringkasan", "Ringkasan", "#/"],
   ["peta", "Peta dan Data", "#/karhutla/peta"],
+  ["potensi", "Potensi 7 hari", "#/karhutla/potensi"],
   ["ispu", "Kualitas Udara (ISPU)", "#/karhutla/ispu"],
   ["logika", "Logika Pemantauan", "#/karhutla/logika"],
   ["sumber", "Sumber Data", "#/karhutla/sumber"],

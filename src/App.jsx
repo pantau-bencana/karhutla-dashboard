@@ -9,6 +9,7 @@ import { LogicPage } from "./components/LogicPage.jsx";
 import { MetodePage } from "./components/MetodePage.jsx";
 import { SiteHeader } from "./components/SiteHeader.jsx";
 import { SourcesPage } from "./components/SourcesPage.jsx";
+import { PotensiTujuhHari } from "./components/PotensiTujuhHari.jsx";
 import { SummaryPage } from "./components/SummaryPage.jsx";
 import { VolcanoPage } from "./components/VolcanoPage.jsx";
 import { defaultRange, deriveDashboard } from "./lib/derive.js";
@@ -99,7 +100,7 @@ export function App() {
     const onGlossary = page === "glosarium" || (page === "metode" && location.anchor === "glosarium");
     const pageName = onGlossary
       ? "Glosarium"
-      : ({ ringkasan: "Ringkasan", peta: "Peta dan Data", ispu: "Kualitas Udara", logika: "Logika Pemantauan", sumber: "Sumber Data", metode: "Sumber dan Metode" }[page] || "Ringkasan");
+      : ({ ringkasan: "Ringkasan", peta: "Peta dan Data", potensi: "Potensi 7 hari", ispu: "Kualitas Udara", logika: "Logika Pemantauan", sumber: "Sumber Data", metode: "Sumber dan Metode" }[page] || "Ringkasan");
     const judulSitus = hazard === "karhutla" ? (config?.judul || DEFAULT_TITLE) : DEFAULT_TITLE;
     document.title = `${pageName} ${hazardName} — ${judulSitus}`;
   }, [page, hazard, location.anchor, config]);
@@ -201,6 +202,17 @@ export function App() {
             setPeriodeJam={setPeriodeJam}
           />
         )
+      ) : null}
+      {built && page === "potensi" ? (
+        <main className="wrap main">
+          <PotensiTujuhHari
+            fwi={feeds.find((feed) => feed.id === "fwi_gwis_pembanding")}
+            hujan={feeds.find((feed) => feed.id === "hujan_14_pembanding")}
+            hotspot={hotspotFeed && !hotspotFeed.contoh && (hotspotFeed.status === "berhasil" || hotspotFeed.status === "usang") ? hotspotFeed : null}
+            irbi={feeds.find((feed) => feed.id === "irbi")?.contoh ? null : feeds.find((feed) => feed.id === "irbi")}
+            provinsi={config?.provinsiPrioritas ?? []}
+          />
+        </main>
       ) : null}
       {built && page === "peta" ? (
         configError && !config ? (
