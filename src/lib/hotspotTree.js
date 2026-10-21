@@ -1,4 +1,5 @@
 import { DESA_UNIDENTIFIED, desaLabel, wilayahGroupKey } from "./bigWilayah.js";
+import { bandingHitungan } from "./peringkatHotspot.js";
 
 function blankCounts() {
   return { jumlah: 0, rendah: 0, nominal: 0, tinggi: 0, points: [] };
@@ -11,8 +12,8 @@ function addCount(bucket, point) {
   bucket.points.push(point);
 }
 
-function byTotalThenName(label) {
-  return (a, b) => b.jumlah - a.jumlah || label(a).localeCompare(label(b), "id") || String(a.key).localeCompare(String(b.key));
+function urutKepercayaan(label) {
+  return (a, b) => bandingHitungan(a, b, label(a), label(b)) || String(a.key).localeCompare(String(b.key));
 }
 
 export function buildHotspotTree(points) {
@@ -51,14 +52,14 @@ export function buildHotspotTree(points) {
     }
   }
   return [...provinces.values()]
-    .sort(byTotalThenName((row) => row.provinsi))
+    .sort(urutKepercayaan((row) => row.provinsi))
     .map((prov) => ({
       ...prov,
       kecamatan: [...prov.kecamatan.values()]
-        .sort(byTotalThenName((row) => row.kecamatan))
+        .sort(urutKepercayaan((row) => row.kecamatan))
         .map((kec) => ({
           ...kec,
-          desa: [...kec.desa.values()].sort(byTotalThenName((row) => row.desa)),
+          desa: [...kec.desa.values()].sort(urutKepercayaan((row) => row.desa)),
         })),
     }));
 }

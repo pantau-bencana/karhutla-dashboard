@@ -32,7 +32,7 @@ import { annotatePoints } from "./big-wilayah.mjs";
 import { buildComparisonAttention, normalizePlaceName, placeFwiTable, PROTOTYPE_LABEL } from "../src/lib/attentionPrototype.js";
 import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { keadaanKategori, statusRingkasan, statusRingkasanSiap } from "../src/lib/ringkasanStatus.js";
-import { bandingPeringkat, barisPeriodeAktif, chipProvinsi, JUMLAH_CHIP_PROVINSI, kelasPeringkat, namaChipProvinsi, sepuluhPrioritas, susunPeringkatHotspot } from "../src/lib/peringkatHotspot.js";
+import { bandingHitungan, bandingPeringkat, barisPeriodeAktif, chipProvinsi, JUMLAH_CHIP_PROVINSI, kelasPeringkat, namaChipProvinsi, sepuluhPrioritas, susunPeringkatHotspot } from "../src/lib/peringkatHotspot.js";
 import { cariWilayahBatas, PROVINSI_TIDAK_DIKETAHUI, tampilBarisFwi, urutBarisFwi } from "../src/lib/kabProvinsi.js";
 import { kelasKepercayaan } from "../src/lib/warning.js";
 import {
@@ -714,6 +714,12 @@ const abjad = [
   { nama: "Aceh", merah: 1, oranye: 0, kuning: 0, total: 1 },
 ].sort(bandingPeringkat);
 assert.deepEqual(abjad.map((row) => row.nama), ["Aceh", "Bali"]);
+assert.ok(bandingHitungan(
+  { tinggi: 2, nominal: 0, rendah: 0, jumlah: 2 },
+  { tinggi: 1, nominal: 5, rendah: 0, jumlah: 6 },
+  "Papua Selatan",
+  "Kalimantan Tengah",
+) < 0);
 const kalteng = peringkatProv.baris.find((row) => row.nama === "Kalimantan Tengah");
 assert.equal(kalteng.kuning, 0);
 assert.equal(kalteng.total, 0);
@@ -808,12 +814,18 @@ assert.equal(arcGisContains({ rings: [] }, 1, 1), false);
 const desaRows = summarizeByDesa([
   { desa: "Hangtuah", kodeDesa: "14.01.16.2003", kecamatan: "Perhentian Raja", kabupaten: "Kampar", provinsi: "Riau", kelasKepercayaan: "nominal" },
   { desa: "Hangtuah", kodeDesa: "14.01.16.2003", kecamatan: "Perhentian Raja", kabupaten: "Kampar", provinsi: "Riau", kelasKepercayaan: "tinggi" },
+  { desa: "Mentang", kodeDesa: "14.01.16.2004", kecamatan: "Perhentian Raja", kabupaten: "Kampar", provinsi: "Riau", kelasKepercayaan: "rendah" },
+  { desa: "Mentang", kodeDesa: "14.01.16.2004", kecamatan: "Perhentian Raja", kabupaten: "Kampar", provinsi: "Riau", kelasKepercayaan: "rendah" },
+  { desa: "Mentang", kodeDesa: "14.01.16.2004", kecamatan: "Perhentian Raja", kabupaten: "Kampar", provinsi: "Riau", kelasKepercayaan: "rendah" },
+  { desa: "Mentang", kodeDesa: "14.01.16.2004", kecamatan: "Perhentian Raja", kabupaten: "Kampar", provinsi: "Riau", kelasKepercayaan: "rendah" },
   { desa: "", kodeDesa: "", kecamatan: "Setiabudi", kabupaten: "Kota Adm. Jakarta Selatan", provinsi: "DKI Jakarta", kelasKepercayaan: "rendah" },
 ]);
 assert.equal(desaRows[0].desa, "Hangtuah");
 assert.equal(desaRows[0].jumlah, 2);
 assert.equal(desaRows[0].nominal, 1);
 assert.equal(desaRows[0].tinggi, 1);
+assert.equal(desaRows.find((row) => row.desa === "Mentang").jumlah, 4);
+assert.ok(desaRows.find((row) => row.desa === "Mentang").jumlah > desaRows[0].jumlah);
 assert.equal(desaRows.find((row) => row.kecamatan === "Setiabudi").desa, DESA_UNIDENTIFIED);
 const mapComponent = readFileSync("src/components/HotspotMap.jsx", "utf8");
 assert.match(mapComponent, /L\.circleMarker\(\[lat, lon\]/);
@@ -897,6 +909,8 @@ assert.match(boardSource, /keyakinan deteksi, bukan intensitas atau bahaya/);
 assert.match(boardSource, /Cara membaca/);
 assert.match(boardSource, /Jumlah deteksi hotspot \(bukan status\)/);
 assert.match(boardSource, /di dalam tanggal/);
+assert.match(boardSource, /tinggi \(merah\) dulu/);
+assert.equal(boardSource.includes("bukan pada daftar ini"), false);
 assert.equal((boardSource.match(/<HotspotAccordion/g) || []).length, 1);
 assert.match(readFileSync("src/components/HotspotAccordion.jsx", "utf8"), /Cari provinsi/);
 assert.match(readFileSync("src/components/HotspotAccordion.jsx", "utf8"), /Confidence deteksi satelit/);
@@ -912,11 +926,49 @@ assert.equal(hotspotTree[0].jumlah, 3);
 assert.equal(hotspotTree[0].rendah, 1);
 assert.equal(hotspotTree[0].nominal, 1);
 assert.equal(hotspotTree[0].tinggi, 1);
-assert.equal(hotspotTree[0].kecamatan[0].kecamatan, "Siak");
-assert.equal(hotspotTree[0].kecamatan[0].kabupaten, "Siak");
-assert.equal(hotspotTree[0].kecamatan[0].kodeKecamatan, "14.08.01");
+assert.equal(hotspotTree[0].kecamatan[0].kecamatan, "Bandar Petalangan");
+assert.equal(hotspotTree[0].kecamatan[0].tinggi, 1);
+const siakTree = hotspotTree[0].kecamatan.find((row) => row.kecamatan === "Siak");
+assert.equal(siakTree.kabupaten, "Siak");
+assert.equal(siakTree.kodeKecamatan, "14.08.01");
 assert.equal(hotspotTree[1].kecamatan[0].desa[0].desa, "Teluk Rendah");
 assert.equal(hotspotTree[0].kecamatan.find((row) => row.kecamatan === "Bandar Petalangan").desa.length, 0);
+const urutMerah = buildHotspotTree([
+  { provinsi: "Papua Selatan", kabupaten: "Merauke", kecamatan: "Sota", kodeKecamatan: "93.01.01", kelasKepercayaan: "tinggi", wilayahStatus: "kecamatan" },
+  { provinsi: "Papua Selatan", kabupaten: "Merauke", kecamatan: "Sota", kodeKecamatan: "93.01.01", kelasKepercayaan: "tinggi", wilayahStatus: "kecamatan" },
+  { provinsi: "Jambi", kabupaten: "Tebo", kecamatan: "Tebo Tengah", kodeKecamatan: "15.09.01", kelasKepercayaan: "tinggi", wilayahStatus: "kecamatan" },
+  { provinsi: "Jambi", kabupaten: "Tebo", kecamatan: "Tebo Tengah", kodeKecamatan: "15.09.01", kelasKepercayaan: "nominal", wilayahStatus: "kecamatan" },
+  { provinsi: "Jambi", kabupaten: "Tebo", kecamatan: "Tebo Tengah", kodeKecamatan: "15.09.01", kelasKepercayaan: "nominal", wilayahStatus: "kecamatan" },
+  { provinsi: "Kalimantan Tengah", kabupaten: "Kapuas", kecamatan: "Basarang", kodeKecamatan: "62.03.02", desa: "Sei Hambawang", kodeDesa: "62.03.02.2001", kelasKepercayaan: "tinggi", wilayahStatus: "desa" },
+  { provinsi: "Kalimantan Tengah", kabupaten: "Kapuas", kecamatan: "Basarang", kodeKecamatan: "62.03.02", desa: "Palangkau", kodeDesa: "62.03.02.2002", kelasKepercayaan: "rendah", wilayahStatus: "desa" },
+  { provinsi: "Kalimantan Tengah", kabupaten: "Kapuas", kecamatan: "Basarang", kodeKecamatan: "62.03.02", desa: "Palangkau", kodeDesa: "62.03.02.2002", kelasKepercayaan: "rendah", wilayahStatus: "desa" },
+  { provinsi: "Kalimantan Tengah", kabupaten: "Kapuas", kecamatan: "Basarang", kodeKecamatan: "62.03.02", desa: "Palangkau", kodeDesa: "62.03.02.2002", kelasKepercayaan: "rendah", wilayahStatus: "desa" },
+  { provinsi: "Kalimantan Tengah", kabupaten: "Kapuas", kecamatan: "Basarang", kodeKecamatan: "62.03.02", desa: "Palangkau", kodeDesa: "62.03.02.2002", kelasKepercayaan: "rendah", wilayahStatus: "desa" },
+  { provinsi: "Kalimantan Tengah", kabupaten: "Kapuas", kecamatan: "Dadahup", kodeKecamatan: "62.03.03", kelasKepercayaan: "rendah", wilayahStatus: "kecamatan" },
+  { provinsi: "Kalimantan Tengah", kabupaten: "Kapuas", kecamatan: "Dadahup", kodeKecamatan: "62.03.03", kelasKepercayaan: "rendah", wilayahStatus: "kecamatan" },
+  { provinsi: "Kalimantan Tengah", kabupaten: "Kapuas", kecamatan: "Dadahup", kodeKecamatan: "62.03.03", kelasKepercayaan: "rendah", wilayahStatus: "kecamatan" },
+  { provinsi: "Kalimantan Tengah", kabupaten: "Kapuas", kecamatan: "Dadahup", kodeKecamatan: "62.03.03", kelasKepercayaan: "rendah", wilayahStatus: "kecamatan" },
+  { provinsi: "Kalimantan Tengah", kabupaten: "Kapuas", kecamatan: "Dadahup", kodeKecamatan: "62.03.03", kelasKepercayaan: "rendah", wilayahStatus: "kecamatan" },
+  { provinsi: "Kalimantan Tengah", kabupaten: "Kapuas", kecamatan: "Dadahup", kodeKecamatan: "62.03.03", kelasKepercayaan: "rendah", wilayahStatus: "kecamatan" },
+]);
+assert.deepEqual(urutMerah.map((row) => row.provinsi), ["Papua Selatan", "Jambi", "Kalimantan Tengah"]);
+const kaltengTree = urutMerah.find((row) => row.provinsi === "Kalimantan Tengah");
+assert.ok(kaltengTree.jumlah > urutMerah[0].jumlah);
+assert.equal(kaltengTree.kecamatan[0].kecamatan, "Basarang");
+assert.ok(kaltengTree.kecamatan.find((row) => row.kecamatan === "Dadahup").jumlah > kaltengTree.kecamatan[0].jumlah);
+assert.equal(kaltengTree.kecamatan[0].desa[0].desa, "Sei Hambawang");
+assert.ok(kaltengTree.kecamatan[0].desa.find((row) => row.desa === "Palangkau").jumlah > kaltengTree.kecamatan[0].desa[0].jumlah);
+const urutKab = summarizeByWilayah([
+  { kabupaten: "Kapuas", provinsi: "Kalimantan Tengah", kelasKepercayaan: "nominal", wilayahStatus: "ok" },
+  { kabupaten: "Kapuas", provinsi: "Kalimantan Tengah", kelasKepercayaan: "nominal", wilayahStatus: "ok" },
+  { kabupaten: "Kapuas", provinsi: "Kalimantan Tengah", kelasKepercayaan: "nominal", wilayahStatus: "ok" },
+  { kabupaten: "Kapuas", provinsi: "Kalimantan Tengah", kelasKepercayaan: "nominal", wilayahStatus: "ok" },
+  { kabupaten: "Kapuas", provinsi: "Kalimantan Tengah", kelasKepercayaan: "nominal", wilayahStatus: "ok" },
+  { kabupaten: "Merauke", provinsi: "Papua Selatan", kelasKepercayaan: "tinggi", wilayahStatus: "ok" },
+  { kabupaten: "Merauke", provinsi: "Papua Selatan", kelasKepercayaan: "tinggi", wilayahStatus: "ok" },
+], "kabupaten");
+assert.equal(urutKab[0].kabupaten, "Merauke");
+assert.ok(urutKab.find((row) => row.kabupaten === "Kapuas").jumlah > urutKab[0].jumlah);
 const dashSource = readFileSync("src/components/DashboardView.jsx", "utf8");
 assert.equal(dashSource.includes("HotspotAccordion"), false);
 assert.equal(dashSource.includes("ProvinceCounts"), false);
