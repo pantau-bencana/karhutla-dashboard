@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import { osmTileLayer } from "../lib/basemap.js";
+import { kunciTampilanIndonesia } from "../lib/kunciPeta.js";
 import { frameIndonesia, framePoints } from "./HotspotMap.jsx";
 
 const COLORS = {
@@ -38,6 +39,7 @@ export function StationMap({ stations, selectedId, onSelect, active = true }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const layerRef = useRef(null);
+  const modeRef = useRef("indonesia");
   const stationsRef = useRef(stations ?? []);
   const selectedRef = useRef(selectedId);
   const onSelectRef = useRef(onSelect);
@@ -64,8 +66,25 @@ export function StationMap({ stations, selectedId, onSelect, active = true }) {
     osmTileLayer(L).addTo(map);
     layerRef.current = L.layerGroup().addTo(map);
     mapRef.current = map;
+    const muat = () => {
+      if (modeRef.current === "points") kunciTampilanIndonesia(map, { muatUlang: false });
+      else frameIndonesia(map, modeRef);
+    };
+    muat();
+    let sizeKey = "";
+    const onResize = () => {
+      const size = map.getSize();
+      const key = `${Math.round(size.x)}x${Math.round(size.y)}`;
+      if (!key || key === "0x0" || key === sizeKey) return;
+      sizeKey = key;
+      muat();
+    };
+    map.on("resize", onResize);
+    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(onResize) : null;
+    observer?.observe(containerRef.current);
 
     return () => {
+      observer?.disconnect();
       map.remove();
       mapRef.current = null;
       layerRef.current = null;
@@ -104,9 +123,9 @@ export function StationMap({ stations, selectedId, onSelect, active = true }) {
         marker.addTo(layer);
       }
       const selected = stationsRef.current.find((station) => station.id === selectedRef.current);
-      if (selected) framePoints(map, [[selected.lintang, selected.bujur]]);
-      else if (latlngs.length) framePoints(map, latlngs);
-      else frameIndonesia(map);
+      if (selected) framePoints(map, [[selected.lintang, selected.bujur]], modeRef);
+      else if (latlngs.length) framePoints(map, latlngs, modeRef);
+      else frameIndonesia(map, modeRef);
     };
     draw();
     return () => {

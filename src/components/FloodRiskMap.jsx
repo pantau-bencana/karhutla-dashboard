@@ -5,7 +5,8 @@ import { feature as topoFeature, mesh as topoMesh } from "topojson-client";
 import { BATAS_KAB_FILE, BATAS_KAB_SUMBER } from "../lib/batasKab.js";
 import { barisDampakHistoris } from "../lib/bnpbBanjir.js";
 import { osmTileLayer } from "../lib/basemap.js";
-import { BANJIR_FRAME, BANJIR_PAN_LIMIT } from "../lib/geo.js";
+import { BANJIR_FRAME } from "../lib/geo.js";
+import { kunciTampilanIndonesia } from "../lib/kunciPeta.js";
 import { ANALISIS_WARNA, CATATAN_ABU, CATATAN_ABU_HARI, CATATAN_ARSIR, LABEL_KEDALUWARSA, LEGENDA_ANALISIS_HARI, WARNA_TANPA_PERINGATAN } from "../lib/analisisPantauBencana.js";
 import {
   FLOOD_PERMISSION,
@@ -208,20 +209,8 @@ function petaSiap(map) {
 }
 
 function frameBanjir(map) {
-  if (!petaSiap(map)) return false;
   const frame = banjirBounds();
-  map.stop();
-  map.setMinZoom(0);
-  map.fitBounds(frame, { padding: BANJIR_PADDING, animate: false });
-  const zoom = map.getZoom();
-  if (Number.isFinite(zoom)) map.setMinZoom(zoom);
-  map.setMaxBounds(
-    L.latLngBounds(
-      [BANJIR_PAN_LIMIT.south, BANJIR_PAN_LIMIT.west],
-      [BANJIR_PAN_LIMIT.north, BANJIR_PAN_LIMIT.east],
-    ),
-  );
-  return true;
+  return kunciTampilanIndonesia(map, { muatUlang: true, padding: BANJIR_PADDING, bounds: frame });
 }
 
 function boundsProvinsi(extent) {
@@ -234,13 +223,14 @@ function fitProvinsi(map, bounds) {
   if (!petaSiap(map) || !bounds?.isValid?.()) return false;
   map.invalidateSize({ animate: false, pan: false });
   if (!petaSiap(map)) return false;
+  const frame = banjirBounds();
+  kunciTampilanIndonesia(map, { muatUlang: false, padding: BANJIR_PADDING, bounds: frame });
   const lantai = map.getMinZoom();
   map.stop();
-  map.setMinZoom(0);
+  map.setMaxBounds(null);
   map.fitBounds(bounds, { padding: PADDING_PROVINSI, animate: false });
-  const zoom = map.getZoom();
-  const lantaiAman = Number.isFinite(lantai) ? lantai : 0;
-  map.setMinZoom(Number.isFinite(zoom) ? Math.min(lantaiAman, zoom) : lantaiAman);
+  map.setMinZoom(lantai);
+  kunciTampilanIndonesia(map, { muatUlang: false, padding: BANJIR_PADDING, bounds: frame });
   return true;
 }
 
@@ -318,6 +308,7 @@ export function FloodRiskMap({
       zoomDelta: 0.5,
       minZoom: 0,
       maxBoundsViscosity: 1,
+      worldCopyJump: false,
     });
     osmTileLayer(L).addTo(map);
     map.createPane("flood-lines");

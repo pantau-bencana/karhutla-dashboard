@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import { feature as topoFeature } from "topojson-client";
 import { BATAS_KAB_FILE } from "../lib/batasKab.js";
-import { INDONESIA_FRAME } from "../lib/geo.js";
 import { osmTileLayer } from "../lib/basemap.js";
+import { kunciTampilanIndonesia, tampilanMasihIndonesia } from "../lib/kunciPeta.js";
 import { WARNA_KOSONG } from "../lib/petaTema.js";
 
 function escapeHtml(value) {
@@ -32,15 +32,19 @@ export function PetaKab({ isi = {}, garis = {}, judul, catatan, legenda = [], ko
   useEffect(() => {
     const container = containerRef.current;
     if (!container || mapRef.current) return undefined;
-    const map = L.map(container, { scrollWheelZoom: true, minZoom: 4, maxBoundsViscosity: 1, worldCopyJump: false });
+    const map = L.map(container, {
+      scrollWheelZoom: true,
+      zoomSnap: 0,
+      zoomDelta: 0.5,
+      minZoom: 0,
+      maxBoundsViscosity: 1,
+      worldCopyJump: false,
+    });
     osmTileLayer(L).addTo(map);
-    map.fitBounds(
-      [
-        [INDONESIA_FRAME.south, INDONESIA_FRAME.west],
-        [INDONESIA_FRAME.north, INDONESIA_FRAME.east],
-      ],
-      { padding: [12, 12] },
-    );
+    const muatIndonesia = () => {
+      kunciTampilanIndonesia(map, { muatUlang: tampilanMasihIndonesia(map) });
+    };
+    muatIndonesia();
     layerRef.current = L.geoJSON(null, {
       style: (feature) => gaya(feature, isiRef.current, garisRef.current),
       onEachFeature: (feature, layer) => {
@@ -48,6 +52,17 @@ export function PetaKab({ isi = {}, garis = {}, judul, catatan, legenda = [], ko
       },
     }).addTo(map);
     mapRef.current = map;
+    let sizeKey = "";
+    const onResize = () => {
+      const size = map.getSize();
+      const key = `${Math.round(size.x)}x${Math.round(size.y)}`;
+      if (!key || key === "0x0" || key === sizeKey) return;
+      sizeKey = key;
+      muatIndonesia();
+    };
+    map.on("resize", onResize);
+    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(onResize) : null;
+    observer?.observe(container);
     let batal = false;
     fetch(new URL(BATAS_KAB_FILE, document.baseURI).href)
       .then((response) => {
@@ -61,13 +76,14 @@ export function PetaKab({ isi = {}, garis = {}, judul, catatan, legenda = [], ko
         layerRef.current.clearLayers();
         layerRef.current.addData(geo);
         layerRef.current.setStyle((feature) => gaya(feature, isiRef.current, garisRef.current));
-        map.invalidateSize();
+        map.invalidateSize({ animate: false, pan: false });
       })
       .catch((error) => {
         if (!batal) setGalat(error.message || "Batas kabupaten/kota tidak termuat.");
       });
     return () => {
       batal = true;
+      observer?.disconnect();
       map.remove();
       mapRef.current = null;
     };
