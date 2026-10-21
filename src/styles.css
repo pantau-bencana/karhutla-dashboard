@@ -388,13 +388,29 @@ a.button {
   padding: 0;
   cursor: pointer;
 }
+.province-filter .info-tip { align-self: center; }
+.province-filter .info-tip-button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  padding: 0;
+  background: #fff;
+  color: #1c1915;
+  border: 1px solid #3f3a34;
+  line-height: 26px;
+}
+.info-tip-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1990;
+  background: rgba(28, 25, 21, 0.4);
+}
 .info-tip-panel {
-  position: absolute;
-  z-index: 800;
-  top: calc(100% + 6px);
-  left: 0;
-  width: min(320px, 70vw);
-  padding: 10px 12px;
+  z-index: 2000;
+  box-sizing: border-box;
+  width: min(360px, calc(100vw - 16px));
+  max-width: min(360px, calc(100vw - 16px));
+  padding: 0 12px 12px;
   background: #fffaf3;
   color: #1c1915;
   border: 1px solid #d6d3d1;
@@ -406,9 +422,52 @@ a.button {
   line-height: 1.45;
   text-align: left;
   text-transform: none;
-  max-height: min(420px, calc(100vh - 24px));
+  white-space: normal;
+  overflow-wrap: break-word;
   overflow: auto;
 }
+.info-tip-popover {
+  position: fixed;
+  max-height: min(420px, calc(100vh - 24px));
+}
+.info-tip-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: none;
+  max-height: min(70vh, 480px);
+  border-radius: 16px 16px 0 0;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+.info-tip-head {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 -12px 8px;
+  padding: 10px 12px 8px;
+  background: #fffaf3;
+  border-bottom: 1px solid #e7e5e4;
+}
+.info-tip-judul { margin: 0; font-size: 13px; font-weight: 700; line-height: 1.35; }
+.info-tip-close {
+  flex: 0 0 auto;
+  border: 1px solid #3f3a34;
+  background: #fff;
+  color: #1c1915;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+}
+.info-tip-isi { min-width: 0; }
 .info-tip-panel p { margin: 0 0 8px; }
 .info-tip-panel p:last-child { margin-bottom: 0; }
 .swatch-hatch {

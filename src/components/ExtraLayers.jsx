@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { InfoTip } from "./InfoTip.jsx";
 import { OfficialLinks } from "./OfficialLinks.jsx";
 import { placeFwiTable, placeRainTable } from "../lib/attentionPrototype.js";
 import { tampilBarisFwi, urutBarisFwi } from "../lib/kabProvinsi.js";
@@ -19,7 +20,20 @@ const LAYERS = [
   ["ispu", "Kualitas Udara (ISPU)"],
 ];
 
+const PENJELASAN_LAPISAN = {
+  hotspot: "Deteksi satelit, bukan kebakaran terkonfirmasi. Satu lapisan pada satu waktu.",
+  inarisk: "Tautan saja. Raster inaRISK tidak digambar di peta ini.",
+  irbi: "Tabel buku IRBI 2025. Tidak mengikuti filter tanggal. Urutan nama, bukan hitungan hotspot.",
+  asap: "Tautan saja – menunggu izin BMKG. Citra tidak diunduh dan tidak dipotong.",
+  fdrs: "FDRS BMKG: menunggu data resmi BMKG. Tautan saja. Citra hingga H+7 sesuai produk BMKG. Tabel FWI, bila ada, adalah model ECMWF, bukan FDRS BMKG. Pembanding (data terbuka, bukan resmi).",
+  hujan: "Nilai tp per slot pada prakiraan 3 hari. Sumber: BMKG. Bukan peluang persen. Tabel 14 hari, bila ada, adalah pembanding model, bukan prakiraan BMKG.",
+  angin: "Arah dan kecepatan (km/jam) pada prakiraan 3 hari. Sumber: BMKG. Bukan asal kebakaran.",
+  ispu: "Kualitas Udara (ISPU). ISPU stasiun resmi belum terintegrasi. Angka model, bila ada, tetap dalam µg/m³ dan tidak diubah menjadi kategori ISPU.",
+};
+
 export function LayerBar({ layer, setLayer }) {
+  const nama = LAYERS.find(([id]) => id === layer)?.[1] || "lapisan";
+  const penjelasan = PENJELASAN_LAPISAN[layer];
   return (
     <div className="province-filter" role="group" aria-label="Lapisan">
       {LAYERS.map(([id, label]) => (
@@ -27,6 +41,11 @@ export function LayerBar({ layer, setLayer }) {
           {label}
         </button>
       ))}
+      {penjelasan ? (
+        <InfoTip label={`Penjelasan lapisan ${nama}`}>
+          <p>{penjelasan}</p>
+        </InfoTip>
+      ) : null}
     </div>
   );
 }

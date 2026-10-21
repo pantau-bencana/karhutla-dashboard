@@ -9,6 +9,7 @@ import { fetchCsv, loadAll, normalizeHotspotRow, normalizeRecords, redactFirmsUr
 import { GLOSSARY } from "../src/lib/glossary.js";
 import { HAZARDS } from "../src/lib/hazards.js";
 import { ispuFromPm25 } from "../src/lib/ispuEstimate.js";
+import { letakInfoTip } from "../src/lib/infoTipLetak.js";
 import {
   CAMS_LABEL,
   ISPU_EXPLANATION,
@@ -1113,6 +1114,38 @@ assert.equal(udaraSource.includes("Prediksi ISPU"), false);
 assert.match(readFileSync("docs/ARAHAN_KUALITAS_UDARA.md", "utf8"), /ISPU resmi dan pembanding kualitas udara/);
 assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Kualitas Udara \(ISPU\)/);
 assert.equal(readFileSync("src/components/ExtraLayers.jsx", "utf8").includes("ISPU perkiraan"), false);
+assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Penjelasan lapisan/);
+assert.match(readFileSync("src/components/InfoTip.jsx", "utf8"), /createPortal/);
+assert.match(readFileSync("src/components/InfoTip.jsx", "utf8"), /document\.body/);
+assert.match(readFileSync("src/components/InfoTip.jsx", "utf8"), /Escape/);
+assert.match(readFileSync("src/components/InfoTip.jsx", "utf8"), /Tutup/);
+{
+  const kanan = letakInfoTip({
+    rect: { left: 860, right: 880, top: 80, bottom: 98 },
+    lebar: 1000,
+    tinggi: 800,
+    align: "end",
+  });
+  assert.equal(kanan.sheet, false);
+  assert.ok(kanan.left >= 8);
+  assert.ok(kanan.left + kanan.width <= 992);
+  const sempit = letakInfoTip({
+    rect: { left: 20, right: 40, top: 80, bottom: 98 },
+    lebar: 390,
+    tinggi: 700,
+    align: "end",
+  });
+  assert.equal(sempit.sheet, true);
+  const bawah = letakInfoTip({
+    rect: { left: 40, right: 60, top: 80, bottom: 98 },
+    lebar: 1200,
+    tinggi: 800,
+    align: "start",
+  });
+  assert.equal(bawah.sheet, false);
+  assert.equal(bawah.top, 106);
+  assert.equal(bawah.left, 40);
+}
 assert.equal(readFileSync("src/lib/hazards.js", "utf8").includes("ispu"), false);
 
 const indicatorSource = readFileSync("src/lib/priorityIndicators.js", "utf8");
