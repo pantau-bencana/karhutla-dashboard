@@ -50,6 +50,7 @@ export function App() {
   const [province, setProvince] = useState("");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [periodeJam, setPeriodeJam] = useState(24);
 
   async function reload({ quiet = false } = {}) {
     if (!quiet) setLoading(true);
@@ -184,7 +185,20 @@ export function App() {
         configError && !config ? (
           <ConfigError message={configError} />
         ) : (
-          <SummaryPage config={config} feeds={feeds} manifest={manifest} freshness={freshness} />
+          <SummaryPage
+            config={config}
+            feeds={feeds}
+            manifest={manifest}
+            freshness={freshness}
+            loading={loading}
+            province={province}
+            from={from}
+            setFrom={setFrom}
+            to={to}
+            setTo={setTo}
+            periodeJam={periodeJam}
+            setPeriodeJam={setPeriodeJam}
+          />
         )
       ) : null}
       {built && page === "peta" ? (
@@ -202,6 +216,8 @@ export function App() {
             setFrom={setFrom}
             to={to}
             setTo={setTo}
+            periodeJam={periodeJam}
+            setPeriodeJam={setPeriodeJam}
             view={view}
             freshness={freshness}
           />

@@ -549,8 +549,9 @@ a.button {
 }
 
 .swatch.tinggi { background: #b42318; }
-.swatch.nominal { background: #ca8a04; }
-.swatch.rendah { background: #15803d; }
+.swatch.nominal { background: #ea580c; }
+.swatch.rendah { background: #eab308; }
+.swatch.tidak_diketahui { background: #78716c; }
 .swatch.baik { background: #1b7f3a; }
 .swatch.sedang { background: #2f6fed; }
 .swatch.tidak { background: #ca8a04; }
@@ -654,7 +655,7 @@ a.button {
   width: 22px;
   height: 22px;
   border-radius: 999px;
-  background: conic-gradient(#15803d 0 34%, #ca8a04 34% 67%, #b42318 67% 100%);
+  background: conic-gradient(#eab308 0 34%, #ea580c 34% 67%, #b42318 67% 100%);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.9);
   opacity: 0.9;
 }
@@ -1066,7 +1067,44 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   font-weight: 700;
   line-height: 1.4;
 }
+.conf-chip.conf-rendah,
 .conf-chip.conf-nominal { color: #1c1915; }
+
+.peringkat-legenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin: 8px 0;
+  padding: 0;
+  list-style: none;
+}
+.peringkat-legenda li { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; }
+.peringkat-tanda {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 4px;
+  color: #1c1917;
+  font-size: 12px;
+  line-height: 1;
+  border: 1px solid #1c1917;
+}
+.tanda-merah { color: #fff; }
+.peringkat-tingkat {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  border: 0;
+  margin: 8px 0;
+  padding: 0;
+}
+.peringkat-tingkat legend { font-weight: 700; margin-right: 8px; }
+.peringkat-tingkat label { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; }
+.peringkat-scroll:focus { outline: 2px solid #1d4ed8; outline-offset: 2px; }
+.peringkat-hotspot table { min-width: 760px; }
+.peringkat-hotspot caption { text-align: left; font-weight: 600; margin-bottom: 6px; }
 
 .flood-map-block { container-type: inline-size; }
 .flood-map,

@@ -20,7 +20,7 @@ Stack this skill assumes: Vite static site, no application server. Scheduled Git
 - After `git pull --rebase` or `git reset --hard`, the refresh and CAP workflows run `npm ci` again before `npm run build`. A rebase onto `main` can add a dependency the first install did not have.
 - The commit step must `git fetch` and `git pull --rebase` before push, retry when the push is rejected, and regenerate the snapshot if rebase conflicts. Never force-push. Push the checked-out branch, not `main`, when the dispatch is on another branch.
 - A data commit by `github-actions[bot]` does not trigger `pages.yml`. Keep the `deploy-pages` job inside `refresh-data.yml`.
-- Concurrency group `pages` uses `cancel-in-progress: false` and `queue: max`.
+- `refresh-data.yml` uses concurrency group `refresh-data` with `cancel-in-progress: true`, job `timeout-minutes: 90`, and step `Ambil data publik` `timeout-minutes: 50`. It does not share group `pages`. `pages.yml` keeps group `pages`, `cancel-in-progress: false`, and `queue: max`. Do not change Pages publish conditions.
 - Log `wilayah_gagal` and `big_queries` in the workflow output. `big_queries` is the BIG MapServer query count on that refresh.
 - Commit `data/live` only when material fields change (status, content hash, record count, error, observed time, file, kept_previous, mode). On failure, keep the last good file.
 - `public/config.json` datasets that the self-check owns stay the five sample ids (`hotspot`, `sipongi`, `irbi`, `bmkg`, `ispu`) with `contoh: true` until a real snapshot replaces that feed at read time. Extra feeds (forecast, comparison, CAP, DIBI) come from the manifest, not from new sample rows.

@@ -29,7 +29,7 @@ function escapeHtml(value) {
   }[char]));
 }
 
-const KEPERCAYAAN = { tinggi: "Tinggi", nominal: "Nominal (sedang)", rendah: "Rendah" };
+const KEPERCAYAAN = { tinggi: "Tinggi (merah)", nominal: "Sedang (oranye)", rendah: "Rendah (kuning)", tidak_diketahui: "Tidak diketahui" };
 
 function wilayahBaris(point) {
   if (point.wilayahStatus === "gagal" || (!point.wilayahStatus && !point.kecamatan && !point.desa && !point.kabupaten)) {
@@ -80,16 +80,18 @@ function drawHotspots(map, layer, points, selectedKey, onSelect) {
     const lat = Number(point.lintang);
     const lon = Number(point.bujur);
     if (!usableCoordinate(lat, lon)) return;
-    const color = COLORS[point.kelasKepercayaan] ?? COLORS.nominal;
+    const dikenal = point.kelasKepercayaan === "tinggi" || point.kelasKepercayaan === "nominal" || point.kelasKepercayaan === "rendah";
+    const color = COLORS[point.kelasKepercayaan] ?? COLORS.tidak_diketahui;
     const selected = selectedKey && hotspotKey(point) === selectedKey;
-    const radius = point.kelasKepercayaan === "tinggi" ? 7 : point.kelasKepercayaan === "rendah" ? 5 : 6;
+    const radius = point.kelasKepercayaan === "tinggi" ? 8 : point.kelasKepercayaan === "nominal" ? 6 : 5;
     const marker = L.circleMarker([lat, lon], {
       renderer,
       radius: selected ? radius + 3 : radius,
-      color: selected ? "#111827" : "#ffffff",
+      color: selected ? "#111827" : "#1c1917",
       weight: selected ? 3 : 2,
       fillColor: color,
       fillOpacity: 0.95,
+      dashArray: dikenal ? null : "2 2",
     });
     marker.bindPopup(popupHtml(point));
     marker.on("click", () => onSelect?.(point));
@@ -134,7 +136,7 @@ function drawHotspots(map, layer, points, selectedKey, onSelect) {
     const lat = Number(anchor.lintang);
     const lon = Number(anchor.bujur);
     const marker = L.marker([lat, lon], { icon: clusterIcon(group.members, map.getZoom() || 4) });
-    marker.bindTooltip(`${group.count} deteksi satelit dalam petak ini. Cincin membagi rendah, nominal, dan tinggi. Angka bukan kelas confidence. Perbesar untuk memisahkan titik.`, { direction: "top" });
+    marker.bindTooltip(`${group.count} deteksi satelit dalam petak ini. Cincin membagi kuning rendah, oranye sedang, merah tinggi, dan abu-abu tidak diketahui. Angka bukan kelas confidence. Perbesar untuk memisahkan titik.`, { direction: "top" });
     marker.on("click", () => {
       map.setView([lat, lon], Math.min((map.getZoom() || 4) + 2, 12));
     });
@@ -193,7 +195,7 @@ export function ClusterLegend() {
     <p className="cluster-note">
       <span className="cluster-key" aria-hidden="true"><b>n</b></span>
       <span>
-        Cincin pada zoom kecil membagi petak menjadi hijau (rendah), kuning (nominal), dan merah (tinggi). Angka di tengah adalah jumlah deteksi dalam petak itu, bukan kelas confidence. Perbesar peta sampai tiap titik terpisah.
+        Cincin pada zoom kecil membagi petak menjadi kuning (rendah), oranye (sedang), merah (tinggi), dan abu-abu (tidak diketahui). Angka di tengah adalah jumlah deteksi dalam petak itu, bukan kelas confidence. Perbesar peta sampai tiap titik terpisah.
       </span>
     </p>
   );

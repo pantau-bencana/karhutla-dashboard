@@ -32,3 +32,14 @@ export function hotspotSourceLabel(feed, sumber = "VIIRS_SNPP_NRT") {
   if (feed?.asal === "firms" && feed.status === "berhasil") return product;
   return product;
 }
+
+export function labelStatusFeed(feed, { sumber = "", memuat = false } = {}) {
+  if (memuat && !feed) return "Memuat";
+  if (!feed) return "Memuat";
+  if (feed.id === "hotspot" || feed.id === "hotspot_peta") return hotspotSourceLabel(feed, sumber);
+  if (feed.status === "tautan" || feed.mode === "tautan") return "Tautan saja";
+  if (feed.status === "berhasil") return "Terhubung";
+  if (feed.status === "usang" || feed.status === "cadangan") return "Cuplikan terakhir";
+  if (feed.status === "gagal") return "Gagal dimuat";
+  return "Memuat";
+}

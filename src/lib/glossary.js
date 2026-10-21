@@ -66,7 +66,7 @@ export const GLOSSARY = [
     nama: "Tingkat kepercayaan deteksi",
     penjelasan:
       "Pada hotspot VIIRS di FIRMS, kepercayaan disebut low, nominal, atau high, yang dasbor tulis rendah, nominal, atau tinggi. Pada MODIS sering berupa angka. Nilai ini menilai kualitas deteksi satelit, bukan hasil cek lapangan dan bukan tingkat bahaya.",
-    penggunaan: "Warna titik: rendah hijau, nominal kuning, tinggi merah. VIIRS memakai l, n, atau h. MODIS 0–29 rendah, 30–79 nominal, 80–100 tinggi. Nilai asli tetap ditampilkan. Nominal adalah kelas menengah, padanan katanya sedang. Ini kualitas deteksi satelit, bukan tingkat bahaya atau tingkat kebakaran.",
+    penggunaan: "Warna titik: rendah kuning, nominal oranye, tinggi merah. Nilai yang tidak terbaca ditulis Tidak diketahui dan tidak dihitung sebagai kuning. VIIRS memakai l, n, atau h. MODIS 0–29 rendah, 30–79 nominal, 80–100 tinggi. Nilai asli tetap ditampilkan. Nominal adalah kelas menengah, padanan katanya sedang. Ini kualitas deteksi satelit, bukan tingkat bahaya atau tingkat kebakaran.",
     rujukan: "https://firms.modaps.eosdis.nasa.gov/",
     rujukanLabel: "NASA FIRMS",
   },

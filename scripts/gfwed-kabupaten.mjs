@@ -131,6 +131,7 @@ async function queryKabupaten(envelope) {
       "user-agent": "karhutla-dashboard-refresh",
     },
     body,
+    signal: AbortSignal.timeout(30000),
   });
   if (!response.ok) throw new Error(`BIG HTTP ${response.status}`);
   const payload = await response.json();
@@ -167,13 +168,16 @@ function cellEnvelope(key) {
   };
 }
 
-export async function fetchGfwedKabupaten() {
+export async function fetchGfwedKabupaten({ deadlineAt = Infinity } = {}) {
   const file = await latestFile();
   const scratch = mkdtempSync(join(tmpdir(), "gfwed-"));
   const ncPath = join(scratch, "daily.nc");
   const jsonPath = join(scratch, "points.json");
   try {
-    const response = await fetch(file.url, { headers: { "user-agent": "karhutla-dashboard-refresh" } });
+    const response = await fetch(file.url, {
+      headers: { "user-agent": "karhutla-dashboard-refresh" },
+      signal: AbortSignal.timeout(120000),
+    });
     if (!response.ok) throw new Error(`Unduh GFWED HTTP ${response.status}`);
     writeFileSync(ncPath, Buffer.from(await response.arrayBuffer()));
     await clipNetcdf(ncPath, jsonPath);
@@ -192,6 +196,11 @@ export async function fetchGfwedKabupaten() {
     let queries = 0;
     let failed = 0;
     await mapPool([...groups.entries()], 4, async ([key, points]) => {
+      if (Date.now() > deadlineAt) {
+        const error = new Error("gfwed_kabupaten melewati batas waktu.");
+        error.batasWaktu = true;
+        throw error;
+      }
       let features;
       try {
         features = await queryKabupaten(cellEnvelope(key));

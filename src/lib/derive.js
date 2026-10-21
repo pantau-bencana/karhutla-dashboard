@@ -68,7 +68,8 @@ function provinceNames(priority, hotspots) {
 function confidenceBucket(row) {
   if (row?.kelasKepercayaan === "tinggi") return "tinggi";
   if (row?.kelasKepercayaan === "rendah") return "rendah";
-  return "nominal";
+  if (row?.kelasKepercayaan === "nominal") return "nominal";
+  return "tidak_diketahui";
 }
 
 export function deriveDashboard({

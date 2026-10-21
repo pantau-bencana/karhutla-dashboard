@@ -5,16 +5,30 @@ import { DatasetTiming } from "./DatasetTiming.jsx";
 import { ForecastPanel } from "./ForecastPanel.jsx";
 import { formatAngka, formatWib } from "../lib/format.js";
 import { hotspotSourceLabel } from "../lib/freshness.js";
-import { buildHotspotTree } from "../lib/hotspotTree.js";
-import { countHotspots, filterHotspotWindow } from "../lib/hotspotWindow.js";
 import { karhutlaRankingPlan } from "../lib/ranking.js";
-import { statusRingkasan } from "../lib/ringkasanStatus.js";
+import { statusRingkasanSiap } from "../lib/ringkasanStatus.js";
+import { barisPeriodeAktif, labelJendela, susunPeringkatHotspot } from "../lib/peringkatHotspot.js";
+import { defaultRange } from "../lib/derive.js";
 import { PriorityIndicators } from "./PriorityIndicators.jsx";
 import { PrioritasPanel } from "./PrioritasPanel.jsx";
+import { PeringkatHotspot } from "./PeringkatHotspot.jsx";
+import { KontrolPeriode } from "./KontrolPeriode.jsx";
 
-export function SummaryPage({ config, feeds, manifest, freshness }) {
+export function SummaryPage({
+  config,
+  feeds,
+  manifest,
+  freshness,
+  loading = false,
+  province = "",
+  from = "",
+  setFrom,
+  to = "",
+  setTo,
+  periodeJam = 24,
+  setPeriodeJam,
+}) {
   const hotspot = feeds.find((feed) => feed.id === "hotspot");
-  const hotspotPeta = feeds.find((feed) => feed.id === "hotspot_peta");
   const priority = config?.provinsiPrioritas ?? [];
   const irbi = feeds.find((feed) => feed.id === "irbi");
   const dibi = feeds.find((feed) => feed.id === "dibi_karhutla");
@@ -24,15 +38,26 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
   const ranking = karhutlaRankingPlan(feeds.prioritas);
   const mapApi = useRef(null);
   const fwiGwis = feeds.find((feed) => feed.id === "fwi_gwis_pembanding");
-  const mapSource = hotspotPeta?.rows?.length ? hotspotPeta : hotspot;
-  const mapPoints = bolehHotspot && mapSource && !mapSource.contoh ? mapSource.rows : [];
+  const mapPoints = bolehHotspot && hotspot && !hotspot.contoh ? hotspot.rows : [];
   const sampleHotspot = !bolehHotspot || !mapPoints.length;
-  const kategori = statusRingkasan(manifest, {
+  const siap = statusRingkasanSiap(manifest, {
+    memuat: Boolean(loading && !manifest),
     capBerakhir: (cap?.rows ?? []).map((row) => row.berakhir).filter(Boolean),
   });
-  const day = useMemo(() => filterHotspotWindow(mapPoints, { hours: 24 }).rows, [mapPoints]);
-  const tally = countHotspots(day);
-  const topProvince = buildHotspotTree(day)[0];
+  const kategori = siap.baris;
+  const day = useMemo(
+    () => barisPeriodeAktif(mapPoints, { from, to, province, hours: periodeJam }),
+    [mapPoints, from, to, province, periodeJam],
+  );
+  const tally = {
+    jumlah: day.length,
+    kepercayaan: day.reduce((acc, point) => {
+      const key = point.kelasKepercayaan || "tidak_diketahui";
+      acc[key] = (acc[key] || 0) + 1;
+      return acc;
+    }, {}),
+  };
+  const pertamaMerah = susunPeringkatHotspot(day, { tingkat: "provinsi" }).baris[0];
   const weather = feeds.find((feed) => feed.id === "fdrs_pembanding");
 
   return (
@@ -40,15 +65,25 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
       <header className="page-head">
         <div>
           <h1>Ringkasan pemantauan</h1>
-          <p className="lead">hotspot = deteksi satelit, bukan kebakaran terkonfirmasi. Peta memakai jendela 24 jam, cakupan Indonesia.</p>
+          <p className="lead">
+            hotspot = deteksi satelit, bukan kebakaran terkonfirmasi. Kepercayaan sensor bukan tingkat bahaya.
+            Peta, angka, dan tabel memakai periode yang sama{province ? ` untuk ${province}` : ", cakupan Indonesia"}.
+          </p>
         </div>
       </header>
       <section className="card" aria-label="Status kategori">
         <h2>Status data</h2>
         <p className="fine">
-          Setiap kategori memakai manifes yang sama dengan halaman lain. Satu sumber yang gagal tidak mengubah status kategori lain.
-          {manifest?.generated_at ? ` Manifes ${formatWib(manifest.generated_at)}.` : " Manifes belum termuat."}
+          Setiap kategori memakai manifes yang sama dengan halaman Karhutla. Satu sumber yang gagal tidak mengubah status kategori lain.
+          {siap.keadaan === "memuat" ? " Memuat status sumber…" : manifest?.generated_at ? ` Manifes ${formatWib(manifest.generated_at)}.` : ` ${siap.catatan || "Manifes gagal dimuat."}`}
         </p>
+        {siap.keadaan === "memuat" ? (
+          <p className="loading" role="status">Memuat status sumber…</p>
+        ) : siap.keadaan === "gagal" && !kategori.length ? (
+          <p className="empty" role="alert">{siap.catatan || "Manifes gagal dimuat."}</p>
+        ) : (
+        <>
+        <p className="fine">Keadaan gabungan: {siap.keadaan === "berhasil" ? "berhasil" : siap.keadaan === "kedaluwarsa" ? "kedaluwarsa" : siap.keadaan === "gagal" ? "gagal" : "sebagian"}.</p>
         <div className="table-wrap">
           <table>
             <thead>
@@ -73,18 +108,44 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
             </tbody>
           </table>
         </div>
+        </>
+        )}
       </section>
+      <KontrolPeriode
+        from={from}
+        to={to}
+        setFrom={setFrom}
+        setTo={setTo}
+        periodeJam={periodeJam}
+        setPeriodeJam={setPeriodeJam}
+        onHariTerakhir={() => {
+          const range = defaultRange(hotspot?.rows ?? [], 1);
+          if (!range.to) return;
+          setFrom?.(range.to);
+          setTo?.(range.to);
+          setPeriodeJam?.(24);
+        }}
+        onTujuhHari={() => {
+          const range = defaultRange(hotspot?.rows ?? [], 7);
+          if (!range.from || !range.to) return;
+          setFrom?.(range.from);
+          setTo?.(range.to);
+          setPeriodeJam?.(168);
+        }}
+      />
       <section className="overview-grid">
         <article className="modcard">
           <div className="mod-head">
             <div>
-              <h2>Sebaran 24 jam</h2>
-              {sampleHotspot ? (
-                <p>{hotspot?.status === "gagal" || hotspot?.status === "usang" ? (hotspot.error || "Titik panas gagal dimuat.") : (hotspot?.error || "Data contoh tidak ditampilkan. Peta dikosongkan.")} Kategori lain tetap mengikuti manifes yang sama.</p>
+              <h2>Sebaran {labelJendela(periodeJam)}</h2>
+              {loading && !hotspot ? (
+                <p className="loading" role="status">Memuat sebaran titik panas…</p>
+              ) : sampleHotspot ? (
+                <p>{hotspot?.status === "gagal" ? (hotspot.error || "Titik panas gagal dimuat.") : hotspot?.status === "usang" ? (hotspot.error || "Cuplikan terakhir tidak ada.") : (hotspot?.error || "Data contoh tidak ditampilkan. Peta dikosongkan.")} Kategori lain tetap mengikuti manifes yang sama.</p>
               ) : (
                 <p>
-                  {formatAngka(tally.jumlah)} titik, {formatAngka(tally.kepercayaan.tinggi || 0)} confidence tinggi
-                  {topProvince ? `, terbanyak di ${topProvince.provinsi}` : ""}.
+                  {formatAngka(tally.jumlah)} titik, {formatAngka(tally.kepercayaan.tinggi || 0)} kepercayaan tinggi, {formatAngka(tally.kepercayaan.nominal || 0)} sedang, {formatAngka(tally.kepercayaan.rendah || 0)} rendah, {formatAngka(tally.kepercayaan.tidak_diketahui || 0)} tidak diketahui
+                  {pertamaMerah ? `, peringkat merah tertinggi: ${pertamaMerah.nama}` : ""}.
                   Observasi {hotspot?.observedAt ? formatWib(hotspot.observedAt) : "tidak tersedia"}
                   {freshness?.tertunda ? " · data tertunda" : ""}.
                   Sumber: {hotspotSourceLabel(hotspot, config?.firms?.sumber)}. Satuan: titik deteksi.
@@ -92,14 +153,14 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
               )}
             </div>
           </div>
-          {sampleHotspot ? (
+          {loading && !hotspot ? null : sampleHotspot ? (
             <p className="empty">{hotspot?.error || "Data contoh tidak ditampilkan. Peta dikosongkan."}</p>
           ) : (
             <HotspotMap points={day} frame="indonesia" mapApi={mapApi} />
           )}
           <ClusterLegend />
           <p className="fine">
-            Hijau rendah, kuning nominal, merah tinggi: kualitas deteksi satelit, bukan tingkat bahaya. Satu titik memakai warna itu. Cincin pada zoom kecil hanya merangkum bagian ketiga warna di dalam petak.
+            Merah tinggi, oranye sedang, kuning rendah: kualitas deteksi satelit, bukan tingkat bahaya. Tidak diketahui berwarna abu-abu dan tidak dihitung sebagai kuning. Satu titik memakai warna itu. Cincin pada zoom kecil hanya merangkum bagian warna di dalam petak.
             {" "}
             <a href="#/karhutla/peta">Buka peta dan tabel</a>
           </p>
@@ -140,6 +201,18 @@ export function SummaryPage({ config, feeds, manifest, freshness }) {
           </ol>
         </article>
       </section>
+
+      <PeringkatHotspot
+        points={day}
+        feed={hotspot}
+        memuat={Boolean(loading && !hotspot)}
+        tertunda={Boolean(freshness?.tertunda)}
+        from={from}
+        to={to}
+        periodeJam={periodeJam}
+        province={province}
+        sumber={config?.firms?.sumber}
+      />
 
       <section className="card">
         <h2>Wilayah dengan perhatian tertinggi</h2>

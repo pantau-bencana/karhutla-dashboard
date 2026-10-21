@@ -2,6 +2,7 @@ export function kelasKepercayaan(value) {
   const text = String(value ?? "")
     .trim()
     .toLowerCase();
+  if (!text) return "tidak_diketahui";
   if (text === "h" || text === "high" || text === "tinggi") return "tinggi";
   if (text === "n" || text === "nominal" || text === "sedang") return "nominal";
   if (text === "l" || text === "low" || text === "rendah") return "rendah";
@@ -11,7 +12,7 @@ export function kelasKepercayaan(value) {
     if (number >= 30) return "nominal";
     return "rendah";
   }
-  return "nominal";
+  return "tidak_diketahui";
 }
 
 export function kategoriIspu(value) {

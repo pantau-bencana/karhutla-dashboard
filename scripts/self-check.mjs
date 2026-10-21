@@ -27,11 +27,13 @@ import { parseLocation, parseRoute } from "../src/lib/route.js";
 import { clusterCellDegrees, countHotspots, filterHotspotWindow } from "../src/lib/hotspotWindow.js";
 import { parseFirmsCoordinate } from "./indonesia-land.mjs";
 import { arcGisContains, summarizeByDesa, summarizeByWilayah, unverifiedWilayahCount, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
-import { assessFreshness, hotspotSourceLabel } from "../src/lib/freshness.js";
+import { assessFreshness, hotspotSourceLabel, labelStatusFeed } from "../src/lib/freshness.js";
 import { annotatePoints } from "./big-wilayah.mjs";
 import { buildComparisonAttention, normalizePlaceName, PROTOTYPE_LABEL } from "../src/lib/attentionPrototype.js";
 import { karhutlaRankingPlan } from "../src/lib/ranking.js";
-import { statusRingkasan } from "../src/lib/ringkasanStatus.js";
+import { keadaanKategori, statusRingkasan, statusRingkasanSiap } from "../src/lib/ringkasanStatus.js";
+import { bandingPeringkat, barisPeriodeAktif, kelasPeringkat, susunPeringkatHotspot } from "../src/lib/peringkatHotspot.js";
+import { kelasKepercayaan } from "../src/lib/warning.js";
 import {
   agregasiHotspot,
   alasanKesegaran,
@@ -485,8 +487,11 @@ assert.match(workflow, /47 1-23\/3 \* \* \*/);
 assert.match(workflow, /fetch-depth:\s*0/);
 assert.match(workflow, /git fetch origin/);
 assert.match(workflow, /git pull --rebase/);
-assert.match(workflow, /queue: max/);
-assert.match(workflow, /cancel-in-progress: false/);
+assert.match(workflow, /group: refresh-data/);
+assert.match(workflow, /cancel-in-progress: true/);
+assert.match(workflow, /timeout-minutes:\s*90/);
+assert.match(workflow, /timeout-minutes:\s*50/);
+assert.equal(workflow.includes("group: pages"), false);
 assert.match(workflow, /deploy-pages/);
 assert.equal(workflow.includes("push --force"), false);
 assert.equal(workflow.includes("git push -f"), false);
@@ -510,6 +515,9 @@ assert.match(refreshSource, /bigQueries: annotated\.stats\.queries/);
 assert.match(refreshSource, /hotspotEntry\.big_queries = result\.bigQueries/);
 assert.match(refreshSource, /wilayah_gagal=\$\{countText/);
 assert.match(refreshSource, /big_queries=\$\{countText/);
+assert.match(refreshSource, /sumber \$\{label\}: mulai/);
+assert.match(refreshSource, /batasWaktu/);
+assert.match(refreshSource, /deadlineAt/);
 assert.match(refreshSource, /\/tmp\/refresh-hotspot-counts\.txt/);
 assert.equal(karhutlaRankingPlan().dapatDisusun, false);
 assert.match(karhutlaRankingPlan().status, /belum cukup data – cuplikan prioritas belum ada/);
@@ -616,6 +624,95 @@ const windowed = filterHotspotWindow([
 assert.equal(windowed.rows.length, 2);
 assert.equal(countHotspots(windowed.rows).sensor.N, 1);
 assert.equal(countHotspots(windowed.rows).sensor.N20, 1);
+assert.equal(kelasKepercayaan(""), "tidak_diketahui");
+assert.equal(kelasKepercayaan("???"), "tidak_diketahui");
+assert.equal(kelasKepercayaan("n"), "nominal");
+assert.equal(kelasKepercayaan("h"), "tinggi");
+assert.equal(kelasKepercayaan("l"), "rendah");
+assert.equal(kelasPeringkat({ kelasKepercayaan: "tidak_diketahui" }), "tidak_diketahui");
+assert.equal(labelStatusFeed({ id: "irbi", asal: "snapshot", status: "berhasil" }, { sumber: "VIIRS_SNPP_NRT" }), "Terhubung");
+assert.equal(labelStatusFeed({ id: "ispu_pembanding", asal: "snapshot", status: "berhasil" }, { sumber: "VIIRS_SNPP_NRT" }), "Terhubung");
+assert.equal(labelStatusFeed({ id: "bmkg_prakiraan", asal: "snapshot", status: "usang" }, { sumber: "VIIRS_SNPP_NRT" }), "Cuplikan terakhir");
+assert.equal(labelStatusFeed({ id: "hotspot", asal: "snapshot", status: "berhasil" }, { sumber: "VIIRS_SNPP_NRT" }), "VIIRS S-NPP NRT (snapshot ±3 jam)");
+assert.equal(labelStatusFeed({ id: "sipongi", status: "tautan" }).includes("VIIRS"), false);
+assert.equal(statusRingkasanSiap(null, { memuat: true }).keadaan, "memuat");
+assert.equal(statusRingkasanSiap(null, { memuat: true }).baris.length, 0);
+assert.equal(statusRingkasanSiap(null, { memuat: false }).keadaan, "gagal");
+assert.equal(keadaanKategori([{ status: "tersedia" }, { status: "gagal dimuat" }, { status: "belum terintegrasi" }]), "sebagian");
+const titikPapua = [
+  { provinsi: "Papua Selatan", kabupaten: "Merauke", tanggal: "2026-10-17", waktu: "0100", kelasKepercayaan: "tinggi", lintang: -8.5, bujur: 140.4 },
+  { provinsi: "Papua Selatan", kabupaten: "Merauke", tanggal: "2026-10-17", waktu: "0200", kelasKepercayaan: "tinggi", lintang: -8.4, bujur: 140.5 },
+  { provinsi: "Papua Selatan", kabupaten: "Boven Digoel", tanggal: "2026-10-17", waktu: "0300", kelasKepercayaan: "tinggi", lintang: -6.1, bujur: 140.3 },
+  { provinsi: "Riau", kabupaten: "Pelalawan", tanggal: "2026-10-17", waktu: "0400", kelasKepercayaan: "nominal", lintang: 0.2, bujur: 102.1 },
+  { provinsi: "Riau", kabupaten: "Pelalawan", tanggal: "2026-10-17", waktu: "0500", kelasKepercayaan: "nominal", lintang: 0.3, bujur: 102.2 },
+  { provinsi: "Riau", kabupaten: "Pelalawan", tanggal: "2026-10-17", waktu: "0600", kelasKepercayaan: "nominal", lintang: 0.4, bujur: 102.3 },
+  { provinsi: "Riau", kabupaten: "Pelalawan", tanggal: "2026-10-17", waktu: "0700", kelasKepercayaan: "nominal", lintang: 0.5, bujur: 102.4 },
+  { provinsi: "Riau", kabupaten: "Siak", tanggal: "2026-10-17", waktu: "0800", kelasKepercayaan: "rendah", lintang: 0.8, bujur: 102.0 },
+  { provinsi: "Riau", kabupaten: "Siak", tanggal: "2026-10-17", waktu: "0900", kelasKepercayaan: "rendah", lintang: 0.9, bujur: 102.1 },
+  { provinsi: "Riau", kabupaten: "Siak", tanggal: "2026-10-17", waktu: "1000", kelasKepercayaan: "rendah", lintang: 1.0, bujur: 102.2 },
+  { provinsi: "Riau", kabupaten: "Siak", tanggal: "2026-10-17", waktu: "1100", kelasKepercayaan: "rendah", lintang: 1.1, bujur: 102.3 },
+  { provinsi: "Riau", kabupaten: "Siak", tanggal: "2026-10-17", waktu: "1200", kelasKepercayaan: "rendah", lintang: 1.2, bujur: 102.4 },
+  { provinsi: "Riau", kabupaten: "Siak", tanggal: "2026-10-01", waktu: "1200", kelasKepercayaan: "tinggi", lintang: 1.3, bujur: 102.5 },
+  { provinsi: "Aceh", kabupaten: "Aceh Timur", tanggal: "2026-10-17", waktu: "1300", kelasKepercayaan: "tinggi", lintang: 4.6, bujur: 97.8 },
+  { provinsi: "Bali", kabupaten: "Jembrana", tanggal: "2026-10-17", waktu: "1400", kelasKepercayaan: "tinggi", lintang: -8.3, bujur: 114.6 },
+  { provinsi: "Bali", kabupaten: "Jembrana", tanggal: "2026-10-17", waktu: "1410", kelasKepercayaan: "nominal", lintang: -8.3, bujur: 114.7 },
+  { provinsi: "Jambi", kabupaten: "Tebo", tanggal: "2026-10-17", waktu: "1500", kelasKepercayaan: "tinggi", lintang: -1.5, bujur: 102.4 },
+  { provinsi: "Jambi", kabupaten: "Tebo", tanggal: "2026-10-17", waktu: "1510", kelasKepercayaan: "nominal", lintang: -1.4, bujur: 102.5 },
+  { provinsi: "Jambi", kabupaten: "Tebo", tanggal: "2026-10-17", waktu: "1520", kelasKepercayaan: "nominal", lintang: -1.3, bujur: 102.6 },
+  { provinsi: "Jambi", kabupaten: "Tebo", tanggal: "2026-10-17", waktu: "1530", kelasKepercayaan: "rendah", lintang: -1.2, bujur: 102.7 },
+  { provinsi: "Kalimantan Barat", kabupaten: "Ketapang", tanggal: "2026-10-17", waktu: "1600", kelasKepercayaan: "tinggi", lintang: -1.8, bujur: 110.2 },
+  { provinsi: "Kalimantan Barat", kabupaten: "Ketapang", tanggal: "2026-10-17", waktu: "1610", kelasKepercayaan: "nominal", lintang: -1.7, bujur: 110.3 },
+  { provinsi: "Kalimantan Barat", kabupaten: "Ketapang", tanggal: "2026-10-17", waktu: "1620", kelasKepercayaan: "rendah", lintang: -1.6, bujur: 110.4 },
+  { provinsi: "Kalimantan Barat", kabupaten: "Ketapang", tanggal: "2026-10-17", waktu: "1630", kelasKepercayaan: "rendah", lintang: -1.5, bujur: 110.5 },
+  { provinsi: "Kalimantan Tengah", kabupaten: "Kotawaringin Timur", tanggal: "2026-10-17", waktu: "1700", kelasKepercayaan: "tidak_diketahui", lintang: -2.1, bujur: 112.7 },
+  { provinsi: "Kalimantan Tengah", kabupaten: "Kotawaringin Timur", tanggal: "2026-10-17", waktu: "1710", kelasKepercayaan: "", lintang: -2.2, bujur: 112.8 },
+];
+const periodePapua = barisPeriodeAktif(titikPapua, { from: "2026-10-17", to: "2026-10-17", hours: 168 });
+assert.equal(periodePapua.some((row) => row.tanggal === "2026-10-01"), false);
+assert.equal(periodePapua.length, titikPapua.length - 1);
+const peringkatProv = susunPeringkatHotspot(periodePapua, { tingkat: "provinsi" });
+assert.equal(peringkatProv.baris[0].nama, "Papua Selatan");
+assert.equal(peringkatProv.baris[0].peringkat, 1);
+assert.equal(peringkatProv.baris[0].merah, 3);
+assert.equal(peringkatProv.baris.every((row) => row.tingkat === "provinsi"), true);
+const barisRiau = peringkatProv.baris.find((row) => row.nama === "Riau");
+const jambi = peringkatProv.baris.find((row) => row.nama === "Jambi");
+const kalbar = peringkatProv.baris.find((row) => row.nama === "Kalimantan Barat");
+assert.ok(barisRiau.total > peringkatProv.baris[0].total);
+assert.ok(barisRiau.peringkat > peringkatProv.baris[0].peringkat);
+assert.equal(barisRiau.merah, 0);
+assert.ok(jambi.oranye > kalbar.oranye);
+assert.ok(jambi.peringkat < kalbar.peringkat);
+const aceh = peringkatProv.baris.find((row) => row.nama === "Aceh");
+const bali = peringkatProv.baris.find((row) => row.nama === "Bali");
+assert.equal(aceh.merah, 1);
+assert.equal(bali.merah, 1);
+assert.ok(bali.oranye > aceh.oranye);
+assert.ok(bali.peringkat < aceh.peringkat);
+assert.equal(kalbar.oranye, bali.oranye);
+assert.ok(kalbar.kuning > bali.kuning);
+assert.ok(kalbar.peringkat < bali.peringkat);
+const sama = [
+  { nama: "Bali", merah: 2, oranye: 2, kuning: 2, total: 9 },
+  { nama: "Aceh", merah: 2, oranye: 2, kuning: 2, total: 6 },
+];
+assert.ok(bandingPeringkat(sama[0], sama[1]) < 0);
+const abjad = [
+  { nama: "Bali", merah: 1, oranye: 0, kuning: 0, total: 1 },
+  { nama: "Aceh", merah: 1, oranye: 0, kuning: 0, total: 1 },
+].sort(bandingPeringkat);
+assert.deepEqual(abjad.map((row) => row.nama), ["Aceh", "Bali"]);
+const kalteng = peringkatProv.baris.find((row) => row.nama === "Kalimantan Tengah");
+assert.equal(kalteng.kuning, 0);
+assert.equal(kalteng.total, 0);
+assert.equal(kalteng.tidakDiketahui, 2);
+assert.equal(peringkatProv.total + peringkatProv.tidakDiketahui, periodePapua.length);
+const peringkatKab = susunPeringkatHotspot(periodePapua, { tingkat: "kabupaten" });
+assert.equal(peringkatKab.baris.every((row) => row.tingkat === "kabupaten"), true);
+assert.equal(peringkatKab.baris.some((row) => row.nama === "Papua Selatan"), false);
+assert.equal(peringkatKab.baris[0].nama, "Merauke, Papua Selatan");
+assert.equal(peringkatKab.merah, peringkatProv.merah);
+assert.equal(barisPeriodeAktif(periodePapua, { from: "2026-10-17", to: "2026-10-17", province: "Papua Selatan", hours: 24 }).every((row) => row.provinsi === "Papua Selatan"), true);
 assert.equal(clusterCellDegrees(8), 0);
 assert.equal(clusterCellDegrees(10), 0);
 assert.equal(clusterCellDegrees(6), 0);
@@ -642,7 +739,8 @@ const mapComponent = readFileSync("src/components/HotspotMap.jsx", "utf8");
 assert.match(mapComponent, /L\.circleMarker\(\[lat, lon\]/);
 assert.match(mapComponent, /Number\(anchor\.lintang\)/);
 assert.equal(mapComponent.includes("circleMarker([meanLat"), false);
-assert.match(readFileSync("src/lib/bigWilayah.js", "utf8"), /#15803d/);
+assert.match(readFileSync("src/lib/bigWilayah.js", "utf8"), /#eab308/);
+assert.match(readFileSync("src/lib/bigWilayah.js", "utf8"), /#ea580c/);
 function jsonResponse(payload, ok = true) {
   return { ok, status: ok ? 200 : 500, json: async () => payload };
 }
