@@ -106,7 +106,7 @@ function gayaWilayah(paint, selected, peringatan) {
     return { color: "#3f3a34", weight: selected ? 1.1 : 0.45, fillColor: paint.fill, fillOpacity: 0.78, dashArray: null };
   }
   if (paint?.kind === "kosong" || paint?.kind === "tak-dikenal" || paint?.kind === "kedaluwarsa") {
-    return { color: "#6f6a62", weight: selected ? 1 : 0.45, fillColor: WARNA_TANPA_PERINGATAN, fillOpacity: 0.9, dashArray: null };
+    return { color: "#6f6a62", weight: selected ? 1 : 0.45, fillColor: WARNA_TANPA_PERINGATAN, fillOpacity: OPASITAS_ABU, dashArray: null };
   }
   return { color: "#6f6a62", weight: selected ? 1 : 0.4, fillColor: "url(#flood-hatch)", fillOpacity: 1, dashArray: null };
 }
@@ -193,6 +193,7 @@ function tooltipTitik(titik, hujan) {
 
 const BANJIR_PADDING = [10, 10];
 const PADDING_PROVINSI = [16, 16];
+const OPASITAS_ABU = 0.15;
 
 function banjirBounds() {
   return L.latLngBounds(

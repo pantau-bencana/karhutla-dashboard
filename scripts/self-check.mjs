@@ -1411,6 +1411,10 @@ assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Lapisan P
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Data Pembanding/);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Tingkat Peringatan/);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Tidak ada status/);
+assert.match(petaBanjirSumber, /const OPASITAS_ABU = 0\.15/);
+assert.match(petaBanjirSumber, /fillOpacity: OPASITAS_ABU/);
+assert.match(petaBanjirSumber, /fillOpacity: 0\.78/);
+assert.match(petaBanjirSumber, /LABEL_KEDALUWARSA/);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Tidak ada data/);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /position: "bottomleft"/);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /position: "topleft"/);
