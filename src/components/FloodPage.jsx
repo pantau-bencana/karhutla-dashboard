@@ -21,7 +21,7 @@ import {
 import { DASARIAN_FILE, DASARIAN_GUIDE_URL, IKLIM_BMKG_URL, applyDasarian, todayWib } from "../lib/dasarianManual.js";
 import { formatTanggalPendek, formatUsia, formatWib } from "../lib/format.js";
 import { bigQueryUrl } from "../lib/floodServices.js";
-import { BMKG_DOCS_URL } from "../lib/bmkgForecast.js";
+import { BMKG_DOCS_URL, labelAnalisisBmkg } from "../lib/bmkgForecast.js";
 import { DIBI_UNAVAILABLE, FLOOD_PERMISSION, IRBI_PENGGUNAAN_INTERNAL, IRBI_PERMISSION, IRBI_TIDAK_TERSEDIA, buildFloodRows, kodeWilayah, urutStatusKab } from "../lib/floodMatrix.js";
 import {
   BPS_PROYEKSI_URL,
@@ -380,13 +380,29 @@ function FloodBody() {
   const hariTab = tab === "cap" ? null : periode.hari[tab];
   const namaHari = tab === "cap" ? "" : ["Hari ini", "Besok", "Lusa"][tab];
   const sumberPrakiraan = titik.find((item) => item.analysisUtc)?.analysisUtc || prakiraan.observedAt;
+  const tanggalCuplikan = useMemo(() => {
+    const tanggal = (prakiraan.rows ?? []).map((row) => String(row.tanggal ?? "").slice(0, 10)).filter((item) => /^\d{4}-\d{2}-\d{2}$/.test(item));
+    return [...new Set(tanggal)].sort();
+  }, [prakiraan.rows]);
+  const analysesCuplikan = useMemo(
+    () => [...new Set((prakiraan.rows ?? []).map((row) => String(row.analysis_utc ?? row.analysisUtc ?? "").trim()).filter(Boolean))],
+    [prakiraan.rows],
+  );
+  const kalimatAnalisis = prakiraan.status === "ok"
+    ? labelAnalisisBmkg({
+        analysisUtc: sumberPrakiraan,
+        fetchedAt: prakiraan.fetchedAt,
+        tanggal: tanggalCuplikan,
+        analyses: analysesCuplikan,
+      })
+    : "";
   const kepalaUnduh = [
     tab === "cap"
       ? `Periode: 0–3 jam. ${PEMBARUAN_TERAKHIR_LABEL}: ${cap.meta.fetched_at ? formatWib(cap.meta.fetched_at) : "—"}.`
       : `${periode.label}. Tab ${namaHari}${hariTab ? `, ${formatTanggalPendek(hariTab)} ${hariTab.slice(0, 4)}` : ""}.`,
     tab === "cap"
       ? `Sumber: BMKG. ${PEMBARUAN_TERAKHIR_LABEL}: ${cap.meta.fetched_at ? formatWib(cap.meta.fetched_at) : "—"}.${ringkas.berlakuSampai ? ` Masa berlaku sampai ${formatWib(ringkas.berlakuSampai)}.` : ""}${ringkas.kedaluwarsa ? ` ${CAP_DATA_TERAKHIR}.` : ""}`
-      : `Sumber: BMKG. Diambil ${prakiraan.fetchedAt ? formatWib(prakiraan.fetchedAt) : "—"}. Dikeluarkan ${sumberPrakiraan ? formatWib(sumberPrakiraan) : "—"}.`,
+      : `Sumber: BMKG. ${kalimatAnalisis}`,
     `Cakupan: ${province || SEMUA_PROVINSI}.`,
     `${DIBI_UNAVAILABLE}. Tanda — pada kolom Historis bukan nol kejadian. Klasifikasi DAS belum terintegrasi.`,
     DISCLAIMER_UNDUH,
@@ -552,9 +568,7 @@ function FloodBody() {
               <>
                 Sumber: BMKG. Prakiraan cuaca 3 hari untuk {namaHari}, {formatTanggalPendek(hariTab)} {hariTab.slice(0, 4)}.
                 Satu titik sampel per kab/kota. {PEMETAAN_CUACA} Hasilnya dipasangkan dengan kelas IRBI pada matriks{" "}
-                {ANALISIS_NAMA}. Bukan nowcast 0–3 jam dan bukan status resmi. Diambil{" "}
-                {prakiraan.fetchedAt ? formatWib(prakiraan.fetchedAt) : "—"}. Dikeluarkan{" "}
-                {sumberPrakiraan ? formatWib(sumberPrakiraan) : "—"}.
+                {ANALISIS_NAMA}. Bukan nowcast 0–3 jam dan bukan status resmi. {kalimatAnalisis}
               </>
             )}
           </p>
@@ -621,8 +635,7 @@ function FloodBody() {
             periode dihitung dari hari ini zona WIB.
           </p>
           <p className="fine">
-            Diambil {prakiraan.fetchedAt ? formatWib(prakiraan.fetchedAt) : "—"}. Dikeluarkan{" "}
-            {prakiraan.observedAt ? formatWib(prakiraan.observedAt) : titik.find((item) => item.analysisUtc)?.analysisUtc ? formatWib(titik.find((item) => item.analysisUtc).analysisUtc) : "—"}.{" "}
+            {kalimatAnalisis}{" "}
             <a href={BMKG_DOCS_URL} target="_blank" rel="noopener noreferrer">
               Dokumentasi prakiraan cuaca
             </a>

@@ -48,6 +48,14 @@ import {
   tampilanPrioritas,
 } from "../src/lib/aplus.js";
 import { CAP_CRON, CAP_WATCH_MINUTES, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
+import {
+  JARAK_ULANG_ANALISIS_MS,
+  ULANG_ANALISIS_MAKS,
+  analisisLebihLama,
+  labelAnalisisBmkg,
+  perluUlangAnalisis,
+  tanggalKalenderWib,
+} from "../src/lib/bmkgForecast.js";
 import { ANALISIS_MATRIKS, ANALISIS_NAMA, ANALISIS_WARNA, WARNA_TANPA_PERINGATAN, analisisStatus, applyAnalisis, catWilayah, keparahanCuaca, keparahanTerburuk } from "../src/lib/analisisPantauBencana.js";
 import {
   BPS_PROYEKSI_URL,
@@ -1564,6 +1572,44 @@ assert.match(readFileSync("src/components/FloodInfoTable.jsx", "utf8"), /IRBI_TI
 assert.equal(readFileSync("src/components/FloodInfoTable.jsx", "utf8").includes("item.desa"), false);
 assert.match(readFileSync(".github/workflows/refresh-cap.yml", "utf8"), /prakiraan-kab\.mjs/);
 assert.match(readFileSync(".github/workflows/refresh-cap.yml", "utf8"), /12,42 \* \* \* \*/);
+assert.equal(ULANG_ANALISIS_MAKS, 3);
+assert.equal(JARAK_ULANG_ANALISIS_MS, 45000);
+assert.equal(tanggalKalenderWib("2026-10-20T00:00:00Z"), "2026-10-20");
+assert.equal(tanggalKalenderWib("2026-10-20T18:00:00Z"), "2026-10-21");
+assert.equal(analisisLebihLama("2026-10-20T00:00:00Z", "2026-10-21T00:08:31.406Z"), true);
+assert.equal(analisisLebihLama("2026-10-20T00:00:00Z", "2026-10-20T08:40:34.088Z"), false);
+assert.equal(analisisLebihLama("", "2026-10-21T00:08:31.406Z"), false);
+assert.equal(perluUlangAnalisis({ analysisUtc: "2026-10-20T00:00:00Z", sekarang: "2026-10-21T00:08:31.406Z", percobaan: 0 }), true);
+assert.equal(perluUlangAnalisis({ analysisUtc: "2026-10-20T00:00:00Z", sekarang: "2026-10-21T00:08:31.406Z", percobaan: 2 }), true);
+assert.equal(perluUlangAnalisis({ analysisUtc: "2026-10-20T00:00:00Z", sekarang: "2026-10-21T00:08:31.406Z", percobaan: 3 }), false);
+assert.equal(perluUlangAnalisis({ analysisUtc: "2026-10-21T00:00:00Z", sekarang: "2026-10-21T00:08:31.406Z", percobaan: 0 }), false);
+const labelLama = labelAnalisisBmkg({
+  analysisUtc: "2026-10-20T00:00:00Z",
+  fetchedAt: "2026-10-21T00:08:31.406Z",
+  tanggal: ["2026-10-22", "2026-10-20", "2026-10-21"],
+  sekarang: "2026-10-21T00:08:31.406Z",
+});
+assert.match(labelLama, /lebih lama dari hari 21 Oktober 2026/);
+assert.match(labelLama, /Bukan terbitan hari itu/);
+assert.match(labelLama, /Tanggal pada cuplikan: 2026-10-20, 2026-10-21, 2026-10-22/);
+assert.equal(labelLama.includes("2026-10-23"), false);
+const labelSama = labelAnalisisBmkg({
+  analysisUtc: "2026-10-21T00:00:00Z",
+  fetchedAt: "2026-10-21T02:00:00.000Z",
+  tanggal: ["2026-10-21", "2026-10-22", "2026-10-23"],
+  sekarang: "2026-10-21T02:00:00.000Z",
+});
+assert.equal(labelSama.includes("lebih lama"), false);
+assert.match(labelSama, /Tanggal pada cuplikan: 2026-10-21, 2026-10-22, 2026-10-23/);
+const skripKab = readFileSync("scripts/prakiraan-kab.mjs", "utf8");
+const skripRefresh = readFileSync("scripts/refresh-live-data.mjs", "utf8");
+assert.match(skripKab, /perluUlangAnalisis/);
+assert.match(skripKab, /14\.71\.05\.1001/);
+assert.match(skripRefresh, /perluUlangAnalisis/);
+assert.match(readFileSync("src/components/FloodPage.jsx", "utf8"), /labelAnalisisBmkg/);
+assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /labelAnalisisBmkg/);
+assert.equal(readFileSync(".github/workflows/refresh-data.yml", "utf8").includes(REFRESH_CRON), true);
+assert.equal(readFileSync(".github/workflows/refresh-cap.yml", "utf8").includes("12,42 * * * *"), true);
 const luarCuplikan = buildFloodRows({
   banjir: [{ kode_wilayah: "32.01", provinsi: "Jawa Barat", nama_big: "Bogor", skor: "1", kelas: "RENDAH", halaman: "226" }],
   multi: [],

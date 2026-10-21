@@ -3,6 +3,7 @@ import { placeFwiTable, placeRainTable } from "../lib/attentionPrototype.js";
 import { officialLinks } from "../lib/sourceCatalog.js";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { KualitasUdara } from "./KualitasUdara.jsx";
+import { labelAnalisisBmkg } from "../lib/bmkgForecast.js";
 import { formatAngka, formatTanggalPendek } from "../lib/format.js";
 
 const LAYERS = [
@@ -54,6 +55,14 @@ export function ExtraLayers({ layer, view, feeds, province, provinces = [] }) {
   const fwiGwis = rowsFor(feeds, "fwi_gwis_pembanding", province);
   const compareRain = feeds.find((feed) => feed.id === "hujan_14_pembanding");
   const compareFwi = feeds.find((feed) => feed.id === "fwi_gwis_pembanding");
+  const kalimatAnalisis = prakiraan.length
+    ? labelAnalisisBmkg({
+        analysisUtc: prakiraan.find((row) => row.analysisUtc)?.analysisUtc || forecastFeed?.observedAt,
+        fetchedAt: forecastFeed?.fetchedAt,
+        tanggal: prakiraan.map((row) => row.tanggal),
+        analyses: prakiraan.map((row) => row.analysisUtc),
+      })
+    : "";
 
   if (layer === "inarisk") {
     return (
@@ -145,6 +154,7 @@ export function ExtraLayers({ layer, view, feeds, province, provinces = [] }) {
           )}
         />
         <p className="fine">Satu kelurahan ibu kota tiap provinsi prioritas. Horizon 3 hari, bukan 14 hari.</p>
+        {kalimatAnalisis ? <p className="fine">{kalimatAnalisis}</p> : null}
       </Panel>
       {rain ? (
         <Panel title="Hujan dan angin 14 hari pada titik wakil" note="Pembanding model, bukan prakiraan BMKG. Curah hujan adalah jumlah mm. Peluang hujan di atas 0,1 mm pada berkas ini tidak ditampilkan sebagai P(>20 mm)." feed={compareRain} compare>

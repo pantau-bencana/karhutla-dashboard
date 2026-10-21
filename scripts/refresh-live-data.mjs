@@ -2,7 +2,16 @@ import { createHash } from "node:crypto";
 import { appendFileSync, existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { flattenBmkgForecast, bmkgForecastUrl, BMKG_LOCATIONS, BMKG_DOCS_URL } from "../src/lib/bmkgForecast.js";
+import {
+  BMKG_DOCS_URL,
+  BMKG_LOCATIONS,
+  JARAK_ULANG_ANALISIS_MS,
+  ULANG_ANALISIS_MAKS,
+  bmkgForecastUrl,
+  flattenBmkgForecast,
+  labelAnalisisBmkg,
+  perluUlangAnalisis,
+} from "../src/lib/bmkgForecast.js";
 import { firmsAreaUrl, redactSecret } from "../src/lib/firms.js";
 import { writeHotspotMap } from "./build-hotspot-map.mjs";
 import { parseFirmsCoordinate } from "./indonesia-land.mjs";
@@ -164,14 +173,34 @@ async function jalankan(label, budgetMs, fn) {
 async function fetchBmkg(deadlineAt = Infinity) {
   const slots = [];
   let analysis = "";
-  for (const location of BMKG_LOCATIONS) {
-    lewatiBatas(deadlineAt, "bmkg_prakiraan");
-    const { text } = await getText(bmkgForecastUrl(location.adm4), 25000);
-    const payload = JSON.parse(text);
-    const flat = flattenBmkgForecast(payload);
-    if (!flat.length) throw new Error(`BMKG tidak mengembalikan slot untuk ${location.adm4}`);
+  for (let index = 0; index < BMKG_LOCATIONS.length; index += 1) {
+    const location = BMKG_LOCATIONS[index];
+    let flat = [];
+    let percobaan = 0;
+    while (true) {
+      lewatiBatas(deadlineAt, "bmkg_prakiraan");
+      const { text } = await getText(bmkgForecastUrl(location.adm4), 25000);
+      const payload = JSON.parse(text);
+      flat = flattenBmkgForecast(payload);
+      if (!flat.length) throw new Error(`BMKG tidak mengembalikan slot untuk ${location.adm4}`);
+      const found = flat.find((slot) => slot.analysisUtc)?.analysisUtc || "";
+      const tanggalProbe = [...new Set(flat.map((slot) => slot.tanggal).filter(Boolean))].sort();
+      const batasPercobaan = index === 0 ? ULANG_ANALISIS_MAKS + 1 : 1;
+      console.log(
+        `sumber bmkg_prakiraan ${location.adm4} percobaan ${percobaan + 1}/${batasPercobaan}: analisis ${found || "—"} tanggal ${tanggalProbe.join(",") || "—"}`,
+      );
+      const cukupWaktu = !Number.isFinite(deadlineAt) || Date.now() + JARAK_ULANG_ANALISIS_MS < deadlineAt;
+      if (index > 0 || !cukupWaktu || !perluUlangAnalisis({ analysisUtc: found, percobaan })) {
+        analysis = found || analysis;
+        break;
+      }
+      console.log(
+        `sumber bmkg_prakiraan: analisis ${found} lebih lama dari hari pengambilan. Menunggu ${JARAK_ULANG_ANALISIS_MS / 1000} detik, sisa percobaan ${ULANG_ANALISIS_MAKS - percobaan}.`,
+      );
+      percobaan += 1;
+      await new Promise((resolveDelay) => setTimeout(resolveDelay, JARAK_ULANG_ANALISIS_MS));
+    }
     slots.push(...flat);
-    analysis = flat.find((slot) => slot.analysisUtc)?.analysisUtc || analysis;
     await new Promise((resolveDelay) => setTimeout(resolveDelay, 250));
   }
   const headers = [
@@ -212,12 +241,17 @@ async function fetchBmkg(deadlineAt = Infinity) {
     })),
   );
   const dates = [...new Set(slots.map((slot) => slot.tanggal).filter(Boolean))].sort();
+  const analyses = [...new Set(slots.map((slot) => slot.analysisUtc).filter(Boolean))].sort();
   return {
     body,
     observedAt: analysis || null,
-    observedLabel: analysis
-      ? `Dikeluarkan ${analysis}. Berlaku ${dates[0]}–${dates.at(-1)} (3 hari, per 3 jam).`
-      : `Berlaku ${dates[0] ?? "—"}–${dates.at(-1) ?? "—"}`,
+    tanggal: dates,
+    observedLabel: labelAnalisisBmkg({
+      analysisUtc: analysis,
+      tanggal: dates,
+      sekarang: new Date(),
+      analyses,
+    }),
     sourceUpdatedAt: analysis || null,
   };
 }
@@ -997,9 +1031,14 @@ async function main() {
   try {
     const result = await jalankan("bmkg_prakiraan", 3 * 60 * 1000, (deadlineAt) => fetchBmkg(deadlineAt));
     bmkgEntry.observed_at = result.observedAt;
-    bmkgEntry.observed_label = result.observedLabel;
     bmkgEntry.source_updated_at = result.sourceUpdatedAt;
     writeIfChanged("data/live/bmkg_prakiraan.csv", result.body, bmkgEntry, previousEntry(previous, "bmkg_prakiraan"));
+    bmkgEntry.observed_label = labelAnalisisBmkg({
+      analysisUtc: bmkgEntry.observed_at,
+      fetchedAt: bmkgEntry.fetched_at,
+      tanggal: result.tanggal,
+      sekarang: nowIso,
+    });
   } catch (error) {
     Object.assign(bmkgEntry, keepPrevious(bmkgEntry, previousEntry(previous, "bmkg_prakiraan"), error.message));
   }
