@@ -1,0 +1,158 @@
+# Prakiraan cuaca 3 hari BMKG.
+# WIB 07.00, 09.00, 19.00, 21.00. UTC: 0 0,2,12,14 * * *.
+# 09.00 dan 21.00 memeriksa apakah analysis_date lebih baru.
+# String cron harus sama dengan PRAKIRAAN_CRON di src/lib/schedule.js.
+# Bila analysis_date tidak lebih baru, skrip tidak menulis berkas dan langkah commit kosong tidak membuat commit.
+# Tidak memakai secret. Jeda antar permintaan ada di scripts/prakiraan-kab.mjs (di bawah 60/menit).
+# Push dari GITHUB_TOKEN tidak memicu pages.yml, jadi deploy dilakukan di sini
+# hanya bila cuplikan berubah dan ref-nya persis refs/heads/main.
+name: Perbarui prakiraan BMKG
+
+on:
+  schedule:
+    - cron: "0 0,2,12,14 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: refresh-prakiraan
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Ambil prakiraan BMKG
+        id: ambil
+        run: |
+          set -euo pipefail
+          node scripts/prakiraan-kab.mjs
+          if git diff --quiet -- data/live/bmkg-prakiraan-kab.csv data/live/bmkg-prakiraan-kab-meta.json data/live/bmkg_prakiraan.csv data/live/manifest.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Analisis tidak lebih baru. Cuplikan tidak diubah."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Tulis ringkasan banjir
+        if: steps.ambil.outputs.changed == 'true'
+        run: node scripts/banjir-ringkasan.mjs || echo "Ringkasan banjir gagal. Prakiraan yang lebih baru tetap disimpan."
+
+      - name: Commit bila analysis_date lebih baru
+        id: commit
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          branch="${GITHUB_REF_NAME}"
+
+          commit_snapshot() {
+            git add data/live/bmkg-prakiraan-kab.csv data/live/bmkg-prakiraan-kab-meta.json data/live/bmkg_prakiraan.csv data/live/manifest.json
+            if [[ -f data/live/banjir-ringkasan.json ]]; then
+              git add data/live/banjir-ringkasan.json
+            fi
+            if git diff --cached --quiet; then
+              return 1
+            fi
+            git commit -m "Perbarui prakiraan cuaca BMKG"
+          }
+
+          if ! commit_snapshot; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Tidak ada commit. Cuplikan prakiraan tetap."
+            exit 0
+          fi
+
+          for attempt in 1 2 3 4; do
+            git fetch origin "$branch"
+            if git pull --rebase origin "$branch"; then
+              if git push origin "HEAD:${branch}"; then
+                echo "changed=true" >> "$GITHUB_OUTPUT"
+                echo "Prakiraan terdorong ke ${branch} (percobaan ${attempt})."
+                exit 0
+              fi
+              echo "Push ditolak (percobaan ${attempt}). Ambil ulang lalu coba lagi."
+            else
+              echo "Rebase bentrok (percobaan ${attempt}). Prakiraan dibuat ulang."
+              git rebase --abort || true
+              git reset --hard "origin/${branch}"
+              npm ci
+              node scripts/prakiraan-kab.mjs || true
+              if ! git diff --quiet -- data/live/bmkg-prakiraan-kab.csv data/live/bmkg-prakiraan-kab-meta.json data/live/bmkg_prakiraan.csv data/live/manifest.json; then
+                node scripts/banjir-ringkasan.mjs || true
+              fi
+              if ! commit_snapshot; then
+                echo "changed=false" >> "$GITHUB_OUTPUT"
+                echo "Tidak ada commit setelah prakiraan dibuat ulang."
+                exit 0
+              fi
+            fi
+          done
+          echo "Gagal mendorong prakiraan setelah 4 percobaan."
+          exit 1
+
+      - name: Setup Pages
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Build
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        env:
+          VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: |
+          set -euo pipefail
+          git fetch origin "${GITHUB_REF_NAME}"
+          tip="$(git rev-parse "origin/${GITHUB_REF_NAME}")"
+          if [ "$(git rev-parse HEAD)" != "$tip" ]; then
+            echo "HEAD bukan ujung main. Membangun ${tip}."
+            git checkout --detach "$tip"
+          fi
+          npm ci
+          npm run check && npm run build
+
+      - name: Verify Pages paths and public config
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        run: node scripts/verify-pages-build.mjs "${{ steps.pages.outputs.base_path }}"
+
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && needs.refresh.outputs.changed == 'true'
+    needs: refresh
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

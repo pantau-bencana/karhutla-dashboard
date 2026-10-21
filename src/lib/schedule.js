@@ -9,6 +9,11 @@ export const REFRESH_CRON_CADANGAN = "47 1-23/3 * * *";
 // CAP nowcast berumur 0–3 jam. Jadwal terpisah tiap 30 menit, di luar menit 0
 // dan di luar slot 7, 17, serta 47 yang sudah dipakai workflow lain.
 export const CAP_CRON = "12,42 * * * *";
+// Prakiraan 3 hari BMKG. Keputusan pemilik: 07.00 dan 09.00 WIB, lalu 19.00 dan 21.00 WIB.
+// 09.00 dan 21.00 memeriksa apakah analysis_date lebih baru dari cuplikan tersimpan.
+// UTC: 00.00, 02.00, 12.00, 14.00. Menit 0 pada cron ini disengaja.
+// Jangan memindahkan REFRESH_CRON, REFRESH_CRON_CADANGAN, atau CAP_CRON ke menit 0.
+export const PRAKIRAAN_CRON = "0 0,2,12,14 * * *";
 // Penjaga berjalan di menit 7. Slot CAP yang sehat terakhir adalah menit 42, umur sekitar 25 menit.
 // Lebih dari 50 menit berarti sedikitnya satu slot 30 menit tidak meninggalkan run.
 export const CAP_WATCH_MINUTES = 50;

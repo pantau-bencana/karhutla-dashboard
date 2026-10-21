@@ -40,6 +40,14 @@ export function perluUlangAnalisis({ analysisUtc, sekarang = new Date(), percoba
   return percobaan < maks && analisisLebihLama(analysisUtc, sekarang);
 }
 
+export function analisisLebihBaru(baru, tersimpan) {
+  const next = String(baru ?? "").trim();
+  const prev = String(tersimpan ?? "").trim();
+  if (!next) return false;
+  if (!prev) return true;
+  return next > prev;
+}
+
 export function labelAnalisisBmkg({ analysisUtc, fetchedAt, tanggal = [], sekarang = new Date(), analyses = [] } = {}) {
   const rentang = [...new Set((tanggal ?? []).filter(Boolean))].sort();
   const rentangTeks = rentang.length ? rentang.join(", ") : "—";

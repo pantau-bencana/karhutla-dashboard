@@ -2,16 +2,6 @@ import { createHash } from "node:crypto";
 import { appendFileSync, existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import {
-  BMKG_DOCS_URL,
-  BMKG_LOCATIONS,
-  JARAK_ULANG_ANALISIS_MS,
-  ULANG_ANALISIS_MAKS,
-  bmkgForecastUrl,
-  flattenBmkgForecast,
-  labelAnalisisBmkg,
-  perluUlangAnalisis,
-} from "../src/lib/bmkgForecast.js";
 import { firmsAreaUrl, redactSecret } from "../src/lib/firms.js";
 import { writeHotspotMap } from "./build-hotspot-map.mjs";
 import { parseFirmsCoordinate } from "./indonesia-land.mjs";
@@ -168,92 +158,6 @@ async function jalankan(label, budgetMs, fn) {
     console.log(`sumber ${label}: gagal ${Date.now() - started} ms — ${redactSecret(error?.message || String(error), firmsKey)}`);
     throw error;
   }
-}
-
-async function fetchBmkg(deadlineAt = Infinity) {
-  const slots = [];
-  let analysis = "";
-  for (let index = 0; index < BMKG_LOCATIONS.length; index += 1) {
-    const location = BMKG_LOCATIONS[index];
-    let flat = [];
-    let percobaan = 0;
-    while (true) {
-      lewatiBatas(deadlineAt, "bmkg_prakiraan");
-      const { text } = await getText(bmkgForecastUrl(location.adm4), 25000);
-      const payload = JSON.parse(text);
-      flat = flattenBmkgForecast(payload);
-      if (!flat.length) throw new Error(`BMKG tidak mengembalikan slot untuk ${location.adm4}`);
-      const found = flat.find((slot) => slot.analysisUtc)?.analysisUtc || "";
-      const tanggalProbe = [...new Set(flat.map((slot) => slot.tanggal).filter(Boolean))].sort();
-      const batasPercobaan = index === 0 ? ULANG_ANALISIS_MAKS + 1 : 1;
-      console.log(
-        `sumber bmkg_prakiraan ${location.adm4} percobaan ${percobaan + 1}/${batasPercobaan}: analisis ${found || "—"} tanggal ${tanggalProbe.join(",") || "—"}`,
-      );
-      const cukupWaktu = !Number.isFinite(deadlineAt) || Date.now() + JARAK_ULANG_ANALISIS_MS < deadlineAt;
-      if (index > 0 || !cukupWaktu || !perluUlangAnalisis({ analysisUtc: found, percobaan })) {
-        analysis = found || analysis;
-        break;
-      }
-      console.log(
-        `sumber bmkg_prakiraan: analisis ${found} lebih lama dari hari pengambilan. Menunggu ${JARAK_ULANG_ANALISIS_MS / 1000} detik, sisa percobaan ${ULANG_ANALISIS_MAKS - percobaan}.`,
-      );
-      percobaan += 1;
-      await new Promise((resolveDelay) => setTimeout(resolveDelay, JARAK_ULANG_ANALISIS_MS));
-    }
-    slots.push(...flat);
-    await new Promise((resolveDelay) => setTimeout(resolveDelay, 250));
-  }
-  const headers = [
-    "tanggal",
-    "waktu_lokal",
-    "provinsi",
-    "kotkab",
-    "kecamatan",
-    "desa",
-    "adm4",
-    "suhu_c",
-    "kelembapan_pct",
-    "curah_hujan_tp",
-    "kec_angin_kmj",
-    "arah_angin",
-    "cuaca",
-    "kode_cuaca",
-    "analysis_utc",
-  ];
-  const body = toCsv(
-    headers,
-    slots.map((slot) => ({
-      tanggal: slot.tanggal,
-      waktu_lokal: slot.waktuLokal,
-      provinsi: slot.provinsi,
-      kotkab: slot.kotkab,
-      kecamatan: slot.kecamatan,
-      desa: slot.desa,
-      adm4: slot.adm4,
-      suhu_c: slot.suhu,
-      kelembapan_pct: slot.kelembapan,
-      curah_hujan_tp: slot.hujan,
-      kec_angin_kmj: slot.anginKmj,
-      arah_angin: slot.arahAngin,
-      cuaca: slot.cuaca,
-      kode_cuaca: slot.kodeCuaca,
-      analysis_utc: slot.analysisUtc,
-    })),
-  );
-  const dates = [...new Set(slots.map((slot) => slot.tanggal).filter(Boolean))].sort();
-  const analyses = [...new Set(slots.map((slot) => slot.analysisUtc).filter(Boolean))].sort();
-  return {
-    body,
-    observedAt: analysis || null,
-    tanggal: dates,
-    observedLabel: labelAnalisisBmkg({
-      analysisUtc: analysis,
-      tanggal: dates,
-      sekarang: new Date(),
-      analyses,
-    }),
-    sourceUpdatedAt: analysis || null,
-  };
 }
 
 async function fetchOpenMeteoWeather(names) {
@@ -1024,34 +928,37 @@ async function main() {
   const names = config.provinsiPrioritas ?? [];
   const datasets = {};
 
-  const bmkgSource = SOURCES.find((source) => source.id === "bmkg_prakiraan");
-  const bmkgEntry = baseEntry(bmkgSource);
-  bmkgEntry.url = BMKG_DOCS_URL;
-  bmkgEntry.license = "Wajib mencantumkan BMKG sebagai sumber. Data Prakiraan Cuaca Terbuka.";
-  try {
-    const result = await jalankan("bmkg_prakiraan", 3 * 60 * 1000, (deadlineAt) => fetchBmkg(deadlineAt));
-    bmkgEntry.observed_at = result.observedAt;
-    bmkgEntry.source_updated_at = result.sourceUpdatedAt;
-    writeIfChanged("data/live/bmkg_prakiraan.csv", result.body, bmkgEntry, previousEntry(previous, "bmkg_prakiraan"));
-    bmkgEntry.observed_label = labelAnalisisBmkg({
-      analysisUtc: bmkgEntry.observed_at,
-      fetchedAt: bmkgEntry.fetched_at,
-      tanggal: result.tanggal,
-      sekarang: nowIso,
-    });
-  } catch (error) {
-    Object.assign(bmkgEntry, keepPrevious(bmkgEntry, previousEntry(previous, "bmkg_prakiraan"), error.message));
+  const previousBmkg = previousEntry(previous, "bmkg_prakiraan");
+  const previousAngin = previousEntry(previous, "angin");
+  if (previousBmkg?.file && existsSync(resolve(root, previousBmkg.file))) {
+    datasets.bmkg_prakiraan = { ...previousBmkg };
+    datasets.angin = previousAngin?.file
+      ? { ...previousAngin }
+      : {
+          ...previousBmkg,
+          id: "angin",
+          nama: "Arah dan kecepatan angin",
+          source: "Arah dan kecepatan angin pada prakiraan cuaca BMKG",
+          fungsi: SOURCES.find((source) => source.id === "angin").fungsi,
+          limitation: SOURCES.find((source) => source.id === "angin").limitation,
+        };
+    console.log("sumber bmkg_prakiraan: cuplikan jadwal tetap, tidak diambil di pembaruan umum");
+  } else {
+    const bmkgEntry = baseEntry(SOURCES.find((source) => source.id === "bmkg_prakiraan"));
+    bmkgEntry.status = "failed";
+    bmkgEntry.error = "Cuplikan prakiraan mengikuti jadwal 07.00, 09.00, 19.00, dan 21.00 WIB.";
+    bmkgEntry.record_count = 0;
+    bmkgEntry.file = null;
+    datasets.bmkg_prakiraan = bmkgEntry;
+    datasets.angin = {
+      ...bmkgEntry,
+      id: "angin",
+      nama: "Arah dan kecepatan angin",
+      source: "Arah dan kecepatan angin pada prakiraan cuaca BMKG",
+      fungsi: SOURCES.find((source) => source.id === "angin").fungsi,
+      limitation: SOURCES.find((source) => source.id === "angin").limitation,
+    };
   }
-  datasets.bmkg_prakiraan = bmkgEntry;
-  datasets.angin = {
-    ...bmkgEntry,
-    id: "angin",
-    nama: "Arah dan kecepatan angin",
-    source: "Arah dan kecepatan angin pada prakiraan cuaca BMKG",
-    fungsi: SOURCES.find((source) => source.id === "angin").fungsi,
-    limitation: SOURCES.find((source) => source.id === "angin").limitation,
-    url: "https://data.bmkg.go.id/prakiraan-cuaca/",
-  };
 
   const compareWeather = SOURCES.find((source) => source.id === "fdrs").comparisons[0];
   const weatherEntry = {

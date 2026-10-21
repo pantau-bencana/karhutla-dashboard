@@ -1,9 +1,12 @@
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  BMKG_LOCATIONS,
   JARAK_ULANG_ANALISIS_MS,
   ULANG_ANALISIS_MAKS,
+  analisisLebihBaru,
   analisisLebihLama,
   bmkgForecastUrl,
   flattenBmkgForecast,
@@ -16,7 +19,26 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SAMPLE = resolve(root, "data/static/prakiraan-sampel-adm4.csv");
 const OUT = resolve(root, "data/live/bmkg-prakiraan-kab.csv");
 const META = resolve(root, "data/live/bmkg-prakiraan-kab-meta.json");
+const PROVINCE_OUT = resolve(root, "data/live/bmkg_prakiraan.csv");
+const MANIFEST = resolve(root, "data/live/manifest.json");
 const GAP_MS = 1100;
+const PROVINCE_HEADERS = [
+  "tanggal",
+  "waktu_lokal",
+  "provinsi",
+  "kotkab",
+  "kecamatan",
+  "desa",
+  "adm4",
+  "suhu_c",
+  "kelembapan_pct",
+  "curah_hujan_tp",
+  "kec_angin_kmj",
+  "arah_angin",
+  "cuaca",
+  "kode_cuaca",
+  "analysis_utc",
+];
 
 const HEADERS = [
   "kode_kab",
@@ -47,12 +69,17 @@ function csvCell(value) {
   return text;
 }
 
-function toCsv(rows) {
-  const lines = [HEADERS.join(",")];
+function toCsv(rows, headers = HEADERS) {
+  const lines = [headers.join(",")];
   for (const row of rows) {
-    lines.push(HEADERS.map((header) => csvCell(row[header])).join(","));
+    lines.push(headers.map((header) => csvCell(row[header])).join(","));
   }
   return `${lines.join("\n")}\n`;
+}
+
+function readJson(path) {
+  if (!existsSync(path)) return null;
+  return JSON.parse(readFileSync(path, "utf8"));
 }
 
 function slotRow(kode, slot) {
@@ -94,10 +121,16 @@ async function ambilSatu(adm4) {
   return { http: 200, slots };
 }
 
-// Dokumentasi BMKG hanya menulis "2 kali sehari", tanpa menit terbit.
-// Cron CAP tetap 12,42. Probe satu adm4, ulang paling banyak 3 kali (45 detik)
-// hanya bila tanggal analisis WIB masih sebelum hari pengambilan, lalu ambil semua kab sekali.
+// Jadwal: 07.00, 09.00, 19.00, 21.00 WIB. 09.00 dan 21.00 memeriksa analysis_date.
+// Probe satu adm4. Ulang paling banyak 3 kali (45 detik) hanya bila tanggal analisis
+// masih sebelum hari pengambilan. Bila tidak lebih baru dari cuplikan tersimpan, berhenti
+// tanpa menulis berkas.
+const metaLama = readJson(META);
+const manifest = readJson(MANIFEST);
+const tersimpanKab = metaLama?.observed_at || "";
+const tersimpanProv = manifest?.datasets?.bmkg_prakiraan?.observed_at || "";
 const probe = sample.find((row) => row.adm4 === "14.71.05.1001") ?? sample[0];
+let probeAnalysis = "";
 if (probe) {
   for (let percobaan = 0; percobaan <= ULANG_ANALISIS_MAKS; percobaan += 1) {
     let hasil;
@@ -112,7 +145,8 @@ if (probe) {
     console.log(
       `Prakiraan probe ${probe.adm4} percobaan ${percobaan + 1}/${ULANG_ANALISIS_MAKS + 1}: http ${hasil.http} analisis ${analysis || "—"} tanggal ${tanggal.join(",") || "—"}`,
     );
-    if (!perluUlangAnalisis({ analysisUtc: analysis, percobaan })) break;
+    if (analysis) probeAnalysis = analysis;
+    if (!analysis || !perluUlangAnalisis({ analysisUtc: analysis, percobaan })) break;
     console.log(
       `Analisis ${analysis} lebih lama dari hari pengambilan. Menunggu ${JARAK_ULANG_ANALISIS_MS / 1000} detik, sisa percobaan ${ULANG_ANALISIS_MAKS - percobaan}.`,
     );
@@ -120,87 +154,140 @@ if (probe) {
   }
 }
 
-for (const row of sample) {
-  let http = 0;
-  try {
-    const hasil = await ambilSatu(row.adm4);
-    http = hasil.http;
-    if (http === 200 && hasil.slots.length) {
-      fresh.push(...hasil.slots.map((slot) => slotRow(row.kode_kab, slot)));
-      observed = hasil.slots.find((slot) => slot.analysisUtc)?.analysisUtc || observed;
-    } else {
-      gagal.push(row.kode_kab);
-    }
-  } catch {
-    gagal.push(row.kode_kab);
-  }
-  if (http === 429) await sleep(60000);
-  else await sleep(GAP_MS);
+const kabPerlu = analisisLebihBaru(probeAnalysis, tersimpanKab);
+const provPerlu = analisisLebihBaru(probeAnalysis, tersimpanProv);
+if (!probeAnalysis || (!kabPerlu && !provPerlu)) {
+  console.log(
+    probeAnalysis
+      ? `Analisis ${probeAnalysis} tidak lebih baru dari cuplikan tersimpan. Cuplikan tidak diubah.`
+      : "Probe prakiraan tidak mengembalikan analysis_date. Cuplikan tidak diubah.",
+  );
+  process.exit(0);
 }
 
-const freshKode = new Set(fresh.map((row) => row.kode_kab));
-const gagalSet = new Set(gagal);
-const kept = previous.filter((row) => gagalSet.has(row.kode_kab) && !freshKode.has(row.kode_kab));
-const rows = [...fresh, ...kept];
-const fetchedAt = new Date().toISOString();
-const analyses = [...new Set(fresh.map((row) => row.analysis_utc).filter(Boolean))].sort();
-const analysisTerbaru = analyses.at(-1) || observed || "";
-const tanggalTerbit = [...new Set(fresh.filter((row) => !analysisTerbaru || row.analysis_utc === analysisTerbaru).map((row) => row.tanggal).filter(Boolean))].sort();
-const observedLabel = labelAnalisisBmkg({
-  analysisUtc: analysisTerbaru,
-  fetchedAt,
-  tanggal: tanggalTerbit,
-  sekarang: fetchedAt,
-  analyses,
-});
-const lebihLama = analisisLebihLama(analysisTerbaru, fetchedAt);
+const adm4Provinsi = new Set(BMKG_LOCATIONS.map((location) => location.adm4));
 
-if (!rows.length) {
+function barisProvinsi(rows, analysis) {
+  const segar = rows.filter((row) => adm4Provinsi.has(row.adm4) && row.analysis_utc === analysis);
+  const ada = new Set(segar.map((row) => row.adm4));
+  const lama = existsSync(PROVINCE_OUT) ? parseCsv(readFileSync(PROVINCE_OUT, "utf8")) : [];
+  const isi = lama.filter((row) => adm4Provinsi.has(row.adm4) && !ada.has(row.adm4));
+  return [...segar, ...isi];
+}
+
+function tulisManifest(body, analysis, tanggal, fetchedAt, analyses) {
+  if (!manifest?.datasets) return;
+  const hash = createHash("sha256").update(body).digest("hex");
+  const recordCount = Math.max(0, body.trim().split("\n").length - 1);
+  const label = labelAnalisisBmkg({
+    analysisUtc: analysis,
+    fetchedAt,
+    tanggal,
+    sekarang: fetchedAt,
+    analyses,
+  });
+  let berubah = false;
+  for (const id of ["bmkg_prakiraan", "angin"]) {
+    const entry = manifest.datasets[id];
+    if (!entry) continue;
+    if (entry.content_hash === hash && entry.observed_at === analysis) continue;
+    entry.fetched_at = fetchedAt;
+    entry.observed_at = analysis;
+    entry.source_updated_at = analysis;
+    entry.observed_label = label;
+    entry.content_hash = hash;
+    entry.record_count = recordCount;
+    entry.status = "ok";
+    entry.error = null;
+    entry.kept_previous = false;
+    entry.file = "data/live/bmkg_prakiraan.csv";
+    berubah = true;
+  }
+  if (berubah) writeFileSync(MANIFEST, `${JSON.stringify(manifest, null, 2)}\n`);
+}
+
+function tulisProvinsi(rows, fetchedAt, analysis, tanggal, analyses) {
+  const dipilih = barisProvinsi(rows, analysis);
+  if (!dipilih.length) return;
+  const body = toCsv(dipilih, PROVINCE_HEADERS);
+  const sebelumnya = existsSync(PROVINCE_OUT) ? readFileSync(PROVINCE_OUT, "utf8") : "";
+  if (body !== sebelumnya) writeFileSync(PROVINCE_OUT, body);
+  tulisManifest(body, analysis, tanggal, fetchedAt, analyses);
+}
+
+if (kabPerlu) {
+  for (const row of sample) {
+    let http = 0;
+    try {
+      const hasil = await ambilSatu(row.adm4);
+      http = hasil.http;
+      if (http === 200 && hasil.slots.length) {
+        fresh.push(...hasil.slots.map((slot) => slotRow(row.kode_kab, slot)));
+        observed = hasil.slots.find((slot) => slot.analysisUtc)?.analysisUtc || observed;
+      } else {
+        gagal.push(row.kode_kab);
+      }
+    } catch {
+      gagal.push(row.kode_kab);
+    }
+    if (http === 429) await sleep(60000);
+    else await sleep(GAP_MS);
+  }
+
+  const freshKode = new Set(fresh.map((row) => row.kode_kab));
+  const gagalSet = new Set(gagal);
+  const kept = previous.filter((row) => gagalSet.has(row.kode_kab) && !freshKode.has(row.kode_kab));
+  const rows = [...fresh, ...kept];
+  const fetchedAt = new Date().toISOString();
+  const analyses = [...new Set(fresh.map((row) => row.analysis_utc).filter(Boolean))].sort();
+  const analysisTerbaru = analyses.at(-1) || observed || "";
+  if (!analisisLebihBaru(analysisTerbaru, tersimpanKab)) {
+    console.log(`Analisis ${analysisTerbaru || "—"} tidak lebih baru dari cuplikan tersimpan. Cuplikan tidak diubah.`);
+    process.exit(0);
+  }
+  if (!rows.length) {
+    console.error("Prakiraan kab/kota kosong. Cuplikan tidak diubah.");
+    process.exit(0);
+  }
+  const tanggalTerbit = [...new Set(fresh.filter((row) => row.analysis_utc === analysisTerbaru).map((row) => row.tanggal).filter(Boolean))].sort();
+  const observedLabel = labelAnalisisBmkg({
+    analysisUtc: analysisTerbaru,
+    fetchedAt,
+    tanggal: tanggalTerbit,
+    sekarang: fetchedAt,
+    analyses,
+  });
+  const lebihLama = analisisLebihLama(analysisTerbaru, fetchedAt);
+  writeFileSync(OUT, toCsv(rows));
   writeFileSync(
     META,
     `${JSON.stringify(
       {
-        status: "gagal",
+        status: "ok",
         fetched_at: fetchedAt,
-        observed_at: null,
-        observed_label: "Waktu analisis BMKG tidak ada pada cuplikan.",
-        analisis_lebih_lama: false,
-        kept_previous: false,
+        observed_at: analysisTerbaru,
+        observed_label: observedLabel,
+        analisis_lebih_lama: lebihLama,
+        tanggal: tanggalTerbit,
+        kept_previous: kept.length > 0,
         diminta: sample.length,
+        berhasil: freshKode.size,
         gagal: gagal.length,
-        record_count: 0,
-        error: "Tidak ada slot prakiraan.",
+        record_count: rows.length,
+        titik: "satu adm4 per kab/kota",
+        error: gagal.length ? `${gagal.length} kab/kota gagal; cuplikan sebelumnya dipertahankan bila ada.` : null,
       },
       null,
       2,
     )}\n`,
   );
-  console.error("Prakiraan kab/kota kosong.");
-  process.exit(1);
+  tulisProvinsi(fresh, fetchedAt, analysisTerbaru, tanggalTerbit, analyses);
+  console.log(`Prakiraan kab/kota: ${freshKode.size} berhasil, ${gagal.length} gagal, ${rows.length} slot.`);
+  console.log(observedLabel);
+} else {
+  const fetchedAt = new Date().toISOString();
+  const sumber = previous.filter((row) => row.analysis_utc === probeAnalysis);
+  const tanggalTerbit = [...new Set(sumber.map((row) => row.tanggal).filter(Boolean))].sort();
+  tulisProvinsi(sumber, fetchedAt, probeAnalysis, tanggalTerbit, [probeAnalysis]);
+  console.log(`Berkas enam provinsi diperbarui ke analisis ${probeAnalysis}. Cuplikan kabupaten tidak diubah.`);
 }
-
-writeFileSync(OUT, toCsv(rows));
-writeFileSync(
-  META,
-  `${JSON.stringify(
-    {
-      status: "ok",
-      fetched_at: fetchedAt,
-      observed_at: analysisTerbaru || null,
-      observed_label: observedLabel,
-      analisis_lebih_lama: lebihLama,
-      tanggal: tanggalTerbit,
-      kept_previous: kept.length > 0,
-      diminta: sample.length,
-      berhasil: freshKode.size,
-      gagal: gagal.length,
-      record_count: rows.length,
-      titik: "satu adm4 per kab/kota",
-      error: gagal.length ? `${gagal.length} kab/kota gagal; cuplikan sebelumnya dipertahankan bila ada.` : null,
-    },
-    null,
-    2,
-  )}\n`,
-);
-console.log(`Prakiraan kab/kota: ${freshKode.size} berhasil, ${gagal.length} gagal, ${rows.length} slot.`);
-console.log(observedLabel);

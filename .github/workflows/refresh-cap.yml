@@ -44,9 +44,6 @@ jobs:
       - name: Ambil CAP nowcast
         run: node scripts/cap-kab.mjs || echo "Pengambilan CAP gagal. Meta tetap dipakai bila skrip sempat menulisnya."
 
-      - name: Ambil prakiraan satu titik per kab/kota
-        run: node scripts/prakiraan-kab.mjs || echo "Pengambilan prakiraan kab/kota gagal. Cuplikan sebelumnya tetap dipakai bila ada."
-
       - name: Tulis ringkasan banjir
         run: node scripts/banjir-ringkasan.mjs || echo "Ringkasan banjir gagal. Berkas sebelumnya tetap dipakai bila ada."
 
@@ -60,9 +57,6 @@ jobs:
 
           commit_snapshot() {
             git add data/live/bmkg-cap-kab.csv data/live/bmkg-cap-prov.csv data/live/bmkg-cap-kab-meta.json
-            if [[ -f data/live/bmkg-prakiraan-kab.csv ]]; then
-              git add data/live/bmkg-prakiraan-kab.csv data/live/bmkg-prakiraan-kab-meta.json
-            fi
             if [[ -f data/live/bmkg-cap-geom.json ]]; then
               git add data/live/bmkg-cap-geom.json
             fi
@@ -72,7 +66,7 @@ jobs:
             if git diff --cached --quiet; then
               return 1
             fi
-            git commit -m "Perbarui cuplikan CAP dan prakiraan kab/kota"
+            git commit -m "Perbarui cuplikan CAP"
           }
 
           if ! commit_snapshot; then
@@ -96,7 +90,6 @@ jobs:
               git reset --hard "origin/${branch}"
               npm ci
               node scripts/cap-kab.mjs || true
-              node scripts/prakiraan-kab.mjs || true
               node scripts/banjir-ringkasan.mjs || true
               if ! commit_snapshot; then
                 echo "changed=false" >> "$GITHUB_OUTPUT"

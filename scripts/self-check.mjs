@@ -47,10 +47,11 @@ import {
   susunPrioritas,
   tampilanPrioritas,
 } from "../src/lib/aplus.js";
-import { CAP_CRON, CAP_WATCH_MINUTES, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
+import { CAP_CRON, CAP_WATCH_MINUTES, PRAKIRAAN_CRON, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
 import {
   JARAK_ULANG_ANALISIS_MS,
   ULANG_ANALISIS_MAKS,
+  analisisLebihBaru,
   analisisLebihLama,
   labelAnalisisBmkg,
   perluUlangAnalisis,
@@ -1570,8 +1571,14 @@ assert.equal(prakiraanKab.includes("14.71.01.1001"), false);
 assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /Satu titik per kabupaten\/kota/);
 assert.match(readFileSync("src/components/FloodInfoTable.jsx", "utf8"), /IRBI_TIDAK_TERSEDIA/);
 assert.equal(readFileSync("src/components/FloodInfoTable.jsx", "utf8").includes("item.desa"), false);
-assert.match(readFileSync(".github/workflows/refresh-cap.yml", "utf8"), /prakiraan-kab\.mjs/);
+assert.equal(readFileSync(".github/workflows/refresh-cap.yml", "utf8").includes("prakiraan-kab.mjs"), false);
 assert.match(readFileSync(".github/workflows/refresh-cap.yml", "utf8"), /12,42 \* \* \* \*/);
+assert.equal(PRAKIRAAN_CRON, "0 0,2,12,14 * * *");
+const workflowPrakiraan = readFileSync(".github/workflows/refresh-prakiraan.yml", "utf8");
+assert.match(workflowPrakiraan, /0 0,2,12,14 \* \* \*/);
+assert.match(workflowPrakiraan, /prakiraan-kab\.mjs/);
+assert.match(workflowPrakiraan, /Tidak ada commit/);
+assert.equal(workflowPrakiraan.includes("FIRMS_MAP_KEY"), false);
 assert.equal(ULANG_ANALISIS_MAKS, 3);
 assert.equal(JARAK_ULANG_ANALISIS_MS, 45000);
 assert.equal(tanggalKalenderWib("2026-10-20T00:00:00Z"), "2026-10-20");
@@ -1583,6 +1590,11 @@ assert.equal(perluUlangAnalisis({ analysisUtc: "2026-10-20T00:00:00Z", sekarang:
 assert.equal(perluUlangAnalisis({ analysisUtc: "2026-10-20T00:00:00Z", sekarang: "2026-10-21T00:08:31.406Z", percobaan: 2 }), true);
 assert.equal(perluUlangAnalisis({ analysisUtc: "2026-10-20T00:00:00Z", sekarang: "2026-10-21T00:08:31.406Z", percobaan: 3 }), false);
 assert.equal(perluUlangAnalisis({ analysisUtc: "2026-10-21T00:00:00Z", sekarang: "2026-10-21T00:08:31.406Z", percobaan: 0 }), false);
+assert.equal(analisisLebihBaru("2026-10-21T00:00:00Z", "2026-10-20T00:00:00Z"), true);
+assert.equal(analisisLebihBaru("2026-10-20T00:00:00Z", "2026-10-20T00:00:00Z"), false);
+assert.equal(analisisLebihBaru("2026-10-20T00:00:00Z", "2026-10-21T00:00:00Z"), false);
+assert.equal(analisisLebihBaru("", "2026-10-20T00:00:00Z"), false);
+assert.equal(analisisLebihBaru("2026-10-21T00:00:00Z", ""), true);
 const labelLama = labelAnalisisBmkg({
   analysisUtc: "2026-10-20T00:00:00Z",
   fetchedAt: "2026-10-21T00:08:31.406Z",
@@ -1604,8 +1616,11 @@ assert.match(labelSama, /Tanggal pada cuplikan: 2026-10-21, 2026-10-22, 2026-10-
 const skripKab = readFileSync("scripts/prakiraan-kab.mjs", "utf8");
 const skripRefresh = readFileSync("scripts/refresh-live-data.mjs", "utf8");
 assert.match(skripKab, /perluUlangAnalisis/);
+assert.match(skripKab, /analisisLebihBaru/);
+assert.match(skripKab, /Cuplikan tidak diubah/);
 assert.match(skripKab, /14\.71\.05\.1001/);
-assert.match(skripRefresh, /perluUlangAnalisis/);
+assert.match(skripRefresh, /tidak diambil di pembaruan umum/);
+assert.equal(skripRefresh.includes("fetchBmkg"), false);
 assert.match(readFileSync("src/components/FloodPage.jsx", "utf8"), /labelAnalisisBmkg/);
 assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /labelAnalisisBmkg/);
 assert.equal(readFileSync(".github/workflows/refresh-data.yml", "utf8").includes(REFRESH_CRON), true);
