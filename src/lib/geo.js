@@ -15,10 +15,10 @@ export function shortName(name) {
   return SINGKATAN[name] ?? name;
 }
 
-// Bingkai tampilan peta, sedikit lebih luas dari ujung daratan yang umum
-// disebut (sekitar Pulau Rondo, Pulau Ndana, Pulau Breueh, dan perbatasan
-// Merauke). Dipakai hanya untuk posisi awal dan batas zoom. Bukan batas
-// administrasi resmi, dan tidak menggeser koordinat titik.
+// Jendela geografis untuk penyaringan data. Sedikit lebih luas dari ujung
+// daratan yang umum disebut (sekitar Pulau Rondo, Pulau Ndana, Pulau Breueh,
+// dan perbatasan Merauke). Bukan batas administrasi resmi, dan tidak menggeser
+// koordinat titik. Kunci geser peta memakai BATAS_KUNCI_PETA.
 export const INDONESIA_FRAME = Object.freeze({
   south: -11.5,
   west: 94.4,
@@ -36,17 +36,21 @@ export const INDONESIA_PAN_LIMIT = Object.freeze({
   east: 143.0,
 });
 
-// Bingkai awal peta Banjir: Sumatra sampai Papua, rapat.
-// Bukan batas administrasi. Hanya untuk fitBounds.
-export const BANJIR_FRAME = Object.freeze({
+// Kotak kunci semua peta Leaflet: seluruh Indonesia plus sedikit laut
+// (lintang −11.5..6.5, bujur 94.5..141.5). Dipakai sebagai maxBounds dan
+// sebagai tampilan awal. Bukan batas administrasi, dan tidak menggeser titik.
+export const BATAS_KUNCI_PETA = Object.freeze({
   south: -11.5,
   west: 94.5,
   north: 6.5,
   east: 141.5,
 });
 
-// Geser longgar di sekitar bingkai, supaya Australia dan Papua Nugini
-// tidak menjadi tujuan geser, tetapi tepi pulau masih bisa digeser sedikit.
+// Nama lama bingkai Banjir. Nilainya sama dengan kotak kunci peta.
+export const BANJIR_FRAME = BATAS_KUNCI_PETA;
+
+// Acuan luar yang tetap diuji (memuat bingkai). Geser peta yang dipakai
+// tidak selebar kotak ini.
 export const BANJIR_PAN_LIMIT = Object.freeze({
   south: -14.5,
   west: 91.5,

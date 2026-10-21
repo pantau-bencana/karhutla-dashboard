@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
-import { INDONESIA_FRAME } from "../lib/geo.js";
+import { kunciTampilanIndonesia, petaSiap } from "../lib/kunciPeta.js";
 import { GWIS_ATTRIBUTION, GWIS_CREDIT, GWIS_FWI_LAYER, GWIS_WMS } from "../lib/gwisFwi.js";
 import { formatTanggal, formatWaktu } from "../lib/format.js";
 import { clusterCellDegrees } from "../lib/hotspotWindow.js";
@@ -201,85 +201,39 @@ export function ClusterLegend() {
   );
 }
 
-function indonesiaBounds() {
-  return L.latLngBounds(
-    [INDONESIA_FRAME.south, INDONESIA_FRAME.west],
-    [INDONESIA_FRAME.north, INDONESIA_FRAME.east],
-  );
-}
-
 function mapReady(map) {
-  const size = map?.getSize?.();
-  return Boolean(size && size.x >= 80 && size.y >= 80);
-}
-
-function panEnvelope(map) {
-  // Sedikit ruang geser, lebih kecil daripada jarak bingkai ke tepi layar,
-  // supaya pulau terluar tidak keluar dari peta.
-  return map.getBounds().pad(0.012);
+  return petaSiap(map);
 }
 
 export function frameIndonesia(map, modeRef) {
-  if (!mapReady(map)) return false;
-  const frame = indonesiaBounds();
-  map.stop();
-  map.setMaxBounds(null);
-  map.setMinZoom(0);
-  map.fitBounds(frame, { padding: PADDING, animate: false });
-  const settled = map.getZoom();
-  map.setMinZoom(settled);
-  map.setMaxBounds(panEnvelope(map));
-  if (!map.getBounds().contains(frame)) {
-    map.setMaxBounds(null);
-    map.setMinZoom(0);
-    map.fitBounds(frame, { padding: PADDING, animate: false });
-    map.setMinZoom(map.getZoom());
-    map.setMaxBounds(panEnvelope(map));
-  }
-  if (modeRef) modeRef.current = "indonesia";
-  return true;
+  const ok = kunciTampilanIndonesia(map, { muatUlang: true, padding: PADDING });
+  if (ok && modeRef) modeRef.current = "indonesia";
+  return ok;
 }
 
 export function framePoints(map, latlngs, modeRef) {
   if (!mapReady(map)) return false;
   const usable = (latlngs ?? []).filter((pair) => usableCoordinate(pair?.[0], pair?.[1]));
   if (!usable.length) return frameIndonesia(map, modeRef);
+  const terkunci = kunciTampilanIndonesia(map, { muatUlang: false, padding: PADDING });
+  if (!terkunci) return false;
+  const lantai = map.getMinZoom();
   map.stop();
+  map.setMaxBounds(null);
   if (usable.length === 1) {
-    const zoom = Math.min(8, Math.max(map.getMinZoom() || 0, 7));
+    const zoom = Math.min(8, Math.max(lantai || 0, 7));
     map.setView(usable[0], zoom, { animate: false });
   } else {
     map.fitBounds(usable, { padding: PADDING, maxZoom: 8, animate: false });
   }
+  map.setMinZoom(lantai);
+  kunciTampilanIndonesia(map, { muatUlang: false, padding: PADDING });
   if (modeRef) modeRef.current = "points";
   return true;
 }
 
-function countryEnvelope(map) {
-  const previousMin = map.getMinZoom();
-  map.setMinZoom(0);
-  const zoom = map.getBoundsZoom(indonesiaBounds(), false, L.point(20, 20));
-  map.setMinZoom(previousMin);
-  const center = indonesiaBounds().getCenter();
-  const half = map.getSize().divideBy(2);
-  const projected = map.options.crs.latLngToPoint(center, zoom);
-  const nw = map.options.crs.pointToLatLng(projected.subtract(half), zoom);
-  const se = map.options.crs.pointToLatLng(projected.add(half), zoom);
-  return L.latLngBounds(nw, se).pad(0.012);
-}
-
 function syncMinZoom(map) {
-  if (!mapReady(map)) return;
-  const center = map.getCenter();
-  const zoom = map.getZoom();
-  const envelope = countryEnvelope(map);
-  const previousMin = map.getMinZoom();
-  map.setMinZoom(0);
-  const nextMin = map.getBoundsZoom(indonesiaBounds(), false, L.point(20, 20));
-  const minZoom = Number.isFinite(nextMin) ? nextMin : previousMin;
-  map.setMinZoom(minZoom);
-  map.setMaxBounds(envelope);
-  map.setView(center, Math.max(zoom, minZoom), { animate: false });
+  kunciTampilanIndonesia(map, { muatUlang: false, padding: PADDING });
 }
 
 function desaExportUrl(bounds, width, height) {

@@ -3,7 +3,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "no
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { deriveDashboard, defaultRange } from "../src/lib/derive.js";
-import { areaContains, assignProvince, BANJIR_FRAME, BANJIR_PAN_LIMIT, INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../src/lib/geo.js";
+import { areaContains, assignProvince, BANJIR_FRAME, BANJIR_PAN_LIMIT, BATAS_KUNCI_PETA, INDONESIA_FRAME, INDONESIA_PAN_LIMIT } from "../src/lib/geo.js";
 import { looksLikeCsv, parseCsv } from "../src/lib/csv.js";
 import { fetchCsv, loadAll, normalizeHotspotRow, normalizeRecords, redactFirmsUrl } from "../src/lib/loadData.js";
 import { GLOSSARY } from "../src/lib/glossary.js";
@@ -384,14 +384,37 @@ const firmsArea = { west: 95, south: -11, east: 141, north: 6 };
 assert.equal(areaContains(INDONESIA_FRAME, firmsArea), true);
 assert.equal(areaContains(INDONESIA_PAN_LIMIT, INDONESIA_FRAME), true);
 assert.deepEqual(BANJIR_FRAME, { south: -11.5, west: 94.5, north: 6.5, east: 141.5 });
+assert.equal(BANJIR_FRAME, BATAS_KUNCI_PETA);
+assert.equal(areaContains(BATAS_KUNCI_PETA, firmsArea), true);
+assert.equal(areaContains(INDONESIA_FRAME, BATAS_KUNCI_PETA), true);
 assert.equal(areaContains(BANJIR_PAN_LIMIT, BANJIR_FRAME), true);
 const petaBanjirSumber = readFileSync("src/components/FloodRiskMap.jsx", "utf8");
 assert.match(petaBanjirSumber, /BANJIR_FRAME/);
-assert.match(petaBanjirSumber, /fitBounds\(frame, \{ padding: BANJIR_PADDING/);
+assert.match(petaBanjirSumber, /kunciTampilanIndonesia\(map, \{ muatUlang: true, padding: BANJIR_PADDING, bounds: frame \}/);
 assert.match(petaBanjirSumber, /fitBounds\(bounds, \{ padding: PADDING_PROVINSI/);
 assert.match(petaBanjirSumber, /properties\?\.provinsi \|\| feature\?\.properties\?\.wadmpr/);
 assert.match(petaBanjirSumber, /ResizeObserver/);
+assert.match(petaBanjirSumber, /maxBoundsViscosity:\s*1/);
+assert.equal(petaBanjirSumber.includes("BANJIR_PAN_LIMIT"), false);
 assert.equal(petaBanjirSumber.includes("setView([-2.2, 118]"), false);
+const kunciSumber = readFileSync("src/lib/kunciPeta.js", "utf8");
+assert.match(kunciSumber, /BATAS_KUNCI_PETA/);
+assert.match(kunciSumber, /fitBounds\(kotak, \{ padding, animate: false \}/);
+assert.match(kunciSumber, /setMinZoom/);
+assert.match(kunciSumber, /setMaxBounds\(kotak\)/);
+assert.match(kunciSumber, /maxBoundsViscosity = 1/);
+for (const file of [
+  "src/components/HotspotMap.jsx",
+  "src/components/PetaKab.jsx",
+  "src/components/FloodRiskMap.jsx",
+  "src/components/StationMap.jsx",
+]) {
+  const source = readFileSync(file, "utf8");
+  assert.match(source, /kunciTampilanIndonesia/, file);
+  assert.match(source, /maxBoundsViscosity:\s*1/, file);
+  assert.match(source, /ResizeObserver/, file);
+  assert.equal(source.includes("setView([-2.2, 118]"), false, file);
+}
 assert.match(readFileSync("src/styles.css", "utf8"), /100cqw \/ 2\.6/);
 for (const edge of ["south", "west"]) {
   const margin = INDONESIA_FRAME[edge] - INDONESIA_PAN_LIMIT[edge];
@@ -458,7 +481,7 @@ assert.equal(JSON.stringify(offline).includes("mapKey"), false);
 
 const mapSource = readFileSync("src/components/HotspotMap.jsx", "utf8");
 assert.equal(mapSource.includes("setView([-2.2, 118]"), false);
-assert.equal(mapSource.includes("INDONESIA_FRAME"), true);
+assert.equal(mapSource.includes("kunciTampilanIndonesia"), true);
 assert.equal(mapSource.includes("fitBounds"), true);
 const logicSource = readFileSync("src/components/LogicPage.jsx", "utf8");
 assert.equal(logicSource.includes("Kembali ke ringkasan"), true);
