@@ -2299,6 +2299,14 @@ const headerNav = readFileSync("src/components/SiteHeader.jsx", "utf8");
 const topNav = headerNav.slice(headerNav.indexOf("const TOP"), headerNav.indexOf("const KARHUTLA_PAGES"));
 assert.match(topNav, /\["ringkasan", "Ringkasan", "#\/"\],\s*\];/);
 assert.equal(topNav.indexOf('["karhutla"') < topNav.indexOf('["ringkasan"'), true);
+const subNav = headerNav.slice(headerNav.indexOf("const KARHUTLA_PAGES"), headerNav.indexOf("function topCurrent"));
+assert.match(subNav, /Peta dan Data/);
+assert.match(subNav, /Potensi 7 hari/);
+assert.match(subNav, /Kualitas Udara \(ISPU\)/);
+assert.match(subNav, /Logika Pemantauan/);
+assert.equal(subNav.includes("Sumber Data"), false);
+assert.equal(subNav.includes("Glosarium"), false);
+assert.equal(subNav.includes("Ringkasan"), false);
 const hariLaporan = titikHariTerbaru([
   { tanggal: "2026-10-16", lintang: 0, bujur: 100, kelasKepercayaan: "tinggi", provinsi: "Riau" },
   { tanggal: "2026-10-17", lintang: 0, bujur: 101, kelasKepercayaan: "nominal", provinsi: "Jambi" },

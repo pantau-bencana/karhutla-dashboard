@@ -15,9 +15,6 @@ const KARHUTLA_PAGES = [
   ["potensi", "Potensi 7 hari", "#/karhutla/potensi"],
   ["ispu", "Kualitas Udara (ISPU)", "#/karhutla/ispu"],
   ["logika", "Logika Pemantauan", "#/karhutla/logika"],
-  ["sumber", "Sumber Data", "#/karhutla/sumber"],
-  ["glosarium", "Glosarium", "#/sumber-metode/glosarium"],
-  ["ringkasan", "Ringkasan", "#/"],
 ];
 
 function topCurrent(id, page, hazard, anchor) {
