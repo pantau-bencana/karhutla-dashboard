@@ -1120,11 +1120,28 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 }
 .peringkat-tingkat legend { font-weight: 700; margin-right: 8px; }
 .peringkat-tingkat label { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; }
-.peringkat-scroll:focus, .peringkat-ringkas:focus { outline: 2px solid #1d4ed8; outline-offset: 2px; }
+.peringkat-scroll:focus { outline: 2px solid #1d4ed8; outline-offset: 2px; }
 .peringkat-hotspot .peringkat-scroll table { min-width: 760px; }
-.peringkat-hotspot .peringkat-ringkas table { min-width: 640px; }
 .peringkat-hotspot caption { text-align: left; font-weight: 600; margin-bottom: 6px; }
 .peringkat-hotspot h3 { margin: 12px 0 4px; font-size: 1.05rem; }
+.peringkat-hotspot tr.peringkat-prioritas td,
+.peringkat-hotspot tr.peringkat-prioritas th {
+  background: #fff4e0;
+}
+.peringkat-lencana {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: #e7d3a8;
+  color: #5c3b08;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+  vertical-align: middle;
+}
 
 .flood-map-block { container-type: inline-size; }
 .flood-map,

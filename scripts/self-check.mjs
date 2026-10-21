@@ -782,9 +782,13 @@ if (existsSync("data/live/fwi_gwis_pembanding.csv")) {
   }
 }
 const peringkatSumber = readFileSync("src/components/PeringkatHotspot.jsx", "utf8");
-assert.match(peringkatSumber, /10 Prioritas Hotspot/);
+assert.match(peringkatSumber, /10 Prioritas/);
+assert.match(peringkatSumber, /peringkat-prioritas/);
+assert.match(peringkatSumber, /Bukan data terkini/);
 assert.match(peringkatSumber, /Tidak diketahui/);
 assert.match(peringkatSumber, /sepuluhPrioritas/);
+assert.equal((peringkatSumber.match(/<table>/g) || []).length, 1);
+assert.equal(peringkatSumber.includes("peringkat-ringkas"), false);
 const filterSumber = readFileSync("src/components/FilterProvinsi.jsx", "utf8");
 assert.match(filterSumber, /Seluruh Indonesia/);
 assert.match(filterSumber, /SEMUA_PROVINSI/);
