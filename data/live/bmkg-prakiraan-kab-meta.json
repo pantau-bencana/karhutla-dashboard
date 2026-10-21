@@ -1,12 +1,12 @@
 {
   "status": "ok",
-  "fetched_at": "2026-10-20T22:34:28.646Z",
+  "fetched_at": "2026-10-21T00:08:31.406Z",
   "observed_at": "2026-10-20T00:00:00Z",
   "kept_previous": true,
   "diminta": 510,
-  "berhasil": 504,
-  "gagal": 6,
+  "berhasil": 502,
+  "gagal": 8,
   "record_count": 10006,
   "titik": "satu adm4 per kab/kota",
-  "error": "6 kab/kota gagal; cuplikan sebelumnya dipertahankan bila ada."
+  "error": "8 kab/kota gagal; cuplikan sebelumnya dipertahankan bila ada."
 }
