@@ -11,6 +11,7 @@ import { barisPeriodeAktif, labelJendela, susunPeringkatHotspot } from "../lib/p
 import { defaultRange } from "../lib/derive.js";
 import { PriorityIndicators } from "./PriorityIndicators.jsx";
 import { PrioritasPanel } from "./PrioritasPanel.jsx";
+import { PotensiTujuhHari } from "./PotensiTujuhHari.jsx";
 import { PeringkatHotspot } from "./PeringkatHotspot.jsx";
 import { FilterProvinsi } from "./FilterProvinsi.jsx";
 import { KontrolPeriode } from "./KontrolPeriode.jsx";
@@ -234,6 +235,14 @@ export function SummaryPage({
           Daftar di bawah, bila cuplikannya segar, adalah model pihak ketiga dan bukan peringatan BNPB atau BMKG.
         </p>
       </section>
+
+      <PotensiTujuhHari
+        fwi={fwiGwis}
+        hujan={feeds.find((feed) => feed.id === "hujan_14_pembanding")}
+        hotspot={bolehHotspot ? hotspot : null}
+        irbi={irbi?.contoh ? null : irbi}
+        provinsi={priority}
+      />
 
       <PrioritasPanel snapshot={feeds.prioritas} />
 

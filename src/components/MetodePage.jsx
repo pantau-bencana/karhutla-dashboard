@@ -21,6 +21,7 @@ import { CUACA_DISCLAIMER, CUACA_RUJUKAN, PEMETAAN_CUACA, PRAKIRAAN_BATAS } from
 import { decorateSources } from "../lib/sourceCatalog.js";
 import { GlossaryPage } from "./GlossaryPage.jsx";
 import { MetodeAplus } from "./MetodeAplus.jsx";
+import { PotensiTujuhMetode } from "./PotensiTujuhHari.jsx";
 
 const KINDS = [
   ["akt", "Aktif", "Observasi", "Diukur atau dideteksi langsung (satelit, stasiun)."],
@@ -291,6 +292,7 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
         </ul>
       </section>
 
+      <PotensiTujuhMetode />
       <MetodeAplus anchor={anchor} />
 
       <GlossaryPage embedded term={term} />

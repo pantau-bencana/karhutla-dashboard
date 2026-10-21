@@ -32,6 +32,7 @@ export function parseLocation(hash) {
   else if (token === "ispu" || token === "kualitas-udara") page = "ispu";
   else if (token === "sumber-metode" || token === "metode") page = "metode";
   else if (token === "sumber" || token === "sumber-data") page = "sumber";
+  else if (token === "potensi" || token === "potensi-7-hari") page = "potensi";
   else if (token === "ringkasan") page = "ringkasan";
   const anchor = token === "sumber-metode" || token === "metode" ? rest[1] || "" : "";
   const term = anchor === "glosarium" ? rest[2] || "" : "";
