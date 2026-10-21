@@ -138,6 +138,26 @@ export function teksBobot(hotspotMasuk) {
   return "Hotspot tidak masuk skor karena cuplikannya tidak ada. Bobot sama, masing-masing setengah: peringkat FWI rata-rata dan peringkat hari tanpa hujan model di atas 20 mm.";
 }
 
+export function ringkasHujanModel(baris) {
+  const lengkap = (baris ?? []).filter((row) => row?.skor != null && Number.isFinite(Number(row.hariBasah)) && Number(row.hujanHari) > 0);
+  if (!lengkap.length) return null;
+  const hitung = new Map();
+  for (const row of lengkap) {
+    const hari = Number(row.hariBasah);
+    hitung.set(hari, (hitung.get(hari) ?? 0) + 1);
+  }
+  const kelompok = [...hitung.entries()]
+    .sort((a, b) => a[0] - b[0])
+    .map(([hari, jumlah]) => ({ hari, jumlah }));
+  const jendela = [...new Set(lengkap.map((row) => Number(row.hujanHari)))];
+  return {
+    membedakan: kelompok.length > 1,
+    kelompok,
+    hariJendela: jendela.length === 1 ? jendela[0] : null,
+    jumlah: lengkap.length,
+  };
+}
+
 function kumpulkanHari(rows, tanggalSet, provinsiSet, angka) {
   const byKode = new Map();
   for (const row of rows ?? []) {

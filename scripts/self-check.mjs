@@ -45,11 +45,12 @@ import {
   nilaiKab,
   p75,
   statusDaftar,
+  percentRanks,
   susunPrioritas,
   tampilanPrioritas,
 } from "../src/lib/aplus.js";
 import { CAP_CRON, CAP_WATCH_MINUTES, PRAKIRAAN_CRON, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
-import { susunPotensiTujuh } from "../src/lib/potensiTujuh.js";
+import { ringkasHujanModel, susunPotensiTujuh } from "../src/lib/potensiTujuh.js";
 import {
   JARAK_ULANG_ANALISIS_MS,
   ULANG_ANALISIS_MAKS,
@@ -2252,6 +2253,32 @@ assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /Potensi karhutla 
 assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /hasil\.judul/);
 assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /Pembanding \(data terbuka, bukan resmi\)/);
 assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /belum terintegrasi/);
+assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /Petunjuk skoring/);
+assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /peringkat persentil yang sama/);
+assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /#\/sumber-metode\/potensi-7-hari/);
+assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /tidak membedakan peringkat/);
+const seriPersentil = percentRanks([3, 3, 3]);
+assert.equal(seriPersentil[0], 0.5);
+assert.equal(seriPersentil[1], 0.5);
+assert.equal(seriPersentil[2], 0.5);
+const bedaPersentil = percentRanks([1, 2, 2]);
+assert.equal(bedaPersentil[1], bedaPersentil[2]);
+assert.equal(bedaPersentil[0] < bedaPersentil[1], true);
+const hujanSama = ringkasHujanModel([
+  { skor: 0.2, hariBasah: 0, hujanHari: 7 },
+  { skor: 0.8, hariBasah: 0, hujanHari: 7 },
+]);
+assert.equal(hujanSama.membedakan, false);
+assert.equal(hujanSama.kelompok[0].hari, 0);
+assert.equal(hujanSama.jumlah, 2);
+const hujanBeda = ringkasHujanModel([
+  { skor: 0.2, hariBasah: 0, hujanHari: 7 },
+  { skor: 0.4, hariBasah: 1, hujanHari: 7 },
+  { skor: null, hariBasah: 5, hujanHari: 7 },
+]);
+assert.equal(hujanBeda.membedakan, true);
+assert.equal(hujanBeda.jumlah, 2);
+assert.deepEqual(hujanBeda.kelompok, [{ hari: 0, jumlah: 1 }, { hari: 1, jumlah: 1 }]);
 assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /bukan prakiraan resmi/);
 assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /hingga H\+7 sesuai produk BMKG/);
 assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /precipitation_sum/);

@@ -2,11 +2,66 @@ import { useState } from "react";
 import { Badge } from "./Badge.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { formatAngka, formatTanggal, formatWib } from "../lib/format.js";
-import { PARAMETER_POTENSI, POTENSI_DISCLAIMER, POTENSI_JUDUL, susunPotensiTujuh, teksBobot } from "../lib/potensiTujuh.js";
+import { PARAMETER_POTENSI, POTENSI_DISCLAIMER, POTENSI_JUDUL, ringkasHujanModel, susunPotensiTujuh, teksBobot } from "../lib/potensiTujuh.js";
 
 function selAngka(value, digits = 0) {
   if (value == null || !Number.isFinite(Number(value))) return "—";
   return formatAngka(value, digits);
+}
+
+function teksHujanCuplikan(ringkas) {
+  if (!ringkas) return "";
+  if (!ringkas.membedakan) {
+    const satu = ringkas.kelompok[0];
+    const dari = ringkas.hariJendela != null ? ` dari ${formatAngka(ringkas.hariJendela)}` : "";
+    return `Pada cuplikan ini indikator hujan model tidak membedakan peringkat: ${formatAngka(ringkas.jumlah)} kabupaten/kota yang diskor sama-sama ${formatAngka(satu.hari)} hari${dari}. Nilai yang seri mendapat peringkat persentil yang sama, sehingga urutan ditentukan FWI rata-rata dan jumlah hotspot FIRMS.`;
+  }
+  const rinci = ringkas.kelompok
+    .map((item) => `${formatAngka(item.jumlah)} kabupaten/kota ${formatAngka(item.hari)} hari`)
+    .join(", ");
+  const jendela = ringkas.hariJendela != null ? ` Tiap baris yang diskor memakai jendela ${formatAngka(ringkas.hariJendela)} hari.` : "";
+  return `Pada cuplikan ini jumlah hari tidak sama untuk semua kabupaten: ${rinci}.${jendela} Tulisan 0 dari ${ringkas.hariJendela == null ? "jumlah hari yang ada" : formatAngka(ringkas.hariJendela)} berarti titik wakil kabupaten itu tidak punya hari dengan hujan model di atas 20 mm. Bukan kolom yang gagal terisi. Kabupaten dengan jumlah hari yang sama mendapat peringkat persentil yang sama, jadi di dalam kelompok itu urutan mengikuti FWI rata-rata dan hotspot FIRMS.`;
+}
+
+function PetunjukSkoring({ hasil }) {
+  const hujan = teksHujanCuplikan(ringkasHujanModel(hasil.baris));
+  return (
+    <details className="read-help petunjuk-skor" open>
+      <summary>Petunjuk skoring</summary>
+      <p>
+        Skor berjalan dari 0 sampai 1. Angka itu rata-rata peringkat kabupaten/kota yang datanya lengkap pada enam provinsi, bukan kadar bahaya yang sama di semua tempat.
+        Tiga bagian berbobot sama, masing-masing sepertiga: FWI rata-rata, bagian hari tanpa hujan model di atas 20 mm, dan jumlah hotspot FIRMS.
+        Makin tinggi FWI, makin sedikit hari hujan lebat pada model, atau makin banyak deteksi, makin tinggi peringkat bagian itu.
+      </p>
+      <p>
+        Ini peringkat relatif. Kabupaten dengan angka yang persis sama pada satu bagian berbagi rata-rata posisi seri, jadi tidak ada yang diunggulkan hanya karena urutan baris.
+        Yang paling rendah pada bagian itu mendekati 0, yang paling tinggi mendekati 1. Skor 0,8 berarti relatif tinggi di antara kabupaten yang diskor, bukan ambang bahaya resmi.
+      </p>
+      <p>
+        Kelas: Sangat tinggi bila skor ≥ 0,75. Tinggi bila ≥ 0,55. Sedang bila ≥ 0,35. Rendah di bawah 0,35.
+      </p>
+      <ul>
+        <li>FWI rata-rata: rata-rata FWI harian pada titik wakil untuk tanggal yang terisi di 7 hari ke depan. Angka dalam kurung adalah jumlah hari yang terisi. Pengganti ECMWF lewat GWIS, bukan kelas FDRS SPARTAN.</li>
+        <li>Hari hujan model &gt;20 mm: berapa hari pada jendela yang sama curah hujan model di titik wakil melebihi 20 mm. Pengganti Open-Meteo, bukan peluang persen BMKG dan bukan peluang hujan di atas 0,1 mm.</li>
+        <li>Hotspot FIRMS: jumlah deteksi satelit kelas nominal dan tinggi pada 7 hari terakhir sampai hari ini. Bukan prakiraan, bukan jumlah SiPongi, dan bukan kebakaran terkonfirmasi. Kelas rendah dan tidak diketahui tidak dihitung.</li>
+        <li>IRBI 2025: indeks risiko tahunan. Konteks saja, tidak masuk skor, dan bukan indeks bahaya inaRISK.</li>
+      </ul>
+      {hujan ? <p>{hujan}</p> : null}
+      <p>
+        Saran analisis, bukan perintah. Verifikasi lapangan bila kelas Sangat tinggi atau Tinggi dan ada deteksi nominal atau tinggi. Antisipasi bila kelas itu tanpa deteksi tersebut. Patroli untuk kelas Sedang. Pantau untuk kelas Rendah.
+      </p>
+      <p>
+        Syarat skor: FWI dan hujan model masing-masing minimal 5 dari 7 hari. Kurang dari itu, barisnya Belum cukup data dan tidak diberi skor.
+        Bila cuplikan FWI atau hujan lebih lama dari 36 jam, seluruh kelas disembunyikan.
+        Hotspot yang lebih lama dari 18 jam tetap dihitung, dengan catatan data tertunda.
+      </p>
+      <p>
+        Indeks risiko inaRISK, kategori ISPU, dan indeks kesesuaian iklim BMKG belum terintegrasi. Angka lain tidak diisi sebagai pengganti diam-diam.
+        {" "}
+        <a href="#/sumber-metode/potensi-7-hari">Cara hitung di Sumber &amp; Metode</a>
+      </p>
+    </details>
+  );
 }
 
 export function PotensiTujuhHari({ fwi, hujan, hotspot, irbi, provinsi = [], now }) {
@@ -148,6 +203,7 @@ export function PotensiTujuhHari({ fwi, hujan, hotspot, irbi, provinsi = [], now
               </tbody>
             </table>
           </div>
+          <PetunjukSkoring hasil={hasil} />
         </>
       ) : null}
     </section>
@@ -168,6 +224,7 @@ export function PotensiTujuhMetode() {
         Kelas Sangat tinggi: skor ≥ 0,75. Tinggi: ≥ 0,55. Sedang: ≥ 0,35. Rendah: di bawah 0,35.
         Baris yang FWI atau hari hujannya kurang dari 5 ditulis Belum cukup data dan tidak diberi skor.
         Cuplikan FWI atau hujan yang lebih lama dari 36 jam membuat seluruh kelas disembunyikan.
+        Nilai yang sama pada satu indikator diberi peringkat persentil rata-rata yang sama. Bila semua kabupaten punya jumlah hari hujan model yang sama, bagian itu tidak mengubah urutan: yang membedakan adalah FWI rata-rata dan, bila ada, hotspot FIRMS.
       </p>
       <p>
         Saran analisis, bukan perintah: Verifikasi lapangan bila kelas Sangat tinggi atau Tinggi dan ada deteksi FIRMS nominal atau tinggi pada 7 hari terakhir.

@@ -1031,6 +1031,28 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   width: fit-content;
 }
 
+.petunjuk-skor {
+  margin-top: 12px;
+  max-width: 100%;
+}
+
+.petunjuk-skor summary {
+  max-width: 100%;
+  padding: 10px 0;
+}
+
+.petunjuk-skor p,
+.petunjuk-skor li {
+  overflow-wrap: break-word;
+}
+
+.petunjuk-skor ul {
+  margin: 8px 0 0;
+  padding-left: 1.2rem;
+}
+
+.petunjuk-skor li + li { margin-top: 4px; }
+
 .hotspot-count {
   margin-top: 16px;
   padding-top: 12px;
