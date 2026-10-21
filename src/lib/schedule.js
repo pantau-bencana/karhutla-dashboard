@@ -12,6 +12,7 @@ export const CAP_CRON = "12,42 * * * *";
 // Prakiraan 3 hari BMKG. Keputusan pemilik: 07.00 dan 09.00 WIB, lalu 19.00 dan 21.00 WIB.
 // 09.00 dan 21.00 memeriksa apakah analysis_date lebih baru dari cuplikan tersimpan.
 // UTC: 00.00, 02.00, 12.00, 14.00. Menit 0 pada cron ini disengaja.
+// GitHub dapat menunda eksekusi jadwal beberapa menit. Jangan memindahkan jamnya karena itu.
 // Jangan memindahkan REFRESH_CRON, REFRESH_CRON_CADANGAN, atau CAP_CRON ke menit 0.
 export const PRAKIRAAN_CRON = "0 0,2,12,14 * * *";
 // Penjaga berjalan di menit 7. Slot CAP yang sehat terakhir adalah menit 42, umur sekitar 25 menit.

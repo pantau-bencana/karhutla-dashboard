@@ -1576,6 +1576,11 @@ assert.match(readFileSync(".github/workflows/refresh-cap.yml", "utf8"), /12,42 \
 assert.equal(PRAKIRAAN_CRON, "0 0,2,12,14 * * *");
 const workflowPrakiraan = readFileSync(".github/workflows/refresh-prakiraan.yml", "utf8");
 assert.match(workflowPrakiraan, /0 0,2,12,14 \* \* \*/);
+assert.match(workflowPrakiraan, /workflow_dispatch/);
+assert.match(workflowPrakiraan, /group: refresh-prakiraan/);
+assert.match(workflowPrakiraan, /cancel-in-progress: false/);
+assert.match(workflowPrakiraan, /timeout-minutes: 40/);
+assert.match(workflowPrakiraan, /timeout-minutes: 20/);
 assert.match(workflowPrakiraan, /prakiraan-kab\.mjs/);
 assert.match(workflowPrakiraan, /Tidak ada commit/);
 assert.equal(workflowPrakiraan.includes("FIRMS_MAP_KEY"), false);

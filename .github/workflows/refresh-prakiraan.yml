@@ -1,7 +1,10 @@
-# Prakiraan cuaca 3 hari BMKG.
+# Prakiraan cuaca 3 hari BMKG. Berjalan otomatis tiap hari, plus workflow_dispatch.
 # WIB 07.00, 09.00, 19.00, 21.00. UTC: 0 0,2,12,14 * * *.
 # 09.00 dan 21.00 memeriksa apakah analysis_date lebih baru.
+# GitHub dapat menunda jadwal beberapa menit saat beban tinggi. Itu bukan kegagalan cron.
 # String cron harus sama dengan PRAKIRAAN_CRON di src/lib/schedule.js.
+# Grup refresh-prakiraan, cancel-in-progress false: run berikutnya menunggu.
+# timeout-minutes memutus run yang macet supaya antrean tidak menumpuk.
 # Bila analysis_date tidak lebih baru, skrip tidak menulis berkas dan langkah commit kosong tidak membuat commit.
 # Tidak memakai secret. Jeda antar permintaan ada di scripts/prakiraan-kab.mjs (di bawah 60/menit).
 # Push dari GITHUB_TOKEN tidak memicu pages.yml, jadi deploy dilakukan di sini
@@ -146,6 +149,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && needs.refresh.outputs.changed == 'true'
     needs: refresh
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
