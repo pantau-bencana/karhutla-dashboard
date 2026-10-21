@@ -371,6 +371,8 @@ assert.equal(areaContains(BANJIR_PAN_LIMIT, BANJIR_FRAME), true);
 const petaBanjirSumber = readFileSync("src/components/FloodRiskMap.jsx", "utf8");
 assert.match(petaBanjirSumber, /BANJIR_FRAME/);
 assert.match(petaBanjirSumber, /fitBounds\(frame, \{ padding: BANJIR_PADDING/);
+assert.match(petaBanjirSumber, /fitBounds\(bounds, \{ padding: PADDING_PROVINSI/);
+assert.match(petaBanjirSumber, /properties\?\.provinsi \|\| feature\?\.properties\?\.wadmpr/);
 assert.match(petaBanjirSumber, /ResizeObserver/);
 assert.equal(petaBanjirSumber.includes("setView([-2.2, 118]"), false);
 assert.match(readFileSync("src/styles.css", "utf8"), /100cqw \/ 2\.6/);

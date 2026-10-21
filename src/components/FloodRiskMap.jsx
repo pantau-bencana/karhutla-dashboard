@@ -192,6 +192,7 @@ function tooltipTitik(titik, hujan) {
 }
 
 const BANJIR_PADDING = [10, 10];
+const PADDING_PROVINSI = [16, 16];
 
 function banjirBounds() {
   return L.latLngBounds(
@@ -219,6 +220,26 @@ function frameBanjir(map) {
       [BANJIR_PAN_LIMIT.north, BANJIR_PAN_LIMIT.east],
     ),
   );
+  return true;
+}
+
+function boundsProvinsi(extent) {
+  if (!extent) return null;
+  const bounds = L.latLngBounds([extent.south, extent.west], [extent.north, extent.east]);
+  return bounds.isValid() ? bounds : null;
+}
+
+function fitProvinsi(map, bounds) {
+  if (!petaSiap(map) || !bounds?.isValid?.()) return false;
+  map.invalidateSize({ animate: false, pan: false });
+  if (!petaSiap(map)) return false;
+  const lantai = map.getMinZoom();
+  map.stop();
+  map.setMinZoom(0);
+  map.fitBounds(bounds, { padding: PADDING_PROVINSI, animate: false });
+  const zoom = map.getZoom();
+  const lantaiAman = Number.isFinite(lantai) ? lantai : 0;
+  map.setMinZoom(Number.isFinite(zoom) ? Math.min(lantaiAman, zoom) : lantaiAman);
   return true;
 }
 
@@ -257,6 +278,8 @@ export function FloodRiskMap({
   const identifyRef = useRef(0);
   const identifyHandler = useRef(() => {});
   const provinceRef = useRef(province);
+  const boundsProvRef = useRef(null);
+  const onProvinceRef = useRef(onProvince);
   const inariskRef = useRef(false);
   const [showInarisk, setShowInarisk] = useState(false);
   const [showBahaya, setShowBahaya] = useState(false);
@@ -269,6 +292,7 @@ export function FloodRiskMap({
   const [loadingMap, setLoadingMap] = useState(false);
 
   provinceRef.current = province;
+  onProvinceRef.current = onProvince;
   inariskRef.current = showInarisk;
 
   useEffect(() => {
@@ -299,11 +323,14 @@ export function FloodRiskMap({
     map.getPane("flood-lines").style.zIndex = 450;
     const pasang = () => {
       map.invalidateSize({ animate: false, pan: false });
-      const batasProv = provinceRef.current ? kabRef.current?.getBounds?.() : null;
-      if (batasProv?.isValid?.()) {
-        map.fitBounds(batasProv, { padding: [16, 16], animate: false });
+      if (provinceRef.current) {
+        const tersimpan = boundsProvRef.current?.isValid?.() ? boundsProvRef.current : null;
+        const dariLapisan = kabRef.current?.getBounds?.();
+        const bounds = tersimpan || (dariLapisan?.isValid?.() ? dariLapisan : null);
+        if (bounds) fitProvinsi(map, bounds);
         return;
       }
+      boundsProvRef.current = null;
       frameBanjir(map);
     };
     pasang();
@@ -424,6 +451,8 @@ export function FloodRiskMap({
     const map = mapRef.current;
     if (!map) return undefined;
     let cancelled = false;
+    let ulang = 0;
+    if (!province) boundsProvRef.current = null;
     kabRef.current?.remove();
     lineRef.current?.remove();
     geomRef.current?.remove();
@@ -454,8 +483,8 @@ export function FloodRiskMap({
               if (!province) {
                 layer.on("click", (event) => {
                   L.DomEvent.stopPropagation(event);
-                  const next = feature?.properties?.wadmpr;
-                  if (next) onProvince?.(next);
+                  const next = feature?.properties?.provinsi || feature?.properties?.wadmpr;
+                  if (next) onProvinceRef.current?.(next);
                 });
               }
             },
@@ -465,16 +494,15 @@ export function FloodRiskMap({
         kabRef.current.setStyle((feature) =>
           gayaWilayah(resolvePaint(feature, kabPaint, tab, bolehKosong), Boolean(province), showPeringatan),
         );
-        const extent = envelopeOf(drawn);
-        if (province && extent) {
-          map.fitBounds(
-            [
-              [extent.south, extent.west],
-              [extent.north, extent.east],
-            ],
-            { padding: [16, 16], animate: false },
-          );
+        const bounds = boundsProvinsi(envelopeOf(drawn)) || kabRef.current.getBounds();
+        if (province && bounds?.isValid?.()) {
+          boundsProvRef.current = bounds;
+          fitProvinsi(map, bounds);
+          ulang = requestAnimationFrame(() => {
+            if (!cancelled && provinceRef.current === province) fitProvinsi(mapRef.current, bounds);
+          });
         } else if (!province) {
+          boundsProvRef.current = null;
           frameBanjir(map);
         }
       } catch {
@@ -485,8 +513,9 @@ export function FloodRiskMap({
     })();
     return () => {
       cancelled = true;
+      cancelAnimationFrame(ulang);
     };
-  }, [province, onProvince]);
+  }, [province]);
 
   useEffect(() => {
     const map = mapRef.current;
