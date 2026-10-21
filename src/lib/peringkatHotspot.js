@@ -79,6 +79,30 @@ export function bandingPeringkat(a, b) {
   );
 }
 
+export function sepuluhPrioritas(baris) {
+  return (baris ?? []).slice(0, 10);
+}
+
+export const JUMLAH_CHIP_PROVINSI = 8;
+
+export function namaChipProvinsi(baris, batas = JUMLAH_CHIP_PROVINSI) {
+  const daftar = [];
+  for (const row of baris ?? []) {
+    const nama = String(row?.nama || "").trim();
+    if (!nama || nama === "Belum terpetakan" || row?.tingkat === "kabupaten") continue;
+    daftar.push(nama);
+    if (daftar.length >= batas) break;
+  }
+  return daftar;
+}
+
+export function chipProvinsi(points, { from = "", to = "", hours = null } = {}) {
+  const baris = susunPeringkatHotspot(barisPeriodeAktif(points, { from, to, province: "", hours }), {
+    tingkat: "provinsi",
+  }).baris;
+  return namaChipProvinsi(baris);
+}
+
 export function susunPeringkatHotspot(points, { tingkat = "provinsi" } = {}) {
   const level = tingkat === "kabupaten" ? "kabupaten" : "provinsi";
   const groups = new Map();

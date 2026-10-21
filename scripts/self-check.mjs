@@ -29,10 +29,11 @@ import { parseFirmsCoordinate } from "./indonesia-land.mjs";
 import { arcGisContains, summarizeByDesa, summarizeByWilayah, unverifiedWilayahCount, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
 import { assessFreshness, hotspotSourceLabel, labelStatusFeed } from "../src/lib/freshness.js";
 import { annotatePoints } from "./big-wilayah.mjs";
-import { buildComparisonAttention, normalizePlaceName, PROTOTYPE_LABEL } from "../src/lib/attentionPrototype.js";
+import { buildComparisonAttention, normalizePlaceName, placeFwiTable, PROTOTYPE_LABEL } from "../src/lib/attentionPrototype.js";
 import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { keadaanKategori, statusRingkasan, statusRingkasanSiap } from "../src/lib/ringkasanStatus.js";
-import { bandingPeringkat, barisPeriodeAktif, kelasPeringkat, susunPeringkatHotspot } from "../src/lib/peringkatHotspot.js";
+import { bandingPeringkat, barisPeriodeAktif, chipProvinsi, JUMLAH_CHIP_PROVINSI, kelasPeringkat, namaChipProvinsi, sepuluhPrioritas, susunPeringkatHotspot } from "../src/lib/peringkatHotspot.js";
+import { cariWilayahBatas, PROVINSI_TIDAK_DIKETAHUI, tampilBarisFwi, urutBarisFwi } from "../src/lib/kabProvinsi.js";
 import { kelasKepercayaan } from "../src/lib/warning.js";
 import {
   agregasiHotspot,
@@ -722,6 +723,74 @@ assert.equal(peringkatKab.baris.some((row) => row.nama === "Papua Selatan"), fal
 assert.equal(peringkatKab.baris[0].nama, "Merauke, Papua Selatan");
 assert.equal(peringkatKab.merah, peringkatProv.merah);
 assert.equal(barisPeriodeAktif(periodePapua, { from: "2026-10-17", to: "2026-10-17", province: "Papua Selatan", hours: 24 }).every((row) => row.provinsi === "Papua Selatan"), true);
+const sepuluh = sepuluhPrioritas(peringkatProv.baris);
+assert.equal(sepuluh.length, 7);
+assert.deepEqual(sepuluh.map((row) => row.nama), peringkatProv.baris.slice(0, 10).map((row) => row.nama));
+assert.equal(sepuluh[0].nama, "Papua Selatan");
+assert.equal(sepuluhPrioritas(peringkatProv.baris.slice(0, 3)).length, 3);
+assert.equal(sepuluhPrioritas(null).length, 0);
+assert.equal(JUMLAH_CHIP_PROVINSI, 8);
+assert.ok(JUMLAH_CHIP_PROVINSI >= 6 && JUMLAH_CHIP_PROVINSI <= 8);
+const chipPapua = chipProvinsi(titikPapua, { from: "2026-10-17", to: "2026-10-17", hours: 168 });
+assert.equal(chipPapua[0], "Papua Selatan");
+assert.equal(chipPapua.length, 7);
+assert.equal(chipPapua.includes("Belum terpetakan"), false);
+assert.deepEqual(namaChipProvinsi(Array.from({ length: 12 }, (_, index) => ({ nama: `P${index}`, tingkat: "provinsi" })), 8).length, 8);
+assert.equal(namaChipProvinsi([{ nama: "Belum terpetakan", tingkat: "provinsi" }, { nama: "Aceh", tingkat: "provinsi" }])[0], "Aceh");
+const batasKab = JSON.parse(readFileSync("data/static/kabkota-provinsi.json", "utf8"));
+const topoKab = JSON.parse(readFileSync("data/static/batas-kabkota.topojson", "utf8"));
+const propertiBatas = topoKab.objects.kabupaten.geometries.map((geometry) => [geometry.properties.kode, geometry.properties.nama, geometry.properties.provinsi]);
+assert.equal(propertiBatas.length, 514);
+assert.deepEqual(batasKab, propertiBatas);
+assert.equal(new Set(batasKab.map((row) => String(row[0]).replaceAll(".", ""))).size, batasKab.length);
+assert.deepEqual(cariWilayahBatas({ kode: "6311" }), { kode: "63.11", nama: "Balangan", provinsi: "Kalimantan Selatan" });
+assert.equal(cariWilayahBatas({ kode: "63.11" }).nama, "Balangan");
+assert.equal(cariWilayahBatas({ kode: "", kabupaten: "Balangan" }).provinsi, "Kalimantan Selatan");
+assert.equal(cariWilayahBatas({ kode: "9999", kabupaten: "Balangan" }), null);
+assert.equal(PROVINSI_TIDAK_DIKETAHUI, "Tidak diketahui");
+assert.equal(tampilBarisFwi({ kode: "6311", kabupaten: "BALANGAN" }).kabupaten, "Balangan");
+assert.equal(tampilBarisFwi({ kode: "6311", kabupaten: "BALANGAN" }).provinsi, "Kalimantan Selatan");
+assert.equal(tampilBarisFwi({ kode: "9999", kabupaten: "Fiktif" }).provinsi, "Tidak diketahui");
+const fwiContoh = placeFwiTable([
+  { kode: "6311", kabupaten: "BALANGAN", provinsi: "Kalimantan Selatan", tanggal: "2026-10-02", fwi: 12 },
+  { kode: "6311", kabupaten: "BALANGAN", provinsi: "Kalimantan Selatan", tanggal: "2026-10-01", fwi: 10 },
+  { kode: "9999", kabupaten: "Fiktif", provinsi: "Riau", tanggal: "2026-10-01", fwi: 30 },
+]);
+const fwiTampil = urutBarisFwi(fwiContoh.map((row) => ({ ...row, ...tampilBarisFwi(row) })), "provinsi", "asc");
+assert.equal(fwiTampil[0].kabupaten, "Balangan");
+assert.equal(fwiTampil[0].provinsi, "Kalimantan Selatan");
+assert.equal(fwiTampil[0].fwiRata, 11);
+assert.equal(fwiTampil[1].provinsi, "Tidak diketahui");
+assert.equal(urutBarisFwi(fwiTampil, "fwiRata", "desc")[0].kabupaten, "Fiktif");
+if (existsSync("data/live/fwi_gwis_pembanding.csv")) {
+  const fwiHidup = parseCsv(readFileSync("data/live/fwi_gwis_pembanding.csv", "utf8")).find((row) => String(row.kode) === "6311");
+  if (fwiHidup) {
+    const hidup = tampilBarisFwi({ kode: fwiHidup.kode, kabupaten: fwiHidup.kabupaten });
+    assert.equal(hidup.kabupaten, "Balangan");
+    assert.equal(hidup.provinsi, "Kalimantan Selatan");
+  }
+}
+const peringkatSumber = readFileSync("src/components/PeringkatHotspot.jsx", "utf8");
+assert.match(peringkatSumber, /10 Prioritas Hotspot/);
+assert.match(peringkatSumber, /Tidak diketahui/);
+assert.match(peringkatSumber, /sepuluhPrioritas/);
+const filterSumber = readFileSync("src/components/FilterProvinsi.jsx", "utf8");
+assert.match(filterSumber, /Seluruh Indonesia/);
+assert.match(filterSumber, /SEMUA_PROVINSI/);
+assert.match(filterSumber, /chipProvinsi/);
+assert.match(filterSumber, /Tombol mengikuti peringkat deteksi hotspot pada periode aktif/);
+assert.equal(filterSumber.includes("Kalimantan Tengah"), false);
+assert.match(readFileSync("src/components/DashboardView.jsx", "utf8"), /FilterProvinsi/);
+assert.match(readFileSync("src/components/DashboardView.jsx", "utf8"), /frame=\{province \? "points" : "indonesia"\}/);
+assert.equal(readFileSync("src/components/DashboardView.jsx", "utf8").includes("priority.map"), false);
+assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /FilterProvinsi/);
+assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /frame=\{province \? "points" : "indonesia"\}/);
+assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /Enam prioritas/);
+assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Kabupaten/);
+assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Provinsi/);
+assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /FWI rata-rata/);
+assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Tidak diketahui/);
+assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /aria-sort/);
 assert.equal(clusterCellDegrees(8), 0);
 assert.equal(clusterCellDegrees(10), 0);
 assert.equal(clusterCellDegrees(6), 0);

@@ -192,6 +192,7 @@ export function App() {
             freshness={freshness}
             loading={loading}
             province={province}
+            setProvince={setProvince}
             from={from}
             setFrom={setFrom}
             to={to}

@@ -13,6 +13,7 @@ import { hotspotSourceLabel, labelStatusFeed } from "../lib/freshness.js";
 import { formatAngka, formatTanggal } from "../lib/format.js";
 import { JENDELA_PERIODE, barisPeriodeAktif, labelJendela } from "../lib/peringkatHotspot.js";
 import { PeringkatHotspot } from "./PeringkatHotspot.jsx";
+import { FilterProvinsi } from "./FilterProvinsi.jsx";
 
 function feedStatus(feed, sumber) {
   return labelStatusFeed(feed, { sumber });
@@ -83,6 +84,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
   const fallbacks = visibleFeeds.filter((feed) => feed.status === "cadangan");
   const keySet = Boolean(String(config.firms?.mapKey ?? "").trim());
   const priority = config.provinsiPrioritas ?? [];
+  const titikNasional = hotspotFeed && !hotspotFeed.contoh && hotspotFeed.status !== "gagal" ? hotspotFeed.rows : [];
 
   function resetDates() {
     const range = defaultRange(hotspotFeed?.rows ?? [], 7);
@@ -144,16 +146,15 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
       )}
 
       <section className="filters" aria-label="Filter">
-        <div className="province-filter" role="group" aria-label="Cakupan wilayah">
-          <button type="button" aria-pressed={province === ""} onClick={() => setProvince("")}>
-            Seluruh Indonesia
-          </button>
-          {priority.map((name) => (
-            <button key={name} type="button" aria-pressed={province === name} onClick={() => setProvince(name)}>
-              {name}
-            </button>
-          ))}
-        </div>
+        <FilterProvinsi
+          province={province}
+          setProvince={setProvince}
+          points={titikNasional}
+          from={from}
+          to={to}
+          hours={periodeJam}
+          prioritas={priority}
+        />
         {layer === "ispu" ? null : <div className="date-filter">
           <label>
             Dari
@@ -218,6 +219,8 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           <HotspotBoard
             points={aktif}
             priority={priority}
+            frame={province ? "points" : "indonesia"}
+            onKembaliIndonesia={() => setProvince("")}
             meta={feeds.find((feed) => feed.id === "hotspot_peta")?.petaMeta}
             feed={hotspotFeed}
             fetchedAt={hotspotFeed?.fetchedAt}

@@ -12,6 +12,7 @@ import { defaultRange } from "../lib/derive.js";
 import { PriorityIndicators } from "./PriorityIndicators.jsx";
 import { PrioritasPanel } from "./PrioritasPanel.jsx";
 import { PeringkatHotspot } from "./PeringkatHotspot.jsx";
+import { FilterProvinsi } from "./FilterProvinsi.jsx";
 import { KontrolPeriode } from "./KontrolPeriode.jsx";
 
 export function SummaryPage({
@@ -21,6 +22,7 @@ export function SummaryPage({
   freshness,
   loading = false,
   province = "",
+  setProvince,
   from = "",
   setFrom,
   to = "",
@@ -111,6 +113,17 @@ export function SummaryPage({
         </>
         )}
       </section>
+      {setProvince ? (
+        <FilterProvinsi
+          province={province}
+          setProvince={setProvince}
+          points={mapPoints}
+          from={from}
+          to={to}
+          hours={periodeJam}
+          prioritas={priority}
+        />
+      ) : null}
       <KontrolPeriode
         from={from}
         to={to}
@@ -156,7 +169,7 @@ export function SummaryPage({
           {loading && !hotspot ? null : sampleHotspot ? (
             <p className="empty">{hotspot?.error || "Data contoh tidak ditampilkan. Peta dikosongkan."}</p>
           ) : (
-            <HotspotMap points={day} frame="indonesia" mapApi={mapApi} />
+            <HotspotMap points={day} frame={province ? "points" : "indonesia"} mapApi={mapApi} />
           )}
           <ClusterLegend />
           <p className="fine">

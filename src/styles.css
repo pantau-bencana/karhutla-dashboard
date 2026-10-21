@@ -223,6 +223,24 @@ a.button {
   border-color: var(--pine);
 }
 
+.province-picker { display: grid; gap: 6px; min-width: 0; max-width: 100%; }
+.province-picker .province-filter { max-width: 100%; }
+.province-semua { flex: 1 1 12rem; min-width: min(100%, 12rem); max-width: 100%; }
+.province-semua select { width: 100%; max-width: 100%; }
+
+.tabel-urut button {
+  font: inherit;
+  font-weight: 700;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
 .hotspot-filters {
   display: flex;
   flex-wrap: wrap;
@@ -1102,9 +1120,11 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 }
 .peringkat-tingkat legend { font-weight: 700; margin-right: 8px; }
 .peringkat-tingkat label { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; }
-.peringkat-scroll:focus { outline: 2px solid #1d4ed8; outline-offset: 2px; }
-.peringkat-hotspot table { min-width: 760px; }
+.peringkat-scroll:focus, .peringkat-ringkas:focus { outline: 2px solid #1d4ed8; outline-offset: 2px; }
+.peringkat-hotspot .peringkat-scroll table { min-width: 760px; }
+.peringkat-hotspot .peringkat-ringkas table { min-width: 640px; }
 .peringkat-hotspot caption { text-align: left; font-weight: 600; margin-bottom: 6px; }
+.peringkat-hotspot h3 { margin: 12px 0 4px; font-size: 1.05rem; }
 
 .flood-map-block { container-type: inline-size; }
 .flood-map,
@@ -1224,6 +1244,11 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 .dasarian-badge { font-weight: 700; }
 
 @media (max-width: 640px) {
+  .province-picker .province-filter {
+    flex-wrap: wrap;
+    overflow-x: auto;
+  }
+  .province-semua { flex-basis: 100%; }
   .cards { grid-template-columns: 1fr; }
   .wrap { width: min(1280px, calc(100% - 20px)); }
   .map-canvas,

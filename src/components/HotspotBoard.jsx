@@ -39,7 +39,7 @@ function SelectFilter({ label, value, onChange, options, empty }) {
   );
 }
 
-export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observedAt, freshness, sumber, from = "", to = "", periodeTeks = "" }) {
+export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observedAt, freshness, sumber, from = "", to = "", periodeTeks = "", frame = "indonesia", onKembaliIndonesia }) {
   const mapApi = useRef(null);
   const [provinceFilter, setProvinceFilter] = useState("semua");
   const [tanggal, setTanggal] = useState("");
@@ -126,13 +126,13 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
       <DatasetTiming feed={feed} />
       {fetchedAt ? <p className="fine">Diambil {formatWib(fetchedAt)}. Usia cuplikan mengikuti waktu ambil itu.</p> : null}
       {filterIncomplete ? <p className="banner warn is-sticky">{FILTER_INCOMPLETE}</p> : null}
-      <div className="province-filter" role="group" aria-label="Provinsi prioritas">
+      <div className="province-filter" role="group" aria-label="Saringan peta tambahan">
         <button type="button" aria-pressed={provinceFilter === "semua"} onClick={() => setProvinceFilter("semua")}>Semua</button>
         <button type="button" aria-pressed={provinceFilter === "prioritas"} onClick={() => setProvinceFilter("prioritas")}>Enam prioritas</button>
-        {(priority ?? []).map((name) => (
-          <button key={name} type="button" aria-pressed={provinceFilter === name} onClick={() => setProvinceFilter(name)}>{name}</button>
-        ))}
       </div>
+      <p className="fine">
+        Enam prioritas membatasi peta ke {(priority ?? []).join(", ") || "provinsi pada konfigurasi kesiapsiagaan"}. Tombol cakupan di atas mengikuti peringkat hotspot periode ini.
+      </p>
       <div className="hotspot-filters">
         <SelectFilter label="Tanggal" value={tanggal} onChange={setTanggal} options={dates} empty="Semua tanggal pada jendela" />
         <SelectFilter label="Satelit" value={satelit} onChange={setSatelit} options={satellites} empty="Semua satelit" />
@@ -164,7 +164,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
       <div className="board-split">
       <div className="board-map">
       <div className="map-toolbar">
-        <button type="button" className="button" onClick={() => mapApi.current?.showIndonesia()}>Kembali ke seluruh Indonesia</button>
+        <button type="button" className="button" onClick={() => { onKembaliIndonesia?.(); mapApi.current?.showIndonesia(); }}>Kembali ke seluruh Indonesia</button>
       </div>
       <div className="map-stage">
         {freshness?.tertunda || feed?.status === "usang" || feed?.status === "gagal" ? (
@@ -177,7 +177,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
             </p>
           </div>
         ) : null}
-        <HotspotMap points={filtered} frame="indonesia" mapApi={mapApi} selectedKey={selectedKey} onSelect={choosePoint} fwiDate={fwiOn && fwiReady ? modelDate : ""} />
+        <HotspotMap points={filtered} frame={frame} mapApi={mapApi} selectedKey={selectedKey} onSelect={choosePoint} fwiDate={fwiOn && fwiReady ? modelDate : ""} />
       </div>
       </div>
       <section className="hotspot-count" aria-labelledby="hotspot-count-heading">
