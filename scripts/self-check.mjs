@@ -45,12 +45,13 @@ import {
   kuantilIndeks,
   nilaiKab,
   p75,
+  percentRanks,
   statusDaftar,
   susunPrioritas,
   tampilanPrioritas,
 } from "../src/lib/aplus.js";
 import { CAP_CRON, CAP_WATCH_MINUTES, PRAKIRAAN_CRON, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
-import { susunPotensiTujuh } from "../src/lib/potensiTujuh.js";
+import { ringkasHujanModel, susunPotensiTujuh } from "../src/lib/potensiTujuh.js";
 import {
   JARAK_ULANG_ANALISIS_MS,
   ULANG_ANALISIS_MAKS,
@@ -783,9 +784,13 @@ if (existsSync("data/live/fwi_gwis_pembanding.csv")) {
   }
 }
 const peringkatSumber = readFileSync("src/components/PeringkatHotspot.jsx", "utf8");
-assert.match(peringkatSumber, /10 Prioritas Hotspot/);
+assert.match(peringkatSumber, /10 Prioritas/);
+assert.match(peringkatSumber, /peringkat-prioritas/);
+assert.match(peringkatSumber, /Bukan data terkini/);
 assert.match(peringkatSumber, /Tidak diketahui/);
 assert.match(peringkatSumber, /sepuluhPrioritas/);
+assert.equal((peringkatSumber.match(/<table>/g) || []).length, 1);
+assert.equal(peringkatSumber.includes("peringkat-ringkas"), false);
 const filterSumber = readFileSync("src/components/FilterProvinsi.jsx", "utf8");
 assert.match(filterSumber, /Seluruh Indonesia/);
 assert.match(filterSumber, /SEMUA_PROVINSI/);
@@ -2288,6 +2293,32 @@ assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /Potensi karhutla 
 assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /hasil\.judul/);
 assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /Pembanding \(data terbuka, bukan resmi\)/);
 assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /belum terintegrasi/);
+assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /Petunjuk skoring/);
+assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /peringkat persentil yang sama/);
+assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /#\/sumber-metode\/potensi-7-hari/);
+assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /tidak membedakan peringkat/);
+const seriPersentil = percentRanks([3, 3, 3]);
+assert.equal(seriPersentil[0], 0.5);
+assert.equal(seriPersentil[1], 0.5);
+assert.equal(seriPersentil[2], 0.5);
+const bedaPersentil = percentRanks([1, 2, 2]);
+assert.equal(bedaPersentil[1], bedaPersentil[2]);
+assert.equal(bedaPersentil[0] < bedaPersentil[1], true);
+const hujanSama = ringkasHujanModel([
+  { skor: 0.2, hariBasah: 0, hujanHari: 7 },
+  { skor: 0.8, hariBasah: 0, hujanHari: 7 },
+]);
+assert.equal(hujanSama.membedakan, false);
+assert.equal(hujanSama.kelompok[0].hari, 0);
+assert.equal(hujanSama.jumlah, 2);
+const hujanBeda = ringkasHujanModel([
+  { skor: 0.2, hariBasah: 0, hujanHari: 7 },
+  { skor: 0.4, hariBasah: 1, hujanHari: 7 },
+  { skor: null, hariBasah: 5, hujanHari: 7 },
+]);
+assert.equal(hujanBeda.membedakan, true);
+assert.equal(hujanBeda.jumlah, 2);
+assert.deepEqual(hujanBeda.kelompok, [{ hari: 0, jumlah: 1 }, { hari: 1, jumlah: 1 }]);
 assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /bukan prakiraan resmi/);
 assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /hingga H\+7 sesuai produk BMKG/);
 assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /precipitation_sum/);
@@ -2339,6 +2370,27 @@ const okiPotensi = potensiSegar.baris.find((row) => row.kode === "16.02");
 assert.equal(okiPotensi.kelas, "Belum cukup data");
 assert.equal(okiPotensi.skor, null);
 assert.equal(potensiSegar.baris.at(-1).kode, "16.02");
+const potensiNasional = susunPotensiTujuh({
+  fwiRows: fwiPotensi,
+  hujanRows: hujanPotensi,
+  hotspotRows: [
+    { tanggal: "2026-10-20", kodeKabupaten: "15.04", kelasKepercayaan: "tinggi", wilayahStatus: "ok" },
+  ],
+  fwiFetchedAt: "2026-10-21T00:00:00.000Z",
+  hujanFetchedAt: "2026-10-21T00:00:00.000Z",
+  hotspotFetchedAt: "2026-10-21T00:00:00.000Z",
+  now: new Date("2026-10-21T06:00:00.000Z"),
+  nasional: true,
+  daftarWilayah: [
+    { kode: "93.01", nama: "Merauke", provinsi: "Papua Selatan" },
+    { kode: "72.01", nama: "Banggai", provinsi: "Sulawesi Tengah" },
+  ],
+});
+assert.equal(potensiNasional.baris.find((row) => row.kode === "15.04").kelas, "Sangat tinggi");
+assert.equal(potensiNasional.baris.find((row) => row.kode === "15.04").skor, potensiSegar.baris[0].skor);
+assert.equal(potensiNasional.baris.find((row) => row.kabupaten === "Merauke").kelas, "Belum cukup data");
+assert.equal(potensiNasional.baris.find((row) => row.kabupaten === "Merauke").skor, null);
+assert.equal(potensiNasional.baris.find((row) => row.kabupaten === "Banggai").provinsi, "Sulawesi Tengah");
 const potensiBasi = susunPotensiTujuh({
   fwiRows: fwiPotensi,
   hujanRows: hujanPotensi,

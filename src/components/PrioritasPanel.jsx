@@ -1,4 +1,5 @@
 import { Badge } from "./Badge.jsx";
+import { CatatanRingkas } from "./CatatanRingkas.jsx";
 import { Term } from "./Term.jsx";
 import { CATATAN_SATU_TITIK, tampilanPrioritas } from "../lib/aplus.js";
 import { formatAngka, formatWib } from "../lib/format.js";
@@ -34,15 +35,7 @@ export function PrioritasPanel({ snapshot, now }) {
         </div>
         <Badge kind="pem">{view.jenis}</Badge>
       </header>
-      <p>{view.disclaimer}</p>
-      <p className="fine method-note">
-        Skor = rata-rata peringkat empat indikator (25% tiap indikator). Masuk daftar bila data lengkap, peluang 14 hari tanpa hari hujan di atas 20 mm minimal 50%, serta FFMC minimal 78 pada minimal 3 dari 9 hari atau DC minimal 260.
-        {" "}FWI, FFMC, dan DC memakai hari model GWIS yang tersimpan (sekitar 9 hari), bukan 14 hari dan bukan prediksi resmi BMKG.
-        {" "}Peluang kering dihitung dari anggota ensemble precipitation_sum di atas 20 mm selama 14 hari. Bukan precipitation_probability (peluang hujan di atas 0,1 mm) dan bukan peluang resmi BMKG.
-        {" "}Analisis dasbor, bukan resmi BMKG/BNPB.
-        {" "}
-        <a href="#/sumber-metode/cara-hitung">Cara hitung & rujukan</a>
-      </p>
+      <p className="fine">Bukan prakiraan resmi. Daftar resmi 15–20 kabupaten/kota: menunggu data resmi BMKG (FDRS/potensi karhutla per kab/kota).</p>
       {view.catatan_cuplikan ? <p>{view.catatan_cuplikan}</p> : null}
       {view.tersedia ? (
         <p className="fine">
@@ -140,13 +133,24 @@ export function PrioritasPanel({ snapshot, now }) {
               </table>
             </div>
           ) : null}
-          <nav className="method-links" aria-label="Metode perhitungan dan rujukan">
-            <a href="#/sumber-metode/cara-hitung">Metode perhitungan dan rujukan →</a>
-            <a href="#/sumber-metode/rujukan">Rujukan</a>
-            <a href="#/sumber-metode/glosarium">Glosarium</a>
-          </nav>
         </div>
       ) : null}
+      <CatatanRingkas judul="Cara hitung & rujukan">
+        <p>{view.disclaimer}</p>
+        <p className="fine method-note">
+          Skor = rata-rata peringkat empat indikator (25% tiap indikator). Masuk daftar bila data lengkap, peluang 14 hari tanpa hari hujan di atas 20 mm minimal 50%, serta FFMC minimal 78 pada minimal 3 dari 9 hari atau DC minimal 260.
+          {" "}FWI, FFMC, dan DC memakai hari model GWIS yang tersimpan (sekitar 9 hari), bukan 14 hari dan bukan prediksi resmi BMKG.
+          {" "}Peluang kering dihitung dari anggota ensemble precipitation_sum di atas 20 mm selama 14 hari. Bukan precipitation_probability (peluang hujan di atas 0,1 mm) dan bukan peluang resmi BMKG.
+          {" "}Analisis dasbor, bukan resmi BMKG/BNPB.
+          {" "}
+          <a href="#/sumber-metode/cara-hitung">Cara hitung & rujukan</a>
+        </p>
+      </CatatanRingkas>
+      <nav className="method-links" aria-label="Metode perhitungan dan rujukan">
+        <a href="#/sumber-metode/cara-hitung">Metode perhitungan dan rujukan →</a>
+        <a href="#/sumber-metode/rujukan">Rujukan</a>
+        <a href="#/sumber-metode/glosarium">Glosarium</a>
+      </nav>
     </section>
   );
 }

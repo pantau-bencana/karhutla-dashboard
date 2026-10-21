@@ -11,8 +11,6 @@ import { barisPeriodeAktif, labelJendela, susunPeringkatHotspot } from "../lib/p
 import { defaultRange } from "../lib/derive.js";
 import { PriorityIndicators } from "./PriorityIndicators.jsx";
 import { PrioritasPanel } from "./PrioritasPanel.jsx";
-import { PotensiTujuhHari } from "./PotensiTujuhHari.jsx";
-import { PeringkatHotspot } from "./PeringkatHotspot.jsx";
 import { FilterProvinsi } from "./FilterProvinsi.jsx";
 import { KontrolPeriode } from "./KontrolPeriode.jsx";
 
@@ -174,9 +172,9 @@ export function SummaryPage({
           )}
           <ClusterLegend />
           <p className="fine">
-            Merah tinggi, oranye sedang, kuning rendah: kualitas deteksi satelit, bukan tingkat bahaya. Tidak diketahui berwarna abu-abu dan tidak dihitung sebagai kuning. Satu titik memakai warna itu. Cincin pada zoom kecil hanya merangkum bagian warna di dalam petak.
+            Warna titik adalah kualitas deteksi satelit, bukan tingkat bahaya.
             {" "}
-            <a href="#/karhutla/peta">Buka peta dan tabel</a>
+            <a href="#/karhutla/peta">Buka peta dan tabel peringkat</a>
           </p>
         </article>
         <article className="modcard">
@@ -216,33 +214,15 @@ export function SummaryPage({
         </article>
       </section>
 
-      <PeringkatHotspot
-        points={day}
-        feed={hotspot}
-        memuat={Boolean(loading && !hotspot)}
-        tertunda={Boolean(freshness?.tertunda)}
-        from={from}
-        to={to}
-        periodeJam={periodeJam}
-        province={province}
-        sumber={config?.firms?.sumber}
-      />
-
       <section className="card">
         <h2>Wilayah dengan perhatian tertinggi</h2>
         <p>
           Belum ada daftar dari produk resmi per kabupaten. FDRS BMKG dan kejadian historis per kabupaten belum tersambung untuk urutan ini.
           Daftar di bawah, bila cuplikannya segar, adalah model pihak ketiga dan bukan peringatan BNPB atau BMKG.
+          {" "}
+          <a href="#/karhutla/potensi">Potensi karhutla 7 hari</a> memakai seluruh kabupaten/kota pada batas tersimpan. Yang datanya belum lengkap tertulis belum cukup data.
         </p>
       </section>
-
-      <PotensiTujuhHari
-        fwi={fwiGwis}
-        hujan={feeds.find((feed) => feed.id === "hujan_14_pembanding")}
-        hotspot={bolehHotspot ? hotspot : null}
-        irbi={irbi?.contoh ? null : irbi}
-        provinsi={priority}
-      />
 
       <PrioritasPanel snapshot={feeds.prioritas} />
 

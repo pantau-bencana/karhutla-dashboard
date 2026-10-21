@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Badge } from "./Badge.jsx";
+import { CatatanRingkas } from "./CatatanRingkas.jsx";
 import { InfoTip } from "./InfoTip.jsx";
 import { StationMap } from "./StationMap.jsx";
 import { parseCsv } from "../lib/csv.js";
@@ -150,20 +151,6 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
               </tbody>
             </table>
           </div>
-          <h3>Kenapa tidak ada angka ISPU?</h3>
-          <p>
-            Portal ISPU belum punya API publik terdokumentasi dan katalog Satu Data belum memuat ISPU harian per stasiun. Pengambilan otomatis memerlukan izin tertulis KLH. Dasbor tidak memakai token dari situs KLH. Ketersediaan stasiun diperiksa di portal resmi. Baris tanpa pengukuran tidak diisi angka.
-          </p>
-          <p>
-            <a href={KLH_ISPU_APP} target="_blank" rel="noopener noreferrer">Buka ispu.kemenlh.go.id</a>
-            {" · "}
-            <a href={KLH_ISPU_ANALYTIC} target="_blank" rel="noopener noreferrer">Analisis kawasan</a>
-          </p>
-          <p className="fine">
-            <Badge kind="pem">Pembanding, bukan BMKG/KLHK</Badge>
-            {" "}
-            {CAMS_LABEL}. Angka model, bila ada, tetap dalam µg/m³ dan tidak diwarnai sebagai ISPU. Indeks Kualitas Udara 2024 di bawah adalah data statis tahunan, bukan ISPU harian.
-          </p>
         </article>
 
       <article className="card">
@@ -192,19 +179,47 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
             </button>
           ))}
         </div>
-        <p className="fine">
-          Tiga jenis data tetap terpisah. (1) ISPU stasiun KLH adalah pengukuran resmi dan belum terintegrasi ke dashboard. (2) Model CAMS lewat Open-Meteo adalah pembanding, bukan ISPU dan bukan pengamatan stasiun; angkanya hanya tabel karena sel model tidak digambar. (3) Tanggal sesudah hari ini pada berkas model, bila ada, adalah prakiraan model, bukan prediksi ISPU.
-        </p>
+        <ul className="legend" aria-label="Legenda kategori ISPU">
+          <li><i className="swatch baik" /> Baik</li>
+          <li><i className="swatch sedang" /> Sedang</li>
+          <li><i className="swatch tidak" /> Tidak Sehat</li>
+          <li><i className="swatch sangat" /> Sangat Tidak Sehat</li>
+          <li><i className="swatch bahaya" /> Berbahaya</li>
+        </ul>
         <StationMap stations={sourceOn.kemenlh ? rows : []} selectedId={selectedId} onSelect={setSelectedId} />
-        <p className="map-note">
-          Stasiun KemenLH tidak dipetakan: tidak ada dataset terbuka koordinat stasiun yang dipakai di sini. Portal mengirim X-Frame-Options strict-origin-when-cross-origin, jadi halaman itu tidak disematkan.
-          {" "}OpenAQ tidak dipetakan: {OPENAQ_BLOCKED}.
-          {" "}Sel CAMS tidak digambar. Berkas model adalah rata-rata harian pada titik tengah provinsi, bukan grid sekitar 0,4° (sekitar 45 km) domain global. Produk Eropa 0,1° tidak mencakup Indonesia. Titik tengah provinsi terlalu kasar untuk kesimpulan kabupaten atau kota.
-        </p>
+        <p className="fine">Titik adalah lokasi pengukuran. Bukan pewarnaan kabupaten/kota. {CAMS_LABEL} tetap µg/m³.</p>
         <p className="fine">
           Waktu ambil model: {cams.fetchedAt ? formatWib(cams.fetchedAt) : "tidak tersedia"}. Waktu model pada berkas: {cams.observedAt ? formatWib(cams.observedAt) : "tidak tersedia"}.
           {cams.state === "usang" ? ` Gagal/stale: ${cams.alasan}` : ""}
         </p>
+        <CatatanRingkas judul="Cara membaca kualitas udara">
+          <h3>Kenapa tidak ada angka ISPU?</h3>
+          <p>
+            Portal ISPU belum punya API publik terdokumentasi dan katalog Satu Data belum memuat ISPU harian per stasiun. Pengambilan otomatis memerlukan izin tertulis KLH. Dasbor tidak memakai token dari situs KLH. Ketersediaan stasiun diperiksa di portal resmi. Baris tanpa pengukuran tidak diisi angka.
+          </p>
+          <p>
+            <a href={KLH_ISPU_APP} target="_blank" rel="noopener noreferrer">Buka ispu.kemenlh.go.id</a>
+            {" · "}
+            <a href={KLH_ISPU_ANALYTIC} target="_blank" rel="noopener noreferrer">Analisis kawasan</a>
+          </p>
+          <p className="fine">
+            <Badge kind="pem">Pembanding, bukan BMKG/KLHK</Badge>
+            {" "}
+            {CAMS_LABEL}. Angka model, bila ada, tetap dalam µg/m³ dan tidak diwarnai sebagai ISPU. Indeks Kualitas Udara 2024 di bawah adalah data statis tahunan, bukan ISPU harian.
+          </p>
+          <p>{ISPU_EXPLANATION}</p>
+          <p>
+            Tiga jenis data tetap terpisah. (1) ISPU stasiun KLH adalah pengukuran resmi dan belum terintegrasi ke dashboard. (2) Model CAMS lewat Open-Meteo adalah pembanding, bukan ISPU dan bukan pengamatan stasiun; angkanya hanya tabel karena sel model tidak digambar. (3) Tanggal sesudah hari ini pada berkas model, bila ada, adalah prakiraan model, bukan prediksi ISPU.
+          </p>
+          <p className="map-note">
+            Stasiun KemenLH tidak dipetakan: tidak ada dataset terbuka koordinat stasiun yang dipakai di sini. Portal mengirim X-Frame-Options strict-origin-when-cross-origin, jadi halaman itu tidak disematkan.
+            {" "}OpenAQ tidak dipetakan: {OPENAQ_BLOCKED}.
+            {" "}Sel CAMS tidak digambar. Berkas model adalah rata-rata harian pada titik tengah provinsi, bukan grid sekitar 0,4° (sekitar 45 km) domain global. Produk Eropa 0,1° tidak mencakup Indonesia. Titik tengah provinsi terlalu kasar untuk kesimpulan kabupaten atau kota.
+          </p>
+          <p>
+            <a href="#/sumber-metode">Sumber &amp; Metode</a>
+          </p>
+        </CatatanRingkas>
         <div className="table-wrap">
           <table>
             <thead>
@@ -291,15 +306,6 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
           </div>
         </header>
         <div className="logic-body">
-          <p>{ISPU_EXPLANATION}</p>
-          <div className="province-filter" role="group" aria-label="Periode kualitas udara">
-            <button type="button" aria-pressed={period === "hari-ini"} onClick={() => { setPeriod("hari-ini"); setSelectedId(""); }}>
-              Hari Ini
-            </button>
-            <button type="button" aria-pressed={period === "historis"} onClick={showHistory}>
-              Historis
-            </button>
-          </div>
           <p className="fine">
             {period === "hari-ini"
               ? `Hari Ini memakai tanggal ${formatTanggal(today)} (WIB).`
@@ -344,26 +350,6 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
       </article>
 
       <section className="split">
-        <article className="card map-card">
-          <header className="card-head">
-            <div>
-              <h2>Peta stasiun</h2>
-              <p>Titik adalah lokasi pengukuran. Bukan pewarnaan kabupaten/kota.</p>
-            </div>
-            <ul className="legend" aria-label="Legenda kategori ISPU">
-              <li><i className="swatch baik" /> Baik</li>
-              <li><i className="swatch sedang" /> Sedang</li>
-              <li><i className="swatch tidak" /> Tidak Sehat</li>
-              <li><i className="swatch sangat" /> Sangat Tidak Sehat</li>
-              <li><i className="swatch bahaya" /> Berbahaya</li>
-            </ul>
-          </header>
-          <StationMap stations={rows} selectedId={selectedId} onSelect={setSelectedId} />
-          {!rows.length ? (
-            <p className="map-note">Tidak ada titik stasiun. Data stasiun ISPU resmi belum terhubung.</p>
-          ) : null}
-        </article>
-
         <article className="card">
           <header className="card-head">
             <div>
@@ -423,19 +409,21 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
           </div>
         </header>
         <div className="logic-body">
-          <p>
-            Akses Terbuka. Tahun data 2024. Pembaruan pada sumber 8 Juli 2026. Disalin 19 Oktober 2026.
-            Metode pada halaman dataset: 40% indeks SO2, 40% indeks NO2, dan 20% indeks PM2.5 dari data ambien tahunan.
-            Tidak ada kelas resmi pada berkas ini, jadi angka tidak diwarnai. Urutan mengikuti kode wilayah, bukan nilai IKU.
-          </p>
-          <p>
-            <a href="https://satudata.kemenlh.go.id/dataset/indeks-kualitas-udara" target="_blank" rel="noopener noreferrer">Halaman dataset</a>
-            {" · "}
-            <a href="https://satudata.kemenlh.go.id/tentang/kebijakan" target="_blank" rel="noopener noreferrer">Kebijakan pemakaian</a>
-          </p>
-          <p className="fine">
-            Beberapa kode wilayah pada sumber terulang untuk kabupaten dan kota yang berbeda. Kode disimpan apa adanya.
-          </p>
+          <CatatanRingkas judul="Cara membaca IKU 2024">
+            <p>
+              Akses Terbuka. Tahun data 2024. Pembaruan pada sumber 8 Juli 2026. Disalin 19 Oktober 2026.
+              Metode pada halaman dataset: 40% indeks SO2, 40% indeks NO2, dan 20% indeks PM2.5 dari data ambien tahunan.
+              Tidak ada kelas resmi pada berkas ini, jadi angka tidak diwarnai. Urutan mengikuti kode wilayah, bukan nilai IKU.
+            </p>
+            <p>
+              <a href="https://satudata.kemenlh.go.id/dataset/indeks-kualitas-udara" target="_blank" rel="noopener noreferrer">Halaman dataset</a>
+              {" · "}
+              <a href="https://satudata.kemenlh.go.id/tentang/kebijakan" target="_blank" rel="noopener noreferrer">Kebijakan pemakaian</a>
+            </p>
+            <p className="fine">
+              Beberapa kode wilayah pada sumber terulang untuk kabupaten dan kota yang berbeda. Kode disimpan apa adanya.
+            </p>
+          </CatatanRingkas>
           <label className="search-field">
             Cari kabupaten/kota atau provinsi
             <input type="search" value={ikuQuery} onChange={(event) => setIkuQuery(event.target.value)} />

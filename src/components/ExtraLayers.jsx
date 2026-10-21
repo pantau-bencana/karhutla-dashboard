@@ -5,6 +5,7 @@ import { placeFwiTable, placeRainTable } from "../lib/attentionPrototype.js";
 import { tampilBarisFwi, urutBarisFwi } from "../lib/kabProvinsi.js";
 import { officialLinks } from "../lib/sourceCatalog.js";
 import { DatasetTiming } from "./DatasetTiming.jsx";
+import { GfwedTable } from "./GfwedTable.jsx";
 import { KualitasUdara } from "./KualitasUdara.jsx";
 import { labelAnalisisBmkg } from "../lib/bmkgForecast.js";
 import { formatAngka, formatTanggalPendek } from "../lib/format.js";
@@ -131,7 +132,6 @@ export function ExtraLayers({ layer, view, feeds, province, provinces = [] }) {
     return (
       <>
         <Panel title="FDRS" note={<><span className="link-only"><span>menunggu data resmi BMKG. Tautan saja.</span><OfficialLinks links={officialLinks("fdrs").slice(0, 2)} /></span> Citra hingga H+7 sesuai produk BMKG. Nilai contoh tidak ditampilkan.</>}>
-          <p>menunggu data resmi BMKG</p>
           <p>
             <a href="https://spartan.bmkg.go.id/" target="_blank" rel="noopener noreferrer">
               SPARTAN
@@ -148,6 +148,7 @@ export function ExtraLayers({ layer, view, feeds, province, provinces = [] }) {
             rows={cuaca.map((row) => [row.provinsi, formatTanggalPendek(row.tanggal), formatAngka(row.curahHujan, 1), formatAngka(row.anginKmj, 1)])}
           />
         </Panel>
+        <GfwedTable rows={feeds.find((feed) => feed.id === "gfwed_kabupaten")?.rows} />
       </>
     );
   }

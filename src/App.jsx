@@ -211,6 +211,7 @@ export function App() {
             hotspot={hotspotFeed && !hotspotFeed.contoh && (hotspotFeed.status === "berhasil" || hotspotFeed.status === "usang") ? hotspotFeed : null}
             irbi={feeds.find((feed) => feed.id === "irbi")?.contoh ? null : feeds.find((feed) => feed.id === "irbi")}
             provinsi={config?.provinsiPrioritas ?? []}
+            nasional
           />
         </main>
       ) : null}
