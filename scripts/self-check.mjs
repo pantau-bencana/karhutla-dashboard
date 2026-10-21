@@ -9,6 +9,8 @@ import { fetchCsv, loadAll, normalizeHotspotRow, normalizeRecords, redactFirmsUr
 import { GLOSSARY } from "../src/lib/glossary.js";
 import { HAZARDS } from "../src/lib/hazards.js";
 import { ispuFromPm25 } from "../src/lib/ispuEstimate.js";
+import { hitungStatusBanjir, puncakBanjir, titikHariTerbaru } from "../src/lib/laporanHarian.js";
+import { letakInfoTip } from "../src/lib/infoTipLetak.js";
 import {
   CAMS_LABEL,
   ISPU_EXPLANATION,
@@ -26,6 +28,7 @@ import {
 import { parseLocation, parseRoute } from "../src/lib/route.js";
 import { clusterCellDegrees, countHotspots, filterHotspotWindow } from "../src/lib/hotspotWindow.js";
 import { parseFirmsCoordinate } from "./indonesia-land.mjs";
+import { muatTitikBatas, pointInGeometry } from "./titik-dalam-batas.mjs";
 import { arcGisContains, summarizeByDesa, summarizeByWilayah, unverifiedWilayahCount, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
 import { assessFreshness, hotspotSourceLabel, labelStatusFeed } from "../src/lib/freshness.js";
 import { annotatePoints } from "./big-wilayah.mjs";
@@ -44,12 +47,13 @@ import {
   kuantilIndeks,
   nilaiKab,
   p75,
+  percentRanks,
   statusDaftar,
   susunPrioritas,
   tampilanPrioritas,
 } from "../src/lib/aplus.js";
 import { CAP_CRON, CAP_WATCH_MINUTES, PRAKIRAAN_CRON, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
-import { susunPotensiTujuh } from "../src/lib/potensiTujuh.js";
+import { ringkasHujanModel, susunPotensiTujuh } from "../src/lib/potensiTujuh.js";
 import {
   JARAK_ULANG_ANALISIS_MS,
   ULANG_ANALISIS_MAKS,
@@ -782,9 +786,13 @@ if (existsSync("data/live/fwi_gwis_pembanding.csv")) {
   }
 }
 const peringkatSumber = readFileSync("src/components/PeringkatHotspot.jsx", "utf8");
-assert.match(peringkatSumber, /10 Prioritas Hotspot/);
+assert.match(peringkatSumber, /10 Prioritas/);
+assert.match(peringkatSumber, /peringkat-prioritas/);
+assert.match(peringkatSumber, /Bukan data terkini/);
 assert.match(peringkatSumber, /Tidak diketahui/);
 assert.match(peringkatSumber, /sepuluhPrioritas/);
+assert.equal((peringkatSumber.match(/<table>/g) || []).length, 1);
+assert.equal(peringkatSumber.includes("peringkat-ringkas"), false);
 const filterSumber = readFileSync("src/components/FilterProvinsi.jsx", "utf8");
 assert.match(filterSumber, /Seluruh Indonesia/);
 assert.match(filterSumber, /SEMUA_PROVINSI/);
@@ -795,7 +803,9 @@ assert.match(readFileSync("src/components/DashboardView.jsx", "utf8"), /FilterPr
 assert.match(readFileSync("src/components/DashboardView.jsx", "utf8"), /frame=\{province \? "points" : "indonesia"\}/);
 assert.equal(readFileSync("src/components/DashboardView.jsx", "utf8").includes("priority.map"), false);
 assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /FilterProvinsi/);
-assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /frame=\{province \? "points" : "indonesia"\}/);
+assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /Laporan singkat harian/);
+assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<h2>Karhutla<\/h2>/);
+assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<h2>Banjir<\/h2>/);
 assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /Enam prioritas/);
 assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Kabupaten/);
 assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Provinsi/);
@@ -906,6 +916,9 @@ assert.equal(hotspotSourceLabel({ status: "usang", rows: [] }), "Cuplikan tidak 
 const boardSource = readFileSync("src/components/HotspotBoard.jsx", "utf8");
 assert.match(boardSource, /Confidence deteksi satelit/);
 assert.match(boardSource, /Lintasan satelit terakhir/);
+assert.match(boardSource, /map-badge/);
+assert.match(boardSource, /cuplikan, bukan permintaan peramban ke NASA FIRMS/);
+assert.equal(boardSource.includes("map-overlay"), false);
 assert.match(boardSource, /nama desa tersedia untuk/);
 assert.match(boardSource, /titik belum terverifikasi wilayah/);
 assert.match(boardSource, /keyakinan deteksi, bukan intensitas atau bahaya/);
@@ -1000,7 +1013,7 @@ assert.match(readFileSync("src/components/ForecastPanel.jsx", "utf8"), /Pembandi
 assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /Nama wilayah dari kueri BIG/);
 assert.equal(readFileSync("scripts/refresh-live-data.mjs", "utf8").includes("Kabupaten tidak diisi"), false);
 assert.equal(readFileSync("src/components/LogicPage.jsx", "utf8").includes("Batas administrasi resmi belum dipasang"), false);
-assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /Konteks risiko jangka panjang \(IRBI 2025\)/);
+assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Konteks risiko jangka panjang \(IRBI 2025\)/);
 assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /FILTER_INCOMPLETE/);
 assert.match(readFileSync("src/lib/bigWilayah.js", "utf8"), /Penyaringan wilayah dan batas Indonesia pada pembaruan ini tidak lengkap/);
 assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /big_filter_incomplete/);
@@ -1015,7 +1028,8 @@ assert.match(readFileSync("src/components/HotspotMap.jsx", "utf8"), /hotspot-clu
 assert.match(readFileSync("src/components/HotspotMap.jsx", "utf8"), /conic-gradient/);
 assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /bukan kelas confidence/);
 assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /<ClusterLegend \/>/);
-assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<ClusterLegend \/>/);
+assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /belum terintegrasi/);
+assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Potensi 7 hari/);
 assert.equal(readFileSync("src/styles.css", "utf8").includes(".hotspot-cluster span") && readFileSync("src/styles.css", "utf8").includes("background: #1e293b"), false);
 assert.match(readFileSync("src/styles.css", "utf8"), /\.leaflet-tile-pane/);
 assert.equal(readFileSync("src/lib/sourceCatalog.js", "utf8").includes("masih data contoh"), false);
@@ -1113,11 +1127,43 @@ assert.equal(udaraSource.includes("Prediksi ISPU"), false);
 assert.match(readFileSync("docs/ARAHAN_KUALITAS_UDARA.md", "utf8"), /ISPU resmi dan pembanding kualitas udara/);
 assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Kualitas Udara \(ISPU\)/);
 assert.equal(readFileSync("src/components/ExtraLayers.jsx", "utf8").includes("ISPU perkiraan"), false);
+assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Penjelasan lapisan/);
+assert.match(readFileSync("src/components/InfoTip.jsx", "utf8"), /createPortal/);
+assert.match(readFileSync("src/components/InfoTip.jsx", "utf8"), /document\.body/);
+assert.match(readFileSync("src/components/InfoTip.jsx", "utf8"), /Escape/);
+assert.match(readFileSync("src/components/InfoTip.jsx", "utf8"), /Tutup/);
+{
+  const kanan = letakInfoTip({
+    rect: { left: 860, right: 880, top: 80, bottom: 98 },
+    lebar: 1000,
+    tinggi: 800,
+    align: "end",
+  });
+  assert.equal(kanan.sheet, false);
+  assert.ok(kanan.left >= 8);
+  assert.ok(kanan.left + kanan.width <= 992);
+  const sempit = letakInfoTip({
+    rect: { left: 20, right: 40, top: 80, bottom: 98 },
+    lebar: 390,
+    tinggi: 700,
+    align: "end",
+  });
+  assert.equal(sempit.sheet, true);
+  const bawah = letakInfoTip({
+    rect: { left: 40, right: 60, top: 80, bottom: 98 },
+    lebar: 1200,
+    tinggi: 800,
+    align: "start",
+  });
+  assert.equal(bawah.sheet, false);
+  assert.equal(bawah.top, 106);
+  assert.equal(bawah.left, 40);
+}
 assert.equal(readFileSync("src/lib/hazards.js", "utf8").includes("ispu"), false);
 
 const indicatorSource = readFileSync("src/lib/priorityIndicators.js", "utf8");
 const indicatorUi = readFileSync("src/components/PriorityIndicators.jsx", "utf8");
-assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<PriorityIndicators \/>/);
+assert.match(readFileSync("src/components/LogicPage.jsx", "utf8"), /<PriorityIndicators rinci \/>/);
 assert.match(logicSource, /<PriorityIndicators rinci \/>/);
 assert.match(indicatorSource, /Indikator untuk Wilayah Prioritas/);
 assert.match(indicatorSource, /Metode A\+/);
@@ -2245,13 +2291,66 @@ const rujukanBoleh = new Set([
 ]);
 assert.equal(rujukanHref.length > 0, true);
 for (const href of rujukanHref) assert.equal(rujukanBoleh.has(href), true, href);
-assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<PrioritasPanel /);
+assert.match(readFileSync("src/components/DashboardView.jsx", "utf8"), /<PrioritasPanel /);
+assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /<ForecastPanel/);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /Logika pemantauan/);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /<h3>Gunung api<\/h3>/);
+const headerNav = readFileSync("src/components/SiteHeader.jsx", "utf8");
+const topNav = headerNav.slice(headerNav.indexOf("const TOP"), headerNav.indexOf("const KARHUTLA_PAGES"));
+assert.match(topNav, /\["ringkasan", "Ringkasan", "#\/"\],\s*\];/);
+assert.equal(topNav.indexOf('["karhutla"') < topNav.indexOf('["ringkasan"'), true);
+const hariLaporan = titikHariTerbaru([
+  { tanggal: "2026-10-16", lintang: 0, bujur: 100, kelasKepercayaan: "tinggi", provinsi: "Riau" },
+  { tanggal: "2026-10-17", lintang: 0, bujur: 101, kelasKepercayaan: "nominal", provinsi: "Jambi" },
+  { tanggal: "2026-10-17", lintang: 1, bujur: 102, kelasKepercayaan: "rendah", provinsi: "Riau" },
+]);
+assert.equal(hariLaporan.hari, "2026-10-17");
+assert.equal(hariLaporan.hitung.merah, 0);
+assert.equal(hariLaporan.hitung.oranye, 1);
+assert.equal(hariLaporan.hitung.kuning, 1);
+assert.equal(hariLaporan.puncak[0].nama, "Jambi");
+assert.deepEqual(hitungStatusBanjir([{ status: "Awas" }, { status: "Siaga" }, { status: "Siaga" }, { status: "Waspada" }, { status: "lain" }]), { Awas: 1, Siaga: 2, Waspada: 1 });
+assert.equal(puncakBanjir([{ status: "Awas", kab_kota: "A" }, { status: "lain" }, { status: "Siaga", kab_kota: "B" }]).length, 2);
+const titikBatas = muatTitikBatas();
+assert.equal(titikBatas.points.length, 514);
+assert.equal(titikBatas.gagal.length, 0);
+const topoTitik = JSON.parse(readFileSync("data/static/batas-kabkota.topojson", "utf8"));
+const geoTitik = (await import("topojson-client")).feature(topoTitik, topoTitik.objects.kabupaten);
+const fiturAceh = geoTitik.features.find((item) => item.properties.kode === "11.01");
+const titikAceh = titikBatas.points.find((item) => item.kode === "11.01");
+assert.equal(pointInGeometry(titikAceh.bujur, titikAceh.lintang, fiturAceh.geometry), true);
 assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /prioritas_aplus/);
 assert.match(readFileSync("src/components/SiteHeader.jsx", "utf8"), /Potensi 7 hari/);
 assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /Potensi karhutla 7 hari ke depan/);
 assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /hasil\.judul/);
 assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /Pembanding \(data terbuka, bukan resmi\)/);
 assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /belum terintegrasi/);
+assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /Petunjuk skoring/);
+assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /peringkat persentil yang sama/);
+assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /#\/sumber-metode\/potensi-7-hari/);
+assert.match(readFileSync("src/components/PotensiTujuhHari.jsx", "utf8"), /tidak membedakan peringkat/);
+const seriPersentil = percentRanks([3, 3, 3]);
+assert.equal(seriPersentil[0], 0.5);
+assert.equal(seriPersentil[1], 0.5);
+assert.equal(seriPersentil[2], 0.5);
+const bedaPersentil = percentRanks([1, 2, 2]);
+assert.equal(bedaPersentil[1], bedaPersentil[2]);
+assert.equal(bedaPersentil[0] < bedaPersentil[1], true);
+const hujanSama = ringkasHujanModel([
+  { skor: 0.2, hariBasah: 0, hujanHari: 7 },
+  { skor: 0.8, hariBasah: 0, hujanHari: 7 },
+]);
+assert.equal(hujanSama.membedakan, false);
+assert.equal(hujanSama.kelompok[0].hari, 0);
+assert.equal(hujanSama.jumlah, 2);
+const hujanBeda = ringkasHujanModel([
+  { skor: 0.2, hariBasah: 0, hujanHari: 7 },
+  { skor: 0.4, hariBasah: 1, hujanHari: 7 },
+  { skor: null, hariBasah: 5, hujanHari: 7 },
+]);
+assert.equal(hujanBeda.membedakan, true);
+assert.equal(hujanBeda.jumlah, 2);
+assert.deepEqual(hujanBeda.kelompok, [{ hari: 0, jumlah: 1 }, { hari: 1, jumlah: 1 }]);
 assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /bukan prakiraan resmi/);
 assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /hingga H\+7 sesuai produk BMKG/);
 assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /precipitation_sum/);
@@ -2303,6 +2402,27 @@ const okiPotensi = potensiSegar.baris.find((row) => row.kode === "16.02");
 assert.equal(okiPotensi.kelas, "Belum cukup data");
 assert.equal(okiPotensi.skor, null);
 assert.equal(potensiSegar.baris.at(-1).kode, "16.02");
+const potensiNasional = susunPotensiTujuh({
+  fwiRows: fwiPotensi,
+  hujanRows: hujanPotensi,
+  hotspotRows: [
+    { tanggal: "2026-10-20", kodeKabupaten: "15.04", kelasKepercayaan: "tinggi", wilayahStatus: "ok" },
+  ],
+  fwiFetchedAt: "2026-10-21T00:00:00.000Z",
+  hujanFetchedAt: "2026-10-21T00:00:00.000Z",
+  hotspotFetchedAt: "2026-10-21T00:00:00.000Z",
+  now: new Date("2026-10-21T06:00:00.000Z"),
+  nasional: true,
+  daftarWilayah: [
+    { kode: "93.01", nama: "Merauke", provinsi: "Papua Selatan" },
+    { kode: "72.01", nama: "Banggai", provinsi: "Sulawesi Tengah" },
+  ],
+});
+assert.equal(potensiNasional.baris.find((row) => row.kode === "15.04").kelas, "Sangat tinggi");
+assert.equal(potensiNasional.baris.find((row) => row.kode === "15.04").skor, potensiSegar.baris[0].skor);
+assert.equal(potensiNasional.baris.find((row) => row.kabupaten === "Merauke").kelas, "Belum cukup data");
+assert.equal(potensiNasional.baris.find((row) => row.kabupaten === "Merauke").skor, null);
+assert.equal(potensiNasional.baris.find((row) => row.kabupaten === "Banggai").provinsi, "Sulawesi Tengah");
 const potensiBasi = susunPotensiTujuh({
   fwiRows: fwiPotensi,
   hujanRows: hujanPotensi,

@@ -5,7 +5,8 @@ import { fileURLToPath } from "node:url";
 import { firmsAreaUrl, redactSecret } from "../src/lib/firms.js";
 import { writeHotspotMap } from "./build-hotspot-map.mjs";
 import { parseFirmsCoordinate } from "./indonesia-land.mjs";
-import { BIG_EDITION_NOTE, BIG_SOURCE_LABEL, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
+import { BIG_EDITION_NOTE, BIG_SERVICE, BIG_SOURCE_LABEL, DESA_UNIDENTIFIED } from "../src/lib/bigWilayah.js";
+import { muatTitikBatas } from "./titik-dalam-batas.mjs";
 import { annotatePoints, rowsToHotspotCsv } from "./big-wilayah.mjs";
 import { fetchGfwedKabupaten } from "./gfwed-kabupaten.mjs";
 import { assignKabupaten, geomFromAlerts, loadCapAlerts, writeCapKabFiles } from "./cap-kab.mjs";
@@ -271,56 +272,32 @@ async function fetchOpenMeteoAir(names) {
   };
 }
 
-const PRIORITY_PREFIX = {
-  14: "Riau",
-  15: "Jambi",
-  16: "Sumatera Selatan",
-  61: "Kalimantan Barat",
-  62: "Kalimantan Tengah",
-  63: "Kalimantan Selatan",
-};
-
 function inFrame(lat, lon) {
   return lat >= -11.5 && lat <= 6.5 && lon >= 94.4 && lon <= 141.6;
 }
 
-async function fetchRepresentativePoints() {
-  const resource = "21044ffd-c397-4b3c-acbd-5adaa03d79e3";
-  const url = `https://data.bnpb.go.id/api/3/action/datastore_search?resource_id=${resource}&limit=600`;
-  const { text } = await getText(url, 30000);
-  const payload = JSON.parse(text);
-  if (!payload.success) throw new Error("CKAN menolak tabel kabupaten.");
-  const points = [];
-  for (const record of payload.result?.records ?? []) {
-    const rawCode = Number(record["Kode Wilayah Kabupaten / Kota"]);
-    if (!Number.isFinite(rawCode)) continue;
-    const kode = String(Math.trunc(rawCode)).padStart(4, "0");
-    const provinsi = PRIORITY_PREFIX[kode.slice(0, 2)];
-    if (!provinsi) continue;
-    const lintang = Number(record.Latitude);
-    const bujur = Number(record.Longitude);
-    const kabupaten = String(record["Nama Kabupaten/Kota"] ?? "").trim();
-    if (!kabupaten || !inFrame(lintang, bujur)) continue;
-    points.push({
-      kode,
-      provinsi,
-      kabupaten,
-      lintang,
-      bujur,
-      sumber: "Titik wakil pada baris kabupaten Satu Data BNPB. Bukan batas administrasi. Jumlah kejadian tidak dipakai.",
-    });
+const TITIK_SUMBER =
+  "Titik di dalam batas kabupaten/kota yang tersimpan. Bukan ibu kota, bukan centroid, dan bukan koordinat Satu Data BNPB.";
+const TITIK_LISENSI =
+  "Koordinat dihitung dari batas kabupaten/kota yang sudah tersimpan (layanan BIG). Bukan unduhan shapefile baru dan bukan ODC-BY BNPB.";
+
+function fetchRepresentativePoints() {
+  const { points: mentah, gagal } = muatTitikBatas();
+  const points = mentah.filter((point) => inFrame(point.lintang, point.bujur));
+  if (gagal.length || points.length !== 514) {
+    throw new Error(`Titik dalam batas tidak lengkap: ${points.length} titik, gagal ${gagal.slice(0, 8).join(", ") || "—"}.`);
   }
-  points.sort((a, b) => a.provinsi.localeCompare(b.provinsi, "id") || a.kabupaten.localeCompare(b.kabupaten, "id"));
-  if (points.length < 15) throw new Error("Titik wakil kabupaten prioritas kurang dari 15.");
   return {
     points,
     body: toCsv(["kode", "provinsi", "kabupaten", "lintang", "bujur", "sumber"], points),
-    license: "ODC-BY. Cantumkan BNPB Satu Data. Hanya koordinat, bukan jumlah bencana.",
+    license: TITIK_LISENSI,
   };
 }
 
 async function fetchRain14(points) {
   const rows = [];
+  let permintaan = 0;
+  const mulai = Date.now();
   for (let start = 0; start < points.length; start += 25) {
     const chunk = points.slice(start, start + 25);
     const url = new URL("https://api.open-meteo.com/v1/forecast");
@@ -330,7 +307,16 @@ async function fetchRain14(points) {
     url.searchParams.set("forecast_days", "14");
     url.searchParams.set("timezone", "Asia/Jakarta");
     url.searchParams.set("wind_speed_unit", "kmh");
-    const { text } = await getText(url, 30000);
+    permintaan += 1;
+    let text;
+    try {
+      text = (await getText(url, 30000)).text;
+    } catch (error) {
+      if (!String(error?.message || "").includes("HTTP 429")) throw error;
+      await new Promise((resolveDelay) => setTimeout(resolveDelay, 15000));
+      permintaan += 1;
+      text = (await getText(url, 30000)).text;
+    }
     const payload = JSON.parse(text);
     const blocks = Array.isArray(payload) ? payload : [payload];
     if (blocks.length !== chunk.length) throw new Error("Open-Meteo tidak mengembalikan satu blok per kabupaten.");
@@ -361,8 +347,9 @@ async function fetchRain14(points) {
       rows,
     ),
     observedAt: dates.at(-1) ? `${dates.at(-1)}T16:59:00.000Z` : null,
-    observedLabel: dates.length ? `Prakiraan harian ${dates[0]}–${dates.at(-1)} (14 hari, zona Asia/Jakarta) pada titik wakil kabupaten` : "",
+    observedLabel: dates.length ? `Prakiraan harian ${dates[0]}–${dates.at(-1)} (14 hari, zona Asia/Jakarta) pada titik di dalam batas kabupaten/kota` : "",
     sourceUpdatedAt: dates.at(-1) ? `${dates.at(-1)}T16:59:00.000Z` : null,
+    statistik: { permintaan, detik: Math.round((Date.now() - mulai) / 100) / 10, kabupaten: points.length },
   };
 }
 
@@ -411,6 +398,40 @@ function parseGwisHtml(html) {
   };
 }
 
+const FWI_CACHE_FILE = resolve(root, "data/live/fwi_gwis_cache.json");
+const FWI_CACHE_MS = 18 * 60 * 60 * 1000;
+const FWI_CONCURRENCY = 8;
+// Isi dingin terukur: 4637 permintaan GWIS dalam 61,2 detik (4626 sel, 0 gagal)
+// ditambah 21 permintaan Open-Meteo dalam 3,5 detik. Langkah kabupaten 65 detik,
+// di bawah batas jalankan 10 menit. Angka ini cukup untuk menyegarkan seluruh
+// sel basi pada satu jadwal; tidak perlu menaikkan batas waktu.
+const FWI_MAKS_PERMINTAAN = 6000;
+
+function bacaCacheFwi() {
+  if (!existsSync(FWI_CACHE_FILE)) return {};
+  try {
+    const data = JSON.parse(readFileSync(FWI_CACHE_FILE, "utf8"));
+    return data?.cells && typeof data.cells === "object" ? data.cells : {};
+  } catch {
+    return {};
+  }
+}
+
+function tulisCacheFwi(cells) {
+  mkdirSync(dirname(FWI_CACHE_FILE), { recursive: true });
+  writeFileSync(FWI_CACHE_FILE, `${JSON.stringify({ updated_at: new Date().toISOString(), umur_jam: 18, cells })}\n`);
+}
+
+function kunciSelFwi(point, time) {
+  return `${point.kode}|${time}|${Number(point.lintang).toFixed(3)}|${Number(point.bujur).toFixed(3)}`;
+}
+
+function selMasih(cell, now) {
+  if (!cell || !Number.isFinite(Number(cell.fwi))) return false;
+  const at = Date.parse(cell.at);
+  return Number.isFinite(at) && now - at < FWI_CACHE_MS;
+}
+
 async function gwisAt(lat, lon, time) {
   const { text } = await getText(gwisInfoUrl(lat, lon, time), 30000);
   return parseGwisHtml(text);
@@ -430,14 +451,17 @@ async function mapPool(items, limit, task) {
   return output;
 }
 
-async function fetchGwisFwi(points, deadlineAt = Infinity) {
+async function fetchGwisFwi(points, deadlineAt = Infinity, { penuh = false } = {}) {
+  const mulai = Date.now();
   const probe = points[0];
   const today = jakartaToday();
   const dates = [];
   let misses = 0;
+  let permintaan = 0;
   for (let offset = 0; offset < 12; offset += 1) {
     lewatiBatas(deadlineAt, "fwi_gwis_pembanding");
     const time = addCalendarDays(today, offset);
+    permintaan += 1;
     const value = await gwisAt(probe.lintang, probe.bujur, time);
     if (!value) {
       misses += 1;
@@ -448,44 +472,89 @@ async function fetchGwisFwi(points, deadlineAt = Infinity) {
     dates.push(time);
   }
   if (!dates.length) throw new Error("GWIS tidak mengembalikan FWI pada titik uji.");
+  const now = Date.now();
+  const cells = bacaCacheFwi();
   const jobs = [];
   for (const point of points) {
-    for (const time of dates) jobs.push({ point, time });
+    for (const time of dates) {
+      const kunci = kunciSelFwi(point, time);
+      const cell = cells[kunci];
+      jobs.push({ point, time, kunci, cell, segar: selMasih(cell, now) });
+    }
   }
+  const perlu = jobs
+    .filter((job) => !job.segar)
+    .sort((a, b) => Date.parse(a.cell?.at || 0) - Date.parse(b.cell?.at || 0));
+  const batasPermintaan = penuh ? perlu.length : Math.min(perlu.length, FWI_MAKS_PERMINTAAN);
+  const antrian = perlu.slice(0, batasPermintaan);
+  const ditunda = perlu.length - antrian.length;
   let failures = 0;
-  const found = await mapPool(jobs, 4, async (job) => {
+  await mapPool(antrian, FWI_CONCURRENCY, async (job) => {
     try {
       lewatiBatas(deadlineAt, "fwi_gwis_pembanding");
+      permintaan += 1;
       const value = await gwisAt(job.point.lintang, job.point.bujur, job.time);
-      return { ...job, value };
+      if (!value) {
+        failures += 1;
+        return null;
+      }
+      cells[job.kunci] = {
+        at: new Date().toISOString(),
+        fwi: value.fwi,
+        isi: value.isi,
+        bui: value.bui,
+        ffmc: value.ffmc,
+        dmc: value.dmc,
+        dc: value.dc,
+      };
+      return value;
     } catch {
       failures += 1;
-      return { ...job, value: null };
+      return null;
     }
   });
-  if (failures > jobs.length * 0.3) throw new Error("Sebagian besar permintaan GWIS gagal.");
-  const rows = found
-    .filter((item) => item.value)
-    .map((item) => ({
-      tanggal: item.time,
-      provinsi: item.point.provinsi,
-      kabupaten: item.point.kabupaten,
-      kode: item.point.kode,
-      lintang: item.point.lintang,
-      bujur: item.point.bujur,
-      fwi: item.value.fwi,
-      isi: item.value.isi,
-      bui: item.value.bui,
-      ffmc: item.value.ffmc,
-      dmc: item.value.dmc,
-      dc: item.value.dc,
-    }));
+  tulisCacheFwi(cells);
+  if (antrian.length && failures > antrian.length * 0.3) {
+    throw new Error(`Sebagian besar permintaan GWIS gagal (${failures} dari ${antrian.length}). Cache yang berhasil tetap disimpan.`);
+  }
+  const rows = [];
+  for (const job of jobs) {
+    const cell = cells[job.kunci];
+    if (!cell || !Number.isFinite(Number(cell.fwi))) continue;
+    rows.push({
+      tanggal: job.time,
+      provinsi: job.point.provinsi,
+      kabupaten: job.point.kabupaten,
+      kode: job.point.kode,
+      lintang: job.point.lintang,
+      bujur: job.point.bujur,
+      fwi: cell.fwi,
+      isi: cell.isi,
+      bui: cell.bui,
+      ffmc: cell.ffmc,
+      dmc: cell.dmc,
+      dc: cell.dc,
+    });
+  }
   if (!rows.length) throw new Error("GWIS tidak menghasilkan baris FWI.");
+  const statistik = {
+    permintaan,
+    dari_cache: jobs.filter((job) => job.segar).length,
+    diambil: antrian.length - failures,
+    gagal: failures,
+    ditunda,
+    sel: jobs.length,
+    detik: Math.round((Date.now() - mulai) / 100) / 10,
+    kabupaten: points.length,
+    hari: dates.length,
+  };
+  console.log(`FWI GWIS: ${JSON.stringify(statistik)}`);
   return {
     body: toCsv(["tanggal", "provinsi", "kabupaten", "kode", "lintang", "bujur", "fwi", "isi", "bui", "ffmc", "dmc", "dc"], rows),
     observedAt: `${dates.at(-1)}T16:59:00.000Z`,
-    observedLabel: `FWI ECMWF ${dates[0]}–${dates.at(-1)} (${dates.length} hari yang dikembalikan layanan). Bukan 14 hari dan bukan FDRS BMKG.`,
+    observedLabel: `FWI ECMWF ${dates[0]}–${dates.at(-1)} (${dates.length} hari yang dikembalikan layanan) pada titik di dalam batas. Bukan 14 hari dan bukan FDRS BMKG.`,
     sourceUpdatedAt: `${dates.at(-1)}T16:59:00.000Z`,
+    statistik,
   };
 }
 
@@ -517,26 +586,26 @@ async function refreshKabupatenComparison(datasets, previous, deadlineAt = Infin
   const pointEntry = {
     ...baseEntry({
       id: "titik_wakil",
-      nama: "Titik wakil kabupaten",
-      instansi: "BNPB Satu Data",
-      officialUrl: "https://data.bnpb.go.id/api/3/action/package_show?id=data-bencana-indonesia",
-      access: "API",
+      nama: "Titik di dalam batas kabupaten/kota",
+      instansi: "BIG",
+      officialUrl: BIG_SERVICE,
+      access: "Berkas tersimpan",
       kind: "statis",
-      updateType: "Tahunan / statis",
+      updateType: "Data statis",
       expectedMaxAgeHours: 24 * 30 * 18,
-      limitation: "Hanya koordinat kabupaten pada enam provinsi prioritas. Jumlah kejadian semua jenis bencana tidak disimpan.",
-      fungsi: "Titik wakil untuk lapisan pembanding. Bukan batas administrasi.",
+      limitation: TITIK_SUMBER,
+      fungsi: "Titik sampel di dalam poligon untuk lapisan pembanding. Bukan batas administrasi dan bukan ibu kota.",
     }),
     mode: "statis",
-    license: "ODC-BY. Cantumkan BNPB Satu Data.",
+    license: TITIK_LISENSI,
   };
   let points = [];
   try {
-    const result = await fetchRepresentativePoints();
+    const result = fetchRepresentativePoints();
     points = result.points;
     pointEntry.license = result.license;
     pointEntry.observed_at = new Date().toISOString();
-    pointEntry.observed_label = `${points.length} titik wakil kabupaten pada enam provinsi prioritas. Bukan batas administrasi.`;
+    pointEntry.observed_label = `${points.length} titik di dalam batas kabupaten/kota. Bukan ibu kota dan bukan koordinat BNPB.`;
     pointEntry.source_updated_at = pointEntry.observed_at;
     writeIfChanged("data/live/titik_wakil.csv", result.body, pointEntry, previousEntry(previous, "titik_wakil"));
   } catch (error) {
@@ -553,6 +622,9 @@ async function refreshKabupatenComparison(datasets, previous, deadlineAt = Infin
       rainEntry.observed_at = result.observedAt;
       rainEntry.observed_label = result.observedLabel;
       rainEntry.source_updated_at = result.sourceUpdatedAt;
+      rainEntry.permintaan = result.statistik?.permintaan ?? null;
+      rainEntry.detik = result.statistik?.detik ?? null;
+      console.log(`Hujan Open-Meteo: ${JSON.stringify(result.statistik)}`);
       writeIfChanged("data/live/hujan_14_pembanding.csv", result.body, rainEntry, previousEntry(previous, "hujan_14_pembanding"));
     } catch (error) {
       Object.assign(rainEntry, keepPrevious(rainEntry, previousEntry(previous, "hujan_14_pembanding"), error.message));
@@ -567,16 +639,22 @@ async function refreshKabupatenComparison(datasets, previous, deadlineAt = Infin
   } else {
     try {
       lewatiBatas(deadlineAt, "fwi_gwis_pembanding");
-      const result = await fetchGwisFwi(points, deadlineAt);
+      const result = await fetchGwisFwi(points, deadlineAt, { penuh: process.argv.includes("--isi-penuh") });
       fwiEntry.observed_at = result.observedAt;
       fwiEntry.observed_label = result.observedLabel;
       fwiEntry.source_updated_at = result.sourceUpdatedAt;
+      fwiEntry.permintaan = result.statistik?.permintaan ?? null;
+      fwiEntry.dari_cache = result.statistik?.dari_cache ?? null;
+      fwiEntry.ditunda = result.statistik?.ditunda ?? null;
+      fwiEntry.detik = result.statistik?.detik ?? null;
       writeIfChanged("data/live/fwi_gwis_pembanding.csv", result.body, fwiEntry, previousEntry(previous, "fwi_gwis_pembanding"));
     } catch (error) {
       Object.assign(fwiEntry, keepPrevious(fwiEntry, previousEntry(previous, "fwi_gwis_pembanding"), error.message));
     }
   }
   datasets.fwi_gwis_pembanding = fwiEntry;
+
+  if (process.argv.includes("--isi-penuh")) return;
 
   const gfwedEntry = {
     ...baseEntry({
@@ -1245,8 +1323,31 @@ async function comparisonOnly() {
   console.log("Cuplikan pembanding ditulis. Status kunci FIRMS tidak diubah.");
 }
 
+async function kabupatenOnly() {
+  const previous = readJson(manifestPath) ?? { datasets: {} };
+  const datasets = { ...(previous.datasets ?? {}) };
+  const budgetMs = process.argv.includes("--isi-penuh") ? 25 * 60 * 1000 : 10 * 60 * 1000;
+  await jalankan("kabupaten_pembanding", budgetMs, (deadlineAt) => refreshKabupatenComparison(datasets, previous, deadlineAt));
+  const next = {
+    generated_at: nowIso,
+    schedule: previous.schedule ?? {
+      cron: REFRESH_CRON,
+      cron_cadangan: REFRESH_CRON_CADANGAN,
+      interval_hours: REFRESH_INTERVAL_HOURS,
+      timezone: "UTC",
+      display_timezone: "Asia/Jakarta",
+    },
+    next_run: nextScheduledRun(new Date()),
+    firms_key: previous.firms_key === "used" ? "used" : "absent",
+    datasets,
+  };
+  writeFileSync(manifestPath, `${JSON.stringify(next, null, 2)}\n`);
+  console.log("Cuplikan kabupaten pembanding ditulis. Status kunci FIRMS tidak diubah.");
+}
+
 const comparisonOnlyRun = process.argv.includes("--comparison-only");
-const run = comparisonOnlyRun ? comparisonOnly : main;
+const kabupatenOnlyRun = process.argv.includes("--kabupaten-only");
+const run = kabupatenOnlyRun ? kabupatenOnly : comparisonOnlyRun ? comparisonOnly : main;
 run().catch((error) => {
   console.error(redactSecret(error?.stack || error?.message || error, firmsKey));
   if (!comparisonOnlyRun && !hotspotCountsLogged) logHotspotCounts(null);

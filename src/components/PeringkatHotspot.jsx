@@ -45,6 +45,7 @@ export function PeringkatHotspot({
   const jendela = labelJendela(periodeJam);
   const cakupan = province || "seluruh Indonesia";
   const periodeTeks = from && to ? `${formatTanggal(from)}–${formatTanggal(to)}, jendela ${jendela}` : `jendela ${jendela}`;
+  const namaPrioritas = new Set(sepuluhPrioritas(hitung?.baris).map((row) => row.nama));
 
   return (
     <section className="card peringkat-hotspot" aria-labelledby="peringkat-hotspot-judul">
@@ -100,53 +101,17 @@ export function PeringkatHotspot({
               Jumlah kolom Total {formatAngka(hitung.total)}.
             </p>
           ) : null}
-          <h3>10 Prioritas Hotspot</h3>
           <p className="fine">
-            Sepuluh wilayah teratas pada tingkat dan periode yang sama dengan tabel lengkap.
-            Tanda dan warna adalah kepercayaan deteksi satelit, bukan bahaya.
-            Bila wilayah yang punya deteksi kurang dari sepuluh, daftar hanya memuat wilayah itu.
+            <strong>10 Prioritas</strong> adalah sepuluh baris teratas pada tabel ini, ditandai latar dan lencana.
+            Urutan seluruh tabel tetap merah menurun, lalu oranye, lalu kuning, lalu total, lalu nama.
+            Tingkat wilayah dan periode mengikuti saringan yang aktif.
+            Bila wilayah yang punya deteksi kurang dari sepuluh, tanda hanya pada wilayah itu.
+            Tanda warna adalah kepercayaan deteksi satelit, bukan bahaya.
           </p>
-          <div className="table-wrap peringkat-ringkas" tabIndex={0} aria-label="10 Prioritas Hotspot. Geser mendatar pada layar sempit.">
+          <div className="table-wrap peringkat-scroll" tabIndex={0} aria-label="Tabel peringkat hotspot. Sepuluh baris teratas adalah 10 Prioritas. Geser mendatar pada layar sempit.">
             <table>
               <caption>
-                10 Prioritas Hotspot {tingkat === "kabupaten" ? "kabupaten/kota" : "provinsi"} pada {periodeTeks}.
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">Peringkat</th>
-                  <th scope="col">Nama Wilayah</th>
-                  <th scope="col"><Tanda jenis="merah" /> Merah</th>
-                  <th scope="col"><Tanda jenis="oranye" /> Oranye</th>
-                  <th scope="col"><Tanda jenis="kuning" /> Kuning</th>
-                  <th scope="col">Total</th>
-                  <th scope="col">Waktu Data</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sepuluhPrioritas(hitung?.baris).length ? (
-                  sepuluhPrioritas(hitung.baris).map((row) => (
-                    <tr key={`prioritas-${row.tingkat}-${row.nama}`}>
-                      <td>{row.peringkat}</td>
-                      <th scope="row">{row.nama}</th>
-                      <td>{formatAngka(row.merah)}</td>
-                      <td>{formatAngka(row.oranye)}</td>
-                      <td>{formatAngka(row.kuning)}</td>
-                      <td>{formatAngka(row.total)}</td>
-                      <td>{waktuSel(row.waktuData)}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={7}>{keadaan.tampil ? "Tidak ada deteksi pada periode ini." : "Daftar tidak diisi."}</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-          <div className="table-wrap peringkat-scroll" tabIndex={0} aria-label="Tabel peringkat hotspot. Geser mendatar pada layar sempit.">
-            <table>
-              <caption>
-                Peringkat {tingkat === "kabupaten" ? "kabupaten/kota" : "provinsi"} pada {periodeTeks}. {keadaan.status === "berhasil" ? "Data periode aktif." : "Bukan data terkini."}
+                Peringkat {tingkat === "kabupaten" ? "kabupaten/kota" : "provinsi"} pada {periodeTeks}. Sepuluh baris pertama adalah 10 Prioritas. {keadaan.status === "berhasil" ? "Data periode aktif." : "Bukan data terkini."}
               </caption>
               <thead>
                 <tr>
@@ -162,18 +127,24 @@ export function PeringkatHotspot({
               </thead>
               <tbody>
                 {hitung?.baris.length ? (
-                  hitung.baris.map((row) => (
-                    <tr key={`${row.tingkat}-${row.nama}`}>
-                      <td>{row.peringkat}</td>
-                      <th scope="row">{row.nama}</th>
-                      <td>{formatAngka(row.merah)}</td>
-                      <td>{formatAngka(row.oranye)}</td>
-                      <td>{formatAngka(row.kuning)}</td>
-                      <td>{formatAngka(row.tidakDiketahui)}</td>
-                      <td>{formatAngka(row.total)}</td>
-                      <td>{waktuSel(row.waktuData)}</td>
-                    </tr>
-                  ))
+                  hitung.baris.map((row) => {
+                    const prioritas = namaPrioritas.has(row.nama);
+                    return (
+                      <tr key={`${row.tingkat}-${row.nama}`} className={prioritas ? "peringkat-prioritas" : undefined}>
+                        <td>
+                          {row.peringkat}
+                          {prioritas ? <span className="peringkat-lencana">10 Prioritas</span> : null}
+                        </td>
+                        <th scope="row">{row.nama}</th>
+                        <td>{formatAngka(row.merah)}</td>
+                        <td>{formatAngka(row.oranye)}</td>
+                        <td>{formatAngka(row.kuning)}</td>
+                        <td>{formatAngka(row.tidakDiketahui)}</td>
+                        <td>{formatAngka(row.total)}</td>
+                        <td>{waktuSel(row.waktuData)}</td>
+                      </tr>
+                    );
+                  })
                 ) : (
                   <tr>
                     <td colSpan={8}>{keadaan.tampil ? "Tidak ada deteksi pada periode ini." : "Tabel tidak diisi."}</td>

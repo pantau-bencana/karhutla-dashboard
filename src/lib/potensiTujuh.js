@@ -80,10 +80,10 @@ export const PARAMETER_POTENSI = Object.freeze([
   {
     id: "cakupan",
     nama: "Cakupan wilayah",
-    resmi: "Enam provinsi prioritas",
+    resmi: "Seluruh kabupaten/kota pada batas tersimpan",
     ketersediaan: "tersedia",
     catatan:
-      "Riau, Jambi, Sumatera Selatan, Kalimantan Barat, Kalimantan Tengah, dan Kalimantan Selatan. Nama kabupaten memakai batas yang tersimpan bila kodenya cocok. Kabupaten di luar enam provinsi tidak masuk tabel.",
+      "Daftar memakai batas kabupaten/kota yang tersimpan. Titik FWI GWIS dan hujan Open-Meteo dihitung di dalam poligon itu, bukan ibu kota dan bukan koordinat BNPB. Skor hanya dihitung di antara kabupaten yang FWI dan hujan modelnya lengkap, minimal 5 dari 7 hari. Yang kurang dari itu ditulis Belum cukup data. Angka tidak diisi. Memindahkan titik sampel mengubah skor kabupaten yang sebelumnya memakai koordinat lain.",
     masukSkor: false,
   },
 ]);
@@ -138,6 +138,26 @@ export function teksBobot(hotspotMasuk) {
   return "Hotspot tidak masuk skor karena cuplikannya tidak ada. Bobot sama, masing-masing setengah: peringkat FWI rata-rata dan peringkat hari tanpa hujan model di atas 20 mm.";
 }
 
+export function ringkasHujanModel(baris) {
+  const lengkap = (baris ?? []).filter((row) => row?.skor != null && Number.isFinite(Number(row.hariBasah)) && Number(row.hujanHari) > 0);
+  if (!lengkap.length) return null;
+  const hitung = new Map();
+  for (const row of lengkap) {
+    const hari = Number(row.hariBasah);
+    hitung.set(hari, (hitung.get(hari) ?? 0) + 1);
+  }
+  const kelompok = [...hitung.entries()]
+    .sort((a, b) => a[0] - b[0])
+    .map(([hari, jumlah]) => ({ hari, jumlah }));
+  const jendela = [...new Set(lengkap.map((row) => Number(row.hujanHari)))];
+  return {
+    membedakan: kelompok.length > 1,
+    kelompok,
+    hariJendela: jendela.length === 1 ? jendela[0] : null,
+    jumlah: lengkap.length,
+  };
+}
+
 function kumpulkanHari(rows, tanggalSet, provinsiSet, angka) {
   const byKode = new Map();
   for (const row of rows ?? []) {
@@ -146,7 +166,8 @@ function kumpulkanHari(rows, tanggalSet, provinsiSet, angka) {
     const kode = kodeKan(row?.kode);
     if (!kode) continue;
     const wilayah = cariWilayahBatas({ kode, kabupaten: row?.kabupaten });
-    if (!wilayah || !provinsiSet.has(wilayah.provinsi)) continue;
+    if (!wilayah) continue;
+    if (provinsiSet && !provinsiSet.has(wilayah.provinsi)) continue;
     let bucket = byKode.get(wilayah.kode);
     if (!bucket) {
       bucket = { kode: wilayah.kode, kabupaten: wilayah.nama, provinsi: wilayah.provinsi, hari: new Map() };
@@ -192,6 +213,8 @@ export function susunPotensiTujuh({
   hotspotRows = null,
   irbiRows = [],
   provinsi = CAKUPAN_PROVINSI,
+  daftarWilayah = null,
+  nasional = false,
   fwiFetchedAt = "",
   hujanFetchedAt = "",
   hotspotFetchedAt = "",
@@ -202,7 +225,7 @@ export function susunPotensiTujuh({
   const depan = tanggalDepan(hari0);
   const tanggalDepanSet = new Set(depan);
   const hotspotDari = addDays(hari0, -(HORIZON_HARI - 1));
-  const provinsiSet = new Set(provinsi?.length ? provinsi : CAKUPAN_PROVINSI);
+  const provinsiSet = nasional ? null : new Set(provinsi?.length ? provinsi : CAKUPAN_PROVINSI);
   const alasan = [];
   if (umurJam(fwiFetchedAt, saat) > MAKS_JAM_CUACA) {
     alasan.push("cuplikan FWI pembanding lebih dari 36 jam atau waktu ambilnya tidak ada");
@@ -240,6 +263,32 @@ export function susunPotensiTujuh({
       irbiKelas: iklim?.kelas || "",
     };
   });
+  const sudah = new Set(dasar.map((row) => row.kode));
+  for (const item of daftarWilayah ?? []) {
+    const kode = kodeKan(item?.kode);
+    if (!kode || sudah.has(kode)) continue;
+    const wilayah = cariWilayahBatas({ kode, kabupaten: item?.nama || item?.kabupaten }) || {
+      kode,
+      nama: item?.nama || item?.kabupaten || kode,
+      provinsi: item?.provinsi || "",
+    };
+    if (provinsiSet && !provinsiSet.has(wilayah.provinsi)) continue;
+    const iklim = irbi.get(`${normalizePlaceName(wilayah.provinsi)}|${normalizePlaceName(wilayah.nama)}`);
+    dasar.push({
+      kode,
+      kabupaten: wilayah.nama,
+      provinsi: wilayah.provinsi,
+      fwiRata: null,
+      fwiHari: 0,
+      hariBasah: 0,
+      hujanHari: 0,
+      kering: null,
+      hotspot: hotspotMasuk ? panas.get(kode) ?? 0 : null,
+      irbi: iklim ? Number(iklim.indeks) : null,
+      irbiKelas: iklim?.kelas || "",
+    });
+    sudah.add(kode);
+  }
   const lengkap = alasan.length
     ? []
     : dasar.filter((row) => row.fwiHari >= FWI_HARI_MIN && row.hujanHari >= HUJAN_HARI_MIN && row.fwiRata != null && row.kering != null);
@@ -272,7 +321,9 @@ export function susunPotensiTujuh({
       if (skor) return skor;
       return a.kabupaten.localeCompare(b.kabupaten, "id") || a.provinsi.localeCompare(b.provinsi, "id");
     });
-  if (!alasan.length && !baris.length) alasan.push("tidak ada kabupaten pada enam provinsi untuk 7 tanggal ke depan");
+  if (!alasan.length && !baris.length) {
+    alasan.push(nasional ? "tidak ada kabupaten pada batas tersimpan untuk 7 tanggal ke depan" : "tidak ada kabupaten pada enam provinsi untuk 7 tanggal ke depan");
+  }
   return {
     judul: POTENSI_JUDUL,
     jenis: POTENSI_JENIS,

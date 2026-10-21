@@ -1,3 +1,4 @@
+import { CatatanRingkas } from "./CatatanRingkas.jsx";
 import { formatAngka, formatTanggal } from "../lib/format.js";
 import { GFWED_CITATION, GFWED_LABEL, GFWED_UNAVAILABLE } from "../lib/gfwed.js";
 
@@ -19,9 +20,14 @@ export function GfwedTable({ rows }) {
             <p>
               Tanggal data: <strong>{formatTanggal(tanggal)}</strong> <span className="tag">tertunda</span>
             </p>
-            <p>
-              Rata-rata dan maksimum dihitung dari sel yang pusatnya jatuh di dalam kabupaten/kota. Kabupaten/kota tanpa sel seperti itu tidak dicantumkan. Itu bukan nilai nol. Urutan mengikuti kode wilayah, bukan peringkat.
-            </p>
+            <CatatanRingkas judul="Cara membaca tabel GFWED">
+              <p>
+                Rata-rata dan maksimum dihitung dari sel yang pusatnya jatuh di dalam kabupaten/kota. Kabupaten/kota tanpa sel seperti itu tidak dicantumkan. Itu bukan nilai nol. Urutan mengikuti kode wilayah, bukan peringkat.
+              </p>
+              <p>
+                <a href="#/sumber-metode">Sumber &amp; Metode</a>
+              </p>
+            </CatatanRingkas>
             <div className="table-wrap">
               <table>
                 <thead>

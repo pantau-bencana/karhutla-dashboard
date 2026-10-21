@@ -1,17 +1,24 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Badge } from "./Badge.jsx";
 import { OfficialLinks } from "./OfficialLinks.jsx";
 import { officialLinks } from "../lib/sourceCatalog.js";
-import { ExtraLayers, LayerBar, WilayahDetail } from "./ExtraLayers.jsx";
-import { PrioritasPanel } from "./PrioritasPanel.jsx";
+import { CatatanRingkas } from "./CatatanRingkas.jsx";
+import { ExtraLayers, LayerBar } from "./ExtraLayers.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { HotspotBoard } from "./HotspotBoard.jsx";
-import { GfwedTable } from "./GfwedTable.jsx";
+import { HotspotMap } from "./HotspotMap.jsx";
+import { KontrolPeriode } from "./KontrolPeriode.jsx";
+import { PetaKab } from "./PetaKab.jsx";
+import { PrioritasPanel } from "./PrioritasPanel.jsx";
 import { TrendCharts } from "./TrendCharts.jsx";
 import { defaultRange } from "../lib/derive.js";
 import { hotspotSourceLabel, labelStatusFeed } from "../lib/freshness.js";
 import { formatAngka, formatTanggal } from "../lib/format.js";
-import { JENDELA_PERIODE, barisPeriodeAktif, labelJendela } from "../lib/peringkatHotspot.js";
+import { tanggalJakarta } from "../lib/gwisFwi.js";
+import { cariWilayahBatas, daftarKabkota } from "../lib/kabProvinsi.js";
+import { barisPeriodeAktif, labelJendela } from "../lib/peringkatHotspot.js";
+import { hariKeDepan, ringkasTitik, warnaAngin, warnaHujan, warnaIrbi, WARNA_KELAS } from "../lib/petaTema.js";
+import { KELAS_BELUM, susunPotensiTujuh } from "../lib/potensiTujuh.js";
 import { PeringkatHotspot } from "./PeringkatHotspot.jsx";
 import { FilterProvinsi } from "./FilterProvinsi.jsx";
 
@@ -65,18 +72,22 @@ export function DashboardView({
   );
 }
 
+const HORIZON = {
+  fdrs: "Horizon citra SPARTAN: hingga H+7 sesuai produk BMKG. Peta menampilkan FWI model ECMWF (GWIS) pada tanggal model, pengganti berlabel, bukan FDRS BMKG.",
+  hujan: "Horizon prakiraan BMKG: 3 hari. Pewarnaan peta adalah jumlah precipitation_sum model pada 7 hari ke depan, di satu titik di dalam batas. Bukan prakiraan resmi.",
+  angin: "Horizon prakiraan BMKG: 3 hari. Pewarnaan peta adalah angin maksimum model pada 7 hari ke depan, di satu titik di dalam batas. Bukan asal kebakaran.",
+  ispu: "Horizon: hari pengukuran stasiun. Bukan prakiraan ISPU. Titik model CAMS tetap µg/m³ dan bukan pewarnaan kabupaten/kota.",
+  potensi: "Horizon 7 hari ke depan, zona Asia/Jakarta. Analisis model, bukan prakiraan resmi. Abu-abu berarti Belum cukup data.",
+};
+
 function DashboardBody({ active, config, feeds, loading, province, setProvince, from, setFrom, to, setTo, periodeJam, setPeriodeJam, view, freshness }) {
   const [layer, setLayer] = useState("hotspot");
+  const [overlayIrbi, setOverlayIrbi] = useState(false);
   const hotspotFeed = feeds.find((feed) => feed.id === "hotspot");
   const aktif = barisPeriodeAktif(
     hotspotFeed && !hotspotFeed.contoh && hotspotFeed.status !== "gagal" ? hotspotFeed.rows : [],
     { from, to, province, hours: periodeJam },
   );
-  const kelasAktif = aktif.reduce((acc, point) => {
-    const key = point.kelasKepercayaan || "tidak_diketahui";
-    acc[key] = (acc[key] || 0) + 1;
-    return acc;
-  }, {});
   const sipongiFeed = feeds.find((feed) => feed.id === "sipongi");
   const irbiFeed = feeds.find((feed) => feed.id === "irbi");
   const visibleFeeds = layer === "ispu" ? feeds.filter((feed) => feed.id !== "ispu" && feed.id !== "ispu_pembanding") : feeds;
@@ -99,15 +110,70 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
     setPeriodeJam?.(24);
   }
 
-  function updateFrom(value) {
-    setFrom(value);
-    if (value && to && value > to) setTo(value);
-  }
-
-  function updateTo(value) {
-    setTo(value);
-    if (value && from && value < from) setFrom(value);
-  }
+  const hariTujuh = useMemo(() => hariKeDepan(7), []);
+  const hujanFeed = feeds.find((feed) => feed.id === "hujan_14_pembanding");
+  const fwiFeed = feeds.find((feed) => feed.id === "fwi_gwis_pembanding");
+  const potensi = useMemo(
+    () =>
+      susunPotensiTujuh({
+        fwiRows: fwiFeed?.contoh ? [] : fwiFeed?.rows,
+        hujanRows: hujanFeed?.contoh ? [] : hujanFeed?.rows,
+        hotspotRows: hotspotFeed && !hotspotFeed.contoh && hotspotFeed.status !== "gagal" ? hotspotFeed.rows : null,
+        irbiRows: irbiFeed?.contoh ? [] : irbiFeed?.rows,
+        daftarWilayah: daftarKabkota(),
+        nasional: true,
+        fwiFetchedAt: fwiFeed?.fetchedAt || "",
+        hujanFetchedAt: hujanFeed?.fetchedAt || "",
+        hotspotFetchedAt: hotspotFeed?.fetchedAt || "",
+      }),
+    [fwiFeed, hujanFeed, hotspotFeed, irbiFeed],
+  );
+  const tanggalFwi = useMemo(() => {
+    const today = tanggalJakarta();
+    const dates = (fwiFeed?.contoh ? [] : fwiFeed?.rows ?? [])
+      .map((row) => String(row.tanggal || "").slice(0, 10))
+      .filter((item) => item >= today)
+      .sort();
+    return dates[0] || today;
+  }, [fwiFeed]);
+  const garisIrbi = useMemo(() => {
+    const map = {};
+    if (!overlayIrbi) return map;
+    for (const row of irbiFeed?.contoh ? [] : irbiFeed?.rows ?? []) {
+      const wilayah = cariWilayahBatas({ kabupaten: row.kabupaten });
+      if (!wilayah?.kode) continue;
+      map[wilayah.kode] = {
+        warna: warnaIrbi(row.kelas),
+        teks: `Overlay IRBI 2025: ${row.kelas}. Bukan tema peta dan bukan prakiraan.`,
+      };
+    }
+    return map;
+  }, [overlayIrbi, irbiFeed]);
+  const isiPeta = useMemo(() => {
+    const map = {};
+    if (layer === "potensi") {
+      for (const row of potensi.baris) {
+        map[row.kode] = {
+          warna: WARNA_KELAS[row.kelas] || WARNA_KELAS[KELAS_BELUM],
+          teks: `${row.kelas}. Analisis model, bukan prakiraan resmi.`,
+        };
+      }
+      return map;
+    }
+    if (layer === "hujan" || layer === "angin") {
+      const bidang = layer === "hujan" ? "curahHujan" : "anginKmj";
+      const ringkas = ringkasTitik(hujanFeed?.contoh ? [] : hujanFeed?.rows, { hari: hariTujuh, bidang });
+      for (const [kode, nilai] of ringkas) {
+        map[kode] =
+          layer === "hujan"
+            ? { warna: warnaHujan(nilai.jumlah), teks: `Jumlah hujan model 7 hari ${nilai.jumlah.toFixed(1)} mm pada satu titik di dalam batas.` }
+            : { warna: warnaAngin(nilai.maks), teks: `Angin maksimum model ${nilai.maks.toFixed(0)} km/jam pada satu titik di dalam batas.` };
+      }
+      return map;
+    }
+    if (overlayIrbi && (layer === "hotspot" || layer === "fdrs")) return garisIrbi;
+    return map;
+  }, [layer, potensi, hujanFeed, hariTujuh, overlayIrbi, garisIrbi]);
 
   return (
     <main className="wrap main">
@@ -155,35 +221,60 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           hours={periodeJam}
           prioritas={priority}
         />
-        {layer === "ispu" ? null : <div className="date-filter">
-          <label>
-            Dari
-            <input type="date" value={from} onChange={(event) => updateFrom(event.target.value)} />
-          </label>
-          <label>
-            Sampai
-            <input type="date" value={to} onChange={(event) => updateTo(event.target.value)} />
-          </label>
-          <button type="button" className="button ghost" onClick={latestDay}>
-            Hari terakhir
-          </button>
-          <button type="button" className="button ghost" onClick={() => { resetDates(); setPeriodeJam?.(168); }}>
-            7 hari terakhir
-          </button>
-        </div>}
-        {layer === "ispu" ? null : (
-          <div className="province-filter" role="group" aria-label={`Jendela periode, sekarang ${labelJendela(periodeJam)}`}>
-            {JENDELA_PERIODE.map(([jam, label]) => (
-              <button key={jam} type="button" aria-pressed={periodeJam === jam} onClick={() => setPeriodeJam?.(jam)}>
-                {label}
-              </button>
-            ))}
-          </div>
+        {layer === "hotspot" ? (
+          <KontrolPeriode
+            from={from}
+            to={to}
+            setFrom={setFrom}
+            setTo={setTo}
+            periodeJam={periodeJam}
+            setPeriodeJam={setPeriodeJam}
+            onHariTerakhir={latestDay}
+            onTujuhHari={() => {
+              resetDates();
+              setPeriodeJam?.(168);
+            }}
+          />
+        ) : (
+          <p className="horizon-label">{HORIZON[layer]}</p>
         )}
       </section>
-      <LayerBar layer={layer} setLayer={setLayer} />
-      <WilayahDetail province={province} from={from} to={to} layer={layer} />
+      <LayerBar layer={layer} setLayer={setLayer} overlayIrbi={overlayIrbi} setOverlayIrbi={setOverlayIrbi} />
+      {layer === "potensi" || layer === "hujan" || layer === "angin" ? (
+        <PetaKab
+          isi={isiPeta}
+          garis={overlayIrbi ? garisIrbi : {}}
+          judul={layer === "potensi" ? "Potensi 7 hari" : layer === "hujan" ? "Hujan model 7 hari" : "Angin model 7 hari"}
+          catatan={HORIZON[layer]}
+          legenda={
+            layer === "potensi"
+              ? Object.entries(WARNA_KELAS).map(([label, warna]) => ({ label, warna }))
+              : []
+          }
+          kosongLabel={layer === "potensi" ? "Belum cukup data" : "Tidak ada nilai model pada titik ini"}
+        />
+      ) : null}
+      {layer === "fdrs" ? (
+        <section className="card">
+          <header className="card-head">
+            <div>
+              <h2>FWI model ECMWF (GWIS)</h2>
+              <p>Pembanding (data terbuka, bukan resmi). Bukan FDRS BMKG. Tanggal model {formatTanggal(tanggalFwi)}.</p>
+            </div>
+          </header>
+          <HotspotMap points={[]} frame="indonesia" fwiDate={tanggalFwi} />
+        </section>
+      ) : null}
+      {overlayIrbi && (layer === "hotspot" || layer === "fdrs") ? (
+        <PetaKab
+          isi={garisIrbi}
+          judul="Overlay IRBI 2025"
+          catatan="Kelas buku IRBI 2025. Overlay saja, bukan tema peta, bukan filter tanggal, dan bukan prakiraan."
+          kosongLabel="Tidak ada baris IRBI pada batas ini"
+        />
+      ) : null}
       {layer !== "hotspot" ? <ExtraLayers layer={layer} view={view} feeds={feeds} province={province} provinces={config?.provinsiPrioritas ?? []} /> : null}
+      {overlayIrbi ? <ExtraLayers layer="irbi" view={view} feeds={feeds} province={province} provinces={config?.provinsiPrioritas ?? []} /> : null}
 
       {layer === "hotspot" && view.rangeInvalid ? (
         <p className="banner error" role="alert">
@@ -192,24 +283,17 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
       ) : null}
 
       {layer === "hotspot" ? (
-        <p className="fine">
-          {formatAngka(aktif.length)} titik pada periode {labelJendela(periodeJam)}
-          {from && to ? ` (${formatTanggal(from)}–${formatTanggal(to)})` : ""}, cakupan {province || "seluruh Indonesia"}.
-          Merah {formatAngka(kelasAktif.tinggi || 0)}, oranye {formatAngka(kelasAktif.nominal || 0)}, kuning {formatAngka(kelasAktif.rendah || 0)}, tidak diketahui {formatAngka(kelasAktif.tidak_diketahui || 0)}.
-          Angka ini sama dengan peta dan tabel bila saringan kelas tidak diubah. Grafik tren memakai seluruh rentang tanggal.
-          Data stasiun ISPU belum terintegrasi ke dashboard.
-        </p>
-      ) : null}
-
-      {layer === "hotspot" ? <>
       <section className="card">
         <header className="card-head">
           <div>
             <h2>Sebaran titik panas</h2>
             <p>
-              {formatAngka(aktif.length)} titik pada jendela {labelJendela(periodeJam)}
+              {formatAngka(aktif.length)} titik · {labelJendela(periodeJam)}
+              {from && to ? ` · ${formatTanggal(from)}–${formatTanggal(to)}` : ""}
+              {province ? ` · ${province}` : " · seluruh Indonesia"}
               {hotspotFeed?.contoh ? " · data contoh" : ""}
               {hotspotFeed ? ` · ${hotspotSourceLabel(hotspotFeed, config.firms?.sumber)}` : ""}
+              {freshness?.tertunda ? " · data tertunda" : ""}
             </p>
           </div>
         </header>
@@ -233,84 +317,13 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           />
         )}
       </section>
-      <PeringkatHotspot
-        points={aktif}
-        feed={hotspotFeed}
-        memuat={Boolean(loading && !hotspotFeed)}
-        tertunda={Boolean(freshness?.tertunda)}
-        from={from}
-        to={to}
-        periodeJam={periodeJam}
-        province={province}
-        sumber={config.firms?.sumber}
-      />
+      ) : null}
 
-      <TrendCharts hotspotTrend={view.hotspotTrend} hotspotSeries={view.hotspotSeries} province={province} />
-
-      <section className="card">
-        <header className="card-head">
-          <div>
-            <h2>Rekap SiPongi</h2>
-            <p>
-              {sipongiFeed?.rows?.length ? (
-                "Jumlah hotspot dan luas terbakar dijumlahkan pada rentang tanggal."
-              ) : (
-                <span className="link-only">
-                  <Badge kind="tau">Tautan saja</Badge>
-                  <OfficialLinks links={officialLinks("sipongi")} />
-                  <span>Rekap resmi belum terhubung ke dasbor.</span>
-                </span>
-              )}
-            </p>
-          </div>
-        </header>
-        <SimpleTable
-          empty={
-            sipongiFeed?.rows?.length ? (
-              "Tidak ada rekap SiPongi pada rentang ini."
-            ) : (
-              <span className="link-only">
-                <Badge kind="tau">Tautan saja</Badge>
-                <OfficialLinks links={officialLinks("sipongi")} />
-                <span>Rekap resmi SiPongi belum terhubung.</span>
-              </span>
-            )
-          }
-          head={["Provinsi", "Hotspot", "Luas (ha)"]}
-          rows={view.sipongiRows.map((row) => [row.provinsi, formatAngka(row.jumlah), formatAngka(row.luas, 1)])}
-        />
-      </section>
-
-      <section className="card">
-        <header className="card-head">
-          <div>
-            <h2>Konteks risiko jangka panjang (IRBI 2025)</h2>
-            <p>
-              {irbiFeed?.rows?.length
-                ? "Buku IRBI 2025. Tidak mengikuti filter tanggal. Urutan nama, bukan urutan prioritas dan bukan hitungan hotspot."
-                : irbiFeed?.error || "Tidak tersedia. Tabel IRBI resmi belum dimuat."}
-            </p>
-          </div>
-        </header>
-        <SimpleTable
-          empty={
-            irbiFeed?.rows?.length
-              ? "Tidak ada baris IRBI pada cakupan ini."
-              : irbiFeed?.error || "Tidak tersedia. Tabel IRBI resmi belum dimuat."
-          }
-          head={["Kabupaten", "Provinsi", "Indeks", "Kelas"]}
-          rows={view.irbiRows.map((row) => [row.kabupaten, row.provinsi, formatAngka(row.indeks, 2), row.kelas])}
-        />
-      </section>
-      </> : null}
-
-      <section className="card sources-panel" aria-labelledby="metadata-heading">
-        <header className="card-head">
-          <div>
-            <h2 id="metadata-heading">Metadata sumber</h2>
-            <p>Waktu ambil dan waktu data mengikuti snapshot resmi. Berkas contoh tidak ditampilkan. Tidak ada server aplikasi.</p>
-          </div>
-        </header>
+      <CatatanRingkas judul="Catatan sumber" id="metadata-heading">
+        <p>
+          Periode filter {from || "—"} sampai {to || "—"}. Lapisan {layer}. Cakupan {province || "seluruh Indonesia"}. Angka contoh tidak menjadi data resmi.
+          Waktu ambil dan waktu data mengikuti snapshot resmi. Berkas contoh tidak ditampilkan. Tidak ada server aplikasi.
+        </p>
         <div className={`callout ${keySet ? "callout-hot" : ""}`}>
           <strong>{keySet ? "MAP_KEY FIRMS aktif di config." : "MAP_KEY FIRMS kosong."}</strong>
           <p>
@@ -367,9 +380,74 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
         ) : (
           <p className="empty">{loading ? "Memuat sumber…" : "Tidak ada dataset di config.json."}</p>
         )}
+        <p>
+          <a href="#/sumber-metode">Rincian di Sumber &amp; Metode</a>
+          {" · "}
+          <a href="#/">Konteks risiko jangka panjang (IRBI 2025) di Ringkasan</a>
+          {" · "}
+          <a href="#/">Daftar prioritas 14 hari di Ringkasan</a>
+        </p>
+      </CatatanRingkas>
+
+      {layer === "hotspot" ? <>
+      <PeringkatHotspot
+        points={aktif}
+        feed={hotspotFeed}
+        memuat={Boolean(loading && !hotspotFeed)}
+        tertunda={Boolean(freshness?.tertunda)}
+        from={from}
+        to={to}
+        periodeJam={periodeJam}
+        province={province}
+        sumber={config.firms?.sumber}
+      />
+
+      <TrendCharts hotspotTrend={view.hotspotTrend} hotspotSeries={view.hotspotSeries} province={province} />
+
+      <section className="card">
+        <header className="card-head">
+          <div>
+            <h2>Rekap SiPongi</h2>
+            <p>
+              {sipongiFeed?.rows?.length ? (
+                "Jumlah hotspot dan luas terbakar dijumlahkan pada rentang tanggal."
+              ) : (
+                <span className="link-only">
+                  <Badge kind="tau">Tautan saja</Badge>
+                  <OfficialLinks links={officialLinks("sipongi")} />
+                  <span>Rekap resmi belum terhubung ke dasbor.</span>
+                </span>
+              )}
+            </p>
+          </div>
+        </header>
+        <SimpleTable
+          empty={
+            sipongiFeed?.rows?.length ? (
+              "Tidak ada rekap SiPongi pada rentang ini."
+            ) : (
+              <span className="link-only">
+                <Badge kind="tau">Tautan saja</Badge>
+                <OfficialLinks links={officialLinks("sipongi")} />
+                <span>Rekap resmi SiPongi belum terhubung.</span>
+              </span>
+            )
+          }
+          head={["Provinsi", "Hotspot", "Luas (ha)"]}
+          rows={view.sipongiRows.map((row) => [row.provinsi, formatAngka(row.jumlah), formatAngka(row.luas, 1)])}
+        />
       </section>
-      <GfwedTable rows={feeds.find((feed) => feed.id === "gfwed_kabupaten")?.rows} />
+      <p className="fine">
+        Konteks risiko jangka panjang (IRBI 2025):{" "}
+        {irbiFeed?.rows?.length
+          ? "nyalakan overlay IRBI pada pemilih tema. Buku IRBI 2025. Tidak mengikuti filter tanggal. Urutan nama, bukan urutan prioritas dan bukan hitungan hotspot."
+          : irbiFeed?.error || "Tidak tersedia. Tabel IRBI resmi belum dimuat."}
+      </p>
+      <p className="fine">
+        Daftar resmi 15–20 kabupaten/kota untuk 14 hari: menunggu data resmi BMKG (FDRS/potensi karhutla per kab/kota).
+      </p>
       <PrioritasPanel snapshot={feeds.prioritas} />
+      </> : null}
     </main>
   );
 }

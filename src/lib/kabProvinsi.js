@@ -21,6 +21,10 @@ for (const item of daftar) {
   else if (byNama.get(kunci)?.kode !== wilayah.kode) byNama.set(kunci, null);
 }
 
+export function daftarKabkota() {
+  return daftar.map(([kode, nama, provinsi]) => ({ kode, nama, provinsi }));
+}
+
 export function cariWilayahBatas({ kode = "", kabupaten = "" } = {}) {
   const mentah = String(kode ?? "").trim();
   const polos = mentah.replaceAll(".", "");

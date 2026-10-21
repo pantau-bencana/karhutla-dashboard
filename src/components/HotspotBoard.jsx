@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from "react";
+import { CatatanRingkas } from "./CatatanRingkas.jsx";
 import { ClusterLegend, HotspotMap } from "./HotspotMap.jsx";
 import { GwisFwiToggle } from "./GwisFwiToggle.jsx";
 import { tanggalJakarta } from "../lib/gwisFwi.js";
@@ -41,7 +42,6 @@ function SelectFilter({ label, value, onChange, options, empty }) {
 
 export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observedAt, freshness, sumber, from = "", to = "", periodeTeks = "", frame = "indonesia", onKembaliIndonesia }) {
   const mapApi = useRef(null);
-  const [provinceFilter, setProvinceFilter] = useState("semua");
   const [tanggal, setTanggal] = useState("");
   const [satelit, setSatelit] = useState("");
   const [provinsi, setProvinsi] = useState("");
@@ -57,13 +57,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
   const modelDate = tanggal || tanggalJakarta();
   const onFwiReady = useCallback((ready) => setFwiReady(ready), []);
 
-  const selectedProvinces = provinceFilter === "prioritas" ? priority : provinceFilter === "semua" ? null : [provinceFilter];
-  const scoped = useMemo(() => {
-    const rows = points ?? [];
-    if (!selectedProvinces) return rows;
-    const allow = new Set(selectedProvinces);
-    return rows.filter((point) => allow.has(point.provinsi));
-  }, [points, selectedProvinces]);
+  const scoped = useMemo(() => points ?? [], [points]);
   const dated = useMemo(() => {
     const rows = tanggal ? scoped.filter((point) => point.tanggal === tanggal) : scoped;
     return satelit ? rows.filter((point) => point.satelit === satelit) : rows;
@@ -110,29 +104,12 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
 
   return (
     <div className="logic-body">
-      <p>
+      <p className="fine">
         Deteksi satelit, bukan kebakaran terkonfirmasi. Confidence deteksi satelit — keyakinan deteksi, bukan intensitas atau bahaya.
       </p>
-      <details className="read-help">
-        <summary>Cara membaca</summary>
-        <p>Sumber titik: {hotspotSourceLabel(feed, sumber || meta?.sumber)}. Koordinat yang digambar adalah koordinat FIRMS, tidak dibulatkan dan tidak ditukar. Sumber wilayah: {BIG_SOURCE_LABEL}.</p>
-        <p>{BIG_EDITION_NOTE}</p>
-        <p>{CONFIDENCE_NOTE} Jumlah per kelas adalah jumlah deteksi, bukan tingkat keparahan.</p>
-        <p>
-          Pada zoom kecil, cincin berwarna membagi petak menjadi kuning (rendah), oranye (sedang), dan merah (tinggi). Abu-abu adalah tidak diketahui dan tidak dihitung sebagai kuning. Angka di tengah adalah jumlah deteksi, bukan kelas confidence. Pada zoom 6 ke atas, atau bila petak hanya berisi satu titik, tiap titik memakai warna itu dan koordinat FIRMS.
-          Garis desa BIG hanya diminta untuk tampilan dekat, tidak untuk seluruh Indonesia, dan tidak disimpan.
-        </p>
-      </details>
       <DatasetTiming feed={feed} />
       {fetchedAt ? <p className="fine">Diambil {formatWib(fetchedAt)}. Usia cuplikan mengikuti waktu ambil itu.</p> : null}
       {filterIncomplete ? <p className="banner warn is-sticky">{FILTER_INCOMPLETE}</p> : null}
-      <div className="province-filter" role="group" aria-label="Saringan peta tambahan">
-        <button type="button" aria-pressed={provinceFilter === "semua"} onClick={() => setProvinceFilter("semua")}>Semua</button>
-        <button type="button" aria-pressed={provinceFilter === "prioritas"} onClick={() => setProvinceFilter("prioritas")}>Enam prioritas</button>
-      </div>
-      <p className="fine">
-        Enam prioritas membatasi peta ke {(priority ?? []).join(", ") || "provinsi pada konfigurasi kesiapsiagaan"}. Tombol cakupan di atas mengikuti peringkat hotspot periode ini.
-      </p>
       <div className="hotspot-filters">
         <SelectFilter label="Tanggal" value={tanggal} onChange={setTanggal} options={dates} empty="Semua tanggal pada jendela" />
         <SelectFilter label="Satelit" value={satelit} onChange={setSatelit} options={satellites} empty="Semua satelit" />
@@ -142,7 +119,6 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
         <SelectFilter label="Desa/kelurahan" value={desa} onChange={setDesa} options={desaOptions} empty="Semua desa" />
       </div>
       <div className="confidence-legend" aria-label="Confidence deteksi satelit">
-        <p><strong>Confidence deteksi satelit</strong> — keyakinan deteksi, bukan intensitas atau bahaya</p>
         <div className="province-filter" role="group" aria-label="Saring kelas confidence">
           {CONFIDENCE_LABELS.map(([kelas, label]) => (
             <button key={kelas} type="button" aria-pressed={confidence.has(kelas)} onClick={() => toggleConfidence(kelas)}>
@@ -153,8 +129,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
         <ClusterLegend />
       </div>
       <p className="fine">
-        {periodeTeks || "Periode aktif"}: {formatAngka(tally.jumlah)} titik pada peta setelah saringan. Tabel peringkat tetap menghitung seluruh jendela sebelum saringan kelas, satelit, atau desa.
-        nama desa tersedia untuk {formatAngka(desaCoverage)} dari {formatAngka(filtered.length)} titik.
+        {periodeTeks || "Periode aktif"}: {formatAngka(tally.jumlah)} titik pada peta setelah saringan. nama desa tersedia untuk {formatAngka(desaCoverage)} dari {formatAngka(filtered.length)} titik.
       </p>
       <p className="lintasan-line" role="status">
         <strong>Lintasan satelit terakhir: {observedAt ? formatWib(observedAt) : "—"}</strong>
@@ -167,17 +142,20 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
         <button type="button" className="button" onClick={() => { onKembaliIndonesia?.(); mapApi.current?.showIndonesia(); }}>Kembali ke seluruh Indonesia</button>
       </div>
       <div className="map-stage">
+        <HotspotMap points={filtered} frame={frame} mapApi={mapApi} selectedKey={selectedKey} onSelect={choosePoint} fwiDate={fwiOn && fwiReady ? modelDate : ""} />
         {freshness?.tertunda || feed?.status === "usang" || feed?.status === "gagal" ? (
-          <div className="banner warn map-overlay" role="status">
-            <strong>{feed?.status === "gagal" ? "Peta kosong" : "Data tertunda"}</strong>
+          <details className={feed?.status === "gagal" ? "map-badge map-badge-gagal" : "map-badge"}>
+            <summary>
+              <span className="map-badge-judul">{feed?.status === "gagal" ? "Peta kosong" : "Data tertunda"}</span>
+              {feed?.status === "gagal" ? null : <span className="map-badge-ringkas">{observedAt ? formatWib(observedAt) : "—"}</span>}
+            </summary>
             <p>
               {feed?.status === "gagal"
                 ? feed.error
                 : `Lintasan satelit terakhir: ${observedAt ? formatWib(observedAt) : "—"}. Yang tampil adalah cuplikan, bukan permintaan peramban ke NASA FIRMS.`}
             </p>
-          </div>
+          </details>
         ) : null}
-        <HotspotMap points={filtered} frame={frame} mapApi={mapApi} selectedKey={selectedKey} onSelect={choosePoint} fwiDate={fwiOn && fwiReady ? modelDate : ""} />
       </div>
       </div>
       <section className="hotspot-count" aria-labelledby="hotspot-count-heading">
@@ -188,15 +166,31 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
           {unverified ? ` ${formatAngka(unverified)} titik belum terverifikasi wilayah.` : ""}
           {" "}Daftar mengikuti saringan di atas dan memusatkan peta saat baris dipilih.
         </p>
-        <details className="read-help">
-          <summary>Cara membaca</summary>
-          <p>
-            Satelit: {hotspotSourceLabel(feed, sumber || meta?.sumber)}. Angka berwarna adalah confidence deteksi satelit: kuning rendah, oranye sedang, merah tinggi. Tidak diketahui tidak disebut kuning. Bukan tingkat bahaya. Membuka provinsi menampilkan kecamatan, lalu desa. Urutan daftar ini sama dengan tabel peringkat: tinggi (merah) dulu, lalu sedang (oranye), lalu rendah (kuning), lalu jumlah tiga kelas itu, lalu nama. Angka titik di samping nama menghitung semua deteksi, termasuk yang kepercayaannya tidak diketahui.
-          </p>
-        </details>
         <HotspotAccordion points={filtered} onFocus={focusGroup} selectedKey={selectedGroup} revealKey={mapReveal} />
       </section>
       </div>
+      <CatatanRingkas judul="Cara membaca">
+        <p>Sumber titik: {hotspotSourceLabel(feed, sumber || meta?.sumber)}. Koordinat yang digambar adalah koordinat FIRMS, tidak dibulatkan dan tidak ditukar. Sumber wilayah: {BIG_SOURCE_LABEL}.</p>
+        <p>{BIG_EDITION_NOTE}</p>
+        <p>{CONFIDENCE_NOTE} Jumlah per kelas adalah jumlah deteksi, bukan tingkat keparahan.</p>
+        <p>
+          Pada zoom kecil, cincin berwarna membagi petak menjadi kuning (rendah), oranye (sedang), dan merah (tinggi). Abu-abu adalah tidak diketahui dan tidak dihitung sebagai kuning. Angka di tengah adalah jumlah deteksi, bukan kelas confidence. Pada zoom 6 ke atas, atau bila petak hanya berisi satu titik, tiap titik memakai warna itu dan koordinat FIRMS.
+          Garis desa BIG hanya diminta untuk tampilan dekat, tidak untuk seluruh Indonesia, dan tidak disimpan.
+        </p>
+        <p>
+          Satelit: {hotspotSourceLabel(feed, sumber || meta?.sumber)}. Angka berwarna adalah confidence deteksi satelit: kuning rendah, oranye sedang, merah tinggi. Tidak diketahui tidak disebut kuning. Bukan tingkat bahaya. Membuka provinsi menampilkan kecamatan, lalu desa. Urutan daftar ini sama dengan tabel peringkat: tinggi (merah) dulu, lalu sedang (oranye), lalu rendah (kuning), lalu jumlah tiga kelas itu, lalu nama. Angka titik di samping nama menghitung semua deteksi, termasuk yang kepercayaannya tidak diketahui.
+        </p>
+        <p>
+          Tabel peringkat tetap menghitung seluruh jendela sebelum saringan kelas, satelit, atau desa. Grafik tren memakai seluruh rentang tanggal.
+          Data stasiun ISPU belum terintegrasi ke dashboard.
+        </p>
+        <p>
+          Enam prioritas pada konfigurasi kesiapsiagaan: {(priority ?? []).join(", ") || "provinsi pada konfigurasi kesiapsiagaan"}. Tombol cakupan di atas halaman mengikuti peringkat hotspot periode ini. Pilih Seluruh Indonesia atau satu provinsi; tidak ada saringan peta kedua.
+        </p>
+        <p>
+          <a href="#/sumber-metode">Cara hitung dan sumber di Sumber &amp; Metode</a>
+        </p>
+      </CatatanRingkas>
     </div>
   );
 }
