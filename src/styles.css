@@ -257,6 +257,18 @@ a.button {
   border-color: var(--pine);
 }
 
+.province-filter button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.tema-peta { display: grid; gap: 8px; margin: 8px 0 16px; }
+.overlay-bar { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.overlay-bar label { display: inline-flex; gap: 6px; align-items: center; font-weight: 650; }
+.horizon-label { margin: 0; font-size: 14px; }
+.peta-legenda { display: flex; flex-wrap: wrap; gap: 8px 14px; list-style: none; padding: 8px 0 0; margin: 0; }
+.laporan-teks ol { margin: 0.4rem 0 0.8rem 1.2rem; }
+
 .province-picker { display: grid; gap: 6px; min-width: 0; max-width: 100%; }
 .province-picker .province-filter { max-width: 100%; }
 .province-semua { flex: 1 1 12rem; min-width: min(100%, 12rem); max-width: 100%; }

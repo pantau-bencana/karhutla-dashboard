@@ -83,7 +83,7 @@ export const PARAMETER_POTENSI = Object.freeze([
     resmi: "Seluruh kabupaten/kota pada batas tersimpan",
     ketersediaan: "tersedia",
     catatan:
-      "Daftar memakai batas kabupaten/kota yang tersimpan. Skor hanya dihitung di antara kabupaten yang FWI dan hujan modelnya lengkap, minimal 5 dari 7 hari. Cuplikan FWI GWIS dan hujan Open-Meteo yang tersimpan saat ini masih enam provinsi prioritas: Riau, Jambi, Sumatera Selatan, Kalimantan Barat, Kalimantan Tengah, dan Kalimantan Selatan. Kabupaten di luar cuplikan itu ditulis Belum cukup data. Angka tidak diisi.",
+      "Daftar memakai batas kabupaten/kota yang tersimpan. Titik FWI GWIS dan hujan Open-Meteo dihitung di dalam poligon itu, bukan ibu kota dan bukan koordinat BNPB. Skor hanya dihitung di antara kabupaten yang FWI dan hujan modelnya lengkap, minimal 5 dari 7 hari. Yang kurang dari itu ditulis Belum cukup data. Angka tidak diisi. Memindahkan titik sampel mengubah skor kabupaten yang sebelumnya memakai koordinat lain.",
     masukSkor: false,
   },
 ]);

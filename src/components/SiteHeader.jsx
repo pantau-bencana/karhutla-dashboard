@@ -2,22 +2,22 @@ import { useState } from "react";
 import { formatWib } from "../lib/format.js";
 
 const TOP = [
-  ["ringkasan", "Ringkasan", "#/"],
   ["karhutla", "Karhutla", "#/karhutla/peta"],
   ["banjir", "Banjir", "#/banjir"],
   ["gunung-api", "Gunung Api", "#/gunung-api"],
   ["metode", "Sumber & Metode", "#/sumber-metode"],
   ["glosarium", "Glosarium", "#/sumber-metode/glosarium"],
+  ["ringkasan", "Ringkasan", "#/"],
 ];
 
 const KARHUTLA_PAGES = [
-  ["ringkasan", "Ringkasan", "#/"],
   ["peta", "Peta dan Data", "#/karhutla/peta"],
   ["potensi", "Potensi 7 hari", "#/karhutla/potensi"],
   ["ispu", "Kualitas Udara (ISPU)", "#/karhutla/ispu"],
   ["logika", "Logika Pemantauan", "#/karhutla/logika"],
   ["sumber", "Sumber Data", "#/karhutla/sumber"],
   ["glosarium", "Glosarium", "#/sumber-metode/glosarium"],
+  ["ringkasan", "Ringkasan", "#/"],
 ];
 
 function topCurrent(id, page, hazard, anchor) {

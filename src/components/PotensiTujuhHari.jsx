@@ -1,11 +1,10 @@
-import { useMemo, useState } from "react";
 import { Badge } from "./Badge.jsx";
 import { CatatanRingkas } from "./CatatanRingkas.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
+import { FilterProvinsi } from "./FilterProvinsi.jsx";
 import { formatAngka, formatTanggal, formatWib } from "../lib/format.js";
 import { daftarKabkota } from "../lib/kabProvinsi.js";
 import { PARAMETER_POTENSI, POTENSI_DISCLAIMER, POTENSI_JUDUL, ringkasHujanModel, susunPotensiTujuh, teksBobot } from "../lib/potensiTujuh.js";
-import { PROVINSI, SEMUA_PROVINSI } from "../lib/provinsi.js";
 
 function selAngka(value, digits = 0) {
   if (value == null || !Number.isFinite(Number(value))) return "—";
@@ -64,8 +63,8 @@ function PetunjukSkoring({ hasil }) {
   );
 }
 
-export function PotensiTujuhHari({ fwi, hujan, hotspot, irbi, provinsi = [], nasional = false, now }) {
-  const [saringan, setSaringan] = useState("");
+export function PotensiTujuhHari({ fwi, hujan, hotspot, irbi, provinsi = [], nasional = false, now, province = "", setProvince, titik = [] }) {
+  const saringan = province;
   const hasil = susunPotensiTujuh({
     fwiRows: fwi?.contoh ? [] : fwi?.rows,
     hujanRows: hujan?.contoh ? [] : hujan?.rows,
@@ -84,18 +83,6 @@ export function PotensiTujuhHari({ fwi, hujan, hotspot, irbi, provinsi = [], nas
     map.set(row.kelas, (map.get(row.kelas) ?? 0) + 1);
     return map;
   }, new Map());
-  const chip = useMemo(() => {
-    const nama = [];
-    const ada = new Set();
-    for (const row of hasil.baris) {
-      if (row.skor == null || !row.provinsi || ada.has(row.provinsi)) continue;
-      ada.add(row.provinsi);
-      nama.push(row.provinsi);
-    }
-    return nama;
-  }, [hasil.baris]);
-  const pilihan = useMemo(() => PROVINSI.map((item) => item.nama), []);
-
   return (
     <section className="card" id="potensi-7-hari">
       <header className="card-head">
@@ -127,25 +114,11 @@ export function PotensiTujuhHari({ fwi, hujan, hotspot, irbi, provinsi = [], nas
       )}
       {hasil.tersedia ? (
         <>
-          <div className="province-filter" role="group" aria-label="Saringan provinsi potensi 7 hari">
-            <button type="button" aria-pressed={saringan === ""} onClick={() => setSaringan("")}>Seluruh Indonesia</button>
-            {chip.map((nama) => (
-              <button key={nama} type="button" aria-pressed={saringan === nama} onClick={() => setSaringan(nama)}>
-                {nama}
-              </button>
-            ))}
-            <label className="filter-field province-semua">
-              <span className="sr-only">{SEMUA_PROVINSI}</span>
-              <select aria-label={SEMUA_PROVINSI} value={pilihan.includes(saringan) ? saringan : ""} onChange={(event) => setSaringan(event.target.value)}>
-                <option value="">{SEMUA_PROVINSI}</option>
-                {pilihan.map((nama) => (
-                  <option key={nama} value={nama}>{nama}</option>
-                ))}
-              </select>
-            </label>
-          </div>
+          {setProvince ? (
+            <FilterProvinsi province={province} setProvince={setProvince} points={titik} prioritas={provinsi} />
+          ) : null}
+          <p className="horizon-label">Horizon 7 hari ke depan, zona Asia/Jakarta. Bukan saringan tanggal hotspot.</p>
           <p className="fine">
-            Horizon 7 hari ke depan. Bukan saringan tanggal hotspot.
             {" "}
             {tampil.length} kab/kota
             {hitung.size ? ` · ${[...hitung.entries()].map(([kelas, jumlah]) => `${kelas} ${formatAngka(jumlah)}`).join(" · ")}` : ""}.

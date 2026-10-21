@@ -19,6 +19,7 @@ import {
 } from "../lib/hujanPembanding.js";
 import { CUACA_DISCLAIMER, CUACA_RUJUKAN, PEMETAAN_CUACA, PRAKIRAAN_BATAS } from "../lib/prakiraanHujan.js";
 import { decorateSources } from "../lib/sourceCatalog.js";
+import { hazardById } from "../lib/hazards.js";
 import { GlossaryPage } from "./GlossaryPage.jsx";
 import { MetodeAplus } from "./MetodeAplus.jsx";
 import { PotensiTujuhMetode } from "./PotensiTujuhHari.jsx";
@@ -52,6 +53,28 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
           <p className="lead">Jenis data, sumber, kapan diperbarui, dan apa yang tidak boleh dibaca sebagai produk resmi.</p>
         </div>
       </header>
+
+      <section className="card" id="logika-pemantauan">
+        <h2>Logika pemantauan</h2>
+        <p>Alur yang sama untuk setiap bahaya: ambil cuplikan, tandai yang gagal atau tertunda, cocokkan nama wilayah yang ada, lalu tulis jenis, sumber, dan waktu di samping angka. Bagian ini di depan glosarium.</p>
+        <h3>Karhutla</h3>
+        <p>Hotspot adalah deteksi satelit, bukan kebakaran terkonfirmasi. FDRS BMKG tetap tautan: horizon API prakiraan 3 hari, citra SPARTAN hingga H+7 sesuai produk BMKG. FWI pada peta dan tabel, bila ada, adalah model ECMWF lewat GWIS, pembanding, bukan FDRS BMKG. Potensi 7 hari adalah analisis model, bukan prakiraan resmi. IRBI 2025 hanya konteks tahunan. Daftar resmi 15–20 kabupaten/kota: menunggu data resmi BMKG (FDRS/potensi karhutla per kab/kota).</p>
+        <p>
+          <a href="#/karhutla/logika">Halaman Logika Pemantauan</a>
+        </p>
+        <h3>Banjir</h3>
+        <p>Awas, Siaga, dan Waspada pada peta banjir adalah analisis dasbor, bukan status resmi BMKG atau BNPB. Tab 0–3 jam memakai peringatan dini cuaca BMKG. Tab hari memakai prakiraan cuaca 3 hari. Sumber: BMKG. Overlay inaRISK mati sampai dinyalakan dan statusnya belum Aktif.</p>
+        <p>
+          <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
+        </p>
+        <h3>Gunung api</h3>
+        <p>Belum terhubung / menunggu data. {hazardById("gunung-api").catatan} MAGMA Indonesia berstatus Tautan saja. Tidak ada angka tingkat aktivitas pada dasbor ini.</p>
+        <p>
+          <a href="https://magma.esdm.go.id/" target="_blank" rel="noopener noreferrer">MAGMA Indonesia</a>
+          {" · "}
+          <a href="#/gunung-api">Halaman Gunung Api</a>
+        </p>
+      </section>
 
       <section className="card">
         <h2>Jenis data yang dibedakan</h2>

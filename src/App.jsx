@@ -9,6 +9,7 @@ import { LogicPage } from "./components/LogicPage.jsx";
 import { MetodePage } from "./components/MetodePage.jsx";
 import { SiteHeader } from "./components/SiteHeader.jsx";
 import { SourcesPage } from "./components/SourcesPage.jsx";
+import { FilterProvinsi } from "./components/FilterProvinsi.jsx";
 import { PotensiTujuhHari } from "./components/PotensiTujuhHari.jsx";
 import { SummaryPage } from "./components/SummaryPage.jsx";
 import { VolcanoPage } from "./components/VolcanoPage.jsx";
@@ -212,6 +213,9 @@ export function App() {
             irbi={feeds.find((feed) => feed.id === "irbi")?.contoh ? null : feeds.find((feed) => feed.id === "irbi")}
             provinsi={config?.provinsiPrioritas ?? []}
             nasional
+            province={province}
+            setProvince={setProvince}
+            titik={hotspotFeed && !hotspotFeed.contoh && hotspotFeed.status !== "gagal" ? hotspotFeed.rows : []}
           />
         </main>
       ) : null}
@@ -242,13 +246,19 @@ export function App() {
           <header className="page-head">
             <div>
               <h1>Kualitas Udara (ISPU)</h1>
-              <p className="lead">ISPU diukur di stasiun pemantau KLH. Dashboard ini tidak mengambil data ISPU otomatis dan tidak membuat prediksi ISPU.</p>
+              <p className="lead">ISPU diukur di stasiun pemantau KLH. Dashboard ini tidak mengambil data ISPU otomatis dan tidak membuat prediksi ISPU. Horizon: hari pengukuran. Bukan prakiraan.</p>
             </div>
             <div className="badges">
               <Badge kind="tau">Tautan saja</Badge>
               <OfficialLinks links={officialLinks("ispu").filter((link) => link.href.includes("ispu.kemenlh.go.id"))} />
             </div>
           </header>
+          <FilterProvinsi
+            province={province}
+            setProvince={setProvince}
+            points={hotspotFeed && !hotspotFeed.contoh && hotspotFeed.status !== "gagal" ? hotspotFeed.rows : []}
+            prioritas={config?.provinsiPrioritas ?? []}
+          />
           <KualitasUdara feeds={feeds} province={province} provinces={config?.provinsiPrioritas ?? []} />
         </main>
       ) : null}

@@ -5,20 +5,20 @@ import { placeFwiTable, placeRainTable } from "../lib/attentionPrototype.js";
 import { tampilBarisFwi, urutBarisFwi } from "../lib/kabProvinsi.js";
 import { officialLinks } from "../lib/sourceCatalog.js";
 import { DatasetTiming } from "./DatasetTiming.jsx";
+import { ForecastPanel } from "./ForecastPanel.jsx";
 import { GfwedTable } from "./GfwedTable.jsx";
 import { KualitasUdara } from "./KualitasUdara.jsx";
 import { labelAnalisisBmkg } from "../lib/bmkgForecast.js";
 import { formatAngka, formatTanggalPendek } from "../lib/format.js";
 
 const LAYERS = [
-  ["hotspot", "Hotspot"],
-  ["inarisk", "inaRISK"],
-  ["irbi", "IRBI 2025"],
-  ["asap", "Asap"],
-  ["fdrs", "FDRS"],
-  ["hujan", "Hujan"],
-  ["angin", "Angin"],
-  ["ispu", "Kualitas Udara (ISPU)"],
+  ["hotspot", "Hotspot", true],
+  ["fdrs", "FDRS", true],
+  ["asap", "Asap", false],
+  ["ispu", "ISPU", true],
+  ["hujan", "Hujan", true],
+  ["angin", "Angin", true],
+  ["potensi", "Potensi 7 hari", true],
 ];
 
 const PENJELASAN_LAPISAN = {
@@ -30,23 +30,46 @@ const PENJELASAN_LAPISAN = {
   hujan: "Nilai tp per slot pada prakiraan 3 hari. Sumber: BMKG. Bukan peluang persen. Tabel 14 hari, bila ada, adalah pembanding model, bukan prakiraan BMKG.",
   angin: "Arah dan kecepatan (km/jam) pada prakiraan 3 hari. Sumber: BMKG. Bukan asal kebakaran.",
   ispu: "Kualitas Udara (ISPU). ISPU stasiun resmi belum terintegrasi. Angka model, bila ada, tetap dalam µg/m³ dan tidak diubah menjadi kategori ISPU.",
+  potensi: "Potensi 7 hari mewarnai kabupaten/kota menurut kelas analisis model. Abu-abu berarti Belum cukup data. Analisis model, bukan prakiraan resmi.",
 };
 
-export function LayerBar({ layer, setLayer }) {
+export function LayerBar({ layer, setLayer, overlayIrbi = false, setOverlayIrbi }) {
   const nama = LAYERS.find(([id]) => id === layer)?.[1] || "lapisan";
   const penjelasan = PENJELASAN_LAPISAN[layer];
   return (
-    <div className="province-filter" role="group" aria-label="Lapisan">
-      {LAYERS.map(([id, label]) => (
-        <button key={id} type="button" aria-pressed={layer === id} onClick={() => setLayer(id)}>
-          {label}
-        </button>
-      ))}
-      {penjelasan ? (
-        <InfoTip label={`Penjelasan lapisan ${nama}`}>
-          <p>{penjelasan}</p>
-        </InfoTip>
-      ) : null}
+    <div className="tema-peta">
+      <div className="province-filter" role="group" aria-label="Tema peta">
+        {LAYERS.map(([id, label, aktif]) => (
+          <button
+            key={id}
+            type="button"
+            aria-pressed={layer === id}
+            disabled={!aktif}
+            title={aktif ? undefined : "belum terintegrasi"}
+            onClick={() => aktif && setLayer(id)}
+          >
+            {label}
+            {aktif ? "" : " · belum terintegrasi"}
+          </button>
+        ))}
+        {penjelasan ? (
+          <InfoTip label={`Penjelasan lapisan ${nama}`}>
+            <p>{penjelasan}</p>
+          </InfoTip>
+        ) : null}
+      </div>
+      <div className="overlay-bar" role="group" aria-label="Overlay peta">
+        <label>
+          <input type="checkbox" disabled />
+          inaRISK
+        </label>
+        <span className="fine">belum terintegrasi</span>
+        <label>
+          <input type="checkbox" checked={overlayIrbi} onChange={(event) => setOverlayIrbi?.(event.target.checked)} />
+          IRBI 2025
+        </label>
+        <span className="fine">Overlay saja, bukan tema peta.</span>
+      </div>
     </div>
   );
 }
@@ -149,7 +172,23 @@ export function ExtraLayers({ layer, view, feeds, province, provinces = [] }) {
           />
         </Panel>
         <GfwedTable rows={feeds.find((feed) => feed.id === "gfwed_kabupaten")?.rows} />
+        <ForecastPanel
+          provinces={provinces}
+          weatherRows={compareWeather?.contoh ? [] : compareWeather?.rows}
+          fwiRows={compareFwi?.contoh ? [] : compareFwi?.rows}
+        />
       </>
+    );
+  }
+
+  if (layer === "potensi") {
+    return (
+      <Panel title="Potensi 7 hari" note="Analisis model, bukan prakiraan resmi. Horizon 7 hari ke depan. Tabel lengkap ada di halaman Potensi 7 hari. Abu-abu pada peta berarti Belum cukup data.">
+        <p>
+          <a href="#/karhutla/potensi">Buka tabel potensi 7 hari</a>
+        </p>
+        <p className="fine">Pewarnaan memakai kelas pada titik di dalam batas. Bukan FDRS SPARTAN dan bukan peringatan resmi.</p>
+      </Panel>
     );
   }
 
@@ -181,7 +220,7 @@ export function ExtraLayers({ layer, view, feeds, province, provinces = [] }) {
             empty="Snapshot hujan 14 hari belum ada."
             rows={placeRainTable(hujan14).map((row) => [row.kabupaten, formatAngka(row.hujanMm, 1), `${row.hariKering}/${row.hariNilai}`, formatAngka(row.anginMaks, 0)])}
           />
-          <p className="fine">Titik wakil Satu Data, zona tanggal Asia/Jakarta. Bukan batas kabupaten.</p>
+          <p className="fine">Titik di dalam batas kabupaten/kota, zona tanggal Asia/Jakarta. Bukan rata-rata wilayah dan bukan koordinat BNPB.</p>
         </Panel>
       ) : (
         <Panel title="Angin 14 hari pada titik wakil" note="Pembanding model, bukan prakiraan BMKG. Kecepatan maksimum harian, bukan arah BMKG." feed={compareRain} compare>
