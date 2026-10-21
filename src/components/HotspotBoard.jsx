@@ -191,7 +191,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
         <details className="read-help">
           <summary>Cara membaca</summary>
           <p>
-            Satelit: {hotspotSourceLabel(feed, sumber || meta?.sumber)}. Angka berwarna adalah confidence deteksi satelit: kuning rendah, oranye sedang, merah tinggi. Tidak diketahui tidak disebut kuning. Bukan tingkat bahaya. Membuka provinsi menampilkan kecamatan, lalu desa. Urutan prioritas pelaporan ada pada tabel peringkat, bukan pada daftar ini.
+            Satelit: {hotspotSourceLabel(feed, sumber || meta?.sumber)}. Angka berwarna adalah confidence deteksi satelit: kuning rendah, oranye sedang, merah tinggi. Tidak diketahui tidak disebut kuning. Bukan tingkat bahaya. Membuka provinsi menampilkan kecamatan, lalu desa. Urutan daftar ini sama dengan tabel peringkat: tinggi (merah) dulu, lalu sedang (oranye), lalu rendah (kuning), lalu jumlah tiga kelas itu, lalu nama. Angka titik di samping nama menghitung semua deteksi, termasuk yang kepercayaannya tidak diketahui.
           </p>
         </details>
         <HotspotAccordion points={filtered} onFocus={focusGroup} selectedKey={selectedGroup} revealKey={mapReveal} />

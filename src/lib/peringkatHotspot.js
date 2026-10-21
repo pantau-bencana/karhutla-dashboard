@@ -79,6 +79,23 @@ export function bandingPeringkat(a, b) {
   );
 }
 
+function angka(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+}
+
+export function hitunganKepercayaan(row, label = "") {
+  const merah = angka(row?.merah) ?? angka(row?.tinggi) ?? 0;
+  const oranye = angka(row?.oranye) ?? angka(row?.nominal) ?? 0;
+  const kuning = angka(row?.kuning) ?? angka(row?.rendah) ?? 0;
+  const total = angka(row?.total) ?? merah + oranye + kuning;
+  return { merah, oranye, kuning, total, nama: String(label ?? "") };
+}
+
+export function bandingHitungan(a, b, labelA = "", labelB = "") {
+  return bandingPeringkat(hitunganKepercayaan(a, labelA), hitunganKepercayaan(b, labelB));
+}
+
 export function sepuluhPrioritas(baris) {
   return (baris ?? []).slice(0, 10);
 }

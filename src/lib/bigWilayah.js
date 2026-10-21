@@ -1,3 +1,5 @@
+import { bandingHitungan } from "./peringkatHotspot.js";
+
 export const DESA_UNIDENTIFIED = "Wilayah desa belum teridentifikasi";
 export const WILAYAH_UNAVAILABLE = "Identifikasi wilayah BIG tidak tersedia";
 export const FILTER_INCOMPLETE =
@@ -123,7 +125,7 @@ export function summarizeByWilayah(points, level = "kecamatan") {
     if (level === "kabupaten") return group.kabupaten || group.provinsi;
     return group.kecamatan || group.kabupaten;
   };
-  return [...groups.values()].sort((a, b) => b.jumlah - a.jumlah || labelOf(a).localeCompare(labelOf(b), "id") || a.key.localeCompare(b.key));
+  return [...groups.values()].sort((a, b) => bandingHitungan(a, b, labelOf(a), labelOf(b)) || a.key.localeCompare(b.key));
 }
 
 export function summarizeByDesa(points) {
