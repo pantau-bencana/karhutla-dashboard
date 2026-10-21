@@ -252,7 +252,7 @@ export function App() {
         </main>
       ) : null}
       {built && page === "logika" ? <LogicPage config={config} /> : null}
-      {built && page === "sumber" ? <SourcesPage manifest={manifest} /> : null}
+      {built && page === "sumber" ? <SourcesPage manifest={manifest} dibi={feeds.find((feed) => feed.id === "dibi_karhutla")} /> : null}
       <Footer />
     </>
   );

@@ -1,6 +1,6 @@
 import { OfficialLinks } from "./OfficialLinks.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
-import { formatWib } from "../lib/format.js";
+import { formatAngka, formatWib } from "../lib/format.js";
 import { decorateSources } from "../lib/sourceCatalog.js";
 
 function statusClass(status) {
@@ -11,7 +11,7 @@ function statusClass(status) {
   return "status-off";
 }
 
-export function SourcesPage({ manifest }) {
+export function SourcesPage({ manifest, dibi = null }) {
   const rows = decorateSources(manifest);
   return (
     <main className="wrap main">
@@ -48,6 +48,26 @@ export function SourcesPage({ manifest }) {
             </tbody>
           </table>
         </div>
+      </section>
+      <section className="card">
+        <header className="card-head">
+          <div>
+            <h2>Kejadian historis nasional</h2>
+            <p>Sumber: BNPB Satu Data. Rangkaian nasional kebakaran hutan dan lahan. Bukan jumlah per kabupaten.</p>
+          </div>
+        </header>
+        <DatasetTiming feed={dibi} />
+        {dibi?.rows?.length && !dibi.contoh ? (
+          <ul className="plain-list">
+            {dibi.rows.map((row) => (
+              <li key={row.tahun}>
+                {row.tahun}: {formatAngka(row.jumlah)} kejadian {String(row.jenis || "").toLowerCase()} ({row.cakupan})
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="empty">Rangkaian nasional belum ada di snapshot.</p>
+        )}
       </section>
     </main>
   );

@@ -1318,6 +1318,9 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 .notice p { width: min(1440px, 100%); margin: 0 auto; }
 .page-head, .mod-head, .mod-foot { display: flex; justify-content: space-between; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
 .lead { margin: 6px 0 0; color: #334155; font-size: 14.5px; line-height: 1.6; max-width: 70ch; }
+.laporan-teks p, .laporan-teks ol { max-width: 72ch; }
+.laporan-teks ol { margin: 0 0 0.8rem 1.2rem; padding: 0; }
+.laporan-teks li { margin: 0.15rem 0; }
 .badges, .kind-row, .time-row, .overview-grid, .steps { display: flex; flex-wrap: wrap; gap: 12px; }
 .official-links { display: inline-flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
 .link-only { display: inline-flex; flex-wrap: wrap; gap: 8px; align-items: center; }

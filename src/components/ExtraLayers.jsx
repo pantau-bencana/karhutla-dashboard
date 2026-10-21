@@ -4,6 +4,7 @@ import { placeFwiTable, placeRainTable } from "../lib/attentionPrototype.js";
 import { tampilBarisFwi, urutBarisFwi } from "../lib/kabProvinsi.js";
 import { officialLinks } from "../lib/sourceCatalog.js";
 import { DatasetTiming } from "./DatasetTiming.jsx";
+import { ForecastPanel } from "./ForecastPanel.jsx";
 import { KualitasUdara } from "./KualitasUdara.jsx";
 import { labelAnalisisBmkg } from "../lib/bmkgForecast.js";
 import { formatAngka, formatTanggalPendek } from "../lib/format.js";
@@ -129,6 +130,11 @@ export function ExtraLayers({ layer, view, feeds, province, provinces = [] }) {
             rows={cuaca.map((row) => [row.provinsi, formatTanggalPendek(row.tanggal), formatAngka(row.curahHujan, 1), formatAngka(row.anginKmj, 1)])}
           />
         </Panel>
+        <ForecastPanel
+          provinces={provinces}
+          weatherRows={compareWeather?.contoh ? [] : compareWeather?.rows}
+          fwiRows={compareFwi?.contoh ? [] : compareFwi?.rows}
+        />
       </>
     );
   }

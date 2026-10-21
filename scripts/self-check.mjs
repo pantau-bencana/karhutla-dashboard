@@ -9,6 +9,7 @@ import { fetchCsv, loadAll, normalizeHotspotRow, normalizeRecords, redactFirmsUr
 import { GLOSSARY } from "../src/lib/glossary.js";
 import { HAZARDS } from "../src/lib/hazards.js";
 import { ispuFromPm25 } from "../src/lib/ispuEstimate.js";
+import { hitungStatusBanjir, puncakBanjir, titikHariTerbaru } from "../src/lib/laporanHarian.js";
 import {
   CAMS_LABEL,
   ISPU_EXPLANATION,
@@ -795,7 +796,9 @@ assert.match(readFileSync("src/components/DashboardView.jsx", "utf8"), /FilterPr
 assert.match(readFileSync("src/components/DashboardView.jsx", "utf8"), /frame=\{province \? "points" : "indonesia"\}/);
 assert.equal(readFileSync("src/components/DashboardView.jsx", "utf8").includes("priority.map"), false);
 assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /FilterProvinsi/);
-assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /frame=\{province \? "points" : "indonesia"\}/);
+assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /Laporan singkat harian/);
+assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<h2>Karhutla<\/h2>/);
+assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<h2>Banjir<\/h2>/);
 assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /Enam prioritas/);
 assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Kabupaten/);
 assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Provinsi/);
@@ -1000,7 +1003,7 @@ assert.match(readFileSync("src/components/ForecastPanel.jsx", "utf8"), /Pembandi
 assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /Nama wilayah dari kueri BIG/);
 assert.equal(readFileSync("scripts/refresh-live-data.mjs", "utf8").includes("Kabupaten tidak diisi"), false);
 assert.equal(readFileSync("src/components/LogicPage.jsx", "utf8").includes("Batas administrasi resmi belum dipasang"), false);
-assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /Konteks risiko jangka panjang \(IRBI 2025\)/);
+assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Konteks risiko jangka panjang \(IRBI 2025\)/);
 assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /FILTER_INCOMPLETE/);
 assert.match(readFileSync("src/lib/bigWilayah.js", "utf8"), /Penyaringan wilayah dan batas Indonesia pada pembaruan ini tidak lengkap/);
 assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /big_filter_incomplete/);
@@ -1015,7 +1018,6 @@ assert.match(readFileSync("src/components/HotspotMap.jsx", "utf8"), /hotspot-clu
 assert.match(readFileSync("src/components/HotspotMap.jsx", "utf8"), /conic-gradient/);
 assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /bukan kelas confidence/);
 assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /<ClusterLegend \/>/);
-assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<ClusterLegend \/>/);
 assert.equal(readFileSync("src/styles.css", "utf8").includes(".hotspot-cluster span") && readFileSync("src/styles.css", "utf8").includes("background: #1e293b"), false);
 assert.match(readFileSync("src/styles.css", "utf8"), /\.leaflet-tile-pane/);
 assert.equal(readFileSync("src/lib/sourceCatalog.js", "utf8").includes("masih data contoh"), false);
@@ -1117,7 +1119,7 @@ assert.equal(readFileSync("src/lib/hazards.js", "utf8").includes("ispu"), false)
 
 const indicatorSource = readFileSync("src/lib/priorityIndicators.js", "utf8");
 const indicatorUi = readFileSync("src/components/PriorityIndicators.jsx", "utf8");
-assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<PriorityIndicators \/>/);
+assert.match(readFileSync("src/components/LogicPage.jsx", "utf8"), /<PriorityIndicators rinci \/>/);
 assert.match(logicSource, /<PriorityIndicators rinci \/>/);
 assert.match(indicatorSource, /Indikator untuk Wilayah Prioritas/);
 assert.match(indicatorSource, /Metode A\+/);
@@ -2245,7 +2247,24 @@ const rujukanBoleh = new Set([
 ]);
 assert.equal(rujukanHref.length > 0, true);
 for (const href of rujukanHref) assert.equal(rujukanBoleh.has(href), true, href);
-assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<PrioritasPanel /);
+assert.match(readFileSync("src/components/DashboardView.jsx", "utf8"), /<PrioritasPanel /);
+assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /<ForecastPanel/);
+const headerNav = readFileSync("src/components/SiteHeader.jsx", "utf8");
+const topNav = headerNav.slice(headerNav.indexOf("const TOP"), headerNav.indexOf("const KARHUTLA_PAGES"));
+assert.match(topNav, /\["ringkasan", "Ringkasan", "#\/"\],\s*\];/);
+assert.equal(topNav.indexOf('["karhutla"') < topNav.indexOf('["ringkasan"'), true);
+const hariLaporan = titikHariTerbaru([
+  { tanggal: "2026-10-16", lintang: 0, bujur: 100, kelasKepercayaan: "tinggi", provinsi: "Riau" },
+  { tanggal: "2026-10-17", lintang: 0, bujur: 101, kelasKepercayaan: "nominal", provinsi: "Jambi" },
+  { tanggal: "2026-10-17", lintang: 1, bujur: 102, kelasKepercayaan: "rendah", provinsi: "Riau" },
+]);
+assert.equal(hariLaporan.hari, "2026-10-17");
+assert.equal(hariLaporan.hitung.merah, 0);
+assert.equal(hariLaporan.hitung.oranye, 1);
+assert.equal(hariLaporan.hitung.kuning, 1);
+assert.equal(hariLaporan.puncak[0].nama, "Jambi");
+assert.deepEqual(hitungStatusBanjir([{ status: "Awas" }, { status: "Siaga" }, { status: "Siaga" }, { status: "Waspada" }, { status: "lain" }]), { Awas: 1, Siaga: 2, Waspada: 1 });
+assert.equal(puncakBanjir([{ status: "Awas", kab_kota: "A" }, { status: "lain" }, { status: "Siaga", kab_kota: "B" }]).length, 2);
 assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /prioritas_aplus/);
 assert.match(readFileSync("src/components/SiteHeader.jsx", "utf8"), /Potensi 7 hari/);
 assert.match(readFileSync("src/lib/potensiTujuh.js", "utf8"), /Potensi karhutla 7 hari ke depan/);
