@@ -1,6 +1,7 @@
 import { Component, useCallback, useEffect, useMemo, useState } from "react";
 import { FloodInfoTable, FloodKabDaftar, PrakiraanTigaHari, rincianKab } from "./FloodInfoTable.jsx";
 import { KeteranganMobile } from "./KeteranganMobile.jsx";
+import { IrbiBanjirLongsor } from "./IrbiBanjirLongsor.jsx";
 import { FloodRiskMap } from "./FloodRiskMap.jsx";
 import { ANALISIS_BUKAN_RESMI, ANALISIS_NAMA, CATATAN_ALASAN, applyAnalisis, catWilayah } from "../lib/analisisPantauBencana.js";
 import { DISCLAIMER_UNDUH, barisXlsx, csvUnduh } from "../lib/banjirExport.js";
@@ -620,6 +621,8 @@ function FloodBody() {
           </p>
         </div>
       </section>
+
+      <IrbiBanjirLongsor />
 
       <section className="card">
         <header className="card-head">

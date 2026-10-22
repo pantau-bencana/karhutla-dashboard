@@ -62,6 +62,10 @@ jobs:
         if: steps.ambil.outputs.changed == 'true'
         run: node scripts/banjir-ringkasan.mjs || echo "Ringkasan banjir gagal. Prakiraan yang lebih baru tetap disimpan."
 
+      - name: Tulis rekap harian
+        if: steps.ambil.outputs.changed == 'true'
+        run: node scripts/tulis-rekap-harian.mjs || echo "Rekap harian tidak ditulis."
+
       - name: Commit bila analysis_date lebih baru
         id: commit
         run: |
@@ -74,6 +78,9 @@ jobs:
             git add data/live/bmkg-prakiraan-kab.csv data/live/bmkg-prakiraan-kab-meta.json data/live/bmkg_prakiraan.csv data/live/manifest.json
             if [[ -f data/live/banjir-ringkasan.json ]]; then
               git add data/live/banjir-ringkasan.json
+            fi
+            if [[ -f data/live/rekap-harian.json ]]; then
+              git add data/live/rekap-harian.json
             fi
             if git diff --cached --quiet; then
               return 1
@@ -104,6 +111,7 @@ jobs:
               node scripts/prakiraan-kab.mjs || true
               if ! git diff --quiet -- data/live/bmkg-prakiraan-kab.csv data/live/bmkg-prakiraan-kab-meta.json data/live/bmkg_prakiraan.csv data/live/manifest.json; then
                 node scripts/banjir-ringkasan.mjs || true
+                node scripts/tulis-rekap-harian.mjs || true
               fi
               if ! commit_snapshot; then
                 echo "changed=false" >> "$GITHUB_OUTPUT"

@@ -22,6 +22,7 @@ import { officialLinks } from "./lib/sourceCatalog.js";
 import { MANIFEST_POLL_MINUTES } from "./lib/schedule.js";
 
 const FloodPage = lazy(() => import("./components/FloodPage.jsx").then((module) => ({ default: module.FloodPage })));
+const RekapHarian = lazy(() => import("./components/RekapHarian.jsx").then((module) => ({ default: module.RekapHarian })));
 
 const DEFAULT_TITLE = "Pantau Bencana v0.1";
 
@@ -101,7 +102,7 @@ export function App() {
     const onGlossary = page === "glosarium" || (page === "metode" && location.anchor === "glosarium");
     const pageName = onGlossary
       ? "Glosarium"
-      : ({ ringkasan: "Ringkasan", peta: "Peta dan Data", potensi: "Potensi 7 hari", ispu: "Kualitas Udara", logika: "Logika Pemantauan", sumber: "Sumber Data", metode: "Sumber dan Metode" }[page] || "Ringkasan");
+      : ({ ringkasan: "Ringkasan", rekap: "Rekap Harian", peta: "Peta dan Data", potensi: "Potensi 7 hari", ispu: "Kualitas Udara", logika: "Logika Pemantauan", sumber: "Sumber Data", metode: "Sumber dan Metode" }[page] || "Ringkasan");
     const judulSitus = hazard === "karhutla" ? (config?.judul || DEFAULT_TITLE) : DEFAULT_TITLE;
     document.title = `${pageName} ${hazardName} — ${judulSitus}`;
   }, [page, hazard, location.anchor, config]);
@@ -183,6 +184,11 @@ export function App() {
         </Suspense>
       ) : null}
       {!built && !flood && hazard !== "gunung-api" && page !== "glosarium" && page !== "metode" ? <HazardPlaceholder hazardId={hazard} /> : null}
+      {page === "rekap" ? (
+        <Suspense fallback={<main className="wrap main"><p>Memuat rekap harian…</p></main>}>
+          <RekapHarian />
+        </Suspense>
+      ) : null}
       {built && page === "ringkasan" ? (
         configError && !config ? (
           <ConfigError message={configError} />

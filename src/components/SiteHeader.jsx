@@ -7,6 +7,7 @@ const TOP = [
   ["gunung-api", "Gunung Api", "#/gunung-api"],
   ["metode", "Sumber & Metode", "#/sumber-metode"],
   ["glosarium", "Glosarium", "#/sumber-metode/glosarium"],
+  ["rekap", "Rekap Harian", "#/rekap-harian"],
   ["ringkasan", "Ringkasan", "#/"],
 ];
 
@@ -21,14 +22,15 @@ function topCurrent(id, page, hazard, anchor) {
   const glossary = page === "glosarium" || (page === "metode" && anchor === "glosarium");
   if (id === "glosarium") return glossary;
   if (id === "metode") return page === "metode" && !glossary;
+  if (id === "rekap") return page === "rekap";
   if (id === "ringkasan") return page === "ringkasan" && hazard === "karhutla";
-  if (id === "karhutla") return hazard === "karhutla" && page !== "ringkasan" && page !== "metode" && page !== "glosarium";
+  if (id === "karhutla") return hazard === "karhutla" && page !== "ringkasan" && page !== "metode" && page !== "glosarium" && page !== "rekap";
   return hazard === id && page !== "metode" && page !== "glosarium";
 }
 
 export function SiteHeader({ manifest, onReload, loading, page, hazard, anchor = "" }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const showSub = hazard === "karhutla" && page !== "ringkasan" && page !== "metode";
+  const showSub = hazard === "karhutla" && page !== "ringkasan" && page !== "metode" && page !== "rekap";
   const loaded = manifest?.generated_at ? formatWib(manifest.generated_at) : "belum ada snapshot";
 
   return (
@@ -78,7 +80,7 @@ export function SiteHeader({ manifest, onReload, loading, page, hazard, anchor =
       <nav className="tabbar" aria-label="Bagian">
         {TOP.map(([id, label, href]) => (
           <a key={id} href={href} aria-current={topCurrent(id, page, hazard, anchor) ? "page" : undefined}>
-            {id === "metode" ? "Sumber" : label}
+            {id === "metode" ? "Sumber" : id === "rekap" ? "Rekap" : label}
           </a>
         ))}
       </nav>
