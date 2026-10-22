@@ -1,6 +1,6 @@
 {
   "hariWib": "2026-10-23",
-  "generated_at": "2026-10-22T18:38:38.224Z",
+  "generated_at": "2026-10-22T20:02:44.061Z",
   "sumber": {
     "sipongi": {
       "nama": "SiPongi+",
@@ -46,8 +46,8 @@
     "cap": {
       "nama": "Sumber: BMKG",
       "status": "Aktif",
-      "diambil": "2026-10-22T18:10:32.674Z",
-      "observasi": "2026-10-22T18:30:11.000Z",
+      "diambil": "2026-10-22T20:02:43.686Z",
+      "observasi": "2026-10-22T20:00:09.000Z",
       "label": "Nowcast BMKG, dasar waktu 0–3 jam.",
       "catatan": "Cakupan nasional. Tanpa peringatan bukan nol."
     },
@@ -7527,7 +7527,7 @@
       },
       "p": {
         "2026-10-22": "Hujan Lebat dan Petir · Moderate",
-        "2026-10-23": "Hujan Lebat dan Petir · Moderate"
+        "2026-10-23": "Tidak ada peringatan"
       }
     },
     "14.03": {
@@ -7665,7 +7665,7 @@
       },
       "p": {
         "2026-10-22": "Hujan Lebat dan Petir · Moderate",
-        "2026-10-23": "Hujan Lebat dan Petir · Moderate"
+        "2026-10-23": "Tidak ada peringatan"
       }
     },
     "14.06": {
@@ -7849,7 +7849,7 @@
       },
       "p": {
         "2026-10-22": "Hujan Lebat dan Petir · Moderate",
-        "2026-10-23": "Hujan Lebat dan Petir · Moderate"
+        "2026-10-23": "Tidak ada peringatan"
       }
     },
     "14.10": {
@@ -7987,7 +7987,7 @@
       },
       "p": {
         "2026-10-22": "Tidak ada peringatan",
-        "2026-10-23": "Hujan Lebat dan Petir · Moderate"
+        "2026-10-23": "Tidak ada peringatan"
       }
     },
     "15.01": {
@@ -20791,7 +20791,7 @@
       },
       "p": {
         "2026-10-22": "Hujan Lebat dan Petir · Moderate",
-        "2026-10-23": "Hujan Lebat dan Petir · Moderate"
+        "2026-10-23": "Tidak ada peringatan"
       }
     },
     "65.02": {
@@ -20837,7 +20837,7 @@
       },
       "p": {
         "2026-10-22": "Hujan Lebat dan Petir · Moderate",
-        "2026-10-23": "Hujan Lebat dan Petir · Moderate"
+        "2026-10-23": "Tidak ada peringatan"
       }
     },
     "65.03": {
@@ -20883,7 +20883,7 @@
       },
       "p": {
         "2026-10-22": "Hujan Lebat dan Petir · Moderate",
-        "2026-10-23": "Hujan Lebat dan Petir · Moderate"
+        "2026-10-23": "Tidak ada peringatan"
       }
     },
     "65.04": {
@@ -20929,7 +20929,7 @@
       },
       "p": {
         "2026-10-22": "Hujan Lebat dan Petir · Moderate",
-        "2026-10-23": "Hujan Lebat dan Petir · Moderate"
+        "2026-10-23": "Tidak ada peringatan"
       }
     },
     "65.71": {
