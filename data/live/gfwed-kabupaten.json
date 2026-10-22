@@ -1353,9 +1353,9 @@
       "kode": "35.01",
       "kabupaten": "Pacitan",
       "provinsi": "Jawa Timur",
-      "fwi_rata": 5.57,
+      "fwi_rata": 2.89,
       "fwi_maks": 5.57,
-      "n_sel": 1
+      "n_sel": 2
     },
     {
       "kode": "35.02",
@@ -1366,12 +1366,20 @@
       "n_sel": 1
     },
     {
+      "kode": "35.03",
+      "kabupaten": "Trenggalek",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
       "kode": "35.04",
       "kabupaten": "Tulungagung",
       "provinsi": "Jawa Timur",
-      "fwi_rata": 4.58,
+      "fwi_rata": 2.5,
       "fwi_maks": 4.58,
-      "n_sel": 1
+      "n_sel": 2
     },
     {
       "kode": "35.05",
@@ -1417,9 +1425,9 @@
       "kode": "35.10",
       "kabupaten": "Banyuwangi",
       "provinsi": "Jawa Timur",
-      "fwi_rata": 13.75,
+      "fwi_rata": 6.75,
       "fwi_maks": 13.75,
-      "n_sel": 1
+      "n_sel": 4
     },
     {
       "kode": "35.11",
@@ -1588,6 +1596,14 @@
       "fwi_rata": 3.36,
       "fwi_maks": 6.03,
       "n_sel": 2
+    },
+    {
+      "kode": "51.01",
+      "kabupaten": "Jembrana",
+      "provinsi": "Bali",
+      "fwi_rata": 0.34,
+      "fwi_maks": 0.34,
+      "n_sel": 1
     },
     {
       "kode": "51.02",
