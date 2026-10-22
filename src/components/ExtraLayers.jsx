@@ -38,7 +38,7 @@ export function LayerBar({ layer, setLayer, overlayIrbi = false, setOverlayIrbi 
   const penjelasan = PENJELASAN_LAPISAN[layer];
   return (
     <div className="tema-peta">
-      <div className="province-filter" role="group" aria-label="Tema peta">
+      <div className="province-filter tema-baris" role="group" aria-label="Tema peta">
         {LAYERS.map(([id, label, aktif]) => (
           <button
             key={id}

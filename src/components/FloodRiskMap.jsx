@@ -19,6 +19,7 @@ import {
   legendClass,
 } from "../lib/floodMatrix.js";
 import { BAHAYA_SERVICE, LEGEND_IMAGE, RISIKO_SERVICE, exportImageUrl, identifyUrl } from "../lib/floodServices.js";
+import { KeteranganMobile } from "./KeteranganMobile.jsx";
 import {
   HUJAN_KELAS,
   HUJAN_PEMBANDING_BADGE,
@@ -682,8 +683,10 @@ export function FloodRiskMap({
 
   return (
     <div className="flood-map-block">
+      <div className="peta-penjelas">
       {tab === "cap" ? <p className="fine">{HUJAN_TANPA_NOWCAST}</p> : null}
       <p className="fine">{FLOOD_PERMISSION} Overlay inaRISK mati sampai dinyalakan. Status peta inaRISK belum Aktif.</p>
+      </div>
       {mapError ? (
         <p className="banner warn" role="status">
           <strong>{mapError}</strong>{" "}
@@ -693,8 +696,14 @@ export function FloodRiskMap({
         </p>
       ) : null}
       {loadingMap ? <p className="fine">Memuat batas kabupaten/kota…</p> : null}
-      {bigNote ? <p className="fine">{bigNote}</p> : null}
+      {bigNote ? <p className="fine peta-penjelas">{bigNote}</p> : null}
       <div ref={containerRef} className="map-canvas flood-map" role="application" aria-label="Peta banjir Indonesia" />
+      <KeteranganMobile>
+        {tab === "cap" ? <p>{HUJAN_TANPA_NOWCAST}</p> : null}
+        <p>{FLOOD_PERMISSION} Overlay inaRISK mati sampai dinyalakan. Status peta inaRISK belum Aktif.</p>
+        {bigNote ? <p>{bigNote}</p> : null}
+        <p>Peringatan cuaca jangka pendek BMKG, kejadian banjir 2024, dan kelas risiko IRBI 2025 per kabupaten/kota. Klasifikasi DAS belum terintegrasi. Daftar DAS tidak menyaring peta dan tidak menampilkan angka DAS.</p>
+      </KeteranganMobile>
       {kontrolSiap && kontrolRef.current
         ? createPortal(
             <details className="peta-kartu" open={kartuBuka} onToggle={(event) => setKartuBuka(event.currentTarget.open)}>

@@ -1,5 +1,6 @@
 import { Component, useCallback, useEffect, useMemo, useState } from "react";
 import { FloodInfoTable, FloodKabDaftar, PrakiraanTigaHari, rincianKab } from "./FloodInfoTable.jsx";
+import { KeteranganMobile } from "./KeteranganMobile.jsx";
 import { FloodRiskMap } from "./FloodRiskMap.jsx";
 import { ANALISIS_BUKAN_RESMI, ANALISIS_NAMA, CATATAN_ALASAN, applyAnalisis, catWilayah } from "../lib/analisisPantauBencana.js";
 import { DISCLAIMER_UNDUH, barisXlsx, csvUnduh } from "../lib/banjirExport.js";
@@ -426,13 +427,13 @@ function FloodBody() {
       <header className="page-head">
         <div>
           <h1>Banjir · Indonesia</h1>
-          <p className="lead">
+          <p className="lead peta-penjelas">
             Peringatan cuaca jangka pendek BMKG, kejadian banjir 2024, dan kelas risiko IRBI 2025 per kabupaten/kota.
           </p>
         </div>
       </header>
-      <section className="card flood-map-first">
-        <div className="logic-body">
+      <section className="card flood-map-first susun-peta">
+        <div className="logic-body susun-filter">
           <div className="time-toggle" role="tablist" aria-label="Jangka waktu peta">
             <button type="button" role="tab" aria-selected={tab === "cap"} onClick={() => setTab("cap")}>
               0–3 jam
@@ -474,8 +475,8 @@ function FloodBody() {
               </p>
             ) : null}
           </div>
-          <p className="fine">Klasifikasi DAS belum terintegrasi. Daftar DAS tidak menyaring peta dan tidak menampilkan angka DAS.</p>
-          <div className="flood-layout">
+          <p className="fine peta-penjelas">Klasifikasi DAS belum terintegrasi. Daftar DAS tidak menyaring peta dan tidak menampilkan angka DAS.</p>
+          <div className="flood-layout susun-kanvas">
             <FloodRiskMap
               province={province}
               onProvince={pilihProvinsi}

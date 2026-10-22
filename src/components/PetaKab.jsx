@@ -5,6 +5,7 @@ import { BATAS_KAB_FILE } from "../lib/batasKab.js";
 import { osmTileLayer } from "../lib/basemap.js";
 import { kunciTampilanIndonesia, tampilanMasihIndonesia } from "../lib/kunciPeta.js";
 import { WARNA_KOSONG } from "../lib/petaTema.js";
+import { KeteranganMobile } from "./KeteranganMobile.jsx";
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -106,11 +107,14 @@ export function PetaKab({ isi = {}, garis = {}, judul, catatan, legenda = [], ko
       <header className="card-head">
         <div>
           <h2>{judul}</h2>
-          <p>{catatan}</p>
+          <p className="peta-penjelas">{catatan}</p>
         </div>
       </header>
       {galat ? <p className="banner warn" role="status">{galat}</p> : null}
       <div ref={containerRef} className="map-canvas" role="application" aria-label={judul} />
+      <KeteranganMobile>
+        <p>{catatan}</p>
+      </KeteranganMobile>
       {legenda.length ? (
         <ul className="peta-legenda">
           {legenda.map((item) => (

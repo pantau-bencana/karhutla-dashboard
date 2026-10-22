@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { CatatanRingkas } from "./CatatanRingkas.jsx";
+import { KeteranganMobile } from "./KeteranganMobile.jsx";
 import { ClusterLegend, HotspotMap } from "./HotspotMap.jsx";
 import { GwisFwiToggle } from "./GwisFwiToggle.jsx";
 import { tanggalJakarta } from "../lib/gwisFwi.js";
@@ -103,12 +104,15 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
   }
 
   return (
-    <div className="logic-body">
+    <div className="logic-body board-susun">
+      <div className="board-pra">
+      <div className="peta-penjelas">
       <p className="fine">
         Deteksi satelit, bukan kebakaran terkonfirmasi. Confidence deteksi satelit — keyakinan deteksi, bukan intensitas atau bahaya.
       </p>
-      <DatasetTiming feed={feed} />
       {fetchedAt ? <p className="fine">Diambil {formatWib(fetchedAt)}. Usia cuplikan mengikuti waktu ambil itu.</p> : null}
+      </div>
+      <DatasetTiming feed={feed} />
       {filterIncomplete ? <p className="banner warn is-sticky">{FILTER_INCOMPLETE}</p> : null}
       <div className="hotspot-filters">
         <SelectFilter label="Tanggal" value={tanggal} onChange={setTanggal} options={dates} empty="Semua tanggal pada jendela" />
@@ -128,14 +132,22 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
         </div>
         <ClusterLegend />
       </div>
-      <p className="fine">
+      <p className="fine peta-penjelas">
         {periodeTeks || "Periode aktif"}: {formatAngka(tally.jumlah)} titik pada peta setelah saringan. nama desa tersedia untuk {formatAngka(desaCoverage)} dari {formatAngka(filtered.length)} titik.
       </p>
+      <KeteranganMobile>
+        <p>Deteksi satelit, bukan kebakaran terkonfirmasi. Confidence deteksi satelit — keyakinan deteksi, bukan intensitas atau bahaya.</p>
+        {fetchedAt ? <p>Diambil {formatWib(fetchedAt)}. Usia cuplikan mengikuti waktu ambil itu.</p> : null}
+        <p>
+          {periodeTeks || "Periode aktif"}: {formatAngka(tally.jumlah)} titik pada peta setelah saringan. nama desa tersedia untuk {formatAngka(desaCoverage)} dari {formatAngka(filtered.length)} titik.
+        </p>
+      </KeteranganMobile>
       <p className="lintasan-line" role="status">
         <strong>Lintasan satelit terakhir: {observedAt ? formatWib(observedAt) : "—"}</strong>
         {freshness?.tertunda ? <span className="tag">tertunda</span> : null}
       </p>
       <GwisFwiToggle date={modelDate} enabled={fwiOn} onEnabled={setFwiOn} onReady={onFwiReady} />
+      </div>
       <div className="board-split">
       <div className="board-map">
       <div className="map-toolbar">

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Badge } from "./Badge.jsx";
 import { CatatanRingkas } from "./CatatanRingkas.jsx";
 import { InfoTip } from "./InfoTip.jsx";
+import { KeteranganMobile } from "./KeteranganMobile.jsx";
 import { StationMap } from "./StationMap.jsx";
 import { parseCsv } from "../lib/csv.js";
 import { formatAngka, formatTanggal, formatWib } from "../lib/format.js";
@@ -153,11 +154,11 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
           </div>
         </article>
 
-      <article className="card">
+      <article className="card peta-artikel">
         <header className="card-head">
           <div>
             <h2>Peta dan tabel</h2>
-            <p>Hari Ini memakai tanggal {formatTanggal(today)} (WIB). Riwayat hanya untuk tanggal yang memang ada pada sumber.</p>
+            <p className="peta-penjelas">Hari Ini memakai tanggal {formatTanggal(today)} (WIB). Riwayat hanya untuk tanggal yang memang ada pada sumber.</p>
           </div>
           <Badge kind="pem">Pembanding (data terbuka, bukan resmi)</Badge>
         </header>
@@ -187,7 +188,11 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
           <li><i className="swatch bahaya" /> Berbahaya</li>
         </ul>
         <StationMap stations={sourceOn.kemenlh ? rows : []} selectedId={selectedId} onSelect={setSelectedId} />
-        <p className="fine">Titik adalah lokasi pengukuran. Bukan pewarnaan kabupaten/kota. {CAMS_LABEL} tetap µg/m³.</p>
+        <KeteranganMobile>
+          <p>Hari Ini memakai tanggal {formatTanggal(today)} (WIB). Riwayat hanya untuk tanggal yang memang ada pada sumber.</p>
+          <p>Titik adalah lokasi pengukuran. Bukan pewarnaan kabupaten/kota. {CAMS_LABEL} tetap µg/m³.</p>
+        </KeteranganMobile>
+        <p className="fine peta-penjelas">Titik adalah lokasi pengukuran. Bukan pewarnaan kabupaten/kota. {CAMS_LABEL} tetap µg/m³.</p>
         <p className="fine">
           Waktu ambil model: {cams.fetchedAt ? formatWib(cams.fetchedAt) : "tidak tersedia"}. Waktu model pada berkas: {cams.observedAt ? formatWib(cams.observedAt) : "tidak tersedia"}.
           {cams.state === "usang" ? ` Gagal/stale: ${cams.alasan}` : ""}
