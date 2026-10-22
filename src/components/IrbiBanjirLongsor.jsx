@@ -140,9 +140,9 @@ export function IrbiBanjirLongsor() {
             Provinsi
             <select value={provinsi} onChange={(event) => setProvinsi(event.target.value)}>
               <option value="">Seluruh Indonesia</option>
-              {PROVINSI.map((nama) => (
-                <option key={nama} value={nama}>
-                  {nama}
+              {PROVINSI.map((item) => (
+                <option key={item.kode} value={item.nama}>
+                  {item.nama}
                 </option>
               ))}
             </select>
