@@ -1353,9 +1353,9 @@
       "kode": "35.01",
       "kabupaten": "Pacitan",
       "provinsi": "Jawa Timur",
-      "fwi_rata": 2.89,
+      "fwi_rata": 5.57,
       "fwi_maks": 5.57,
-      "n_sel": 2
+      "n_sel": 1
     },
     {
       "kode": "35.02",
@@ -1366,20 +1366,12 @@
       "n_sel": 1
     },
     {
-      "kode": "35.03",
-      "kabupaten": "Trenggalek",
-      "provinsi": "Jawa Timur",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 1
-    },
-    {
       "kode": "35.04",
       "kabupaten": "Tulungagung",
       "provinsi": "Jawa Timur",
-      "fwi_rata": 2.5,
+      "fwi_rata": 4.58,
       "fwi_maks": 4.58,
-      "n_sel": 2
+      "n_sel": 1
     },
     {
       "kode": "35.05",
@@ -1425,9 +1417,9 @@
       "kode": "35.10",
       "kabupaten": "Banyuwangi",
       "provinsi": "Jawa Timur",
-      "fwi_rata": 6.75,
+      "fwi_rata": 13.75,
       "fwi_maks": 13.75,
-      "n_sel": 4
+      "n_sel": 1
     },
     {
       "kode": "35.11",
@@ -1598,14 +1590,6 @@
       "n_sel": 2
     },
     {
-      "kode": "51.01",
-      "kabupaten": "Jembrana",
-      "provinsi": "Bali",
-      "fwi_rata": 0.34,
-      "fwi_maks": 0.34,
-      "n_sel": 1
-    },
-    {
       "kode": "51.02",
       "kabupaten": "Tabanan",
       "provinsi": "Bali",
@@ -1702,6 +1686,38 @@
       "n_sel": 1
     },
     {
+      "kode": "53.01",
+      "kabupaten": "Kupang",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 11.92,
+      "fwi_maks": 18.53,
+      "n_sel": 6
+    },
+    {
+      "kode": "53.02",
+      "kabupaten": "Timor Tengah Selatan",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 9.04,
+      "fwi_maks": 11.21,
+      "n_sel": 3
+    },
+    {
+      "kode": "53.03",
+      "kabupaten": "Timor Tengah Utara",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 9.49,
+      "fwi_maks": 10.83,
+      "n_sel": 3
+    },
+    {
+      "kode": "53.05",
+      "kabupaten": "Alor",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 5.47,
+      "fwi_maks": 5.47,
+      "n_sel": 1
+    },
+    {
       "kode": "53.06",
       "kabupaten": "Flores Timur",
       "provinsi": "Nusa Tenggara Timur",
@@ -1716,6 +1732,14 @@
       "fwi_rata": 0.07,
       "fwi_maks": 0.07,
       "n_sel": 1
+    },
+    {
+      "kode": "53.08",
+      "kabupaten": "Ende",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 1.62,
+      "fwi_maks": 4.07,
+      "n_sel": 3
     },
     {
       "kode": "53.09",
@@ -1734,11 +1758,35 @@
       "n_sel": 1
     },
     {
+      "kode": "53.11",
+      "kabupaten": "Sumba Timur",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 6.05,
+      "fwi_maks": 9.81,
+      "n_sel": 7
+    },
+    {
+      "kode": "53.12",
+      "kabupaten": "Sumba Barat",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0.82,
+      "fwi_maks": 0.82,
+      "n_sel": 1
+    },
+    {
       "kode": "53.13",
       "kabupaten": "Lembata",
       "provinsi": "Nusa Tenggara Timur",
       "fwi_rata": 5.57,
       "fwi_maks": 5.57,
+      "n_sel": 1
+    },
+    {
+      "kode": "53.14",
+      "kabupaten": "Rote Ndao",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 22.9,
+      "fwi_maks": 22.9,
       "n_sel": 1
     },
     {
@@ -1750,12 +1798,44 @@
       "n_sel": 4
     },
     {
+      "kode": "53.16",
+      "kabupaten": "Nagekeo",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 4,
+      "fwi_maks": 5.22,
+      "n_sel": 2
+    },
+    {
+      "kode": "53.17",
+      "kabupaten": "Sumba Tengah",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0.27,
+      "fwi_maks": 0.49,
+      "n_sel": 2
+    },
+    {
+      "kode": "53.18",
+      "kabupaten": "Sumba Barat Daya",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0,
+      "fwi_maks": 0.01,
+      "n_sel": 2
+    },
+    {
       "kode": "53.19",
       "kabupaten": "Manggarai Timur",
       "provinsi": "Nusa Tenggara Timur",
       "fwi_rata": 0.04,
       "fwi_maks": 0.08,
       "n_sel": 2
+    },
+    {
+      "kode": "53.21",
+      "kabupaten": "Malaka",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 8.65,
+      "fwi_maks": 8.65,
+      "n_sel": 1
     },
     {
       "kode": "61.01",
