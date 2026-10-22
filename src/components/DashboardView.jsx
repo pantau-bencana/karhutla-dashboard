@@ -255,6 +255,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
               : []
           }
           kosongLabel={layer === "potensi" ? "Belum cukup data" : "Tidak ada nilai model pada titik ini"}
+          provinsi={province}
         />
       ) : null}
       {layer === "fdrs" ? (
@@ -265,7 +266,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
               <p className="peta-penjelas">Pembanding (data terbuka, bukan resmi). Bukan FDRS BMKG. Tanggal model {formatTanggal(tanggalFwi)}.</p>
             </div>
           </header>
-          <HotspotMap points={[]} frame="indonesia" fwiDate={tanggalFwi} />
+          <HotspotMap points={[]} frame="indonesia" wilayah={province} fwiDate={tanggalFwi} />
           <KeteranganMobile>
             <p>Pembanding (data terbuka, bukan resmi). Bukan FDRS BMKG. Tanggal model {formatTanggal(tanggalFwi)}. {HORIZON.fdrs}</p>
           </KeteranganMobile>
@@ -277,6 +278,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           judul="Overlay IRBI 2025"
           catatan="Kelas buku IRBI 2025. Overlay saja, bukan tema peta, bukan filter tanggal, dan bukan prakiraan."
           kosongLabel="Tidak ada baris IRBI pada batas ini"
+          provinsi={province}
         />
       ) : null}
       {layer === "hotspot" && view.rangeInvalid ? (
@@ -306,6 +308,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
             points={aktif}
             priority={priority}
             frame={province ? "points" : "indonesia"}
+            wilayah={province}
             onKembaliIndonesia={() => setProvince("")}
             meta={feeds.find((feed) => feed.id === "hotspot_peta")?.petaMeta}
             feed={hotspotFeed}

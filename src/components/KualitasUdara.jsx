@@ -187,7 +187,7 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
           <li><i className="swatch sangat" /> Sangat Tidak Sehat</li>
           <li><i className="swatch bahaya" /> Berbahaya</li>
         </ul>
-        <StationMap stations={sourceOn.kemenlh ? rows : []} selectedId={selectedId} onSelect={setSelectedId} />
+        <StationMap stations={sourceOn.kemenlh ? rows : []} selectedId={selectedId} onSelect={setSelectedId} wilayah={province} />
         <KeteranganMobile>
           <p>Hari Ini memakai tanggal {formatTanggal(today)} (WIB). Riwayat hanya untuk tanggal yang memang ada pada sumber.</p>
           <p>Titik adalah lokasi pengukuran. Bukan pewarnaan kabupaten/kota. {CAMS_LABEL} tetap µg/m³.</p>

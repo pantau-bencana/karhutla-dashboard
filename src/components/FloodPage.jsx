@@ -588,7 +588,7 @@ function FloodBody() {
               ) : null}
               {error ? <p className="banner warn">{error}</p> : null}
               {province ? (
-                <>
+                <div className="flood-ikut-provinsi">
                   <div className="flood-toolbar">
                     <label className="filter-field">
                       Tanggal acuan dasarian
@@ -604,7 +604,7 @@ function FloodBody() {
                   </div>
                   <p className="fine">{DASARIAN_NOTE}</p>
                   <FloodInfoTable rows={urut} />
-                </>
+                </div>
               ) : (
                 <p className="fine">
                   Tabel Semua provinsi memuat seluruh {urut.length} kab/kota pada tab ini, urut Awas, Siaga, Waspada, tanpa

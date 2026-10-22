@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
-import { kunciTampilanIndonesia, petaSiap } from "../lib/kunciPeta.js";
+import { kotakProvinsi, muatFiturKab } from "../lib/batasProvinsi.js";
+import { kunciTampilanIndonesia, muatWilayah, petaSiap } from "../lib/kunciPeta.js";
 import { GWIS_ATTRIBUTION, GWIS_CREDIT, GWIS_FWI_LAYER, GWIS_WMS } from "../lib/gwisFwi.js";
 import { formatTanggal, formatWaktu } from "../lib/format.js";
 import { clusterCellDegrees } from "../lib/hotspotWindow.js";
@@ -215,21 +216,26 @@ export function framePoints(map, latlngs, modeRef) {
   if (!mapReady(map)) return false;
   const usable = (latlngs ?? []).filter((pair) => usableCoordinate(pair?.[0], pair?.[1]));
   if (!usable.length) return frameIndonesia(map, modeRef);
-  const terkunci = kunciTampilanIndonesia(map, { muatUlang: false, padding: PADDING });
-  if (!terkunci) return false;
-  const lantai = map.getMinZoom();
-  map.stop();
-  map.setMaxBounds(null);
-  if (usable.length === 1) {
-    const zoom = Math.min(8, Math.max(lantai || 0, 7));
-    map.setView(usable[0], zoom, { animate: false });
-  } else {
-    map.fitBounds(usable, { padding: PADDING, maxZoom: 8, animate: false });
-  }
-  map.setMinZoom(lantai);
-  kunciTampilanIndonesia(map, { muatUlang: false, padding: PADDING });
+  const bounds = L.latLngBounds(usable);
+  if (usable.length === 1) bounds.extend([usable[0][0] + 0.15, usable[0][1] + 0.15]);
+  const ok = muatWilayah(map, bounds, PADDING);
+  if (!ok) map.fitBounds(usable, { padding: PADDING, maxZoom: 8, animate: false });
   if (modeRef) modeRef.current = "points";
   return true;
+}
+
+export function frameWilayah(map, nama, modeRef) {
+  if (!nama) return frameIndonesia(map, modeRef);
+  return muatFiturKab()
+    .then((fitur) => {
+      const kotak = kotakProvinsi(fitur, nama);
+      if (!kotak || !mapReady(map)) return frameIndonesia(map, modeRef);
+      const bounds = L.latLngBounds([kotak.south, kotak.west], [kotak.north, kotak.east]);
+      const ok = muatWilayah(map, bounds, PADDING);
+      if (ok && modeRef) modeRef.current = "points";
+      return ok;
+    })
+    .catch(() => frameIndonesia(map, modeRef));
 }
 
 function syncMinZoom(map) {
@@ -250,7 +256,7 @@ function desaExportUrl(bounds, width, height) {
   return `${BIG_SERVICE}/export?${params}`;
 }
 
-export function HotspotMap({ points, frame = "indonesia", active = true, mapApi, selectedKey = "", onSelect, fwiDate = "" }) {
+export function HotspotMap({ points, frame = "indonesia", wilayah = "", active = true, mapApi, selectedKey = "", onSelect, fwiDate = "" }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const layerRef = useRef(null);
@@ -263,6 +269,9 @@ export function HotspotMap({ points, frame = "indonesia", active = true, mapApi,
   const drawRef = useRef(() => {});
   const desaLayerRef = useRef(null);
   const pointsSignatureRef = useRef("");
+  const wilayahRef = useRef(wilayah);
+  const wilayahTerpasang = useRef(wilayah);
+  wilayahRef.current = wilayah;
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return undefined;
@@ -292,11 +301,14 @@ export function HotspotMap({ points, frame = "indonesia", active = true, mapApi,
 
     let sizeKey = "";
     const onResize = () => {
-      const size = map.getSize();
-      const key = `${Math.round(size.x)}x${Math.round(size.y)}`;
-      if (!key || key === sizeKey) return;
+      const lebar = containerRef.current?.clientWidth || 0;
+      const tinggi = containerRef.current?.clientHeight || 0;
+      const key = `${Math.round(lebar)}x${Math.round(tinggi)}`;
+      if (lebar < 80 || tinggi < 80 || key === sizeKey) return;
       sizeKey = key;
+      map.invalidateSize({ pan: false, animate: false });
       if (modeRef.current === "points") syncMinZoom(map);
+      else if (wilayahRef.current) frameWilayah(map, wilayahRef.current, modeRef);
       else frameIndonesia(map, modeRef);
     };
     map.on("resize", onResize);
@@ -400,7 +412,9 @@ export function HotspotMap({ points, frame = "indonesia", active = true, mapApi,
     pointsSignatureRef.current = String(signature);
     // Memilih baris mengganti identitas array tanpa mengubah koordinat.
     // Jangan kembalikan tampilan ke seluruh Indonesia setelah fokus desa.
-    if (unchanged && modeRef.current === "points") return undefined;
+    const wilayahBerubah = wilayahRef.current !== wilayahTerpasang.current;
+    wilayahTerpasang.current = wilayahRef.current;
+    if (unchanged && modeRef.current === "points" && !wilayahBerubah) return undefined;
     let cancelled = false;
     let tries = 0;
     const apply = () => {
@@ -414,6 +428,7 @@ export function HotspotMap({ points, frame = "indonesia", active = true, mapApi,
       }
       if (!mapReady(map)) return;
       if (frame === "points" && latlngsRef.current.length) framePoints(map, latlngsRef.current, modeRef);
+      else if (wilayahRef.current) frameWilayah(map, wilayahRef.current, modeRef);
       else frameIndonesia(map, modeRef);
       drawRef.current();
     };
@@ -421,7 +436,7 @@ export function HotspotMap({ points, frame = "indonesia", active = true, mapApi,
     return () => {
       cancelled = true;
     };
-  }, [frame, points, active]);
+  }, [frame, points, active, wilayah]);
 
     return <div ref={containerRef} className="map-canvas hotspot-map" role="region" aria-label="Peta sebaran titik panas" />;
 }

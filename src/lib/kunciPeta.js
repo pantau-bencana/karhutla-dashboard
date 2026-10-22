@@ -49,10 +49,18 @@ function jejakNasional(map, kotak, zoom) {
   return tampilan.pad(0.012);
 }
 
+function perluasJejak(jejak, bounds) {
+  if (!bounds?.isValid?.()) return jejak;
+  jejak.extend(bounds.getSouthWest());
+  jejak.extend(bounds.getNorthEast());
+  return jejak;
+}
+
 // Kunci geser (maxBounds + viscosity 1) dan lantai zoom.
 // muatUlang: tampilan menjadi seluruh Indonesia, lalu minZoom = zoom hasil fit.
 // Tanpa muatUlang: lantai dihitung ulang, pusat yang ada (zoom provinsi / titik) dipertahankan.
-export function kunciTampilanIndonesia(map, { muatUlang = true, padding = PADDING_BAWAAN, bounds = null } = {}) {
+// ikut: kotak wilayah yang baru dimuat. Batas geser melebar supaya viscosity 1 tidak mendorongnya keluar.
+export function kunciTampilanIndonesia(map, { muatUlang = true, padding = PADDING_BAWAAN, bounds = null, ikut = null } = {}) {
   if (!petaSiap(map)) return false;
   const kotak = bounds?.isValid?.() ? bounds : boundsKunciPeta();
   map.stop();
@@ -73,9 +81,33 @@ export function kunciTampilanIndonesia(map, { muatUlang = true, padding = PADDIN
   const zoom = map.getZoom();
   const lantai = zoomMuatIndonesia(map, padding, kotak);
   map.setMinZoom(lantai);
-  map.setMaxBounds(jejakNasional(map, kotak, lantai));
+  const jejak = perluasJejak(jejakNasional(map, kotak, lantai), ikut);
+  map.setMaxBounds(jejak);
   if (!Number.isFinite(zoom) || zoom < lantai) map.setView(pusat, lantai, { animate: false });
   return true;
+}
+
+// Muat satu wilayah. Lantai zoom nasional tidak menimpa zoom yang lebih dekat,
+// dan batas geser ikut melebar supaya fitBounds tidak terpantul kembali.
+export function muatWilayah(map, bounds, padding = PADDING_BAWAAN) {
+  if (!petaSiap(map) || !bounds?.isValid?.()) return false;
+  map.invalidateSize({ animate: false, pan: false });
+  if (!petaSiap(map)) return false;
+  const kotak = boundsKunciPeta();
+  const lantai = zoomMuatIndonesia(map, padding, kotak);
+  map.stop();
+  map.options.zoomSnap = 0;
+  map.options.worldCopyJump = false;
+  map.options.maxBoundsViscosity = 1;
+  map.setMaxBounds(null);
+  map.setMinZoom(0);
+  map.fitBounds(bounds, { padding, maxZoom: 8, animate: false });
+  const zoom = map.getZoom();
+  const aman = Number.isFinite(lantai) ? lantai : 0;
+  map.setMinZoom(aman);
+  if (Number.isFinite(zoom) && zoom < aman) map.setView(bounds.getCenter(), aman, { animate: false });
+  map.setMaxBounds(perluasJejak(jejakNasional(map, kotak, map.getMinZoom()), bounds));
+  return map.getBounds().intersects(bounds);
 }
 
 export function tampilanMasihIndonesia(map) {

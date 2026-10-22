@@ -6,7 +6,7 @@ import { BATAS_KAB_FILE, BATAS_KAB_SUMBER } from "../lib/batasKab.js";
 import { barisDampakHistoris } from "../lib/bnpbBanjir.js";
 import { osmTileLayer } from "../lib/basemap.js";
 import { BANJIR_FRAME } from "../lib/geo.js";
-import { kunciTampilanIndonesia } from "../lib/kunciPeta.js";
+import { kunciTampilanIndonesia, zoomMuatIndonesia } from "../lib/kunciPeta.js";
 import { ANALISIS_WARNA, CATATAN_ABU, CATATAN_ABU_HARI, CATATAN_ARSIR, LABEL_KEDALUWARSA, LEGENDA_ANALISIS_HARI, WARNA_TANPA_PERINGATAN } from "../lib/analisisPantauBencana.js";
 import {
   FLOOD_PERMISSION,
@@ -225,13 +225,13 @@ function fitProvinsi(map, bounds) {
   map.invalidateSize({ animate: false, pan: false });
   if (!petaSiap(map)) return false;
   const frame = banjirBounds();
-  kunciTampilanIndonesia(map, { muatUlang: false, padding: BANJIR_PADDING, bounds: frame });
-  const lantai = map.getMinZoom();
+  const lantai = zoomMuatIndonesia(map, BANJIR_PADDING, frame);
   map.stop();
   map.setMaxBounds(null);
+  map.setMinZoom(0);
   map.fitBounds(bounds, { padding: PADDING_PROVINSI, animate: false });
-  map.setMinZoom(lantai);
-  kunciTampilanIndonesia(map, { muatUlang: false, padding: BANJIR_PADDING, bounds: frame });
+  map.setMinZoom(Number.isFinite(lantai) ? lantai : 0);
+  kunciTampilanIndonesia(map, { muatUlang: false, padding: BANJIR_PADDING, bounds: frame, ikut: bounds });
   return true;
 }
 
@@ -329,9 +329,10 @@ export function FloodRiskMap({
     pasang();
     let sizeKey = "";
     const onResize = () => {
-      const size = map.getSize();
-      const key = `${Math.round(size.x)}x${Math.round(size.y)}`;
-      if (!key || key === sizeKey) return;
+      const lebar = containerRef.current?.clientWidth || 0;
+      const tinggi = containerRef.current?.clientHeight || 0;
+      const key = `${Math.round(lebar)}x${Math.round(tinggi)}`;
+      if (lebar < 80 || tinggi < 80 || key === sizeKey) return;
       sizeKey = key;
       pasang();
     };

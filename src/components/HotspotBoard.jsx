@@ -41,7 +41,7 @@ function SelectFilter({ label, value, onChange, options, empty }) {
   );
 }
 
-export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observedAt, freshness, sumber, from = "", to = "", periodeTeks = "", frame = "indonesia", onKembaliIndonesia }) {
+export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observedAt, freshness, sumber, from = "", to = "", periodeTeks = "", frame = "indonesia", wilayah = "", onKembaliIndonesia }) {
   const mapApi = useRef(null);
   const [tanggal, setTanggal] = useState("");
   const [satelit, setSatelit] = useState("");
@@ -154,7 +154,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
         <button type="button" className="button" onClick={() => { onKembaliIndonesia?.(); mapApi.current?.showIndonesia(); }}>Kembali ke seluruh Indonesia</button>
       </div>
       <div className="map-stage">
-        <HotspotMap points={filtered} frame={frame} mapApi={mapApi} selectedKey={selectedKey} onSelect={choosePoint} fwiDate={fwiOn && fwiReady ? modelDate : ""} />
+        <HotspotMap points={filtered} frame={frame} wilayah={wilayah} mapApi={mapApi} selectedKey={selectedKey} onSelect={choosePoint} fwiDate={fwiOn && fwiReady ? modelDate : ""} />
         {freshness?.tertunda || feed?.status === "usang" || feed?.status === "gagal" ? (
           <details className={feed?.status === "gagal" ? "map-badge map-badge-gagal" : "map-badge"}>
             <summary>

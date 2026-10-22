@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import L from "leaflet";
 import { osmTileLayer } from "../lib/basemap.js";
 import { kunciTampilanIndonesia } from "../lib/kunciPeta.js";
-import { frameIndonesia, framePoints } from "./HotspotMap.jsx";
+import { frameIndonesia, framePoints, frameWilayah } from "./HotspotMap.jsx";
 
 const COLORS = {
   Baik: "#1b7f3a",
@@ -35,7 +35,7 @@ function popupHtml(station) {
   `;
 }
 
-export function StationMap({ stations, selectedId, onSelect, active = true }) {
+export function StationMap({ stations, selectedId, onSelect, active = true, wilayah = "" }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const layerRef = useRef(null);
@@ -43,6 +43,8 @@ export function StationMap({ stations, selectedId, onSelect, active = true }) {
   const stationsRef = useRef(stations ?? []);
   const selectedRef = useRef(selectedId);
   const onSelectRef = useRef(onSelect);
+  const wilayahRef = useRef(wilayah);
+  wilayahRef.current = wilayah;
 
   useEffect(() => {
     stationsRef.current = stations ?? [];
@@ -68,15 +70,18 @@ export function StationMap({ stations, selectedId, onSelect, active = true }) {
     mapRef.current = map;
     const muat = () => {
       if (modeRef.current === "points") kunciTampilanIndonesia(map, { muatUlang: false });
+      else if (wilayahRef.current) frameWilayah(map, wilayahRef.current, modeRef);
       else frameIndonesia(map, modeRef);
     };
     muat();
     let sizeKey = "";
     const onResize = () => {
-      const size = map.getSize();
-      const key = `${Math.round(size.x)}x${Math.round(size.y)}`;
-      if (!key || key === "0x0" || key === sizeKey) return;
+      const lebar = containerRef.current?.clientWidth || 0;
+      const tinggi = containerRef.current?.clientHeight || 0;
+      const key = `${Math.round(lebar)}x${Math.round(tinggi)}`;
+      if (lebar < 80 || tinggi < 80 || key === sizeKey) return;
       sizeKey = key;
+      map.invalidateSize({ animate: false, pan: false });
       muat();
     };
     map.on("resize", onResize);
@@ -125,13 +130,14 @@ export function StationMap({ stations, selectedId, onSelect, active = true }) {
       const selected = stationsRef.current.find((station) => station.id === selectedRef.current);
       if (selected) framePoints(map, [[selected.lintang, selected.bujur]], modeRef);
       else if (latlngs.length) framePoints(map, latlngs, modeRef);
+      else if (wilayahRef.current) frameWilayah(map, wilayahRef.current, modeRef);
       else frameIndonesia(map, modeRef);
     };
     draw();
     return () => {
       cancelled = true;
     };
-  }, [stations, selectedId, active]);
+  }, [stations, selectedId, active, wilayah]);
 
   return <div ref={containerRef} className="map-canvas" role="region" aria-label="Peta stasiun ISPU" />;
 }
