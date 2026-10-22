@@ -3,7 +3,8 @@ import L from "leaflet";
 import { feature as topoFeature } from "topojson-client";
 import { BATAS_KAB_FILE } from "../lib/batasKab.js";
 import { osmTileLayer } from "../lib/basemap.js";
-import { kunciTampilanIndonesia, tampilanMasihIndonesia } from "../lib/kunciPeta.js";
+import { kotakProvinsi } from "../lib/batasProvinsi.js";
+import { kunciTampilanIndonesia, muatWilayah, tampilanMasihIndonesia } from "../lib/kunciPeta.js";
 import { WARNA_KOSONG } from "../lib/petaTema.js";
 import { KeteranganMobile } from "./KeteranganMobile.jsx";
 
@@ -17,7 +18,7 @@ function escapeHtml(value) {
   }[char]));
 }
 
-export function PetaKab({ isi = {}, garis = {}, judul, catatan, legenda = [], kosongLabel = "Belum cukup data" }) {
+export function PetaKab({ isi = {}, garis = {}, judul, catatan, legenda = [], kosongLabel = "Belum cukup data", provinsi = "" }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const layerRef = useRef(null);
@@ -25,16 +26,33 @@ export function PetaKab({ isi = {}, garis = {}, judul, catatan, legenda = [], ko
   const isiRef = useRef(isi);
   const garisRef = useRef(garis);
   const kosongRef = useRef(kosongLabel);
+  const provinsiRef = useRef(provinsi);
   const [galat, setGalat] = useState("");
   isiRef.current = isi;
   garisRef.current = garis;
   kosongRef.current = kosongLabel;
+  provinsiRef.current = provinsi;
+
+  function tampilkan(map) {
+    const nama = provinsiRef.current;
+    const geo = dataRef.current;
+    if (nama && geo?.features) {
+      const kotak = kotakProvinsi(geo.features, nama);
+      if (kotak) {
+        const bounds = L.latLngBounds([kotak.south, kotak.west], [kotak.north, kotak.east]);
+        if (muatWilayah(map, bounds)) return;
+      }
+    }
+    kunciTampilanIndonesia(map, { muatUlang: !nama && tampilanMasihIndonesia(map) });
+  }
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container || mapRef.current) return undefined;
     const map = L.map(container, {
       scrollWheelZoom: true,
+      zoomAnimation: false,
+      fadeAnimation: false,
       zoomSnap: 0,
       zoomDelta: 0.5,
       minZoom: 0,
@@ -42,9 +60,7 @@ export function PetaKab({ isi = {}, garis = {}, judul, catatan, legenda = [], ko
       worldCopyJump: false,
     });
     osmTileLayer(L).addTo(map);
-    const muatIndonesia = () => {
-      kunciTampilanIndonesia(map, { muatUlang: tampilanMasihIndonesia(map) });
-    };
+    const muatIndonesia = () => tampilkan(map);
     muatIndonesia();
     layerRef.current = L.geoJSON(null, {
       style: (feature) => gaya(feature, isiRef.current, garisRef.current),
@@ -55,10 +71,12 @@ export function PetaKab({ isi = {}, garis = {}, judul, catatan, legenda = [], ko
     mapRef.current = map;
     let sizeKey = "";
     const onResize = () => {
-      const size = map.getSize();
-      const key = `${Math.round(size.x)}x${Math.round(size.y)}`;
-      if (!key || key === "0x0" || key === sizeKey) return;
+      const lebar = container.clientWidth || 0;
+      const tinggi = container.clientHeight || 0;
+      const key = `${Math.round(lebar)}x${Math.round(tinggi)}`;
+      if (lebar < 80 || tinggi < 80 || key === sizeKey) return;
       sizeKey = key;
+      map.invalidateSize({ animate: false, pan: false });
       muatIndonesia();
     };
     map.on("resize", onResize);
@@ -78,6 +96,7 @@ export function PetaKab({ isi = {}, garis = {}, judul, catatan, legenda = [], ko
         layerRef.current.addData(geo);
         layerRef.current.setStyle((feature) => gaya(feature, isiRef.current, garisRef.current));
         map.invalidateSize({ animate: false, pan: false });
+        tampilkan(map);
       })
       .catch((error) => {
         if (!batal) setGalat(error.message || "Batas kabupaten/kota tidak termuat.");
@@ -101,6 +120,12 @@ export function PetaKab({ isi = {}, garis = {}, judul, catatan, legenda = [], ko
       item.setTooltipContent(tooltip(feature, isi, garis, kosongLabel));
     });
   }, [isi, garis, kosongLabel]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !dataRef.current) return;
+    tampilkan(map);
+  }, [provinsi]);
 
   return (
     <section className="card">

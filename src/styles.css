@@ -732,6 +732,12 @@ a.button {
   background: #d7d0c3;
 }
 
+/* Kotak 1600px bawaan Leaflet memotong ubin di Safari setelah zoom provinsi. */
+.leaflet-safari .leaflet-tile-container {
+  width: auto;
+  height: auto;
+}
+
 .leaflet-tile-pane {
   filter: saturate(0.55) brightness(1.05);
 }
@@ -1518,7 +1524,8 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   .flood-map-first .logic-body > .flood-summary,
   .flood-map-first .logic-body > .banner,
   .flood-map-first .logic-body > h2,
-  .flood-map-first .logic-body > p { order: 2; }
+  .flood-map-first .logic-body > p,
+  .flood-map-first .logic-body > .flood-ikut-provinsi { order: 2; }
   .map-stage, .flood-map-block { scroll-margin-bottom: 88px; }
   .cards { grid-template-columns: 1fr; }
   .wrap { width: min(1280px, calc(100% - 20px)); }
