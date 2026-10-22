@@ -1705,9 +1705,9 @@
       "kode": "53.01",
       "kabupaten": "Kupang",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 11.92,
+      "fwi_rata": 11.53,
       "fwi_maks": 18.53,
-      "n_sel": 6
+      "n_sel": 5
     },
     {
       "kode": "53.02",
@@ -1795,14 +1795,6 @@
       "provinsi": "Nusa Tenggara Timur",
       "fwi_rata": 5.57,
       "fwi_maks": 5.57,
-      "n_sel": 1
-    },
-    {
-      "kode": "53.14",
-      "kabupaten": "Rote Ndao",
-      "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 22.9,
-      "fwi_maks": 22.9,
       "n_sel": 1
     },
     {
@@ -3009,9 +3001,9 @@
       "kode": "93.01",
       "kabupaten": "Merauke",
       "provinsi": "Papua Selatan",
-      "fwi_rata": 7.14,
-      "fwi_maks": 13.87,
-      "n_sel": 49
+      "fwi_rata": 6.43,
+      "fwi_maks": 12.17,
+      "n_sel": 41
     },
     {
       "kode": "93.02",
