@@ -2,6 +2,7 @@ import { kodeKan } from "./aplus.js";
 import { kelasIrbi } from "./analisisPantauBencana.js";
 import { formatAngka, formatWib } from "./format.js";
 import { IRBI_LONGSOR_TERVERIFIKASI, IRBI_TIDAK_TERSEDIA } from "./floodMatrix.js";
+import { lembarIrbiGabung } from "./irbiGabung.js";
 import { daftarKabkota } from "./kabProvinsi.js";
 import {
   LABEL_TAK_DIKENAL,
@@ -708,6 +709,7 @@ export function lembarRekap(rekap) {
   if (rekap?.meta?.hotspotTanpaKode) {
     sumber.push(["Hotspot tanpa kode kabupaten", String(rekap.meta.hotspotTanpaKode), "—", "—", "Tidak dibagikan ke kabupaten/kota."]);
   }
+  lembar.push(lembarIrbiGabung(rekap));
   lembar.push({ nama: "Sumber dan waktu", baris: sumber });
   return lembar;
 }

@@ -303,11 +303,14 @@ a.button {
   min-width: min(100%, 11rem);
   font-size: 13px;
 }
-.filter-field select {
+.filter-field select,
+.filter-field input {
   padding: 6px 8px;
   border: 1px solid #cfc4b2;
   border-radius: 8px;
   background: #fff;
+  font: inherit;
+  min-height: 36px;
 }
 .filter-field select:disabled { color: var(--muted); background: #f4f1ea; }
 .flood-tip { max-width: 260px; white-space: normal; }

@@ -34,11 +34,13 @@ import {
   catatanParameter,
   gabungRekap,
   kelasFwiGwis,
+  lembarRekap,
   nilaiParameter,
   susunCuplikan,
   tandaiHujan,
   teksHujan,
 } from "../src/lib/rekapHarian.js";
+import { lembarIrbiGabung, saringIrbi, susunIrbiGabung, urutIrbi } from "../src/lib/irbiGabung.js";
 import { clusterCellDegrees, countHotspots, filterHotspotWindow } from "../src/lib/hotspotWindow.js";
 import { parseFirmsCoordinate } from "./indonesia-land.mjs";
 import { muatTitikBatas, pointInGeometry } from "./titik-dalam-batas.mjs";
@@ -1326,6 +1328,48 @@ assert.equal(irbiNasional.find((row) => row.kode_wilayah === "11.01").skor, "26.
 assert.match(IRBI_PENGGUNAAN_INTERNAL, /Penggunaan internal/);
 assert.match(IRBI_PENGGUNAAN_INTERNAL, /tidak untuk publikasi/);
 assert.match(IRBI_PENGGUNAAN_INTERNAL, /bukan status resmi/);
+const irbiGabung = susunIrbiGabung(irbiNasional, irbiLongsor);
+assert.equal(irbiGabung.length, 514);
+const gabungSelatan = irbiGabung.find((row) => row.kode === "11.01");
+assert.equal(gabungSelatan.banjir, "Tinggi (26,84)");
+assert.equal(gabungSelatan.longsor, "Tinggi (26,40)");
+const gabungBanda = irbiGabung.find((row) => row.kode === "11.71");
+assert.equal(gabungBanda.nama, "Kota Banda Aceh");
+assert.equal(gabungBanda.longsor, "IRBI tidak tersedia");
+assert.equal(gabungBanda.banjir.includes("Tinggi") || gabungBanda.banjir.includes("Sedang") || gabungBanda.banjir.includes("Rendah"), true);
+assert.equal(irbiGabung.filter((row) => row.longsor !== "IRBI tidak tersedia" && row.longsor !== "belum terintegrasi").length, 455);
+assert.equal(irbiGabung.filter((row) => row.banjir !== "IRBI tidak tersedia" && row.banjir !== "belum terintegrasi").length, 510);
+const acehGabung = saringIrbi(irbiGabung, { provinsi: "Aceh" });
+assert.equal(acehGabung.length, 23);
+assert.equal(acehGabung.every((row) => row.provinsi === "Aceh"), true);
+assert.equal(saringIrbi(irbiGabung, { cari: "11.01" }).some((row) => row.kode === "11.01"), true);
+assert.equal(saringIrbi(irbiGabung, { cari: "banda aceh" }).some((row) => row.kode === "11.71"), true);
+const urutLongsor = urutIrbi(irbiGabung, "longsor", "desc");
+assert.equal(urutLongsor[0].longsorSkor >= urutLongsor[1].longsorSkor, true);
+assert.equal(urutLongsor.at(-1).longsorSkor, null);
+assert.equal(urutLongsor.at(-60).longsorSkor == null, false);
+const tanpaLongsor = susunIrbiGabung(irbiNasional, null);
+assert.equal(tanpaLongsor.every((row) => row.longsor === "belum terintegrasi"), true);
+assert.equal(tanpaLongsor.find((row) => row.kode === "11.01").banjir, "Tinggi (26,84)");
+const lembarGabung = lembarIrbiGabung({
+  irbi: { "11.01": { kelas: "Tinggi", skor: 26.84 } },
+  longsor: { "11.01": { kelas: "Tinggi", skor: 26.4 } },
+});
+assert.equal(lembarGabung.nama, "IRBI 2025 Banjir & Longsor");
+assert.equal(lembarGabung.nama.length <= 31, true);
+assert.deepEqual(
+  lembarGabung.baris.find((row) => row[1] === "Aceh Selatan"),
+  ["Aceh", "Aceh Selatan", "Tinggi (26,84)", "Tinggi (26,40)"],
+);
+assert.equal(lembarGabung.baris.find((row) => row[1] === "Kota Banda Aceh")[3], "IRBI tidak tersedia");
+const lembarTanpa = lembarIrbiGabung({ irbi: { "11.01": { kelas: "Tinggi", skor: 26.84 } } });
+assert.equal(lembarTanpa.baris.find((row) => row[1] === "Aceh Selatan")[3], "belum terintegrasi");
+assert.match(readFileSync("src/components/IrbiBanjirLongsor.jsx", "utf8"), /IRBI 2025 Banjir & Longsor/);
+assert.match(readFileSync("src/components/IrbiBanjirLongsor.jsx", "utf8"), /IRBI_PENGGUNAAN_INTERNAL/);
+assert.match(readFileSync("src/components/IrbiBanjirLongsor.jsx", "utf8"), /Seluruh Indonesia/);
+assert.equal(readFileSync("src/lib/irbiGabung.js", "utf8").includes("multibahaya"), false);
+assert.match(readFileSync("src/components/FloodPage.jsx", "utf8"), /IrbiBanjirLongsor/);
+assert.equal(lembarRekap({ irbi: { "11.01": { kelas: "Tinggi", skor: 26.84 } }, longsor: { "11.01": { kelas: "Tinggi", skor: 26.4 } } }).some((item) => item.nama === "IRBI 2025 Banjir & Longsor"), true);
 assert.equal(irbiMulti.length, 33);
 assert.equal(dibiBanjir.length, 28);
 const floodRows = buildFloodRows({ banjir: irbiBanjir, multi: irbiMulti, dibi: dibiBanjir, dibiLoaded: true });
