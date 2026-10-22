@@ -8,6 +8,8 @@ Padanan nama terhadap kode batas BIG: Mamuju Utara = Pasangkayu (76.01), Toba Sa
 
 `irbi-2025-banjir-aceh-bengkulu.csv` tetap 33 baris yang sudah dicocokkan angka-nya dengan berkas nasional. Buku melarang pengutipan atau perbanyakan tanpa izin tertulis BNPB; izin belum diperoleh.
 
+`irbi-2025-longsor.csv` berisi 514 kabupaten/kota dari tabel tanah longsor buku yang sama, halaman 310–323. 455 baris punya skor dan kelas: 369 Tinggi, 52 Sedang, 34 Rendah. 59 baris dikosongkan karena tidak ada di tabel itu. Skor tidak diubah. Berkas multibahaya Aceh–Bengkulu bukan tabel longsor nasional. Bukan peta rawan longsor PVMBG.
+
 ## Titik sampel prakiraan
 
 `prakiraan-sampel-adm4.csv` menyimpan satu kode adm4 per kabupaten/kota yang sudah dicek ke API prakiraan BMKG. Enam kelurahan prioritas bertanda `terverifikasi`. Sisanya `kelurahan-terkecil` atau `desa-terkecil`: itu calon kode, bukan ibu kota yang diverifikasi. Baris `status` selain `ok` tidak diambil ulang dan tidak punya prakiraan. Pada 20 Oktober 2026 yang gagal (HTTP 404): Sorong Selatan, Raja Ampat, Tambrauw, dan Maybrat.

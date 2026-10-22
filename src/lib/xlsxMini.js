@@ -19,18 +19,35 @@ function u32(value) {
   return [value & 0xff, (value >>> 8) & 0xff, (value >>> 16) & 0xff, (value >>> 24) & 0xff];
 }
 
-function zipStore(files) {
+function toBytes(content) {
+  if (content instanceof Uint8Array) return content;
+  return new TextEncoder().encode(String(content ?? ""));
+}
+
+function concatBytes(parts) {
+  let size = 0;
+  for (const part of parts) size += part.length;
+  const out = new Uint8Array(size);
+  let offset = 0;
+  for (const part of parts) {
+    out.set(part, offset);
+    offset += part.length;
+  }
+  return out;
+}
+
+export function arsipZip(files) {
   const local = [];
   const central = [];
   let offset = 0;
   const now = new Date();
   const time = ((now.getHours() & 31) << 11) | ((now.getMinutes() & 63) << 5) | ((now.getSeconds() >> 1) & 31);
   const date = (((now.getFullYear() - 1980) & 127) << 9) | (((now.getMonth() + 1) & 15) << 5) | (now.getDate() & 31);
-  for (const [name, text] of files) {
-    const data = new TextEncoder().encode(text);
+  for (const [name, content] of files) {
+    const data = toBytes(content);
     const nameBytes = new TextEncoder().encode(name);
     const crc = crc32(data);
-    const localHeader = [
+    const localHeader = Uint8Array.from([
       ...u32(0x04034b50),
       ...u16(20),
       ...u16(0),
@@ -42,9 +59,9 @@ function zipStore(files) {
       ...u32(data.length),
       ...u16(nameBytes.length),
       ...u16(0),
-    ];
+    ]);
     local.push(localHeader, nameBytes, data);
-    const centralHeader = [
+    const centralHeader = Uint8Array.from([
       ...u32(0x02014b50),
       ...u16(20),
       ...u16(20),
@@ -62,12 +79,12 @@ function zipStore(files) {
       ...u16(0),
       ...u32(0),
       ...u32(offset),
-    ];
+    ]);
     central.push(centralHeader, nameBytes);
     offset += localHeader.length + nameBytes.length + data.length;
   }
-  const centralBytes = central.flat();
-  const end = [
+  const centralBytes = concatBytes(central);
+  const end = Uint8Array.from([
     ...u32(0x06054b50),
     ...u16(0),
     ...u16(0),
@@ -76,8 +93,8 @@ function zipStore(files) {
     ...u32(centralBytes.length),
     ...u32(offset),
     ...u16(0),
-  ];
-  return new Uint8Array([...local.flat(), ...centralBytes, ...end]);
+  ]);
+  return concatBytes([...local, centralBytes, end]);
 }
 
 function xml(value) {
@@ -114,7 +131,7 @@ function sheetXml(rows) {
 
 export function xlsxBytes(rows) {
   const sheet = sheetXml(rows);
-  return zipStore([
+  return arsipZip([
     [
       "[Content_Types].xml",
       `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -137,4 +154,52 @@ export function xlsxBytes(rows) {
     ],
     ["xl/worksheets/sheet1.xml", sheet],
   ]);
+}
+
+export function xlsxLembar(lembar) {
+  const sheets = (lembar ?? []).map((item, index) => ({
+    nama: String(item.nama || `Lembar ${index + 1}`).slice(0, 31),
+    xml: sheetXml(item.baris ?? []),
+  }));
+  const overrides = sheets
+    .map(
+      (_sheet, index) =>
+        `<Override PartName="/xl/worksheets/sheet${index + 1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`,
+    )
+    .join("");
+  const tags = sheets
+    .map((sheet, index) => `<sheet name="${xml(sheet.nama)}" sheetId="${index + 1}" r:id="rId${index + 1}"/>`)
+    .join("");
+  const rels = sheets
+    .map(
+      (_sheet, index) =>
+        `<Relationship Id="rId${index + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${index + 1}.xml"/>`,
+    )
+    .join("");
+  const files = [
+    [
+      "[Content_Types].xml",
+      `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/>${overrides}<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/></Types>`,
+    ],
+    [
+      "_rels/.rels",
+      `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`,
+    ],
+    [
+      "xl/workbook.xml",
+      `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${tags}</sheets></workbook>`,
+    ],
+    [
+      "xl/_rels/workbook.xml.rels",
+      `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${rels}</Relationships>`,
+    ],
+  ];
+  sheets.forEach((sheet, index) => {
+    files.push([`xl/worksheets/sheet${index + 1}.xml`, sheet.xml]);
+  });
+  return arsipZip(files);
 }

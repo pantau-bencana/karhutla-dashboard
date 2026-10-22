@@ -1,0 +1,98 @@
+{
+  "status": "ok",
+  "fetched_at": "2026-10-22T03:56:54.888Z",
+  "url": "https://opsroom.sipongidata.my.id/api/sebaran",
+  "satelit": "all-nasa",
+  "confidence": "all",
+  "tanggal": [
+    "2026-10-17",
+    "2026-10-18",
+    "2026-10-19",
+    "2026-10-20",
+    "2026-10-21",
+    "2026-10-22"
+  ],
+  "record_count": 1528,
+  "lepas": [
+    {
+      "tanggal": "2026-10-17",
+      "provinsi": "IKN",
+      "kabupaten": "KUTAI KARTANEGARA",
+      "confidence": "High",
+      "sumber": "NASA-MODIS",
+      "counter": 2
+    },
+    {
+      "tanggal": "2026-10-17",
+      "provinsi": "IKN",
+      "kabupaten": "PENAJAM PASER UTARA",
+      "confidence": "Medium",
+      "sumber": "NASA-MODIS",
+      "counter": 1
+    },
+    {
+      "tanggal": "2026-10-17",
+      "provinsi": "IKN",
+      "kabupaten": "KUTAI KARTANEGARA",
+      "confidence": "Medium",
+      "sumber": "NASA-SNPP",
+      "counter": 40
+    },
+    {
+      "tanggal": "2026-10-17",
+      "provinsi": "IKN",
+      "kabupaten": "KUTAI KARTANEGARA",
+      "confidence": "Medium",
+      "sumber": "NASA-NOAA20",
+      "counter": 12
+    },
+    {
+      "tanggal": "2026-10-18",
+      "provinsi": "IKN",
+      "kabupaten": "KUTAI KARTANEGARA",
+      "confidence": "Low",
+      "sumber": "NASA-MODIS",
+      "counter": 1
+    },
+    {
+      "tanggal": "2026-10-18",
+      "provinsi": "IKN",
+      "kabupaten": "KUTAI KARTANEGARA",
+      "confidence": "High",
+      "sumber": "NASA-SNPP",
+      "counter": 6
+    },
+    {
+      "tanggal": "2026-10-18",
+      "provinsi": "IKN",
+      "kabupaten": "KUTAI KARTANEGARA",
+      "confidence": "Low",
+      "sumber": "NASA-SNPP",
+      "counter": 1
+    },
+    {
+      "tanggal": "2026-10-20",
+      "provinsi": "IKN",
+      "kabupaten": "KUTAI KARTANEGARA",
+      "confidence": "High",
+      "sumber": "NASA-MODIS",
+      "counter": 8
+    },
+    {
+      "tanggal": "2026-10-20",
+      "provinsi": "IKN",
+      "kabupaten": "KUTAI KARTANEGARA",
+      "confidence": "Medium",
+      "sumber": "NASA-NOAA20",
+      "counter": 62
+    },
+    {
+      "tanggal": "2026-10-21",
+      "provinsi": "Lampung",
+      "kabupaten": "",
+      "confidence": "Medium",
+      "sumber": "NASA-SNPP",
+      "counter": 1
+    }
+  ]
+}

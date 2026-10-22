@@ -33,6 +33,7 @@ export function parseLocation(hash) {
   else if (token === "sumber-metode" || token === "metode") page = "metode";
   else if (token === "sumber" || token === "sumber-data") page = "sumber";
   else if (token === "potensi" || token === "potensi-7-hari") page = "potensi";
+  else if (token === "rekap" || token === "rekap-harian") page = "rekap";
   else if (token === "ringkasan") page = "ringkasan";
   const anchor = token === "sumber-metode" || token === "metode" ? rest[1] || "" : "";
   const term = anchor === "glosarium" ? rest[2] || "" : "";
@@ -47,6 +48,7 @@ export function pageHref(page, hazard = "karhutla") {
   if (page === "glosarium") return "#/sumber-metode/glosarium";
   if (page === "metode") return "#/sumber-metode";
   const safeHazard = hazard === "gunungapi" ? "gunung-api" : hazard || "karhutla";
+  if (page === "rekap") return "#/rekap-harian";
   if (safeHazard === "karhutla") {
     if (!page || page === "ringkasan" || page === "dashboard") return "#/";
     return `#/karhutla/${page === "dashboard" ? "peta" : page}`;

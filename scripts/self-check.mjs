@@ -26,6 +26,19 @@ import {
   stationPoints,
 } from "../src/lib/ispuView.js";
 import { parseLocation, parseRoute } from "../src/lib/route.js";
+import { kodeSipongi } from "../src/lib/sipongiHotspot.js";
+import {
+  REKAP_BELUM,
+  REKAP_KOSONG,
+  barisRekap,
+  catatanParameter,
+  gabungRekap,
+  kelasFwiGwis,
+  nilaiParameter,
+  susunCuplikan,
+  tandaiHujan,
+  teksHujan,
+} from "../src/lib/rekapHarian.js";
 import { clusterCellDegrees, countHotspots, filterHotspotWindow } from "../src/lib/hotspotWindow.js";
 import { parseFirmsCoordinate } from "./indonesia-land.mjs";
 import { muatTitikBatas, pointInGeometry } from "./titik-dalam-batas.mjs";
@@ -109,7 +122,7 @@ import { PROVINSI, SEMUA_PROVINSI } from "../src/lib/provinsi.js";
 import { CAP_DATA_TERAKHIR, cakupanTersimpan, severityLabel } from "../src/lib/capKab.js";
 import { xlsxBytes } from "../src/lib/xlsxMini.js";
 import { buildHotspotTree } from "../src/lib/hotspotTree.js";
-import { DIBI_LUAR_CUPLIKAN, DIBI_UNAVAILABLE, FLOOD_INFO_COLUMNS, IRBI_BANJIR_TERVERIFIKASI, IRBI_PENGGUNAAN_INTERNAL, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI, peringkatTampil, urutStatusKab } from "../src/lib/floodMatrix.js";
+import { DIBI_LUAR_CUPLIKAN, DIBI_UNAVAILABLE, FLOOD_INFO_COLUMNS, IRBI_BANJIR_TERVERIFIKASI, IRBI_LONGSOR_TERVERIFIKASI, IRBI_PENGGUNAAN_INTERNAL, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI, peringkatTampil, urutStatusKab } from "../src/lib/floodMatrix.js";
 import {
   DASARIAN_NOTE,
   MATRIX_PERMISSION,
@@ -1283,6 +1296,33 @@ for (const lama of irbiBanjir) {
 assert.equal(irbiNasional.find((row) => row.kode_wilayah === "76.01").padanan.includes("Pasangkayu"), true);
 assert.equal(irbiNasional.find((row) => row.kode_wilayah === "12.12").nama_big, "Toba");
 assert.equal(irbiNasional.some((row) => row.skor === "0" && !row.kelas), false);
+const irbiLongsor = parseCsv(readFileSync("data/static/irbi-2025-longsor.csv", "utf8"));
+assert.equal(irbiLongsor.length, 514);
+const kelasLongsor = {};
+for (const row of irbiLongsor) kelasLongsor[row.kelas || ""] = (kelasLongsor[row.kelas || ""] || 0) + 1;
+assert.equal(kelasLongsor.TINGGI, 369);
+assert.equal(kelasLongsor.SEDANG, 52);
+assert.equal(kelasLongsor.RENDAH, 34);
+assert.equal(kelasLongsor[""], 59);
+assert.match(IRBI_LONGSOR_TERVERIFIKASI, /455 kabupaten\/kota/);
+assert.match(IRBI_LONGSOR_TERVERIFIKASI, /halaman 310–323/);
+assert.match(IRBI_LONGSOR_TERVERIFIKASI, /369 Tinggi, 52 Sedang, 34 Rendah/);
+for (const row of irbiLongsor) {
+  const halaman = row.halaman ? Number(row.halaman) : 0;
+  assert.equal(row.skor === "" || (halaman >= 310 && halaman <= 323), true);
+  assert.equal(Boolean(row.skor) === Boolean(row.kelas), true);
+  assert.equal(row.skor === "0", false);
+}
+assert.equal(irbiLongsor.find((row) => row.kode_wilayah === "96.71").skor, "33.00");
+assert.equal(irbiLongsor.find((row) => row.kode_wilayah === "96.71").kelas, "TINGGI");
+assert.equal(irbiLongsor.find((row) => row.kode_wilayah === "73.24").skor, "1.00");
+assert.equal(irbiLongsor.find((row) => row.kode_wilayah === "73.24").halaman, "323");
+assert.equal(irbiLongsor.find((row) => row.kode_wilayah === "11.01").skor, "26.40");
+assert.equal(irbiLongsor.find((row) => row.kode_wilayah === "11.71").skor, "");
+assert.equal(irbiLongsor.find((row) => row.kode_wilayah === "11.71").kelas, "");
+assert.equal(irbiLongsor.find((row) => row.kode_wilayah === "76.01").padanan.includes("Pasangkayu"), true);
+assert.equal(irbiLongsor.find((row) => row.kode_wilayah === "81.03").skor, "4.43");
+assert.equal(irbiNasional.find((row) => row.kode_wilayah === "11.01").skor, "26.84");
 assert.match(IRBI_PENGGUNAAN_INTERNAL, /Penggunaan internal/);
 assert.match(IRBI_PENGGUNAAN_INTERNAL, /tidak untuk publikasi/);
 assert.match(IRBI_PENGGUNAAN_INTERNAL, /bukan status resmi/);
@@ -2339,6 +2379,110 @@ assert.match(subNav, /Logika Pemantauan/);
 assert.equal(subNav.includes("Sumber Data"), false);
 assert.equal(subNav.includes("Glosarium"), false);
 assert.equal(subNav.includes("Ringkasan"), false);
+assert.equal(subNav.includes("Rekap"), false);
+assert.match(topNav, /Rekap Harian/);
+assert.equal(topNav.indexOf("Rekap Harian") < topNav.indexOf("Ringkasan"), true);
+assert.equal(parseRoute("#/rekap-harian"), "rekap");
+assert.equal(parseLocation("#/karhutla/rekap-harian").page, "rekap");
+assert.equal(parseRoute("#/lain"), "ringkasan");
+assert.equal(readFileSync("src/lib/rekapHarian.js", "utf8").includes("peluang_hujan"), false);
+assert.equal(barisRekap(null, "").length, 514);
+const acehRekap = barisRekap(null, "Aceh");
+assert.equal(acehRekap.length > 0 && acehRekap.length < 514, true);
+assert.equal(acehRekap.every((item) => item.provinsi === "Aceh"), true);
+assert.equal(kelasFwiGwis(-9999), "");
+assert.equal(kelasFwiGwis(11.199), "Rendah");
+assert.equal(kelasFwiGwis(11.2), "Sedang");
+assert.equal(kelasFwiGwis(21.3), "Tinggi");
+assert.equal(kelasFwiGwis(38), "Sangat tinggi");
+assert.equal(kelasFwiGwis(50), "Ekstrem");
+assert.equal(kelasFwiGwis(70), "Ekstrem");
+assert.equal(kelasFwiGwis(70.1), "Sangat ekstrem");
+assert.equal(tandaiHujan({ curah_hujan_mm: "5", peluang_hujan_maks: "99" }), false);
+assert.equal(tandaiHujan({ curah_hujan_mm: "20" }), false);
+assert.equal(tandaiHujan({ curah_hujan_mm: "20.1" }), true);
+assert.equal(tandaiHujan({ peluang_hujan_maks: "100" }), null);
+assert.match(teksHujan(25), /ya/);
+assert.match(teksHujan(5), /tidak/);
+const kabRekap = [
+  { kode: "11.01", nama: "Aceh Selatan", provinsi: "Aceh" },
+  { kode: "14.04", nama: "Indragiri Hilir", provinsi: "Riau" },
+];
+const cuplikanLama = susunCuplikan({
+  hariWib: "2026-10-21",
+  kab: kabRekap,
+  hotspot: [
+    { tanggal: "2026-10-20", kode_kabupaten: "11.01", kepercayaan: "n" },
+    { tanggal: "2026-10-20", kode_kabupaten: "11.01", kepercayaan: "l" },
+    { tanggal: "2026-10-20", kode_kabupaten: "", kepercayaan: "h" },
+    { tanggal: "2026-10-20", kode_kabupaten: "14.04", kepercayaan: "h" },
+  ],
+  fwi: [
+    { tanggal: "2026-10-21", kode: "11.01", fwi: 12 },
+    { tanggal: "2026-10-22", kode: "11.01", fwi: 1 },
+  ],
+});
+assert.equal(cuplikanLama.baris["11.01"].h["2026-10-20"], 1);
+assert.equal(cuplikanLama.baris["14.04"].h["2026-10-20"], 1);
+assert.equal(cuplikanLama.meta.hotspotTanpaKode, 1);
+const cuplikanBaru = susunCuplikan({
+  hariWib: "2026-10-22",
+  kab: kabRekap,
+  fwi: [
+    { tanggal: "2026-10-21", kode: "11.01", fwi: 99 },
+    { tanggal: "2026-10-22", kode: "11.01", fwi: 40 },
+    { tanggal: "2026-10-23", kode: "11.01", fwi: 3 },
+    { tanggal: "2026-10-24", kode: "11.01", fwi: 4 },
+  ],
+});
+assert.equal(cuplikanBaru.baris["11.01"].f["2026-10-21"], undefined);
+assert.equal(cuplikanBaru.baris["11.01"].f["2026-10-22"], 40);
+const rekapGabung = gabungRekap(cuplikanLama, cuplikanBaru);
+assert.equal(rekapGabung.baris["11.01"].f["2026-10-21"], 12);
+assert.equal(rekapGabung.baris["11.01"].f["2026-10-22"], 40);
+assert.equal(rekapGabung.baris["11.01"].f["2026-10-24"], 4);
+assert.equal(rekapGabung.baris["11.01"].h["2026-10-20"], 1);
+assert.equal(rekapGabung.statis.ispu, REKAP_BELUM);
+assert.equal(rekapGabung.statis.iki, REKAP_BELUM);
+assert.equal(rekapGabung.statis.pvmbg, REKAP_BELUM);
+assert.equal(rekapGabung.statis.irbiLongsor, undefined);
+const paramLongsor = { id: "longsor", jenis: "irbi", peta: "longsor" };
+const cuplikanLongsor = susunCuplikan({
+  hariWib: "2026-10-22",
+  kab: kabRekap,
+  longsor: [
+    { kode_wilayah: "11.01", skor: "26.40", kelas: "TINGGI" },
+    { kode_wilayah: "14.04", skor: "", kelas: "" },
+  ],
+});
+assert.equal(nilaiParameter(cuplikanLongsor, "11.01", paramLongsor, ""), "Tinggi (26,40)");
+assert.equal(nilaiParameter(cuplikanLongsor, "14.04", paramLongsor, ""), IRBI_TIDAK_TERSEDIA);
+assert.equal(gabungRekap(cuplikanLama, cuplikanLongsor).longsor["11.01"].kelas, "Tinggi");
+assert.match(readFileSync("src/components/RekapHarian.jsx", "utf8"), /param\?\.id === "irbi" \|\| param\?\.id === "longsor"/);
+assert.match(catatanParameter(paramLongsor), /455 kabupaten\/kota/);
+assert.match(catatanParameter(paramLongsor), /IRBI tidak tersedia/);
+assert.equal(rekapGabung.sumber.sipongi.status, "Tautan saja");
+assert.equal(kodeSipongi("Aceh", "ACEH SELATAN"), "11.01");
+assert.equal(kodeSipongi("Gorontalo", "PAHUWATO"), "75.04");
+assert.equal(kodeSipongi("DKI Jakarta", "KOTA ADMINISTRASI JAKARTA UTARA"), "31.72");
+assert.equal(kodeSipongi("Sulawesi Utara", "KEPULAUAN SIAU TAGULANDANG BIARO"), "71.09");
+assert.equal(kodeSipongi("Sulawesi Selatan", "PANGKAJENE KEPULAUAN"), "73.10");
+assert.equal(kodeSipongi("Papua Barat Daya", "KOTA SORONG"), "96.71");
+assert.equal(kodeSipongi("Papua Barat Daya", "SORONG"), "96.01");
+assert.equal(kodeSipongi("Lampung", ""), "");
+assert.match(readFileSync("scripts/ambil-sipongi.mjs", "utf8"), /curl\/8\.5\.0/);
+assert.equal(readFileSync("scripts/ambil-sipongi.mjs", "utf8").includes("Authorization"), false);
+assert.match(readFileSync("src/components/RekapHarian.jsx", "utf8"), /FIRMS pembanding/);
+const paramFwi = { id: "fwi", bidang: "f", cakupan: "fwi", jenis: "fwi" };
+assert.equal(nilaiParameter(rekapGabung, "14.04", paramFwi, "2026-10-22"), REKAP_KOSONG);
+const hujanKosong = susunCuplikan({
+  hariWib: "2026-10-22",
+  kab: kabRekap,
+  hujan: [{ tanggal: "2026-10-22", kode: "11.01", curah_hujan_mm: "", peluang_hujan_maks: "90" }],
+  irbi: [{ kode_wilayah: "11.01", skor: "", kelas: "" }],
+});
+assert.equal(hujanKosong.baris["11.01"]?.m?.["2026-10-22"], undefined);
+assert.equal(hujanKosong.irbi["11.01"], undefined);
 const hariLaporan = titikHariTerbaru([
   { tanggal: "2026-10-16", lintang: 0, bujur: 100, kelasKepercayaan: "tinggi", provinsi: "Riau" },
   { tanggal: "2026-10-17", lintang: 0, bujur: 101, kelasKepercayaan: "nominal", provinsi: "Jambi" },

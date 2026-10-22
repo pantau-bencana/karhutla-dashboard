@@ -13,6 +13,7 @@ import { assignKabupaten, geomFromAlerts, loadCapAlerts, writeCapKabFiles } from
 import { provinceCenters } from "../src/lib/geo.js";
 import { REFRESH_CRON, REFRESH_CRON_CADANGAN, REFRESH_INTERVAL_HOURS, nextScheduledRun } from "../src/lib/schedule.js";
 import { SMOKE_IMAGE_URL, SMOKE_URL, SOURCES } from "../src/lib/sourceCatalog.js";
+import { ambilSipongi } from "./ambil-sipongi.mjs";
 import { kodeWilayah } from "../src/lib/floodMatrix.js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -999,6 +1000,16 @@ function material(entry) {
   });
 }
 
+async function catatRekap() {
+  try {
+    const { tulisRekapDariDisk } = await import("./tulis-rekap-harian.mjs");
+    const hasil = tulisRekapDariDisk();
+    console.log(hasil.ditulis ? "Rekap harian ditulis." : "Rekap harian tidak berubah.");
+  } catch (error) {
+    console.log(`Rekap harian tidak ditulis: ${error.message}`);
+  }
+}
+
 async function main() {
   mkdirSync(liveDir, { recursive: true });
   const previous = readJson(manifestPath);
@@ -1241,6 +1252,22 @@ async function main() {
     datasets.prioritas_aplus = previous.datasets.prioritas_aplus;
   }
 
+  const sumberSipongi = SOURCES.find((source) => source.id === "sipongi");
+  const entriSipongi = baseEntry(sumberSipongi);
+  entriSipongi.mode = "snapshot";
+  try {
+    const hasil = await ambilSipongi();
+    const badan = readFileSync(resolve(root, "data/live/sipongi-hotspot.csv"), "utf8");
+    entriSipongi.observed_at = nowIso;
+    entriSipongi.source_updated_at = nowIso;
+    entriSipongi.observed_label = `Tanggal ${hasil.tanggal[0]}–${hasil.tanggal.at(-1)}. Confidence all. Satelit ${hasil.satelit}.`;
+    writeIfChanged("data/live/sipongi-hotspot.csv", badan, entriSipongi, previousEntry(previous, "sipongi"));
+    if (hasil.lepas) entriSipongi.error = `${hasil.lepas} baris SiPongi tidak punya kode kabupaten.`;
+  } catch (error) {
+    Object.assign(entriSipongi, keepPrevious(entriSipongi, previousEntry(previous, "sipongi"), error.message));
+  }
+  datasets.sipongi = entriSipongi;
+
   for (const source of SOURCES) {
     if (source.id === "prioritas_aplus") continue;
     if (datasets[source.id]) continue;
@@ -1265,10 +1292,11 @@ async function main() {
   const changed = !previous || Object.keys(next.datasets).some((id) => material(next.datasets[id]) !== material(previous.datasets?.[id]));
   if (!changed) {
     console.log("Data tidak berubah. Manifes tidak ditulis ulang.");
-    return;
+  } else {
+    writeFileSync(manifestPath, `${JSON.stringify(next, null, 2)}\n`);
+    console.log(`Manifes ditulis. Kunci FIRMS: ${firmsKey ? "dipakai" : "tidak ada"}.`);
   }
-  writeFileSync(manifestPath, `${JSON.stringify(next, null, 2)}\n`);
-  console.log(`Manifes ditulis. Kunci FIRMS: ${firmsKey ? "dipakai" : "tidak ada"}.`);
+  await catatRekap();
 }
 
 async function comparisonOnly() {
@@ -1321,6 +1349,7 @@ async function comparisonOnly() {
   };
   writeFileSync(manifestPath, `${JSON.stringify(next, null, 2)}\n`);
   console.log("Cuplikan pembanding ditulis. Status kunci FIRMS tidak diubah.");
+  await catatRekap();
 }
 
 async function kabupatenOnly() {
@@ -1343,6 +1372,7 @@ async function kabupatenOnly() {
   };
   writeFileSync(manifestPath, `${JSON.stringify(next, null, 2)}\n`);
   console.log("Cuplikan kabupaten pembanding ditulis. Status kunci FIRMS tidak diubah.");
+  await catatRekap();
 }
 
 const comparisonOnlyRun = process.argv.includes("--comparison-only");

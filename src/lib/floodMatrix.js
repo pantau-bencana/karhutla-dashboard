@@ -1,8 +1,11 @@
 export const FLOOD_PERMISSION = "Prototipe internal – menunggu izin tertulis BNPB";
 export const IRBI_BUKU_BANJIR_URL = "https://inarisk.bnpb.go.id/IRBI-2025/files/basic-html/page212.html";
+export const IRBI_BUKU_LONGSOR_URL = "https://inarisk.bnpb.go.id/IRBI-2025/files/basic-html/page310.html";
 export const IRBI_TIDAK_TERSEDIA = "IRBI tidak tersedia";
 export const IRBI_BANJIR_TERVERIFIKASI =
   "510 kabupaten/kota punya skor dan kelas banjir dari Buku IRBI 2025, halaman 212–227 (282 Tinggi, 221 Sedang, 7 Rendah). Empat kabupaten/kota tidak ada di tabel banjir itu dan dikosongkan: Adm. Kep. Seribu, Bangli, Kep. Siau Tagulandang Biaro, dan Kota Ternate. Padanan nama yang dipakai: Mamuju Utara = Pasangkayu, Toba Samosir = Toba, Padangsidimpuan = Kota Padang Sidempuan, Maluku Tenggara Barat = Kepulauan Tanimbar. Skor IRB total dan tabel banjir bandang tidak dipakai.";
+export const IRBI_LONGSOR_TERVERIFIKASI =
+  "455 kabupaten/kota punya skor dan kelas tanah longsor dari Buku IRBI 2025, halaman 310–323 (369 Tinggi, 52 Sedang, 34 Rendah). 59 kabupaten/kota tidak ada di tabel itu dan dikosongkan. Skor tidak diubah. Bukan peta rawan longsor PVMBG.";
 export const DIBI_LUAR_CUPLIKAN =
   "Cuplikan kejadian 2024 yang tersimpan tidak mencakup provinsi ini";
 export const IRBI_PENGGUNAAN_INTERNAL =
