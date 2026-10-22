@@ -14,14 +14,16 @@ export function FilterProvinsi({ province = "", setProvince, points = [], from =
   return (
     <div className="province-picker">
       <div className="province-filter" role="group" aria-label="Cakupan wilayah">
-        <button type="button" aria-pressed={province === ""} onClick={() => setProvince("")}>
-          Seluruh Indonesia
-        </button>
-        {chips.map((name) => (
-          <button key={name} type="button" aria-pressed={province === name} onClick={() => setProvince(name)}>
-            {name}
+        <div className="province-chips">
+          <button type="button" aria-pressed={province === ""} onClick={() => setProvince("")}>
+            Seluruh Indonesia
           </button>
-        ))}
+          {chips.map((name) => (
+            <button key={name} type="button" aria-pressed={province === name} onClick={() => setProvince(name)}>
+              {name}
+            </button>
+          ))}
+        </div>
         <label className="filter-field province-semua">
           <span className="sr-only">{SEMUA_PROVINSI}</span>
           <select aria-label={SEMUA_PROVINSI} value={nilaiPilih} onChange={(event) => setProvince(event.target.value)}>
@@ -34,7 +36,7 @@ export function FilterProvinsi({ province = "", setProvince, points = [], from =
           </select>
         </label>
       </div>
-      <p className="fine">
+      <p className="fine peta-penjelas">
         Tombol mengikuti peringkat deteksi hotspot pada periode aktif: merah, lalu oranye, lalu kuning, lalu total.
         {prioritas.length ? ` Konteks provinsi prioritas untuk prakiraan dan kesiapsiagaan tetap: ${prioritas.join(", ")}.` : ""}
       </p>

@@ -7,7 +7,8 @@ import { ExtraLayers, LayerBar } from "./ExtraLayers.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { HotspotBoard } from "./HotspotBoard.jsx";
 import { HotspotMap } from "./HotspotMap.jsx";
-import { KontrolPeriode } from "./KontrolPeriode.jsx";
+import { KeteranganMobile } from "./KeteranganMobile.jsx";
+import { KontrolPeriode, teksJendela } from "./KontrolPeriode.jsx";
 import { PetaKab } from "./PetaKab.jsx";
 import { PrioritasPanel } from "./PrioritasPanel.jsx";
 import { TrendCharts } from "./TrendCharts.jsx";
@@ -180,7 +181,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
       <header className="page-head">
         <div>
           <h1>Karhutla · Peta dan Data</h1>
-          <p className="lead">
+          <p className="lead peta-penjelas">
             Cakupan {province || "seluruh Indonesia"}
             {from && to ? `, ${formatTanggal(from)}–${formatTanggal(to)}` : ""}.
             Hotspot = deteksi satelit, bukan kebakaran terkonfirmasi.
@@ -211,7 +212,8 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
         </div>
       )}
 
-      <section className="filters" aria-label="Filter">
+      <div className="susun-peta">
+      <section className="filters susun-filter" aria-label="Filter">
         <FilterProvinsi
           province={province}
           setProvince={setProvince}
@@ -236,10 +238,11 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
             }}
           />
         ) : (
-          <p className="horizon-label">{HORIZON[layer]}</p>
+          <p className="horizon-label peta-penjelas">{HORIZON[layer]}</p>
         )}
       </section>
       <LayerBar layer={layer} setLayer={setLayer} overlayIrbi={overlayIrbi} setOverlayIrbi={setOverlayIrbi} />
+      <div className="susun-kanvas">
       {layer === "potensi" || layer === "hujan" || layer === "angin" ? (
         <PetaKab
           isi={isiPeta}
@@ -255,14 +258,17 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
         />
       ) : null}
       {layer === "fdrs" ? (
-        <section className="card">
+        <section className="card peta-kartu">
           <header className="card-head">
             <div>
               <h2>FWI model ECMWF (GWIS)</h2>
-              <p>Pembanding (data terbuka, bukan resmi). Bukan FDRS BMKG. Tanggal model {formatTanggal(tanggalFwi)}.</p>
+              <p className="peta-penjelas">Pembanding (data terbuka, bukan resmi). Bukan FDRS BMKG. Tanggal model {formatTanggal(tanggalFwi)}.</p>
             </div>
           </header>
           <HotspotMap points={[]} frame="indonesia" fwiDate={tanggalFwi} />
+          <KeteranganMobile>
+            <p>Pembanding (data terbuka, bukan resmi). Bukan FDRS BMKG. Tanggal model {formatTanggal(tanggalFwi)}. {HORIZON.fdrs}</p>
+          </KeteranganMobile>
         </section>
       ) : null}
       {overlayIrbi && (layer === "hotspot" || layer === "fdrs") ? (
@@ -273,21 +279,17 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           kosongLabel="Tidak ada baris IRBI pada batas ini"
         />
       ) : null}
-      {layer !== "hotspot" ? <ExtraLayers layer={layer} view={view} feeds={feeds} province={province} provinces={config?.provinsiPrioritas ?? []} /> : null}
-      {overlayIrbi ? <ExtraLayers layer="irbi" view={view} feeds={feeds} province={province} provinces={config?.provinsiPrioritas ?? []} /> : null}
-
       {layer === "hotspot" && view.rangeInvalid ? (
         <p className="banner error" role="alert">
           Tanggal awal lebih besar dari tanggal akhir. Perbaiki rentang untuk melihat angka.
         </p>
       ) : null}
-
       {layer === "hotspot" ? (
       <section className="card">
         <header className="card-head">
           <div>
             <h2>Sebaran titik panas</h2>
-            <p>
+            <p className="peta-penjelas">
               {formatAngka(aktif.length)} titik · {labelJendela(periodeJam)}
               {from && to ? ` · ${formatTanggal(from)}–${formatTanggal(to)}` : ""}
               {province ? ` · ${province}` : " · seluruh Indonesia"}
@@ -318,6 +320,21 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
         )}
       </section>
       ) : null}
+      {layer !== "hotspot" ? <ExtraLayers layer={layer} view={view} feeds={feeds} province={province} provinces={config?.provinsiPrioritas ?? []} /> : null}
+      {overlayIrbi ? <ExtraLayers layer="irbi" view={view} feeds={feeds} province={province} provinces={config?.provinsiPrioritas ?? []} /> : null}
+      </div>
+      <KeteranganMobile>
+        <p>
+          Cakupan {province || "seluruh Indonesia"}
+          {from && to ? `, ${formatTanggal(from)}–${formatTanggal(to)}` : ""}. Hotspot = deteksi satelit, bukan kebakaran terkonfirmasi.
+        </p>
+        <p>
+          Tombol provinsi pada layar lebar mengikuti peringkat deteksi hotspot pada periode aktif: merah, lalu oranye, lalu kuning, lalu total.
+          {priority.length ? ` Konteks provinsi prioritas untuk prakiraan dan kesiapsiagaan tetap: ${priority.join(", ")}.` : ""}
+        </p>
+        {layer === "hotspot" ? <p>{teksJendela(periodeJam)}</p> : <p>{HORIZON[layer]}</p>}
+      </KeteranganMobile>
+      </div>
 
       <CatatanRingkas judul="Catatan sumber" id="metadata-heading">
         <p>

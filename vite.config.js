@@ -10,6 +10,10 @@ const dataDir = path.resolve(root, "data");
 function dataMiddleware() {
   return (req, res, next) => {
     try {
+      if ((req.url || "").includes("import")) {
+        next();
+        return;
+      }
       const raw = decodeURIComponent((req.url || "/").split("?")[0]);
       const rel = path.normalize(raw).replace(/^[/\\]+/, "");
       if (!rel || rel.startsWith("..") || rel.includes(`..${path.sep}`)) {

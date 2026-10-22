@@ -273,6 +273,10 @@ a.button {
 .province-picker .province-filter { max-width: 100%; }
 .province-semua { flex: 1 1 12rem; min-width: min(100%, 12rem); max-width: 100%; }
 .province-semua select { width: 100%; max-width: 100%; }
+.province-chips { display: contents; }
+.tanggal-tombol { display: none; }
+.keterangan-sempit { display: none; }
+.keterangan-isi p { margin: 6px 0; }
 
 .tabel-urut button {
   font: inherit;
@@ -1404,19 +1408,120 @@ button:focus-visible, input:focus-visible, a:focus-visible {
     flex-wrap: wrap;
     overflow-x: auto;
   }
+  .province-chips { display: none; }
   .province-semua { flex-basis: 100%; }
-  .cards { grid-template-columns: 1fr; }
-  .wrap { width: min(1280px, calc(100% - 20px)); }
+  .page-head .peta-penjelas,
+  .susun-peta .peta-penjelas,
+  .board-susun .peta-penjelas,
+  .flood-map-block .peta-penjelas,
+  .peta-kartu .peta-penjelas,
+  .peta-artikel .peta-penjelas { display: none; }
+  .keterangan-sempit { display: block; margin: 8px 0 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+  .keterangan-sempit summary { cursor: pointer; font-weight: 700; color: var(--ink); min-height: 36px; }
+  .susun-peta { display: flex; flex-direction: column; gap: 8px; }
+  .susun-filter { order: 1; }
+  .susun-peta > .tema-peta { display: contents; }
+  .tema-baris { order: 2; flex-wrap: nowrap; overflow-x: auto; max-width: 100%; }
+  .tema-baris button { flex: none; white-space: nowrap; }
+  .susun-kanvas { order: 3; }
+  .susun-peta .overlay-bar { order: 4; flex-wrap: nowrap; overflow-x: auto; }
+  .susun-peta > .keterangan-sempit { order: 5; }
+  .filters { position: static; padding: 8px; gap: 8px; }
+  .main { gap: 8px; padding-top: 8px; }
+  .periode-kontrol { position: relative; }
+  .periode-baris { display: flex; flex-wrap: nowrap; align-items: center; gap: 8px; }
+  .tanggal-tombol { display: inline-flex; flex: none; min-height: 36px; }
+  .periode-kontrol .date-filter { display: none; }
+  .periode-kontrol .date-filter.is-open {
+    display: flex;
+    position: absolute;
+    z-index: 30;
+    left: 0;
+    right: 0;
+    top: calc(100% + 6px);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: var(--shadow);
+  }
+  .periode-duplikat { display: none; }
+  .jendela-chips { flex: 1 1 auto; flex-wrap: nowrap; overflow-x: auto; }
+  .jendela-chips button { flex: none; white-space: nowrap; }
+  .wrap, .main, .page-head, .susun-peta, .susun-filter, .susun-kanvas, .card,
+  .board-map, .map-stage, .province-picker, .province-filter, .periode-baris,
+  .periode-kontrol, .table-wrap, .peringkat-hotspot, .flood-layout, .flood-map-block {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .table-wrap { overflow-x: auto; }
+  .topbar { padding-top: 6px; padding-bottom: 6px; }
+  .bname { white-space: nowrap; font-size: 15px; }
+  .subnav a { padding-top: 8px; padding-bottom: 8px; }
+  .notice { padding-top: 4px; padding-bottom: 4px; font-size: 12px; line-height: 1.35; }
+  .tabbar { z-index: 1100; }
+  .susun-peta { gap: 6px; }
+  .susun-filter .periode-kontrol {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .susun-kanvas > .card:has(.board-susun),
+  .susun-kanvas > .card:has(> .map-canvas) {
+    display: flex;
+    flex-direction: column;
+  }
+  .susun-kanvas > .card:has(.board-susun) > .board-susun { display: contents; }
+  .susun-kanvas > .card > .card-head { order: 2; padding: 8px 10px 0; }
+  .susun-kanvas > .card > .map-canvas { order: 1; margin-top: 0; }
+  .susun-kanvas > .card > .keterangan-sempit,
+  .susun-kanvas > .card > .peta-legenda,
+  .susun-kanvas > .card > .banner { order: 3; }
+  .board-susun { display: flex; flex-direction: column; }
+  .board-split { display: contents; }
+  .board-map { order: 1; position: relative; }
+  .board-pra { order: 2; }
+  .hotspot-count { order: 3; }
+  .board-map .map-toolbar { position: absolute; z-index: 500; top: 8px; left: 8px; right: 52px; margin: 0; }
+  .board-map .map-toolbar .button { font-size: 12px; padding: 6px 8px; background: #fff; }
   .map-canvas,
-  .map-canvas.leaflet-container { height: 180px; max-height: 180px; }
+  .map-canvas.leaflet-container,
   .map-canvas.hotspot-map,
-  .map-canvas.hotspot-map.leaflet-container { height: 320px; max-height: 320px; }
+  .map-canvas.hotspot-map.leaflet-container,
   .map-canvas.flood-map,
   .map-canvas.flood-map.leaflet-container {
-    height: 70vh;
-    min-height: 240px;
-    max-height: none;
+    height: min(calc(60vh - 8px), calc(100svh - 370px));
+    min-height: 220px;
+    max-height: 60vh;
+    margin-top: 0;
   }
+  .stack:has(.peta-artikel) { display: flex; flex-direction: column; }
+  .peta-artikel { order: -1; display: flex; flex-direction: column; }
+  .peta-artikel > .card-head { order: 0; }
+  .peta-artikel > .province-filter { order: 1; flex-wrap: nowrap; overflow-x: auto; }
+  .peta-artikel > .map-canvas { order: 2; height: min(60vh, calc(100svh - 480px)); }
+  .peta-artikel > .legend,
+  .peta-artikel > .keterangan-sempit,
+  .peta-artikel > .fine,
+  .peta-artikel > details { order: 3; }
+  .peta-artikel > .table-wrap,
+  .peta-artikel > .catatan-ringkas { order: 4; }
+  .peta-artikel .province-filter button { flex: none; white-space: nowrap; }
+  .time-toggle { flex-wrap: nowrap; overflow-x: auto; margin-bottom: 0; min-width: 0; max-width: 100%; }
+  .time-toggle button { flex: none; }
+  .flood-map-first, .flood-map-first .logic-body { min-width: 0; max-width: 100%; }
+  .flood-map-first .logic-body { display: flex; flex-direction: column; padding: 8px; gap: 6px; }
+  .flood-toolbar { flex-wrap: nowrap; margin-bottom: 0; }
+  .flood-toolbar .filter-field { min-width: 0; flex: 1 1 0; }
+  .flood-map-first .flood-layout { order: 1; }
+  .flood-map-first .logic-body > .flood-summary,
+  .flood-map-first .logic-body > .banner,
+  .flood-map-first .logic-body > h2,
+  .flood-map-first .logic-body > p { order: 2; }
+  .map-stage, .flood-map-block { scroll-margin-bottom: 88px; }
+  .cards { grid-template-columns: 1fr; }
+  .wrap { width: min(1280px, calc(100% - 20px)); }
   .flood-layout { grid-template-columns: minmax(0, 1fr); }
   .flood-kab table { display: none; }
   .flood-cards { display: grid; gap: 10px; }
@@ -1428,11 +1533,15 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   .wrap { width: min(1280px, calc(100% - 16px)); }
   .acc-row { padding: 8px 6px; gap: 6px; }
   .acc-children { padding-left: 8px; }
+  .map-canvas,
+  .map-canvas.leaflet-container,
+  .map-canvas.hotspot-map,
+  .map-canvas.hotspot-map.leaflet-container,
   .map-canvas.flood-map,
   .map-canvas.flood-map.leaflet-container {
-    height: 70vh;
+    height: min(calc(60vh - 8px), calc(100svh - 370px));
     min-height: 220px;
-    max-height: none;
+    max-height: 60vh;
   }
   .flood-side table { font-size: 12px; table-layout: auto; width: 100%; }
   .flood-side th, .flood-side td { padding: 6px 4px; }
@@ -1544,6 +1653,24 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   .time-row { display: grid; }
   body { padding-bottom: 72px; }
   .footer { padding: 18px 16px 88px; }
+}
+
+@media (max-width: 640px) {
+  body { padding-bottom: 88px; }
+  .topbar { padding: 6px 12px; }
+  .bname { white-space: nowrap; font-size: 15px; }
+  .subnav { gap: 16px; padding-left: 12px; padding-right: 12px; }
+  .subnav a { padding-top: 8px; padding-bottom: 8px; }
+  .notice { padding: 4px 12px; font-size: 12px; line-height: 1.35; max-width: 100%; min-width: 0; overflow-x: auto; contain: inline-size; }
+  .notice p { white-space: nowrap; }
+  html, body { overflow-x: hidden; }
+  .tabbar { left: 0; right: 0; width: 100%; max-width: 100%; min-width: 0; overflow-x: auto; }
+  .tabbar a { flex: 1 1 0; min-width: 0; padding: 0 2px; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .topbar .btn { white-space: nowrap; padding: 6px 8px; }
+  .filters { padding: 6px; gap: 6px; }
+  .tabbar { z-index: 1100; }
+  .map-stage, .map-canvas, .flood-map-block { position: relative; z-index: 0; }
+  .peta-artikel > .map-canvas { height: min(60vh, calc(100svh - 480px)); }
 }
 
 .method-note { margin-top: 8px; }
