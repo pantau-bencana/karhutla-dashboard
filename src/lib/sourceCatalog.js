@@ -297,6 +297,26 @@ export const SOURCES = [
       "Diambil dari RSS resmi, lalu tiap berkas CAP XML. Halaman web nowcast tidak dikorek. Poligon tidak digambar dan tidak disimpan. Irisan dengan kabupaten/kota Aceh dan Bengkulu hanya menyimpan kode, nama, dan isi peringatan. areaDesc adalah kantor penerbit, bukan provinsi yang terdampak. Atribusi: Sumber: BMKG.",
   },
   {
+    id: "bmkg_siklon",
+    nama: "Siklon tropis dan bibit siklon",
+    instansi: "BMKG",
+    fungsi: "Status ada atau tidak ada siklon tropis di sekitar Indonesia. Bukan jejak, bukan kerucut, dan bukan peringatan resmi dasbor.",
+    officialUrl: "https://www.bmkg.go.id/cuaca/siklon-tropis",
+    officialLabel: "Siklon Tropis BMKG",
+    extraUrls: [
+      ["Detail BMKG TCWC", "https://tropicalcyclone.bmkg.go.id/"],
+      ["Ikhtisar cuaca harian", "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf"],
+    ],
+    access: "Halaman publik dan PDF",
+    needsKey: false,
+    kind: "dinamis",
+    updateType: "Harian",
+    expectedMaxAgeHours: 30,
+    file: "data/live/siklon-bmkg.json",
+    limitation:
+      "Status Ada/Tidak Ada dibaca dari kalimat pada halaman publik Siklon Tropis. API https://tropicalcyclone.bmkg.go.id/cms/service-api/cyclone/current tanpa token mengembalikan HTTP 401 pada pemeriksaan 23 Oktober 2026; token di halaman tidak disalin dan tidak dipakai. Ikhtisar PDF hanya mengisi nama, tahap, dan dampak bila kalimatnya terbaca. Bila PDF gagal, kolom itu belum terintegrasi. Jejak dan kerucut tidak disimpan dan tidak digambar. Windy bukan sumber data. Atribusi: Sumber: BMKG. Izin tertulis untuk integrasi pihak ketiga belum ada.",
+  },
+  {
     id: "chirps",
     nama: "CHIRPS hujan historis",
     instansi: "UC Santa Barbara Climate Hazards Center",

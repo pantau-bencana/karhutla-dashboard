@@ -1729,3 +1729,6 @@ thead th a.term { color: inherit; font-weight: 700; }
 }
 .faq-list summary { cursor: pointer; font-weight: 700; }
 .faq-list details p { margin: 8px 0 0; }
+#siklon-bibit { scroll-margin-top: 88px; }
+.siklon-tautan { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.siklon-tautan a { word-break: break-word; }

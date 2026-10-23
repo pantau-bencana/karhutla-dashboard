@@ -13,6 +13,7 @@ import {
   titikHariTerbaru,
 } from "../lib/laporanHarian.js";
 import { KELAS_BELUM, POTENSI_JENIS, susunPotensiTujuh } from "../lib/potensiTujuh.js";
+import { SiklonRingkas } from "./SiklonRingkas.jsx";
 
 const KELAS_URUT = ["Sangat tinggi", "Tinggi", "Sedang", "Rendah", KELAS_BELUM];
 const RINGKASAN_BANJIR = "data/live/banjir-ringkasan.json";
@@ -157,6 +158,7 @@ export function SummaryPage({
         </p>
       </section>
       <BagianBanjir province={province} />
+      <SiklonRingkas />
     </main>
   );
 }
