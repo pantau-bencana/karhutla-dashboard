@@ -1,6 +1,6 @@
 {
   "status": "ok",
-  "fetched_at": "2026-10-23T01:25:51.916Z",
+  "fetched_at": "2026-10-23T05:38:09.600Z",
   "url": "https://opsroom.sipongidata.my.id/api/sebaran",
   "satelit": "all-nasa",
   "confidence": "all",
@@ -12,7 +12,7 @@
     "2026-10-22",
     "2026-10-23"
   ],
-  "record_count": 1574,
+  "record_count": 1575,
   "lepas": [
     {
       "tanggal": "2026-10-18",
@@ -29,6 +29,14 @@
       "confidence": "High",
       "sumber": "NASA-SNPP",
       "counter": 6
+    },
+    {
+      "tanggal": "2026-10-18",
+      "provinsi": "IKN",
+      "kabupaten": "PENAJAM PASER UTARA",
+      "confidence": "Medium",
+      "sumber": "NASA-SNPP",
+      "counter": 18
     },
     {
       "tanggal": "2026-10-18",
@@ -77,14 +85,6 @@
       "confidence": "Medium",
       "sumber": "NASA-MODIS",
       "counter": 34
-    },
-    {
-      "tanggal": "2026-10-22",
-      "provinsi": "IKN",
-      "kabupaten": "PENAJAM PASER UTARA",
-      "confidence": "Medium",
-      "sumber": "NASA-MODIS",
-      "counter": 9
     },
     {
       "tanggal": "2026-10-22",

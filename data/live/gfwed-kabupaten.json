@@ -790,6 +790,14 @@
       "n_sel": 1
     },
     {
+      "kode": "18.01",
+      "kabupaten": "Lampung Selatan",
+      "provinsi": "Lampung",
+      "fwi_rata": 4.94,
+      "fwi_maks": 8.4,
+      "n_sel": 3
+    },
+    {
       "kode": "18.02",
       "kabupaten": "Lampung Tengah",
       "provinsi": "Lampung",
@@ -833,9 +841,9 @@
       "kode": "18.07",
       "kabupaten": "Lampung Timur",
       "provinsi": "Lampung",
-      "fwi_rata": 10.19,
-      "fwi_maks": 10.19,
-      "n_sel": 1
+      "fwi_rata": 10.21,
+      "fwi_maks": 10.22,
+      "n_sel": 2
     },
     {
       "kode": "18.08",
@@ -844,6 +852,22 @@
       "fwi_rata": 5.71,
       "fwi_maks": 6.93,
       "n_sel": 3
+    },
+    {
+      "kode": "18.09",
+      "kabupaten": "Pesawaran",
+      "provinsi": "Lampung",
+      "fwi_rata": 0.11,
+      "fwi_maks": 0.11,
+      "n_sel": 1
+    },
+    {
+      "kode": "18.10",
+      "kabupaten": "Pringsewu",
+      "provinsi": "Lampung",
+      "fwi_rata": 0.68,
+      "fwi_maks": 0.68,
+      "n_sel": 1
     },
     {
       "kode": "18.11",
@@ -1681,33 +1705,9 @@
       "kode": "53.01",
       "kabupaten": "Kupang",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 12.46,
-      "fwi_maks": 13.8,
-      "n_sel": 6
-    },
-    {
-      "kode": "53.02",
-      "kabupaten": "Timor Tengah Selatan",
-      "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 7.06,
-      "fwi_maks": 7.63,
+      "fwi_rata": 12.2,
+      "fwi_maks": 13.46,
       "n_sel": 3
-    },
-    {
-      "kode": "53.03",
-      "kabupaten": "Timor Tengah Utara",
-      "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 8.14,
-      "fwi_maks": 9.61,
-      "n_sel": 3
-    },
-    {
-      "kode": "53.05",
-      "kabupaten": "Alor",
-      "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 5.75,
-      "fwi_maks": 5.75,
-      "n_sel": 1
     },
     {
       "kode": "53.06",
