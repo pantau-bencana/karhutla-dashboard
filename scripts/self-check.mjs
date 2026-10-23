@@ -42,6 +42,7 @@ import {
 } from "../src/lib/rekapHarian.js";
 import { lembarIrbiGabung, saringIrbi, susunIrbiGabung, urutIrbi } from "../src/lib/irbiGabung.js";
 import { IRBI_ANCAMAN, IRBI_BELUM_BERKAS, barisUnduh, csvIrbiNasional, lembarIrbiNasional, susunIrbiNasional, teksSkorIrbi } from "../src/lib/irbiNasional.js";
+import { WAKTU_CUPLIKAN_81_TEKS, csvKarhutla81, lembarKarhutla81, namaBerkasKarhutla81, susunKarhutla81 } from "../src/lib/karhutla81.js";
 import { clusterCellDegrees, countHotspots, filterHotspotWindow } from "../src/lib/hotspotWindow.js";
 import { parseFirmsCoordinate } from "./indonesia-land.mjs";
 import { muatTitikBatas, pointInGeometry } from "./titik-dalam-batas.mjs";
@@ -1239,10 +1240,47 @@ const hujan81 = parseCsv(readFileSync("data/static/karhutla-81/peluang-hujan-81-
 assert.equal(hujan81[0]["Peluang Hujan >20mm (Rentang %)"], ">90%");
 const iklim81 = parseCsv(readFileSync("data/static/karhutla-81/indeks-kesesuaian-iklim-81-kab-kota.csv", "utf8"));
 assert.equal(iklim81[0]["Indeks Kesesuain Iklim (Rendah, Menengah, Tinggi)"], "Rendah");
+const urut81 = susunKarhutla81({ fwi: fwi81, hujan: hujan81, iklim: iklim81 });
+assert.equal(urut81.length, 81);
+assert.equal(urut81[0].kode, "14.01");
+assert.equal(urut81[0].nama, "Kampar");
+assert.equal(urut81.find((row) => row.kode === "14.09").nama, "Kuantan Singingi");
+assert.equal(urut81.find((row) => row.kode === "14.09").nilai.fwi, "#N/A");
+assert.equal(urut81.find((row) => row.kode === "14.72").nama, "Kota Dumai");
+assert.equal(urut81.find((row) => row.kode === "14.72").nilai.fwi, "#N/A");
+assert.equal(urut81.find((row) => row.kode === "63.03").nilai.fwi, "5");
+assert.equal(urut81.filter((row) => row.nilai.fwi === "#N/A").length, 29);
+assert.equal(urut81.some((row) => row.nilai.fwi === "0" || row.nilai.fwi === "0,00"), false);
+assert.deepEqual(
+  urut81.reduce((jumlah, row) => ({ ...jumlah, [row.provinsi]: (jumlah[row.provinsi] || 0) + 1 }), {}),
+  { Riau: 12, Jambi: 11, "Sumatera Selatan": 17, "Kalimantan Barat": 14, "Kalimantan Tengah": 14, "Kalimantan Selatan": 13 },
+);
+const csvFwi81 = csvKarhutla81(urut81, "fwi");
+const dataFwi81 = csvFwi81.replace(/^\uFEFF/, "").split(/\r?\n/).filter((line) => line && !line.startsWith("#") && !line.startsWith("Kode"));
+assert.equal(dataFwi81.length, 81);
+assert.match(csvFwi81, /FWI — 81 kabupaten\/kota prioritas/);
+assert.match(csvFwi81, /23 Oktober 2026, 09\.14 WIB/);
+assert.match(csvFwi81, /14\.09,Riau,Kuantan Singingi,#N\/A/);
+assert.equal(csvFwi81.includes("Google Sheets"), false);
+assert.equal(WAKTU_CUPLIKAN_81_TEKS, "23 Oktober 2026, 09.14 WIB");
+assert.equal(namaBerkasKarhutla81("fwi", "csv"), "fwi-81-kab-kota-2026-10-23-0914.csv");
+assert.equal(namaBerkasKarhutla81("hujan", "xlsx"), "hujan-81-kab-kota-2026-10-23-0914.xlsx");
+const csvIklim81 = csvKarhutla81(urut81, "iklim");
+assert.equal(csvIklim81.replace(/^\uFEFF/, "").split(/\r?\n/).filter((line) => line && !line.startsWith("#") && !line.startsWith("Kode")).length, 81);
+const lembarFwi81 = lembarKarhutla81(urut81, "fwi");
+assert.equal(lembarFwi81.nama, "FWI 81 kab/kota");
+assert.match(lembarFwi81.baris[0][0], /FWI — 81 kabupaten\/kota prioritas/);
+assert.match(lembarFwi81.baris[1][0], /23 Oktober 2026, 09\.14 WIB/);
+assert.equal(lembarFwi81.baris.filter((row) => /^\d{2}\.\d{2}$/.test(String(row[0] || ""))).length, 81);
+const lib81 = readFileSync("src/lib/karhutla81.js", "utf8");
+assert.match(lib81, /Unduh FWI \(81 kab\/kota\)/);
+assert.match(lib81, /Unduh Peluang Hujan/);
+assert.match(lib81, /Unduh Indeks Kesesuaian Iklim/);
+assert.equal(/sheets\.google/i.test(lib81), false);
 const unduh81 = readFileSync("src/components/UnduhKarhutla81.jsx", "utf8");
-assert.match(unduh81, /Unduh FWI \(81 kab\/kota\)/);
-assert.match(unduh81, /Unduh Peluang Hujan/);
-assert.match(unduh81, /Unduh Indeks Kesesuaian Iklim/);
+assert.match(unduh81, /\{item\.label\}/);
+assert.match(unduh81, /xlsxLembar/);
+assert.match(unduh81, /WAKTU_CUPLIKAN_81_TEKS/);
 assert.match(unduh81, /Analisis Karhutla 2026/);
 assert.match(unduh81, /#N\/A/);
 assert.equal(/sheets\.google/i.test(unduh81), false);
