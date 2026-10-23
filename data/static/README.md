@@ -10,6 +10,31 @@ Padanan nama terhadap kode batas BIG: Mamuju Utara = Pasangkayu (76.01), Toba Sa
 
 `irbi-2025-longsor.csv` berisi 514 kabupaten/kota dari tabel tanah longsor buku yang sama, halaman 310–323. 455 baris punya skor dan kelas: 369 Tinggi, 52 Sedang, 34 Rendah. 59 baris dikosongkan karena tidak ada di tabel itu. Skor tidak diubah. Berkas multibahaya Aceh–Bengkulu bukan tabel longsor nasional. Bukan peta rawan longsor PVMBG.
 
+## IRBI 2025, tabel kabupaten lain
+
+Sumbernya HTML publik Flip PDF `https://inarisk.bnpb.go.id/IRBI-2025/files/basic-html/page{N}.html` (halaman 1–380). Angka disalin dari blok teks, bukan dihitung ulang. Buku melarang pengutipan atau perbanyakan tanpa izin tertulis BNPB; izin belum diperoleh. Kalimat izin pada dasbor tidak diubah.
+
+Banjir (halaman 212–227) dan longsor (halaman 310–323) dicocokkan ulang ke HTML: 510 dan 455 skor sama persis, termasuk kelas dan halaman. Kedua berkas itu tidak ditimpa. Skor banjir bandang tidak masuk berkas banjir.
+
+`irbi-2025-karhutla.csv` tetap memakai kolom yang sudah dibaca dasbor. 467 skor halaman 294–307 cocok dengan HTML (380 Tinggi, 77 Sedang, 10 Rendah) dan tidak diubah. 47 kabupaten/kota yang tidak ada di tabel ditambahkan dengan `indeks_risiko` kosong dan keterangan `IRBI tidak tersedia`. Sel kosong bukan nol.
+
+Berkas baru memakai kolom `provinsi,kabupaten_irbi,kode_wilayah,nama_big,skor,kelas,halaman,catatan`. Urutannya mengikuti 514 baris tabel banjir. Tanpa skor: `catatan` = `IRBI tidak tersedia`, skor dan kelas kosong. Nama HTML yang terpotong di tanda hubung, atau `KEP, SIAU TAGULANDANG BIARO`, diisi hanya bila satu nama pada tabel banjir yang cocok. Baris buku yang tidak terpadankan tidak ada.
+
+| Berkas | Halaman | Ada skor | IRBI tidak tersedia | Kelas yang ada |
+| --- | --- | --- | --- | --- |
+| `irbi-2025-multibahaya.csv` | 40–55 | 514 | 0 | 169 Tinggi, 345 Sedang |
+| `irbi-2025-gempabumi.csv` | 230–245 | 514 | 0 | 336 Tinggi, 34 Sedang, 144 Rendah |
+| `irbi-2025-tsunami.csv` | 248–256 | 274 | 240 | 206 Tinggi, 19 Sedang, 49 Rendah |
+| `irbi-2025-gunung-api.csv` | 260–263 | 132 | 382 | 79 Tinggi, 22 Sedang, 31 Rendah |
+| `irbi-2025-banjir-bandang.csv` | 266–278 | 420 | 94 | 4 Tinggi, 315 Sedang, 101 Rendah |
+| `irbi-2025-gelombang-abrasi.csv` | 282–291 | 322 | 192 | 241 Tinggi, 57 Sedang, 24 Rendah |
+| `irbi-2025-karhutla.csv` | 294–307 | 467 | 47 | 380 Tinggi, 77 Sedang, 10 Rendah |
+| `irbi-2025-kekeringan.csv` | 326–341 | 514 | 0 | 375 Tinggi, 107 Sedang, 32 Rendah |
+| `irbi-2025-likuefaksi.csv` | 344–355 | 381 | 133 | 314 Tinggi, 40 Sedang, 27 Rendah |
+| `irbi-2025-cuaca-ekstrem.csv` | 358–373 | 514 | 0 | 185 Tinggi, 276 Sedang, 53 Rendah |
+
+`irbi-2025-multibahaya.csv` adalah tabel nasional kabupaten/kota (skor gabungan, misalnya 278,51). `irbi-2025-multibahaya-aceh-bengkulu.csv` tetap 33 baris; angkanya cocok dengan tabel nasional itu. Likuefaksi ada sebagai tabel sendiri di buku dan tidak digabung ke gempabumi. Tidak ada menu pilihan bahaya pada dasbor di perubahan ini.
+
 ## Titik sampel prakiraan
 
 `prakiraan-sampel-adm4.csv` menyimpan satu kode adm4 per kabupaten/kota yang sudah dicek ke API prakiraan BMKG. Enam kelurahan prioritas bertanda `terverifikasi`. Sisanya `kelurahan-terkecil` atau `desa-terkecil`: itu calon kode, bukan ibu kota yang diverifikasi. Baris `status` selain `ok` tidak diambil ulang dan tidak punya prakiraan. Pada 20 Oktober 2026 yang gagal (HTTP 404): Sorong Selatan, Raja Ampat, Tambrauw, dan Maybrat.

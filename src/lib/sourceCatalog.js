@@ -228,7 +228,7 @@ export const SOURCES = [
     expectedMaxAgeHours: 24 * 30 * 18,
     file: "data/static/irbi-2025-karhutla.csv",
     limitation:
-      "Tabel dikutip dari versi HTML Buku IRBI 2025 halaman 294–307 untuk ancaman kebakaran hutan dan lahan (467 kabupaten/kota). Skor dan kelas tidak diubah. Bukan peta, karena batas wilayah resmi tidak disertakan. Komponen bahaya, kerentanan, dan kapasitas tidak ada pada halaman itu.",
+      "Tabel dikutip dari versi HTML Buku IRBI 2025 halaman 294–307 untuk ancaman kebakaran hutan dan lahan. 467 kabupaten/kota punya skor dan kelas; 47 yang tidak ada di tabel dikosongkan dan dicatat IRBI tidak tersedia. Skor yang ada tidak diubah. Bukan peta, karena batas wilayah resmi tidak disertakan. Komponen bahaya, kerentanan, dan kapasitas tidak ada pada halaman itu.",
   },
   {
     id: "ispu",

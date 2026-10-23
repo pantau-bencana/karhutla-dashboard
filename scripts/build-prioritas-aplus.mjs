@@ -173,7 +173,9 @@ function readIrbi() {
   const map = new Map();
   for (const row of parseCsv(readFileSync(path, "utf8"))) {
     const key = `${normalizePlaceName(row.provinsi)}|${normalizePlaceName(row.kabupaten)}`;
-    const indeks = Number(row.indeks_risiko);
+    const indeksTeks = String(row.indeks_risiko ?? "").trim();
+    if (!indeksTeks) continue;
+    const indeks = Number(indeksTeks);
     if (!Number.isFinite(indeks)) continue;
     map.set(key, { I3: indeks, irbi_kelas: row.kelas_risiko || "" });
   }

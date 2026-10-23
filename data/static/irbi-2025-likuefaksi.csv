@@ -1,0 +1,515 @@
+provinsi,kabupaten_irbi,kode_wilayah,nama_big,skor,kelas,halaman,catatan
+Aceh,ACEH SELATAN,11.01,Aceh Selatan,26.40,TINGGI,345,
+Aceh,ACEH TENGGARA,11.02,Aceh Tenggara,24.50,TINGGI,347,
+Aceh,ACEH TIMUR,11.03,Aceh Timur,23.82,TINGGI,347,
+Aceh,ACEH TENGAH,11.04,Aceh Tengah,31.82,TINGGI,344,
+Aceh,ACEH BARAT,11.05,Aceh Barat,15.79,TINGGI,351,
+Aceh,ACEH BESAR,11.06,Aceh Besar,26.84,TINGGI,344,
+Aceh,PIDIE,11.07,Pidie,25.90,TINGGI,347,
+Aceh,ACEH UTARA,11.08,Aceh Utara,29.10,TINGGI,344,
+Aceh,SIMEULUE,11.09,Simeulue,24.92,TINGGI,347,
+Aceh,ACEH SINGKIL,11.10,Aceh Singkil,26.40,TINGGI,344,
+Aceh,BIREUEN,11.11,Bireuen,24.45,TINGGI,347,
+Aceh,ACEH BARAT DAYA,11.12,Aceh Barat Daya,26.40,TINGGI,345,
+Aceh,GAYO LUES,11.13,Gayo Lues,24.00,TINGGI,347,
+Aceh,ACEH JAYA,11.14,Aceh Jaya,21.26,TINGGI,348,
+Aceh,NAGAN RAYA,11.15,Nagan Raya,20.79,TINGGI,349,
+Aceh,ACEH TAMIANG,11.16,Aceh Tamiang,17.77,TINGGI,350,
+Aceh,BENER MERIAH,11.17,Bener Meriah,13.04,TINGGI,352,
+Aceh,PIDIE JAYA,11.18,Pidie Jaya,31.20,TINGGI,344,
+Aceh,KOTA BANDA ACEH,11.71,Kota Banda Aceh,24.87,TINGGI,347,
+Aceh,KOTA SABANG,11.72,Kota Sabang,,,,IRBI tidak tersedia
+Aceh,KOTA LHOKSEUMAWE,11.73,Kota Lhokseumawe,26.69,TINGGI,344,
+Aceh,KOTA LANGSA,11.74,Kota Langsa,25.40,TINGGI,347,
+Aceh,KOTA SUBULUSSALAM,11.75,Kota Subulussalam,20.37,TINGGI,349,
+Sumatera Utara,TAPANULI TENGAH,12.01,Tapanuli Tengah,22.87,TINGGI,348,
+Sumatera Utara,TAPANULI UTARA,12.02,Tapanuli Utara,23.66,TINGGI,347,
+Sumatera Utara,TAPANULI SELATAN,12.03,Tapanuli Selatan,17.71,TINGGI,350,
+Sumatera Utara,NIAS,12.04,Nias,25.06,TINGGI,347,
+Sumatera Utara,LANGKAT,12.05,Langkat,24.00,TINGGI,347,
+Sumatera Utara,KARO,12.06,Karo,13.61,TINGGI,352,
+Sumatera Utara,DELI SERDANG,12.07,Deli Serdang,26.48,TINGGI,344,
+Sumatera Utara,SIMALUNGUN,12.08,Simalungun,,,,IRBI tidak tersedia
+Sumatera Utara,ASAHAN,12.09,Asahan,20.16,TINGGI,349,
+Sumatera Utara,LABUHANBATU,12.10,Labuhanbatu,26.40,TINGGI,345,
+Sumatera Utara,DAIRI,12.11,Dairi,16.60,TINGGI,351,
+Sumatera Utara,TOBA SAMOSIR,12.12,Toba,15.18,TINGGI,352,
+Sumatera Utara,MANDAILING NATAL,12.13,Mandailing Natal,26.18,TINGGI,346,
+Sumatera Utara,NIAS SELATAN,12.14,Nias Selatan,24.00,TINGGI,347,
+Sumatera Utara,PAKPAK BHARAT,12.15,Pakpak Bharat,,,,IRBI tidak tersedia
+Sumatera Utara,HUMBANG HASUNDUTAN,12.16,Humbang Hasundutan,26.30,TINGGI,346,
+Sumatera Utara,SAMOSIR,12.17,Samosir,30.20,TINGGI,344,
+Sumatera Utara,SERDANG BEDAGAI,12.18,Serdang Bedagai,2.98,RENDAH,354,
+Sumatera Utara,BATU BARA,12.19,Batu Bara,1.60,RENDAH,354,
+Sumatera Utara,PADANG LAWAS UTARA,12.20,Padang Lawas Utara,24.00,TINGGI,347,
+Sumatera Utara,PADANG LAWAS,12.21,Padang Lawas,25.20,TINGGI,347,
+Sumatera Utara,LABUHANBATU SELATAN,12.22,Labuhanbatu Selatan,22.80,TINGGI,348,
+Sumatera Utara,LABUHANBATU UTARA,12.23,Labuhanbatu Utara,26.40,TINGGI,345,
+Sumatera Utara,NIAS UTARA,12.24,Nias Utara,,,,IRBI tidak tersedia
+Sumatera Utara,NIAS BARAT,12.25,Nias Barat,,,,IRBI tidak tersedia
+Sumatera Utara,KOTA MEDAN,12.71,Kota Medan,16.14,TINGGI,351,
+Sumatera Utara,KOTA PEMATANGSIANTAR,12.72,Kota Pematangsiantar,,,,IRBI tidak tersedia
+Sumatera Utara,KOTA SIBOLGA,12.73,Kota Sibolga,31.18,TINGGI,344,
+Sumatera Utara,KOTA TANJUNG BALAI,12.74,Kota Tanjung Balai,4.14,RENDAH,354,
+Sumatera Utara,KOTA BINJAI,12.75,Kota Binjai,32.40,TINGGI,344,
+Sumatera Utara,KOTA TEBING TINGGI,12.76,Kota Tebing Tinggi,3.36,RENDAH,354,
+Sumatera Utara,KOTA PADANGSIDIMPUAN,12.77,Kota Padang Sidempuan,27.78,TINGGI,344,
+Sumatera Utara,KOTA GUNUNGSITOLI,12.78,Kota Gunungsitoli,17.93,TINGGI,350,
+Sumatera Barat,PESISIR SELATAN,13.01,Pesisir Selatan,16.45,TINGGI,351,
+Sumatera Barat,SOLOK,13.02,Solok,24.06,TINGGI,347,
+Sumatera Barat,SIJUNJUNG,13.03,Sijunjung,16.55,TINGGI,351,
+Sumatera Barat,TANAH DATAR,13.04,Tanah Datar,30.00,TINGGI,344,
+Sumatera Barat,PADANG PARIAMAN,13.05,Padang Pariaman,19.52,TINGGI,349,
+Sumatera Barat,AGAM,13.06,Agam,25.27,TINGGI,347,
+Sumatera Barat,LIMA PULUH KOTA,13.07,Lima Puluh Kota,29.87,TINGGI,344,
+Sumatera Barat,PASAMAN,13.08,Pasaman,27.60,TINGGI,344,
+Sumatera Barat,KEPULAUAN MENTAWAI,13.09,Kepulauan Mentawai,,,,IRBI tidak tersedia
+Sumatera Barat,DHARMASRAYA,13.10,Dharmasraya,13.59,TINGGI,352,
+Sumatera Barat,SOLOK SELATAN,13.11,Solok Selatan,23.97,TINGGI,347,
+Sumatera Barat,PASAMAN BARAT,13.12,Pasaman Barat,21.47,TINGGI,348,
+Sumatera Barat,KOTA PADANG,13.71,Kota Padang,22.45,TINGGI,348,
+Sumatera Barat,KOTA SOLOK,13.72,Kota Solok,28.71,TINGGI,344,
+Sumatera Barat,KOTA SAWAHLUNTO,13.73,Kota Sawahlunto,26.06,TINGGI,346,
+Sumatera Barat,KOTA PADANG PANJANG,13.74,Kota Padang Panjang,,,,IRBI tidak tersedia
+Sumatera Barat,KOTA BUKITTINGGI,13.75,Kota Bukittinggi,,,,IRBI tidak tersedia
+Sumatera Barat,KOTA PAYAKUMBUH,13.76,Kota Payakumbuh,22.40,TINGGI,348,
+Sumatera Barat,KOTA PARIAMAN,13.77,Kota Pariaman,20.82,TINGGI,348,
+Riau,KAMPAR,14.01,Kampar,21.61,TINGGI,348,
+Riau,INDRAGIRI HULU,14.02,Indragiri Hulu,16.80,TINGGI,350,
+Riau,BENGKALIS,14.03,Bengkalis,1.60,RENDAH,354,
+Riau,INDRAGIRI HILIR,14.04,Indragiri Hilir,,,,IRBI tidak tersedia
+Riau,PELALAWAN,14.05,Pelalawan,24.00,TINGGI,347,
+Riau,ROKAN HULU,14.06,Rokan Hulu,1.43,RENDAH,355,
+Riau,ROKAN HILIR,14.07,Rokan Hilir,16.80,TINGGI,350,
+Riau,SIAK,14.08,Siak,1.16,RENDAH,355,
+Riau,KUANTAN SINGINGI,14.09,Kuantan Singingi,17.60,TINGGI,350,
+Riau,KEPULAUAN MERANTI,14.10,Kepulauan Meranti,,,,IRBI tidak tersedia
+Riau,KOTA PEKANBARU,14.71,Kota Pekanbaru,4.66,RENDAH,354,
+Riau,KOTA DUMAI,14.72,Kota Dumai,,,,IRBI tidak tersedia
+Jambi,KERINCI,15.01,Kerinci,31.20,TINGGI,344,
+Jambi,MERANGIN,15.02,Merangin,,,,IRBI tidak tersedia
+Jambi,SAROLANGUN,15.03,Sarolangun,,,,IRBI tidak tersedia
+Jambi,BATANGHARI,15.04,Batanghari,,,,IRBI tidak tersedia
+Jambi,MUARO JAMBI,15.05,Muaro Jambi,,,,IRBI tidak tersedia
+Jambi,TANJUNG JABUNG BARAT,15.06,Tanjung Jabung Barat,,,,IRBI tidak tersedia
+Jambi,TANJUNG JABUNG TIMUR,15.07,Tanjung Jabung Timur,,,,IRBI tidak tersedia
+Jambi,BUNGO,15.08,Bungo,,,,IRBI tidak tersedia
+Jambi,TEBO,15.09,Tebo,14.40,TINGGI,352,
+Jambi,KOTA JAMBI,15.71,Kota Jambi,,,,IRBI tidak tersedia
+Jambi,KOTA SUNGAI PENUH,15.72,Kota Sungai Penuh,22.87,TINGGI,348,
+Sumatera Selatan,OGAN KOMERING ULU,16.01,Ogan Komering Ulu,22.88,TINGGI,348,
+Sumatera Selatan,OGAN KOMERING ILIR,16.02,Ogan Komering Ilir,23.06,TINGGI,347,
+Sumatera Selatan,MUARA ENIM,16.03,Muara Enim,17.99,TINGGI,350,
+Sumatera Selatan,LAHAT,16.04,Lahat,28.80,TINGGI,344,
+Sumatera Selatan,MUSI RAWAS,16.05,Musi Rawas,1.60,RENDAH,354,
+Sumatera Selatan,MUSI BANYUASIN,16.06,Musi Banyuasin,19.19,TINGGI,349,
+Sumatera Selatan,BANYUASIN,16.07,Banyuasin,11.94,SEDANG,353,
+Sumatera Selatan,OGAN KOMERING ULU TIMUR,16.08,Ogan Komering Ulu Timur,16.89,TINGGI,350,
+Sumatera Selatan,OGAN KOMERING ULU SELATAN,16.09,Ogan Komering Ulu Selatan,16.60,TINGGI,351,
+Sumatera Selatan,OGAN ILIR,16.10,Ogan Ilir,9.70,SEDANG,353,
+Sumatera Selatan,EMPAT LAWANG,16.11,Empat Lawang,24.64,TINGGI,347,
+Sumatera Selatan,PENUKAL ABAB LEMATANG ILIR,16.12,Penukal Abab Lematang Ilir,22.90,TINGGI,347,
+Sumatera Selatan,MUSI RAWAS UTARA,16.13,Musi Rawas Utara,0.96,RENDAH,355,
+Sumatera Selatan,KOTA PALEMBANG,16.71,Kota Palembang,,,,IRBI tidak tersedia
+Sumatera Selatan,KOTA PAGAR ALAM,16.72,Kota Pagar Alam,32.40,TINGGI,344,
+Sumatera Selatan,KOTA LUBUKLINGGAU,16.73,Kota Lubuk Linggau,4.80,RENDAH,354,
+Sumatera Selatan,KOTA PRABUMULIH,16.74,Kota Prabumulih,17.60,TINGGI,350,
+Bengkulu,BENGKULU SELATAN,17.01,Bengkulu Selatan,20.21,TINGGI,349,
+Bengkulu,REJANG LEBONG,17.02,Rejang Lebong,31.23,TINGGI,344,
+Bengkulu,BENGKULU UTARA,17.03,Bengkulu Utara,22.26,TINGGI,348,
+Bengkulu,KAUR,17.04,Kaur,22.11,TINGGI,348,
+Bengkulu,SELUMA,17.05,Seluma,18.59,TINGGI,350,
+Bengkulu,MUKOMUKO,17.06,Muko Muko,26.40,TINGGI,345,
+Bengkulu,LEBONG,17.07,Lebong,18.06,TINGGI,350,
+Bengkulu,KEPAHIANG,17.08,Kepahiang,16.62,TINGGI,351,
+Bengkulu,BENGKULU TENGAH,17.09,Bengkulu Tengah,28.80,TINGGI,344,
+Bengkulu,KOTA BENGKULU,17.71,Kota Bengkulu,25.19,TINGGI,347,
+Lampung,LAMPUNG SELATAN,18.01,Lampung Selatan,16.37,TINGGI,351,
+Lampung,LAMPUNG TENGAH,18.02,Lampung Tengah,1.03,RENDAH,355,
+Lampung,LAMPUNG UTARA,18.03,Lampung Utara,1.60,RENDAH,354,
+Lampung,LAMPUNG BARAT,18.04,Lampung Barat,,,,IRBI tidak tersedia
+Lampung,TULANG BAWANG,18.05,Tulang Bawang,1.04,RENDAH,355,
+Lampung,TANGGAMUS,18.06,Tanggamus,12.86,TINGGI,352,
+Lampung,LAMPUNG TIMUR,18.07,Lampung Timur,0.69,RENDAH,355,
+Lampung,WAY KANAN,18.08,Way Kanan,7.18,SEDANG,354,
+Lampung,PESAWARAN,18.09,Pesawaran,19.52,TINGGI,349,
+Lampung,PRINGSEWU,18.10,Pringsewu,20.59,TINGGI,349,
+Lampung,MESUJI,18.11,Mesuji,,,,IRBI tidak tersedia
+Lampung,TULANG BAWANG BARAT,18.12,Tulang Bawang Barat,1.24,RENDAH,355,
+Lampung,PESISIR BARAT,18.13,Pesisir Barat,17.86,TINGGI,350,
+Lampung,KOTA BANDAR LAMPUNG,18.71,Kota Bandar Lampung,16.42,TINGGI,351,
+Lampung,KOTA METRO,18.72,Kota Metro,,,,IRBI tidak tersedia
+Kepulauan Bangka Belitung,BANGKA,19.01,Bangka,,,,IRBI tidak tersedia
+Kepulauan Bangka Belitung,BELITUNG,19.02,Belitung,,,,IRBI tidak tersedia
+Kepulauan Bangka Belitung,BANGKA SELATAN,19.03,Bangka Selatan,,,,IRBI tidak tersedia
+Kepulauan Bangka Belitung,BANGKA TENGAH,19.04,Bangka Tengah,,,,IRBI tidak tersedia
+Kepulauan Bangka Belitung,BANGKA BARAT,19.05,Bangka Barat,,,,IRBI tidak tersedia
+Kepulauan Bangka Belitung,BELITUNG TIMUR,19.06,Belitung Timur,,,,IRBI tidak tersedia
+Kepulauan Bangka Belitung,KOTA PANGKALPINANG,19.71,Kota Pangkal Pinang,,,,IRBI tidak tersedia
+Kepulauan Riau,BINTAN,21.01,Bintan,,,,IRBI tidak tersedia
+Kepulauan Riau,KARIMUN,21.02,Karimun,,,,IRBI tidak tersedia
+Kepulauan Riau,NATUNA,21.03,Natuna,,,,IRBI tidak tersedia
+Kepulauan Riau,LINGGA,21.04,Lingga,,,,IRBI tidak tersedia
+Kepulauan Riau,KEPULAUAN ANAMBAS,21.05,Kepulauan Anambas,,,,IRBI tidak tersedia
+Kepulauan Riau,KOTA BATAM,21.71,Kota Batam,,,,IRBI tidak tersedia
+Kepulauan Riau,KOTA TANJUNGPINANG,21.72,Kota Tanjung Pinang,,,,IRBI tidak tersedia
+DKI Jakarta,KEPULAUAN SERIBU,31.01,Adm. Kep. Seribu,,,,IRBI tidak tersedia
+DKI Jakarta,JAKARTA PUSAT,31.71,Kota Adm. Jakarta Pusat,10.85,SEDANG,353,
+DKI Jakarta,JAKARTA UTARA,31.72,Kota Adm. Jakarta Utara,17.48,TINGGI,350,
+DKI Jakarta,JAKARTA BARAT,31.73,Kota Adm. Jakarta Barat,10.85,SEDANG,353,
+DKI Jakarta,JAKARTA SELATAN,31.74,Kota Adm. Jakarta Selatan,10.85,SEDANG,353,
+DKI Jakarta,JAKARTA TIMUR,31.75,Kota Adm. Jakarta Timur,10.85,SEDANG,353,
+Jawa Barat,BOGOR,32.01,Bogor,12.48,TINGGI,353,
+Jawa Barat,SUKABUMI,32.02,Sukabumi,22.04,TINGGI,348,
+Jawa Barat,CIANJUR,32.03,Cianjur,12.10,TINGGI,353,
+Jawa Barat,BANDUNG,32.04,Bandung,2.24,RENDAH,354,
+Jawa Barat,GARUT,32.05,Garut,15.51,TINGGI,351,
+Jawa Barat,TASIKMALAYA,32.06,Tasikmalaya,14.02,TINGGI,352,
+Jawa Barat,CIAMIS,32.07,Ciamis,10.05,SEDANG,353,
+Jawa Barat,KUNINGAN,32.08,Kuningan,,,,IRBI tidak tersedia
+Jawa Barat,CIREBON,32.09,Cirebon,15.91,TINGGI,351,
+Jawa Barat,MAJALENGKA,32.10,Majalengka,,,,IRBI tidak tersedia
+Jawa Barat,SUMEDANG,32.11,Sumedang,2.93,RENDAH,354,
+Jawa Barat,INDRAMAYU,32.12,Indramayu,12.53,TINGGI,353,
+Jawa Barat,SUBANG,32.13,Subang,16.30,TINGGI,351,
+Jawa Barat,PURWAKARTA,32.14,Purwakarta,9.76,SEDANG,353,
+Jawa Barat,KARAWANG,32.15,Karawang,19.54,TINGGI,349,
+Jawa Barat,BEKASI,32.16,Bekasi,15.65,TINGGI,351,
+Jawa Barat,BANDUNG BARAT,32.17,Bandung Barat,,,,IRBI tidak tersedia
+Jawa Barat,PANGANDARAN,32.18,Pangandaran,16.90,TINGGI,350,
+Jawa Barat,KOTA BOGOR,32.71,Kota Bogor,,,,IRBI tidak tersedia
+Jawa Barat,KOTA SUKABUMI,32.72,Kota Sukabumi,,,,IRBI tidak tersedia
+Jawa Barat,KOTA BANDUNG,32.73,Kota Bandung,2.48,RENDAH,354,
+Jawa Barat,KOTA CIREBON,32.74,Kota Cirebon,13.20,TINGGI,352,
+Jawa Barat,KOTA BEKASI,32.75,Kota Bekasi,9.94,SEDANG,353,
+Jawa Barat,KOTA DEPOK,32.76,Kota Depok,7.78,SEDANG,354,
+Jawa Barat,KOTA CIMAHI,32.77,Kota Cimahi,,,,IRBI tidak tersedia
+Jawa Barat,KOTA TASIKMALAYA,32.78,Kota Tasikmalaya,,,,IRBI tidak tersedia
+Jawa Barat,KOTA BANJAR,32.79,Kota Banjar,11.96,SEDANG,353,
+Jawa Tengah,CILACAP,33.01,Cilacap,14.94,TINGGI,352,
+Jawa Tengah,BANYUMAS,33.02,Banyumas,7.51,SEDANG,354,
+Jawa Tengah,PURBALINGGA,33.03,Purbalingga,12.02,TINGGI,353,
+Jawa Tengah,BANJARNEGARA,33.04,Banjarnegara,8.75,SEDANG,354,
+Jawa Tengah,KEBUMEN,33.05,Kebumen,11.27,SEDANG,353,
+Jawa Tengah,PURWOREJO,33.06,Purworejo,12.70,TINGGI,353,
+Jawa Tengah,WONOSOBO,33.07,Wonosobo,7.79,SEDANG,354,
+Jawa Tengah,MAGELANG,33.08,Magelang,7.41,SEDANG,354,
+Jawa Tengah,BOYOLALI,33.09,Boyolali,,,,IRBI tidak tersedia
+Jawa Tengah,KLATEN,33.10,Klaten,11.14,SEDANG,353,
+Jawa Tengah,SUKOHARJO,33.11,Sukoharjo,10.27,SEDANG,353,
+Jawa Tengah,WONOGIRI,33.12,Wonogiri,8.92,SEDANG,354,
+Jawa Tengah,KARANGANYAR,33.13,Karanganyar,8.13,SEDANG,354,
+Jawa Tengah,SRAGEN,33.14,Sragen,9.64,SEDANG,354,
+Jawa Tengah,GROBOGAN,33.15,Grobogan,,,,IRBI tidak tersedia
+Jawa Tengah,BLORA,33.16,Blora,3.46,RENDAH,354,
+Jawa Tengah,REMBANG,33.17,Rembang,15.47,TINGGI,352,
+Jawa Tengah,PATI,33.18,Pati,20.18,TINGGI,349,
+Jawa Tengah,KUDUS,33.19,Kudus,7.51,SEDANG,354,
+Jawa Tengah,JEPARA,33.20,Jepara,19.41,TINGGI,349,
+Jawa Tengah,DEMAK,33.21,Demak,14.77,TINGGI,352,
+Jawa Tengah,SEMARANG,33.22,Semarang,2.00,RENDAH,354,
+Jawa Tengah,TEMANGGUNG,33.23,Temanggung,,,,IRBI tidak tersedia
+Jawa Tengah,KENDAL,33.24,Kendal,14.59,TINGGI,352,
+Jawa Tengah,BATANG,33.25,Batang,16.67,TINGGI,350,
+Jawa Tengah,PEKALONGAN,33.26,Pekalongan,15.14,TINGGI,352,
+Jawa Tengah,PEMALANG,33.27,Pemalang,13.09,TINGGI,352,
+Jawa Tengah,TEGAL,33.28,Tegal,12.60,TINGGI,353,
+Jawa Tengah,BREBES,33.29,Brebes,18.15,TINGGI,350,
+Jawa Tengah,KOTA MAGELANG,33.71,Kota Magelang,,,,IRBI tidak tersedia
+Jawa Tengah,KOTA SURAKARTA,33.72,Kota Surakarta,8.44,SEDANG,354,
+Jawa Tengah,KOTA SALATIGA,33.73,Kota Salatiga,,,,IRBI tidak tersedia
+Jawa Tengah,KOTA SEMARANG,33.74,Kota Semarang,14.07,TINGGI,352,
+Jawa Tengah,KOTA PEKALONGAN,33.75,Kota Pekalongan,16.60,TINGGI,351,
+Jawa Tengah,KOTA TEGAL,33.76,Kota Tegal,16.42,TINGGI,351,
+Daerah Istimewa Yogyakarta,KULON PROGO,34.01,Kulon Progo,16.09,TINGGI,351,
+Daerah Istimewa Yogyakarta,BANTUL,34.02,Bantul,13.39,TINGGI,352,
+Daerah Istimewa Yogyakarta,GUNUNGKIDUL,34.03,Gunungkidul,8.58,SEDANG,354,
+Daerah Istimewa Yogyakarta,SLEMAN,34.04,Sleman,13.76,TINGGI,352,
+Daerah Istimewa Yogyakarta,KOTA YOGYAKARTA,34.71,Kota Yogyakarta,9.30,SEDANG,354,
+Jawa Timur,PACITAN,35.01,Pacitan,14.48,TINGGI,352,
+Jawa Timur,PONOROGO,35.02,Ponorogo,12.86,TINGGI,352,
+Jawa Timur,TRENGGALEK,35.03,Trenggalek,16.32,TINGGI,351,
+Jawa Timur,TULUNGAGUNG,35.04,Tulungagung,16.13,TINGGI,351,
+Jawa Timur,BLITAR,35.05,Blitar,10.76,SEDANG,353,
+Jawa Timur,KEDIRI,35.06,Kediri,10.05,SEDANG,353,
+Jawa Timur,MALANG,35.07,Malang,14.26,TINGGI,352,
+Jawa Timur,LUMAJANG,35.08,Lumajang,14.17,TINGGI,352,
+Jawa Timur,JEMBER,35.09,Jember,18.93,TINGGI,349,
+Jawa Timur,BANYUWANGI,35.10,Banyuwangi,13.77,TINGGI,352,
+Jawa Timur,BONDOWOSO,35.11,Bondowoso,11.01,SEDANG,353,
+Jawa Timur,SITUBONDO,35.12,Situbondo,16.54,TINGGI,351,
+Jawa Timur,PROBOLINGGO,35.13,Probolinggo,20.07,TINGGI,349,
+Jawa Timur,PASURUAN,35.14,Pasuruan,14.59,TINGGI,352,
+Jawa Timur,SIDOARJO,35.15,Sidoarjo,22.47,TINGGI,348,
+Jawa Timur,MOJOKERTO,35.16,Mojokerto,9.58,SEDANG,354,
+Jawa Timur,JOMBANG,35.17,Jombang,12.59,TINGGI,353,
+Jawa Timur,NGANJUK,35.18,Nganjuk,11.03,SEDANG,353,
+Jawa Timur,MADIUN,35.19,Madiun,13.03,TINGGI,352,
+Jawa Timur,MAGETAN,35.20,Magetan,10.47,SEDANG,353,
+Jawa Timur,NGAWI,35.21,Ngawi,9.45,SEDANG,354,
+Jawa Timur,BOJONEGORO,35.22,Bojonegoro,11.62,SEDANG,353,
+Jawa Timur,TUBAN,35.23,Tuban,18.80,TINGGI,349,
+Jawa Timur,LAMONGAN,35.24,Lamongan,33.44,TINGGI,344,
+Jawa Timur,GRESIK,35.25,Gresik,15.82,TINGGI,351,
+Jawa Timur,BANGKALAN,35.26,Bangkalan,21.14,TINGGI,348,
+Jawa Timur,SAMPANG,35.27,Sampang,19.13,TINGGI,349,
+Jawa Timur,PAMEKASAN,35.28,Pamekasan,16.21,TINGGI,351,
+Jawa Timur,SUMENEP,35.29,Sumenep,18.06,TINGGI,350,
+Jawa Timur,KOTA KEDIRI,35.71,Kota Kediri,12.46,TINGGI,353,
+Jawa Timur,KOTA BLITAR,35.72,Kota Blitar,,,,IRBI tidak tersedia
+Jawa Timur,KOTA MALANG,35.73,Kota Malang,,,,IRBI tidak tersedia
+Jawa Timur,KOTA PROBOLINGGO,35.74,Kota Probolinggo,21.62,TINGGI,348,
+Jawa Timur,KOTA PASURUAN,35.75,Kota Pasuruan,20.63,TINGGI,349,
+Jawa Timur,KOTA MOJOKERTO,35.76,Kota Mojokerto,21.60,TINGGI,348,
+Jawa Timur,KOTA MADIUN,35.77,Kota Madiun,12.08,TINGGI,353,
+Jawa Timur,KOTA SURABAYA,35.78,Kota Surabaya,16.86,TINGGI,350,
+Jawa Timur,KOTA BATU,35.79,Kota Batu,,,,IRBI tidak tersedia
+Banten,PANDEGLANG,36.01,Pandeglang,11.10,SEDANG,353,
+Banten,LEBAK,36.02,Lebak,21.32,TINGGI,348,
+Banten,TANGERANG,36.03,Tangerang,13.70,TINGGI,352,
+Banten,SERANG,36.04,Serang,14.87,TINGGI,352,
+Banten,KOTA TANGERANG,36.71,Kota Tangerang,10.46,SEDANG,353,
+Banten,KOTA CILEGON,36.72,Kota Cilegon,15.99,TINGGI,351,
+Banten,KOTA SERANG,36.73,Kota Serang,17.45,TINGGI,350,
+Banten,KOTA TANGERANG SELATAN,36.74,Kota Tangerang Selatan,10.99,SEDANG,353,
+Bali,JEMBRANA,51.01,Jembrana,17.83,TINGGI,350,
+Bali,TABANAN,51.02,Tabanan,,,,IRBI tidak tersedia
+Bali,BADUNG,51.03,Badung,16.50,TINGGI,351,
+Bali,GIANYAR,51.04,Gianyar,,,,IRBI tidak tersedia
+Bali,KLUNGKUNG,51.05,Klungkung,21.07,TINGGI,348,
+Bali,BANGLI,51.06,Bangli,,,,IRBI tidak tersedia
+Bali,KARANGASEM,51.07,Karangasem,15.19,TINGGI,352,
+Bali,BULELENG,51.08,Buleleng,15.58,TINGGI,351,
+Bali,KOTA DENPASAR,51.71,Kota Denpasar,14.19,TINGGI,352,
+Nusa Tenggara Barat,LOMBOK BARAT,52.01,Lombok Barat,15.88,TINGGI,351,
+Nusa Tenggara Barat,LOMBOK TENGAH,52.02,Lombok Tengah,16.37,TINGGI,351,
+Nusa Tenggara Barat,LOMBOK TIMUR,52.03,Lombok Timur,20.68,TINGGI,349,
+Nusa Tenggara Barat,SUMBAWA,52.04,Sumbawa,19.12,TINGGI,349,
+Nusa Tenggara Barat,DOMPU,52.05,Dompu,22.40,TINGGI,348,
+Nusa Tenggara Barat,BIMA,52.06,Bima,22.20,TINGGI,348,
+Nusa Tenggara Barat,SUMBAWA BARAT,52.07,Sumbawa Barat,15.04,TINGGI,352,
+Nusa Tenggara Barat,LOMBOK UTARA,52.08,Lombok Utara,15.31,TINGGI,352,
+Nusa Tenggara Barat,KOTA MATARAM,52.71,Kota Mataram,24.16,TINGGI,347,
+Nusa Tenggara Barat,KOTA BIMA,52.72,Kota Bima,18.66,TINGGI,350,
+Nusa Tenggara Timur,KUPANG,53.01,Kupang,21.61,TINGGI,348,
+Nusa Tenggara Timur,TIMOR TENGAH SELATAN,53.02,Timor Tengah Selatan,,,,IRBI tidak tersedia
+Nusa Tenggara Timur,TIMOR TENGAH UTARA,53.03,Timor Tengah Utara,19.51,TINGGI,349,
+Nusa Tenggara Timur,BELU,53.04,Belu,19.97,TINGGI,349,
+Nusa Tenggara Timur,ALOR,53.05,Alor,28.23,TINGGI,344,
+Nusa Tenggara Timur,FLORES TIMUR,53.06,Flores Timur,15.82,TINGGI,351,
+Nusa Tenggara Timur,SIKKA,53.07,Sikka,21.01,TINGGI,348,
+Nusa Tenggara Timur,ENDE,53.08,Ende,22.07,TINGGI,348,
+Nusa Tenggara Timur,NGADA,53.09,Ngada,25.10,TINGGI,347,
+Nusa Tenggara Timur,MANGGARAI,53.10,Manggarai,29.23,TINGGI,344,
+Nusa Tenggara Timur,SUMBA TIMUR,53.11,Sumba Timur,16.88,TINGGI,350,
+Nusa Tenggara Timur,SUMBA BARAT,53.12,Sumba Barat,19.17,TINGGI,349,
+Nusa Tenggara Timur,LEMBATA,53.13,Lembata,22.63,TINGGI,348,
+Nusa Tenggara Timur,ROTE NDAO,53.14,Rote Ndao,21.22,TINGGI,348,
+Nusa Tenggara Timur,MANGGARAI BARAT,53.15,Manggarai Barat,16.11,TINGGI,351,
+Nusa Tenggara Timur,NAGEKEO,53.16,Nagekeo,17.38,TINGGI,350,
+Nusa Tenggara Timur,SUMBA TENGAH,53.17,Sumba Tengah,22.52,TINGGI,348,
+Nusa Tenggara Timur,SUMBA BARAT DAYA,53.18,Sumba Barat Daya,19.20,TINGGI,349,
+Nusa Tenggara Timur,MANGGARAI TIMUR,53.19,Manggarai Timur,18.41,TINGGI,350,
+Nusa Tenggara Timur,SABU RAIJUA,53.20,Sabu Raijua,19.57,TINGGI,349,
+Nusa Tenggara Timur,MALAKA,53.21,Malaka,26.40,TINGGI,345,
+Nusa Tenggara Timur,KOTA KUPANG,53.71,Kota Kupang,25.47,TINGGI,347,
+Kalimantan Barat,SAMBAS,61.01,Sambas,,,,IRBI tidak tersedia
+Kalimantan Barat,MEMPAWAH,61.02,Mempawah,,,,IRBI tidak tersedia
+Kalimantan Barat,SANGGAU,61.03,Sanggau,,,,IRBI tidak tersedia
+Kalimantan Barat,KETAPANG,61.04,Ketapang,,,,IRBI tidak tersedia
+Kalimantan Barat,SINTANG,61.05,Sintang,,,,IRBI tidak tersedia
+Kalimantan Barat,KAPUAS HULU,61.06,Kapuas Hulu,,,,IRBI tidak tersedia
+Kalimantan Barat,BENGKAYANG,61.07,Bengkayang,,,,IRBI tidak tersedia
+Kalimantan Barat,LANDAK,61.08,Landak,,,,IRBI tidak tersedia
+Kalimantan Barat,SEKADAU,61.09,Sekadau,,,,IRBI tidak tersedia
+Kalimantan Barat,MELAWI,61.10,Melawi,,,,IRBI tidak tersedia
+Kalimantan Barat,KAYONG UTARA,61.11,Kayong Utara,,,,IRBI tidak tersedia
+Kalimantan Barat,KUBU RAYA,61.12,Kubu Raya,,,,IRBI tidak tersedia
+Kalimantan Barat,KOTA PONTIANAK,61.71,Kota Pontianak,,,,IRBI tidak tersedia
+Kalimantan Barat,KOTA SINGKAWANG,61.72,Kota Singkawang,,,,IRBI tidak tersedia
+Kalimantan Tengah,KOTAWARINGIN BARAT,62.01,Kotawaringin Barat,,,,IRBI tidak tersedia
+Kalimantan Tengah,KOTAWARINGIN TIMUR,62.02,Kotawaringin Timur,,,,IRBI tidak tersedia
+Kalimantan Tengah,KAPUAS,62.03,Kapuas,,,,IRBI tidak tersedia
+Kalimantan Tengah,BARITO SELATAN,62.04,Barito Selatan,,,,IRBI tidak tersedia
+Kalimantan Tengah,BARITO UTARA,62.05,Barito Utara,,,,IRBI tidak tersedia
+Kalimantan Tengah,KATINGAN,62.06,Katingan,,,,IRBI tidak tersedia
+Kalimantan Tengah,SERUYAN,62.07,Seruyan,,,,IRBI tidak tersedia
+Kalimantan Tengah,SUKAMARA,62.08,Sukamara,,,,IRBI tidak tersedia
+Kalimantan Tengah,LAMANDAU,62.09,Lamandau,,,,IRBI tidak tersedia
+Kalimantan Tengah,GUNUNG MAS,62.10,Gunung Mas,,,,IRBI tidak tersedia
+Kalimantan Tengah,PULANG PISAU,62.11,Pulang Pisau,,,,IRBI tidak tersedia
+Kalimantan Tengah,MURUNG RAYA,62.12,Murung Raya,,,,IRBI tidak tersedia
+Kalimantan Tengah,BARITO TIMUR,62.13,Barito Timur,,,,IRBI tidak tersedia
+Kalimantan Tengah,KOTA PALANGKARAYA,62.71,Kota Palangkaraya,,,,IRBI tidak tersedia
+Kalimantan Selatan,TANAH LAUT,63.01,Tanah Laut,,,,IRBI tidak tersedia
+Kalimantan Selatan,KOTABARU,63.02,Kotabaru,,,,IRBI tidak tersedia
+Kalimantan Selatan,BANJAR,63.03,Banjar,,,,IRBI tidak tersedia
+Kalimantan Selatan,BARITO KUALA,63.04,Barito Kuala,,,,IRBI tidak tersedia
+Kalimantan Selatan,TAPIN,63.05,Tapin,,,,IRBI tidak tersedia
+Kalimantan Selatan,HULU SUNGAI SELATAN,63.06,Hulu Sungai Selatan,,,,IRBI tidak tersedia
+Kalimantan Selatan,HULU SUNGAI TENGAH,63.07,Hulu Sungai Tengah,,,,IRBI tidak tersedia
+Kalimantan Selatan,HULU SUNGAI UTARA,63.08,Hulu Sungai Utara,,,,IRBI tidak tersedia
+Kalimantan Selatan,TABALONG,63.09,Tabalong,,,,IRBI tidak tersedia
+Kalimantan Selatan,TANAH BUMBU,63.10,Tanah Bumbu,,,,IRBI tidak tersedia
+Kalimantan Selatan,BALANGAN,63.11,Balangan,,,,IRBI tidak tersedia
+Kalimantan Selatan,KOTA BANJARMASIN,63.71,Kota Banjarmasin,,,,IRBI tidak tersedia
+Kalimantan Selatan,KOTA BANJARBARU,63.72,Kota Banjarbaru,,,,IRBI tidak tersedia
+Kalimantan Timur,PASER,64.01,Paser,,,,IRBI tidak tersedia
+Kalimantan Timur,KUTAI KARTANEGARA,64.02,Kutai Kartanegara,,,,IRBI tidak tersedia
+Kalimantan Timur,BERAU,64.03,Berau,12.78,TINGGI,353,
+Kalimantan Timur,KUTAI BARAT,64.07,Kutai Barat,,,,IRBI tidak tersedia
+Kalimantan Timur,KUTAI TIMUR,64.08,Kutai Timur,18.14,TINGGI,350,
+Kalimantan Timur,PENAJAM PASER UTARA,64.09,Penajam Paser Utara,,,,IRBI tidak tersedia
+Kalimantan Timur,MAHAKAM ULU,64.11,Mahakam Ulu,,,,IRBI tidak tersedia
+Kalimantan Timur,KOTA BALIKPAPAN,64.71,Kota Balikpapan,,,,IRBI tidak tersedia
+Kalimantan Timur,KOTA SAMARINDA,64.72,Kota Samarinda,,,,IRBI tidak tersedia
+Kalimantan Timur,KOTA BONTANG,64.74,Kota Bontang,,,,IRBI tidak tersedia
+Kalimantan Utara,BULUNGAN,65.01,Bulungan,,,,IRBI tidak tersedia
+Kalimantan Utara,MALINAU,65.02,Malinau,,,,IRBI tidak tersedia
+Kalimantan Utara,NUNUKAN,65.03,Nunukan,,,,IRBI tidak tersedia
+Kalimantan Utara,TANA TIDUNG,65.04,Tana Tidung,,,,IRBI tidak tersedia
+Kalimantan Utara,KOTA TARAKAN,65.71,Kota Tarakan,,,,IRBI tidak tersedia
+Sulawesi Utara,BOLAANG MONGONDOW,71.01,Bolaang Mongondow,14.73,TINGGI,352,
+Sulawesi Utara,MINAHASA,71.02,Minahasa,28.61,TINGGI,344,
+Sulawesi Utara,KEPULAUAN SANGIHE,71.03,Kepulauan Sangihe,,,,IRBI tidak tersedia
+Sulawesi Utara,KEPULAUAN TALAUD,71.04,Kepulauan Talaud,,,,IRBI tidak tersedia
+Sulawesi Utara,MINAHASA SELATAN,71.05,Minahasa Selatan,21.48,TINGGI,348,
+Sulawesi Utara,MINAHASA UTARA,71.06,Minahasa Utara,16.53,TINGGI,351,
+Sulawesi Utara,MINAHASA TENGGARA,71.07,Minahasa Tenggara,24.10,TINGGI,347,
+Sulawesi Utara,BOLAANG MONGONDOW UTARA,71.08,Bolaang Mongondow Utara,26.40,TINGGI,345,
+Sulawesi Utara,KEP. SIAU TAGULANDANG BIARO,71.09,Kep. Siau Tagulandang Biaro,,,,IRBI tidak tersedia
+Sulawesi Utara,BOLAANG MONGONDOW TIMUR,71.10,Bolaang Mongondow Timur,17.49,TINGGI,350,
+Sulawesi Utara,BOLAANG MONGONDOW SELATAN,71.11,Bolaang Mongondow Selatan,21.83,TINGGI,348,
+Sulawesi Utara,KOTA MANADO,71.71,Kota Manado,13.00,TINGGI,352,
+Sulawesi Utara,KOTA BITUNG,71.72,Kota Bitung,17.66,TINGGI,350,
+Sulawesi Utara,KOTA TOMOHON,71.73,Kota Tomohon,,,,IRBI tidak tersedia
+Sulawesi Utara,KOTA KOTAMOBAGU,71.74,Kota Kotamobagu,12.37,TINGGI,353,
+Sulawesi Tengah,BANGGAI,72.01,Banggai,26.40,TINGGI,345,
+Sulawesi Tengah,POSO,72.02,Poso,19.78,TINGGI,349,
+Sulawesi Tengah,DONGGALA,72.03,Donggala,19.20,TINGGI,349,
+Sulawesi Tengah,TOLITOLI,72.04,Toli Toli,19.18,TINGGI,349,
+Sulawesi Tengah,BUOL,72.05,Buol,26.40,TINGGI,345,
+Sulawesi Tengah,MOROWALI,72.06,Morowali,24.24,TINGGI,347,
+Sulawesi Tengah,BANGGAI KEPULAUAN,72.07,Banggai Kepulauan,,,,IRBI tidak tersedia
+Sulawesi Tengah,PARIGI MOUTONG,72.08,Parigi Moutong,17.56,TINGGI,350,
+Sulawesi Tengah,TOJO UNA-UNA,72.09,Tojo Una Una,26.40,TINGGI,345,
+Sulawesi Tengah,SIGI,72.10,Sigi,15.47,TINGGI,352,
+Sulawesi Tengah,BANGGAI LAUT,72.11,Banggai Laut,,,,IRBI tidak tersedia
+Sulawesi Tengah,MOROWALI UTARA,72.12,Morowali Utara,26.40,TINGGI,345,
+Sulawesi Tengah,KOTA PALU,72.71,Kota Palu,15.68,TINGGI,351,
+Sulawesi Selatan,KEPULAUAN SELAYAR,73.01,Kepulauan Selayar,,,,IRBI tidak tersedia
+Sulawesi Selatan,BULUKUMBA,73.02,Bulukumba,,,,IRBI tidak tersedia
+Sulawesi Selatan,BANTAENG,73.03,Bantaeng,,,,IRBI tidak tersedia
+Sulawesi Selatan,JENEPONTO,73.04,Jeneponto,,,,IRBI tidak tersedia
+Sulawesi Selatan,TAKALAR,73.05,Takalar,,,,IRBI tidak tersedia
+Sulawesi Selatan,GOWA,73.06,Gowa,,,,IRBI tidak tersedia
+Sulawesi Selatan,SINJAI,73.07,Sinjai,,,,IRBI tidak tersedia
+Sulawesi Selatan,BONE,73.08,Bone,10.22,SEDANG,353,
+Sulawesi Selatan,MAROS,73.09,Maros,,,,IRBI tidak tersedia
+Sulawesi Selatan,PANGKAJENE DAN KEPULAUAN,73.10,Pangkajene Dan Kepulauan,,,,IRBI tidak tersedia
+Sulawesi Selatan,BARRU,73.11,Barru,23.10,TINGGI,347,
+Sulawesi Selatan,SOPPENG,73.12,Soppeng,26.40,TINGGI,345,
+Sulawesi Selatan,WAJO,73.13,Wajo,19.56,TINGGI,349,
+Sulawesi Selatan,SIDENRENG RAPPANG,73.14,Sidenreng Rappang,26.40,TINGGI,345,
+Sulawesi Selatan,PINRANG,73.15,Pinrang,26.40,TINGGI,345,
+Sulawesi Selatan,ENREKANG,73.16,Enrekang,17.60,TINGGI,350,
+Sulawesi Selatan,LUWU,73.17,Luwu,22.02,TINGGI,348,
+Sulawesi Selatan,TANA TORAJA,73.18,Tana Toraja,,,,IRBI tidak tersedia
+Sulawesi Selatan,LUWU UTARA,73.22,Luwu Utara,15.61,TINGGI,351,
+Sulawesi Selatan,LUWU TIMUR,73.24,Luwu Timur,12.96,TINGGI,352,
+Sulawesi Selatan,TORAJA UTARA,73.26,Toraja Utara,18.74,TINGGI,349,
+Sulawesi Selatan,KOTA MAKASSAR,73.71,Kota Makassar,,,,IRBI tidak tersedia
+Sulawesi Selatan,KOTA PARE PARE,73.72,Kota Parepare,24.82,TINGGI,347,
+Sulawesi Selatan,KOTA PALOPO,73.73,Kota Palopo,29.15,TINGGI,344,
+Sulawesi Tenggara,KOLAKA,74.01,Kolaka,31.20,TINGGI,344,
+Sulawesi Tenggara,KONAWE,74.02,Konawe,26.40,TINGGI,345,
+Sulawesi Tenggara,MUNA,74.03,Muna,26.40,TINGGI,345,
+Sulawesi Tenggara,BUTON,74.04,Buton,1.50,RENDAH,355,
+Sulawesi Tenggara,KONAWE SELATAN,74.05,Konawe Selatan,26.40,TINGGI,345,
+Sulawesi Tenggara,BOMBANA,74.06,Bombana,1.31,RENDAH,355,
+Sulawesi Tenggara,WAKATOBI,74.07,Wakatobi,,,,IRBI tidak tersedia
+Sulawesi Tenggara,KOLAKA UTARA,74.08,Kolaka Utara,25.93,TINGGI,346,
+Sulawesi Tenggara,KONAWE UTARA,74.09,Konawe Utara,26.40,TINGGI,345,
+Sulawesi Tenggara,BUTON UTARA,74.10,Buton Utara,23.65,TINGGI,347,
+Sulawesi Tenggara,KOLAKA TIMUR,74.11,Kolaka Timur,26.40,TINGGI,345,
+Sulawesi Tenggara,KONAWE KEPULAUAN,74.12,Konawe Kepulauan,26.40,TINGGI,345,
+Sulawesi Tenggara,MUNA BARAT,74.13,Muna Barat,1.60,RENDAH,355,
+Sulawesi Tenggara,BUTON TENGAH,74.14,Buton Tengah,22.16,TINGGI,348,
+Sulawesi Tenggara,BUTON SELATAN,74.15,Buton Selatan,26.40,TINGGI,345,
+Sulawesi Tenggara,KOTA KENDARI,74.71,Kota Kendari,15.83,TINGGI,351,
+Sulawesi Tenggara,KOTA BAU BAU,74.72,Kota Bau Bau,26.40,TINGGI,345,
+Gorontalo,GORONTALO,75.01,Gorontalo,15.94,TINGGI,351,
+Gorontalo,BOALEMO,75.02,Boalemo,15.58,TINGGI,351,
+Gorontalo,BONE BOLANGO,75.03,Bone Bolango,19.40,TINGGI,349,
+Gorontalo,POHUWATO,75.04,Pohuwato,17.12,TINGGI,350,
+Gorontalo,GORONTALO UTARA,75.05,Gorontalo Utara,26.76,TINGGI,344,
+Gorontalo,KOTA GORONTALO,75.71,Kota Gorontalo,21.04,TINGGI,348,
+Sulawesi Barat,MAMUJU UTARA,76.01,Pasangkayu,26.40,TINGGI,345,
+Sulawesi Barat,MAMUJU,76.02,Mamuju,26.40,TINGGI,345,
+Sulawesi Barat,MAMASA,76.03,Mamasa,,,,IRBI tidak tersedia
+Sulawesi Barat,POLEWALI MANDAR,76.04,Polewali Mandar,31.20,TINGGI,344,
+Sulawesi Barat,MAJENE,76.05,Majene,32.85,TINGGI,344,
+Sulawesi Barat,MAMUJU TENGAH,76.06,Mamuju Tengah,26.40,TINGGI,345,
+Maluku,MALUKU TENGAH,81.01,Maluku Tengah,17.59,TINGGI,350,
+Maluku,MALUKU TENGGARA,81.02,Maluku Tenggara,4.80,RENDAH,354,
+Maluku,MALUKU TENGGARA BARAT,81.03,Kepulauan Tanimbar,7.76,SEDANG,354,
+Maluku,BURU,81.04,Buru,23.29,TINGGI,347,
+Maluku,SERAM BAGIAN TIMUR,81.05,Seram Bagian Timur,26.40,TINGGI,345,
+Maluku,SERAM BAGIAN BARAT,81.06,Seram Bagian Barat,19.04,TINGGI,349,
+Maluku,KEPULAUAN ARU,81.07,Kepulauan Aru,4.40,RENDAH,354,
+Maluku,MALUKU BARAT DAYA,81.08,Maluku Barat Daya,22.54,TINGGI,348,
+Maluku,BURU SELATAN,81.09,Buru Selatan,23.26,TINGGI,347,
+Maluku,KOTA AMBON,81.71,Kota Ambon,20.82,TINGGI,349,
+Maluku,KOTA TUAL,81.72,Kota Tual,9.60,SEDANG,354,
+Maluku Utara,HALMAHERA BARAT,82.01,Halmahera Barat,26.40,TINGGI,345,
+Maluku Utara,HALMAHERA TENGAH,82.02,Halmahera Tengah,26.40,TINGGI,345,
+Maluku Utara,HALMAHERA UTARA,82.03,Halmahera Utara,26.40,TINGGI,345,
+Maluku Utara,HALMAHERA SELATAN,82.04,Halmahera Selatan,26.40,TINGGI,345,
+Maluku Utara,KEPULAUAN SULA,82.05,Kepulauan Sula,17.44,TINGGI,350,
+Maluku Utara,HALMAHERA TIMUR,82.06,Halmahera Timur,26.40,TINGGI,345,
+Maluku Utara,PULAU MOROTAI,82.07,Pulau Morotai,20.51,TINGGI,349,
+Maluku Utara,PULAU TALIABU,82.08,Pulau Taliabu,26.40,TINGGI,345,
+Maluku Utara,KOTA TERNATE,82.71,Kota Ternate,,,,IRBI tidak tersedia
+Maluku Utara,KOTA TIDORE KEPULAUAN,82.72,Kota Tidore Kepulauan,26.40,TINGGI,345,
+Papua,JAYAPURA,91.03,Jayapura,26.40,TINGGI,346,
+Papua,KEPULAUAN YAPEN,91.05,Kepulauan Yapen,26.40,TINGGI,346,
+Papua,BIAK NUMFOR,91.06,Biak Numfor,26.40,TINGGI,346,
+Papua,SARMI,91.10,Sarmi,26.40,TINGGI,346,
+Papua,KEEROM,91.11,Keerom,26.40,TINGGI,346,
+Papua,WAROPEN,91.15,Waropen,26.40,TINGGI,346,
+Papua,SUPIORI,91.19,Supiori,26.40,TINGGI,346,
+Papua,MAMBERAMO RAYA,91.20,Mamberamo Raya,26.40,TINGGI,346,
+Papua,KOTA JAYAPURA,91.71,Kota Jayapura,17.12,TINGGI,350,
+Papua Barat,MANOKWARI,92.02,Manokwari,26.40,TINGGI,346,
+Papua Barat,FAKFAK,92.03,Fak Fak,23.73,TINGGI,347,
+Papua Barat,TELUK BINTUNI,92.06,Teluk Bintuni,26.40,TINGGI,346,
+Papua Barat,TELUK WONDAMA,92.07,Teluk Wondama,23.48,TINGGI,347,
+Papua Barat,KAIMANA,92.08,Kaimana,26.40,TINGGI,345,
+Papua Barat,MANOKWARI SELATAN,92.11,Manokwari Selatan,26.40,TINGGI,346,
+Papua Barat,PEGUNUNGAN ARFAK,92.12,Pegunungan Arfak,4.80,RENDAH,354,
+Papua Selatan,MERAUKE,93.01,Merauke,,,,IRBI tidak tersedia
+Papua Selatan,BOVEN DIGOEL,93.02,Boven Digoel,26.40,TINGGI,346,
+Papua Selatan,MAPPI,93.03,Mappi,20.40,TINGGI,349,
+Papua Selatan,ASMAT,93.04,Asmat,26.40,TINGGI,346,
+Papua Tengah,NABIRE,94.01,Nabire,21.51,TINGGI,348,
+Papua Tengah,PUNCAK JAYA,94.02,Puncak Jaya,26.40,TINGGI,346,
+Papua Tengah,PANIAI,94.03,Paniai,31.20,TINGGI,344,
+Papua Tengah,MIMIKA,94.04,Mimika,26.40,TINGGI,346,
+Papua Tengah,PUNCAK,94.05,Puncak,26.40,TINGGI,346,
+Papua Tengah,DOGIYAI,94.06,Dogiyai,26.40,TINGGI,346,
+Papua Tengah,INTAN JAYA,94.07,Intan Jaya,26.40,TINGGI,346,
+Papua Tengah,DEIYAI,94.08,Deiyai,26.40,TINGGI,346,
+Papua Pegunungan,JAYAWIJAYA,95.01,Jayawijaya,26.40,TINGGI,346,
+Papua Pegunungan,PEGUNUNGAN BINTANG,95.02,Pegunungan Bintang,26.40,TINGGI,346,
+Papua Pegunungan,YAHUKIMO,95.03,Yahukimo,26.40,TINGGI,346,
+Papua Pegunungan,TOLIKARA,95.04,Tolikara,26.40,TINGGI,346,
+Papua Pegunungan,MAMBERAMO TENGAH,95.05,Mamberamo Tengah,26.40,TINGGI,346,
+Papua Pegunungan,YALIMO,95.06,Yalimo,26.40,TINGGI,346,
+Papua Pegunungan,LANNY JAYA,95.07,Lanny Jaya,17.60,TINGGI,350,
+Papua Pegunungan,NDUGA,95.08,Nduga,26.40,TINGGI,346,
+Papua Barat Daya,SORONG,96.01,Sorong,26.40,TINGGI,346,
+Papua Barat Daya,SORONG SELATAN,96.02,Sorong Selatan,26.40,TINGGI,346,
+Papua Barat Daya,RAJA AMPAT,96.03,Raja Ampat,26.40,TINGGI,346,
+Papua Barat Daya,TAMBRAUW,96.04,Tambrauw,26.40,TINGGI,346,
+Papua Barat Daya,MAYBRAT,96.05,Maybrat,20.40,TINGGI,349,
+Papua Barat Daya,KOTA SORONG,96.71,Kota Sorong,34.80,TINGGI,344,
