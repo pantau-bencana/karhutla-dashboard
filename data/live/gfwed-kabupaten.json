@@ -1705,9 +1705,25 @@
       "kode": "53.01",
       "kabupaten": "Kupang",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 11.16,
-      "fwi_maks": 11.16,
-      "n_sel": 1
+      "fwi_rata": 13.31,
+      "fwi_maks": 15.4,
+      "n_sel": 6
+    },
+    {
+      "kode": "53.02",
+      "kabupaten": "Timor Tengah Selatan",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 6.95,
+      "fwi_maks": 7.83,
+      "n_sel": 3
+    },
+    {
+      "kode": "53.03",
+      "kabupaten": "Timor Tengah Utara",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 8.34,
+      "fwi_maks": 9.42,
+      "n_sel": 3
     },
     {
       "kode": "53.05",
