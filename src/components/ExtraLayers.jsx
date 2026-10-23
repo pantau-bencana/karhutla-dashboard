@@ -24,7 +24,7 @@ const LAYERS = [
 const PENJELASAN_LAPISAN = {
   hotspot: "Deteksi satelit, bukan kebakaran terkonfirmasi. Satu lapisan pada satu waktu.",
   inarisk: "Tautan saja. Raster inaRISK tidak digambar di peta ini.",
-  irbi: "Tabel buku IRBI 2025. Tidak mengikuti filter tanggal. Urutan nama, bukan hitungan hotspot.",
+  irbi: "Tabel buku IRBI 2025. Tidak mengikuti filter tanggal. Urutan nama, bukan hitungan hotspot. Tanpa skor: IRBI tidak tersedia, bukan nol.",
   asap: "Tautan saja – menunggu izin BMKG. Citra tidak diunduh dan tidak dipotong.",
   fdrs: "FDRS BMKG: menunggu data resmi BMKG. Tautan saja. Citra hingga H+7 sesuai produk BMKG. Tabel FWI, bila ada, adalah model ECMWF, bukan FDRS BMKG. Pembanding (data terbuka, bukan resmi).",
   hujan: "Nilai tp per slot pada prakiraan 3 hari. Sumber: BMKG. Bukan peluang persen. Tabel 14 hari, bila ada, adalah pembanding model, bukan prakiraan BMKG.",
@@ -126,10 +126,10 @@ export function ExtraLayers({ layer, view, feeds, province, provinces = [] }) {
     return (
       <Panel
         title="Konteks risiko jangka panjang (IRBI 2025)"
-        note={irbiFeed?.contoh ? "Angka contoh, bukan keluaran buku. Urutan nama." : "Tabel buku tahun 2025, urutan nama. Tidak mengikuti filter tanggal dan bukan hitungan hotspot."}
+        note={irbiFeed?.contoh ? "Angka contoh, bukan keluaran buku. Urutan nama." : "Tabel buku tahun 2025, urutan nama. Kabupaten/kota yang tidak ada di tabel karhutla tertulis IRBI tidak tersedia, bukan nol. Tidak mengikuti filter tanggal dan bukan hitungan hotspot."}
         feed={irbiFeed}
       >
-        <Simple rows={view.irbiRows.map((row) => [row.kabupaten, row.provinsi, formatAngka(row.indeks, 2), row.kelas])} head={["Kabupaten", "Provinsi", "Indeks", "Kelas"]} empty="Tidak ada baris pada cakupan ini." />
+        <Simple rows={view.irbiRows.map((row) => [row.kabupaten, row.provinsi, row.indeks == null ? "—" : formatAngka(row.indeks, 2), row.kelas])} head={["Kabupaten", "Provinsi", "Indeks", "Kelas"]} empty="Tidak ada baris pada cakupan ini." />
       </Panel>
     );
   }

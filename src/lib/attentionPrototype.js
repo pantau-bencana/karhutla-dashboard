@@ -98,7 +98,7 @@ export function placeFwiTable(rows) {
 export function buildComparisonAttention({ irbiRows, rainRows, fwiRows } = {}) {
   const irbiByKey = new Map();
   for (const row of irbiRows ?? []) {
-    if (!Number.isFinite(Number(row.indeks))) continue;
+    if (row?.indeks == null || row.indeks === "" || !Number.isFinite(Number(row.indeks))) continue;
     const key = `${row.provinsi}|${normalizePlaceName(row.kabupaten)}`;
     if (!irbiByKey.has(key)) irbiByKey.set(key, row);
   }

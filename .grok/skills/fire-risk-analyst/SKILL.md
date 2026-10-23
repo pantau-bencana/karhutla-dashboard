@@ -22,7 +22,7 @@ The dashboard supports situational awareness for leaders. It does not issue an o
 - BMKG open forecast is 3 days at 3-hour steps for one representative kelurahan per priority province. Rain in that feed is the API field `tp` for the slot, not a probability in percent and not a 10-day or 14-day total. Wind is `wd` plus `ws` in km/h as documented by BMKG. Do not convert that forecast into FWI.
 - SPARTAN FDRS images, when shown as links, cover observation plus H+0 through H+7. Write **hingga H+7 sesuai produk BMKG**. Do not stretch the horizon to 10 or 14 days and do not digitize a PNG into a table.
 - Dasarian products are three periods of about ten days in a month (1–10, 11–20, 21–end). They are not a rolling 14-day daily forecast. Link them; do not scrape them.
-- IRBI 2025 karhutla scores are an annual index from the official book (pages 294–307, 467 kabupaten/kota). They do not follow the date filter and they are not a forecast.
+- IRBI 2025 karhutla scores are an annual index from the official book (pages 294–307). 467 kabupaten/kota have a score; the other rows are blank and say IRBI tidak tersedia. A blank indeks is not zero. They do not follow the date filter and they are not a forecast.
 - Historical DIBI counts that this project can filter to kebakaran hutan dan lahan are national, 2010–2024. Do not rank kabupaten from the all-hazard kabupaten table. The same table is not a banjir series: checked 20 Oct 2026, no public 2011–2025 banjir count per kabupaten exists, so Historis is not filled from those year columns.
 
 ## 14-day ranking

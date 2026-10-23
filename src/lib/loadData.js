@@ -117,7 +117,7 @@ function normalizeIrbi(raw) {
     kerentanan: num(raw.skor_kerentanan),
     kapasitas: num(raw.skor_kapasitas),
     indeks: num(raw.indeks_risiko),
-    kelas: raw.kelas_risiko || "—",
+    kelas: raw.kelas_risiko || (String(raw.keterangan || "").trim() === "IRBI tidak tersedia" ? "IRBI tidak tersedia" : "—"),
   };
 }
 

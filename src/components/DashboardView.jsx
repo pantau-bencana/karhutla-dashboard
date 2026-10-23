@@ -460,7 +460,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
       <p className="fine">
         Konteks risiko jangka panjang (IRBI 2025):{" "}
         {irbiFeed?.rows?.length
-          ? "nyalakan overlay IRBI pada pemilih tema. Buku IRBI 2025. Tidak mengikuti filter tanggal. Urutan nama, bukan urutan prioritas dan bukan hitungan hotspot."
+          ? "nyalakan overlay IRBI pada pemilih tema. Buku IRBI 2025. Tidak mengikuti filter tanggal. Urutan nama, bukan urutan prioritas dan bukan hitungan hotspot. Tanpa skor: IRBI tidak tersedia, bukan nol."
           : irbiFeed?.error || "Tidak tersedia. Tabel IRBI resmi belum dimuat."}
       </p>
       <p className="fine">

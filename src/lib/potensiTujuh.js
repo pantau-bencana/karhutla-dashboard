@@ -202,7 +202,8 @@ function indeksIrbi(rows) {
   for (const row of rows ?? []) {
     if (row?.contoh) continue;
     const kunci = `${normalizePlaceName(row?.provinsi)}|${normalizePlaceName(row?.kabupaten)}`;
-    if (!map.has(kunci) && Number.isFinite(Number(row?.indeks))) map.set(kunci, row);
+    if (row?.indeks == null || row.indeks === "" || !Number.isFinite(Number(row.indeks))) continue;
+    if (!map.has(kunci)) map.set(kunci, row);
   }
   return map;
 }
@@ -259,7 +260,7 @@ export function susunPotensiTujuh({
       hujanHari: hujanHari.size,
       kering: hujanHari.size ? (hujanHari.size - hariBasah) / hujanHari.size : null,
       hotspot: hotspotMasuk ? panas.get(id) ?? 0 : null,
-      irbi: iklim ? Number(iklim.indeks) : null,
+      irbi: iklim?.indeks == null || iklim.indeks === "" ? null : Number(iklim.indeks),
       irbiKelas: iklim?.kelas || "",
     };
   });
@@ -284,7 +285,7 @@ export function susunPotensiTujuh({
       hujanHari: 0,
       kering: null,
       hotspot: hotspotMasuk ? panas.get(kode) ?? 0 : null,
-      irbi: iklim ? Number(iklim.indeks) : null,
+      irbi: iklim?.indeks == null || iklim.indeks === "" ? null : Number(iklim.indeks),
       irbiKelas: iklim?.kelas || "",
     });
     sudah.add(kode);
