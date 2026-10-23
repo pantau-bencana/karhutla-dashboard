@@ -14,6 +14,7 @@ import { provinceCenters } from "../src/lib/geo.js";
 import { REFRESH_CRON, REFRESH_CRON_CADANGAN, REFRESH_INTERVAL_HOURS, nextScheduledRun } from "../src/lib/schedule.js";
 import { SMOKE_IMAGE_URL, SMOKE_URL, SOURCES } from "../src/lib/sourceCatalog.js";
 import { ambilSipongi } from "./ambil-sipongi.mjs";
+import { ambilSiklon } from "./ambil-siklon.mjs";
 import { kodeWilayah } from "../src/lib/floodMatrix.js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -1267,6 +1268,37 @@ async function main() {
     Object.assign(entriSipongi, keepPrevious(entriSipongi, previousEntry(previous, "sipongi"), error.message));
   }
   datasets.sipongi = entriSipongi;
+
+  const siklonSource = SOURCES.find((source) => source.id === "bmkg_siklon");
+  const siklonEntry = baseEntry(siklonSource);
+  siklonEntry.license = "Sumber: BMKG.";
+  try {
+    const hasil = await jalankan("bmkg_siklon", 2 * 60 * 1000, async (deadlineAt) => {
+      lewatiBatas(deadlineAt, "bmkg_siklon");
+      return ambilSiklon();
+    });
+    const hash = sha(hasil.badan);
+    const sebelumnya = previousEntry(previous, "bmkg_siklon");
+    siklonEntry.observed_at = hasil.observedAt;
+    siklonEntry.observed_label = hasil.observedLabel;
+    siklonEntry.source_updated_at = hasil.sourceUpdatedAt;
+    siklonEntry.file = "data/live/siklon-bmkg.json";
+    siklonEntry.content_hash = hash;
+    siklonEntry.record_count = hasil.recordCount;
+    siklonEntry.status = "ok";
+    siklonEntry.error = null;
+    siklonEntry.kept_previous = false;
+    if (sebelumnya?.content_hash === hash && existsSync(resolve(root, siklonEntry.file))) {
+      siklonEntry.fetched_at = sebelumnya.fetched_at || nowIso;
+      if (!siklonEntry.observed_at) siklonEntry.observed_at = sebelumnya.observed_at;
+    } else {
+      writeFileSync(resolve(root, siklonEntry.file), hasil.badan);
+      siklonEntry.fetched_at = nowIso;
+    }
+  } catch (error) {
+    Object.assign(siklonEntry, keepPrevious(siklonEntry, previousEntry(previous, "bmkg_siklon"), error.message));
+  }
+  datasets.bmkg_siklon = siklonEntry;
 
   for (const source of SOURCES) {
     if (source.id === "prioritas_aplus") continue;

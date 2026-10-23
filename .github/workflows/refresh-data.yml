@@ -53,7 +53,7 @@ jobs:
         run: npm ci
 
       - name: Pasang pembaca NetCDF
-        run: python3 -m pip install --user netCDF4
+        run: python3 -m pip install --user netCDF4 pypdf
 
       - name: Ambil data publik
         timeout-minutes: 50

@@ -670,6 +670,32 @@
       "file": "data/live/hujan-pembanding-kab.csv",
       "kept_previous": false,
       "content_hash": null
+    },
+    "bmkg_siklon": {
+      "id": "bmkg_siklon",
+      "nama": "Siklon tropis dan bibit siklon",
+      "instansi": "BMKG",
+      "source": "Siklon tropis dan bibit siklon",
+      "url": "https://www.bmkg.go.id/cuaca/siklon-tropis",
+      "license": "Sumber: BMKG.",
+      "mode": "snapshot",
+      "update_type": "Harian",
+      "access": "Halaman publik dan PDF",
+      "frequency": "Harian",
+      "limitation": "Status Ada/Tidak Ada dibaca dari kalimat pada halaman publik Siklon Tropis. API https://tropicalcyclone.bmkg.go.id/cms/service-api/cyclone/current tanpa token mengembalikan HTTP 401 pada pemeriksaan 23 Oktober 2026; token di halaman tidak disalin dan tidak dipakai. Ikhtisar PDF hanya mengisi nama, tahap, dan dampak bila kalimatnya terbaca. Bila PDF gagal, kolom itu belum terintegrasi. Jejak dan kerucut tidak disimpan dan tidak digambar. Windy bukan sumber data. Atribusi: Sumber: BMKG. Izin tertulis untuk integrasi pihak ketiga belum ada.",
+      "fungsi": "Status ada atau tidak ada siklon tropis di sekitar Indonesia. Bukan jejak, bukan kerucut, dan bukan peringatan resmi dasbor.",
+      "expected_max_age_hours": 30,
+      "schedule_interval_hours": 3,
+      "fetched_at": "2026-10-23T00:50:09.745Z",
+      "observed_at": "2026-10-22T08:44:41.000Z",
+      "observed_label": "Halaman Siklon Tropis: Tidak Ada Siklon, tanpa jam pembaruan pada halaman. Ikhtisar tertanggal 2026-10-22. Disebut: Champi.",
+      "source_updated_at": "2026-10-22T08:44:41.000Z",
+      "record_count": 1,
+      "status": "ok",
+      "error": null,
+      "file": "data/live/siklon-bmkg.json",
+      "content_hash": "471a8bfb2e1e4df473729afda1d8d25dd0ec0f8e6944750e7f46cd3b82a7ff73",
+      "kept_previous": false
     }
   }
 }
