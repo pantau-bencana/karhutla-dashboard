@@ -67,7 +67,7 @@ Rumah tangga disalin manual dari tabel BPS provinsi. Tidak ada kunci API, dan wo
 
 ## Daftar 81 kab/kota (Analisis Karhutla 2026)
 
-Folder `karhutla-81/` menyimpan cuplikan baca-saja untuk enam provinsi prioritas: Riau 12, Jambi 11, Sumatera Selatan 17, Kalimantan Barat 14, Kalimantan Tengah 14, Kalimantan Selatan 13. Urutan dan kode sama di setiap berkas. Kode dan nama tidak diubah. Bukan sinkron ke lembar, dan dasbor tidak menulis balik.
+Folder `karhutla-81/` menyimpan cuplikan baca-saja untuk enam provinsi prioritas: Riau 12, Jambi 11, Sumatera Selatan 17, Kalimantan Barat 14, Kalimantan Tengah 14, Kalimantan Selatan 13. Kode pada berkas ini mengikuti lembar (tanpa titik, dan tidak sama dengan kode Kemendagri). Tombol unduh menulis ulang 81 baris menurut nama ke kode Kemendagri pada `kabkota-provinsi.json`, urutan yang sama untuk FWI, peluang hujan, dan indeks iklim. Nilai tidak dihitung ulang. Waktu cuplikan pada berkas unduhan: 23 Oktober 2026, 09.14 WIB. Bukan sinkron ke lembar, dan dasbor tidak menulis balik.
 
 `fwi-81-kab-kota.csv` memakai nilai FWI yang ada pada cuplikan. 29 sel tertulis `#N/A` (seluruh Riau, 10 Kalimantan Barat, 3 Jambi, 2 Sumatera Selatan, 2 Kalimantan Selatan) dan dibiarkan, bukan nol. `template-fwi-81-kab-kota.csv` mengosongkan kolom FWI untuk isian tim; tombol unduhan memakai berkas yang ada nilainya, bukan templat kosong. `master-81-kab-kota.csv` hanya kode, provinsi, dan kabupaten/kota.
 
