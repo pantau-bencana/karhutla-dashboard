@@ -12,6 +12,7 @@ import { SourcesPage } from "./components/SourcesPage.jsx";
 import { FilterProvinsi } from "./components/FilterProvinsi.jsx";
 import { PotensiTujuhHari } from "./components/PotensiTujuhHari.jsx";
 import { SiklonRingkas } from "./components/SiklonRingkas.jsx";
+import { IrbiBanjirLongsor } from "./components/IrbiBanjirLongsor.jsx";
 import { SummaryPage } from "./components/SummaryPage.jsx";
 import { VolcanoPage } from "./components/VolcanoPage.jsx";
 import { defaultRange, deriveDashboard } from "./lib/derive.js";
@@ -103,7 +104,7 @@ export function App() {
     const onGlossary = page === "glosarium" || (page === "metode" && location.anchor === "glosarium");
     const pageName = onGlossary
       ? "Glosarium"
-      : ({ ringkasan: "Ringkasan", rekap: "Rekap Harian", siklon: "Siklon", peta: "Peta dan Data", potensi: "Potensi 7 hari", ispu: "Kualitas Udara", logika: "Logika Pemantauan", sumber: "Sumber Data", metode: "Info" }[page] || "Ringkasan");
+      : ({ ringkasan: "Ringkasan", rekap: "Rekap Harian", siklon: "Siklon", irbi: "IRBI", peta: "Peta dan Data", potensi: "Potensi 7 hari", ispu: "Kualitas Udara", logika: "Logika Pemantauan", sumber: "Sumber Data", metode: "Info" }[page] || "Ringkasan");
     const judulSitus = hazard === "karhutla" ? (config?.judul || DEFAULT_TITLE) : DEFAULT_TITLE;
     document.title = `${pageName} ${hazardName} — ${judulSitus}`;
   }, [page, hazard, location.anchor, config]);
@@ -181,6 +182,11 @@ export function App() {
       {page === "siklon" ? (
         <main className="wrap main">
           <SiklonRingkas />
+        </main>
+      ) : null}
+      {page === "irbi" ? (
+        <main className="wrap main">
+          <IrbiBanjirLongsor />
         </main>
       ) : null}
       {hazard === "gunung-api" && page !== "glosarium" && page !== "metode" && page !== "siklon" ? <VolcanoPage /> : null}

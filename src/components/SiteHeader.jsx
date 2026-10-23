@@ -7,6 +7,7 @@ import { useCuplikanSiklon } from "./SiklonRingkas.jsx";
 const TOP = [
   ["karhutla", "Karhutla", "#/karhutla/peta"],
   ["banjir", "Banjir", "#/banjir"],
+  ["irbi", "IRBI", "#/irbi"],
   ["gunung-api", "Gunung Api", "#/gunung-api"],
   ["siklon", "Siklon", "#/siklon"],
   ["info", "Info", "#/sumber-metode"],
@@ -26,10 +27,11 @@ const HALAMAN_INFO = new Set(["metode", "glosarium", "sumber"]);
 function topCurrent(id, page, hazard) {
   if (id === "info") return HALAMAN_INFO.has(page);
   if (id === "siklon") return page === "siklon";
+  if (id === "irbi") return page === "irbi";
   if (id === "rekap") return page === "rekap";
   if (id === "ringkasan") return page === "ringkasan" && hazard === "karhutla";
-  if (id === "karhutla") return hazard === "karhutla" && page !== "ringkasan" && page !== "siklon" && !HALAMAN_INFO.has(page) && page !== "rekap";
-  return hazard === id && page !== "siklon" && !HALAMAN_INFO.has(page);
+  if (id === "karhutla") return hazard === "karhutla" && page !== "ringkasan" && page !== "siklon" && page !== "irbi" && !HALAMAN_INFO.has(page) && page !== "rekap";
+  return hazard === id && page !== "siklon" && page !== "irbi" && !HALAMAN_INFO.has(page);
 }
 
 function PenjelasanSiklon({ cuplikan }) {
@@ -70,7 +72,7 @@ export function SiteHeader({ manifest, onReload, loading, page, hazard }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { data: cuplikanSiklon } = useCuplikanSiklon();
   const siklonDekat = potensiDekatIndonesia(cuplikanSiklon).dekat;
-  const showSub = hazard === "karhutla" && page !== "ringkasan" && page !== "metode" && page !== "rekap" && page !== "siklon" && page !== "glosarium" && page !== "sumber";
+  const showSub = hazard === "karhutla" && page !== "ringkasan" && page !== "metode" && page !== "rekap" && page !== "siklon" && page !== "irbi" && page !== "glosarium" && page !== "sumber";
   const loaded = manifest?.generated_at ? formatWib(manifest.generated_at) : "belum ada snapshot";
 
   return (
