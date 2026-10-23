@@ -41,6 +41,7 @@ import {
   teksHujan,
 } from "../src/lib/rekapHarian.js";
 import { lembarIrbiGabung, saringIrbi, susunIrbiGabung, urutIrbi } from "../src/lib/irbiGabung.js";
+import { IRBI_ANCAMAN, IRBI_BELUM_BERKAS, barisUnduh, csvIrbiNasional, lembarIrbiNasional, susunIrbiNasional, teksSkorIrbi } from "../src/lib/irbiNasional.js";
 import { clusterCellDegrees, countHotspots, filterHotspotWindow } from "../src/lib/hotspotWindow.js";
 import { parseFirmsCoordinate } from "./indonesia-land.mjs";
 import { muatTitikBatas, pointInGeometry } from "./titik-dalam-batas.mjs";
@@ -1408,7 +1409,45 @@ assert.equal(lembarTanpa.baris.find((row) => row[1] === "Aceh Selatan")[3], "bel
 assert.match(readFileSync("src/components/IrbiBanjirLongsor.jsx", "utf8"), /IRBI 2025 Banjir & Longsor/);
 assert.match(readFileSync("src/components/IrbiBanjirLongsor.jsx", "utf8"), /IRBI_PENGGUNAAN_INTERNAL/);
 assert.match(readFileSync("src/components/IrbiBanjirLongsor.jsx", "utf8"), /Seluruh Indonesia/);
+assert.match(readFileSync("src/components/IrbiBanjirLongsor.jsx", "utf8"), /aria-expanded/);
+assert.equal(readFileSync("src/components/IrbiBanjirLongsor.jsx", "utf8").includes("sheets.google"), false);
 assert.equal(readFileSync("src/lib/irbiGabung.js", "utf8").includes("multibahaya"), false);
+assert.equal(IRBI_ANCAMAN.length, 12);
+assert.equal(IRBI_ANCAMAN.some((item) => item.berkas.includes("aceh-bengkulu")), false);
+assert.equal(teksSkorIrbi({ skor: "", kelas: "" }), "IRBI tidak tersedia");
+assert.equal(teksSkorIrbi({ indeks_risiko: "", kelas_risiko: "" }), "IRBI tidak tersedia");
+assert.equal(teksSkorIrbi({ skor: "26.84", kelas: "TINGGI" }), "Tinggi (26,84)");
+const berkasIrbi = Object.fromEntries(
+  IRBI_ANCAMAN.map((item) => [item.id, parseCsv(readFileSync(item.berkas, "utf8"))]),
+);
+const irbiProvinsi = susunIrbiNasional(berkasIrbi);
+assert.equal(irbiProvinsi.length, 38);
+assert.equal(irbiProvinsi.reduce((jumlah, grup) => jumlah + grup.kab.length, 0), 514);
+assert.equal(irbiProvinsi[0].provinsi, "Aceh");
+assert.equal(irbiProvinsi[0].kab.length, 23);
+const acehSelatanNasional = irbiProvinsi[0].kab.find((item) => item.kode === "11.01");
+assert.equal(acehSelatanNasional.nilai.banjir, "Tinggi (26,84)");
+assert.equal(acehSelatanNasional.nilai.longsor, "Tinggi (26,40)");
+const bandaNasional = irbiProvinsi[0].kab.find((item) => item.kode === "11.71");
+assert.equal(bandaNasional.nilai.longsor, "IRBI tidak tersedia");
+assert.equal(bandaNasional.nilai.banjir.includes("0,00"), false);
+const semuaKab = irbiProvinsi.flatMap((grup) => grup.kab);
+assert.equal(semuaKab.filter((item) => item.nilai.karhutla !== "IRBI tidak tersedia" && item.nilai.karhutla !== IRBI_BELUM_BERKAS).length, 467);
+assert.equal(semuaKab.filter((item) => item.nilai.gempabumi !== "IRBI tidak tersedia").length, 514);
+assert.equal(semuaKab.filter((item) => item.nilai.multibahaya !== "IRBI tidak tersedia").length, 514);
+assert.equal(semuaKab.filter((item) => item.nilai["banjir-bandang"] !== "IRBI tidak tersedia").length, 420);
+assert.equal(semuaKab.some((item) => Object.values(item.nilai).includes("0,00")), false);
+const unduhAceh = barisUnduh(irbiProvinsi, { provinsi: ["Aceh"], ancaman: ["banjir", "multibahaya"] });
+assert.equal(unduhAceh.length, 23);
+assert.equal(Object.keys(unduhAceh[0].nilai).join(","), "banjir,multibahaya");
+const csvNasional = csvIrbiNasional(unduhAceh, ["banjir", "multibahaya"]);
+assert.match(csvNasional, /Penggunaan internal/);
+assert.match(csvNasional, /IRBI tidak tersedia/);
+assert.equal(csvNasional.includes("Google Sheets"), false);
+const lembarNasional = lembarIrbiNasional(unduhAceh, ["banjir"]);
+assert.equal(lembarNasional.nama, "IRBI 2025");
+assert.match(lembarNasional.baris[1][0], /Penggunaan internal/);
+assert.equal(susunIrbiNasional({}).every((grup) => grup.kab.every((item) => item.nilai.banjir === IRBI_BELUM_BERKAS)), true);
 assert.match(readFileSync("src/components/FloodPage.jsx", "utf8"), /IrbiBanjirLongsor/);
 assert.equal(lembarRekap({ irbi: { "11.01": { kelas: "Tinggi", skor: 26.84 } }, longsor: { "11.01": { kelas: "Tinggi", skor: 26.4 } } }).some((item) => item.nama === "IRBI 2025 Banjir & Longsor"), true);
 assert.equal(irbiMulti.length, 33);
