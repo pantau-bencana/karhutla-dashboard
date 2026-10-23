@@ -2,8 +2,6 @@ export const SIKLON_HTML_URL = "https://www.bmkg.go.id/cuaca/siklon-tropis";
 export const SIKLON_TCWC_URL = "https://tropicalcyclone.bmkg.go.id/";
 export const SIKLON_PDF_URL = "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf";
 export const SIKLON_API_URL = "https://tropicalcyclone.bmkg.go.id/cms/service-api/cyclone/current";
-export const SIKLON_WINDY_URL = "https://www.windy.com/-Show-tropical-cyclones/tropicalcyclones?type=tropicalcyclone";
-export const SIKLON_WINDY_LABEL = "Lihat di Windy (visualisasi model, bukan resmi)";
 export const SIKLON_JEJAK =
   "Analisis jejak dan kerucut ketidakpastian terhadap wilayah Indonesia belum terintegrasi.";
 export const SIKLON_BELUM = "belum terintegrasi";
