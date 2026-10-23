@@ -5,8 +5,6 @@ import {
   SIKLON_HTML_URL,
   SIKLON_JEJAK,
   SIKLON_TCWC_URL,
-  SIKLON_WINDY_LABEL,
-  SIKLON_WINDY_URL,
 } from "../lib/siklonBmkg.js";
 
 const BERKAS = "data/live/siklon-bmkg.json";
@@ -98,12 +96,10 @@ export function SiklonRingkas() {
         </>
       ) : null}
       <p className="siklon-tautan">
-        <a href={SIKLON_TCWC_URL} target="_blank" rel="noopener noreferrer">Detail BMKG TCWC</a>
-        {" · "}
-        <a href={data?.url_halaman || SIKLON_HTML_URL} target="_blank" rel="noopener noreferrer">Halaman Siklon Tropis BMKG</a>
-        {" · "}
-        <a href={SIKLON_WINDY_URL} target="_blank" rel="noopener noreferrer">{SIKLON_WINDY_LABEL}</a>
+        <a className="button" href={SIKLON_TCWC_URL} target="_blank" rel="noopener noreferrer">Peta TCWC BMKG</a>
+        <a className="button" href={SIKLON_HTML_URL} target="_blank" rel="noopener noreferrer">Halaman Siklon Tropis BMKG</a>
       </p>
+      <p className="fine">Peta dan halaman dibuka di situs BMKG. Status tautan: Tautan saja. Sumber: BMKG.</p>
       <p>{SIKLON_JEJAK} Tidak ada lapisan jejak pada peta.</p>
     </section>
   );
