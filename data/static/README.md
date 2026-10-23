@@ -65,6 +65,14 @@ Rumah tangga disalin manual dari tabel BPS provinsi. Tidak ada kunci API, dan wo
 
 `prakiraan-adm4-koordinat.csv` menyimpan lintang dan bujur dari bidang `lokasi` API prakiraan BMKG untuk kode adm4 yang statusnya `ok` di `prakiraan-sampel-adm4.csv`. Itu titik yang sama dengan prakiraan 3 hari, bukan pusat poligon kabupaten. Koordinat tidak diambil ulang tiap jadwal hujan. Kabupaten yang API-nya 404 tidak punya baris.
 
+## Daftar 81 kab/kota (Analisis Karhutla 2026)
+
+Folder `karhutla-81/` menyimpan cuplikan baca-saja untuk enam provinsi prioritas: Riau 12, Jambi 11, Sumatera Selatan 17, Kalimantan Barat 14, Kalimantan Tengah 14, Kalimantan Selatan 13. Urutan dan kode sama di setiap berkas. Kode dan nama tidak diubah. Bukan sinkron ke lembar, dan dasbor tidak menulis balik.
+
+`fwi-81-kab-kota.csv` memakai nilai FWI yang ada pada cuplikan. 29 sel tertulis `#N/A` (seluruh Riau, 10 Kalimantan Barat, 3 Jambi, 2 Sumatera Selatan, 2 Kalimantan Selatan) dan dibiarkan, bukan nol. `template-fwi-81-kab-kota.csv` mengosongkan kolom FWI untuk isian tim; tombol unduhan memakai berkas yang ada nilainya, bukan templat kosong. `master-81-kab-kota.csv` hanya kode, provinsi, dan kabupaten/kota.
+
+`peluang-hujan-81-kab-kota.csv` menyimpan rentang persen untuk hujan lebih dari 20 mm. `indeks-kesesuaian-iklim-81-kab-kota.csv` menyimpan kelas pada lembar, termasuk gabungan kelas. Judul kolom iklim dibiarkan seperti cuplikan, termasuk ejaan `Kesesuain`. Angka ini bukan FDRS BMKG dan bukan peringatan resmi. Rekap harian tetap menulis Indeks Kesesuaian Iklim sebagai belum terintegrasi.
+
 ## Batas kabupaten/kota
 
 `batas-kabkota.topojson` menyimpan 514 kabupaten/kota untuk peta Banjir. Geometri diambil dari layanan publik BIG `PUBLIK/BATAS_WILAYAH` layer kabupaten/kota (`kdpkab`, `wadmkk`, `wadmpr`) dengan toleransi 0,001 derajat, lalu dikuantisasi TopoJSON 1e5. Kode dicocokkan ke `irbi-2025-banjir.csv`. Satu kode ganda pada layanan (`71.05`/`71.10`) tidak masuk karena tidak ada di tabel IRBI.

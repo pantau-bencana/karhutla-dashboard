@@ -1208,6 +1208,38 @@ assert.deepEqual(Object.keys(ikuRows[0]), ["kode_wilayah", "kab_kota", "provinsi
 assert.equal(ikuRows.every((row) => row.tahun === "2024" && row.tanggal_akses === "2026-10-19"), true);
 assert.equal(new Set(ikuRows.map((row) => `${row.kode_wilayah}|${row.kab_kota}`)).size, 509);
 assert.equal(ikuRows.some((row) => row.kab_kota === "Kabupaten Aceh Barat" && row.iku === "92.11"), true);
+const jumlahProvinsi81 = { RIAU: 12, JAMBI: 11, "SUMATERA SELATAN": 17, "KALIMANTAN BARAT": 14, "KALIMANTAN TENGAH": 14, "KALIMANTAN SELATAN": 13 };
+let kode81 = null;
+for (const nama of ["fwi-81-kab-kota.csv", "peluang-hujan-81-kab-kota.csv", "indeks-kesesuaian-iklim-81-kab-kota.csv", "master-81-kab-kota.csv", "template-fwi-81-kab-kota.csv"]) {
+  const baris81 = parseCsv(readFileSync(`data/static/karhutla-81/${nama}`, "utf8"));
+  assert.equal(baris81.length, 81, nama);
+  assert.deepEqual(Object.keys(baris81[0]).slice(0, 3), ["Kode Kab/Kota", "PROVINSI", "KAB/KOTA"], nama);
+  const jumlah = {};
+  for (const row of baris81) jumlah[row.PROVINSI] = (jumlah[row.PROVINSI] || 0) + 1;
+  assert.deepEqual(jumlah, jumlahProvinsi81, nama);
+  const kode = baris81.map((row) => row["Kode Kab/Kota"]);
+  assert.equal(new Set(kode).size, 81, nama);
+  if (!kode81) kode81 = kode;
+  else assert.deepEqual(kode, kode81, nama);
+}
+const fwi81 = parseCsv(readFileSync("data/static/karhutla-81/fwi-81-kab-kota.csv", "utf8"));
+assert.equal(fwi81.find((row) => row["Kode Kab/Kota"] === "1401").FWI, "#N/A");
+assert.equal(fwi81.filter((row) => row.FWI === "#N/A").length, 29);
+assert.equal(fwi81.some((row) => row.FWI === "0" || row.FWI === "0,00"), false);
+const template81 = parseCsv(readFileSync("data/static/karhutla-81/template-fwi-81-kab-kota.csv", "utf8"));
+assert.equal(template81.every((row) => row.FWI === ""), true);
+const hujan81 = parseCsv(readFileSync("data/static/karhutla-81/peluang-hujan-81-kab-kota.csv", "utf8"));
+assert.equal(hujan81[0]["Peluang Hujan >20mm (Rentang %)"], ">90%");
+const iklim81 = parseCsv(readFileSync("data/static/karhutla-81/indeks-kesesuaian-iklim-81-kab-kota.csv", "utf8"));
+assert.equal(iklim81[0]["Indeks Kesesuain Iklim (Rendah, Menengah, Tinggi)"], "Rendah");
+const unduh81 = readFileSync("src/components/UnduhKarhutla81.jsx", "utf8");
+assert.match(unduh81, /Unduh FWI \(81 kab\/kota\)/);
+assert.match(unduh81, /Unduh Peluang Hujan/);
+assert.match(unduh81, /Unduh Indeks Kesesuaian Iklim/);
+assert.match(unduh81, /Analisis Karhutla 2026/);
+assert.match(unduh81, /#N\/A/);
+assert.equal(/sheets\.google/i.test(unduh81), false);
+assert.match(readFileSync("src/components/DashboardView.jsx", "utf8"), /<UnduhKarhutla81 \/>/);
 assert.equal(udaraSource.includes("ispu_pembanding"), false);
 assert.match(udaraSource, /CAMS_LABEL/);
 assert.match(udaraSource, /OPENAQ_BLOCKED/);

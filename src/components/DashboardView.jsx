@@ -22,6 +22,7 @@ import { hariKeDepan, ringkasTitik, warnaAngin, warnaHujan, warnaIrbi, WARNA_KEL
 import { KELAS_BELUM, susunPotensiTujuh } from "../lib/potensiTujuh.js";
 import { PeringkatHotspot } from "./PeringkatHotspot.jsx";
 import { FilterProvinsi } from "./FilterProvinsi.jsx";
+import { UnduhKarhutla81 } from "./UnduhKarhutla81.jsx";
 
 function feedStatus(feed, sumber) {
   return labelStatusFeed(feed, { sumber });
@@ -322,6 +323,7 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
           />
         )}
       </section>
+      <UnduhKarhutla81 />
       ) : null}
       {layer !== "hotspot" ? <ExtraLayers layer={layer} view={view} feeds={feeds} province={province} provinces={config?.provinsiPrioritas ?? []} /> : null}
       {overlayIrbi ? <ExtraLayers layer="irbi" view={view} feeds={feeds} province={province} provinces={config?.provinsiPrioritas ?? []} /> : null}
