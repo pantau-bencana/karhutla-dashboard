@@ -1,43 +1,19 @@
 {
   "status": "ok",
-  "fetched_at": "2026-10-23T12:36:13.934Z",
+  "fetched_at": "2026-10-23T18:26:30.429Z",
   "url": "https://opsroom.sipongidata.my.id/api/sebaran",
   "satelit": "all-nasa",
   "confidence": "all",
   "tanggal": [
-    "2026-10-18",
     "2026-10-19",
     "2026-10-20",
     "2026-10-21",
     "2026-10-22",
-    "2026-10-23"
+    "2026-10-23",
+    "2026-10-24"
   ],
-  "record_count": 1682,
+  "record_count": 1387,
   "lepas": [
-    {
-      "tanggal": "2026-10-18",
-      "provinsi": "IKN",
-      "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "Low",
-      "sumber": "NASA-MODIS",
-      "counter": 1
-    },
-    {
-      "tanggal": "2026-10-18",
-      "provinsi": "IKN",
-      "kabupaten": "PENAJAM PASER UTARA",
-      "confidence": "Medium",
-      "sumber": "NASA-SNPP",
-      "counter": 18
-    },
-    {
-      "tanggal": "2026-10-18",
-      "provinsi": "IKN",
-      "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "Low",
-      "sumber": "NASA-SNPP",
-      "counter": 1
-    },
     {
       "tanggal": "2026-10-19",
       "provinsi": "IKN",
@@ -55,14 +31,6 @@
       "counter": 8
     },
     {
-      "tanggal": "2026-10-20",
-      "provinsi": "IKN",
-      "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "Medium",
-      "sumber": "NASA-NOAA20",
-      "counter": 62
-    },
-    {
       "tanggal": "2026-10-21",
       "provinsi": "Lampung",
       "kabupaten": "",
@@ -71,28 +39,12 @@
       "counter": 1
     },
     {
-      "tanggal": "2026-10-21",
-      "provinsi": "IKN",
-      "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "Medium",
-      "sumber": "NASA-SNPP",
-      "counter": 15
-    },
-    {
-      "tanggal": "2026-10-21",
-      "provinsi": "IKN",
-      "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "Medium",
-      "sumber": "NASA-NOAA20",
-      "counter": 127
-    },
-    {
       "tanggal": "2026-10-22",
       "provinsi": "IKN",
       "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "High",
+      "confidence": "Medium",
       "sumber": "NASA-MODIS",
-      "counter": 8
+      "counter": 34
     },
     {
       "tanggal": "2026-10-22",
