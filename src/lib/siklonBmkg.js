@@ -96,6 +96,14 @@ export function bacaIkhtisar(teks) {
   return sistem;
 }
 
+export function potensiDekatIndonesia(cuplikan) {
+  const status = String(cuplikan?.status || "").trim().toLowerCase();
+  const sistem = (Array.isArray(cuplikan?.ikhtisar?.sistem) ? cuplikan.ikhtisar.sistem : [])
+    .filter((item) => String(item?.dampak || "").trim());
+  const halamanAda = status === "ada";
+  return { dekat: halamanAda || sistem.length > 0, halamanAda, sistem };
+}
+
 export function susunCuplikan({
   html,
   ikhtisarTeks = "",

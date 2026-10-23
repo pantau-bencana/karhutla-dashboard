@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { formatWib } from "../lib/format.js";
+import { InfoTip } from "./InfoTip.jsx";
+import { potensiDekatIndonesia, SIKLON_JEJAK } from "../lib/siklonBmkg.js";
+import { useCuplikanSiklon } from "./SiklonRingkas.jsx";
 
 const TOP = [
   ["karhutla", "Karhutla", "#/karhutla/peta"],
   ["banjir", "Banjir", "#/banjir"],
   ["gunung-api", "Gunung Api", "#/gunung-api"],
-  ["metode", "Sumber & Metode", "#/sumber-metode"],
-  ["glosarium", "Glosarium", "#/sumber-metode/glosarium"],
+  ["siklon", "Siklon", "#/siklon"],
+  ["info", "Info", "#/sumber-metode"],
   ["rekap", "Rekap Harian", "#/rekap-harian"],
   ["ringkasan", "Ringkasan", "#/"],
 ];
@@ -18,19 +21,56 @@ const KARHUTLA_PAGES = [
   ["logika", "Logika Pemantauan", "#/karhutla/logika"],
 ];
 
-function topCurrent(id, page, hazard, anchor) {
-  const glossary = page === "glosarium" || (page === "metode" && anchor === "glosarium");
-  if (id === "glosarium") return glossary;
-  if (id === "metode") return page === "metode" && !glossary;
+const HALAMAN_INFO = new Set(["metode", "glosarium", "sumber"]);
+
+function topCurrent(id, page, hazard) {
+  if (id === "info") return HALAMAN_INFO.has(page);
+  if (id === "siklon") return page === "siklon";
   if (id === "rekap") return page === "rekap";
   if (id === "ringkasan") return page === "ringkasan" && hazard === "karhutla";
-  if (id === "karhutla") return hazard === "karhutla" && page !== "ringkasan" && page !== "metode" && page !== "glosarium" && page !== "rekap";
-  return hazard === id && page !== "metode" && page !== "glosarium";
+  if (id === "karhutla") return hazard === "karhutla" && page !== "ringkasan" && page !== "siklon" && !HALAMAN_INFO.has(page) && page !== "rekap";
+  return hazard === id && page !== "siklon" && !HALAMAN_INFO.has(page);
 }
 
-export function SiteHeader({ manifest, onReload, loading, page, hazard, anchor = "" }) {
+function PenjelasanSiklon({ cuplikan }) {
+  const sinyal = potensiDekatIndonesia(cuplikan);
+  const statusHalaman = cuplikan?.status_teks || cuplikan?.status || "Tidak Ada Siklon";
+  return (
+    <>
+      <p>Halaman Siklon Tropis BMKG: {statusHalaman}. Sumber: BMKG. Bukan peringatan resmi.</p>
+      {sinyal.sistem.map((item) => (
+        <p key={item.nama}>
+          Ikhtisar menulis {item.tahap ? `${item.tahap} ` : ""}{item.nama}{item.lokasi ? ` di ${item.lokasi}` : ""}. Dampak yang ditulis dokumen: {item.dampak} Tanda pada tab memakai kalimat itu. Halaman Siklon Tropis {sinyal.halamanAda ? "berstatus Ada." : "tetap bukan status Ada."} Bukan jejak, bukan kerucut, dan bukan peringatan resmi.
+        </p>
+      ))}
+      {sinyal.halamanAda ? <p>{SIKLON_JEJAK}</p> : null}
+    </>
+  );
+}
+
+function ItemNav({ id, label, href, current, pendek = false, dekat = false, cuplikan = null, onPilih }) {
+  const teks = pendek && id === "rekap" ? "Rekap" : label;
+  const tautan = (
+    <a href={href} aria-current={current ? "page" : undefined} className={dekat ? "siklon-dekat" : undefined} onClick={onPilih}>
+      {teks}
+    </a>
+  );
+  if (!dekat) return tautan;
+  return (
+    <span className="tab-siklon tab-siklon-dekat">
+      {tautan}
+      <InfoTip label="Potensi siklon dekat Indonesia">
+        <PenjelasanSiklon cuplikan={cuplikan} />
+      </InfoTip>
+    </span>
+  );
+}
+
+export function SiteHeader({ manifest, onReload, loading, page, hazard }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const showSub = hazard === "karhutla" && page !== "ringkasan" && page !== "metode" && page !== "rekap";
+  const { data: cuplikanSiklon } = useCuplikanSiklon();
+  const siklonDekat = potensiDekatIndonesia(cuplikanSiklon).dekat;
+  const showSub = hazard === "karhutla" && page !== "ringkasan" && page !== "metode" && page !== "rekap" && page !== "siklon" && page !== "glosarium" && page !== "sumber";
   const loaded = manifest?.generated_at ? formatWib(manifest.generated_at) : "belum ada snapshot";
 
   return (
@@ -45,7 +85,15 @@ export function SiteHeader({ manifest, onReload, loading, page, hazard, anchor =
         </a>
         <nav className="nav" aria-label="Bagian">
           {TOP.map(([id, label, href]) => (
-            <a key={id} href={href} aria-current={topCurrent(id, page, hazard, anchor) ? "page" : undefined}>{label}</a>
+            <ItemNav
+              key={id}
+              id={id}
+              label={label}
+              href={href}
+              current={topCurrent(id, page, hazard)}
+              dekat={id === "siklon" && siklonDekat}
+              cuplikan={cuplikanSiklon}
+            />
           ))}
         </nav>
         <div className="tright">
@@ -68,7 +116,16 @@ export function SiteHeader({ manifest, onReload, loading, page, hazard, anchor =
       {menuOpen ? (
         <nav className="menu-panel" aria-label="Menu">
           {TOP.map(([id, label, href]) => (
-            <a key={id} href={href} onClick={() => setMenuOpen(false)}>{label}</a>
+            <ItemNav
+              key={id}
+              id={id}
+              label={label}
+              href={href}
+              current={topCurrent(id, page, hazard)}
+              dekat={id === "siklon" && siklonDekat}
+              cuplikan={cuplikanSiklon}
+              onPilih={() => setMenuOpen(false)}
+            />
           ))}
         </nav>
       ) : null}
@@ -79,9 +136,16 @@ export function SiteHeader({ manifest, onReload, loading, page, hazard, anchor =
       </div>
       <nav className="tabbar" aria-label="Bagian">
         {TOP.map(([id, label, href]) => (
-          <a key={id} href={href} aria-current={topCurrent(id, page, hazard, anchor) ? "page" : undefined}>
-            {id === "metode" ? "Sumber" : id === "rekap" ? "Rekap" : label}
-          </a>
+          <ItemNav
+            key={id}
+            id={id}
+            label={label}
+            href={href}
+            pendek
+            current={topCurrent(id, page, hazard)}
+            dekat={id === "siklon" && siklonDekat}
+            cuplikan={cuplikanSiklon}
+          />
         ))}
       </nav>
     </>
