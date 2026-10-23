@@ -1353,9 +1353,9 @@
       "kode": "35.01",
       "kabupaten": "Pacitan",
       "provinsi": "Jawa Timur",
-      "fwi_rata": 2.88,
+      "fwi_rata": 5.41,
       "fwi_maks": 5.41,
-      "n_sel": 2
+      "n_sel": 1
     },
     {
       "kode": "35.02",
@@ -1366,20 +1366,12 @@
       "n_sel": 1
     },
     {
-      "kode": "35.03",
-      "kabupaten": "Trenggalek",
-      "provinsi": "Jawa Timur",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 1
-    },
-    {
       "kode": "35.04",
       "kabupaten": "Tulungagung",
       "provinsi": "Jawa Timur",
-      "fwi_rata": 4.64,
+      "fwi_rata": 6.48,
       "fwi_maks": 6.48,
-      "n_sel": 2
+      "n_sel": 1
     },
     {
       "kode": "35.05",
@@ -1705,9 +1697,33 @@
       "kode": "53.01",
       "kabupaten": "Kupang",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 12.2,
-      "fwi_maks": 13.46,
+      "fwi_rata": 12.46,
+      "fwi_maks": 13.8,
+      "n_sel": 6
+    },
+    {
+      "kode": "53.02",
+      "kabupaten": "Timor Tengah Selatan",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 7.06,
+      "fwi_maks": 7.63,
       "n_sel": 3
+    },
+    {
+      "kode": "53.03",
+      "kabupaten": "Timor Tengah Utara",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 8.14,
+      "fwi_maks": 9.61,
+      "n_sel": 3
+    },
+    {
+      "kode": "53.05",
+      "kabupaten": "Alor",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 5.75,
+      "fwi_maks": 5.75,
+      "n_sel": 1
     },
     {
       "kode": "53.06",
@@ -1753,9 +1769,9 @@
       "kode": "53.11",
       "kabupaten": "Sumba Timur",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 6.05,
+      "fwi_rata": 11.21,
       "fwi_maks": 11.21,
-      "n_sel": 7
+      "n_sel": 1
     },
     {
       "kode": "53.12",

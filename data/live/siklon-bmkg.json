@@ -6,17 +6,9 @@
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-10-22",
+    "terbit": "2026-10-23",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
-    "sistem": [
-      {
-        "nama": "Champi",
-        "tahap": "Siklon Tropis kategori 3",
-        "lokasi": "Laut Filipina timur laut Filipina",
-        "dampak": "Menginduksi konvergensi dan konfluensi di Kalimantan Utara, Laut Filipina, Laut Halmahera.",
-        "sumber": "ikhtisar"
-      }
-    ]
+    "sistem": []
   },
   "api": {
     "url": "https://tropicalcyclone.bmkg.go.id/cms/service-api/cyclone/current",
@@ -25,8 +17,8 @@
     "galat": "HTTP 401"
   },
   "jejak": "belum terintegrasi",
-  "fetched_at": "2026-10-23T07:11:55.672Z",
-  "pdf_diubah": "Thu, 22 Oct 2026 08:44:41 GMT",
+  "fetched_at": "2026-10-23T12:36:36.682Z",
+  "pdf_diubah": "Fri, 23 Oct 2026 07:26:12 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/"
 }

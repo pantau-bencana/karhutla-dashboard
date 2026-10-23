@@ -1,6 +1,6 @@
 {
   "status": "ok",
-  "fetched_at": "2026-10-23T07:10:32.731Z",
+  "fetched_at": "2026-10-23T12:36:13.934Z",
   "url": "https://opsroom.sipongidata.my.id/api/sebaran",
   "satelit": "all-nasa",
   "confidence": "all",
@@ -12,7 +12,7 @@
     "2026-10-22",
     "2026-10-23"
   ],
-  "record_count": 1610,
+  "record_count": 1682,
   "lepas": [
     {
       "tanggal": "2026-10-18",
@@ -21,14 +21,6 @@
       "confidence": "Low",
       "sumber": "NASA-MODIS",
       "counter": 1
-    },
-    {
-      "tanggal": "2026-10-18",
-      "provinsi": "IKN",
-      "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "Medium",
-      "sumber": "NASA-SNPP",
-      "counter": 106
     },
     {
       "tanggal": "2026-10-18",
@@ -51,8 +43,16 @@
       "provinsi": "IKN",
       "kabupaten": "KUTAI KARTANEGARA",
       "confidence": "Medium",
-      "sumber": "NASA-NOAA20",
-      "counter": 85
+      "sumber": "NASA-SNPP",
+      "counter": 51
+    },
+    {
+      "tanggal": "2026-10-20",
+      "provinsi": "IKN",
+      "kabupaten": "KUTAI KARTANEGARA",
+      "confidence": "High",
+      "sumber": "NASA-MODIS",
+      "counter": 8
     },
     {
       "tanggal": "2026-10-20",
@@ -71,20 +71,36 @@
       "counter": 1
     },
     {
-      "tanggal": "2026-10-22",
-      "provinsi": "IKN",
-      "kabupaten": "PENAJAM PASER UTARA",
-      "confidence": "Medium",
-      "sumber": "NASA-MODIS",
-      "counter": 9
-    },
-    {
-      "tanggal": "2026-10-23",
+      "tanggal": "2026-10-21",
       "provinsi": "IKN",
       "kabupaten": "KUTAI KARTANEGARA",
       "confidence": "Medium",
+      "sumber": "NASA-SNPP",
+      "counter": 15
+    },
+    {
+      "tanggal": "2026-10-21",
+      "provinsi": "IKN",
+      "kabupaten": "KUTAI KARTANEGARA",
+      "confidence": "Medium",
+      "sumber": "NASA-NOAA20",
+      "counter": 127
+    },
+    {
+      "tanggal": "2026-10-22",
+      "provinsi": "IKN",
+      "kabupaten": "KUTAI KARTANEGARA",
+      "confidence": "High",
       "sumber": "NASA-MODIS",
-      "counter": 5
+      "counter": 8
+    },
+    {
+      "tanggal": "2026-10-22",
+      "provinsi": "IKN",
+      "kabupaten": "KUTAI KARTANEGARA",
+      "confidence": "Medium",
+      "sumber": "NASA-NOAA20",
+      "counter": 40
     }
   ]
 }
