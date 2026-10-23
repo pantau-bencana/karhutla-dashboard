@@ -7,10 +7,10 @@ import { useCuplikanSiklon } from "./SiklonRingkas.jsx";
 const TOP = [
   ["karhutla", "Karhutla", "#/karhutla/peta"],
   ["banjir", "Banjir", "#/banjir"],
-  ["irbi", "IRBI", "#/irbi"],
   ["gunung-api", "Gunung Api", "#/gunung-api"],
   ["siklon", "Siklon", "#/siklon"],
   ["info", "Info", "#/sumber-metode"],
+  ["irbi", "IRBI", "#/irbi"],
   ["rekap", "Rekap Harian", "#/rekap-harian"],
   ["ringkasan", "Ringkasan", "#/"],
 ];
