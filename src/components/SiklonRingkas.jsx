@@ -11,17 +11,30 @@ import {
 
 const BERKAS = "data/live/siklon-bmkg.json";
 
-export function SiklonRingkas() {
+let cuplikanJanji = null;
+
+function ambilCuplikanSiklon() {
+  if (!cuplikanJanji) {
+    cuplikanJanji = fetch(new URL(BERKAS, document.baseURI).href, { cache: "no-store" })
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })
+      .catch((error) => {
+        cuplikanJanji = null;
+        throw error;
+      });
+  }
+  return cuplikanJanji;
+}
+
+export function useCuplikanSiklon() {
   const [data, setData] = useState(null);
   const [galat, setGalat] = useState("");
 
   useEffect(() => {
     let batal = false;
-    fetch(new URL(BERKAS, document.baseURI).href, { cache: "no-store" })
-      .then((response) => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.json();
-      })
+    ambilCuplikanSiklon()
       .then((json) => {
         if (!batal) setData(json);
       })
@@ -32,6 +45,12 @@ export function SiklonRingkas() {
       batal = true;
     };
   }, []);
+
+  return { data, galat };
+}
+
+export function SiklonRingkas() {
+  const { data, galat } = useCuplikanSiklon();
 
   const ikhtisar = data?.ikhtisar;
   const sistem = Array.isArray(ikhtisar?.sistem) ? ikhtisar.sistem : [];
