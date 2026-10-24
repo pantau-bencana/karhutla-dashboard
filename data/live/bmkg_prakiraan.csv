@@ -1,115 +1,126 @@
 tanggal,waktu_lokal,provinsi,kotkab,kecamatan,desa,adm4,suhu_c,kelembapan_pct,curah_hujan_tp,kec_angin_kmj,arah_angin,cuaca,kode_cuaca,analysis_utc
-2026-10-24,2026-10-24 00:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,25,97,2,5.2,W,Hujan Ringan,61,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 03:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,24,98,1.7,4.5,W,Hujan Ringan,61,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 06:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,24,98,0,3,NW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 09:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,27,85,0,3.4,NW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 12:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,30,76,1.7,1.3,SW,Hujan Ringan,61,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 15:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,28,84,2,6.1,NW,Hujan Ringan,61,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 18:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,25,96,2,5.5,N,Hujan Ringan,61,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 21:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,25,95,2,10.6,W,Hujan Ringan,61,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 00:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,24,98,0,4.7,W,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 03:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,24,98,0,3.1,NW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 06:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,24,98,0,4.3,SW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 09:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,27,86,0,2,NW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 12:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,29,79,0,2.6,SW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 15:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,26,91,2,5,SW,Hujan Ringan,61,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 18:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,26,97,2,2.6,NW,Hujan Ringan,61,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 21:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,25,96,0,1.7,N,Berawan,3,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 00:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,25,98,0,0.9,NW,Berawan,3,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 03:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,24,99,0,2.2,N,Berawan,3,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 06:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,24,98,0,1.8,S,Cerah Berawan,2,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 00:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,24,97,0,10.2,S,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 03:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,24,98,0,4.3,SW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 06:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,24,97,0,2.7,W,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 09:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,27,83,0.1,0.6,NW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 12:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,33,72,0.1,3.3,NW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 15:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,29,87,0,4.3,S,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 18:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,27,90,0,7.2,N,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 21:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,25,96,0,2.7,S,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 00:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,24,96,0,1.8,NW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 03:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,24,97,0,4.3,SE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 06:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,24,97,0.1,6.3,SE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 09:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,26,85,0,2.7,S,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 12:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,32,75,0.1,2,N,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 15:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,32,71,0.1,2.4,E,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 18:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,26,94,0.9,7,N,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 21:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,26,97,3.3,4.1,NW,Hujan Ringan,61,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 00:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,25,98,0.3,9.6,N,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 03:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,24,97,0,5.3,S,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 06:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,24,98,0.2,8.3,SE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 00:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,28,78,0,6.6,SE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 03:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,27,80,0.1,3.2,SW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 06:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,26,90,0,1.2,SW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 09:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,30,66,0,4.3,SE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 12:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,34,50,0,2.6,NE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 15:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,34,49,1.6,6.5,NE,Hujan Ringan,61,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 18:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,27,82,1.2,9.1,W,Hujan Ringan,61,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 21:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,26,92,1.4,4.7,SE,Hujan Ringan,61,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 00:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,25,95,1.9,7.2,S,Hujan Ringan,61,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 03:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,24,97,0.4,3.5,SE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 06:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,24,96,0.2,2.2,E,Berawan,3,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 09:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,28,77,0,1.9,SE,Berawan,3,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 12:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,28,74,0.1,3.5,E,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 15:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,28,79,0.2,1.3,N,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 18:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,27,84,0.1,4.8,NW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 21:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,27,91,0,6.4,N,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 00:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,25,94,1,8.7,S,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 03:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,24,99,0.6,5.2,S,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 06:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,24,96,0.3,2.7,S,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 00:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,26,95,0,3.4,S,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 03:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,25,97,0,4.2,SE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 06:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,26,96,0,4.1,SE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 09:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,29,78,0,11.1,SE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 12:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,32,65,0.1,7.4,SE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 15:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,31,68,0.3,10.4,SW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 18:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,27,91,0,5.4,NW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 21:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,25,96,0,5.2,N,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 00:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,24,97,0,4.3,N,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 03:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,24,97,0,2.2,E,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 06:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,24,97,0,2.6,N,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 09:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,29,79,0,2.4,SE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 12:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,32,73,0.4,9.7,SW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 15:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,30,80,0.9,5.9,SW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 18:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,27,93,0.2,2.9,NE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 21:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,25,98,0.3,6.1,NE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 00:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,24,99,0.7,7.2,NE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 03:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,24,98,0.1,2.9,N,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 06:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,24,98,0,3.5,N,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 00:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,26,85,0,6,S,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 03:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,26,89,0,2.6,NE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 06:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,26,88,0,2.6,N,Kabut/Asap,45,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 09:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,30,67,0,4.4,NE,Kabut/Asap,45,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 12:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,34,51,0,4.5,SE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 15:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,32,63,0,1.7,NE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 18:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,28,81,0.1,3.6,SE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 21:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,25,98,0.3,2.2,NW,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 00:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,24,98,0.1,4.6,N,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 03:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,24,98,0.2,2.7,NE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 06:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,24,97,0.2,3.6,N,Kabut/Asap,45,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 09:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,28,90,0.6,4.5,N,Kabut/Asap,45,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 12:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,30,73,0.2,5.3,N,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 15:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,33,78,0,4.3,NE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 18:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,28,97,0.5,4.2,SE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 21:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,25,97,0.1,2.7,NE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 00:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,24,99,1.8,2.1,NW,Hujan Ringan,61,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 03:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,24,98,0.9,3.3,N,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 06:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,24,97,0,3,NW,Kabut/Asap,45,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 01:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,27,82,0,3.4,S,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 04:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,26,87,0,0.3,NE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 07:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,27,83,0,7.1,NE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 10:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,32,57,0,5.6,E,Berawan,3,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 13:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,35,60,0.8,11.3,SW,Berawan,3,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 16:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,34,60,0.3,8.5,SE,Berawan,3,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 19:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,29,69,0.1,2.9,SE,Berawan,3,2026-10-23T12:00:00Z
-2026-10-24,2026-10-24 22:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,28,80,0,3,S,Berawan,3,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 01:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,27,86,0,1,S,Berawan,3,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 04:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,26,91,0.2,4.6,N,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 07:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,26,90,0,6,NE,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 10:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,32,62,0,9.1,N,Cerah,1,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 13:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,35,74,1,13.4,S,Udara Kabur,10,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 16:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,31,77,0.7,7.5,SE,Berawan,3,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 19:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,27,93,0.1,3.3,E,Cerah Berawan,2,2026-10-23T12:00:00Z
-2026-10-25,2026-10-25 22:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,26,97,0,3.5,NE,Cerah Berawan,2,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 01:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,26,97,0,3.3,NE,Berawan,3,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 04:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,24,98,1.7,5.7,E,Hujan Ringan,61,2026-10-23T12:00:00Z
-2026-10-26,2026-10-26 07:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,25,96,0.1,3,E,Udara Kabur,10,2026-10-23T12:00:00Z
+2026-10-24,2026-10-24 11:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,28,81,0.1,4.5,W,Berawan,3,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 14:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,30,74,1.9,2.9,N,Hujan Ringan,61,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 17:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,26,94,2.7,6.6,W,Hujan Petir,95,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 20:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,25,97,1.2,0.7,SE,Hujan Ringan,61,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 23:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,24,98,0.4,5.2,W,Petir,17,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 02:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,24,98,0.1,4.3,W,Petir,17,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 05:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,24,98,0.2,1.5,S,Petir,17,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 08:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,25,92,0.1,2,NW,Petir,17,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 11:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,29,79,0.1,1.1,S,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 14:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,29,76,2.8,3.5,W,Hujan Ringan,61,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 17:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,26,92,1.3,1.3,S,Hujan Ringan,61,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 20:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,25,97,0.5,4,N,Petir,17,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 23:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,25,98,0.6,1,E,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 02:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,25,99,0.1,2,N,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 05:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,24,99,0,0.8,NE,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 08:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,26,91,0.2,2.2,E,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 11:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,29,80,0.2,5.3,E,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 14:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,28,84,0.7,5.3,E,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 17:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,26,92,0.7,3.6,W,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 20:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,25,96,0.7,3.6,W,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 23:00:00,Riau,Kota Pekanbaru,Senapelan,Padang Bulan,14.71.05.1001,25,97,0.7,4.8,SW,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 11:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,31,66,0,1.9,NW,Berawan,3,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 14:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,32,60,1.2,3.5,NW,Hujan Ringan,61,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 17:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,27,91,0.4,3.4,E,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 20:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,26,93,1.9,9.5,NW,Hujan Ringan,61,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 23:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,24,97,1.9,5.8,W,Hujan Ringan,61,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 02:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,23,98,2.3,4.8,SW,Hujan Ringan,61,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 05:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,24,97,0.3,3.2,S,Petir,17,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 08:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,25,92,0.1,9.8,SE,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 11:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,28,78,0.1,5.5,SE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 14:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,30,72,1,3.4,E,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 17:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,26,94,0.9,6,NW,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 20:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,25,97,0,5.7,NW,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 23:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,25,98,0,5.3,NW,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 02:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,24,98,0.8,2.6,SW,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 05:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,24,98,0,3.2,S,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 08:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,26,91,0.1,3.9,SE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 11:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,29,77,0.1,2.4,E,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 14:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,28,84,0.2,2.4,E,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 17:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,28,86,0.2,5,NW,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 20:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,26,95,0.3,5,NW,Cerah Berawan,2,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 23:00:00,Jambi,Kota Jambi,Telanaipura,Simpang IV Sipin,15.71.01.1001,25,98,0.3,7.2,S,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 11:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,34,47,0,11.3,SE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 14:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,36,41,0,7,SE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 17:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,32,55,3.3,6.3,E,Hujan Ringan,61,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 20:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,25,94,4.6,16.7,SW,Hujan Ringan,61,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 23:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,25,96,4.8,3.6,SW,Hujan Petir,95,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 02:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,25,96,5.4,3.9,S,Hujan Petir,95,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 05:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,25,96,3.3,2.2,SW,Hujan Ringan,61,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 08:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,25,93,0.4,5.8,SE,Petir,17,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 11:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,27,81,0.3,3.4,S,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 14:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,28,82,0.2,3.7,S,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 17:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,27,87,0.1,1.3,W,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 20:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,27,94,0.1,5.5,N,Petir,17,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 23:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,26,96,0.8,4.2,N,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 02:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,24,96,2.4,9.3,S,Hujan Ringan,61,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 05:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,23,96,0.9,8.1,S,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 08:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,26,89,0.1,1.8,SW,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 11:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,30,68,0.1,4,E,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 14:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,31,68,0.3,4,E,Cerah Berawan,2,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 17:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,27,87,0.3,9.1,NE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 20:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,26,93,0.3,9.1,NE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 23:00:00,Sumatera Selatan,Kota Palembang,Ilir Barat Dua,Tiga-puluh-lima Ilir,16.71.01.1001,26,95,0.3,8.6,SW,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 11:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,31,68,0,11,SE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 14:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,32,59,0.2,5.1,SE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 17:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,28,85,0,11.1,SW,Berawan,3,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 20:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,27,91,0,3.6,W,Berawan,3,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 23:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,25,97,0,4.4,N,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 02:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,25,98,0,4.3,NE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 05:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,24,98,0.1,2.9,S,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 08:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,26,87,0.2,1.3,E,Petir,17,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 11:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,30,73,0.1,3.8,SE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 14:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,29,77,0.9,3.4,SW,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 17:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,28,88,0.2,7.4,SW,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 20:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,26,97,0.8,6.3,NE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 23:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,24,98,0.5,8,E,Petir,17,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 02:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,24,98,0,5.2,E,Petir,17,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 05:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,24,98,0,3.8,N,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 08:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,25,91,0.1,5,NE,Petir,17,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 11:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,30,76,0.1,3.1,N,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 14:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,28,85,1.8,3.1,N,Hujan Ringan,61,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 17:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,25,96,1.8,4.1,NE,Hujan Ringan,61,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 20:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,25,98,0,4.1,NE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 23:00:00,Kalimantan Barat,Kota Pontianak,Pontianak Kota,Sungaibangkong,61.71.05.1001,24,98,0,2.4,E,Berawan,3,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 11:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,34,53,0,4.9,E,Berawan,3,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 14:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,35,48,0.3,5,S,Berawan,3,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 17:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,28,81,0.3,1.1,E,Berawan,3,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 20:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,26,93,0.1,4.1,NE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 23:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,25,94,0,3.4,NW,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 02:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,25,97,0.1,1.8,NW,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 05:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,24,96,0.2,4.5,N,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 08:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,27,82,0,4.6,N,Cerah Berawan,2,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 11:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,31,64,0,7.4,N,Cerah Berawan,2,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 14:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,32,55,0.1,7.5,N,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 17:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,29,71,0.1,7.3,N,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 20:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,26,88,0.3,2.5,SE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 23:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,25,98,0.7,2.9,NE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 02:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,24,98,0.2,6,NE,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 05:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,24,98,0,0.7,W,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 08:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,27,86,0.1,2.3,NW,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 11:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,32,63,0.1,0.6,W,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 14:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,30,77,0.4,0.6,W,Cerah Berawan,2,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 17:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,27,89,0.4,3.1,SE,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 20:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,25,97,0.3,3.1,SE,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 23:00:00,Kalimantan Tengah,Kota Palangkaraya,Pahandut,Pahandut,62.71.01.1001,24,98,0.3,3.5,W,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 12:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,34,51,0.7,3.4,SE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 15:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,32,63,0.5,11.9,SW,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 18:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,30,64,0,10.5,SE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-24,2026-10-24 21:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,28,77,0,4.3,SE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 00:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,27,82,0,1.9,NW,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 03:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,26,89,0,0.6,NW,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 06:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,26,92,0,2.5,NE,Cerah Berawan,2,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 09:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,31,65,0.1,4.6,NE,Cerah,1,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 12:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,27,89,3.9,4.7,N,Hujan Ringan,61,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 15:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,30,73,0.2,8.2,S,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 18:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,29,76,0.1,8.1,SE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-25,2026-10-25 21:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,27,89,0,4.7,E,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 00:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,26,95,0,4.2,N,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 03:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,25,97,0.9,3.6,NW,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 06:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,25,98,0,2.7,NE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 09:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,28,81,0.4,2.2,N,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 12:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,30,72,0.4,11.2,S,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 15:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,29,79,0.3,11.2,S,Udara Kabur,10,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 18:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,28,85,0.3,2.5,SE,Berawan,3,2026-10-24T00:00:00Z
+2026-10-26,2026-10-26 21:00:00,Kalimantan Selatan,Kota Banjarmasin,Banjarmasin Selatan,Mantuil,63.71.01.1001,26,94,0,2.5,SE,Berawan,3,2026-10-24T00:00:00Z
