@@ -2,25 +2,25 @@
   "sumber": "NASA FIRMS VIIRS_SNPP_NRT",
   "bbox_permintaan": "94.4,-11.5,141.6,6.5",
   "permintaan_hari": 5,
-  "baris_berkas": 37364,
+  "baris_berkas": 37932,
   "koordinat_tidak_valid": 0,
   "sensor_berkas": {
-    "N": 37364
+    "N": 37932
   },
   "duplikat_dibuang": 0,
   "di_luar_poligon": 0,
-  "di_darat": 37364,
+  "di_darat": 37932,
   "tanggal_mulai": "2026-10-20",
-  "tanggal_selesai": "2026-10-23",
+  "tanggal_selesai": "2026-10-24",
   "jam_24_sensor": {
-    "N": 7304
+    "N": 7760
   },
   "jam_24_kepercayaan": {
-    "nominal": 6765,
-    "rendah": 376,
-    "tinggi": 163
+    "nominal": 7171,
+    "rendah": 417,
+    "tinggi": 172
   },
-  "jam_24_jumlah": 7304,
+  "jam_24_jumlah": 7760,
   "catatan": "Hotspot = deteksi satelit, bukan kebakaran terkonfirmasi. Penyaring daratan dan nama wilayah datang dari kueri BIG pada saat pembaruan, bukan dari berkas batas di repositori. Koordinat FIRMS tidak diubah.",
   "batas": "BIG – Batas Administrasi Desa/Kelurahan",
   "edisi": "Layer desa (MapServer/4) berjudul Peta Batas Administrasi Desa, edisi Mei 2021, 1.419 wilayah, dan layanan ini tidak mengirim geometrinya. Layer kecamatan (MapServer/3) pada layanan yang sama memuat nama kecamatan, kabupaten/kota, dan provinsi; deskripsi layanannya menyebut revisi 27 Desember 2022. Padanan adalah pencocokan koordinat pada batas peta, bukan verifikasi lapangan. Cakupan dan batas edisi Mei 2021 tidak lengkap untuk seluruh desa di Indonesia.",

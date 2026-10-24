@@ -6,7 +6,7 @@
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-10-23",
+    "terbit": "2026-10-24",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
     "sistem": []
   },
@@ -17,8 +17,8 @@
     "galat": "HTTP 401"
   },
   "jejak": "belum terintegrasi",
-  "fetched_at": "2026-10-24T04:59:28.719Z",
-  "pdf_diubah": "Fri, 23 Oct 2026 07:26:12 GMT",
+  "fetched_at": "2026-10-24T06:58:36.204Z",
+  "pdf_diubah": "Sat, 24 Oct 2026 05:58:36 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/"
 }
