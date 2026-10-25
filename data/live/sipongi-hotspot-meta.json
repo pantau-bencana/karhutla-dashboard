@@ -1,6 +1,6 @@
 {
   "status": "ok",
-  "fetched_at": "2026-10-24T23:47:10.229Z",
+  "fetched_at": "2026-10-25T00:51:39.833Z",
   "url": "https://opsroom.sipongidata.my.id/api/sebaran",
   "satelit": "all-nasa",
   "confidence": "all",
@@ -18,9 +18,17 @@
       "tanggal": "2026-10-20",
       "provinsi": "IKN",
       "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "High",
+      "confidence": "Medium",
       "sumber": "NASA-MODIS",
-      "counter": 8
+      "counter": 28
+    },
+    {
+      "tanggal": "2026-10-20",
+      "provinsi": "IKN",
+      "kabupaten": "KUTAI KARTANEGARA",
+      "confidence": "Medium",
+      "sumber": "NASA-SNPP",
+      "counter": 11
     },
     {
       "tanggal": "2026-10-21",
@@ -59,24 +67,16 @@
       "provinsi": "IKN",
       "kabupaten": "KUTAI KARTANEGARA",
       "confidence": "Medium",
-      "sumber": "NASA-NOAA20",
-      "counter": 40
+      "sumber": "NASA-SNPP",
+      "counter": 113
     },
     {
       "tanggal": "2026-10-24",
       "provinsi": "IKN",
       "kabupaten": "KUTAI KARTANEGARA",
       "confidence": "Medium",
-      "sumber": "NASA-NOAA20",
-      "counter": 8
-    },
-    {
-      "tanggal": "2026-10-25",
-      "provinsi": "IKN",
-      "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "Medium",
-      "sumber": "NASA-NOAA20",
-      "counter": 8
+      "sumber": "NASA-SNPP",
+      "counter": 2
     }
   ]
 }
