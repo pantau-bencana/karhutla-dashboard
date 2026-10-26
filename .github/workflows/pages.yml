@@ -162,12 +162,13 @@ jobs:
       contents: read
     steps:
       - name: Picu penjaga jadwal
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          if gh workflow run refresh-watchdog.yml --ref main; then
-            echo "Penjaga jadwal dipicu"
-          else
-            echo "Penjaga jadwal tidak terpicu"
-          fi
+          # Job ini tidak checkout. Tanpa --repo, gh mencari remote git dan gagal
+          # ("not a git repository") sebelum permintaan dispatch terkirim.
+          gh workflow run refresh-watchdog.yml --repo "$GITHUB_REPOSITORY" --ref main
+          echo "Penjaga jadwal dipicu"
