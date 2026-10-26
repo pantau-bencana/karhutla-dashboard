@@ -1,6 +1,6 @@
 {
   "hariWib": "2026-10-27",
-  "generated_at": "2026-10-26T23:17:07.313Z",
+  "generated_at": "2026-10-26T23:50:29.418Z",
   "sumber": {
     "sipongi": {
       "nama": "SiPongi+",
@@ -46,8 +46,8 @@
     "cap": {
       "nama": "Sumber: BMKG",
       "status": "Aktif",
-      "diambil": "2026-10-26T23:17:06.945Z",
-      "observasi": "2026-10-26T23:15:24.000Z",
+      "diambil": "2026-10-26T23:50:29.045Z",
+      "observasi": "2026-10-26T23:45:17.000Z",
       "label": "Nowcast BMKG, dasar waktu 0–3 jam.",
       "catatan": "Cakupan nasional. Tanpa peringatan bukan nol."
     },
@@ -16857,7 +16857,7 @@
         "2026-10-24": "Tidak ada peringatan",
         "2026-10-25": "Tidak ada peringatan",
         "2026-10-26": "Tidak ada peringatan",
-        "2026-10-27": "Hujan Lebat dan Petir · Moderate"
+        "2026-10-27": "Tidak ada peringatan"
       }
     },
     "32.14": {
@@ -34107,7 +34107,7 @@
         "2026-10-24": "Tidak ada peringatan",
         "2026-10-25": "Tidak ada peringatan",
         "2026-10-26": "Tidak ada peringatan",
-        "2026-10-27": "Hujan Lebat dan Petir · Moderate"
+        "2026-10-27": "Tidak ada peringatan"
       }
     },
     "73.14": {
@@ -34178,7 +34178,7 @@
         "2026-10-24": "Tidak ada peringatan",
         "2026-10-25": "Tidak ada peringatan",
         "2026-10-26": "Tidak ada peringatan",
-        "2026-10-27": "Hujan Lebat dan Petir · Moderate"
+        "2026-10-27": "Tidak ada peringatan"
       }
     },
     "73.15": {
@@ -34391,7 +34391,7 @@
         "2026-10-24": "Tidak ada peringatan",
         "2026-10-25": "Tidak ada peringatan",
         "2026-10-26": "Hujan Lebat dan Petir · Moderate",
-        "2026-10-27": "Hujan Lebat dan Petir · Moderate"
+        "2026-10-27": "Tidak ada peringatan"
       }
     },
     "73.18": {
@@ -34888,7 +34888,7 @@
         "2026-10-24": "Tidak ada peringatan",
         "2026-10-25": "Tidak ada peringatan",
         "2026-10-26": "Tidak ada peringatan",
-        "2026-10-27": "Hujan Lebat dan Petir · Moderate"
+        "2026-10-27": "Tidak ada peringatan"
       }
     },
     "74.01": {
