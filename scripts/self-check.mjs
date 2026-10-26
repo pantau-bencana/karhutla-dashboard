@@ -743,6 +743,9 @@ assert.match(pagesWorkflow, /Ujung main sudah berpindah/);
 assert.match(pagesWorkflow, /Bangun ulang dari ujung main/);
 assert.match(pagesWorkflow, /steps\.head\.outputs\.rebuild == 'true'/);
 assert.equal(pagesWorkflow.includes("steps.head.outputs.skip != 'true'"), false);
+assert.match(pagesWorkflow, /picu-penjaga/);
+assert.match(pagesWorkflow, /gh workflow run refresh-watchdog\.yml --repo "\$GITHUB_REPOSITORY" --ref main/);
+assert.match(pagesWorkflow, /github\.event\.pull_request\.head\.repo\.full_name == github\.repository/);
 const windowed = filterHotspotWindow([
   { tanggal: "2026-10-17", waktu: "1200", satelit: "N", kelasKepercayaan: "nominal", provinsi: "Riau" },
   { tanggal: "2026-10-16", waktu: "1200", satelit: "N", kelasKepercayaan: "tinggi", provinsi: "Aceh" },

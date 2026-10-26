@@ -6,6 +6,9 @@
 # Bila ujung main sudah berpindah saat deploy, job ini membangun ulang SHA ujung itu lalu men-deploy-nya.
 # Artefak commit lama tidak diunggah lagi, supaya situs tidak tertinggal di belakang push bot.
 # Pull request, termasuk cabang cursor/*, hanya membangun dan memeriksa. Job deploy dilewati.
+# Cron bisa tidak membuat run sama sekali, termasuk penjaga menit 7. Job picu-penjaga
+# mengirim workflow_dispatch ke refresh-watchdog.yml. Penjaga di main yang memutuskan
+# apakah data, CAP, atau prakiraan perlu dijalankan. Pull request dari fork tidak masuk.
 # https://rixaga.github.io/karhutla-dashboard/
 name: Deploy GitHub Pages
 
@@ -146,3 +149,26 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+  picu-penjaga:
+    # Jalan sejajar dengan build. Tidak memakai needs: deploy, supaya picu tidak
+    # menunggu unggahan Pages dan tidak gagal bila deploy gagal.
+    if: >-
+      (github.event_name != 'pull_request' && github.ref == 'refs/heads/main')
+      || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Picu penjaga jadwal
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          # Job ini tidak checkout. Tanpa --repo, gh mencari remote git dan gagal
+          # ("not a git repository") sebelum permintaan dispatch terkirim.
+          gh workflow run refresh-watchdog.yml --repo "$GITHUB_REPOSITORY" --ref main
+          echo "Penjaga jadwal dipicu"
