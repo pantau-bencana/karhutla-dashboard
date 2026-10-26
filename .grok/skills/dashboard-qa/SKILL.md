@@ -27,7 +27,7 @@ Do not weaken these to make a new feature pass:
 - Indonesia frame contains the FIRMS area and the pan limit contains the frame.
 - HTML bodies are rejected as CSV.
 
-When `data/live` or `data/static` exist in the working tree, the self-check's fake fetch must 404 those paths so the sample assertions still measure the sample files. Add a separate assertion if the manifest itself must be checked.
+When `data/live` or `data/static` exist in the working tree, the self-check's fake fetch must 404 those paths so the sample assertions still measure the sample files. Add a separate assertion if the manifest itself must be checked. Do not require a particular live FIRMS row to exist. Those rows age out of the snapshot; a failed `npm run check` after a data commit skips the Pages deploy, and a `github-actions[bot]` push does not start `pages.yml`.
 
 ## Failure drills
 

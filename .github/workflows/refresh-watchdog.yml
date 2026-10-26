@@ -2,6 +2,9 @@
 # Bila manifes lebih tua dari 4 jam dan tidak ada run Perbarui data yang aktif, kirim workflow_dispatch.
 # Jadwal CAP (menit 12 dan 42) juga bisa tidak pernah membuat run. Bila run CAP terakhir lebih tua
 # dari CAP_WATCH_MINUTES, atau belum pernah ada, kirim workflow_dispatch refresh-cap.yml.
+# Prakiraan BMKG tetap di menit 0 (00.00, 02.00, 12.00, 14.00 UTC). GitHub sering tidak
+# membuat run untuk slot itu. Bila slot terakhir tidak punya run sukses, kirim
+# workflow_dispatch refresh-prakiraan.yml. Jangan memindahkan cron prakiraan.
 # workflow_dispatch dari GITHUB_TOKEN memang membuat run baru. Push GITHUB_TOKEN tidak memicu workflow lain.
 # Grup concurrency terpisah dari `pages` supaya penjaga tidak mengantri di belakang unduhan 30 menit
 # dan tidak membatalkan deploy.
@@ -34,7 +37,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          export CAP_RUNS_JSON="$(gh run list --workflow refresh-cap.yml --limit 10 --json createdAt,status)"
+          export CAP_RUNS_JSON="$(gh run list --workflow refresh-cap.yml --limit 10 --json createdAt,status,conclusion)"
+          export PRAKIRAAN_RUNS_JSON="$(gh run list --workflow refresh-prakiraan.yml --limit 8 --json createdAt,status,conclusion)"
           node scripts/refresh-watchdog.mjs
 
       - name: Picu pembaruan bila cuplikan basi
@@ -66,3 +70,18 @@ jobs:
           fi
           gh workflow run refresh-cap.yml --ref main
           echo "workflow_dispatch Perbarui CAP dikirim."
+
+      - name: Picu prakiraan bila slot terlewat
+        if: steps.umur.outputs.dispatch_prakiraan == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          active="$(gh run list --workflow refresh-prakiraan.yml --limit 10 --json status --jq '[.[] | select(.status=="in_progress" or .status=="queued" or .status=="pending" or .status=="waiting" or .status=="requested")] | length')"
+          echo "prakiraan_run_aktif=${active}"
+          if [ "$active" != "0" ]; then
+            echo "Perbarui prakiraan sudah berjalan atau antre. Tidak memicu lagi."
+            exit 0
+          fi
+          gh workflow run refresh-prakiraan.yml --ref main
+          echo "workflow_dispatch Perbarui prakiraan dikirim."

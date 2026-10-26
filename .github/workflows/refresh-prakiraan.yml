@@ -9,6 +9,9 @@
 # Tidak memakai secret. Jeda antar permintaan ada di scripts/prakiraan-kab.mjs (di bawah 60/menit).
 # Push dari GITHUB_TOKEN tidak memicu pages.yml, jadi deploy dilakukan di sini
 # hanya bila cuplikan berubah dan ref-nya persis refs/heads/main.
+# Bila rebase bentrok, cuplikan yang sudah diambil dipasang ulang. Pengambilan 514 kab/kota
+# diulang hanya bila pemasangan itu gagal. Jangan force-push.
+# Cron tetap di menit 0. Slot yang tidak meninggalkan run dipicu oleh refresh-watchdog.yml.
 name: Perbarui prakiraan BMKG
 
 on:
@@ -104,10 +107,34 @@ jobs:
               fi
               echo "Push ditolak (percobaan ${attempt}). Ambil ulang lalu coba lagi."
             else
-              echo "Rebase bentrok (percobaan ${attempt}). Prakiraan dibuat ulang."
+              echo "Rebase bentrok (percobaan ${attempt}). Memasang cuplikan yang sudah diambil."
+              our=""
+              if git rev-parse --verify REBASE_HEAD >/dev/null 2>&1; then
+                our="$(git rev-parse REBASE_HEAD)"
+              fi
               git rebase --abort || true
+              if [[ -z "${our}" ]]; then
+                our="$(git rev-parse HEAD)"
+              fi
               git reset --hard "origin/${branch}"
               npm ci
+              if node scripts/snapshot-rebase.mjs "${our}" HEAD; then
+                node scripts/banjir-ringkasan.mjs || true
+                node scripts/tulis-rekap-harian.mjs || true
+                if commit_snapshot; then
+                  if git push origin "HEAD:${branch}"; then
+                    echo "changed=true" >> "$GITHUB_OUTPUT"
+                    echo "Prakiraan terdorong ke ${branch} setelah dipasang ulang (percobaan ${attempt})."
+                    exit 0
+                  fi
+                  echo "Push ditolak setelah pasang ulang (percobaan ${attempt})."
+                  continue
+                fi
+                echo "changed=false" >> "$GITHUB_OUTPUT"
+                echo "Tidak ada commit setelah prakiraan dipasang ulang."
+                exit 0
+              fi
+              echo "Pemasangan ulang gagal. Prakiraan dibuat ulang."
               node scripts/prakiraan-kab.mjs || true
               if ! git diff --quiet -- data/live/bmkg-prakiraan-kab.csv data/live/bmkg-prakiraan-kab-meta.json data/live/bmkg_prakiraan.csv data/live/manifest.json; then
                 node scripts/banjir-ringkasan.mjs || true

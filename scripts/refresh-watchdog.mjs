@@ -3,7 +3,7 @@
 import { existsSync, readFileSync, appendFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { CAP_WATCH_MINUTES, STALE_SNAPSHOT_HOURS } from "../src/lib/schedule.js";
+import { CAP_WATCH_MINUTES, PRAKIRAAN_SLOT_GRACE_MS, STALE_SNAPSHOT_HOURS, slotPrakiraanTerakhir } from "../src/lib/schedule.js";
 
 const ACTIVE_RUN = new Set(["in_progress", "queued", "pending", "waiting", "requested"]);
 
@@ -31,6 +31,27 @@ export function capRunMissed(runs, now = new Date(), maxMinutes = CAP_WATCH_MINU
   return (now.getTime() - newest) / 60000 > maxMinutes;
 }
 
+function runCreatedAt(run) {
+  const time = new Date(run?.createdAt ?? run?.created_at ?? 0).getTime();
+  return Number.isFinite(time) ? time : 0;
+}
+
+// Slot menit 0 tanpa run sukses, dan tanpa run yang masih antre, perlu dipicu.
+// Run gagal tidak menutup slot. Run yang masih berjalan menutupnya supaya unduhan tidak ganda.
+export function prakiraanSlotMissed(runs, now = new Date(), graceMs = PRAKIRAAN_SLOT_GRACE_MS) {
+  const list = Array.isArray(runs) ? runs : [];
+  if (list.some((run) => ACTIVE_RUN.has(run?.status))) return false;
+  const slot = slotPrakiraanTerakhir(now);
+  if (slot == null) return false;
+  if (now.getTime() - slot < graceMs) return false;
+  const covered = list.some((run) => {
+    if (runCreatedAt(run) < slot) return false;
+    if (run?.conclusion) return run.conclusion === "success";
+    return run?.status === "completed";
+  });
+  return !covered;
+}
+
 function readGeneratedAt(manifestPath) {
   if (!existsSync(manifestPath)) return null;
   const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
@@ -45,10 +66,10 @@ function writeOutputs(fields) {
   }
 }
 
-function readCapRuns() {
-  if (!process.env.CAP_RUNS_JSON) return null;
+function readRunList(name) {
+  if (!process.env[name]) return null;
   try {
-    const parsed = JSON.parse(process.env.CAP_RUNS_JSON);
+    const parsed = JSON.parse(process.env[name]);
     return Array.isArray(parsed) ? parsed : [];
   } catch {
     return [];
@@ -62,12 +83,19 @@ function main() {
   const dispatch = manifestNeedsRefresh(generatedAt);
   const ageLabel = Number.isFinite(age) ? age.toFixed(2) : "tidak-ada";
   console.log(`generated_at=${generatedAt ?? "tidak-ada"} umur_jam=${ageLabel} batas_jam=${STALE_SNAPSHOT_HOURS}`);
-  const capRuns = readCapRuns();
+  const capRuns = readRunList("CAP_RUNS_JSON");
   const dispatchCap = capRuns ? capRunMissed(capRuns) : false;
   if (capRuns) console.log(`cap_run=${capRuns.length} batas_menit=${CAP_WATCH_MINUTES}`);
+  const prakiraanRuns = readRunList("PRAKIRAAN_RUNS_JSON");
+  const dispatchPrakiraan = prakiraanRuns ? prakiraanSlotMissed(prakiraanRuns) : false;
+  if (prakiraanRuns) {
+    const slot = slotPrakiraanTerakhir();
+    console.log(`prakiraan_run=${prakiraanRuns.length} slot=${slot ? new Date(slot).toISOString() : "tidak-ada"}`);
+  }
   writeOutputs({
     dispatch: dispatch ? "true" : "false",
     dispatch_cap: dispatchCap ? "true" : "false",
+    dispatch_prakiraan: dispatchPrakiraan ? "true" : "false",
   });
 }
 
