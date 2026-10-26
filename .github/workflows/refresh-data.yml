@@ -8,7 +8,10 @@
 # Untuk event schedule, github.ref adalah cabang default (refs/heads/main). Job refresh tidak memakai if.
 # workflow_dispatch pada cabang lain tidak men-deploy dan tidak menulis ke main.
 # Sebelum push: git fetch, lalu git pull --rebase, diulang bila push ditolak.
-# Bila rebase bentrok, snapshot dibuat ulang. Jangan force-push.
+# Bila rebase bentrok, cuplikan yang sudah diambil dipasang ulang di atas ujung cabang
+# (manifes digabung per dataset, CAP dan prakiraan mengikuti cap waktu yang lebih baru,
+# ringkasan banjir dan rekap dibuat lagi). Unduhan penuh hanya bila pemasangan itu gagal.
+# Jangan force-push.
 # Grup concurrency terpisah dari Pages. Run baru membatalkan run yang masih berjalan
 # supaya antrean tidak menumpuk. pages.yml tidak diubah.
 # timeout-minutes membatasi job. Tiap sumber juga punya batas di skrip.
@@ -123,10 +126,36 @@ jobs:
               fi
               echo "Push ditolak (percobaan ${attempt}). Ambil ulang lalu coba lagi."
             else
-              echo "Rebase bentrok (percobaan ${attempt}). Snapshot dibuat ulang."
+              echo "Rebase bentrok (percobaan ${attempt}). Memasang cuplikan yang sudah diambil."
+              our=""
+              if git rev-parse --verify REBASE_HEAD >/dev/null 2>&1; then
+                our="$(git rev-parse REBASE_HEAD)"
+              fi
               git rebase --abort || true
+              if [[ -z "${our}" ]]; then
+                our="$(git rev-parse HEAD)"
+              fi
               git reset --hard "origin/${branch}"
               npm ci
+              if node scripts/snapshot-rebase.mjs "${our}" HEAD; then
+                node scripts/banjir-ringkasan.mjs || true
+                node scripts/tulis-rekap-harian.mjs || true
+                if commit_snapshot; then
+                  if git push origin "HEAD:${branch}"; then
+                    echo "changed=true" >> "$GITHUB_OUTPUT"
+                    echo "Snapshot terdorong ke ${branch} setelah dipasang ulang (percobaan ${attempt})."
+                    publish_counts
+                    exit 0
+                  fi
+                  echo "Push ditolak setelah pasang ulang (percobaan ${attempt})."
+                  continue
+                fi
+                echo "changed=false" >> "$GITHUB_OUTPUT"
+                echo "Tidak ada perubahan data setelah dipasang ulang."
+                publish_counts
+                exit 0
+              fi
+              echo "Pemasangan ulang gagal. Snapshot dibuat dari awal."
               node scripts/refresh-live-data.mjs
               node scripts/hujan-pembanding.mjs || true
               node scripts/banjir-ringkasan.mjs || true

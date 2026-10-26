@@ -70,7 +70,7 @@ import {
   susunPrioritas,
   tampilanPrioritas,
 } from "../src/lib/aplus.js";
-import { CAP_CRON, CAP_WATCH_MINUTES, PRAKIRAAN_CRON, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun } from "../src/lib/schedule.js";
+import { CAP_CRON, CAP_WATCH_MINUTES, PRAKIRAAN_CRON, PRAKIRAAN_SLOT_GRACE_MS, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun, slotPrakiraanTerakhir } from "../src/lib/schedule.js";
 import { ringkasHujanModel, susunPotensiTujuh } from "../src/lib/potensiTujuh.js";
 import {
   JARAK_ULANG_ANALISIS_MS,
@@ -166,7 +166,8 @@ import {
   rowsFromFeatures,
   targetRings,
 } from "./cap-kab.mjs";
-import { capRunMissed, manifestNeedsRefresh } from "./refresh-watchdog.mjs";
+import { capRunMissed, manifestNeedsRefresh, prakiraanSlotMissed } from "./refresh-watchdog.mjs";
+import { gabungManifest, sisiLebihBaru } from "./snapshot-rebase.mjs";
 import { monitoringSources } from "../src/lib/sourceStatus.js";
 import { aggregateCells, gfwedCsv, latestDailyStamp } from "./gfwed-kabupaten.mjs";
 import { GFWED_LABEL, GFWED_UNAVAILABLE } from "../src/lib/gfwed.js";
@@ -535,6 +536,68 @@ assert.equal(
   capRunMissed([{ status: "queued", createdAt: "2026-10-20T05:12:00.000Z" }], new Date("2026-10-20T07:07:00.000Z")),
   false,
 );
+assert.equal(PRAKIRAAN_SLOT_GRACE_MS, 4 * 60 * 1000);
+assert.equal(PRAKIRAAN_SLOT_GRACE_MS < 7 * 60 * 1000, true);
+assert.equal(slotPrakiraanTerakhir(new Date("2026-10-26T00:07:00.000Z")), Date.parse("2026-10-26T00:00:00.000Z"));
+assert.equal(slotPrakiraanTerakhir(new Date("2026-10-26T02:07:00.000Z")), Date.parse("2026-10-26T02:00:00.000Z"));
+assert.equal(slotPrakiraanTerakhir(new Date("2026-10-26T11:07:00.000Z")), Date.parse("2026-10-26T02:00:00.000Z"));
+assert.equal(slotPrakiraanTerakhir(new Date("2026-10-25T23:30:00.000Z")), Date.parse("2026-10-25T14:00:00.000Z"));
+assert.equal(prakiraanSlotMissed([], new Date("2026-10-26T00:07:00.000Z")), true);
+assert.equal(prakiraanSlotMissed([], new Date("2026-10-26T00:03:00.000Z")), false);
+assert.equal(
+  prakiraanSlotMissed(
+    [{ status: "completed", conclusion: "success", createdAt: "2026-10-26T00:10:00.000Z" }],
+    new Date("2026-10-26T00:20:00.000Z"),
+  ),
+  false,
+);
+assert.equal(
+  prakiraanSlotMissed(
+    [{ status: "completed", conclusion: "success", createdAt: "2026-10-26T00:10:00.000Z" }],
+    new Date("2026-10-26T02:07:00.000Z"),
+  ),
+  true,
+);
+assert.equal(
+  prakiraanSlotMissed(
+    [{ status: "completed", conclusion: "failure", createdAt: "2026-10-26T00:10:00.000Z" }],
+    new Date("2026-10-26T00:20:00.000Z"),
+  ),
+  true,
+);
+assert.equal(
+  prakiraanSlotMissed(
+    [{ status: "in_progress", conclusion: "", createdAt: "2026-10-25T16:00:00.000Z" }],
+    new Date("2026-10-26T00:07:00.000Z"),
+  ),
+  false,
+);
+assert.equal(sisiLebihBaru(2, 1), "kita");
+assert.equal(sisiLebihBaru(1, 2), "hulu");
+assert.equal(sisiLebihBaru(2, 2), "hulu");
+const manifestHulu = {
+  generated_at: "2026-10-26T01:00:00.000Z",
+  firms_key: "used",
+  datasets: {
+    hotspot: { fetched_at: "2026-10-26T00:30:00.000Z", record_count: 1 },
+    bmkg_cap: { fetched_at: "2026-10-26T01:00:00.000Z", record_count: 9 },
+  },
+};
+const manifestKita = {
+  generated_at: "2026-10-26T00:40:00.000Z",
+  firms_key: "absent",
+  datasets: {
+    hotspot: { fetched_at: "2026-10-26T00:40:00.000Z", record_count: 2 },
+    bmkg_cap: { fetched_at: "2026-10-26T00:20:00.000Z", record_count: 4 },
+    bmkg_prakiraan: { fetched_at: "2026-10-25T16:00:00.000Z", record_count: 3 },
+  },
+};
+const manifestGabung = gabungManifest(manifestHulu, manifestKita);
+assert.equal(manifestGabung.generated_at, "2026-10-26T01:00:00.000Z");
+assert.equal(manifestGabung.firms_key, "used");
+assert.equal(manifestGabung.datasets.hotspot.record_count, 2);
+assert.equal(manifestGabung.datasets.bmkg_cap.record_count, 9);
+assert.equal(manifestGabung.datasets.bmkg_prakiraan.record_count, 3);
 assert.match(nextScheduledRun(new Date("2026-10-17T16:30:00.000Z")), /^2026-10-17T16:47:00/);
 assert.match(nextScheduledRun(new Date("2026-10-17T18:10:00.000Z")), /^2026-10-17T18:17:00/);
 assert.match(nextScheduledRun(new Date("2026-10-17T18:20:00.000Z")), /^2026-10-17T19:47:00/);
@@ -560,6 +623,7 @@ assert.match(workflow, /wilayah_gagal/);
 assert.match(workflow, /big_queries/);
 assert.match(workflow, /FIRMS_MAP_KEY/);
 assert.match(workflow, /git reset --hard[\s\S]*npm ci/);
+assert.match(workflow, /snapshot-rebase\.mjs[\s\S]*refresh-live-data\.mjs/);
 assert.match(workflow, /npm ci\n\s*npm run check && npm run build/);
 assert.equal(workflow.includes("eyJ"), false);
 const watchdog = readFileSync(".github/workflows/refresh-watchdog.yml", "utf8");
@@ -567,6 +631,8 @@ assert.match(watchdog, /7 \* \* \* \*/);
 assert.match(watchdog, /actions: write/);
 assert.match(watchdog, /gh workflow run refresh-data\.yml --ref main/);
 assert.match(watchdog, /gh workflow run refresh-cap\.yml --ref main/);
+assert.match(watchdog, /gh workflow run refresh-prakiraan\.yml --ref main/);
+assert.match(watchdog, /PRAKIRAAN_RUNS_JSON/);
 assert.match(watchdog, /CAP_RUNS_JSON/);
 assert.match(watchdog, /cancel-in-progress: false/);
 assert.match(watchdog, /group: refresh-watchdog/);
@@ -1794,10 +1860,14 @@ assert.equal(pendudukByKode.get("31.71").nama, "Kota Adm. Jakarta Pusat");
 assert.equal(pendudukByKode.get("31.73").nama, "Kota Adm. Jakarta Barat");
 assert.equal(pendudukByKode.get("31.75").nama, "Kota Adm. Jakarta Timur");
 assert.equal(pendudukByKode.get("31.01").nama, "Adm. Kep. Seribu");
+// Titik FIRMS di Jakarta Utara tidak selalu ada pada jendela 5 hari.
+// Bila baris itu ada, kecamatan dan kode adm harus tetap dari batas resmi.
+// Jangan mewajibkan barisnya: pemeriksaan yang gagal di sini menggagalkan build Pages
+// sesudah commit, dan push bot tidak memicu workflow Pages lain.
 const hotspotJakarta = readFileSync("data/live/hotspot.csv", "utf8")
   .split("\n")
   .find((line) => line.includes("DKI Jakarta,Kota Adm. Jakarta Utara"));
-assert.match(hotspotJakarta, /Cilincing,31\.72\.04,31\.72,31/);
+if (hotspotJakarta) assert.match(hotspotJakarta, /Cilincing,31\.72\.04,31\.72,31/);
 assert.match(readFileSync("scripts/self-check.mjs", "utf8"), /Kota Adm\. Jakarta Selatan/);
 assert.match(readFileSync("scripts/self-check.mjs", "utf8"), /31\.74\.02/);
 const rumahProv = [...new Set(pendudukBerkas.filter((row) => String(row.rumah_tangga || "").trim()).map((row) => row.kode.slice(0, 2)))].sort();
@@ -2033,6 +2103,7 @@ assert.match(workflowPrakiraan, /cancel-in-progress: false/);
 assert.match(workflowPrakiraan, /timeout-minutes: 40/);
 assert.match(workflowPrakiraan, /timeout-minutes: 20/);
 assert.match(workflowPrakiraan, /prakiraan-kab\.mjs/);
+assert.match(workflowPrakiraan, /snapshot-rebase\.mjs[\s\S]*prakiraan-kab\.mjs/);
 assert.match(workflowPrakiraan, /Tidak ada commit/);
 assert.equal(workflowPrakiraan.includes("FIRMS_MAP_KEY"), false);
 assert.equal(ULANG_ANALISIS_MAKS, 3);
@@ -2288,6 +2359,7 @@ assert.equal(reliable.length, 1);
 assert.equal(reliableCalls >= 3, true);
 const capWorkflow = readFileSync(".github/workflows/refresh-cap.yml", "utf8");
 assert.match(capWorkflow, /git reset --hard[\s\S]*npm ci/);
+assert.match(capWorkflow, /snapshot-rebase\.mjs[\s\S]*cap-kab\.mjs/);
 assert.match(capWorkflow, /npm ci\n\s*npm run check && npm run build/);
 assert.match(capScript, /batas-tersimpan/);
 assert.match(capScript, /QUERY_BACKOFF_MS/);

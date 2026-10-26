@@ -18,6 +18,10 @@ export const PRAKIRAAN_CRON = "0 0,2,12,14 * * *";
 // Penjaga berjalan di menit 7. Slot CAP yang sehat terakhir adalah menit 42, umur sekitar 25 menit.
 // Lebih dari 50 menit berarti sedikitnya satu slot 30 menit tidak meninggalkan run.
 export const CAP_WATCH_MINUTES = 50;
+// Slot prakiraan menit 0 sering tidak meninggalkan run bila GitHub menundanya melewati slot berikut.
+// Penjaga menit 7 mengirim workflow_dispatch bila slot terakhir belum punya run.
+// Jeda 4 menit: jangan memicu di menit 0–3, supaya run yang hanya terlambat sebentar tidak digandakan.
+export const PRAKIRAAN_SLOT_GRACE_MS = 4 * 60 * 1000;
 export const REFRESH_CRONS = [REFRESH_CRON, REFRESH_CRON_CADANGAN];
 export const REFRESH_INTERVAL_HOURS = 3;
 export const REFRESH_MINUTE = 17;
@@ -49,4 +53,31 @@ function nextSlot(now, slot) {
 export function nextScheduledRun(now = new Date()) {
   const soonest = Math.min(...SLOTS.map((slot) => nextSlot(now, slot)));
   return new Date(soonest).toISOString();
+}
+
+// Slot prakiraan terakhir yang sudah jatuh tempo. String cron tetap sumbernya.
+export function slotPrakiraanTerakhir(now = new Date(), cron = PRAKIRAAN_CRON) {
+  const [minuteField, hourField] = String(cron).trim().split(/\s+/);
+  const minute = Number(minuteField);
+  const hours = String(hourField || "")
+    .split(",")
+    .map((hour) => Number(hour))
+    .filter((hour) => Number.isInteger(hour));
+  if (!Number.isInteger(minute) || !hours.length) return null;
+  let best = null;
+  for (let daysBack = 0; daysBack < 3; daysBack += 1) {
+    for (const hour of hours) {
+      const slot = Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate() - daysBack,
+        hour,
+        minute,
+        0,
+        0,
+      );
+      if (slot <= now.getTime() && (best == null || slot > best)) best = slot;
+    }
+  }
+  return best;
 }

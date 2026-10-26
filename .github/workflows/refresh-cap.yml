@@ -4,6 +4,8 @@
 # Tidak memakai secret. Jeda antar permintaan BMKG ada di scripts/cap-kab.mjs (di bawah 60/menit).
 # Push dari GITHUB_TOKEN tidak memicu pages.yml, jadi deploy dilakukan di sini
 # hanya bila berkas CAP berubah dan ref-nya persis refs/heads/main.
+# Bila rebase bentrok, cuplikan yang sudah diambil dipasang ulang. Pengambilan CAP
+# diulang hanya bila pemasangan itu gagal. Jangan force-push.
 name: Perbarui CAP nowcast
 
 on:
@@ -91,10 +93,34 @@ jobs:
               fi
               echo "Push ditolak (percobaan ${attempt}). Ambil ulang lalu coba lagi."
             else
-              echo "Rebase bentrok (percobaan ${attempt}). Cuplikan CAP dibuat ulang."
+              echo "Rebase bentrok (percobaan ${attempt}). Memasang cuplikan yang sudah diambil."
+              our=""
+              if git rev-parse --verify REBASE_HEAD >/dev/null 2>&1; then
+                our="$(git rev-parse REBASE_HEAD)"
+              fi
               git rebase --abort || true
+              if [[ -z "${our}" ]]; then
+                our="$(git rev-parse HEAD)"
+              fi
               git reset --hard "origin/${branch}"
               npm ci
+              if node scripts/snapshot-rebase.mjs "${our}" HEAD; then
+                node scripts/banjir-ringkasan.mjs || true
+                node scripts/tulis-rekap-harian.mjs || true
+                if commit_snapshot; then
+                  if git push origin "HEAD:${branch}"; then
+                    echo "changed=true" >> "$GITHUB_OUTPUT"
+                    echo "Cuplikan CAP terdorong ke ${branch} setelah dipasang ulang (percobaan ${attempt})."
+                    exit 0
+                  fi
+                  echo "Push ditolak setelah pasang ulang (percobaan ${attempt})."
+                  continue
+                fi
+                echo "changed=false" >> "$GITHUB_OUTPUT"
+                echo "Tidak ada perubahan CAP setelah dipasang ulang."
+                exit 0
+              fi
+              echo "Pemasangan ulang gagal. Cuplikan CAP dibuat ulang."
               node scripts/cap-kab.mjs || true
               node scripts/banjir-ringkasan.mjs || true
               node scripts/tulis-rekap-harian.mjs || true
