@@ -1,6 +1,6 @@
 {
   "status": "ok",
-  "fetched_at": "2026-10-27T07:03:01.109Z",
+  "fetched_at": "2026-10-27T09:20:41.177Z",
   "url": "https://opsroom.sipongidata.my.id/api/sebaran",
   "satelit": "all-nasa",
   "confidence": "all",
@@ -12,8 +12,16 @@
     "2026-10-26",
     "2026-10-27"
   ],
-  "record_count": 1187,
+  "record_count": 1254,
   "lepas": [
+    {
+      "tanggal": "2026-10-22",
+      "provinsi": "IKN",
+      "kabupaten": "KUTAI KARTANEGARA",
+      "confidence": "Medium",
+      "sumber": "NASA-MODIS",
+      "counter": 34
+    },
     {
       "tanggal": "2026-10-22",
       "provinsi": "IKN",
@@ -23,12 +31,36 @@
       "counter": 9
     },
     {
-      "tanggal": "2026-10-23",
+      "tanggal": "2026-10-22",
       "provinsi": "IKN",
       "kabupaten": "KUTAI KARTANEGARA",
       "confidence": "Medium",
       "sumber": "NASA-NOAA20",
-      "counter": 68
+      "counter": 40
+    },
+    {
+      "tanggal": "2026-10-23",
+      "provinsi": "IKN",
+      "kabupaten": "KUTAI KARTANEGARA",
+      "confidence": "Medium",
+      "sumber": "NASA-MODIS",
+      "counter": 10
+    },
+    {
+      "tanggal": "2026-10-23",
+      "provinsi": "IKN",
+      "kabupaten": "KUTAI KARTANEGARA",
+      "confidence": "Medium",
+      "sumber": "NASA-SNPP",
+      "counter": 84
+    },
+    {
+      "tanggal": "2026-10-24",
+      "provinsi": "IKN",
+      "kabupaten": "KUTAI KARTANEGARA",
+      "confidence": "Medium",
+      "sumber": "NASA-SNPP",
+      "counter": 2
     },
     {
       "tanggal": "2026-10-26",
@@ -39,36 +71,12 @@
       "counter": 6
     },
     {
-      "tanggal": "2026-10-27",
-      "provinsi": "IKN",
-      "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "Medium",
-      "sumber": "NASA-SNPP",
-      "counter": 66
-    },
-    {
-      "tanggal": "2026-10-27",
-      "provinsi": "IKN",
-      "kabupaten": "PENAJAM PASER UTARA",
-      "confidence": "Medium",
-      "sumber": "NASA-SNPP",
-      "counter": 14
-    },
-    {
-      "tanggal": "2026-10-27",
+      "tanggal": "2026-10-26",
       "provinsi": "IKN",
       "kabupaten": "PENAJAM PASER UTARA",
       "confidence": "Medium",
       "sumber": "NASA-NOAA20",
-      "counter": 7
-    },
-    {
-      "tanggal": "2026-10-27",
-      "provinsi": "IKN",
-      "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "Medium",
-      "sumber": "NASA-NOAA20",
-      "counter": 22
+      "counter": 16
     }
   ]
 }
