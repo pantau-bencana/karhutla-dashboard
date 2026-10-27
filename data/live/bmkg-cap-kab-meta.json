@@ -1,13 +1,13 @@
 {
   "status": "ok",
-  "fetched_at": "2026-10-27T06:14:02.887Z",
-  "rss_published": "2026-10-27T06:17:42.000Z",
+  "fetched_at": "2026-10-27T06:50:29.905Z",
+  "rss_published": "2026-10-27T06:47:49.000Z",
   "sumber": "BMKG",
   "dasar": "Nowcast BMKG, dasar waktu 0–3 jam.",
   "cakupan": "nasional",
-  "jumlah_alert": 25,
-  "jumlah_prov": 27,
-  "baris": 156,
+  "jumlah_alert": 34,
+  "jumlah_prov": 24,
+  "baris": 170,
   "penempatan": "kueri-big",
   "error": null
 }
