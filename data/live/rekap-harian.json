@@ -1,20 +1,20 @@
 {
   "hariWib": "2026-10-27",
-  "generated_at": "2026-10-27T00:44:56.486Z",
+  "generated_at": "2026-10-27T01:49:44.633Z",
   "sumber": {
     "sipongi": {
       "nama": "SiPongi+",
       "status": "Aktif",
       "url": "https://sipongi.gakkum.kehutanan.go.id/",
       "temuan": "Pemeriksaan 22 Oktober 2026: GET https://opsroom.sipongidata.my.id/api/konfigurasi dan /api/sebaran tanpa header otorisasi mengembalikan HTTP 200 JSON. Tidak ada token yang disalin. Satelit mengikuti sumber_satelit pada konfigurasi. Host lama sipongi.menlhk.go.id tidak punya alamat DNS.",
-      "diambil": "2026-10-27T00:44:30.848Z",
+      "diambil": "2026-10-27T01:49:19.710Z",
       "label": "2026-10-22, 2026-10-23, 2026-10-24, 2026-10-25, 2026-10-26, 2026-10-27",
       "catatan": "Kolom SiPongi menjumlahkan counter High, Medium, dan Low dari semua satelit yang dikembalikan endpoint publik, per kabupaten pada tanggal yang diminta. Kabupaten yang tidak muncul pada tanggal itu ditulis 0. Baris tanpa nama kabupaten tidak dibagikan. Hotspot adalah deteksi satelit, bukan kebakaran terkonfirmasi. Kolom FIRMS adalah pembanding: hanya kepercayaan nominal dan tinggi (huruf n atau h, atau angka ≥ 30)."
     },
     "hotspot": {
       "nama": "NASA FIRMS VIIRS NRT",
       "status": "Snapshot/arsip",
-      "diambil": "2026-10-27T00:33:04.557Z",
+      "diambil": "2026-10-27T01:37:40.696Z",
       "observasi": "2026-10-26T18:15:00.000Z",
       "label": "Lintasan terbaru 2026-10-26T18:15:00.000Z UTC. Wilayah dari kueri BIG, bukan berkas batas.",
       "catatan": "Kolom SiPongi menjumlahkan counter High, Medium, dan Low dari semua satelit yang dikembalikan endpoint publik, per kabupaten pada tanggal yang diminta. Kabupaten yang tidak muncul pada tanggal itu ditulis 0. Baris tanpa nama kabupaten tidak dibagikan. Hotspot adalah deteksi satelit, bukan kebakaran terkonfirmasi. Kolom FIRMS adalah pembanding: hanya kepercayaan nominal dan tinggi (huruf n atau h, atau angka ≥ 30). "
@@ -46,8 +46,8 @@
     "cap": {
       "nama": "Sumber: BMKG",
       "status": "Aktif",
-      "diambil": "2026-10-27T00:33:04.557Z",
-      "observasi": "2026-10-27T00:30:11.000Z",
+      "diambil": "2026-10-27T01:37:40.696Z",
+      "observasi": "2026-10-27T01:45:12.000Z",
       "label": "Nowcast BMKG, dasar waktu 0–3 jam.",
       "catatan": "Cakupan nasional. Tanpa peringatan bukan nol."
     },
@@ -8918,7 +8918,7 @@
         "2026-10-24": "Tidak ada peringatan",
         "2026-10-25": "Tidak ada peringatan",
         "2026-10-26": "Tidak ada peringatan",
-        "2026-10-27": "Tidak ada peringatan"
+        "2026-10-27": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "13.11": {
@@ -10564,7 +10564,7 @@
         "2026-10-24": "Tidak ada peringatan",
         "2026-10-25": "Hujan Lebat dan Petir · Moderate",
         "2026-10-26": "Tidak ada peringatan",
-        "2026-10-27": "Tidak ada peringatan"
+        "2026-10-27": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "15.02": {
@@ -10637,7 +10637,7 @@
         "2026-10-24": "Hujan Lebat dan Petir · Moderate",
         "2026-10-25": "Hujan Lebat dan Petir · Moderate",
         "2026-10-26": "Hujan Lebat dan Petir · Moderate",
-        "2026-10-27": "Tidak ada peringatan"
+        "2026-10-27": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "15.03": {
@@ -10710,7 +10710,7 @@
         "2026-10-24": "Hujan Lebat dan Petir · Moderate",
         "2026-10-25": "Tidak ada peringatan",
         "2026-10-26": "Hujan Lebat dan Petir · Moderate",
-        "2026-10-27": "Tidak ada peringatan"
+        "2026-10-27": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "15.04": {
@@ -11083,7 +11083,7 @@
         "2026-10-24": "Tidak ada peringatan",
         "2026-10-25": "Tidak ada peringatan",
         "2026-10-26": "Hujan Lebat dan Petir · Moderate",
-        "2026-10-27": "Tidak ada peringatan"
+        "2026-10-27": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "15.09": {
@@ -12275,7 +12275,7 @@
         "2026-10-24": "Hujan Lebat dan Petir · Moderate",
         "2026-10-25": "Tidak ada peringatan",
         "2026-10-26": "Hujan Lebat dan Petir · Moderate",
-        "2026-10-27": "Tidak ada peringatan"
+        "2026-10-27": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "16.71": {
@@ -13092,7 +13092,7 @@
         "2026-10-24": "Tidak ada peringatan",
         "2026-10-25": "Tidak ada peringatan",
         "2026-10-26": "Tidak ada peringatan",
-        "2026-10-27": "Tidak ada peringatan"
+        "2026-10-27": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "17.08": {
@@ -15172,7 +15172,7 @@
         "2026-10-24": "Tidak ada peringatan",
         "2026-10-25": "Hujan Lebat dan Petir · Moderate",
         "2026-10-26": "Tidak ada peringatan",
-        "2026-10-27": "Hujan Lebat dan Petir · Moderate"
+        "2026-10-27": "Tidak ada peringatan"
       }
     },
     "21.04": {
@@ -25585,10 +25585,10 @@
         "2026-10-20": 9,
         "2026-10-21": 89,
         "2026-10-22": 44,
-        "2026-10-23": 22,
-        "2026-10-24": 8,
-        "2026-10-25": 20,
-        "2026-10-26": 44
+        "2026-10-23": 29,
+        "2026-10-24": 11,
+        "2026-10-25": 35,
+        "2026-10-26": 60
       },
       "s": {
         "2026-10-17": 124,
@@ -28395,7 +28395,7 @@
         "2026-10-24": "Tidak ada peringatan",
         "2026-10-25": "Hujan Lebat dan Petir · Moderate",
         "2026-10-26": "Tidak ada peringatan",
-        "2026-10-27": "Hujan Lebat dan Petir · Moderate"
+        "2026-10-27": "Tidak ada peringatan"
       }
     },
     "62.04": {
@@ -30224,11 +30224,11 @@
         "2026-10-19": 136,
         "2026-10-20": 42,
         "2026-10-21": 150,
-        "2026-10-22": 216,
-        "2026-10-23": 176,
-        "2026-10-24": 10,
-        "2026-10-25": 103,
-        "2026-10-26": 127,
+        "2026-10-22": 129,
+        "2026-10-23": 108,
+        "2026-10-24": 0,
+        "2026-10-25": 97,
+        "2026-10-26": 382,
         "2026-10-27": 22
       },
       "f": {
@@ -30508,12 +30508,12 @@
         "2026-10-19": 4,
         "2026-10-20": 30,
         "2026-10-21": 19,
-        "2026-10-22": 80,
+        "2026-10-22": 89,
         "2026-10-23": 16,
         "2026-10-24": 18,
         "2026-10-25": 9,
-        "2026-10-26": 0,
-        "2026-10-27": 7
+        "2026-10-26": 16,
+        "2026-10-27": 21
       },
       "f": {
         "2026-10-22": 6.3317719,
@@ -41351,6 +41351,6 @@
     }
   },
   "meta": {
-    "hotspotTanpaKode": 64
+    "hotspotTanpaKode": 22
   }
 }
