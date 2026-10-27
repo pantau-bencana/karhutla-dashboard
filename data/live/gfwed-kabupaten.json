@@ -1665,17 +1665,17 @@
       "kode": "52.04",
       "kabupaten": "Sumbawa",
       "provinsi": "Nusa Tenggara Barat",
-      "fwi_rata": 4.56,
-      "fwi_maks": 14.45,
-      "n_sel": 9
+      "fwi_rata": 3.96,
+      "fwi_maks": 3.96,
+      "n_sel": 1
     },
     {
       "kode": "52.05",
       "kabupaten": "Dompu",
       "provinsi": "Nusa Tenggara Barat",
-      "fwi_rata": 0.12,
+      "fwi_rata": 0.15,
       "fwi_maks": 0.29,
-      "n_sel": 3
+      "n_sel": 2
     },
     {
       "kode": "52.06",
@@ -1705,24 +1705,8 @@
       "kode": "53.01",
       "kabupaten": "Kupang",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 1.74,
+      "fwi_rata": 3.47,
       "fwi_maks": 4.24,
-      "n_sel": 6
-    },
-    {
-      "kode": "53.02",
-      "kabupaten": "Timor Tengah Selatan",
-      "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 1.71,
-      "fwi_maks": 5.11,
-      "n_sel": 3
-    },
-    {
-      "kode": "53.03",
-      "kabupaten": "Timor Tengah Utara",
-      "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 3.33,
-      "fwi_maks": 9.46,
       "n_sel": 3
     },
     {
