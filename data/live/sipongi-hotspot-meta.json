@@ -1,6 +1,6 @@
 {
   "status": "ok",
-  "fetched_at": "2026-10-27T01:49:19.710Z",
+  "fetched_at": "2026-10-27T06:25:23.390Z",
   "url": "https://opsroom.sipongidata.my.id/api/sebaran",
   "satelit": "all-nasa",
   "confidence": "all",
@@ -12,16 +12,8 @@
     "2026-10-26",
     "2026-10-27"
   ],
-  "record_count": 1180,
+  "record_count": 1189,
   "lepas": [
-    {
-      "tanggal": "2026-10-22",
-      "provinsi": "IKN",
-      "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "High",
-      "sumber": "NASA-MODIS",
-      "counter": 8
-    },
     {
       "tanggal": "2026-10-22",
       "provinsi": "IKN",
@@ -29,62 +21,6 @@
       "confidence": "Medium",
       "sumber": "NASA-MODIS",
       "counter": 34
-    },
-    {
-      "tanggal": "2026-10-22",
-      "provinsi": "IKN",
-      "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "Medium",
-      "sumber": "NASA-NOAA20",
-      "counter": 40
-    },
-    {
-      "tanggal": "2026-10-22",
-      "provinsi": "IKN",
-      "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "Low",
-      "sumber": "NASA-NOAA20",
-      "counter": 5
-    },
-    {
-      "tanggal": "2026-10-23",
-      "provinsi": "IKN",
-      "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "Medium",
-      "sumber": "NASA-NOAA20",
-      "counter": 68
-    },
-    {
-      "tanggal": "2026-10-24",
-      "provinsi": "IKN",
-      "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "Medium",
-      "sumber": "NASA-SNPP",
-      "counter": 2
-    },
-    {
-      "tanggal": "2026-10-24",
-      "provinsi": "IKN",
-      "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "Medium",
-      "sumber": "NASA-NOAA20",
-      "counter": 8
-    },
-    {
-      "tanggal": "2026-10-25",
-      "provinsi": "IKN",
-      "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "Medium",
-      "sumber": "NASA-MODIS",
-      "counter": 6
-    },
-    {
-      "tanggal": "2026-10-27",
-      "provinsi": "IKN",
-      "kabupaten": "KUTAI KARTANEGARA",
-      "confidence": "Medium",
-      "sumber": "NASA-SNPP",
-      "counter": 66
     }
   ]
 }
