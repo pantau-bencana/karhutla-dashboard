@@ -1,6 +1,6 @@
 {
   "hariWib": "2026-10-28",
-  "generated_at": "2026-10-27T19:13:06.366Z",
+  "generated_at": "2026-10-27T19:26:13.986Z",
   "sumber": {
     "sipongi": {
       "nama": "SiPongi+",
@@ -46,8 +46,8 @@
     "cap": {
       "nama": "Sumber: BMKG",
       "status": "Aktif",
-      "diambil": "2026-10-27T18:59:06.179Z",
-      "observasi": "2026-10-27T19:00:24.000Z",
+      "diambil": "2026-10-27T19:26:13.610Z",
+      "observasi": "2026-10-27T19:15:24.000Z",
       "label": "Nowcast BMKG, dasar waktu 0–3 jam.",
       "catatan": "Cakupan nasional. Tanpa peringatan bukan nol."
     },
