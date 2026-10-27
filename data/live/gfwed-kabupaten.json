@@ -1705,9 +1705,9 @@
       "kode": "53.01",
       "kabupaten": "Kupang",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 1.74,
-      "fwi_maks": 4.24,
-      "n_sel": 6
+      "fwi_rata": 1.24,
+      "fwi_maks": 3.1,
+      "n_sel": 5
     },
     {
       "kode": "53.02",
@@ -1777,9 +1777,9 @@
       "kode": "53.11",
       "kabupaten": "Sumba Timur",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 6.78,
-      "fwi_maks": 10.07,
-      "n_sel": 7
+      "fwi_rata": 6.23,
+      "fwi_maks": 9.72,
+      "n_sel": 6
     },
     {
       "kode": "53.12",
@@ -1795,14 +1795,6 @@
       "provinsi": "Nusa Tenggara Timur",
       "fwi_rata": 3.64,
       "fwi_maks": 3.64,
-      "n_sel": 1
-    },
-    {
-      "kode": "53.14",
-      "kabupaten": "Rote Ndao",
-      "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 15.22,
-      "fwi_maks": 15.22,
       "n_sel": 1
     },
     {
