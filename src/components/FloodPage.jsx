@@ -512,8 +512,8 @@ function FloodBody() {
                 {urut.length} kab/kota
                 {province ? "" : `, ${jumlahBerstatus} berstatus`}.
                 {province
-                  ? " Nomor pada peta sama dengan nomor tabel."
-                  : " Seluruh baris ditampilkan, urut Awas, Siaga, Waspada, tanpa status, lalu tidak terklasifikasi atau tanpa data."}{" "}
+                  ? " Nomor pada peta sama dengan nomor tabel. Dikelompokkan menurut status."
+                  : " Dikelompokkan Awas, Siaga, Waspada, dan tanpa status atau tidak terklasifikasi. Kelompok berstatus tertinggi yang berisi kab/kota terbuka. Nomor tetap mengikuti urutan itu."}{" "}
                 Tingkat kabupaten/kota. Kecamatan dan kelurahan tidak ditampilkan.
               </p>
               <FloodKabDaftar
@@ -608,7 +608,8 @@ function FloodBody() {
               ) : (
                 <p className="fine">
                   Tabel Semua provinsi memuat seluruh {urut.length} kab/kota pada tab ini, urut Awas, Siaga, Waspada, tanpa
-                  status, lalu tidak terklasifikasi atau tanpa data. Unduh CSV dan XLSX memuat urutan yang sama.
+                  status, lalu tidak terklasifikasi atau tanpa data. Kelompok dapat dibuka atau ditutup. Unduh CSV dan XLSX
+                  memuat seluruh baris pada urutan yang sama.
                 </p>
               )}
             </>

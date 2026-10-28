@@ -27,7 +27,7 @@ import {
 import { HISTORIS_DISCLAIMER, barisDampakHistoris } from "../lib/bnpbBanjir.js";
 import { HUJAN_PEMBANDING_JENIS, barisHujanModel } from "../lib/hujanPembanding.js";
 import { InfoTip } from "./InfoTip.jsx";
-import { DIBI_UNAVAILABLE, FLOOD_INFO_COLUMNS, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, krbLinksFor, skorTeks, sortFloodRows } from "../lib/floodMatrix.js";
+import { DIBI_UNAVAILABLE, FLOOD_INFO_COLUMNS, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, grupStatusTerbukaAwal, kelompokStatusKab, krbLinksFor, skorTeks, sortFloodRows } from "../lib/floodMatrix.js";
 
 function selPenduduk(row, jenis) {
   if (!row.pendudukTampil) return "—";
@@ -292,77 +292,121 @@ export function rincianKab(row, hujanTeks) {
 
 export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null }) {
   const ordered = rows ?? [];
+  const kelompok = useMemo(() => kelompokStatusKab(ordered), [ordered]);
   const [buka, setBuka] = useState("");
+  const [pilihanGrup, setPilihanGrup] = useState(null);
+  const grupTerbuka = pilihanGrup ?? new Set([grupStatusTerbukaAwal(kelompok)]);
+  const lebar = tampilProvinsi ? 6 : 5;
+
+  function ubahGrup(id) {
+    setPilihanGrup((saat) => {
+      const dasar = new Set(saat ?? [grupStatusTerbukaAwal(kelompok)]);
+      if (dasar.has(id)) dasar.delete(id);
+      else dasar.add(id);
+      return dasar;
+    });
+  }
+
   return (
-    <div className="table-wrap flood-side wrap-cells">
+    <div className="flood-daftar-bingkai">
       <p className="fine">{DIBI_UNAVAILABLE}. Tanda — pada kolom Historis bukan nol kejadian. Klasifikasi DAS belum terintegrasi.</p>
-      <table>
-        <colgroup>
-          <col className="col-no" />
-          <col className="col-nama" />
-          {tampilProvinsi ? <col className="col-prov" /> : null}
-          <col className="col-status" />
-          <col className="col-historis" />
-          <col className="col-irbi" />
-        </colgroup>
-        <caption>
-          Kolom: No, Kab/Kota{tampilProvinsi ? ", Provinsi" : ""}, Status, Historis, IRBI. Nomor mengikuti urutan Awas, Siaga, Waspada, tanpa status, lalu tidak terklasifikasi atau tanpa data.
-          Bukan peringkat prioritas. Ketuk nama untuk rincian.
-        </caption>
-        <thead>
-          <tr>
-            <th scope="col">No</th>
-            <th scope="col">Kab/Kota</th>
-            {tampilProvinsi ? <th scope="col">Provinsi</th> : null}
-            <th scope="col">Status</th>
-            <th scope="col">
-              <span className="th-with-info">
-                Historis
-                <InfoTip label="Penjelasan kolom Historis" align="end">
-                  <p>{HISTORIS_DISCLAIMER}</p>
-                </InfoTip>
-              </span>
-            </th>
-            <th scope="col">IRBI</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ordered.map((row, index) => {
-            const terbuka = buka === row.kode;
-            const hujanTeks = hujanNilai ? hujanNilai.get(row.kode) || "belum tersedia" : "";
-            const rincian = rincianKab(row, hujanTeks);
+      <div className="table-wrap flood-side wrap-cells flood-daftar" tabIndex={0} aria-label="Tabel kabupaten dan kota menurut status">
+        <table>
+          <colgroup>
+            <col className="col-no" />
+            <col className="col-nama" />
+            {tampilProvinsi ? <col className="col-prov" /> : null}
+            <col className="col-status" />
+            <col className="col-historis" />
+            <col className="col-irbi" />
+          </colgroup>
+          <caption>
+            Kolom: No, Kab/Kota{tampilProvinsi ? ", Provinsi" : ""}, Status, Historis, IRBI. Nomor mengikuti urutan Awas, Siaga, Waspada, tanpa status, lalu tidak terklasifikasi atau tanpa data.
+            Bukan peringkat prioritas. Ketuk judul kelompok untuk membuka atau menutup. Ketuk nama untuk rincian.
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">No</th>
+              <th scope="col">Kab/Kota</th>
+              {tampilProvinsi ? <th scope="col">Provinsi</th> : null}
+              <th scope="col">Status</th>
+              <th scope="col">
+                <span className="th-with-info">
+                  Historis
+                  <InfoTip label="Penjelasan kolom Historis" align="end">
+                    <p>{HISTORIS_DISCLAIMER}</p>
+                  </InfoTip>
+                </span>
+              </th>
+              <th scope="col">IRBI</th>
+            </tr>
+          </thead>
+          {kelompok.map((grup) => {
+            const terbuka = grupTerbuka.has(grup.id);
+            const panelId = `flood-grup-${grup.id}`;
             return (
-              <Fragment key={row.kode}>
-                <tr>
-                  <td>{index + 1}</td>
-                  <th scope="row">
+              <tbody key={grup.id} id={panelId} className={`flood-status-grup flood-status-${grup.id}`}>
+                <tr className="flood-status-head">
+                  <th scope="rowgroup" colSpan={lebar}>
                     <button
                       type="button"
-                      className="row-detail-toggle"
+                      className="flood-status-toggle"
                       aria-expanded={terbuka}
-                      onClick={() => setBuka(terbuka ? "" : row.kode)}
+                      aria-controls={panelId}
+                      onClick={() => ubahGrup(grup.id)}
                     >
-                      {row.nama}
-                      <small>{row.kode}</small>
+                      <span className="flood-status-tanda" aria-hidden="true">{terbuka ? "−" : "+"}</span>
+                      <span className="flood-status-nama">{grup.label}</span>
+                      <span className="flood-status-count">{grup.isi.length} kab/kota</span>
                     </button>
                   </th>
-                  {tampilProvinsi ? <td>{row.provinsi || "—"}</td> : null}
-                  <td>{selStatusPeta(row)}</td>
-                  <td>{penandaHistoris(row)}</td>
-                  <td>{selIrbi(row)}</td>
                 </tr>
-                {terbuka ? (
-                  <tr className="flood-row-detail">
-                    <td colSpan={tampilProvinsi ? 6 : 5}>
-                      {rincian.length ? rincian.map((baris) => <p key={baris}>{baris}</p>) : <p>Tidak ada rincian tambahan.</p>}
-                    </td>
+                {terbuka && !grup.isi.length ? (
+                  <tr>
+                    <td colSpan={lebar}>Tidak ada kab/kota.</td>
                   </tr>
                 ) : null}
-              </Fragment>
+                {terbuka
+                  ? grup.isi.map(({ row, nomor }) => {
+                      const rinci = buka === row.kode;
+                      const hujanTeks = hujanNilai ? hujanNilai.get(row.kode) || "belum tersedia" : "";
+                      const rincian = rincianKab(row, hujanTeks);
+                      return (
+                        <Fragment key={row.kode}>
+                          <tr>
+                            <td>{nomor}</td>
+                            <th scope="row">
+                              <button
+                                type="button"
+                                className="row-detail-toggle"
+                                aria-expanded={rinci}
+                                onClick={() => setBuka(rinci ? "" : row.kode)}
+                              >
+                                {row.nama}
+                                <small>{row.kode}</small>
+                              </button>
+                            </th>
+                            {tampilProvinsi ? <td>{row.provinsi || "—"}</td> : null}
+                            <td>{selStatusPeta(row)}</td>
+                            <td>{penandaHistoris(row)}</td>
+                            <td>{selIrbi(row)}</td>
+                          </tr>
+                          {rinci ? (
+                            <tr className="flood-row-detail">
+                              <td colSpan={lebar}>
+                                {rincian.length ? rincian.map((baris) => <p key={baris}>{baris}</p>) : <p>Tidak ada rincian tambahan.</p>}
+                              </td>
+                            </tr>
+                          ) : null}
+                        </Fragment>
+                      );
+                    })
+                  : null}
+              </tbody>
             );
           })}
-        </tbody>
-      </table>
+        </table>
+      </div>
       <p className="fine">Tingkat kabupaten/kota. Kecamatan tidak ditampilkan. Rincian memuat masa berlaku, prakiraan, penduduk terdampak, rumah terdampak, dan potensi BPS. Hujan model hanya pada tab Hari ini, Besok, atau Lusa, bila lapisan itu nyala atau prakiraan BMKG untuk hari itu tidak ada.</p>
     </div>
   );
