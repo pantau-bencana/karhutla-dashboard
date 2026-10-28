@@ -127,7 +127,7 @@ import { PROVINSI, SEMUA_PROVINSI } from "../src/lib/provinsi.js";
 import { CAP_DATA_TERAKHIR, cakupanTersimpan, severityLabel } from "../src/lib/capKab.js";
 import { xlsxBytes } from "../src/lib/xlsxMini.js";
 import { buildHotspotTree } from "../src/lib/hotspotTree.js";
-import { DIBI_LUAR_CUPLIKAN, DIBI_UNAVAILABLE, FLOOD_INFO_COLUMNS, IRBI_BANJIR_TERVERIFIKASI, IRBI_LONGSOR_TERVERIFIKASI, IRBI_PENGGUNAAN_INTERNAL, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, buildFloodRows, kodeWilayah, legendClass, nameKey, MISSING_DIBI, peringkatTampil, urutStatusKab } from "../src/lib/floodMatrix.js";
+import { DIBI_LUAR_CUPLIKAN, DIBI_UNAVAILABLE, FLOOD_INFO_COLUMNS, IRBI_BANJIR_TERVERIFIKASI, IRBI_LONGSOR_TERVERIFIKASI, IRBI_PENGGUNAAN_INTERNAL, IRBI_TIDAK_TERSEDIA, RAIN_RISK_MATRIX, buildFloodRows, grupStatusTerbukaAwal, kelompokStatusKab, kodeWilayah, legendClass, nameKey, MISSING_DIBI, peringkatTampil, urutStatusKab } from "../src/lib/floodMatrix.js";
 import {
   DASARIAN_NOTE,
   MATRIX_PERMISSION,
@@ -1966,10 +1966,24 @@ const urutCuaca = urutStatusKab([
 ]);
 assert.deepEqual(urutCuaca.map((row) => row.kode), ["11.03", "11.01", "11.02"]);
 assert.equal(peringkatTampil({ peta: catTak }), 4);
+const kelompokCuaca = kelompokStatusKab(urutCuaca);
+assert.deepEqual(kelompokCuaca.map((grup) => grup.label), ["Awas", "Siaga", "Waspada", "Tanpa status / tidak terklasifikasi"]);
+assert.deepEqual(kelompokCuaca.find((grup) => grup.id === "waspada").isi.map((item) => item.nomor), [1]);
+assert.deepEqual(kelompokCuaca.find((grup) => grup.id === "tanpa").isi.map((item) => [item.nomor, item.row.kode]), [[2, "11.01"], [3, "11.02"]]);
+assert.equal(grupStatusTerbukaAwal(kelompokCuaca), "waspada");
+assert.equal(grupStatusTerbukaAwal(kelompokStatusKab([{ kode: "11.04", nama: "Aceh", peta: { kind: "status", status: "Awas" } }, ...urutCuaca])), "awas");
+assert.equal(grupStatusTerbukaAwal(kelompokStatusKab([])), "awas");
+assert.match(readFileSync("src/styles.css", "utf8"), /flood-daftar/);
+assert.match(readFileSync("src/components/FloodPage.jsx", "utf8"), /barisXlsx\(kepalaUnduh, urut\)/);
+assert.match(readFileSync("src/components/FloodPage.jsx", "utf8"), /csvUnduh\(kepalaUnduh, urut\)/);
 assert.equal(readFileSync("src/components/FloodRiskMap.jsx", "utf8").includes("Cuaca di luar matriks"), false);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /Penjelasan lapisan peringatan/);
 assert.match(readFileSync("src/components/FloodRiskMap.jsx", "utf8"), /#\/sumber-metode\/petunjuk-banjir/);
 const daftarSumber = readFileSync("src/components/FloodInfoTable.jsx", "utf8");
+assert.match(readFileSync("src/lib/floodMatrix.js", "utf8"), /Tanpa status \/ tidak terklasifikasi/);
+assert.match(daftarSumber, /grupStatusTerbukaAwal/);
+assert.match(daftarSumber, /flood-status-toggle/);
+assert.match(daftarSumber, /aria-expanded=\{terbuka\}/);
 assert.match(daftarSumber, /<th scope="col">No<\/th>[\s\S]*<th scope="col">Kab\/Kota<\/th>[\s\S]*<th scope="col">Provinsi<\/th>[\s\S]*<th scope="col">Status<\/th>[\s\S]*<th scope="col">[\s\S]*Historis[\s\S]*<th scope="col">IRBI<\/th>/);
 assert.match(daftarSumber, /Penjelasan kolom Historis/);
 assert.match(daftarSumber, /HISTORIS_DISCLAIMER/);

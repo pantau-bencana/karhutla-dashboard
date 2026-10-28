@@ -202,6 +202,34 @@ export function urutStatusKab(rows) {
   });
 }
 
+export const GRUP_STATUS_DAFTAR = Object.freeze([
+  { id: "awas", label: "Awas" },
+  { id: "siaga", label: "Siaga" },
+  { id: "waspada", label: "Waspada" },
+  { id: "tanpa", label: "Tanpa status / tidak terklasifikasi" },
+]);
+
+export function idGrupStatus(row) {
+  const rank = peringkatTampil(row);
+  if (rank === 0) return "awas";
+  if (rank === 1) return "siaga";
+  if (rank === 2) return "waspada";
+  return "tanpa";
+}
+
+export function kelompokStatusKab(rows) {
+  const bucket = new Map(GRUP_STATUS_DAFTAR.map((grup) => [grup.id, []]));
+  (rows ?? []).forEach((row, index) => {
+    bucket.get(idGrupStatus(row)).push({ row, nomor: index + 1 });
+  });
+  return GRUP_STATUS_DAFTAR.map((grup) => ({ id: grup.id, label: grup.label, isi: bucket.get(grup.id) }));
+}
+
+export function grupStatusTerbukaAwal(kelompok) {
+  const berisi = (kelompok ?? []).find((grup) => grup.id !== "tanpa" && grup.isi.length > 0);
+  return berisi ? berisi.id : "awas";
+}
+
 export function sortFloodRows(rows, key, direction = "asc") {
   if (key === "status") {
     const ordered = urutStatusKab(rows);
