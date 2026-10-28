@@ -48,6 +48,7 @@ import {
   teksMm,
 } from "../lib/hujanPembanding.js";
 import { PEMETAAN_CUACA, indeksPrakiraan, periodeTigaHari, ringkasPrakiraan, terapkanHari } from "../lib/prakiraanHujan.js";
+import { identitasTampil } from "../lib/identitas.js";
 import { PROVINSI, SEMUA_PROVINSI } from "../lib/provinsi.js";
 
 const BANJIR_CSV = "data/static/irbi-2025-banjir.csv";
@@ -720,7 +721,7 @@ function FloodBody() {
             </a>
             . Angka yang tampil pada kab/kota berstatus adalah {POTENSI_LABEL}.
           </p>
-          <p>Pantau Bencana v0.1 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH.</p>
+          <p>{identitasTampil()}</p>
         </div>
       </section>
       <section className="card flood-disclaimer">

@@ -1,4 +1,5 @@
 import { kelasIrbi } from "./analisisPantauBencana.js";
+import { identitasTampil } from "./identitas.js";
 import { formatAngka } from "./format.js";
 import { IRBI_PENGGUNAAN_INTERNAL, IRBI_TIDAK_TERSEDIA } from "./floodMatrix.js";
 import { daftarKabkota } from "./kabProvinsi.js";
@@ -22,7 +23,7 @@ export const IRBI_ANCAMAN = Object.freeze([
   { id: "multibahaya", nama: "Multibahaya", berkas: "data/static/irbi-2025-multibahaya.csv", halaman: "40–55", opsional: true },
 ]);
 
-const IDENTITAS = "Pantau Bencana v0.1 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH.";
+const IDENTITAS = identitasTampil();
 
 function kunci(provinsi, nama) {
   const rapikan = (nilai) =>

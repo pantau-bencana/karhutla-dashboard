@@ -293,6 +293,11 @@ export function rincianKab(row, hujanTeks) {
 export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null }) {
   const ordered = rows ?? [];
   const [buka, setBuka] = useState("");
+  // v0.2 saja menyingkat daftar. v0.1 tetap seluruh baris. Kelompok provinsi di FloodInfoTable tidak diubah.
+  const edisiV2 = Boolean(import.meta.env && import.meta.env.VITE_EDITION === "v2");
+  const [tampilSemua, setTampilSemua] = useState(!edisiV2);
+  const batasRingkas = 8;
+  const terlihat = edisiV2 && !tampilSemua ? ordered.slice(0, batasRingkas) : ordered;
   return (
     <div className="table-wrap flood-side wrap-cells">
       <p className="fine">{DIBI_UNAVAILABLE}. Tanda — pada kolom Historis bukan nol kejadian. Klasifikasi DAS belum terintegrasi.</p>
@@ -327,7 +332,7 @@ export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null
           </tr>
         </thead>
         <tbody>
-          {ordered.map((row, index) => {
+          {terlihat.map((row, index) => {
             const terbuka = buka === row.kode;
             const hujanTeks = hujanNilai ? hujanNilai.get(row.kode) || "belum tersedia" : "";
             const rincian = rincianKab(row, hujanTeks);
@@ -363,6 +368,13 @@ export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null
           })}
         </tbody>
       </table>
+      {edisiV2 && ordered.length > batasRingkas ? (
+        <p className="v2-more">
+          <button type="button" onClick={() => setTampilSemua((nilai) => !nilai)}>
+            {tampilSemua ? "Tampilkan lebih sedikit" : `Lihat selengkapnya (${ordered.length - batasRingkas} kab/kota)`}
+          </button>
+        </p>
+      ) : null}
       <p className="fine">Tingkat kabupaten/kota. Kecamatan tidak ditampilkan. Rincian memuat masa berlaku, prakiraan, penduduk terdampak, rumah terdampak, dan potensi BPS. Hujan model hanya pada tab Hari ini, Besok, atau Lusa, bila lapisan itu nyala atau prakiraan BMKG untuk hari itu tidak ada.</p>
     </div>
   );
