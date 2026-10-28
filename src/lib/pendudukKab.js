@@ -15,12 +15,18 @@ export const PENDUDUK_HEADER = Object.freeze([
   "tahun_rt",
   "sumber_rt",
 ]);
-export const POTENSI_PENDUDUK = "Potensi penduduk terdampak";
-export const POTENSI_RUMAH = "Potensi rumah terdampak";
-export const POTENSI_LABEL = "potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar";
-export const PENDUDUK_BUKAN_TERPAPAR = POTENSI_LABEL;
+export const POTENSI_PENDUDUK = "Jumlah penduduk di wilayah berstatus";
+export const POTENSI_RUMAH = "Jumlah rumah tangga di wilayah berstatus";
+export const KPI_PENDUDUK = "Penduduk di wilayah berstatus";
+export const KPI_RUMAH = "Rumah tangga di wilayah berstatus";
+export const CATATAN_PENDUDUK =
+  "Total penduduk kab/kota berstatus Awas/Siaga/Waspada (BPS). Bukan jumlah orang yang terdampak.";
+export const CATATAN_RUMAH =
+  "Total rumah tangga kab/kota (BPS SP2020), dipakai sebagai pendekatan jumlah rumah. Bukan jumlah rumah yang terdampak.";
+export const POTENSI_LABEL = `${CATATAN_PENDUDUK} ${CATATAN_RUMAH}`;
+export const PENDUDUK_BUKAN_TERPAPAR = CATATAN_PENDUDUK;
 export const PENDUDUK_ABSENT =
-  "Angka penduduk dan rumah tangga kabupaten/kota belum diisi dari tabel BPS. Sel kosong bukan nol. potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar.";
+  `Angka penduduk dan rumah tangga kabupaten/kota belum diisi dari tabel BPS. Sel kosong bukan nol. ${CATATAN_PENDUDUK} ${CATATAN_RUMAH}`;
 export const BPS_PROYEKSI_URL = "https://sensus.bps.go.id/publikasi/index/sp2020";
 export const BPS_PENDUDUK_URL =
   "https://www.bps.go.id/id/statistics-table/2/Mjc5MCMy/-jumlah-penduduk-menurut-kabupaten-kota-dan-kelompok-umur.html";
@@ -81,8 +87,9 @@ export function barisTooltip(item) {
       : `${labelRumahTangga(item)}: ${teksAngkaPenduduk(item.rumahTangga)}`;
   return [
     `${labelPenduduk(item)}: ${teksAngkaPenduduk(item?.penduduk ?? null)}`,
+    CATATAN_PENDUDUK,
     rumah,
-    POTENSI_LABEL,
+    CATATAN_RUMAH,
   ];
 }
 
@@ -141,13 +148,13 @@ export function ringkasPendudukBerstatus(rows, indeks) {
 }
 
 export function kalimatJumlahPenduduk(ringkas, { memuat = false } = {}) {
-  if (memuat) return `${POTENSI_PENDUDUK} pada kab/kota berstatus menunggu data peringatan. ${POTENSI_LABEL}.`;
-  if (!ringkas?.adaStatus) return "Tidak ada kab/kota berstatus, jadi potensi penduduk dan potensi rumah tidak dijumlahkan.";
+  if (memuat) return `${POTENSI_PENDUDUK} pada kab/kota berstatus menunggu data peringatan. ${CATATAN_PENDUDUK}`;
+  if (!ringkas?.adaStatus) return "Tidak ada kab/kota berstatus, jadi jumlah penduduk dan rumah tangga di wilayah berstatus tidak dijumlahkan.";
   const penduduk = ringkas.lengkap
     ? `${POTENSI_PENDUDUK}: ${teksAngkaPenduduk(ringkas.penduduk)}.`
     : `${POTENSI_PENDUDUK} belum dapat dijumlahkan. ${ringkas.kurang} dari ${ringkas.jumlahStatus} kab/kota berstatus belum punya angka BPS.`;
   const rumah = ringkas.rumahLengkap
     ? `${POTENSI_RUMAH}: ${teksAngkaPenduduk(ringkas.rumah)}.`
     : `${POTENSI_RUMAH} belum dapat dijumlahkan. ${ringkas.rumahKurang} dari ${ringkas.jumlahStatus} kab/kota berstatus belum punya angka rumah tangga BPS.`;
-  return `${penduduk} ${rumah} ${POTENSI_LABEL}.`;
+  return `${penduduk} ${rumah} ${CATATAN_PENDUDUK} ${CATATAN_RUMAH}`;
 }

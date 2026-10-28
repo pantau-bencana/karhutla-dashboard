@@ -1,12 +1,12 @@
 import { Badge } from "./Badge.jsx";
 import { ANALISIS_BUKAN_RESMI, ANALISIS_MATRIKS, ANALISIS_NAMA, ANALISIS_WARNA } from "../lib/analisisPantauBencana.js";
-import { BNPB_RESOURCE_URL, DAMPAK_HISTORIS_CATATAN, HISTORIS_BANJIR_CATATAN, HISTORIS_DISCLAIMER } from "../lib/bnpbBanjir.js";
+import { BNPB_RESOURCE_URL, DAMPAK_HISTORIS_CATATAN, DAMPAK_RIIL_BELUM, HISTORIS_BANJIR_CATATAN, HISTORIS_DISCLAIMER } from "../lib/bnpbBanjir.js";
 import { BMKG_CAP_DOCS, BMKG_CAP_RSS } from "../lib/capKab.js";
 import { BMKG_DOCS_URL } from "../lib/bmkgForecast.js";
 import { IKLIM_BMKG_URL } from "../lib/dasarianManual.js";
 import { BATAS_KAB_SUMBER } from "../lib/batasKab.js";
 import { BIG_SERVICE } from "../lib/bigWilayah.js";
-import { BPS_PENDUDUK_URL, PENDUDUK_BUKAN_TERPAPAR, RUMAH_BELUM } from "../lib/pendudukKab.js";
+import { BPS_PENDUDUK_URL, CATATAN_PENDUDUK, CATATAN_RUMAH, POTENSI_PENDUDUK, POTENSI_RUMAH, RUMAH_BELUM } from "../lib/pendudukKab.js";
 import { IRBI_BANJIR_TERVERIFIKASI, IRBI_BUKU_BANJIR_URL, IRBI_PENGGUNAAN_INTERNAL } from "../lib/floodMatrix.js";
 import {
   HUJAN_GPM_CATATAN,
@@ -249,7 +249,7 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
             <a href={BPS_PENDUDUK_URL} target="_blank" rel="noopener noreferrer">
               Jumlah Penduduk menurut Kabupaten/Kota, BPS
             </a>
-            . Tiap baris menyimpan URL sumbernya. Rumah tangga/KK hanya terisi untuk DKI Jakarta, Banten, dan Jawa Timur. Selain itu tertulis {RUMAH_BELUM}. Angka yang tampil adalah {PENDUDUK_BUKAN_TERPAPAR}.
+            . Tiap baris menyimpan URL sumbernya. Rumah tangga/KK hanya terisi untuk DKI Jakarta, Banten, dan Jawa Timur. Selain itu tertulis {RUMAH_BELUM}. {CATATAN_PENDUDUK} {CATATAN_RUMAH}
           </li>
           <li>
             Peta kab/kota memakai berkas batas yang disimpan dari layanan BIG{" "}
@@ -267,9 +267,9 @@ export function MetodePage({ manifest, anchor = "", term = "" }) {
           <li>Cuplikan kejadian BNPB 2024 yang tersimpan tidak dipakai untuk menyatakan provinsi lain tidak tercantum di tabel nasional.</li>
           <li>{HISTORIS_BANJIR_CATATAN} Kolom Historis tetap “Cuplikan DIBI belum tersedia” bila cuplikan itu tidak termuat.</li>
           <li>{HISTORIS_DISCLAIMER}</li>
-          <li>Potensi penduduk terdampak dan potensi rumah terdampak memakai total kab/kota BPS. potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar. Halaman inaRISK yang menampilkan jiwa terpapar tidak dipakai.</li>
+          <li>{POTENSI_PENDUDUK} dan {POTENSI_RUMAH.toLowerCase()} memakai total kab/kota BPS. {CATATAN_PENDUDUK} {CATATAN_RUMAH} Halaman inaRISK yang menampilkan jiwa terpapar tidak dipakai.</li>
           <li>
-            Penduduk terdampak dan rumah terdampak pada rincian kab/kota tertulis belum tersedia. {DAMPAK_HISTORIS_CATATAN} Angka provinsi tidak dipakai sebagai angka kabupaten.
+            {DAMPAK_RIIL_BELUM}. {DAMPAK_HISTORIS_CATATAN} Angka provinsi tidak dipakai sebagai angka kabupaten.
           </li>
           <li>{BATAS_KAB_SUMBER}</li>
           <li>Cuplikan CAP yang belum bertanda cakupan nasional tidak dipakai untuk menyatakan suatu kabupaten aman.</li>

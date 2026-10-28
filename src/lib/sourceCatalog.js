@@ -1,6 +1,8 @@
 // Katalog sumber untuk halaman Sumber Data, ringkasan, dan skrip pembaruan.
 // Status mengikuti yang benar-benar dapat diambil, bukan rencana.
 
+import { CATATAN_PENDUDUK, CATATAN_RUMAH, POTENSI_PENDUDUK, POTENSI_RUMAH } from "./pendudukKab.js";
+
 export const SMOKE_URL = "https://www.bmkg.go.id/cuaca/satelit/citra-sebaran-asap";
 export const SMOKE_IMAGE_URL = "https://inderaja.bmkg.go.id/Trajektori/Asap.png";
 
@@ -390,7 +392,7 @@ export const SOURCES = [
     nama: "Penduduk dan rumah tangga kabupaten/kota",
     instansi: "BPS",
     fungsi:
-      "Potensi penduduk terdampak dan potensi rumah terdampak: total satu kabupaten/kota, hanya pada baris berstatus Awas, Siaga, atau Waspada. potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar.",
+      `${POTENSI_PENDUDUK} dan ${POTENSI_RUMAH.charAt(0).toLowerCase()}${POTENSI_RUMAH.slice(1)}: total satu kabupaten/kota, hanya pada baris berstatus Awas, Siaga, atau Waspada. ${CATATAN_PENDUDUK} ${CATATAN_RUMAH}`,
     officialUrl: "https://sensus.bps.go.id/publikasi/index/sp2020",
     officialLabel: "Publikasi Proyeksi Penduduk Kabupaten/Kota, Sensus Penduduk 2020",
     access: "Data statis",
@@ -399,7 +401,7 @@ export const SOURCES = [
     updateType: "Tahunan / statis",
     file: "data/static/penduduk-kabkota.csv",
     limitation:
-      "514 kabupaten/kota. Penduduk adalah proyeksi BPS 2026. potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar. Rumah tangga hanya DKI Jakarta, Banten, dan Jawa Timur; sel lain belum tersedia dan bukan nol. Kode mengikuti batas BIG, bukan kode BPS di dalam kalimat sumber. Tidak ada kunci API.",
+      `514 kabupaten/kota. Penduduk adalah proyeksi BPS 2026. ${CATATAN_PENDUDUK} Rumah tangga hanya DKI Jakarta, Banten, dan Jawa Timur; sel lain belum tersedia dan bukan nol. ${CATATAN_RUMAH} Kode mengikuti batas BIG, bukan kode BPS di dalam kalimat sumber. Tidak ada kunci API.`,
   },
   {
     id: "hujan_pembanding_banjir",

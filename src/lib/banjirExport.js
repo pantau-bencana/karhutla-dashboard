@@ -2,7 +2,7 @@ import { CAP_DATA_TERAKHIR } from "./capKab.js";
 import { formatWib } from "./format.js";
 import { IRBI_TIDAK_TERSEDIA } from "./floodMatrix.js";
 import { HUJAN_PEMBANDING_JENIS } from "./hujanPembanding.js";
-import { POTENSI_LABEL } from "./pendudukKab.js";
+import { CATATAN_PENDUDUK, CATATAN_RUMAH, KPI_PENDUDUK, KPI_RUMAH } from "./pendudukKab.js";
 
 export const KOLOM_UNDUH = [
   "No",
@@ -11,8 +11,8 @@ export const KOLOM_UNDUH = [
   "Status",
   "Historis",
   "IRBI",
-  "Potensi penduduk",
-  "Potensi rumah",
+  KPI_PENDUDUK,
+  KPI_RUMAH,
 ];
 
 export const DISCLAIMER_UNDUH =
@@ -62,12 +62,13 @@ export function csvUnduh(kepala, rows) {
   const lines = (kepala ?? []).map((line) => `# ${line}`);
   lines.push(KOLOM_UNDUH.join(","));
   for (const row of barisUnduh(rows)) lines.push(row.map(csvCell).join(","));
-  lines.push(`# ${POTENSI_LABEL}`);
+  lines.push(`# ${CATATAN_PENDUDUK}`);
+  lines.push(`# ${CATATAN_RUMAH}`);
   lines.push(`# ${DISCLAIMER_UNDUH}`);
   return `\uFEFF${lines.join("\r\n")}\r\n`;
 }
 
 export function barisXlsx(kepala, rows) {
   const atas = (kepala ?? []).map((line) => [line]);
-  return [...atas, KOLOM_UNDUH, ...barisUnduh(rows), [POTENSI_LABEL], [DISCLAIMER_UNDUH]];
+  return [...atas, KOLOM_UNDUH, ...barisUnduh(rows), [CATATAN_PENDUDUK], [CATATAN_RUMAH], [DISCLAIMER_UNDUH]];
 }
