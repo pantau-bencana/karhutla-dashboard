@@ -9,7 +9,6 @@ export const JTWC_URL = "https://www.metoc.navy.mil/jtwc/jtwc.html";
 export const RUMUS_DAMPAK_SIKLON =
   "Tingkat Kecil dipakai bila teks dampak pada halaman Siklon Tropis hanya '-' atau kosong dan sistem tidak berada di dalam wilayah pemantauan TCWC Jakarta. Tingkat Disebut BMKG dipakai hanya untuk nama wilayah yang tertulis pada teks dampak itu. Tingkat Di wilayah pemantauan dipakai bila sistem ditandai di dalam AoM TCWC Jakarta tanpa nama wilayah pada teks dampak. Jarak, bila koordinat ada, adalah haversine ke titik terdekat pada bingkai Indonesia dasbor, dibulatkan ke kilometer, dan bukan batas administrasi. Analisis otomatis Pantau Bencana, bukan status resmi.";
 export const SIKLON_TCWC_URL = "https://tropicalcyclone.bmkg.go.id/";
-export const SIKLON_PETA_URL = "https://tropicalcyclone.bmkg.go.id/#3.69/2.07/115.52";
 export const SIKLON_PDF_URL = "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf";
 export const SIKLON_API_URL = "https://tropicalcyclone.bmkg.go.id/cms/service-api/cyclone/current";
 export const SIKLON_JEJAK =

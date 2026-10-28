@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { INDONESIA_FRAME } from "../lib/geo.js";
+import { PetaPosisiSiklon } from "./PetaPosisiSiklon.jsx";
+import { dekatDaratan, teksDekat } from "../lib/dekatDaratan.js";
 import { formatTanggal, formatWib } from "../lib/format.js";
 import {
   IMD_RSMC_URL,
@@ -9,7 +10,6 @@ import {
   SIKLON_BELUM,
   SIKLON_HTML_URL,
   SIKLON_JEJAK,
-  SIKLON_PETA_URL,
   SIKLON_TCWC_URL,
   analisisDampakIndonesia,
   siklonUsang,
@@ -130,49 +130,14 @@ function Fakta({ label, nilai }) {
   );
 }
 
-function SkemaPosisi({ sistem }) {
-  const lebar = 640;
-  const tinggi = 300;
-  const titik = sistem.filter(adaKoordinat);
-  const batas = {
-    west: Math.min(72, INDONESIA_FRAME.west, ...titik.map((item) => Number(item.bujur) - 3)),
-    east: Math.max(148, INDONESIA_FRAME.east, ...titik.map((item) => Number(item.bujur) + 3)),
-    south: Math.min(-16, INDONESIA_FRAME.south, ...titik.map((item) => Number(item.lintang) - 3)),
-    north: Math.max(26, INDONESIA_FRAME.north, ...titik.map((item) => Number(item.lintang) + 3)),
-  };
-  const xy = (bujur, lintang) => {
-    const x = ((bujur - batas.west) / (batas.east - batas.west)) * lebar;
-    const y = ((batas.north - lintang) / (batas.north - batas.south)) * tinggi;
-    return [x, y];
-  };
-  const [x0, y0] = xy(INDONESIA_FRAME.west, INDONESIA_FRAME.north);
-  const [x1, y1] = xy(INDONESIA_FRAME.east, INDONESIA_FRAME.south);
-  return (
-    <figure className="siklon-skema">
-      <svg viewBox={`0 0 ${lebar} ${tinggi}`} role="img" aria-label="Skema posisi sistem terhadap bingkai Indonesia">
-        <rect width={lebar} height={tinggi} className="siklon-skema-laut" />
-        <rect x={x0} y={y0} width={x1 - x0} height={y1 - y0} className="siklon-skema-indonesia" />
-        <text x={x0 + 10} y={y0 + 22}>Indonesia</text>
-        {titik.map((item, indeks) => {
-          const [x, y] = xy(Number(item.bujur), Number(item.lintang));
-          const hasil = analisisDampakIndonesia(item);
-          return (
-            <g key={item.nama} className={`siklon-titik siklon-titik-${kelasTingkat(hasil.tingkat)}`}>
-              <circle cx={x} cy={y} r="7" />
-              <text x={x + 12} y={y + (indeks % 2 === 0 ? -8 : 16)}>{item.nama}</text>
-            </g>
-          );
-        })}
-      </svg>
-      <figcaption>
-        Skema posisi dari titik analisis BMKG. Bingkai Indonesia bukan batas administrasi. Lintasan prakiraan tidak ada pada cuplikan.
-      </figcaption>
-    </figure>
-  );
+function kalimatDekat(item) {
+  if (!adaKoordinat(item)) return null;
+  return dekatDaratan(item.lintang, item.bujur);
 }
 
 function KartuSistem({ item }) {
   const hasil = analisisDampakIndonesia(item);
+  const dekat = teksDekat(kalimatDekat(item));
   const jenis = item.jenis === "bibit" ? "Bibit" : "Siklon";
   return (
     <article className="siklon-kartu">
@@ -190,6 +155,14 @@ function KartuSistem({ item }) {
         <Fakta label="Wilayah TCWC Jakarta" nilai={labelTcwc(item)} />
       </div>
       <p className="siklon-dampak">Dampak BMKG: {item.dampak || "—"}</p>
+      {dekat ? (
+        <>
+          <p className="siklon-dekat">Terdekat dengan: {dekat.negara}</p>
+          <p className="siklon-dekat">Ke Indonesia: {dekat.indonesia}</p>
+        </>
+      ) : (
+        <p className="siklon-dekat">Terdekat dengan: tidak dihitung. Koordinat tidak ada pada halaman BMKG.</p>
+      )}
       {item.kalimat ? (
         <details>
           <summary>Kalimat BMKG</summary>
@@ -236,7 +209,7 @@ export function SiklonRingkas({ manifest = null }) {
           <p className={`siklon-status siklon-status-${sistemHalaman.length ? kelasTingkat(tingkatUtama) : "kosong"}`} role="status">
             {kalimatStatus(sistemHalaman)}
           </p>
-          {sistemHalaman.length ? <SkemaPosisi sistem={sistemHalaman} /> : null}
+          {sistemHalaman.length ? <PetaPosisiSiklon sistem={sistemHalaman} /> : null}
           <h3>Analisis Dampak ke Indonesia</h3>
           {sistemHalaman.length ? (
             <div className="siklon-kartu-daftar">
@@ -273,21 +246,12 @@ export function SiklonRingkas({ manifest = null }) {
           ) : null}
           <p className="siklon-catatan">Tabel prakiraan lintasan tidak ada pada cuplikan. Yang tersimpan hanya titik analisis.</p>
           <div className="siklon-peta-kepala">
-            <h3>Peta Siklon BMKG</h3>
-            <a className="btn pri" href={SIKLON_PETA_URL} target="_blank" rel="noopener noreferrer">Buka peta siklon BMKG</a>
+            <div>
+              <h3>Peta Siklon BMKG</h3>
+              <p className="siklon-catatan">Peta TCWC BMKG dibuka di tab baru. Sumber: BMKG. Peta itu tidak disematkan di dasbor.</p>
+            </div>
+            <a className="btn pri" href={SIKLON_TCWC_URL} target="_blank" rel="noopener noreferrer">Buka peta siklon BMKG</a>
           </div>
-          <iframe
-            className="siklon-peta-bmkg"
-            title="Peta Siklon BMKG"
-            src={SIKLON_PETA_URL}
-            loading="lazy"
-            referrerPolicy="no-referrer"
-          />
-          <p className="siklon-catatan">
-            Panel ini memuat halaman BMKG. Bukan peta buatan dasbor. Sumber: BMKG.
-            {" "}
-            <a href={SIKLON_TCWC_URL} target="_blank" rel="noopener noreferrer">Peta TCWC BMKG</a>
-          </p>
           <h3>Analisis &amp; Siaran Pers BMKG</h3>
           {data.siaran_pers?.status === "gagal" ? (
             <p className="banner warn" role="status">
