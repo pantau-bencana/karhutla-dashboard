@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { identitasTampil } from "../lib/identitas.js";
 import { Term } from "./Term.jsx";
 
 const RUJUKAN = [
@@ -89,7 +90,7 @@ const FAQ = [
   {
     tanya: "Apakah ini data resmi?",
     jawab:
-      "Bukan. Pantau Bencana v0.1 adalah proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH. Daftar prioritas berjenis pemodelan pihak ketiga. Angkanya disusun dari model ECMWF lewat GWIS dan Open-Meteo, deteksi NASA FIRMS, dan IRBI 2025. Ini bukan prakiraan resmi BMKG/BNPB, bukan FDRS BMKG, dan bukan status siaga.",
+      `Bukan. ${identitasTampil()} Daftar prioritas berjenis pemodelan pihak ketiga. Angkanya disusun dari model ECMWF lewat GWIS dan Open-Meteo, deteksi NASA FIRMS, dan IRBI 2025. Ini bukan prakiraan resmi BMKG/BNPB, bukan FDRS BMKG, dan bukan status siaga.`,
   },
   {
     tanya: "Kenapa kab/kota dengan banyak hotspot tidak masuk 15 besar?",

@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/banjir-ringkasan.mjs && vite build",
+    "build": "node scripts/banjir-ringkasan.mjs && vite build && npm run build:v2",
+    "build:v2": "VITE_EDITION=v2 vite build --config vite.v2.config.js",
+    "dev:v2": "VITE_EDITION=v2 vite --config vite.v2.config.js --host 127.0.0.1 --port 5174",
     "preview": "vite preview --host 127.0.0.1 --port 4173",
     "check": "node scripts/self-check.mjs",
     "refresh-data": "node scripts/refresh-live-data.mjs",

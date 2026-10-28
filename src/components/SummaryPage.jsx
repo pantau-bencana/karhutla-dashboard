@@ -103,6 +103,9 @@ export function SummaryPage({
                     </li>
                   ))}
                 </ol>
+                {import.meta.env && import.meta.env.VITE_EDITION === "v2" ? (
+                  <p className="v2-more"><a href="#/karhutla/peta">Lihat selengkapnya</a></p>
+                ) : null}
               </>
             ) : (
               <p>Tidak ada deteksi pada hari cuplikan untuk cakupan ini.</p>
@@ -129,6 +132,9 @@ export function SummaryPage({
                     <li key={row.kode}>{row.kabupaten}, {row.provinsi}: {row.kelas}.</li>
                   ))}
                 </ol>
+                {import.meta.env && import.meta.env.VITE_EDITION === "v2" ? (
+                  <p className="v2-more"><a href="#/karhutla/potensi">Lihat selengkapnya</a></p>
+                ) : null}
               </>
             ) : (
               <p>Semua baris pada cakupan ini berstatus {KELAS_BELUM}.</p>
@@ -221,6 +227,9 @@ function BagianBanjir({ province = "" }) {
                   <li key={row.kode || `${row.provinsi}-${row.kab_kota}`}>{row.kab_kota}, {row.provinsi}: {row.status}.</li>
                 ))}
               </ol>
+              {import.meta.env && import.meta.env.VITE_EDITION === "v2" ? (
+                <p className="v2-more"><a href="#/banjir">Lihat selengkapnya</a></p>
+              ) : null}
             </>
           ) : (
             <p>Tidak ada kabupaten/kota berstatus Awas, Siaga, atau Waspada pada cakupan ini.</p>
