@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { looksLikeCsv, parseCsv } from "../lib/csv.js";
+import { identitasTampil } from "../lib/identitas.js";
 import { IRBI_PENGGUNAAN_INTERNAL } from "../lib/floodMatrix.js";
 import {
   IRBI_ANCAMAN,
@@ -126,7 +127,7 @@ export function IrbiBanjirLongsor() {
           </a>
           . Berkas statis di repositori, tanpa waktu ambil harian. Status sumber: Data statis. Sel kosong ditulis IRBI tidak tersedia, bukan nol.
         </p>
-        <p>Pantau Bencana v0.1 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH.</p>
+        <p>{identitasTampil()}</p>
         {gagal.length ? (
           <p className="banner warn" role="status">
             Berkas belum termuat: {gagal.map((id) => IRBI_ANCAMAN.find((item) => item.id === id)?.nama || id).join(", ")}. Sel ancaman itu tertulis belum terintegrasi.

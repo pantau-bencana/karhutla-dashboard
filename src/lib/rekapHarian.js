@@ -1,4 +1,5 @@
 import { kodeKan } from "./aplus.js";
+import { identitasTampil } from "./identitas.js";
 import { kelasIrbi } from "./analisisPantauBencana.js";
 import { formatAngka, formatWib } from "./format.js";
 import { IRBI_LONGSOR_TERVERIFIKASI, IRBI_TIDAK_TERSEDIA } from "./floodMatrix.js";
@@ -18,8 +19,7 @@ import { kelasKepercayaan } from "./warning.js";
 export const REKAP_KOSONG = "tidak ada data";
 export const REKAP_BELUM = "belum terintegrasi";
 export const REKAP_TANPA_PERINGATAN = "Tidak ada peringatan";
-export const REKAP_IDENTITAS =
-  "Pantau Bencana v0.1 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH.";
+export const REKAP_IDENTITAS = identitasTampil();
 export const REKAP_UNDUH =
   "Unduhan dibuat di peramban dasbor. Berkas ini tidak dikirim ke Google Sheets.";
 export const SIPONGI_URL = "https://sipongi.gakkum.kehutanan.go.id/";

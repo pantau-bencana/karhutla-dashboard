@@ -9,7 +9,9 @@
 # Cron bisa tidak membuat run sama sekali, termasuk penjaga menit 7. Job picu-penjaga
 # mengirim workflow_dispatch ke refresh-watchdog.yml. Penjaga di main yang memutuskan
 # apakah data, CAP, atau prakiraan perlu dijalankan. Pull request dari fork tidak masuk.
-# https://rixaga.github.io/karhutla-dashboard/
+# https://pantau-bencana.github.io/karhutla-dashboard/
+# v0.2 ikut di dalam artefak yang sama, pada /v2/, lewat npm run build. Syarat deploy tidak berubah.
+# https://pantau-bencana.github.io/karhutla-dashboard/v2/
 name: Deploy GitHub Pages
 
 on:

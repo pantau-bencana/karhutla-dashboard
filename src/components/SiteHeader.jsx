@@ -4,7 +4,7 @@ import { InfoTip } from "./InfoTip.jsx";
 import { potensiDekatIndonesia, SIKLON_JEJAK } from "../lib/siklonBmkg.js";
 import { useCuplikanSiklon } from "./SiklonRingkas.jsx";
 
-const TOP = [
+export const TOP = [
   ["karhutla", "Karhutla", "#/karhutla/peta"],
   ["banjir", "Banjir", "#/banjir"],
   ["gunung-api", "Gunung Api", "#/gunung-api"],
@@ -15,7 +15,7 @@ const TOP = [
   ["ringkasan", "Ringkasan", "#/"],
 ];
 
-const KARHUTLA_PAGES = [
+export const KARHUTLA_PAGES = [
   ["peta", "Peta dan Data", "#/karhutla/peta"],
   ["potensi", "Potensi 7 hari", "#/karhutla/potensi"],
   ["ispu", "Kualitas Udara (ISPU)", "#/karhutla/ispu"],
@@ -24,7 +24,7 @@ const KARHUTLA_PAGES = [
 
 const HALAMAN_INFO = new Set(["metode", "glosarium", "sumber"]);
 
-function topCurrent(id, page, hazard) {
+export function topCurrent(id, page, hazard) {
   if (id === "info") return HALAMAN_INFO.has(page);
   if (id === "siklon") return page === "siklon";
   if (id === "irbi") return page === "irbi";
@@ -34,7 +34,7 @@ function topCurrent(id, page, hazard) {
   return hazard === id && page !== "siklon" && page !== "irbi" && !HALAMAN_INFO.has(page);
 }
 
-function PenjelasanSiklon({ cuplikan }) {
+export function PenjelasanSiklon({ cuplikan }) {
   const sinyal = potensiDekatIndonesia(cuplikan);
   const statusHalaman = cuplikan?.status_teks || cuplikan?.status || "Tidak Ada Siklon";
   return (

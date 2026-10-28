@@ -1,4 +1,7 @@
-const IDENTITY = "Pantau Bencana v0.1 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH.";
+import { identitasTampil } from "../lib/identitas.js";
+
+const IDENTITY_V01 = "Pantau Bencana v0.1 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH.";
+const IDENTITY = identitasTampil() || IDENTITY_V01;
 
 export function Footer() {
   return (

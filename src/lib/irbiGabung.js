@@ -1,4 +1,5 @@
 import { kelasIrbi } from "./analisisPantauBencana.js";
+import { identitasTampil } from "./identitas.js";
 import { formatAngka } from "./format.js";
 import {
   IRBI_BANJIR_TERVERIFIKASI,
@@ -18,7 +19,7 @@ export function catatanIrbiGabung() {
     IRBI_BANJIR_TERVERIFIKASI,
     IRBI_LONGSOR_TERVERIFIKASI,
     "Status sumber: Data statis. Tahun 2025. Tahunan, bukan prakiraan harian. Kabupaten/kota tanpa kelas ditulis IRBI tidak tersedia. Bila berkas longsor tidak termuat, sel longsor ditulis belum terintegrasi.",
-    "Pantau Bencana v0.1 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH.",
+    identitasTampil(),
   ];
 }
 
