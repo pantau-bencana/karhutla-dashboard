@@ -1,3 +1,4 @@
+import { OpenMeteoCredit } from "./Atribusi.jsx";
 import { formatAngka, formatTanggal } from "../lib/format.js";
 
 const BMKG_FWI = "https://www.bmkg.go.id/cuaca/karhutla/fwi";
@@ -66,6 +67,7 @@ export function ForecastPanel({ provinces = [], weatherRows = [], fwiRows = [] }
           {" "}
           Itu cuaca model pada titik provinsi, bukan data FDRS, dan bukan prakiraan 14 hari resmi BMKG. Prakiraan cuaca terbuka BMKG yang tersambung tetap 3 hari.
         </p>
+        <OpenMeteoCredit />
         <p>
           FWI GWIS
           {fwiDates.length

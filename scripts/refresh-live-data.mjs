@@ -13,7 +13,6 @@ import { assignKabupaten, geomFromAlerts, loadCapAlerts, writeCapKabFiles } from
 import { provinceCenters } from "../src/lib/geo.js";
 import { REFRESH_CRON, REFRESH_CRON_CADANGAN, REFRESH_INTERVAL_HOURS, nextScheduledRun } from "../src/lib/schedule.js";
 import { SMOKE_IMAGE_URL, SMOKE_URL, SOURCES } from "../src/lib/sourceCatalog.js";
-import { ambilSipongi } from "./ambil-sipongi.mjs";
 import { ambilSiklon } from "./ambil-siklon.mjs";
 import { gagalSiklonBerturut } from "../src/lib/siklonBmkg.js";
 import { kodeWilayah } from "../src/lib/floodMatrix.js";
@@ -1256,17 +1255,16 @@ async function main() {
 
   const sumberSipongi = SOURCES.find((source) => source.id === "sipongi");
   const entriSipongi = baseEntry(sumberSipongi);
-  entriSipongi.mode = "snapshot";
-  try {
-    const hasil = await ambilSipongi();
-    const badan = readFileSync(resolve(root, "data/live/sipongi-hotspot.csv"), "utf8");
-    entriSipongi.observed_at = nowIso;
-    entriSipongi.source_updated_at = nowIso;
-    entriSipongi.observed_label = `Tanggal ${hasil.tanggal[0]}–${hasil.tanggal.at(-1)}. Confidence all. Satelit ${hasil.satelit}.`;
-    writeIfChanged("data/live/sipongi-hotspot.csv", badan, entriSipongi, previousEntry(previous, "sipongi"));
-    if (hasil.lepas) entriSipongi.error = `${hasil.lepas} baris SiPongi tidak punya kode kabupaten.`;
-  } catch (error) {
-    Object.assign(entriSipongi, keepPrevious(entriSipongi, previousEntry(previous, "sipongi"), error.message));
+  entriSipongi.mode = "tautan";
+  entriSipongi.status = "failed";
+  entriSipongi.file = null;
+  entriSipongi.record_count = 0;
+  entriSipongi.kept_previous = false;
+  entriSipongi.content_hash = null;
+  entriSipongi.error = "Tautan saja. Portal resmi tidak diambil sebagai angka hotspot.";
+  for (const rel of ["data/live/sipongi-hotspot.csv", "data/live/sipongi-hotspot-meta.json"]) {
+    const penuh = resolve(root, rel);
+    if (existsSync(penuh)) unlinkSync(penuh);
   }
   datasets.sipongi = entriSipongi;
 

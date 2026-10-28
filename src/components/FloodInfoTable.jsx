@@ -1,4 +1,5 @@
 import { Fragment, useMemo, useState } from "react";
+import { OpenMeteoCredit } from "./Atribusi.jsx";
 import { ANALISIS_NAMA, ANALISIS_WARNA, LABEL_KEDALUWARSA, keparahanTerburuk } from "../lib/analisisPantauBencana.js";
 import {
   BMKG_ATTRIBUTION,
@@ -305,6 +306,7 @@ export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null
   return (
     <div className="table-wrap flood-side wrap-cells">
       <p className="fine">{DIBI_UNAVAILABLE}. Tanda — pada kolom Historis bukan nol kejadian. Klasifikasi DAS belum terintegrasi.</p>
+      {hujanNilai ? <OpenMeteoCredit /> : null}
       <table>
         <colgroup>
           <col className="col-no" />
@@ -414,7 +416,8 @@ function selStatusPeta(row) {
       <span className="hujan-fallback">
         {row.hujanFallback.teks}
         <small>
-          {HUJAN_PEMBANDING_JENIS}. Diambil {row.hujanFallback.waktu}.
+          {HUJAN_PEMBANDING_JENIS}. Diambil {row.hujanFallback.waktu}.{" "}
+          <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Weather data by Open-Meteo.com</a>
         </small>
       </span>
     );

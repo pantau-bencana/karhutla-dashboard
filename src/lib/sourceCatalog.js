@@ -27,23 +27,21 @@ export const SOURCES = [
     updateType: "Realtime / mendekati realtime",
     expectedMaxAgeHours: 18,
     limitation:
-      "API area membutuhkan MAP_KEY dan hanya mengembalikan sampai 5 hari. Tanpa secret, dasbor tidak mengaku tersambung. Berkas contoh hotspot tidak ditampilkan; peta memakai cuplikan data/live atau dikosongkan. Titik tanpa nama wilayah tidak ditebak dari kotak koordinat.",
+      "API area membutuhkan MAP_KEY dan hanya mengembalikan sampai 5 hari. Produk terjadwal: VIIRS_SNPP_NRT pada bingkai Indonesia. Tanpa secret, dasbor tidak mengaku tersambung. Berkas contoh hotspot tidak ditampilkan; peta memakai cuplikan data/live atau dikosongkan. Titik tanpa nama wilayah tidak ditebak dari kotak koordinat. Data NASA terbuka (CC0). Wajib menyertakan kalimat pengakuan FIRMS.",
   },
   {
     id: "sipongi",
     nama: "SiPongi+",
     instansi: "Kementerian Kehutanan",
-    fungsi: "Hitungan titik panas per kabupaten dari endpoint publik halaman sebaran SiPongi+, tanpa login. Kolom utama Rekap Harian. FIRMS ditampilkan terpisah sebagai pembanding.",
+    fungsi: "Portal resmi pemantauan karhutla. Dasbor hanya menautkan situs .go.id. Angka hotspot pada peta, tabel, dan rekap berasal dari NASA FIRMS.",
     officialUrl: "https://sipongi.gakkum.kehutanan.go.id/",
     officialLabel: "sipongi.gakkum.kehutanan.go.id",
-    extraUrls: [["Endpoint sebaran publik", "https://opsroom.sipongidata.my.id/api/sebaran"]],
-    access: "API",
+    access: "Tautan portal",
     needsKey: false,
-    kind: "dinamis",
-    updateType: "Harian",
-    expectedMaxAgeHours: 30,
+    kind: "tautan",
+    updateType: "",
     limitation:
-      "Pemeriksaan 22 Oktober 2026: GET https://opsroom.sipongidata.my.id/api/konfigurasi dan /api/sebaran tanpa header otorisasi mengembalikan HTTP 200 JSON. Tidak ada token yang disalin dari skrip halaman. Satelit mengikuti sumber_satelit. Jumlah adalah counter High, Medium, dan Low. Baris tanpa nama kabupaten tidak dibagikan. Host lama sipongi.menlhk.go.id tidak punya DNS. Hotspot adalah deteksi satelit, bukan kebakaran terkonfirmasi. Berkas contoh tidak ditampilkan.",
+      "Tautan saja. Tidak ada pengambilan angka. Hitungan hotspot dasbor adalah deteksi NASA FIRMS VIIRS S-NPP NRT (kepercayaan nominal dan tinggi), bukan counter High, Medium, dan Low. Host lama sipongi.menlhk.go.id tidak dipakai.",
   },
   {
     id: "bmkg_prakiraan",
@@ -316,7 +314,7 @@ export const SOURCES = [
     expectedMaxAgeHours: 30,
     file: "data/live/siklon-bmkg.json",
     limitation:
-      "Status Ada/Tidak Ada dibaca dari halaman publik Siklon Tropis. Ada berarti halaman menyebut siklon atau bibit yang sedang berjalan, beserta kalimat pertama, titik analisis, dan teks dampak bila ada. Tanda merah pada navigasi hanya untuk sistem di dalam wilayah pemantauan TCWC Jakarta atau yang punya kalimat dampak ke wilayah Indonesia. Sistem yang jauh tetap ditampilkan sebagai informasi. Daftar siaran pers dibaca dari https://www.bmkg.go.id/siaran-pers ; tidak ada RSS siaran pers. Yang disimpan hanya judul, tautan, waktu daftar, dan kutipan yang memuat kata siklon atau bibit. Bila daftar gagal, kutipan sebelumnya tetap dipakai. Tingkat dampak adalah analisis otomatis Pantau Bencana, bukan status resmi, dan hanya memakai teks dampak halaman plus tanda wilayah TCWC Jakarta. IMD dan JTWC tidak diambil. API https://tropicalcyclone.bmkg.go.id/cms/service-api/cyclone/current tanpa token mengembalikan HTTP 401 pada pemeriksaan 23 Oktober 2026; token di halaman tidak disalin dan tidak dipakai. Ikhtisar PDF hanya mengisi nama, tahap, dan dampak bila kalimatnya terbaca. Bila PDF gagal, kolom itu belum terintegrasi. Jejak dan kerucut tidak disimpan dan tidak digambar. Peta TCWC BMKG hanya tautan ke https://tropicalcyclone.bmkg.go.id/ dan tidak disematkan. Peta posisi dasbor memakai ubin OpenStreetMap dan titik analisis yang sudah tersimpan dari halaman Siklon Tropis. Jarak ke daratan dihitung dari garis pantai Natural Earth 1:50m (domain publik), bukan angka BMKG. API internal peta tidak dipanggil. Windy bukan sumber data dan tidak ditautkan. Atribusi: Sumber: BMKG. Izin tertulis untuk integrasi pihak ketiga belum ada.",
+      "Status Ada/Tidak Ada dibaca dari halaman publik Siklon Tropis. Ada berarti halaman menyebut siklon atau bibit yang sedang berjalan, beserta kalimat pertama, titik analisis, dan teks dampak bila ada. Tanda merah pada navigasi hanya untuk sistem di dalam wilayah pemantauan TCWC Jakarta atau yang punya kalimat dampak ke wilayah Indonesia. Sistem yang jauh tetap ditampilkan sebagai informasi. Daftar siaran pers dibaca dari https://www.bmkg.go.id/siaran-pers ; tidak ada RSS siaran pers. Yang disimpan hanya judul, tautan, waktu daftar, dan kutipan yang memuat kata siklon atau bibit. Bila daftar gagal, kutipan sebelumnya tetap dipakai. Tingkat dampak adalah analisis otomatis Pantau Bencana, bukan status resmi, dan hanya memakai teks dampak halaman plus tanda wilayah TCWC Jakarta. IMD dan JTWC tidak diambil. API https://tropicalcyclone.bmkg.go.id/cms/service-api/cyclone/current tanpa token mengembalikan HTTP 401 pada pemeriksaan 23 Oktober 2026; token di halaman tidak disalin dan tidak dipakai. Ikhtisar PDF hanya mengisi nama, tahap, dan dampak bila kalimatnya terbaca. Bila PDF gagal, kolom itu belum terintegrasi. Jejak dan kerucut tidak disimpan dan tidak digambar. Peta TCWC BMKG hanya tautan ke https://tropicalcyclone.bmkg.go.id/ dan tidak disematkan. Peta posisi dasbor memakai gaya OpenFreeMap (data OpenStreetMap, ODbL) dan titik analisis yang sudah tersimpan dari halaman Siklon Tropis. Jarak ke daratan dihitung dari garis pantai Natural Earth 1:50m (domain publik), bukan angka BMKG. API internal peta tidak dipanggil. Windy bukan sumber data dan tidak ditautkan. Atribusi: Sumber: BMKG. Izin tertulis untuk integrasi pihak ketiga belum ada.",
   },
   {
     id: "chirps",

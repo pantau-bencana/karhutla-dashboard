@@ -90,7 +90,6 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
     hotspotFeed && !hotspotFeed.contoh && hotspotFeed.status !== "gagal" ? hotspotFeed.rows : [],
     { from, to, province, hours: periodeJam },
   );
-  const sipongiFeed = feeds.find((feed) => feed.id === "sipongi");
   const irbiFeed = feeds.find((feed) => feed.id === "irbi");
   const visibleFeeds = layer === "ispu" ? feeds.filter((feed) => feed.id !== "ispu" && feed.id !== "ispu_pembanding") : feeds;
   const failures = visibleFeeds.filter((feed) => feed.status === "gagal");
@@ -431,35 +430,16 @@ function DashboardBody({ active, config, feeds, loading, province, setProvince, 
       <section className="card">
         <header className="card-head">
           <div>
-            <h2>Rekap SiPongi</h2>
+            <h2>SiPongi+</h2>
             <p>
-              {sipongiFeed?.rows?.length ? (
-                "Jumlah hotspot dan luas terbakar dijumlahkan pada rentang tanggal."
-              ) : (
-                <span className="link-only">
-                  <Badge kind="tau">Tautan saja</Badge>
-                  <OfficialLinks links={officialLinks("sipongi")} />
-                  <span>Rekap resmi belum terhubung ke dasbor.</span>
-                </span>
-              )}
-            </p>
-          </div>
-        </header>
-        <SimpleTable
-          empty={
-            sipongiFeed?.rows?.length ? (
-              "Tidak ada rekap SiPongi pada rentang ini."
-            ) : (
               <span className="link-only">
                 <Badge kind="tau">Tautan saja</Badge>
                 <OfficialLinks links={officialLinks("sipongi")} />
-                <span>Rekap resmi SiPongi belum terhubung.</span>
+                <span>Portal resmi Kementerian Kehutanan. Dasbor tidak mengambil angka SiPongi. Hitungan hotspot memakai NASA FIRMS.</span>
               </span>
-            )
-          }
-          head={["Provinsi", "Hotspot", "Luas (ha)"]}
-          rows={view.sipongiRows.map((row) => [row.provinsi, formatAngka(row.jumlah), formatAngka(row.luas, 1)])}
-        />
+            </p>
+          </div>
+        </header>
       </section>
       <p className="fine">
         Konteks risiko jangka panjang (IRBI 2025):{" "}
@@ -489,41 +469,3 @@ function FeedLinks({ feed }) {
   return <OfficialLinks links={links} />;
 }
 
-function SimpleTable({ head, rows, empty }) {
-  return (
-    <div className="table-wrap short">
-      <table>
-        <thead>
-          <tr>
-            {head.map((label) => (
-              <th key={label} scope="col">
-                {label}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.length ? (
-            rows.map((row, index) => (
-              <tr key={`${row[0]}-${index}`}>
-                {row.map((cell, cellIndex) =>
-                  cellIndex === 0 ? (
-                    <th key={cellIndex} scope="row">
-                      {cell}
-                    </th>
-                  ) : (
-                    <td key={cellIndex}>{cell}</td>
-                  ),
-                )}
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={head.length}>{empty}</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
-  );
-}

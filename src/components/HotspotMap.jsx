@@ -5,7 +5,7 @@ import { kunciTampilanIndonesia, muatWilayah, petaSiap } from "../lib/kunciPeta.
 import { GWIS_ATTRIBUTION, GWIS_CREDIT, GWIS_FWI_LAYER, GWIS_WMS } from "../lib/gwisFwi.js";
 import { formatTanggal, formatWaktu } from "../lib/format.js";
 import { clusterCellDegrees } from "../lib/hotspotWindow.js";
-import { osmTileLayer } from "../lib/basemap.js";
+import { basemapLayer } from "../lib/basemap.js";
 import {
   BIG_SERVICE,
   BIG_SOURCE_LABEL,
@@ -286,7 +286,7 @@ export function HotspotMap({ points, frame = "indonesia", wilayah = "", active =
       maxBoundsViscosity: 1,
       worldCopyJump: false,
     });
-    osmTileLayer(L).addTo(map);
+    basemapLayer().addTo(map);
     map.createPane("gwisFwi");
     map.getPane("gwisFwi").style.zIndex = 250;
     desaLayerRef.current = L.layerGroup().addTo(map);

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
-import { osmTileLayer } from "../lib/basemap.js";
+import { basemapLayer } from "../lib/basemap.js";
 import { kunciTampilanIndonesia } from "../lib/kunciPeta.js";
 import { frameIndonesia, framePoints, frameWilayah } from "./HotspotMap.jsx";
 
@@ -65,7 +65,7 @@ export function StationMap({ stations, selectedId, onSelect, active = true, wila
       maxBoundsViscosity: 1,
       worldCopyJump: false,
     });
-    osmTileLayer(L).addTo(map);
+    basemapLayer().addTo(map);
     layerRef.current = L.layerGroup().addTo(map);
     mapRef.current = map;
     const muat = () => {

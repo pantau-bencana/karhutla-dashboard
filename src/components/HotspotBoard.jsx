@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from "react";
+import { FirmsAck } from "./Atribusi.jsx";
 import { CatatanRingkas } from "./CatatanRingkas.jsx";
 import { KeteranganMobile } from "./KeteranganMobile.jsx";
 import { ClusterLegend, HotspotMap } from "./HotspotMap.jsx";
@@ -169,6 +170,7 @@ export function HotspotBoard({ points, priority, meta, feed, fetchedAt, observed
           </details>
         ) : null}
       </div>
+      <FirmsAck />
       </div>
       <section className="hotspot-count" aria-labelledby="hotspot-count-heading">
         <h2 id="hotspot-count-heading">Jumlah deteksi hotspot (bukan status)</h2>

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import { feature as topoFeature } from "topojson-client";
 import { BATAS_KAB_FILE } from "../lib/batasKab.js";
-import { osmTileLayer } from "../lib/basemap.js";
+import { basemapLayer } from "../lib/basemap.js";
 import { kotakProvinsi } from "../lib/batasProvinsi.js";
 import { kunciTampilanIndonesia, muatWilayah, tampilanMasihIndonesia } from "../lib/kunciPeta.js";
 import { WARNA_KOSONG } from "../lib/petaTema.js";
@@ -59,7 +59,7 @@ export function PetaKab({ isi = {}, garis = {}, judul, catatan, legenda = [], ko
       maxBoundsViscosity: 1,
       worldCopyJump: false,
     });
-    osmTileLayer(L).addTo(map);
+    basemapLayer().addTo(map);
     const muatIndonesia = () => tampilkan(map);
     muatIndonesia();
     layerRef.current = L.geoJSON(null, {

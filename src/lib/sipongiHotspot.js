@@ -1,8 +1,6 @@
 import { nameKey } from "./floodMatrix.js";
 import { daftarKabkota } from "./kabProvinsi.js";
 
-export const SIPONGI_API = "https://opsroom.sipongidata.my.id/api/sebaran";
-
 const ALIAS = [
   ["DKI Jakarta", "KOTA ADMINISTRASI JAKARTA PUSAT", "31.71"],
   ["DKI Jakarta", "KOTA ADMINISTRASI JAKARTA UTARA", "31.72"],

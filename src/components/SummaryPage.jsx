@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FirmsAck, OpenMeteoCredit } from "./Atribusi.jsx";
 import { FilterProvinsi } from "./FilterProvinsi.jsx";
 import { formatAngka, formatTanggal, formatWib } from "../lib/format.js";
 import { hotspotSourceLabel } from "../lib/freshness.js";
@@ -163,6 +164,8 @@ export function SummaryPage({
           {" · "}
           <a href="#/karhutla/ispu">Kualitas Udara</a>.
         </p>
+        <FirmsAck />
+        <OpenMeteoCredit />
       </section>
       <BagianBanjir province={province} />
       <SiklonRingkas manifest={manifest} />

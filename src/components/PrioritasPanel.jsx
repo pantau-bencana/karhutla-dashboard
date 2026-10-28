@@ -1,3 +1,4 @@
+import { FirmsAck, OpenMeteoCredit } from "./Atribusi.jsx";
 import { Badge } from "./Badge.jsx";
 import { CatatanRingkas } from "./CatatanRingkas.jsx";
 import { Term } from "./Term.jsx";
@@ -54,6 +55,7 @@ export function PrioritasPanel({ snapshot, now }) {
       {view.tersedia && !view.blok_alasan ? (
         <div className="logic-body">
           <h3>Aktivitas hotspot tinggi saat ini</h3>
+          <FirmsAck />
           <p className="fine">
             Ambang jumlah ≥ {formatAngka(view.ambang_hotspot)} (maksimum dari persentil-95 nasional {formatAngka(view.p95_hotspot)} dan 50) dan terdeteksi pada ≥2 hari berturut-turut. {view.catatan_hotspot}
           </p>
@@ -135,6 +137,7 @@ export function PrioritasPanel({ snapshot, now }) {
           ) : null}
         </div>
       ) : null}
+      <OpenMeteoCredit />
       <CatatanRingkas judul="Cara hitung & rujukan">
         <p>{view.disclaimer}</p>
         <p className="fine method-note">

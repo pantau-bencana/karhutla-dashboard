@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FirmsAck } from "../components/Atribusi.jsx";
 import { useCuplikanSiklon } from "../components/SiklonRingkas.jsx";
 import { formatAngka, formatWib } from "../lib/format.js";
 import { CATATAN_PENDUDUK, CATATAN_RUMAH, KPI_PENDUDUK, KPI_RUMAH } from "../lib/pendudukKab.js";
@@ -195,6 +196,7 @@ export function KpiStrip({ location }) {
   return (
     <section className="v2-kpis" aria-label="Ringkasan angka">
       {kartu}
+      {tampilHotspot ? <FirmsAck /> : null}
       {tampilBanjir ? (
         <p className="v2-kpi-batas">
           Intensitas hujan tidak diringkas menjadi satu angka nasional. Milimeter model per kab/kota ada di peta Banjir, berlabel pembanding, dan tidak menetapkan Awas, Siaga, atau Waspada. Luas genangan dan daftar kecamatan tidak ditampilkan.
