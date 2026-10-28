@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { SOURCES } from "../src/lib/sourceCatalog.js";
 import { REFRESH_INTERVAL_HOURS } from "../src/lib/schedule.js";
-import { SIKLON_API_URL, SIKLON_HTML_URL, SIKLON_PDF_URL, jumlahSistemSiklon, susunCuplikan } from "../src/lib/siklonBmkg.js";
+import { SIKLON_API_URL, SIKLON_HTML_URL, SIKLON_PDF_URL, SIARAN_PERS_URL, bacaSiaranPers, gabungSiaran, jumlahSistemSiklon, susunCuplikan } from "../src/lib/siklonBmkg.js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const berkas = resolve(root, "data/live/siklon-bmkg.json");
@@ -79,7 +79,26 @@ export async function ambilSiklon(now = new Date()) {
     ikhtisarGalat = aman(error?.message || error);
   }
 
-  const cuplikan = susunCuplikan({ html, ikhtisarTeks, ikhtisarGalat, apiHttp, apiGalat, fetchedAt, pdfDiubah });
+  let siaranHasil = { status: "gagal", galat: "", daftar: [] };
+  try {
+    const siaran = await ambilTeks(SIARAN_PERS_URL, 20000);
+    const htmlSiaran = await siaran.text();
+    if (!siaran.ok) throw new Error(`Siaran pers HTTP ${siaran.status}`);
+    siaranHasil = { ...bacaSiaranPers(htmlSiaran), fetched_at: fetchedAt };
+  } catch (error) {
+    siaranHasil = { status: "gagal", galat: aman(error?.message || error), daftar: [] };
+  }
+  let siaranLama = null;
+  if (existsSync(berkas)) {
+    try {
+      siaranLama = JSON.parse(readFileSync(berkas, "utf8"))?.siaran_pers || null;
+    } catch {
+      siaranLama = null;
+    }
+  }
+  const siaranPers = gabungSiaran(siaranHasil, siaranLama);
+
+  const cuplikan = susunCuplikan({ html, ikhtisarTeks, ikhtisarGalat, apiHttp, apiGalat, fetchedAt, pdfDiubah, siaranPers });
   const badan = `${JSON.stringify(cuplikan, null, 2)}\n`;
   const terbit = cuplikan.ikhtisar.terbit;
   const namaHalaman = cuplikan.sistem_halaman.map((item) => `${item.tahap} ${item.nama}`).join(", ");

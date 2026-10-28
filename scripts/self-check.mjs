@@ -52,7 +52,7 @@ import { annotatePoints } from "./big-wilayah.mjs";
 import { buildComparisonAttention, normalizePlaceName, placeFwiTable, PROTOTYPE_LABEL } from "../src/lib/attentionPrototype.js";
 import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { keadaanKategori, statusRingkasan, statusRingkasanSiap } from "../src/lib/ringkasanStatus.js";
-import { bacaIkhtisar, bacaStatusHtml, gagalSiklonBerturut, potensiDekatIndonesia, siklonPerluTanda, siklonUsang, susunCuplikan as susunCuplikanSiklon, SIKLON_JEJAK } from "../src/lib/siklonBmkg.js";
+import { analisisDampakIndonesia, bacaIkhtisar, bacaSiaranPers, bacaStatusHtml, gabungSiaran, gagalSiklonBerturut, potensiDekatIndonesia, siklonPerluTanda, siklonUsang, susunCuplikan as susunCuplikanSiklon, SIKLON_JEJAK } from "../src/lib/siklonBmkg.js";
 import { bandingHitungan, bandingPeringkat, barisPeriodeAktif, chipProvinsi, JUMLAH_CHIP_PROVINSI, kelasPeringkat, namaChipProvinsi, sepuluhPrioritas, susunPeringkatHotspot } from "../src/lib/peringkatHotspot.js";
 import { cariWilayahBatas, PROVINSI_TIDAK_DIKETAHUI, tampilBarisFwi, urutBarisFwi } from "../src/lib/kabProvinsi.js";
 import { kelasKepercayaan } from "../src/lib/warning.js";
@@ -963,7 +963,47 @@ assert.equal(bibit90.jenis, "bibit");
 assert.equal(bibit90.tahap, "Bibit Siklon Tropis");
 assert.match(bibit90.kalimat, /Teluk Benggala/);
 assert.equal(bibit90.di_dalam_tcwc, false);
-assert.equal(bibit90.dampak, "");
+assert.equal(bibit90.dampak, "-");
+assert.equal(arnab.dampak, "-");
+assert.equal(arnab.tekanan_hpa, 970);
+assert.equal(arnab.angin_knot, 80);
+assert.equal(arnab.kategori, "3");
+assert.equal(arnab.lintang, 16.4);
+assert.equal(arnab.bujur, 81.4);
+assert.equal(bibit90.tekanan_hpa, 1003);
+assert.equal(bibit90.angin_knot, 25);
+assert.equal(bibit90.kategori, "L");
+const analisisArnab = analisisDampakIndonesia(arnab);
+assert.equal(analisisArnab.tingkat, "Kecil");
+assert.equal(analisisArnab.wilayah.length, 1);
+assert.equal(analisisArnab.wilayah[0].nama, "Wilayah Indonesia");
+assert.equal(Number.isInteger(analisisArnab.jarak_km) && analisisArnab.jarak_km > 0, true);
+assert.equal(analisisDampakIndonesia({ lintang: 0, bujur: 110, di_dalam_tcwc: false, dampak: "-" }).jarak_km, 0);
+assert.equal(analisisDampakIndonesia({
+  dampak: "Menginduksi konvergensi di wilayah Aceh dan Kalimantan Utara.",
+  di_dalam_tcwc: false,
+}).tingkat, "Disebut BMKG");
+assert.deepEqual(analisisDampakIndonesia({
+  dampak: "Menginduksi konvergensi di wilayah Aceh dan Kalimantan Utara.",
+  di_dalam_tcwc: false,
+}).wilayah.map((item) => item.nama), ["Kalimantan Utara", "Aceh"]);
+assert.equal(analisisDampakIndonesia({ di_dalam_tcwc: true, dampak: "-" }).tingkat, "Di wilayah pemantauan");
+const htmlSiaran = readFileSync("scripts/fixtures/siaran-pers-bmkg-2026-10-28.html", "utf8");
+assert.equal(htmlSiaran.includes("eyJ"), false);
+const siaran = bacaSiaranPers(htmlSiaran);
+assert.equal(siaran.status, "ok");
+assert.equal(siaran.daftar.length, 2);
+assert.match(siaran.daftar[0].judul, /Tak Berdampak/);
+assert.match(siaran.daftar[0].kutipan, /187 milimeter/);
+assert.match(siaran.daftar[1].kutipan, /menjauhi Indonesia/);
+assert.match(siaran.daftar[1].url, /^https:\/\/www\.bmkg\.go\.id\/siaran-pers\/siklon-tropis-arnab-/);
+const siaranGagal = gabungSiaran(
+  { status: "gagal", galat: "HTTP 500", daftar: [] },
+  { daftar: [{ judul: "Lama" }], fetched_at: "2026-10-27T00:00:00.000Z" },
+);
+assert.equal(siaranGagal.kept_previous, true);
+assert.equal(siaranGagal.daftar[0].judul, "Lama");
+assert.equal(bacaSiaranPers("<html><p>Cuaca hari ini</p></html>").status, "gagal");
 const cuplikanJauh = susunCuplikanSiklon({ html: htmlSiklon, fetchedAt: "2026-10-28T03:00:00.000Z" });
 assert.equal(cuplikanJauh.status, "Ada");
 assert.equal(cuplikanJauh.sistem_halaman.length, 2);
@@ -1025,6 +1065,12 @@ assert.equal(siklonPerluTanda({
 }), false);
 assert.match(readFileSync("src/components/SiteHeader.jsx", "utf8"), /potensiDekatIndonesia/);
 assert.match(readFileSync("src/components/SiteHeader.jsx", "utf8"), /siklon-dekat/);
+assert.match(siklonSumber, /Analisis &amp; Siaran Pers BMKG/);
+assert.match(siklonSumber, /Analisis Dampak ke Indonesia/);
+assert.match(siklonSumber, /useGrouping: false/);
+assert.match(siklonSumber, /analisis otomatis Pantau Bencana, bukan status resmi/);
+assert.equal(siklonSumber.includes("Andhra"), false);
+assert.equal(siklonSumber.includes("03:30"), false);
 assert.match(siklonSumber, /Data siklon tertunda/);
 assert.match(siklonSumber, /Waktu ambil terakhir yang berhasil/);
 assert.match(siklonSumber, /Periksa halaman Siklon Tropis BMKG/);

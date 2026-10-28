@@ -1769,5 +1769,7 @@ thead th a.term { color: inherit; font-weight: 700; }
 .faq-list summary { cursor: pointer; font-weight: 700; }
 .faq-list details p { margin: 8px 0 0; }
 #siklon-bibit { scroll-margin-top: 88px; }
+#siklon-bibit h3 { margin: 16px 0 0; font-size: 16px; }
+#siklon-bibit article + article { margin-top: 8px; }
 .siklon-tautan { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
 .siklon-tautan a.button { min-height: 44px; display: inline-flex; align-items: center; }
