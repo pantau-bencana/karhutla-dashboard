@@ -4,12 +4,10 @@
   "sumber": {
     "sipongi": {
       "nama": "SiPongi+",
-      "status": "Aktif",
+      "status": "Tautan saja",
       "url": "https://sipongi.gakkum.kehutanan.go.id/",
-      "temuan": "Pemeriksaan 22 Oktober 2026: GET https://opsroom.sipongidata.my.id/api/konfigurasi dan /api/sebaran tanpa header otorisasi mengembalikan HTTP 200 JSON. Tidak ada token yang disalin. Satelit mengikuti sumber_satelit pada konfigurasi. Host lama sipongi.menlhk.go.id tidak punya alamat DNS.",
-      "diambil": "2026-10-28T03:31:46.717Z",
-      "label": "2026-10-23, 2026-10-24, 2026-10-25, 2026-10-26, 2026-10-27, 2026-10-28",
-      "catatan": "Kolom SiPongi menjumlahkan counter High, Medium, dan Low dari semua satelit yang dikembalikan endpoint publik, per kabupaten pada tanggal yang diminta. Kabupaten yang tidak muncul pada tanggal itu ditulis 0. Baris tanpa nama kabupaten tidak dibagikan. Hotspot adalah deteksi satelit, bukan kebakaran terkonfirmasi. Kolom FIRMS adalah pembanding: hanya kepercayaan nominal dan tinggi (huruf n atau h, atau angka ≥ 30)."
+      "temuan": "Portal resmi Kementerian Kehutanan. Dasbor tidak mengambil angka dari situs itu. Hitungan hotspot memakai NASA FIRMS.",
+      "catatan": "Portal resmi. Angka hotspot pada rekap adalah NASA FIRMS, bukan counter SiPongi."
     },
     "hotspot": {
       "nama": "NASA FIRMS VIIRS NRT",
@@ -17,7 +15,7 @@
       "diambil": "2026-10-28T03:23:48.475Z",
       "observasi": "2026-10-27T17:58:00.000Z",
       "label": "Lintasan terbaru 2026-10-27T17:58:00.000Z UTC. Wilayah dari kueri BIG, bukan berkas batas.",
-      "catatan": "Kolom SiPongi menjumlahkan counter High, Medium, dan Low dari semua satelit yang dikembalikan endpoint publik, per kabupaten pada tanggal yang diminta. Kabupaten yang tidak muncul pada tanggal itu ditulis 0. Baris tanpa nama kabupaten tidak dibagikan. Hotspot adalah deteksi satelit, bukan kebakaran terkonfirmasi. Kolom FIRMS adalah pembanding: hanya kepercayaan nominal dan tinggi (huruf n atau h, atau angka ≥ 30). "
+      "catatan": "Kolom hotspot menghitung deteksi NASA FIRMS VIIRS S-NPP NRT pada bingkai Indonesia, kepercayaan nominal dan tinggi saja (huruf n atau h, atau angka ≥ 30). Rendah dan tidak diketahui tidak masuk. Bukan counter SiPongi dan bukan kebakaran terkonfirmasi."
     },
     "fwi": {
       "nama": "FWI model ECMWF via Copernicus GWIS",

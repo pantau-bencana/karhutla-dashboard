@@ -59,8 +59,6 @@ export function tulisRekapDariDisk(now = new Date()) {
   const capTeks = baca("data/live/bmkg-cap-kab.csv");
   const irbiTeks = baca("data/static/irbi-2025-banjir.csv");
   const longsorTeks = baca("data/static/irbi-2025-longsor.csv");
-  const sipongiTeks = baca("data/live/sipongi-hotspot.csv");
-  const sipongiMeta = json("data/live/sipongi-hotspot-meta.json");
   const hotspotFeed = datasets.hotspot || {};
   const fwiFeed = datasets.fwi_gwis_pembanding || {};
   const hujanFeed = datasets.hujan_14_pembanding || {};
@@ -137,23 +135,13 @@ export function tulisRekapDariDisk(now = new Date()) {
           catatan: "Tahunan. 455 kabupaten/kota. Bukan prakiraan dan bukan peta PVMBG. Izin tertulis BNPB untuk publikasi belum ada.",
         }
       : undefined,
-    sipongi: sipongiMeta?.status === "ok"
-      ? {
-          nama: "SiPongi+",
-          status: "Aktif",
-          url: SIPONGI_URL,
-          temuan: SIPONGI_TEMUAN,
-          diambil: sipongiMeta.fetched_at || "",
-          label: Array.isArray(sipongiMeta.tanggal) ? sipongiMeta.tanggal.join(", ") : "",
-          catatan: HOTSPOT_CATATAN,
-        }
-      : {
-          nama: "SiPongi+",
-          status: sipongiTeks ? "Gagal/stale" : "Belum terhubung",
-          url: SIPONGI_URL,
-          temuan: SIPONGI_TEMUAN,
-          catatan: HOTSPOT_CATATAN,
-        },
+    sipongi: {
+      nama: "SiPongi+",
+      status: "Tautan saja",
+      url: SIPONGI_URL,
+      temuan: SIPONGI_TEMUAN,
+      catatan: "Portal resmi. Angka hotspot pada rekap adalah NASA FIRMS, bukan counter SiPongi.",
+    },
   };
   const baru = susunCuplikan({
     hariWib: tanggalJakarta(now),
@@ -167,7 +155,6 @@ export function tulisRekapDariDisk(now = new Date()) {
     capNasional,
     irbi: irbiTeks ? parseCsv(irbiTeks) : undefined,
     longsor: longsorTeks ? parseCsv(longsorTeks) : undefined,
-    sipongi: sipongiTeks ? parseCsv(sipongiTeks) : undefined,
     sumber,
   });
   const lama = json("data/live/rekap-harian.json");

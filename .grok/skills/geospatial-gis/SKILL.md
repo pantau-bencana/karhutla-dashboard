@@ -5,7 +5,7 @@ description: Change maps, layers, coordinates, or geographic filters in the Karh
 
 # Geospatial GIS
 
-The map is Leaflet in `src/components/HotspotMap.jsx`. The basemap is OpenStreetMap tiles. There is no PostGIS and no paid tile service. Keep the Indonesia frame, `minZoom`, and `maxBounds` behavior that `npm run check` already asserts (`INDONESIA_FRAME`, `fitBounds`, no hard-coded `setView([-2.2, 118]`).
+The map is Leaflet in `src/components/HotspotMap.jsx`. The basemap is the OpenFreeMap Liberty style (`BASEMAP` in `src/lib/basemap.js`), drawn with MapLibre through `@maplibre/maplibre-gl-leaflet`. Do not point it back at `tile.openstreetmap.org`. There is no PostGIS and no paid tile service. Keep the Indonesia frame, `minZoom`, and `maxBounds` behavior that `npm run check` already asserts (`INDONESIA_FRAME`, `fitBounds`, no hard-coded `setView([-2.2, 118]`).
 
 ## When to use
 
@@ -37,5 +37,5 @@ The map is Leaflet in `src/components/HotspotMap.jsx`. The basemap is OpenStreet
 ## Verification
 
 - Sample self-check counts stay intact.
-- No new dependency is required to pan the existing map.
+- Pan still uses the existing Leaflet map. The basemap dependencies are `maplibre-gl` and `@maplibre/maplibre-gl-leaflet`, wired only through `src/lib/basemap.js`.
 - A point without an official name is visible as unplaced, not quietly dropped into a neighboring province.

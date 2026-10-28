@@ -1,3 +1,4 @@
+import { FirmsAck, OpenMeteoCredit } from "./Atribusi.jsx";
 import { OfficialLinks } from "./OfficialLinks.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
 import { formatWib } from "../lib/format.js";
@@ -22,8 +23,10 @@ export function SourcesPage({ manifest }) {
             <p>
               Status mengikuti pengambilan terakhir
               {manifest?.generated_at ? ` (${formatWib(manifest.generated_at)})` : ""}. Pembanding tidak menggantikan
-              baris resmi.
+              baris resmi. Kode berlisensi MIT. Data tetap milik penyedia: ODC-BY (BNPB), CC BY 4.0 (Open-Meteo), © EU Copernicus (GWIS/EFFIS).
             </p>
+            <FirmsAck />
+            <OpenMeteoCredit />
           </div>
         </header>
         <div className="table-wrap">

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { OpenMeteoCredit } from "./Atribusi.jsx";
 import { Badge } from "./Badge.jsx";
 import { CatatanRingkas } from "./CatatanRingkas.jsx";
 import { InfoTip } from "./InfoTip.jsx";
@@ -225,6 +226,7 @@ export function KualitasUdara({ feeds, province, provinces = [] }) {
             <a href="#/sumber-metode">Sumber &amp; Metode</a>
           </p>
         </CatatanRingkas>
+        <OpenMeteoCredit />
         <div className="table-wrap">
           <table>
             <thead>

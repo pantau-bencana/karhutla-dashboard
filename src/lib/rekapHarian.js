@@ -24,16 +24,9 @@ export const REKAP_UNDUH =
   "Unduhan dibuat di peramban dasbor. Berkas ini tidak dikirim ke Google Sheets.";
 export const SIPONGI_URL = "https://sipongi.gakkum.kehutanan.go.id/";
 export const SIPONGI_TEMUAN =
-  "Pemeriksaan 22 Oktober 2026: GET https://opsroom.sipongidata.my.id/api/konfigurasi dan /api/sebaran tanpa header otorisasi mengembalikan HTTP 200 JSON. Tidak ada token yang disalin. Satelit mengikuti sumber_satelit pada konfigurasi. Host lama sipongi.menlhk.go.id tidak punya alamat DNS.";
+  "Portal resmi Kementerian Kehutanan. Dasbor tidak mengambil angka dari situs itu. Hitungan hotspot memakai NASA FIRMS.";
 export const HOTSPOT_CATATAN =
-  "Kolom SiPongi menjumlahkan counter High, Medium, dan Low dari semua satelit yang dikembalikan endpoint publik, per kabupaten pada tanggal yang diminta. Kabupaten yang tidak muncul pada tanggal itu ditulis 0. Baris tanpa nama kabupaten tidak dibagikan. Hotspot adalah deteksi satelit, bukan kebakaran terkonfirmasi. Kolom FIRMS adalah pembanding: hanya kepercayaan nominal dan tinggi (huruf n atau h, atau angka ≥ 30).";
-export const PARAM_FIRMS = Object.freeze({
-  id: "firms",
-  nama: "FIRMS pembanding",
-  bidang: "h",
-  cakupan: "hotspot",
-  jenis: "angka",
-});
+  "Kolom hotspot menghitung deteksi NASA FIRMS VIIRS S-NPP NRT pada bingkai Indonesia, kepercayaan nominal dan tinggi saja (huruf n atau h, atau angka ≥ 30). Rendah dan tidak diketahui tidak masuk. Kabupaten tanpa deteksi pada tanggal cuplikan ditulis 0. Titik tanpa kode kabupaten tidak dibagikan. Bukan counter SiPongi (High, Medium, dan Low dari banyak satelit) dan bukan kebakaran terkonfirmasi.";
 export const FWI_KELAS_CATATAN =
   "Kelas mengikuti tabel FWI GWIS/EFFIS: Rendah < 11,2; Sedang 11,2–< 21,3; Tinggi 21,3–< 38; Sangat tinggi 38–< 50; Ekstrem 50–70; Sangat ekstrem > 70. Batas bawah inklusif. Diterapkan pada angka FWI model ECMWF (GetFeatureInfo GWIS). Bukan kelas FDRS BMKG. Angka di bawah 0, termasuk −9999, tidak dikelaskan.";
 export const HUJAN_CATATAN =
@@ -59,7 +52,7 @@ export const REKAP_BAGIAN = Object.freeze([
     id: "karhutla",
     judul: "Karhutla",
     parameter: [
-      { id: "hotspot", nama: "Hotspot SiPongi", bidang: "s", cakupan: "sipongi", jenis: "angka" },
+      { id: "hotspot", nama: "Hotspot FIRMS", bidang: "h", cakupan: "hotspot", jenis: "angka" },
       { id: "fwi", nama: "FWI", bidang: "f", cakupan: "fwi", jenis: "fwi" },
       { id: "kelas", nama: "Kelas FWI", bidang: "f", cakupan: "fwi", jenis: "kelas" },
       { id: "hujan", nama: "Hujan >20 mm", bidang: "m", cakupan: "hujan", jenis: "hujan" },
@@ -481,7 +474,7 @@ export function barisRekap(_rekap, provinsi = "") {
 
 export function tanggalParameter(rekap, param) {
   if (!param || param.jenis === "tetap" || param.jenis === "irbi") return [];
-  if (param.id === "hotspot") return urutTanggal([...(rekap?.cakupan?.sipongi || []), ...(rekap?.cakupan?.hotspot || [])]);
+  if (param.id === "hotspot") return urutTanggal(rekap?.cakupan?.hotspot);
   return urutTanggal(rekap?.cakupan?.[param.cakupan]);
 }
 
@@ -658,24 +651,6 @@ export function lembarRekap(rekap) {
       });
     }
   }
-  const firmsTanggal = tanggalParameter(rekap, PARAM_FIRMS);
-  lembar.splice(1, 0, {
-    nama: "Hotspot FIRMS",
-    baris: [
-      ["Karhutla — FIRMS pembanding"],
-      [`${HOTSPOT_CATATAN} ${PEMBANDING_LENCANA}.`],
-      [REKAP_IDENTITAS],
-      [],
-      ["Provinsi", "Kab/Kota", ...(firmsTanggal.length ? firmsTanggal : ["Nilai"])],
-      ...barisRekap(rekap, "").map((item) => [
-        item.provinsi,
-        item.nama,
-        ...(firmsTanggal.length
-          ? firmsTanggal.map((waktu) => nilaiParameter(rekap, item.kode, PARAM_FIRMS, waktu))
-          : [nilaiParameter(rekap, item.kode, PARAM_FIRMS, "")]),
-      ]),
-    ],
-  });
   const sumber = [
     ["Sumber dan waktu data"],
     [REKAP_UNDUH],
@@ -684,8 +659,7 @@ export function lembarRekap(rekap) {
     ["Parameter", "Status atau sumber", "Diambil", "Waktu sumber", "Catatan"],
   ];
   const blok = [
-    ["Hotspot SiPongi", rekap?.sumber?.sipongi],
-    ["Hotspot FIRMS pembanding", rekap?.sumber?.hotspot],
+    ["Hotspot FIRMS", rekap?.sumber?.hotspot],
     ["FWI", rekap?.sumber?.fwi],
     ["Hujan model", rekap?.sumber?.hujan],
     ["Cuaca BMKG", rekap?.sumber?.bmkg],

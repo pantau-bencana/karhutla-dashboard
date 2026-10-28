@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
-import { osmTileLayer } from "../lib/basemap.js";
+import { basemapLayer } from "../lib/basemap.js";
 import { dekatDaratan, teksDekat } from "../lib/dekatDaratan.js";
 import { INDONESIA_FRAME } from "../lib/geo.js";
 import { analisisDampakIndonesia } from "../lib/siklonBmkg.js";
@@ -31,7 +31,7 @@ export function PetaPosisiSiklon({ sistem }) {
     const el = node.current;
     if (!el) return undefined;
     const map = L.map(el, { scrollWheelZoom: false, zoomControl: true });
-    osmTileLayer(L).addTo(map);
+    basemapLayer().addTo(map);
     const grup = L.layerGroup().addTo(map);
     const gambar = () => {
       grup.clearLayers();

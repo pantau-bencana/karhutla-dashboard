@@ -1,3 +1,4 @@
+import { FirmsAck, OpenMeteoCredit } from "./Atribusi.jsx";
 import { Badge } from "./Badge.jsx";
 import { CatatanRingkas } from "./CatatanRingkas.jsx";
 import { DatasetTiming } from "./DatasetTiming.jsx";
@@ -47,6 +48,8 @@ function PetunjukSkoring({ hasil }) {
         <li>Hotspot FIRMS: jumlah deteksi satelit kelas nominal dan tinggi pada 7 hari terakhir sampai hari ini. Bukan prakiraan, bukan jumlah SiPongi, dan bukan kebakaran terkonfirmasi. Kelas rendah dan tidak diketahui tidak dihitung.</li>
         <li>IRBI 2025: indeks risiko tahunan. Konteks saja, tidak masuk skor, dan bukan indeks bahaya inaRISK.</li>
       </ul>
+      <OpenMeteoCredit />
+      <FirmsAck />
       {hujan ? <p>{hujan}</p> : null}
       <p>
         Saran analisis, bukan perintah. Verifikasi lapangan bila kelas Sangat tinggi atau Tinggi dan ada deteksi nominal atau tinggi. Antisipasi bila kelas itu tanpa deteksi tersebut. Patroli untuk kelas Sedang. Pantau untuk kelas Rendah.
@@ -106,6 +109,8 @@ export function PotensiTujuhHari({ fwi, hujan, hotspot, irbi, provinsi = [], nas
           {hujan?.fetchedAt ? ` Hujan model diambil ${formatWib(hujan.fetchedAt)}.` : ""}
           {hotspot?.observedAt ? ` Observasi hotspot ${formatWib(hotspot.observedAt)}.` : ""}
         </p>
+        <OpenMeteoCredit />
+        <FirmsAck />
       </div>
       {hasil.tersedia ? null : (
         <p>

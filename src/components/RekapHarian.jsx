@@ -1,4 +1,5 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { FirmsAck, OpenMeteoCredit } from "./Atribusi.jsx";
 import { feature } from "topojson-client";
 import { BATAS_KAB_FILE } from "../lib/batasKab.js";
 import { formatTanggal, formatWib } from "../lib/format.js";
@@ -7,14 +8,13 @@ import { gambarRekap } from "../lib/rekapGambar.js";
 import { pptxRekap } from "../lib/rekapPptx.js";
 import {
   REKAP_BAGIAN,
-  PEMBANDING_LENCANA,
   REKAP_IDENTITAS,
+  SIPONGI_TEMUAN,
   REKAP_UNDUH,
   SIPONGI_URL,
   barisRekap,
   catatanParameter,
   lembarRekap,
-  PARAM_FIRMS,
   nilaiParameter,
   papanAtas,
   tanggalParameter,
@@ -154,15 +154,16 @@ export function RekapHarian() {
         <div>
           <h1>Rekap Harian</h1>
           <p className="lead">
-            Tabel harian 514 kabupaten/kota. Angka yang tidak ada ditulis {`"tidak ada data"`}. ISPU, Indeks Kesesuaian Iklim, dan rawan longsor PVMBG tetap belum terintegrasi. Hotspot utama adalah SiPongi. FIRMS ada di kolom pembanding.
+            Tabel harian 514 kabupaten/kota. Angka yang tidak ada ditulis {`"tidak ada data"`}. ISPU, Indeks Kesesuaian Iklim, dan rawan longsor PVMBG tetap belum terintegrasi. Kolom hotspot adalah deteksi NASA FIRMS, bukan counter SiPongi.
           </p>
         </div>
       </header>
       <p className="rekap-note">{REKAP_IDENTITAS} {REKAP_UNDUH}</p>
       <p className="rekap-note">
-        SiPongi+ (KLHK) berstatus {rekap?.sumber?.sipongi?.status || "Belum terhubung"}. {rekap?.sumber?.sipongi?.temuan}{" "}
-        <a href={SIPONGI_URL}>Portal SiPongi+</a>. Kolom FIRMS berlabel {PEMBANDING_LENCANA}.
+        SiPongi+ (Kementerian Kehutanan) berstatus Tautan saja. {SIPONGI_TEMUAN}{" "}
+        <a href={SIPONGI_URL}>Portal SiPongi+</a>.
       </p>
+      <FirmsAck />
       {galat ? <p className="banner">{galat} Baris kabupaten tetap ditampilkan.</p> : null}
       {pesan ? <p className="rekap-note">{pesan}</p> : null}
       <div className="rekap-tools">
@@ -218,6 +219,7 @@ export function RekapHarian() {
               </div>
             </div>
             <p className="rekap-note">{catatanParameter(param)}</p>
+            {param?.id === "hujan" ? <OpenMeteoCredit /> : null}
             {param?.id === "irbi" || param?.id === "longsor" ? <p className="rekap-note">{IRBI_PENGGUNAAN_INTERNAL}</p> : null}
             <canvas ref={kanvas[bagian.id]} className="rekap-map" width="1920" height="1080" aria-label={`Peta ${bagian.judul}`} />
             <div className="table-wrap">
@@ -227,12 +229,7 @@ export function RekapHarian() {
                     <th>Provinsi</th>
                     <th>Kab/Kota</th>
                     {tanggal.length ? tanggal.map((item) => (
-                      param?.id === "hotspot" ? (
-                        <Fragment key={item}>
-                          <th>SiPongi {formatTanggal(item)}</th>
-                          <th>FIRMS pembanding {formatTanggal(item)}</th>
-                        </Fragment>
-                      ) : <th key={item}>{formatTanggal(item)}</th>
+                      <th key={item}>{param?.id === "hotspot" ? `Hotspot FIRMS ${formatTanggal(item)}` : formatTanggal(item)}</th>
                     )) : <th>Nilai</th>}
                   </tr>
                 </thead>
@@ -243,12 +240,7 @@ export function RekapHarian() {
                       <td>{item.nama}</td>
                       {tanggal.length ? (
                         tanggal.map((waktu) => (
-                          param?.id === "hotspot" ? (
-                            <Fragment key={waktu}>
-                              <td>{nilaiParameter(rekap, item.kode, param, waktu)}</td>
-                              <td>{nilaiParameter(rekap, item.kode, PARAM_FIRMS, waktu)}</td>
-                            </Fragment>
-                          ) : <td key={waktu}>{nilaiParameter(rekap, item.kode, param, waktu)}</td>
+                          <td key={waktu}>{nilaiParameter(rekap, item.kode, param, waktu)}</td>
                         ))
                       ) : (
                         <td>{nilaiParameter(rekap, item.kode, param, "")}</td>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FirmsAck } from "./Atribusi.jsx";
 import { formatAngka, formatTanggal, formatWib } from "../lib/format.js";
 import { hotspotSourceLabel } from "../lib/freshness.js";
 import { CONFIDENCE_COLORS } from "../lib/bigWilayah.js";
@@ -67,6 +68,7 @@ export function PeringkatHotspot({
         {feed?.observedAt ? ` Observasi terbaru ${formatWib(feed.observedAt)}.` : ""}
         {feed && !feed.contoh ? ` Sumber: ${hotspotSourceLabel(feed, sumber)}.` : ""}
       </p>
+      <FirmsAck />
       <p className="fine">
         Satu tabel untuk semua kelas. Tingkat wilayah tidak dicampur: pilih Provinsi atau Kabupaten/Kota.
         Urutan: merah menurun, lalu oranye, lalu kuning, lalu total, lalu nama.

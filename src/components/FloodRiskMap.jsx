@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import { OpenMeteoCredit } from "./Atribusi.jsx";
 import { createPortal } from "react-dom";
 import L from "leaflet";
 import { feature as topoFeature, mesh as topoMesh } from "topojson-client";
 import { BATAS_KAB_FILE, BATAS_KAB_SUMBER } from "../lib/batasKab.js";
 import { barisDampakHistoris } from "../lib/bnpbBanjir.js";
-import { osmTileLayer } from "../lib/basemap.js";
+import { basemapLayer } from "../lib/basemap.js";
 import { BANJIR_FRAME } from "../lib/geo.js";
 import { kunciTampilanIndonesia, zoomMuatIndonesia } from "../lib/kunciPeta.js";
 import { ANALISIS_WARNA, CATATAN_ABU, CATATAN_ABU_HARI, CATATAN_ARSIR, LABEL_KEDALUWARSA, LEGENDA_ANALISIS_HARI, WARNA_TANPA_PERINGATAN } from "../lib/analisisPantauBencana.js";
@@ -311,7 +312,7 @@ export function FloodRiskMap({
       maxBoundsViscosity: 1,
       worldCopyJump: false,
     });
-    osmTileLayer(L).addTo(map);
+    basemapLayer().addTo(map);
     map.createPane("flood-lines");
     map.getPane("flood-lines").style.zIndex = 450;
     const pasang = () => {
@@ -755,6 +756,7 @@ export function FloodRiskMap({
                         <p>{HUJAN_TANPA_NOWCAST} {HUJAN_TITIK_BATAS}</p>
                         <p>Bila prakiraan BMKG untuk Hari ini, Besok, atau Lusa tidak ada, angka mm tetap tampil pada tabel dan tooltip. Angka itu tidak menetapkan Awas, Siaga, atau Waspada, dan tidak mewarnai poligon.</p>
                         <p>Diambil {hujan?.waktu || "—"}. Lisensi <a href={HUJAN_PEMBANDING_LISENSI} target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</p>
+                        <OpenMeteoCredit />
                         <p>{hujan?.gpm}</p>
                         <p>
                           <a href="#/sumber-metode/petunjuk-banjir">Petunjuk perhitungan banjir</a>
@@ -801,7 +803,12 @@ export function FloodRiskMap({
                   : null}
               </ul>
               {tab === "cap" ? null : <p className="peta-catatan">{LEGENDA_ANALISIS_HARI}</p>}
-              {showHujan ? <p className="peta-catatan">{HUJAN_PEMBANDING_JENIS}. Bukan warna peringatan.</p> : null}
+              {showHujan ? (
+                <>
+                  <p className="peta-catatan">{HUJAN_PEMBANDING_JENIS}. Bukan warna peringatan.</p>
+                  <OpenMeteoCredit />
+                </>
+              ) : null}
             </details>,
             legendaRef.current,
           )

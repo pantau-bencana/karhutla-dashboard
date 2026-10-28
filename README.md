@@ -8,7 +8,9 @@ Edisi v0.2 (navigasi kiri, kartu ringkas) ada di jalur terpisah dan tidak mengga
 
 Dasbor statis untuk memantau kebakaran hutan dan lahan (karhutla), banjir, gunung api, dan kualitas udara. Karhutla menampilkan sebaran titik panas (deteksi satelit, bukan kebakaran terkonfirmasi) bila cuplikan hotspot pada manifes ada. Banjir memuat peta kabupaten/kota, CAP BMKG yang masih berlaku, prakiraan cuaca 3 hari, dan analisis dasbor yang bukan peringatan resmi. Gunung api belum terintegrasi dan hanya menautkan MAGMA. ISPU stasiun resmi belum terintegrasi; model CAMS adalah pembanding dalam tabel, bukan ISPU. Antarmuka berbahasa Indonesia. Tidak ada server aplikasi. Situs membaca cuplikan di `data/live` lewat manifes yang sama di setiap halaman. Berkas contoh tidak ditampilkan. Satu sumber yang gagal tidak mengosongkan kategori lain.
 
-Angka dan status pada prototipe ini **bukan** peringatan dini resmi BNPB, BMKG, atau instansi sumber.
+Angka dan status pada prototipe ini **bukan** peringatan dini resmi BNPB, BMKG, atau instansi sumber. Ini proyek pribadi nonkomersial, bukan produk resmi, dan tidak berafiliasi dengan BNPB atau BMKG.
+
+Kode sumber berlisensi MIT (`LICENSE`, pemegang hak cipta: Pantau Bencana contributors). Data tetap milik penyedia aslinya. Daftar lisensi dan atribusi ada di [NOTICE.md](NOTICE.md).
 
 ## Dokumen
 
@@ -175,7 +177,7 @@ Pull request hanya membangun dan memeriksa hasilnya. Deploy tidak berjalan sebel
 - Nama wilayah hotspot diisi dari kueri BIG saat pembaruan. Geometri desa dari kueri itu tidak disimpan. Peta banjir memakai salinan TopoJSON kabupaten/kota di `data/static/batas-kabkota.topojson`. Berkas itu tidak dihapus dari repositori ini.
 - Pesan kosong yang dipakai di halaman: **tersedia**, **sebagian**, **belum terintegrasi**, **kedaluwarsa**, **gagal dimuat**, **belum cukup data**, **data terakhir/kedaluwarsa**, dan **Data stasiun belum terintegrasi ke dashboard**. Satu kategori gagal tidak menulis semua kategori sebagai gagal. Angka contoh tidak ditampilkan. IRBI 2025 adalah tabel buku, penggunaan internal, bukan prakiraan.
 - Cuplikan diperbarui dua kali tiap sekitar 3 jam (`17 */3 * * *` dan `47 1-23/3 * * *` UTC). Penjaga jam menit ke-7 memicu pembaruan bila cuplikan lebih tua dari 4 jam. Horizon prakiraan BMKG yang tersambung 3 hari. FWI model pada daftar prioritas sekitar 9 hari, bukan 14 hari dan bukan produk BMKG. Citra SPARTAN hanya tautan, hingga H+7 sesuai produk BMKG.
-- Peta dasar memakai ubin standar OpenStreetMap `https://tile.openstreetmap.org/{z}/{x}/{y}.png` dengan atribusi © OpenStreetMap contributors. Tidak ada kunci API. Lapisan ubin sedikit diturunkan saturasinya supaya warna titik tetap terbaca. Peramban mengirim referer sendiri, dan peta hanya meminta petak yang terlihat. Ketentuan: [kebijakan petak OSM](https://operations.osmfoundation.org/policies/tiles/). Pemakaian operasional yang ramai sebaiknya memakai server petak sendiri. Zoom keluar dibatasi pada bingkai Indonesia; tombol "Tampilkan seluruh Indonesia" mengembalikan tampilan nasional. Modul Gunung Api tidak punya peta dasar.
+- Peta dasar memakai gaya vektor OpenFreeMap `https://tiles.openfreemap.org/styles/liberty` (tanpa kunci API) lewat Leaflet dan MapLibre. Atribusi: OpenFreeMap © OpenMapTiles, data dari © OpenStreetMap contributors (ODbL). URL dan atribusi ada di konstanta `BASEMAP` pada `src/lib/basemap.js`. Ketentuan layanan: [OpenFreeMap](https://openfreemap.org/tos/). Ubin `tile.openstreetmap.org` tidak dipakai. Lapisan peta sedikit diturunkan saturasinya supaya warna titik tetap terbaca. Zoom keluar dibatasi pada bingkai Indonesia; tombol "Tampilkan seluruh Indonesia" mengembalikan tampilan nasional. Modul Gunung Api tidak punya peta dasar.
 - Tidak ada login, jejak audit, atau penyimpanan di server.
 
 ## Berkas penting

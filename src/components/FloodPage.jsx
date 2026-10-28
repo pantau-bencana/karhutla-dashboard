@@ -1,4 +1,5 @@
 import { Component, useCallback, useEffect, useMemo, useState } from "react";
+import { OpenMeteoCredit } from "./Atribusi.jsx";
 import { FloodInfoTable, FloodKabDaftar, PrakiraanTigaHari, rincianKab } from "./FloodInfoTable.jsx";
 import { KeteranganMobile } from "./KeteranganMobile.jsx";
 import { FloodRiskMap } from "./FloodRiskMap.jsx";
@@ -742,6 +743,7 @@ function FloodBody() {
             </a>
             . {HUJAN_TANPA_NOWCAST} Angka milimeter itu tidak menetapkan Awas, Siaga, atau Waspada.
           </p>
+          <OpenMeteoCredit />
         </div>
       </section>
     </main>
