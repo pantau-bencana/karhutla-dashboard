@@ -85,10 +85,16 @@ import {
 import { ANALISIS_MATRIKS, ANALISIS_NAMA, ANALISIS_WARNA, WARNA_TANPA_PERINGATAN, analisisStatus, applyAnalisis, catWilayah, keparahanCuaca, keparahanTerburuk } from "../src/lib/analisisPantauBencana.js";
 import {
   BPS_PROYEKSI_URL,
+  CATATAN_PENDUDUK,
+  CATATAN_RUMAH,
+  KPI_PENDUDUK,
+  KPI_RUMAH,
   PENDUDUK_ABSENT,
   PENDUDUK_BUKAN_TERPAPAR,
   PENDUDUK_FILE,
   PENDUDUK_HEADER,
+  POTENSI_PENDUDUK,
+  POTENSI_RUMAH,
   RUMAH_BELUM,
   angkaUtuh,
   bacaPenduduk,
@@ -98,7 +104,9 @@ import {
   ringkasPendudukBerstatus,
   teksRumahTangga,
 } from "../src/lib/pendudukKab.js";
-import { BNPB_ABSENT, BNPB_RESOURCE_URL, DAMPAK_HISTORIS_CATATAN, HISTORIS_BANJIR_CATATAN, HISTORIS_CUPLIKAN_DIAMBIL, HISTORIS_DISCLAIMER, barisDampakHistoris } from "../src/lib/bnpbBanjir.js";
+import { KOLOM_UNDUH } from "../src/lib/banjirExport.js";
+import { SOURCES } from "../src/lib/sourceCatalog.js";
+import { BNPB_ABSENT, BNPB_RESOURCE_URL, DAMPAK_HISTORIS_CATATAN, DAMPAK_RIIL_BELUM, HISTORIS_BANJIR_CATATAN, HISTORIS_CUPLIKAN_DIAMBIL, HISTORIS_DISCLAIMER, barisDampakHistoris } from "../src/lib/bnpbBanjir.js";
 import { formatWib } from "../src/lib/format.js";
 import {
   LABEL_TAK_DIKENAL,
@@ -2114,8 +2122,10 @@ assert.match(daftarSumber, /DIBI_UNAVAILABLE/);
 assert.match(daftarSumber, /Provinsi:/);
 assert.match(daftarSumber, /barisDampakHistoris/);
 const dampakHistoris = barisDampakHistoris();
-assert.deepEqual(dampakHistoris.slice(0, 2), ["Penduduk terdampak: belum tersedia", "Rumah terdampak: belum tersedia"]);
-assert.equal(dampakHistoris[2], DAMPAK_HISTORIS_CATATAN);
+assert.deepEqual(dampakHistoris, [DAMPAK_RIIL_BELUM, DAMPAK_HISTORIS_CATATAN]);
+assert.equal(DAMPAK_RIIL_BELUM, "Data dampak riil (jiwa/rumah terdampak) belum tersedia");
+assert.equal(dampakHistoris.join(" ").includes("Penduduk terdampak: belum tersedia"), false);
+assert.equal(dampakHistoris.join(" ").includes("Rumah terdampak: belum tersedia"), false);
 assert.match(DAMPAK_HISTORIS_CATATAN, /Historis, bukan prakiraan/);
 assert.equal(dampakHistoris.join(" ").includes("217009"), false);
 assert.equal(daftarSumber.includes('<th scope="col">Penduduk terdampak</th>'), false);
@@ -2342,10 +2352,62 @@ assert.equal(
   100,
 );
 assert.equal(ringkasPendudukBerstatus([{ kode: "11.13", analisisStatus: null }], pendudukIsi).adaStatus, false);
-assert.equal(labelPenduduk(pendudukIsi.get("11.13")), "Potensi penduduk terdampak (BPS, proyeksi 2025)");
-assert.equal(labelRumahTangga(pendudukIsi.get("11.13")), "Potensi rumah terdampak (BPS SP2020, 2020)");
-assert.equal(labelPenduduk(null), "Potensi penduduk terdampak (BPS, proyeksi tahun belum diisi)");
-assert.match(PENDUDUK_ABSENT, /bukan estimasi jumlah terpapar/);
+assert.equal(POTENSI_PENDUDUK, "Jumlah penduduk di wilayah berstatus");
+assert.equal(POTENSI_RUMAH, "Jumlah rumah tangga di wilayah berstatus");
+assert.equal(KPI_PENDUDUK, "Penduduk di wilayah berstatus");
+assert.equal(KPI_RUMAH, "Rumah tangga di wilayah berstatus");
+assert.equal(CATATAN_PENDUDUK, "Total penduduk kab/kota berstatus Awas/Siaga/Waspada (BPS). Bukan jumlah orang yang terdampak.");
+assert.equal(CATATAN_RUMAH, "Total rumah tangga kab/kota (BPS SP2020), dipakai sebagai pendekatan jumlah rumah. Bukan jumlah rumah yang terdampak.");
+assert.equal(labelPenduduk(pendudukIsi.get("11.13")), "Jumlah penduduk di wilayah berstatus (BPS, proyeksi 2025)");
+assert.equal(labelRumahTangga(pendudukIsi.get("11.13")), "Jumlah rumah tangga di wilayah berstatus (BPS SP2020, 2020)");
+assert.equal(labelPenduduk(null), "Jumlah penduduk di wilayah berstatus (BPS, proyeksi tahun belum diisi)");
+assert.equal(kalimatJumlahPenduduk(tanpaAngka).includes(CATATAN_PENDUDUK), true);
+assert.equal(kalimatJumlahPenduduk(tanpaAngka).includes(CATATAN_RUMAH), true);
+assert.match(PENDUDUK_ABSENT, /Bukan jumlah orang yang terdampak/);
+assert.match(PENDUDUK_ABSENT, /Bukan jumlah rumah yang terdampak/);
+assert.equal(PENDUDUK_ABSENT.includes("bukan estimasi jumlah terpapar"), false);
+const kolomPenduduk = FLOOD_INFO_COLUMNS.find((column) => column.id === "penduduk");
+const kolomRumah = FLOOD_INFO_COLUMNS.find((column) => column.id === "rumah-tangga");
+assert.equal(kolomPenduduk.label, POTENSI_PENDUDUK);
+assert.equal(kolomPenduduk.detail, CATATAN_PENDUDUK);
+assert.equal(kolomRumah.label, POTENSI_RUMAH);
+assert.equal(kolomRumah.detail, CATATAN_RUMAH);
+assert.deepEqual(KOLOM_UNDUH.slice(-2), [KPI_PENDUDUK, KPI_RUMAH]);
+const kpiSumber = readFileSync("src/v2/KpiStrip.jsx", "utf8");
+assert.match(kpiSumber, /KPI_PENDUDUK/);
+assert.match(kpiSumber, /KPI_RUMAH/);
+assert.match(kpiSumber, /CATATAN_PENDUDUK/);
+assert.match(kpiSumber, /CATATAN_RUMAH/);
+assert.equal(kpiSumber.includes("Potensi penduduk"), false);
+assert.equal(kpiSumber.includes("Potensi rumah"), false);
+for (const berkasLabel of [
+  "src/lib/pendudukKab.js",
+  "src/lib/floodMatrix.js",
+  "src/lib/banjirExport.js",
+  "src/lib/sourceCatalog.js",
+  "src/lib/bnpbBanjir.js",
+  "src/components/MetodePage.jsx",
+  "src/components/FloodInfoTable.jsx",
+  "src/components/FloodPage.jsx",
+  "src/v2/KpiStrip.jsx",
+]) {
+  const teksLabel = readFileSync(berkasLabel, "utf8");
+  assert.equal(teksLabel.includes("Potensi penduduk terdampak"), false, berkasLabel);
+  assert.equal(teksLabel.includes("Potensi rumah terdampak"), false, berkasLabel);
+  assert.equal(teksLabel.includes("potensi = total kab/kota"), false, berkasLabel);
+}
+const sumberPenduduk = SOURCES.find((source) => source.id === "penduduk_kabkota");
+assert.match(sumberPenduduk.fungsi, /Jumlah penduduk di wilayah berstatus/);
+assert.match(sumberPenduduk.fungsi, /jumlah rumah tangga di wilayah berstatus/);
+assert.match(sumberPenduduk.fungsi, /Bukan jumlah orang yang terdampak/);
+assert.match(sumberPenduduk.fungsi, /Bukan jumlah rumah yang terdampak/);
+assert.match(sumberPenduduk.limitation, /Bukan jumlah orang yang terdampak/);
+assert.match(sumberPenduduk.limitation, /Bukan jumlah rumah yang terdampak/);
+assert.equal(sumberPenduduk.fungsi.includes("Potensi penduduk terdampak"), false);
+assert.equal(sumberPenduduk.limitation.includes("potensi = total kab/kota"), false);
+assert.match(readFileSync("src/components/MetodePage.jsx", "utf8"), /DAMPAK_RIIL_BELUM/);
+assert.match(readFileSync("src/components/FloodInfoTable.jsx", "utf8"), /CATATAN_PENDUDUK/);
+assert.match(readFileSync("src/components/FloodInfoTable.jsx", "utf8"), /CATATAN_RUMAH/);
 assert.equal(xlsxBytes([["No", "Kab/Kota"], ["1", "Aceh Selatan"]])[0], 0x50);
 assert.equal(xlsxBytes([["No"]])[1], 0x4b);
 assert.equal(BPS_PROYEKSI_URL, "https://sensus.bps.go.id/publikasi/index/sp2020");

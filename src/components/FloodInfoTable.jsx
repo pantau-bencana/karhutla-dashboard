@@ -18,7 +18,10 @@ import {
 } from "../lib/dasarianManual.js";
 import { formatTanggal, formatTanggalPendek, formatWib } from "../lib/format.js";
 import {
-  PENDUDUK_BUKAN_TERPAPAR,
+  CATATAN_PENDUDUK,
+  CATATAN_RUMAH,
+  POTENSI_PENDUDUK,
+  POTENSI_RUMAH,
   labelPenduduk,
   labelRumahTangga,
   teksAngkaPenduduk,
@@ -33,11 +36,12 @@ function selPenduduk(row, jenis) {
   if (!row.pendudukTampil) return "—";
   if (row.pendudukStatus === "memuat") return "Memuat angka penduduk…";
   const item = row.pendudukItem;
+  const catatan = jenis === "penduduk" ? CATATAN_PENDUDUK : CATATAN_RUMAH;
   if (jenis === "rumah" && item?.rumahTangga == null) {
     return (
       <>
         {teksRumahTangga(item)}
-        <small>{PENDUDUK_BUKAN_TERPAPAR}</small>
+        <small>{catatan}</small>
       </>
     );
   }
@@ -47,7 +51,7 @@ function selPenduduk(row, jenis) {
     <>
       {angka}
       <small>{label}</small>
-      <small>{PENDUDUK_BUKAN_TERPAPAR}</small>
+      <small>{catatan}</small>
     </>
   );
 }
@@ -282,7 +286,7 @@ export function rincianKab(row, hujanTeks) {
   lines.push(...barisDampakHistoris());
   if (row?.pendudukTampil) {
     lines.push(
-      `Penduduk ${teksAngkaPenduduk(row.pendudukItem?.penduduk)} · rumah tangga ${teksRumahTangga(row.pendudukItem)} · ${PENDUDUK_BUKAN_TERPAPAR}`,
+      `${POTENSI_PENDUDUK}: ${teksAngkaPenduduk(row.pendudukItem?.penduduk)}. ${CATATAN_PENDUDUK} ${POTENSI_RUMAH}: ${teksRumahTangga(row.pendudukItem)}. ${CATATAN_RUMAH}`,
     );
   }
   if (row?.hujanFallback) lines.push(...barisHujanModel(row.hujanFallback.teks, row.hujanFallback.waktu));
@@ -375,7 +379,7 @@ export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null
           </button>
         </p>
       ) : null}
-      <p className="fine">Tingkat kabupaten/kota. Kecamatan tidak ditampilkan. Rincian memuat masa berlaku, prakiraan, penduduk terdampak, rumah terdampak, dan potensi BPS. Hujan model hanya pada tab Hari ini, Besok, atau Lusa, bila lapisan itu nyala atau prakiraan BMKG untuk hari itu tidak ada.</p>
+      <p className="fine">Tingkat kabupaten/kota. Kecamatan tidak ditampilkan. Rincian memuat masa berlaku, prakiraan, data dampak riil (belum tersedia), serta jumlah penduduk dan rumah tangga di wilayah berstatus (BPS). Hujan model hanya pada tab Hari ini, Besok, atau Lusa, bila lapisan itu nyala atau prakiraan BMKG untuk hari itu tidak ada.</p>
     </div>
   );
 }

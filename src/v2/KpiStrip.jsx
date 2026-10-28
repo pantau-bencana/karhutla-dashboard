@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useCuplikanSiklon } from "../components/SiklonRingkas.jsx";
 import { formatAngka, formatWib } from "../lib/format.js";
+import { CATATAN_PENDUDUK, CATATAN_RUMAH, KPI_PENDUDUK, KPI_RUMAH } from "../lib/pendudukKab.js";
 
 const BANJIR = "data/live/banjir-ringkasan.json";
 const MANIFEST = "data/live/manifest.json";
@@ -111,18 +112,18 @@ export function KpiStrip({ location }) {
       kartu.push(
         <Kartu
           key="penduduk"
-          label="Potensi penduduk"
+          label={KPI_PENDUDUK}
           value={total.potensi_penduduk == null ? "Belum dapat dijumlahkan" : formatAngka(total.potensi_penduduk)}
-          note={total.potensi_label || "potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar"}
+          note={CATATAN_PENDUDUK}
           href="#/banjir"
         />,
       );
       kartu.push(
         <Kartu
           key="rumah"
-          label="Potensi rumah"
-          value={total.potensi_rumah == null ? "Belum tersedia" : formatAngka(total.potensi_rumah)}
-          note={total.potensi_label || "potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar"}
+          label={KPI_RUMAH}
+          value={total.potensi_rumah == null ? "Belum dapat dijumlahkan" : formatAngka(total.potensi_rumah)}
+          note={CATATAN_RUMAH}
           href="#/banjir"
         />,
       );

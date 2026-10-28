@@ -28,7 +28,8 @@ import {
   BPS_PROYEKSI_URL,
   PENDUDUK_ABSENT,
   PENDUDUK_FILE,
-  POTENSI_LABEL,
+  CATATAN_PENDUDUK,
+  CATATAN_RUMAH,
   bacaPenduduk,
   barisTooltip,
   kalimatJumlahPenduduk,
@@ -719,7 +720,7 @@ function FloodBody() {
             <a href={BPS_PROYEKSI_URL} target="_blank" rel="noopener noreferrer">
               Publikasi proyeksi penduduk kabupaten/kota
             </a>
-            . Angka yang tampil pada kab/kota berstatus adalah {POTENSI_LABEL}.
+            . Angka yang tampil pada kab/kota berstatus: {CATATAN_PENDUDUK} {CATATAN_RUMAH}
           </p>
           <p>{identitasTampil()}</p>
         </div>

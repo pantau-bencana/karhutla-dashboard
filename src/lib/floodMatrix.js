@@ -48,13 +48,13 @@ export const FLOOD_INFO_COLUMNS = [
   { id: "analisis", label: "Analisis Pantau Bencana", detail: "Bukan status resmi.", sortKey: "status" },
   {
     id: "penduduk",
-    label: "Potensi penduduk terdampak",
-    detail: "potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar.",
+    label: "Jumlah penduduk di wilayah berstatus",
+    detail: "Total penduduk kab/kota berstatus Awas/Siaga/Waspada (BPS). Bukan jumlah orang yang terdampak.",
   },
   {
     id: "rumah-tangga",
-    label: "Potensi rumah terdampak",
-    detail: "potensi = total kab/kota (BPS), bukan estimasi jumlah terpapar.",
+    label: "Jumlah rumah tangga di wilayah berstatus",
+    detail: "Total rumah tangga kab/kota (BPS SP2020), dipakai sebagai pendekatan jumlah rumah. Bukan jumlah rumah yang terdampak.",
   },
   {
     id: "dasarian",
