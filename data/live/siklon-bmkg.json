@@ -47,9 +47,9 @@
   },
   "api": {
     "url": "https://tropicalcyclone.bmkg.go.id/cms/service-api/cyclone/current",
-    "http": 522,
+    "http": 401,
     "dipakai": false,
-    "galat": "HTTP 522"
+    "galat": "HTTP 401"
   },
   "jejak": "belum terintegrasi",
   "siaran_pers": {
@@ -72,10 +72,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-10-28T13:18:37.441Z",
+    "fetched_at": "2026-10-28T14:39:57.669Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-10-28T13:18:37.441Z",
+  "fetched_at": "2026-10-28T14:39:57.669Z",
   "pdf_diubah": "Wed, 28 Oct 2026 07:10:33 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/"
