@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { INDONESIA_FRAME } from "../lib/geo.js";
 import { formatTanggal, formatWib } from "../lib/format.js";
 import {
   IMD_RSMC_URL,
@@ -8,12 +9,14 @@ import {
   SIKLON_BELUM,
   SIKLON_HTML_URL,
   SIKLON_JEJAK,
+  SIKLON_PETA_URL,
   SIKLON_TCWC_URL,
   analisisDampakIndonesia,
   siklonUsang,
 } from "../lib/siklonBmkg.js";
 
 const BERKAS = "data/live/siklon-bmkg.json";
+const URUTAN_TINGKAT = ["Kecil", "Disebut BMKG", "Di wilayah pemantauan"];
 
 let cuplikanJanji = null;
 
@@ -63,54 +66,159 @@ function angkaPolos(nilai, digit = 0) {
   }).format(angka);
 }
 
-function waktuDaftar(terbit) {
-  const cocok = String(terbit || "").match(/^(\d{4}-\d{2}-\d{2})[ T](\d{2}):(\d{2})/);
-  if (!cocok) return terbit || "waktu tidak tertulis";
-  return `${formatTanggal(cocok[1])}, ${cocok[2]}.${cocok[3]} (jam pada daftar BMKG, zona waktu tidak tertulis)`;
+function adaKoordinat(item) {
+  return Number.isFinite(Number(item?.lintang)) && Number.isFinite(Number(item?.bujur));
 }
 
-function teksKoordinat(item) {
-  if (!Number.isFinite(Number(item.lintang)) || !Number.isFinite(Number(item.bujur))) {
-    return "Koordinat titik analisis tidak ada pada halaman.";
-  }
+function teksPosisi(item) {
+  if (!adaKoordinat(item)) return "—";
   const lintang = `${angkaPolos(Math.abs(item.lintang), 1)}° ${item.lintang >= 0 ? "LU" : "LS"}`;
   const bujur = `${angkaPolos(Math.abs(item.bujur), 1)}° ${item.bujur >= 0 ? "BT" : "BB"}`;
-  return `Posisi titik analisis BMKG: ${lintang}, ${bujur}.`;
+  return `${lintang}, ${bujur}`;
 }
 
-function teksIntensitas(item) {
-  const bagian = [];
-  if (item.tekanan_hpa != null) bagian.push(`tekanan ${angkaPolos(item.tekanan_hpa)} hPa`);
-  if (item.angin_knot != null) bagian.push(`angin rata-rata ${angkaPolos(item.angin_knot)} knot`);
-  if (item.kategori) bagian.push(`kategori pada data titik ${item.kategori}`);
-  if (!bagian.length) return "Tekanan, angin, dan kategori tidak ada pada titik analisis.";
-  return `Pada titik analisis: ${bagian.join(", ")}. Satuan mengikuti label halaman BMKG.`;
+function labelTcwc(item) {
+  if (item.di_dalam_tcwc) return "Dalam TCWC Jakarta";
+  if (item.luar_tcwc) return "Luar TCWC Jakarta";
+  return "Tidak ditandai";
 }
 
-function letakSistem(item) {
-  if (item.luar_tcwc) return "Di luar wilayah pemantauan (AoM) TCWC Jakarta.";
-  if (item.di_dalam_tcwc) return "Di dalam wilayah pemantauan TCWC Jakarta.";
-  return "Tidak ditandai di dalam wilayah pemantauan TCWC Jakarta.";
+function kelasTingkat(tingkat) {
+  if (tingkat === "Di wilayah pemantauan") return "pantau";
+  if (tingkat === "Disebut BMKG") return "disebut";
+  return "kecil";
+}
+
+function lokasiPendek(item) {
+  const lokasi = String(item?.lokasi || "").trim();
+  if (!lokasi || /^(luar|dalam)\b/i.test(lokasi)) return "";
+  return lokasi;
+}
+
+function kalimatStatus(sistem) {
+  if (!sistem.length) return "Saat ini tidak ada sistem aktif pada halaman BMKG.";
+  const tingkat = sistem.map((item) => analisisDampakIndonesia(item).tingkat);
+  const utama = tingkat.reduce((terpilih, item) => (
+    URUTAN_TINGKAT.indexOf(item) > URUTAN_TINGKAT.indexOf(terpilih) ? item : terpilih
+  ), "Kecil");
+  const tempat = sistem.map(lokasiPendek);
+  const sama = tempat.every((item) => item && item === tempat[0]);
+  const di = sama ? ` di ${tempat[0]}` : "";
+  return `Saat ini ${sistem.length} sistem aktif${di}. Dampak ke Indonesia: ${utama.toUpperCase()}.`;
+}
+
+function kutipanPendek(teks) {
+  const rata = String(teks || "").replace(/\s+/g, " ").trim();
+  if (!rata) return "";
+  const kalimat = rata.match(/^(.+?\.)(?:\s|$)/);
+  const pendek = kalimat ? kalimat[1] : rata;
+  if (pendek.length <= 160) return pendek;
+  return `${pendek.slice(0, 157).trim()}…`;
+}
+
+function waktuDaftar(terbit) {
+  const cocok = String(terbit || "").match(/^(\d{4}-\d{2}-\d{2})/);
+  return cocok ? formatTanggal(cocok[1]) : "tanggal tidak tertulis";
+}
+
+function Fakta({ label, nilai }) {
+  return (
+    <div className="siklon-fakta">
+      <p>{label}</p>
+      <strong>{nilai}</strong>
+    </div>
+  );
+}
+
+function SkemaPosisi({ sistem }) {
+  const lebar = 640;
+  const tinggi = 300;
+  const titik = sistem.filter(adaKoordinat);
+  const batas = {
+    west: Math.min(72, INDONESIA_FRAME.west, ...titik.map((item) => Number(item.bujur) - 3)),
+    east: Math.max(148, INDONESIA_FRAME.east, ...titik.map((item) => Number(item.bujur) + 3)),
+    south: Math.min(-16, INDONESIA_FRAME.south, ...titik.map((item) => Number(item.lintang) - 3)),
+    north: Math.max(26, INDONESIA_FRAME.north, ...titik.map((item) => Number(item.lintang) + 3)),
+  };
+  const xy = (bujur, lintang) => {
+    const x = ((bujur - batas.west) / (batas.east - batas.west)) * lebar;
+    const y = ((batas.north - lintang) / (batas.north - batas.south)) * tinggi;
+    return [x, y];
+  };
+  const [x0, y0] = xy(INDONESIA_FRAME.west, INDONESIA_FRAME.north);
+  const [x1, y1] = xy(INDONESIA_FRAME.east, INDONESIA_FRAME.south);
+  return (
+    <figure className="siklon-skema">
+      <svg viewBox={`0 0 ${lebar} ${tinggi}`} role="img" aria-label="Skema posisi sistem terhadap bingkai Indonesia">
+        <rect width={lebar} height={tinggi} className="siklon-skema-laut" />
+        <rect x={x0} y={y0} width={x1 - x0} height={y1 - y0} className="siklon-skema-indonesia" />
+        <text x={x0 + 10} y={y0 + 22}>Indonesia</text>
+        {titik.map((item, indeks) => {
+          const [x, y] = xy(Number(item.bujur), Number(item.lintang));
+          const hasil = analisisDampakIndonesia(item);
+          return (
+            <g key={item.nama} className={`siklon-titik siklon-titik-${kelasTingkat(hasil.tingkat)}`}>
+              <circle cx={x} cy={y} r="7" />
+              <text x={x + 12} y={y + (indeks % 2 === 0 ? -8 : 16)}>{item.nama}</text>
+            </g>
+          );
+        })}
+      </svg>
+      <figcaption>
+        Skema posisi dari titik analisis BMKG. Bingkai Indonesia bukan batas administrasi. Lintasan prakiraan tidak ada pada cuplikan.
+      </figcaption>
+    </figure>
+  );
+}
+
+function KartuSistem({ item }) {
+  const hasil = analisisDampakIndonesia(item);
+  const jenis = item.jenis === "bibit" ? "Bibit" : "Siklon";
+  return (
+    <article className="siklon-kartu">
+      <header>
+        <h3>{item.nama}</h3>
+        <span className={`siklon-lencana siklon-lencana-${item.jenis === "bibit" ? "bibit" : "siklon"}`}>{jenis}</span>
+        <span className={`siklon-chip siklon-chip-${kelasTingkat(hasil.tingkat)}`}>{hasil.tingkat}</span>
+      </header>
+      <div className="siklon-fakta-grid">
+        <Fakta label="Posisi" nilai={teksPosisi(item)} />
+        <Fakta label="Tekanan" nilai={item.tekanan_hpa == null ? "—" : `${angkaPolos(item.tekanan_hpa)} hPa`} />
+        <Fakta label="Angin" nilai={item.angin_knot == null ? "—" : `${angkaPolos(item.angin_knot)} knot`} />
+        <Fakta label="Kategori" nilai={item.kategori || "—"} />
+        <Fakta label="Jarak ke Indonesia" nilai={hasil.jarak_km == null ? "—" : `${angkaPolos(hasil.jarak_km)} km`} />
+        <Fakta label="Wilayah TCWC Jakarta" nilai={labelTcwc(item)} />
+      </div>
+      <p className="siklon-dampak">Dampak BMKG: {item.dampak || "—"}</p>
+      {item.kalimat ? (
+        <details>
+          <summary>Kalimat BMKG</summary>
+          <p>{item.kalimat}</p>
+        </details>
+      ) : null}
+    </article>
+  );
 }
 
 export function SiklonRingkas({ manifest = null }) {
   const { data, galat } = useCuplikanSiklon();
   const entri = manifest?.datasets?.bmkg_siklon;
   const usang = siklonUsang(entri);
-
   const ikhtisar = data?.ikhtisar;
-  const sistem = Array.isArray(ikhtisar?.sistem) ? ikhtisar.sistem : [];
+  const sistemIkhtisar = Array.isArray(ikhtisar?.sistem) ? ikhtisar.sistem : [];
   const sistemHalaman = Array.isArray(data?.sistem_halaman) ? data.sistem_halaman : [];
   const waktuBerhasil = entri?.fetched_at || data?.fetched_at;
+  const tingkatUtama = sistemHalaman.length
+    ? sistemHalaman.map((item) => analisisDampakIndonesia(item).tingkat).reduce((terpilih, item) => (
+      URUTAN_TINGKAT.indexOf(item) > URUTAN_TINGKAT.indexOf(terpilih) ? item : terpilih
+    ), "Kecil")
+    : "";
+  const daftarSiaran = Array.isArray(data?.siaran_pers?.daftar) ? data.siaran_pers.daftar : [];
 
   return (
     <section className="card" id="siklon-bibit" aria-label="Siklon">
       <h2>Siklon / Bibit Siklon</h2>
-      <p>
-        Cakupan nasional. Saringan provinsi tidak mengubah status ini. Bukan peringatan resmi.
-        {" "}
-        Sumber: BMKG.
-      </p>
+      <p className="siklon-sumber">Sumber: BMKG. Bukan peringatan resmi.</p>
       {usang ? (
         <p className="banner warn" role="status">
           <strong>Data siklon tertunda.</strong>
@@ -125,63 +233,62 @@ export function SiklonRingkas({ manifest = null }) {
       {!data && !galat ? <p role="status">Memuat cuplikan siklon…</p> : null}
       {data ? (
         <>
-          <p>
-            Status halaman Siklon Tropis: {data.status_teks || data.status || "tidak ada data"}.
-            {" "}
-            Nama sistem pada halaman itu: {sistemHalaman.length ? sistemHalaman.map((item) => item.nama).join(", ") : "tidak ada"}.
+          <p className={`siklon-status siklon-status-${sistemHalaman.length ? kelasTingkat(tingkatUtama) : "kosong"}`} role="status">
+            {kalimatStatus(sistemHalaman)}
           </p>
+          {sistemHalaman.length ? <SkemaPosisi sistem={sistemHalaman} /> : null}
+          <h3>Analisis Dampak ke Indonesia</h3>
           {sistemHalaman.length ? (
-            <>
-              <ul>
-                {sistemHalaman.map((item) => (
-                  <li key={`${item.jenis || "sistem"}-${item.nama}`}>
-                    {item.tahap ? `${item.tahap} ` : ""}{item.nama}.
-                    {item.kalimat ? ` Kalimat halaman: ${item.kalimat}` : ""}
-                    {" "}
-                    {letakSistem(item)}
-                    {" "}
-                    {item.dampak
-                      ? `Dampak yang ditulis: ${item.dampak}`
-                      : "Tidak ada kalimat dampak untuk wilayah Indonesia pada cuplikan ini."}
-                  </li>
-                ))}
-              </ul>
-              <p className="fine">
-                Sistem di luar wilayah pemantauan TCWC Jakarta atau tanpa kalimat dampak untuk Indonesia tetap ditampilkan di sini dan tidak menyalakan tanda merah pada navigasi.
-              </p>
-            </>
+            <div className="siklon-kartu-daftar">
+              {sistemHalaman.map((item) => <KartuSistem key={`${item.jenis || "sistem"}-${item.nama}`} item={item} />)}
+            </div>
+          ) : (
+            <p>Tidak ada sistem aktif. Analisis dampak tidak disusun.</p>
+          )}
+          {sistemHalaman.length ? (
+            <div className="siklon-tabel-bungkus">
+              <table className="siklon-tabel">
+                <caption>Wilayah terdampak pada halaman BMKG</caption>
+                <thead>
+                  <tr>
+                    <th>Sistem</th>
+                    <th>Dampak BMKG</th>
+                    <th>Tingkat dasbor</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sistemHalaman.map((item) => {
+                    const hasil = analisisDampakIndonesia(item);
+                    return (
+                      <tr key={`tabel-${item.nama}`}>
+                        <td>{item.nama}</td>
+                        <td>{item.dampak || "—"}</td>
+                        <td>{hasil.tingkat}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           ) : null}
-          {ikhtisar?.status === "ok" && sistem.length ? (
-            <ul>
-              {sistem.map((item) => (
-                <li key={item.nama}>
-                  Ikhtisar menyebut {item.tahap} {item.nama}{item.lokasi ? ` di ${item.lokasi}` : ""}.
-                  {item.dampak ? ` Dampak yang ditulis dokumen: ${item.dampak}` : " Dampak untuk Indonesia: belum terintegrasi."}
-                  {" "}
-                  Kalimat ini dari ikhtisar cuaca harian, bukan dari status halaman, dan bukan jejak.
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>Nama sistem, tahap, dan dampak dari ikhtisar: {SIKLON_BELUM}.</p>
-          )}
-          <h3>Analisis &amp; Siaran Pers BMKG</h3>
-          <p>
-            Kutipan dari halaman Siklon Tropis dan daftar siaran pers. Teks di bawah ini disalin dari BMKG, bukan ringkasan yang disusun dasbor.
+          <p className="siklon-catatan">Tabel prakiraan lintasan tidak ada pada cuplikan. Yang tersimpan hanya titik analisis.</p>
+          <div className="siklon-peta-kepala">
+            <h3>Peta Siklon BMKG</h3>
+            <a className="btn pri" href={SIKLON_PETA_URL} target="_blank" rel="noopener noreferrer">Buka peta siklon BMKG</a>
+          </div>
+          <iframe
+            className="siklon-peta-bmkg"
+            title="Peta Siklon BMKG"
+            src={SIKLON_PETA_URL}
+            loading="lazy"
+            referrerPolicy="no-referrer"
+          />
+          <p className="siklon-catatan">
+            Panel ini memuat halaman BMKG. Bukan peta buatan dasbor. Sumber: BMKG.
             {" "}
-            Sumber: BMKG.
+            <a href={SIKLON_TCWC_URL} target="_blank" rel="noopener noreferrer">Peta TCWC BMKG</a>
           </p>
-          {sistemHalaman.length ? (
-            <ul>
-              {sistemHalaman.map((item) => (
-                <li key={`dampak-${item.nama}`}>
-                  {item.tahap ? `${item.tahap} ` : ""}{item.nama}. Dampak pada halaman Siklon Tropis: {item.dampak || "tidak ada kalimat"}.
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>Tidak ada sistem aktif. Kutipan dampak tidak disusun.</p>
-          )}
+          <h3>Analisis &amp; Siaran Pers BMKG</h3>
           {data.siaran_pers?.status === "gagal" ? (
             <p className="banner warn" role="status">
               <strong>Daftar siaran pers tertunda.</strong>
@@ -194,94 +301,60 @@ export function SiklonRingkas({ manifest = null }) {
               Periksa daftar Siaran Pers BMKG.
             </p>
           ) : null}
-          {Array.isArray(data.siaran_pers?.daftar) && data.siaran_pers.daftar.length ? (
-            <ul>
-              {data.siaran_pers.daftar.map((item) => (
+          {daftarSiaran.length ? (
+            <ul className="siklon-siaran">
+              {daftarSiaran.map((item) => (
                 <li key={item.url || item.slug}>
                   <a href={item.url} target="_blank" rel="noopener noreferrer">{item.judul}</a>
-                  {" "}
-                  Waktu pada daftar: {waktuDaftar(item.terbit)}.
-                  {item.kutipan ? ` Kutipan: ${item.kutipan}` : ""}
+                  <p>{kutipanPendek(item.kutipan)}</p>
+                  <p>
+                    {waktuDaftar(item.terbit)}
+                    {" · "}
+                    <a href={item.url} target="_blank" rel="noopener noreferrer">Baca selengkapnya</a>
+                  </p>
                 </li>
               ))}
             </ul>
           ) : (
             <p>Tidak ada siaran pers BMKG tentang siklon atau bibit pada daftar yang terbaca.</p>
           )}
-          <p className="fine">Kutipan siaran pers tidak mengubah tingkat dampak. Tingkat hanya memakai teks dampak halaman Siklon Tropis dan tanda wilayah TCWC Jakarta.</p>
-          <p className="fine">
-            Waktu ambil daftar {formatWib(data.siaran_pers?.fetched_at)}.
-            {" "}
-            <a href={SIARAN_PERS_URL} target="_blank" rel="noopener noreferrer">Daftar Siaran Pers BMKG</a>
-          </p>
-          <h3>Analisis Dampak ke Indonesia</h3>
-          <p>
-            <strong>analisis otomatis Pantau Bencana, bukan status resmi.</strong>
-            {" "}
-            {RUMUS_DAMPAK_SIKLON}
-          </p>
-          {sistemHalaman.length ? sistemHalaman.map((item) => {
-            const hasil = analisisDampakIndonesia(item);
-            return (
-              <article key={`analisis-${item.nama}`}>
-                <p><strong>{item.tahap ? `${item.tahap} ` : ""}{item.nama}</strong></p>
-                <p>
-                  {teksKoordinat(item)}
-                  {" "}
-                  {item.waktu_analisis ? `Waktu analisis ${formatWib(item.waktu_analisis)}.` : "Waktu analisis tidak ada pada halaman."}
-                  {" "}
-                  {teksIntensitas(item)}
-                </p>
-                <p>Dampak yang ditulis halaman: {item.dampak || "-"}.</p>
-                <p>{letakSistem(item)}</p>
-                <p>
-                  {hasil.jarak_km == null
-                    ? "Jarak tidak dihitung karena koordinat tidak ada pada halaman."
-                    : `Jarak ke titik terdekat pada bingkai Indonesia dasbor: ${angkaPolos(hasil.jarak_km)} km. Bingkai itu bukan batas administrasi.`}
-                </p>
-                <p>Tingkat untuk cakupan yang disebut: {hasil.tingkat}.</p>
-                <ul>
-                  {hasil.wilayah.map((wilayah) => (
-                    <li key={`${item.nama}-${wilayah.nama}`}>
-                      {wilayah.nama}: {wilayah.tingkat}.
-                      {wilayah.kutipan ? ` Kutipan halaman: ${wilayah.kutipan}` : ""}
-                    </li>
-                  ))}
-                </ul>
-                {hasil.tingkat === "Kecil" ? (
-                  <p>Tidak ada nama provinsi pada teks dampak BMKG, jadi tidak disusun tingkat per provinsi.</p>
-                ) : null}
-              </article>
-            );
-          }) : (
-            <p>Tidak ada sistem aktif. Analisis dampak tidak disusun.</p>
-          )}
-          <p className="fine">
-            Buletin IMD/RSMC New Delhi dan JTWC tidak diambil pada pembaruan ini. Tidak ada angka dari kedua sumber itu.
-            {" "}
-            <a href={IMD_RSMC_URL} target="_blank" rel="noopener noreferrer">IMD / RSMC New Delhi</a>
-            {" · "}
-            <a href={JTWC_URL} target="_blank" rel="noopener noreferrer">JTWC</a>
-            {" "}
-            Waktu ambil halaman siklon {formatWib(data.fetched_at)}.
-          </p>
-          <p>
-            Waktu ambil {formatWib(data.fetched_at)}.
-            {" "}
-            {ikhtisar?.terbit ? `Ikhtisar tertanggal ${formatTanggal(ikhtisar.terbit)}.` : "Halaman status tidak memuat jam pembaruan."}
-            {" "}
-            {data.pdf_diubah ? `Berkas ikhtisar diubah ${formatWib(data.pdf_diubah)}.` : ""}
-            {" "}
-            {data.api?.galat ? `API TCWC tidak dipakai (${data.api.galat}).` : ""}
-          </p>
+          <footer className="siklon-kaki">
+            <p><strong>analisis otomatis Pantau Bencana, bukan status resmi.</strong></p>
+            <p>
+              Waktu ambil {formatWib(data.fetched_at)}.
+              {" "}
+              {sistemHalaman.some((item) => item.waktu_analisis) ? `Waktu analisis ${formatWib(sistemHalaman.find((item) => item.waktu_analisis)?.waktu_analisis)}.` : "Halaman status tidak memuat jam pembaruan."}
+              {" "}
+              {ikhtisar?.terbit ? `Ikhtisar tertanggal ${formatTanggal(ikhtisar.terbit)}.` : `Ikhtisar: ${SIKLON_BELUM}.`}
+              {" "}
+              {data.siaran_pers?.fetched_at ? `Daftar siaran pers diambil ${formatWib(data.siaran_pers.fetched_at)}.` : ""}
+            </p>
+            {sistemIkhtisar.length ? (
+              <p>
+                Ikhtisar menyebut {sistemIkhtisar.map((item) => item.nama).join(", ")}.
+                {sistemIkhtisar.some((item) => item.dampak) ? "" : " Dampak untuk Indonesia: belum terintegrasi."}
+              </p>
+            ) : null}
+            <details>
+              <summary>Rumus tingkat</summary>
+              <p>{RUMUS_DAMPAK_SIKLON}</p>
+            </details>
+            <p>
+              Buletin IMD/RSMC New Delhi dan JTWC tidak diambil. Tidak ada angka dari kedua sumber itu.
+              {" "}
+              <a href={IMD_RSMC_URL} target="_blank" rel="noopener noreferrer">IMD / RSMC New Delhi</a>
+              {" · "}
+              <a href={JTWC_URL} target="_blank" rel="noopener noreferrer">JTWC</a>
+              {" · "}
+              <a href={SIARAN_PERS_URL} target="_blank" rel="noopener noreferrer">Daftar Siaran Pers BMKG</a>
+              {" · "}
+              <a href={SIKLON_HTML_URL} target="_blank" rel="noopener noreferrer">Halaman Siklon Tropis BMKG</a>
+            </p>
+            <p>{SIKLON_JEJAK} Tidak ada lapisan jejak pada peta dasbor.</p>
+            {data.api?.galat ? <p>API TCWC tidak dipakai ({data.api.galat}).</p> : null}
+          </footer>
         </>
       ) : null}
-      <p className="siklon-tautan">
-        <a className="button" href={SIKLON_TCWC_URL} target="_blank" rel="noopener noreferrer">Peta TCWC BMKG</a>
-        <a className="button" href={SIKLON_HTML_URL} target="_blank" rel="noopener noreferrer">Halaman Siklon Tropis BMKG</a>
-      </p>
-      <p className="fine">Peta dan halaman dibuka di situs BMKG. Status tautan: Tautan saja. Sumber: BMKG.</p>
-      <p>{SIKLON_JEJAK} Tidak ada lapisan jejak pada peta.</p>
     </section>
   );
 }
