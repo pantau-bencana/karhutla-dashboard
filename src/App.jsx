@@ -181,7 +181,7 @@ export function App() {
       ) : null}
       {page === "siklon" ? (
         <main className="wrap main">
-          <SiklonRingkas />
+          <SiklonRingkas manifest={manifest} />
         </main>
       ) : null}
       {page === "irbi" ? (

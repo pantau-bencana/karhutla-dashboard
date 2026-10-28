@@ -41,8 +41,12 @@ export function PenjelasanSiklon({ cuplikan }) {
     <>
       <p>Halaman Siklon Tropis BMKG: {statusHalaman}. Sumber: BMKG. Bukan peringatan resmi.</p>
       {sinyal.sistem.map((item) => (
-        <p key={item.nama}>
-          Ikhtisar menulis {item.tahap ? `${item.tahap} ` : ""}{item.nama}{item.lokasi ? ` di ${item.lokasi}` : ""}. Dampak yang ditulis dokumen: {item.dampak} Tanda pada tab memakai kalimat itu. Halaman Siklon Tropis {sinyal.halamanAda ? "berstatus Ada." : "tetap bukan status Ada."} Bukan jejak, bukan kerucut, dan bukan peringatan resmi.
+        <p key={`${item.sumber || "sistem"}-${item.nama}`}>
+          {item.tahap ? `${item.tahap} ` : ""}{item.nama}{item.lokasi ? ` di ${item.lokasi}` : ""}.
+          {item.di_dalam_tcwc ? " Di dalam wilayah pemantauan TCWC Jakarta." : ""}
+          {item.dampak ? ` Dampak yang ditulis: ${item.dampak}` : ""}
+          {" "}
+          Tanda pada tab memakai kedekatan ini. Halaman Siklon Tropis {sinyal.halamanAda ? "berstatus Ada." : "tetap bukan status Ada."} Bukan jejak, bukan kerucut, dan bukan peringatan resmi.
         </p>
       ))}
       {sinyal.halamanAda ? <p>{SIKLON_JEJAK}</p> : null}

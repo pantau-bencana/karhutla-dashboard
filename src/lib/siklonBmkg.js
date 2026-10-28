@@ -1,4 +1,13 @@
+import { INDONESIA_FRAME } from "./geo.js";
+import { PROVINSI } from "./provinsi.js";
+import { REFRESH_INTERVAL_HOURS } from "./schedule.js";
+
 export const SIKLON_HTML_URL = "https://www.bmkg.go.id/cuaca/siklon-tropis";
+export const SIARAN_PERS_URL = "https://www.bmkg.go.id/siaran-pers";
+export const IMD_RSMC_URL = "https://rsmcnewdelhi.imd.gov.in/";
+export const JTWC_URL = "https://www.metoc.navy.mil/jtwc/jtwc.html";
+export const RUMUS_DAMPAK_SIKLON =
+  "Tingkat Kecil dipakai bila teks dampak pada halaman Siklon Tropis hanya '-' atau kosong dan sistem tidak berada di dalam wilayah pemantauan TCWC Jakarta. Tingkat Disebut BMKG dipakai hanya untuk nama wilayah yang tertulis pada teks dampak itu. Tingkat Di wilayah pemantauan dipakai bila sistem ditandai di dalam AoM TCWC Jakarta tanpa nama wilayah pada teks dampak. Jarak, bila koordinat ada, adalah haversine ke titik terdekat pada bingkai Indonesia dasbor, dibulatkan ke kilometer, dan bukan batas administrasi. Analisis otomatis Pantau Bencana, bukan status resmi.";
 export const SIKLON_TCWC_URL = "https://tropicalcyclone.bmkg.go.id/";
 export const SIKLON_PDF_URL = "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf";
 export const SIKLON_API_URL = "https://tropicalcyclone.bmkg.go.id/cms/service-api/cyclone/current";
@@ -25,18 +34,269 @@ function rapikan(teks) {
   return String(teks || "").replace(/\s+/g, " ").trim();
 }
 
+function teksPolos(html) {
+  return rapikan(
+    String(html || "")
+      .replace(/<script[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style[\s\S]*?<\/style>/gi, " ")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/&nbsp;/gi, " ")
+      .replace(/&amp;/gi, "&")
+      .replace(/&#(\d+);/g, (_, angka) => String.fromCharCode(Number(angka)))
+      .replace(/&[a-z]+;/gi, " "),
+  );
+}
+
+function kalimatPertama(teks) {
+  const rata = rapikan(teks);
+  if (!rata) return "";
+  const cocok = rata.match(/^(.+?\.)(?:\s|$)/);
+  return cocok ? cocok[1] : rata;
+}
+
+function lokasiDari(kalimat) {
+  const rata = rapikan(kalimat).replace(/[.]+$/, "");
+  const cocok = rata.match(/\bdi\s+([^.]{3,160})$/i);
+  return cocok ? cocok[1].trim() : "";
+}
+
+function luarTcwc(kalimat) {
+  return /di luar wilayah monitoring|di luar wilayah pemantauan|outside the area of monitoring/i.test(kalimat);
+}
+
+function dalamTcwc(kalimat) {
+  return /di dalam wilayah monitoring|di dalam wilayah pemantauan|inside the area of monitoring/i.test(kalimat);
+}
+
+function teksDampak(nilai) {
+  if (typeof nilai === "string") {
+    const rata = rapikan(nilai);
+    if (!rata || /^[-–—.]+$/.test(rata)) return "";
+    return rata;
+  }
+  if (Array.isArray(nilai)) return nilai.map(teksDampak).filter(Boolean).join("; ");
+  if (nilai && typeof nilai === "object") {
+    return ["text", "description_id", "description", "nama", "name"]
+      .map((kunci) => teksDampak(nilai[kunci]))
+      .filter(Boolean)
+      .join("; ");
+  }
+  return "";
+}
+
+function namaPublik(namaMentah, kode, jenis) {
+  if (jenis === "bibit") {
+    const dariNama = String(namaMentah).match(/([0-9]{2}[A-Za-z])\s*$/);
+    if (dariNama) return dariNama[1].toUpperCase();
+  }
+  if (jenis === "bibit" && /^[0-9]{2}[A-Za-z]$/.test(kode || "")) return String(kode).toUpperCase();
+  const inti = rapikan(namaMentah).replace(/^(?:bibit\s+)?siklon\s+tropis\s+/i, "").trim();
+  if (/^[A-Z]{2,}$/.test(inti)) return `${inti[0]}${inti.slice(1).toLowerCase()}`;
+  return inti || rapikan(namaMentah);
+}
+
+function susunSistem({ nama, tahap, jenis, kalimat, dampak = "", isAor = null, titik = null }) {
+  const kalimatBersih = kalimatPertama(kalimat);
+  const luar = luarTcwc(kalimatBersih);
+  const diDalam = (!luar && dalamTcwc(kalimatBersih)) || (isAor === true && !luar);
+  return {
+    nama,
+    tahap,
+    jenis,
+    kalimat: kalimatBersih,
+    lokasi: lokasiDari(kalimatBersih),
+    dampak: rapikan(dampak),
+    di_dalam_tcwc: Boolean(diDalam),
+    luar_tcwc: Boolean(luar),
+    sumber: "halaman",
+    lintang: titik?.lintang ?? null,
+    bujur: titik?.bujur ?? null,
+    tekanan_hpa: titik?.tekanan_hpa ?? null,
+    angin_knot: titik?.angin_knot ?? null,
+    kategori: titik?.kategori || "",
+    waktu_analisis: titik?.waktu || "",
+  };
+}
+
+function angkaAtauNull(nilai) {
+  if (nilai == null || nilai === "") return null;
+  const angka = Number(nilai);
+  return Number.isFinite(angka) ? angka : null;
+}
+
+function titikAnalisis(geojson) {
+  const fitur = Array.isArray(geojson?.features) ? geojson.features : [];
+  const titik = [];
+  for (const item of fitur) {
+    const prop = item?.properties || {};
+    if (prop.is_forecast) continue;
+    const koordinat = item?.geometry?.coordinates;
+    if (!Array.isArray(koordinat) || koordinat.length < 2) continue;
+    const bujur = Number(koordinat[0]);
+    const lintang = Number(koordinat[1]);
+    if (!Number.isFinite(bujur) || !Number.isFinite(lintang)) continue;
+    if (Math.abs(lintang) > 90 || Math.abs(bujur) > 180) continue;
+    titik.push({
+      lintang,
+      bujur,
+      tekanan_hpa: angkaAtauNull(prop.pressure),
+      angin_knot: angkaAtauNull(prop.mean_wind),
+      kategori: prop.cat == null ? "" : String(prop.cat),
+      waktu: prop.analysis_time || prop.time || "",
+    });
+  }
+  titik.sort((kiri, kanan) => String(kanan.waktu).localeCompare(String(kiri.waktu)));
+  return titik[0] || null;
+}
+
+function nilaiNuxt(raw, indeks, dalam = new Set()) {
+  if (typeof indeks !== "number" || !Number.isInteger(indeks) || indeks < 0 || indeks >= raw.length) return undefined;
+  if (dalam.has(indeks)) return null;
+  const slot = raw[indeks];
+  if (slot === null || typeof slot !== "object") return slot;
+  const berikutnya = new Set(dalam);
+  berikutnya.add(indeks);
+  if (Array.isArray(slot)) return slot.map((item) => nilaiNuxt(raw, item, berikutnya));
+  const objek = {};
+  for (const [kunci, isi] of Object.entries(slot)) objek[kunci] = nilaiNuxt(raw, isi, berikutnya);
+  return objek;
+}
+
+function bacaSistemNuxt(html) {
+  const cocok = String(html || "").match(/<script[^>]*id="__NUXT_DATA__"[^>]*>([\s\S]*?)<\/script>/i);
+  if (!cocok) return [];
+  let raw;
+  try {
+    raw = JSON.parse(cocok[1]);
+  } catch {
+    return [];
+  }
+  if (!Array.isArray(raw)) return [];
+  try {
+    return sistemDariNuxt(raw);
+  } catch {
+    return [];
+  }
+}
+
+function sistemDariNuxt(raw) {
+  const siklon = [];
+  const rincian = new Map();
+  const peta = new Map();
+  for (let i = 0; i < raw.length; i += 1) {
+    const slot = raw[i];
+    if (!slot || typeof slot !== "object" || Array.isArray(slot)) continue;
+    if ("is_cyclone" in slot && "name" in slot) {
+      const objek = nilaiNuxt(raw, i);
+      if (objek && objek.is_current !== false && rapikan(objek.name)) siklon.push(objek);
+    } else if ("description_id" in slot && "tc_id" in slot) {
+      const objek = nilaiNuxt(raw, i);
+      if (objek?.tc_id && objek.description_id) rincian.set(objek.tc_id, objek);
+    } else if ("geojson" in slot && "id" in slot) {
+      const objek = nilaiNuxt(raw, i);
+      if (objek?.id && objek.geojson) peta.set(objek.id, objek.geojson);
+    }
+  }
+  return siklon.map((rekaman) => {
+    const rinci = rincian.get(rekaman.id) || {};
+    const namaMentah = rapikan(rekaman.name);
+    const jenis = /^bibit\b/i.test(namaMentah) || rekaman.is_cyclone === false ? "bibit" : "siklon";
+    const dampak = teksDampak(rinci.direct_impact) || teksDampak(rinci.extreme_weather) || teksDampak(rinci.warning_text);
+    return susunSistem({
+      nama: namaPublik(namaMentah, rekaman.tc_code, jenis),
+      tahap: jenis === "bibit" ? "Bibit Siklon Tropis" : "Siklon Tropis",
+      jenis,
+      kalimat: rinci.description_id || "",
+      dampak,
+      isAor: rekaman.is_aor === true,
+      titik: titikAnalisis(peta.get(rekaman.id)),
+    });
+  }).filter((item) => item.nama && item.kalimat);
+}
+
+function dampakDariTabel(html, nama) {
+  const aman = rapikan(nama).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  if (aman.length < 2) return "";
+  const pola = new RegExp(`Wilayah Terdampak[^<]{0,80}${aman}[\\s\\S]{0,5000}?<tbody[\\s\\S]*?</tbody>`, "i");
+  const cocok = String(html || "").match(pola);
+  if (!cocok) return "";
+  const sel = [...cocok[0].matchAll(/<p>([\s\S]*?)<\/p>/gi)]
+    .map((item) => rapikan(item[1].replace(/<[^>]+>/g, " ")))
+    .filter(Boolean);
+  const isi = sel.filter((teks) => !/^[-–—.]+$/.test(teks));
+  if (isi.length) return isi.join("; ");
+  if (sel.some((teks) => /^[-–—.]+$/.test(teks))) return "-";
+  return "";
+}
+
+function dampakHalaman(html, nama, kalimat) {
+  const dariKalimat = dampakDari(`${kalimat} `);
+  if (dariKalimat) return dariKalimat;
+  const tabel = dampakDariTabel(html, nama);
+  if (tabel) return tabel;
+  const polos = teksPolos(html);
+  const cuplikan = rapikan(kalimat).slice(0, 40).toLowerCase();
+  const awal = cuplikan ? polos.toLowerCase().indexOf(cuplikan) : -1;
+  if (awal < 0) return "";
+  let jendela = polos.slice(awal, awal + 900);
+  const batas = jendela.slice(40).search(/Wilayah Terdampak|Bibit Siklon Tropis|Siklon Tropis/i);
+  if (batas >= 0) jendela = jendela.slice(0, 40 + batas);
+  return dampakDari(jendela);
+}
+
+function bacaSistemTeks(html) {
+  const polos = teksPolos(html);
+  const pola = /(Bibit Siklon Tropis|Siklon Tropis)\s+([0-9]{2}[A-Za-z]|[A-Z][A-Za-z-]{1,24})\s+((?:mulai terbentuk|terbentuk|berkembang|terpantau)\s(?:\d+\.\d+|[^.]){8,500}\.)/gi;
+  const sistem = [];
+  const sudah = new Set();
+  for (const cocok of polos.matchAll(pola)) {
+    const namaMentah = cocok[2];
+    if (/^(dan|yang|dari|pada|dengan|untuk|atau|ini|itu|tropis)$/i.test(namaMentah)) continue;
+    const jenis = /bibit/i.test(cocok[1]) ? "bibit" : "siklon";
+    const nama = namaPublik(namaMentah, namaMentah, jenis);
+    const kunci = nama.toLowerCase();
+    if (!nama || sudah.has(kunci)) continue;
+    const kalimat = rapikan(cocok[0]);
+    sistem.push(susunSistem({
+      nama,
+      tahap: jenis === "bibit" ? "Bibit Siklon Tropis" : "Siklon Tropis",
+      jenis,
+      kalimat,
+      dampak: dampakDari(polos.slice(cocok.index, cocok.index + 800)),
+    }));
+    sudah.add(kunci);
+  }
+  return sistem;
+}
+
+export function bacaSistemHalaman(html) {
+  const sumber = String(html || "");
+  const dariNuxt = bacaSistemNuxt(sumber);
+  const sistem = dariNuxt.length ? dariNuxt : bacaSistemTeks(sumber);
+  return sistem.map((item) => {
+    if (item.dampak) return item;
+    const dampak = dampakHalaman(sumber, item.nama, item.kalimat);
+    return dampak ? { ...item, dampak } : item;
+  });
+}
+
 export function bacaStatusHtml(html) {
   const sumber = String(html || "");
   if (!sumber.trim()) {
-    return { status: null, teks: "", galat: "Halaman Siklon Tropis kosong." };
+    return { status: null, teks: "", galat: "Halaman Siklon Tropis kosong.", sistem: [] };
   }
-  if (/Tidak Ada Siklon/i.test(sumber)) {
-    return { status: "Tidak Ada", teks: "Tidak Ada Siklon", galat: "" };
+  const sistem = bacaSistemHalaman(sumber);
+  if (sistem.length) {
+    return { status: "Ada", teks: "Ada Siklon", galat: "", sistem };
+  }
+  if (/Tidak Ada Siklon/i.test(teksPolos(sumber))) {
+    return { status: "Tidak Ada", teks: "Tidak Ada Siklon", galat: "", sistem: [] };
   }
   return {
     status: null,
     teks: "",
     galat: "Halaman tidak memuat status Ada atau Tidak Ada yang dikenali. Sistem tidak disusun dari teks lain.",
+    sistem: [],
   };
 }
 
@@ -94,12 +354,210 @@ export function bacaIkhtisar(teks) {
   return sistem;
 }
 
+function berdampak(item) {
+  const dampak = rapikan(item?.dampak);
+  return Boolean(dampak) && !/^[-–—.]+$/.test(dampak);
+}
+
+function dekatIndonesia(item) {
+  return item?.di_dalam_tcwc === true || berdampak(item);
+}
+
 export function potensiDekatIndonesia(cuplikan) {
   const status = String(cuplikan?.status || "").trim().toLowerCase();
-  const sistem = (Array.isArray(cuplikan?.ikhtisar?.sistem) ? cuplikan.ikhtisar.sistem : [])
-    .filter((item) => String(item?.dampak || "").trim());
   const halamanAda = status === "ada";
-  return { dekat: halamanAda || sistem.length > 0, halamanAda, sistem };
+  const kumpulan = [
+    ...(Array.isArray(cuplikan?.sistem_halaman) ? cuplikan.sistem_halaman : []),
+    ...(Array.isArray(cuplikan?.ikhtisar?.sistem) ? cuplikan.ikhtisar.sistem : []),
+  ].filter(dekatIndonesia);
+  const sistem = [];
+  const sudah = new Set();
+  for (const item of kumpulan) {
+    const kunci = rapikan(item?.nama).toLowerCase();
+    if (!kunci || sudah.has(kunci)) continue;
+    sudah.add(kunci);
+    sistem.push(item);
+  }
+  return { dekat: sistem.length > 0, halamanAda, sistem };
+}
+
+export function jumlahSistemSiklon(cuplikan) {
+  const nama = new Set();
+  const daftar = [
+    ...(Array.isArray(cuplikan?.sistem_halaman) ? cuplikan.sistem_halaman : []),
+    ...(Array.isArray(cuplikan?.ikhtisar?.sistem) ? cuplikan.ikhtisar.sistem : []),
+  ];
+  for (const item of daftar) {
+    const kunci = rapikan(item?.nama).toLowerCase();
+    if (kunci) nama.add(kunci);
+  }
+  return nama.size;
+}
+
+export function siklonUsang(entri) {
+  if (!entri || typeof entri !== "object") return false;
+  return Boolean(entri.kept_previous) || entri.status === "failed";
+}
+
+export function gagalSiklonBerturut(sebelumnya) {
+  const angka = Number(sebelumnya?.gagal_berturut);
+  if (Number.isFinite(angka) && angka > 0) return angka + 1;
+  if (sebelumnya?.status === "failed" || sebelumnya?.kept_previous) return 2;
+  return 1;
+}
+
+export function siklonPerluTanda(entri, { intervalHours = REFRESH_INTERVAL_HOURS } = {}) {
+  if (!entri || typeof entri !== "object") return false;
+  const angka = Number(entri.gagal_berturut);
+  if (Number.isFinite(angka)) return angka > 1;
+  if (entri.status !== "failed" || !entri.kept_previous) return false;
+  const ambil = Date.parse(entri.fetched_at || "");
+  const cek = Date.parse(entri.checked_at || "");
+  if (!Number.isFinite(ambil) || !Number.isFinite(cek)) return false;
+  const batas = Number(intervalHours) > 0 ? Number(intervalHours) : REFRESH_INTERVAL_HOURS;
+  return cek - ambil > batas * 2 * 3600000;
+}
+
+function rad(derajat) {
+  return (derajat * Math.PI) / 180;
+}
+
+function haversineKm(lintang1, bujur1, lintang2, bujur2) {
+  const dLintang = rad(lintang2 - lintang1);
+  const dBujur = rad(bujur2 - bujur1);
+  const a = Math.sin(dLintang / 2) ** 2
+    + Math.cos(rad(lintang1)) * Math.cos(rad(lintang2)) * Math.sin(dBujur / 2) ** 2;
+  return 6371 * 2 * Math.asin(Math.min(1, Math.sqrt(a)));
+}
+
+export function jarakKeBingkaiIndonesia(lintang, bujur) {
+  const lat = Number(lintang);
+  const lon = Number(bujur);
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+  const dekatLintang = Math.min(INDONESIA_FRAME.north, Math.max(INDONESIA_FRAME.south, lat));
+  const dekatBujur = Math.min(INDONESIA_FRAME.east, Math.max(INDONESIA_FRAME.west, lon));
+  if (dekatLintang === lat && dekatBujur === lon) return 0;
+  return Math.round(haversineKm(lat, lon, dekatLintang, dekatBujur));
+}
+
+function dampakKosong(teks) {
+  const rata = rapikan(teks);
+  return !rata || /^[-–—.]+$/.test(rata);
+}
+
+function wilayahPadaTeks(teks) {
+  const sumber = rapikan(teks);
+  const nama = [...PROVINSI.map((item) => item.nama)].sort((kiri, kanan) => kanan.length - kiri.length);
+  const ketemu = [];
+  let sisa = sumber;
+  for (const wilayah of nama) {
+    const pola = new RegExp(`(?<![A-Za-z])${wilayah.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![A-Za-z])`, "i");
+    if (!pola.test(sisa)) continue;
+    ketemu.push(wilayah);
+    sisa = sisa.replace(pola, " ");
+  }
+  return ketemu;
+}
+
+export function analisisDampakIndonesia(sistem) {
+  const dampak = rapikan(sistem?.dampak);
+  const kosong = dampakKosong(dampak);
+  const disebut = kosong ? [] : wilayahPadaTeks(dampak);
+  let tingkat = "Kecil";
+  let wilayah = [{ nama: "Wilayah Indonesia", tingkat: "Kecil", kutipan: kosong ? "-" : dampak }];
+  if (disebut.length) {
+    tingkat = "Disebut BMKG";
+    wilayah = disebut.map((nama) => ({ nama, tingkat: "Disebut BMKG", kutipan: dampak }));
+  } else if (sistem?.di_dalam_tcwc === true) {
+    tingkat = "Di wilayah pemantauan";
+    wilayah = [{ nama: "Wilayah Indonesia", tingkat, kutipan: kosong ? "-" : dampak }];
+  }
+  return {
+    tingkat,
+    wilayah,
+    rumus: RUMUS_DAMPAK_SIKLON,
+    jarak_km: jarakKeBingkaiIndonesia(sistem?.lintang, sistem?.bujur),
+  };
+}
+
+function muatNuxt(html) {
+  const cocok = String(html || "").match(/<script[^>]*id="__NUXT_DATA__"[^>]*>([\s\S]*?)<\/script>/i);
+  if (!cocok) return null;
+  try {
+    const raw = JSON.parse(cocok[1]);
+    return Array.isArray(raw) ? raw : null;
+  } catch {
+    return null;
+  }
+}
+
+function kutipanSiaran(teks) {
+  const rata = rapikan(teks);
+  if (rata.length <= 500) return rata;
+  const potong = rata.slice(0, 500);
+  const kalimat = potong.match(/^[\s\S]*\./);
+  return `${(kalimat ? kalimat[0] : potong).trim()} …`;
+}
+
+function urlSiaran(slug) {
+  const aman = String(slug || "").trim();
+  if (!/^[a-z0-9-]+$/i.test(aman)) return "";
+  return `${SIARAN_PERS_URL}/${aman}`;
+}
+
+export function bacaSiaranPers(html) {
+  const raw = muatNuxt(html);
+  if (!raw) return { status: "gagal", galat: "Daftar siaran pers tidak dikenali.", daftar: [] };
+  const sudah = new Set();
+  const semua = [];
+  let dikenal = false;
+  for (let i = 0; i < raw.length; i += 1) {
+    const slot = raw[i];
+    if (!slot || typeof slot !== "object" || Array.isArray(slot)) continue;
+    if (!("title" in slot) || !("slug" in slot)) continue;
+    const objek = nilaiNuxt(raw, i);
+    const judul = rapikan(objek?.title);
+    const slug = rapikan(objek?.slug);
+    if (!judul || !slug) continue;
+    dikenal = true;
+    if (sudah.has(slug)) continue;
+    sudah.add(slug);
+    const kutipan = kutipanSiaran(objek?.excerpt || "");
+    if (!/\bsiklon|\bbibit\b/i.test(`${judul} ${kutipan}`)) continue;
+    const url = urlSiaran(slug);
+    if (!url) continue;
+    semua.push({
+      judul,
+      slug,
+      url,
+      terbit: rapikan(objek?.date),
+      kutipan,
+    });
+  }
+  if (!dikenal) return { status: "gagal", galat: "Daftar siaran pers tidak dikenali.", daftar: [] };
+  return { status: "ok", galat: "", daftar: semua.slice(0, 8) };
+}
+
+export function gabungSiaran(hasil, sebelumnya) {
+  if (hasil?.status === "ok") {
+    return {
+      status: "ok",
+      galat: "",
+      daftar: Array.isArray(hasil.daftar) ? hasil.daftar : [],
+      url: SIARAN_PERS_URL,
+      fetched_at: hasil.fetched_at || "",
+      kept_previous: false,
+    };
+  }
+  const daftar = Array.isArray(sebelumnya?.daftar) ? sebelumnya.daftar : [];
+  return {
+    status: "gagal",
+    galat: rapikan(hasil?.galat) || "Daftar siaran pers tidak terbaca.",
+    daftar,
+    url: SIARAN_PERS_URL,
+    fetched_at: sebelumnya?.fetched_at || "",
+    kept_previous: daftar.length > 0,
+  };
 }
 
 export function susunCuplikan({
@@ -110,6 +568,7 @@ export function susunCuplikan({
   apiGalat = "",
   fetchedAt,
   pdfDiubah = "",
+  siaranPers = null,
 }) {
   const halaman = bacaStatusHtml(html);
   if (!halaman.status) {
@@ -123,7 +582,7 @@ export function susunCuplikan({
     status: halaman.status,
     status_teks: halaman.teks,
     status_sumber: "halaman-siklon-tropis",
-    sistem_halaman: [],
+    sistem_halaman: halaman.sistem,
     ikhtisar: {
       status: ikhtisarGalat ? "gagal" : terbit || sistem.length ? "ok" : "kosong",
       galat: ikhtisarGalat,
@@ -138,6 +597,14 @@ export function susunCuplikan({
       galat: apiGalat,
     },
     jejak: SIKLON_BELUM,
+    siaran_pers: siaranPers || {
+      status: "kosong",
+      galat: "",
+      daftar: [],
+      url: SIARAN_PERS_URL,
+      fetched_at: "",
+      kept_previous: false,
+    },
     fetched_at: fetchedAt,
     pdf_diubah: pdfDiubah || "",
     url_halaman: SIKLON_HTML_URL,

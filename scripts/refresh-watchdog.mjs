@@ -4,6 +4,7 @@ import { existsSync, readFileSync, appendFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { CAP_WATCH_MINUTES, PRAKIRAAN_SLOT_GRACE_MS, STALE_SNAPSHOT_HOURS, slotPrakiraanTerakhir } from "../src/lib/schedule.js";
+import { siklonPerluTanda } from "../src/lib/siklonBmkg.js";
 
 const ACTIVE_RUN = new Set(["in_progress", "queued", "pending", "waiting", "requested"]);
 
@@ -52,10 +53,13 @@ export function prakiraanSlotMissed(runs, now = new Date(), graceMs = PRAKIRAAN_
   return !covered;
 }
 
-function readGeneratedAt(manifestPath) {
+function readManifest(manifestPath) {
   if (!existsSync(manifestPath)) return null;
-  const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
-  return manifest.generated_at ?? null;
+  try {
+    return JSON.parse(readFileSync(manifestPath, "utf8"));
+  } catch {
+    return null;
+  }
 }
 
 function writeOutputs(fields) {
@@ -78,7 +82,8 @@ function readRunList(name) {
 
 function main() {
   const manifestPath = resolve(root, "data/live/manifest.json");
-  const generatedAt = readGeneratedAt(manifestPath);
+  const manifest = readManifest(manifestPath);
+  const generatedAt = manifest?.generated_at ?? null;
   const age = manifestAgeHours(generatedAt);
   const dispatch = manifestNeedsRefresh(generatedAt);
   const ageLabel = Number.isFinite(age) ? age.toFixed(2) : "tidak-ada";
@@ -92,10 +97,17 @@ function main() {
     const slot = slotPrakiraanTerakhir();
     console.log(`prakiraan_run=${prakiraanRuns.length} slot=${slot ? new Date(slot).toISOString() : "tidak-ada"}`);
   }
+  const tandaSiklon = siklonPerluTanda(manifest?.datasets?.bmkg_siklon);
+  if (tandaSiklon) {
+    const pesan = "Siklon BMKG gagal lebih dari satu siklus berturut-turut. Cuplikan sebelumnya masih dipakai. Periksa halaman Siklon Tropis.";
+    console.log(pesan);
+    if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${pesan}\n`);
+  }
   writeOutputs({
     dispatch: dispatch ? "true" : "false",
     dispatch_cap: dispatchCap ? "true" : "false",
     dispatch_prakiraan: dispatchPrakiraan ? "true" : "false",
+    siklon_tanda: tandaSiklon ? "true" : "false",
   });
 }
 

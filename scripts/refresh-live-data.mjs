@@ -15,6 +15,7 @@ import { REFRESH_CRON, REFRESH_CRON_CADANGAN, REFRESH_INTERVAL_HOURS, nextSchedu
 import { SMOKE_IMAGE_URL, SMOKE_URL, SOURCES } from "../src/lib/sourceCatalog.js";
 import { ambilSipongi } from "./ambil-sipongi.mjs";
 import { ambilSiklon } from "./ambil-siklon.mjs";
+import { gagalSiklonBerturut } from "../src/lib/siklonBmkg.js";
 import { kodeWilayah } from "../src/lib/floodMatrix.js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -1288,6 +1289,7 @@ async function main() {
     siklonEntry.status = "ok";
     siklonEntry.error = null;
     siklonEntry.kept_previous = false;
+    siklonEntry.gagal_berturut = 0;
     if (sebelumnya?.content_hash === hash && existsSync(resolve(root, siklonEntry.file))) {
       siklonEntry.fetched_at = sebelumnya.fetched_at || nowIso;
       if (!siklonEntry.observed_at) siklonEntry.observed_at = sebelumnya.observed_at;
@@ -1296,7 +1298,12 @@ async function main() {
       siklonEntry.fetched_at = nowIso;
     }
   } catch (error) {
-    Object.assign(siklonEntry, keepPrevious(siklonEntry, previousEntry(previous, "bmkg_siklon"), error.message));
+    const sebelumnya = previousEntry(previous, "bmkg_siklon");
+    Object.assign(siklonEntry, keepPrevious(siklonEntry, sebelumnya, error.message));
+    siklonEntry.gagal_berturut = gagalSiklonBerturut(sebelumnya);
+    if (siklonEntry.gagal_berturut > 1) {
+      console.log(`siklon: gagal ${siklonEntry.gagal_berturut} siklus berturut-turut. Cuplikan sebelumnya tetap dipakai.`);
+    }
   }
   datasets.bmkg_siklon = siklonEntry;
 

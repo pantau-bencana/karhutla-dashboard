@@ -21,6 +21,7 @@ const RINGKASAN_BANJIR = "data/live/banjir-ringkasan.json";
 export function SummaryPage({
   config,
   feeds,
+  manifest = null,
   loading = false,
   province = "",
   setProvince,
@@ -164,7 +165,7 @@ export function SummaryPage({
         </p>
       </section>
       <BagianBanjir province={province} />
-      <SiklonRingkas />
+      <SiklonRingkas manifest={manifest} />
     </main>
   );
 }

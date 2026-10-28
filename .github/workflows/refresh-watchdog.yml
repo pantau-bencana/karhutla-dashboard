@@ -41,6 +41,10 @@ jobs:
           export PRAKIRAAN_RUNS_JSON="$(gh run list --workflow refresh-prakiraan.yml --limit 8 --json createdAt,status,conclusion)"
           node scripts/refresh-watchdog.mjs
 
+      - name: Tandai siklon bila gagal berturut-turut
+        if: steps.umur.outputs.siklon_tanda == 'true'
+        run: echo "::warning title=Siklon BMKG::Siklon BMKG gagal lebih dari satu siklus berturut-turut. Cuplikan sebelumnya masih dipakai. Periksa halaman Siklon Tropis."
+
       - name: Picu pembaruan bila cuplikan basi
         if: steps.umur.outputs.dispatch == 'true'
         env:
