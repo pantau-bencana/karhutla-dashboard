@@ -5,6 +5,7 @@ import {
   SIKLON_HTML_URL,
   SIKLON_JEJAK,
   SIKLON_TCWC_URL,
+  siklonUsang,
 } from "../lib/siklonBmkg.js";
 
 const BERKAS = "data/live/siklon-bmkg.json";
@@ -47,11 +48,21 @@ export function useCuplikanSiklon() {
   return { data, galat };
 }
 
-export function SiklonRingkas() {
+function letakSistem(item) {
+  if (item.luar_tcwc) return "Di luar wilayah pemantauan (AoM) TCWC Jakarta.";
+  if (item.di_dalam_tcwc) return "Di dalam wilayah pemantauan TCWC Jakarta.";
+  return "Tidak ditandai di dalam wilayah pemantauan TCWC Jakarta.";
+}
+
+export function SiklonRingkas({ manifest = null }) {
   const { data, galat } = useCuplikanSiklon();
+  const entri = manifest?.datasets?.bmkg_siklon;
+  const usang = siklonUsang(entri);
 
   const ikhtisar = data?.ikhtisar;
   const sistem = Array.isArray(ikhtisar?.sistem) ? ikhtisar.sistem : [];
+  const sistemHalaman = Array.isArray(data?.sistem_halaman) ? data.sistem_halaman : [];
+  const waktuBerhasil = entri?.fetched_at || data?.fetched_at;
 
   return (
     <section className="card" id="siklon-bibit" aria-label="Siklon">
@@ -61,6 +72,16 @@ export function SiklonRingkas() {
         {" "}
         Sumber: BMKG.
       </p>
+      {usang ? (
+        <p className="banner warn" role="status">
+          <strong>Data siklon tertunda.</strong>
+          Pembaruan terakhir gagal{entri?.error ? ` (${entri.error})` : ""} dan cuplikan sebelumnya tetap ditampilkan.
+          {" "}
+          Waktu ambil terakhir yang berhasil: {formatWib(waktuBerhasil)}.
+          {" "}
+          Periksa halaman Siklon Tropis BMKG untuk status terkini.
+        </p>
+      ) : null}
       {galat ? <p role="alert">{galat} Status siklon tidak diisi.</p> : null}
       {!data && !galat ? <p role="status">Memuat cuplikan siklon…</p> : null}
       {data ? (
@@ -68,8 +89,29 @@ export function SiklonRingkas() {
           <p>
             Status halaman Siklon Tropis: {data.status_teks || data.status || "tidak ada data"}.
             {" "}
-            Nama sistem pada halaman itu: {data.sistem_halaman?.length ? data.sistem_halaman.map((item) => item.nama).join(", ") : "tidak ada"}.
+            Nama sistem pada halaman itu: {sistemHalaman.length ? sistemHalaman.map((item) => item.nama).join(", ") : "tidak ada"}.
           </p>
+          {sistemHalaman.length ? (
+            <>
+              <ul>
+                {sistemHalaman.map((item) => (
+                  <li key={`${item.jenis || "sistem"}-${item.nama}`}>
+                    {item.tahap ? `${item.tahap} ` : ""}{item.nama}.
+                    {item.kalimat ? ` Kalimat halaman: ${item.kalimat}` : ""}
+                    {" "}
+                    {letakSistem(item)}
+                    {" "}
+                    {item.dampak
+                      ? `Dampak yang ditulis: ${item.dampak}`
+                      : "Tidak ada kalimat dampak untuk wilayah Indonesia pada cuplikan ini."}
+                  </li>
+                ))}
+              </ul>
+              <p className="fine">
+                Sistem di luar wilayah pemantauan TCWC Jakarta atau tanpa kalimat dampak untuk Indonesia tetap ditampilkan di sini dan tidak menyalakan tanda merah pada navigasi.
+              </p>
+            </>
+          ) : null}
           {ikhtisar?.status === "ok" && sistem.length ? (
             <ul>
               {sistem.map((item) => (
@@ -77,7 +119,7 @@ export function SiklonRingkas() {
                   Ikhtisar menyebut {item.tahap} {item.nama}{item.lokasi ? ` di ${item.lokasi}` : ""}.
                   {item.dampak ? ` Dampak yang ditulis dokumen: ${item.dampak}` : " Dampak untuk Indonesia: belum terintegrasi."}
                   {" "}
-                  Ini bukan status Ada pada halaman Siklon Tropis dan bukan jejak.
+                  Kalimat ini dari ikhtisar cuaca harian, bukan dari status halaman, dan bukan jejak.
                 </li>
               ))}
             </ul>

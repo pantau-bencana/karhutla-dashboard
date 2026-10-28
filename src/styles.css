@@ -1591,6 +1591,18 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 .menu-panel a.siklon-dekat,
 .nav a.siklon-dekat[aria-current="page"],
 .tabbar a.siklon-dekat[aria-current="page"] { color: #b42318; }
+.nav a.siklon-dekat::after,
+.tabbar a.siklon-dekat::after,
+.menu-panel a.siklon-dekat::after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 6px;
+  border-radius: 50%;
+  background: #b42318;
+  vertical-align: 1px;
+}
 .tright { display: flex; gap: 10px; align-items: center; }
 .tright .small { margin: 0; color: var(--muted); font-size: 12px; }
 .menu-btn, .tabbar { display: none; }

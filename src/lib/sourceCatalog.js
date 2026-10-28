@@ -314,7 +314,7 @@ export const SOURCES = [
     expectedMaxAgeHours: 30,
     file: "data/live/siklon-bmkg.json",
     limitation:
-      "Status Ada/Tidak Ada dibaca dari kalimat pada halaman publik Siklon Tropis. API https://tropicalcyclone.bmkg.go.id/cms/service-api/cyclone/current tanpa token mengembalikan HTTP 401 pada pemeriksaan 23 Oktober 2026; token di halaman tidak disalin dan tidak dipakai. Ikhtisar PDF hanya mengisi nama, tahap, dan dampak bila kalimatnya terbaca. Bila PDF gagal, kolom itu belum terintegrasi. Jejak dan kerucut tidak disimpan dan tidak digambar. Peta TCWC hanya tautan ke situs BMKG, tidak disematkan. Windy bukan sumber data dan tidak ditautkan. Atribusi: Sumber: BMKG. Izin tertulis untuk integrasi pihak ketiga belum ada.",
+      "Status Ada/Tidak Ada dibaca dari halaman publik Siklon Tropis. Ada berarti halaman menyebut siklon atau bibit yang sedang berjalan, beserta kalimat pertamanya. Tanda merah pada navigasi hanya untuk sistem di dalam wilayah pemantauan TCWC Jakarta atau yang punya kalimat dampak ke wilayah Indonesia. Sistem yang jauh tetap ditampilkan sebagai informasi. API https://tropicalcyclone.bmkg.go.id/cms/service-api/cyclone/current tanpa token mengembalikan HTTP 401 pada pemeriksaan 23 Oktober 2026; token di halaman tidak disalin dan tidak dipakai. Ikhtisar PDF hanya mengisi nama, tahap, dan dampak bila kalimatnya terbaca. Bila PDF gagal, kolom itu belum terintegrasi. Jejak dan kerucut tidak disimpan dan tidak digambar. Peta TCWC hanya tautan ke situs BMKG, tidak disematkan. Windy bukan sumber data dan tidak ditautkan. Atribusi: Sumber: BMKG. Izin tertulis untuk integrasi pihak ketiga belum ada.",
   },
   {
     id: "chirps",

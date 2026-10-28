@@ -1,12 +1,35 @@
 {
-  "status": "Tidak Ada",
-  "status_teks": "Tidak Ada Siklon",
+  "status": "Ada",
+  "status_teks": "Ada Siklon",
   "status_sumber": "halaman-siklon-tropis",
-  "sistem_halaman": [],
+  "sistem_halaman": [
+    {
+      "nama": "90B",
+      "tahap": "Bibit Siklon Tropis",
+      "jenis": "bibit",
+      "kalimat": "Bibit Siklon Tropis 90B mulai terbentuk pada 27 Oktober 2026 pukul 13.00 WIB di Teluk Benggala.",
+      "lokasi": "Teluk Benggala",
+      "dampak": "",
+      "di_dalam_tcwc": false,
+      "luar_tcwc": false,
+      "sumber": "halaman"
+    },
+    {
+      "nama": "Arnab",
+      "tahap": "Siklon Tropis",
+      "jenis": "siklon",
+      "kalimat": "Siklon Tropis Arnab berkembang dari Bibit Siklon Tropis 98B yang mencapai intensitas siklon tropis pada 26 Oktober 2026 pukul 07.00 WIB di luar wilayah Monitoring (AoM) TCWC Jakarta.",
+      "lokasi": "luar wilayah Monitoring (AoM) TCWC Jakarta",
+      "dampak": "",
+      "di_dalam_tcwc": false,
+      "luar_tcwc": true,
+      "sumber": "halaman"
+    }
+  ],
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-10-26",
+    "terbit": "2026-10-27",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
     "sistem": []
   },
@@ -17,8 +40,8 @@
     "galat": "HTTP 401"
   },
   "jejak": "belum terintegrasi",
-  "fetched_at": "2026-10-26T21:32:04.474Z",
-  "pdf_diubah": "Mon, 26 Oct 2026 05:51:18 GMT",
+  "fetched_at": "2026-10-28T03:21:20.400Z",
+  "pdf_diubah": "Tue, 27 Oct 2026 08:45:12 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/"
 }

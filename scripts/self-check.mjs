@@ -52,7 +52,7 @@ import { annotatePoints } from "./big-wilayah.mjs";
 import { buildComparisonAttention, normalizePlaceName, placeFwiTable, PROTOTYPE_LABEL } from "../src/lib/attentionPrototype.js";
 import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { keadaanKategori, statusRingkasan, statusRingkasanSiap } from "../src/lib/ringkasanStatus.js";
-import { bacaIkhtisar, bacaStatusHtml, potensiDekatIndonesia, SIKLON_JEJAK } from "../src/lib/siklonBmkg.js";
+import { bacaIkhtisar, bacaStatusHtml, gagalSiklonBerturut, potensiDekatIndonesia, siklonPerluTanda, siklonUsang, susunCuplikan as susunCuplikanSiklon, SIKLON_JEJAK } from "../src/lib/siklonBmkg.js";
 import { bandingHitungan, bandingPeringkat, barisPeriodeAktif, chipProvinsi, JUMLAH_CHIP_PROVINSI, kelasPeringkat, namaChipProvinsi, sepuluhPrioritas, susunPeringkatHotspot } from "../src/lib/peringkatHotspot.js";
 import { cariWilayahBatas, PROVINSI_TIDAK_DIKETAHUI, tampilBarisFwi, urutBarisFwi } from "../src/lib/kabProvinsi.js";
 import { kelasKepercayaan } from "../src/lib/warning.js";
@@ -945,6 +945,39 @@ assert.equal(siklonSumber.includes("leaflet"), false);
 assert.equal(siklonSumber.includes("GeoJSON"), false);
 assert.equal(bacaStatusHtml('<p class="font-bold">Tidak Ada Siklon</p>').status, "Tidak Ada");
 assert.equal(bacaStatusHtml("<html><p>Cuaca hari ini</p></html>").status, null);
+const htmlSiklon = readFileSync("scripts/fixtures/siklon-bmkg-2026-10-28.html", "utf8");
+assert.equal(htmlSiklon.includes("eyJ"), false);
+const halamanSiklon = bacaStatusHtml(htmlSiklon);
+assert.equal(halamanSiklon.status, "Ada");
+assert.equal(halamanSiklon.sistem.length, 2);
+const arnab = halamanSiklon.sistem.find((item) => item.nama === "Arnab");
+const bibit90 = halamanSiklon.sistem.find((item) => item.nama === "90B");
+assert.equal(arnab.jenis, "siklon");
+assert.equal(arnab.tahap, "Siklon Tropis");
+assert.match(arnab.kalimat, /26 Oktober 2026/);
+assert.match(arnab.kalimat, /98B/);
+assert.match(arnab.lokasi, /TCWC Jakarta/);
+assert.equal(arnab.luar_tcwc, true);
+assert.equal(arnab.di_dalam_tcwc, false);
+assert.equal(bibit90.jenis, "bibit");
+assert.equal(bibit90.tahap, "Bibit Siklon Tropis");
+assert.match(bibit90.kalimat, /Teluk Benggala/);
+assert.equal(bibit90.di_dalam_tcwc, false);
+assert.equal(bibit90.dampak, "");
+const cuplikanJauh = susunCuplikanSiklon({ html: htmlSiklon, fetchedAt: "2026-10-28T03:00:00.000Z" });
+assert.equal(cuplikanJauh.status, "Ada");
+assert.equal(cuplikanJauh.sistem_halaman.length, 2);
+assert.equal(potensiDekatIndonesia(cuplikanJauh).dekat, false);
+const htmlTeks = htmlSiklon.replace(/<script[\s\S]*?<\/script>/gi, "");
+const dariTeks = bacaStatusHtml(htmlTeks);
+assert.equal(dariTeks.sistem.map((item) => item.nama).join(","), "90B,Arnab");
+const dalamTcwc = bacaStatusHtml("<p>Siklon Tropis Melati terbentuk pada 1 Oktober 2026 di dalam wilayah Monitoring (AoM) TCWC Jakarta.</p>");
+assert.equal(dalamTcwc.status, "Ada");
+assert.equal(dalamTcwc.sistem[0].di_dalam_tcwc, true);
+assert.equal(potensiDekatIndonesia({ status: "Ada", sistem_halaman: dalamTcwc.sistem }).dekat, true);
+const berdampak = bacaStatusHtml("<p>Siklon Tropis Melati terpantau di Laut Jawa pada 1 Oktober 2026. Sistem ini menginduksi terbentuknya daerah konvergensi dan konfluensi di wilayah Jawa Timur.</p>");
+assert.match(berdampak.sistem[0].dampak, /Jawa Timur/);
+assert.equal(potensiDekatIndonesia({ status: "Ada", sistem_halaman: berdampak.sistem }).dekat, true);
 const sistemIkhtisar = bacaIkhtisar(
   "5) Siklon Tropis Champi terpantau di Laut Filipina timur laut Filipina, dengan pusat tekanan 905 hPa. intensitasnya berada pada kategori 3 (tiga). Sistem ini menginduksi terbentuknya daerah konvergensi dan konfluensi di wilayah Kalimantan Utara, Laut Filipina, Laut Halmahera, serta di sekitar Bibit siklon tropis tersebut. 6) Daerah",
 );
@@ -967,10 +1000,38 @@ assert.equal(sinyalChampi.dekat, true);
 assert.equal(sinyalChampi.halamanAda, false);
 assert.match(sinyalChampi.sistem[0].dampak, /Kalimantan Utara/);
 assert.equal(potensiDekatIndonesia({ status: "Tidak Ada", ikhtisar: { sistem: [] } }).dekat, false);
-assert.equal(potensiDekatIndonesia({ status: "Ada", ikhtisar: { sistem: [] } }).dekat, true);
+assert.equal(potensiDekatIndonesia({ status: "Ada", ikhtisar: { sistem: [] }, sistem_halaman: [] }).dekat, false);
+assert.equal(potensiDekatIndonesia({ status: "Ada", sistem_halaman: [{ nama: "90B", di_dalam_tcwc: false, dampak: "" }] }).dekat, false);
 assert.equal(potensiDekatIndonesia({ status: "Tidak Ada", ikhtisar: { sistem: [{ dampak: "  " }] } }).dekat, false);
+assert.equal(siklonUsang({ status: "failed", kept_previous: true }), true);
+assert.equal(siklonUsang({ status: "ok", kept_previous: false }), false);
+assert.equal(gagalSiklonBerturut({ status: "ok", gagal_berturut: 0 }), 1);
+assert.equal(gagalSiklonBerturut({ status: "failed", kept_previous: true, gagal_berturut: 1 }), 2);
+assert.equal(gagalSiklonBerturut({ status: "failed", kept_previous: true }), 2);
+assert.equal(siklonPerluTanda({ status: "failed", gagal_berturut: 1 }), false);
+assert.equal(siklonPerluTanda({ status: "failed", gagal_berturut: 2 }), true);
+assert.equal(siklonPerluTanda({ status: "ok", gagal_berturut: 0 }), false);
+assert.equal(siklonPerluTanda({
+  status: "failed",
+  kept_previous: true,
+  fetched_at: "2026-10-26T21:12:16.852Z",
+  checked_at: "2026-10-27T23:12:35.982Z",
+}), true);
+assert.equal(siklonPerluTanda({
+  status: "failed",
+  kept_previous: true,
+  fetched_at: "2026-10-27T20:00:00.000Z",
+  checked_at: "2026-10-27T23:00:00.000Z",
+}), false);
 assert.match(readFileSync("src/components/SiteHeader.jsx", "utf8"), /potensiDekatIndonesia/);
 assert.match(readFileSync("src/components/SiteHeader.jsx", "utf8"), /siklon-dekat/);
+assert.match(siklonSumber, /Data siklon tertunda/);
+assert.match(siklonSumber, /Waktu ambil terakhir yang berhasil/);
+assert.match(siklonSumber, /Periksa halaman Siklon Tropis BMKG/);
+assert.match(siklonSumber, /siklonUsang/);
+assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /gagal_berturut/);
+assert.match(readFileSync("scripts/refresh-watchdog.mjs", "utf8"), /siklonPerluTanda/);
+assert.match(watchdog, /siklon_tanda/);
 assert.match(readFileSync("src/App.jsx", "utf8"), /page === "siklon"/);
 assert.match(readFileSync("src/components/HotspotBoard.jsx", "utf8"), /Enam prioritas/);
 assert.match(readFileSync("src/components/ExtraLayers.jsx", "utf8"), /Kabupaten/);
