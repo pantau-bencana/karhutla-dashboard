@@ -227,7 +227,7 @@ export function kelompokStatusKab(rows) {
 
 export function grupStatusTerbukaAwal(kelompok) {
   const berisi = (kelompok ?? []).find((grup) => grup.id !== "tanpa" && grup.isi.length > 0);
-  return berisi ? berisi.id : "awas";
+  return berisi ? berisi.id : "";
 }
 
 export function sortFloodRows(rows, key, direction = "asc") {

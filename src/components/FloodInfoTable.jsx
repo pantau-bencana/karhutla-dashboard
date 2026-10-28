@@ -295,12 +295,14 @@ export function FloodKabDaftar({ rows, tampilProvinsi = false, hujanNilai = null
   const kelompok = useMemo(() => kelompokStatusKab(ordered), [ordered]);
   const [buka, setBuka] = useState("");
   const [pilihanGrup, setPilihanGrup] = useState(null);
-  const grupTerbuka = pilihanGrup ?? new Set([grupStatusTerbukaAwal(kelompok)]);
+  const awal = grupStatusTerbukaAwal(kelompok);
+  const grupTerbuka = pilihanGrup ?? new Set(awal ? [awal] : []);
   const lebar = tampilProvinsi ? 6 : 5;
 
   function ubahGrup(id) {
     setPilihanGrup((saat) => {
-      const dasar = new Set(saat ?? [grupStatusTerbukaAwal(kelompok)]);
+      const awalKlik = grupStatusTerbukaAwal(kelompok);
+      const dasar = new Set(saat ?? (awalKlik ? [awalKlik] : []));
       if (dasar.has(id)) dasar.delete(id);
       else dasar.add(id);
       return dasar;

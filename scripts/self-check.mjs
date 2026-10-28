@@ -1972,7 +1972,7 @@ assert.deepEqual(kelompokCuaca.find((grup) => grup.id === "waspada").isi.map((it
 assert.deepEqual(kelompokCuaca.find((grup) => grup.id === "tanpa").isi.map((item) => [item.nomor, item.row.kode]), [[2, "11.01"], [3, "11.02"]]);
 assert.equal(grupStatusTerbukaAwal(kelompokCuaca), "waspada");
 assert.equal(grupStatusTerbukaAwal(kelompokStatusKab([{ kode: "11.04", nama: "Aceh", peta: { kind: "status", status: "Awas" } }, ...urutCuaca])), "awas");
-assert.equal(grupStatusTerbukaAwal(kelompokStatusKab([])), "awas");
+assert.equal(grupStatusTerbukaAwal(kelompokStatusKab([])), "");
 assert.match(readFileSync("src/styles.css", "utf8"), /flood-daftar/);
 assert.match(readFileSync("src/components/FloodPage.jsx", "utf8"), /barisXlsx\(kepalaUnduh, urut\)/);
 assert.match(readFileSync("src/components/FloodPage.jsx", "utf8"), /csvUnduh\(kepalaUnduh, urut\)/);
