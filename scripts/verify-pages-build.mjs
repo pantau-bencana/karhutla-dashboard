@@ -5,7 +5,9 @@ const raw = String(process.argv[2] ?? "").trim();
 const prefix = !raw || raw === "/" ? "./" : raw.endsWith("/") ? raw : `${raw}/`;
 const html = readFileSync("dist/index.html", "utf8");
 const prefixV2 = prefix === "./" ? "./" : `${prefix}v2/`;
+const prefixV3 = prefix === "./" ? "./" : `${prefix}v3/`;
 const htmlV2 = readFileSync("dist/v2/index.html", "utf8");
+const htmlV3 = readFileSync("dist/v3/index.html", "utf8");
 
 assert.match(html, /Pantau Bencana v0\.1/, "Akar situs tetap v0.1");
 assert.match(
@@ -16,6 +18,7 @@ assert.match(
 assert.equal(html.includes('src="/assets/'), false, "Aset tidak boleh di akar domain");
 assert.equal(html.includes('href="/assets/'), false, "CSS tidak boleh di akar domain");
 assert.equal(html.includes("/v2/assets/"), false, "Akar situs tidak boleh memuat aset v0.2");
+assert.equal(html.includes("/v3/assets/"), false, "Akar situs tidak boleh memuat aset v0.3");
 
 assert.match(htmlV2, /Pantau Bencana v0\.2/, "dist/v2 harus berlabel v0.2");
 assert.match(
@@ -26,6 +29,19 @@ assert.match(
 assert.equal(htmlV2.includes('src="/assets/'), false, "Aset v0.2 tidak boleh di akar domain");
 assert.equal(existsSync("dist/v2/config.json"), true, "config.json v0.2 hilang");
 assert.equal(existsSync("dist/v2/data/sample/hotspot.csv"), true, "Data v0.2 tidak tersalin");
+assert.equal(htmlV2.includes("/v3/assets/"), false, "v0.2 tidak boleh memuat aset v0.3");
+
+assert.match(htmlV3, /Pantau Bencana v0\.3/, "dist/v3 harus berlabel v0.3");
+assert.match(
+  htmlV3,
+  new RegExp(`${prefixV3.replaceAll("/", "\\/")}assets\\/`),
+  `dist/v3/index.html harus memuat aset di bawah ${prefixV3}assets/`,
+);
+assert.equal(htmlV3.includes('src="/assets/'), false, "Aset v0.3 tidak boleh di akar domain");
+assert.equal(htmlV3.includes("/v2/assets/"), false, "v0.3 tidak boleh memuat aset v0.2");
+assert.equal(existsSync("dist/v3/config.json"), true, "config.json v0.3 hilang");
+assert.equal(existsSync("dist/v3/data/sample/hotspot.csv"), true, "Data v0.3 tidak tersalin");
+assert.equal(existsSync("dist/v3/data/live/manifest.json"), true, "Cuplikan v0.3 tidak tersalin");
 
 for (const file of [
   "dist/config.json",

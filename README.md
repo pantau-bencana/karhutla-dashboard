@@ -4,7 +4,7 @@ Pantau Bencana v0.1 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, 
 
 Situs publik v0.1: <https://pantau-bencana.github.io/karhutla-dashboard/>
 
-Edisi v0.2 (navigasi kiri, kartu ringkas) ada di jalur terpisah dan tidak mengganti v0.1: <https://pantau-bencana.github.io/karhutla-dashboard/v2/>. `npm run build` menulis v0.1 di `dist/` lalu v0.2 di `dist/v2/`. Keduanya memakai cuplikan `data/live` yang sama. Workflow Pages tetap mengunggah folder `dist` tanpa syarat terbit yang baru.
+Edisi v0.2 (navigasi kiri, kartu ringkas) ada di jalur terpisah dan tidak mengganti v0.1: <https://pantau-bencana.github.io/karhutla-dashboard/v2/>. Edisi v0.3 (Ringkasan baru) ada di <https://pantau-bencana.github.io/karhutla-dashboard/v3/>. `npm run build` menulis v0.1 di `dist/`, v0.2 di `dist/v2/`, dan v0.3 di `dist/v3/`. Membangun satu edisi tidak menghapus folder edisi lain. Ketiganya memakai cuplikan `data/live` yang sama. Workflow Pages tetap mengunggah folder `dist` tanpa syarat terbit yang baru.
 
 Dasbor statis untuk memantau kebakaran hutan dan lahan (karhutla), banjir, gunung api, dan kualitas udara. Karhutla menampilkan sebaran titik panas (deteksi satelit, bukan kebakaran terkonfirmasi) bila cuplikan hotspot pada manifes ada. Banjir memuat peta kabupaten/kota, CAP BMKG yang masih berlaku, prakiraan cuaca 3 hari, dan analisis dasbor yang bukan peringatan resmi. Gunung api belum terintegrasi dan hanya menautkan MAGMA. ISPU stasiun resmi belum terintegrasi; model CAMS adalah pembanding dalam tabel, bukan ISPU. Antarmuka berbahasa Indonesia. Tidak ada server aplikasi. Situs membaca cuplikan di `data/live` lewat manifes yang sama di setiap halaman. Berkas contoh tidak ditampilkan. Satu sumber yang gagal tidak mengosongkan kategori lain.
 
