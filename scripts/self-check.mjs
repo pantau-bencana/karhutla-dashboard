@@ -53,7 +53,8 @@ import { buildComparisonAttention, normalizePlaceName, placeFwiTable, PROTOTYPE_
 import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { keadaanKategori, statusRingkasan, statusRingkasanSiap } from "../src/lib/ringkasanStatus.js";
 import { dekatDaratan } from "../src/lib/dekatDaratan.js";
-import { analisisDampakIndonesia, bacaIkhtisar, bacaSiaranPers, bacaStatusHtml, gabungSiaran, gagalSiklonBerturut, potensiDekatIndonesia, siklonPerluTanda, siklonUsang, susunCuplikan as susunCuplikanSiklon, terapkanKurasiDampak, SIKLON_JEJAK } from "../src/lib/siklonBmkg.js";
+import { bacaTeksInfografis, yakinCukup, LABEL_INFOGRAFIS_OTOMATIS } from "../src/lib/bacaInfografis.js";
+import { analisisDampakIndonesia, bacaIkhtisar, bacaSiaranPers, bacaStatusHtml, daftarInfografis, gabungSiaran, gagalSiklonBerturut, potensiDekatIndonesia, siklonPerluTanda, siklonUsang, susunCuplikan as susunCuplikanSiklon, terapkanKurasiDampak, urlAsetInfografis, SIKLON_JEJAK } from "../src/lib/siklonBmkg.js";
 import { batangTanggal as batangTanggalV3, kalimatLaporanHariIni, susunButir as susunButirV3, susunStatusSumber, trenTujuhHari } from "../src/v3/susunRingkasan.js";
 import { isiSiklonSama, pertahankanPemantau } from "../scripts/ambil-siklon.mjs";
 import { sistemDariPrakiraanJma } from "../src/lib/siklonJma.js";
@@ -1324,7 +1325,76 @@ assert.equal(terapkanKurasiDampak({
   sistem_halaman: [{ nama: "91B", dampak: "-" }],
 }, { entri: [{ sistem: "91B", potensi_dampak: "", sumber: { label: "a", url: "https://www.bmkg.go.id/" }, berlaku_hingga: "2026-10-30T00:00:00.000Z" }] }, saatBerlaku).sistem_halaman[0].dampak, "-");
 assert.match(siklonSumber, /sumber_manual/);
+assert.match(siklonSumber, /dampak_otomatis/);
 assert.match(readFileSync("src/v3/pages/SummaryPage.jsx", "utf8"), /terapkanKurasiDampak/);
+assert.match(workflowSiklon, /tesseract-ocr-ind/);
+assert.equal(LABEL_INFOGRAFIS_OTOMATIS, "dibaca otomatis dari infografis BMKG");
+assert.equal(urlAsetInfografis("3c9b5581-9987-418f-ad71-1a847da7d1b7"), "https://tropicalcyclone.bmkg.go.id/cms/assets/3c9b5581-9987-418f-ad71-1a847da7d1b7");
+assert.equal(urlAsetInfografis("bukan-uuid"), "");
+assert.equal(yakinCukup([80, 90]), true);
+assert.equal(yakinCukup([40, 50]), false);
+assert.equal(yakinCukup([]), false);
+const teksInfografis = `Update: 29 Oktober 2026 07.00 WIB
+Dampak tidak langsung terhadap kondisi cuaca dan perairan di wilayah Indonesia
+dalam 24 jam ke depan hingga 30 Oktober 2026 pukul 07.00 WIB
+Bibit Siklon 91B
+Hujan dengan Intensitas
+Sedang hingga Lebat
+- Aceh
+- Sumatera Utara
+Gelombang Laut Tinggi
+1.25 - 2.5 m (Moderate Sea)
+- Selat Malaka bagian utara`;
+const baca91 = bacaTeksInfografis(teksInfografis);
+assert.equal(baca91.sistem, "91B");
+assert.equal(baca91.potensi_dampak, "Dampak tidak langsung: hujan sedang–lebat di Aceh dan Sumatera Utara; gelombang tinggi 1.25–2.5 m (moderate sea) di Selat Malaka bagian utara.");
+assert.equal(baca91.berlaku_hingga, "2026-10-30T00:00:00.000Z");
+assert.equal(baca91.diperbarui, "2026-10-29T00:00:00.000Z");
+assert.equal(bacaTeksInfografis(teksInfografis.replace("- Aceh\n- Sumatera Utara", "")), null);
+assert.equal(bacaTeksInfografis(teksInfografis.replace("1.25 - 2.5 m (Moderate Sea)", "")), null);
+const otomatis91 = {
+  catatan: LABEL_INFOGRAFIS_OTOMATIS,
+  entri: [{
+    sistem: "91B",
+    potensi_dampak: baca91.potensi_dampak,
+    sumber: { label: LABEL_INFOGRAFIS_OTOMATIS, url: urlAsetInfografis("84ab3ad5-401e-471a-9236-b31c9ae97cb2") },
+    berlaku_hingga: baca91.berlaku_hingga,
+    diperbarui: baca91.diperbarui,
+  }],
+};
+const kolomSaja = terapkanKurasiDampak({
+  sistem_halaman: [{ nama: "91B", dampak: "Cuaca ekstrem: Aceh; Sumatera Utara. Gelombang tinggi: (A.02. Selat Malaka bagian utara)." }],
+  dampak_otomatis: otomatis91,
+}, { entri: [] }, saatBerlaku);
+assert.equal(kolomSaja.sistem_halaman[0].dampak_otomatis, true);
+assert.equal(kolomSaja.sistem_halaman[0].sumber_manual.label, LABEL_INFOGRAFIS_OTOMATIS);
+const manualMenang = terapkanKurasiDampak({
+  sistem_halaman: [{ nama: "91B", dampak: "-" }],
+  dampak_otomatis: otomatis91,
+}, kurasiDampak, saatBerlaku);
+assert.equal(manualMenang.sistem_halaman[0].dampak_manual, true);
+assert.equal(manualMenang.sistem_halaman[0].dampak, TEKS_DAMPAK_91B);
+assert.equal(terapkanKurasiDampak({
+  sistem_halaman: [{ nama: "91B", dampak: "Teks halaman BMKG" }],
+  dampak_otomatis: otomatis91,
+}, kurasiDampak, saatBerlaku).sistem_halaman[0].dampak, "Teks halaman BMKG");
+const nuxtBerkas = [
+  { is_cyclone: 1, name: 2, is_current: 3, tc_code: 4, id: 5 },
+  false,
+  "BIBIT SIKLON TROPIS 91B",
+  true,
+  "91B",
+  "tc91",
+  { tc_id: 5, description_id: 7, infografis: 8 },
+  "kalimat",
+  [10],
+  { id: 11 },
+  { directus_files_id: 9 },
+  "84ab3ad5-401e-471a-9236-b31c9ae97cb2",
+];
+assert.deepEqual(daftarInfografis(`<script id="__NUXT_DATA__">${JSON.stringify(nuxtBerkas)}</script>`), [
+  { nama: "91B", berkas: ["https://tropicalcyclone.bmkg.go.id/cms/assets/84ab3ad5-401e-471a-9236-b31c9ae97cb2"] },
+]);
 const sumberSiklon = SOURCES.find((item) => item.id === "bmkg_siklon");
 assert.equal(sumberSiklon.updateType, "Berkala (tiap 1 jam)");
 assert.equal(sumberSiklon.expectedMaxAgeHours, SIKLON_MAX_AGE_HOURS);

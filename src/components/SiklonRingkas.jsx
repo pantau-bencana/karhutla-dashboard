@@ -178,7 +178,7 @@ function KartuSistem({ item }) {
       </p>
       <p className="siklon-dampak">
         Sumber: {agensi}
-        {item.dampak_manual && item.sumber_manual?.url ? (
+        {(item.dampak_manual || item.dampak_otomatis) && item.sumber_manual?.url ? (
           <>
             {" · "}
             <a href={item.sumber_manual.url} target="_blank" rel="noopener noreferrer">{item.sumber_manual.label}</a>
@@ -282,7 +282,7 @@ export function SiklonRingkas({ manifest = null }) {
                         <td>{hasil.tingkat}</td>
                         <td>
                           {agensiSistem(item)}
-                          {item.dampak_manual && item.sumber_manual?.url ? (
+                          {(item.dampak_manual || item.dampak_otomatis) && item.sumber_manual?.url ? (
                             <>
                               {" "}
                               <a href={item.sumber_manual.url} target="_blank" rel="noopener noreferrer">{item.sumber_manual.label}</a>
