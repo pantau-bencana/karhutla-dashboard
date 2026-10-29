@@ -6,6 +6,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { SOURCES } from "../src/lib/sourceCatalog.js";
 import { SIKLON_INTERVAL_HOURS } from "../src/lib/schedule.js";
+import { bacaInfografisOtomatis } from "./baca-infografis-siklon.mjs";
 import { SIKLON_API_URL, SIKLON_HTML_URL, SIKLON_PDF_URL, SIARAN_PERS_URL, bacaSiaranPers, gabungSiaran, gagalSiklonBerturut, jumlahSistemSiklon, susunCuplikan, terapkanKurasiDampak } from "../src/lib/siklonBmkg.js";
 import { JMA_DAFTAR_URL, JMA_HALAMAN_URL, bacaTargetJma, sistemDariPrakiraanJma, urlPrakiraanJma } from "../src/lib/siklonJma.js";
 import { JTWC_ABIO_URL, JTWC_ABPW_URL, bacaTeksJtwc } from "../src/lib/siklonJtwc.js";
@@ -102,6 +103,11 @@ export async function ambilSiklon(now = new Date()) {
   const siaranPers = gabungSiaran(siaranHasil, siaranLama);
 
   const cuplikan = susunCuplikan({ html, ikhtisarTeks, ikhtisarGalat, apiHttp, apiGalat, fetchedAt, pdfDiubah, siaranPers });
+  try {
+    cuplikan.dampak_otomatis = await bacaInfografisOtomatis(html);
+  } catch (error) {
+    cuplikan.dampak_otomatis = { catatan: "dibaca otomatis dari infografis BMKG", entri: [], galat: aman(error?.message || error) };
+  }
   const badan = `${JSON.stringify(cuplikan, null, 2)}\n`;
   const terbit = cuplikan.ikhtisar.terbit;
   const namaHalaman = cuplikan.sistem_halaman.map((item) => `${item.tahap} ${item.nama}`).join(", ");
