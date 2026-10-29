@@ -44,7 +44,7 @@ export function KpiStrip({ location }) {
   const tampilBanjir = hazard === "banjir" || ringkasKarhutla;
   const tampilHotspot = ringkasKarhutla || (hazard === "karhutla" && (page === "peta" || page === "potensi"));
   const tampilSiklon = page === "siklon" || ringkasKarhutla;
-  const tampilGunung = hazard === "gunung-api" && page !== "metode" && page !== "glosarium" && page !== "siklon" && page !== "irbi";
+  const tampilGunung = ringkasKarhutla || (hazard === "gunung-api" && page !== "metode" && page !== "glosarium" && page !== "siklon" && page !== "irbi");
   const tampilIrbi = page === "irbi";
   const tampilIspu = page === "ispu";
 
