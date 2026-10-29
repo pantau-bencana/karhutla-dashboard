@@ -54,6 +54,7 @@ import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { keadaanKategori, statusRingkasan, statusRingkasanSiap } from "../src/lib/ringkasanStatus.js";
 import { dekatDaratan } from "../src/lib/dekatDaratan.js";
 import { analisisDampakIndonesia, bacaIkhtisar, bacaSiaranPers, bacaStatusHtml, gabungSiaran, gagalSiklonBerturut, potensiDekatIndonesia, siklonPerluTanda, siklonUsang, susunCuplikan as susunCuplikanSiklon, SIKLON_JEJAK } from "../src/lib/siklonBmkg.js";
+import { batangTanggal, susunButir, susunStatusSumber } from "../src/v3/susunRingkasan.js";
 import { isiSiklonSama, pertahankanPemantau } from "../scripts/ambil-siklon.mjs";
 import { sistemDariPrakiraanJma } from "../src/lib/siklonJma.js";
 import { bacaTeksJtwc } from "../src/lib/siklonJtwc.js";
@@ -412,6 +413,44 @@ await assert.rejects(
 for (const file of ["README.md", "src/components/Footer.jsx", "public/config.json"]) {
   assert.equal(readFileSync(file, "utf8").includes(DISCLAIMER), true, file);
 }
+assert.match(readFileSync("src/lib/identitas.js", "utf8"), /Pantau Bencana v0\.3 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH\./);
+assert.match(readFileSync("package.json", "utf8"), /build:v3/);
+assert.match(readFileSync("index-v3.html", "utf8"), /Pantau Bencana v0\.3/);
+assert.equal(/^(html|body|:root)\b/m.test(readFileSync("src/v3/theme.css", "utf8")), false);
+assert.equal(readFileSync("src/v3/pages/SummaryPage.jsx", "utf8").includes("Laporan singkat harian"), false);
+assert.match(readFileSync("vite.config.js", "utf8"), /emptyOutDir: false/);
+assert.match(readFileSync("vite.config.js", "utf8"), /nama === "v3"/);
+const butirV3 = susunButir({
+  gunung: [
+    { nama: "Semeru", lokasi: "Jawa Timur", tingkat: "Siaga", level: 3 },
+    { nama: "Biasa", lokasi: "Bali", tingkat: "Waspada", level: 2 },
+    { nama: "Lewotobi", lokasi: "Nusa Tenggara Timur", tingkat: "Awas", level: 4 },
+  ],
+  banjirBaris: [
+    { kode: "1", kab_kota: "Aceh Besar", provinsi: "Aceh", status: "Awas" },
+    { kode: "2", kab_kota: "Pidie", provinsi: "Aceh", status: "Siaga" },
+    { kode: "3", kab_kota: "Bireuen", provinsi: "Aceh", status: "Waspada" },
+  ],
+  peringkatProvinsi: [
+    { nama: "Riau", merah: 4, total: 9 },
+    { nama: "Jambi", merah: 1, total: 2 },
+    { nama: "Belum terpetakan", merah: 8, total: 8 },
+    { nama: "Lampung", merah: 0, total: 3 },
+  ],
+  sistemBmkg: [
+    { nama: "91B", agensi: "BMKG", dampak: "-", lokasi: "Laut Andaman" },
+    { nama: "In-fa", agensi: "JMA", dampak: "hujan di Filipina" },
+    { nama: "Contoh", agensi: "BMKG", dampak: "Hujan sedang hingga lebat: Aceh", lokasi: "Laut Andaman" },
+  ],
+});
+assert.deepEqual(butirV3.map((item) => item.id), ["gunung-Lewotobi", "banjir-1", "gunung-Semeru", "banjir-2", "siklon-Contoh", "karhutla-Jambi", "karhutla-Riau"]);
+assert.equal(susunButir({ sistemBmkg: [{ nama: "91B", agensi: "BMKG", dampak: "Hujan: Aceh" }], wilayah: "Sumatera Utara" }).length, 0);
+assert.deepEqual(batangTanggal([{ tanggal: "2026-10-27" }, { tanggal: "2026-10-27" }, { tanggal: "2026-10-29" }]), [
+  { hari: "2026-10-27", jumlah: 2 },
+  { hari: "2026-10-29", jumlah: 1 },
+]);
+assert.equal(susunStatusSumber({ hotspot: { status: "ok" } }).find((item) => item.id === "hotspot").siap, true);
+assert.equal(susunStatusSumber({}).find((item) => item.id === "bmkg_siklon").status, "Tidak ada cuplikan");
 
 const firmsArea = { west: 95, south: -11, east: 141, north: 6 };
 assert.equal(areaContains(INDONESIA_FRAME, firmsArea), true);

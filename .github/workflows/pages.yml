@@ -12,6 +12,8 @@
 # https://pantau-bencana.github.io/karhutla-dashboard/
 # v0.2 ikut di dalam artefak yang sama, pada /v2/, lewat npm run build. Syarat deploy tidak berubah.
 # https://pantau-bencana.github.io/karhutla-dashboard/v2/
+# v0.3 ikut di dalam artefak yang sama, pada /v3/. Membangun satu edisi tidak menghapus folder edisi lain.
+# https://pantau-bencana.github.io/karhutla-dashboard/v3/
 name: Deploy GitHub Pages
 
 on:
