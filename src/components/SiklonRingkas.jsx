@@ -14,7 +14,7 @@ import {
   analisisDampakIndonesia,
   siklonUsang,
 } from "../lib/siklonBmkg.js";
-import { agensiSistem, daftarSistemSiklon, kalimatAgensiLain } from "../lib/siklonTampil.js";
+import { agensiSistem, daftarSistemSiklon, labelPetaSiklon } from "../lib/siklonTampil.js";
 
 const BERKAS = "data/live/siklon-bmkg.json";
 const URUTAN_TINGKAT = ["Kecil", "Disebut BMKG", "Di wilayah pemantauan"];
@@ -137,12 +137,11 @@ function kalimatDekat(item) {
   return dekatDaratan(item.lintang, item.bujur);
 }
 
-function KartuSistem({ item, semua }) {
+function KartuSistem({ item }) {
   const hasil = analisisDampakIndonesia(item);
   const dekat = teksDekat(kalimatDekat(item));
   const jenis = item.jenis === "bibit" ? "Bibit" : "Siklon";
   const agensi = agensiSistem(item);
-  const catatan = kalimatAgensiLain(item, semua);
   return (
     <article className="siklon-kartu">
       <header>
@@ -161,7 +160,6 @@ function KartuSistem({ item, semua }) {
       </div>
       <p className="siklon-dampak">{agensi === "BMKG" ? `Dampak BMKG: ${item.dampak || "—"}` : "Potensi dampak: -"}</p>
       <p className="siklon-dampak">Sumber: {agensi}</p>
-      {catatan ? <p className="siklon-catatan">{catatan}</p> : null}
       {dekat ? (
         <>
           <p className="siklon-dekat">Terdekat dengan: {dekat.negara}</p>
@@ -189,8 +187,8 @@ export function SiklonRingkas({ manifest = null }) {
   const sistemHalaman = Array.isArray(data?.sistem_halaman) ? data.sistem_halaman : [];
   const semuaSistem = daftarSistemSiklon(data);
   const waktuBerhasil = entri?.fetched_at || data?.fetched_at;
-  const tingkatUtama = sistemHalaman.length
-    ? sistemHalaman.map((item) => analisisDampakIndonesia(item).tingkat).reduce((terpilih, item) => (
+  const tingkatUtama = semuaSistem.length
+    ? semuaSistem.map((item) => analisisDampakIndonesia(item).tingkat).reduce((terpilih, item) => (
       URUTAN_TINGKAT.indexOf(item) > URUTAN_TINGKAT.indexOf(terpilih) ? item : terpilih
     ), "Kecil")
     : "";
@@ -214,15 +212,15 @@ export function SiklonRingkas({ manifest = null }) {
       {!data && !galat ? <p role="status">Memuat cuplikan siklon…</p> : null}
       {data ? (
         <>
-          <p className={`siklon-status siklon-status-${sistemHalaman.length ? kelasTingkat(tingkatUtama) : "kosong"}`} role="status">
-            {kalimatStatus(sistemHalaman)}
+          <p className={`siklon-status siklon-status-${semuaSistem.length ? kelasTingkat(tingkatUtama) : "kosong"}`} role="status">
+            {kalimatStatus(semuaSistem)}
           </p>
           {semuaSistem.length ? <PetaPosisiSiklon sistem={semuaSistem} /> : null}
           <h3>Analisis Dampak ke Indonesia</h3>
           {semuaSistem.length ? (
             <div className="siklon-kartu-daftar">
               {semuaSistem.map((item) => (
-                <KartuSistem key={`${agensiSistem(item)}-${item.jenis || "sistem"}-${item.nama}`} item={item} semua={semuaSistem} />
+                <KartuSistem key={`${agensiSistem(item)}-${item.jenis || "sistem"}-${item.nama}`} item={item} />
               ))}
             </div>
           ) : (

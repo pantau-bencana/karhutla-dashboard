@@ -4,7 +4,7 @@ import { basemapLayer } from "../lib/basemap.js";
 import { dekatDaratan, teksDekat } from "../lib/dekatDaratan.js";
 import { INDONESIA_FRAME } from "../lib/geo.js";
 import { analisisDampakIndonesia } from "../lib/siklonBmkg.js";
-import { agensiSistem } from "../lib/siklonTampil.js";
+import { agensiSistem, labelPetaSiklon } from "../lib/siklonTampil.js";
 
 const WARNA = {
   kecil: "#15803d",
@@ -56,7 +56,7 @@ export function PetaPosisiSiklon({ sistem }) {
           fillColor: warna,
           fillOpacity: 1,
         });
-        penanda.bindTooltip(`${item.nama} · ${agensi}`, { permanent: true, direction: "top", offset: [0, -8], className: "siklon-label" });
+        penanda.bindTooltip(labelPetaSiklon(item), { permanent: true, direction: "top", offset: [0, -8], className: "siklon-label" });
         const teks = dekat
           ? `${item.nama}<br>Sumber: ${agensi}<br>Terdekat dengan: ${dekat.negara}<br>Ke Indonesia: ${dekat.indonesia}`
           : `${item.nama}<br>Sumber: ${agensi}`;
@@ -80,7 +80,7 @@ export function PetaPosisiSiklon({ sistem }) {
     <figure className="siklon-peta-gambar">
       <div ref={node} className="siklon-peta-osm" />
       <figcaption>
-        Peta dasar OpenStreetMap, dengan batas negara dan nama yang ada pada peta itu. Titik adalah posisi analisis. Label menyebut sumber: BMKG, JMA, atau JTWC. Bukan lintasan prakiraan dan bukan peta resmi.
+        Peta dasar OpenStreetMap, dengan batas negara dan nama yang ada pada peta itu. Titik adalah posisi analisis. Label peta hanya nama sistem. Sumber ada di tabel. Bukan lintasan prakiraan dan bukan peta resmi.
         Jarak ke daratan memakai garis pantai Natural Earth 1:50m (domain publik), bukan angka BMKG.
       </figcaption>
     </figure>

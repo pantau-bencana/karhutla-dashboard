@@ -57,7 +57,7 @@ import { analisisDampakIndonesia, bacaIkhtisar, bacaSiaranPers, bacaStatusHtml, 
 import { isiSiklonSama, pertahankanPemantau } from "../scripts/ambil-siklon.mjs";
 import { sistemDariPrakiraanJma } from "../src/lib/siklonJma.js";
 import { bacaTeksJtwc } from "../src/lib/siklonJtwc.js";
-import { kalimatAgensiLain } from "../src/lib/siklonTampil.js";
+import { daftarSistemSiklon, labelPetaSiklon } from "../src/lib/siklonTampil.js";
 import { bandingHitungan, bandingPeringkat, barisPeriodeAktif, chipProvinsi, JUMLAH_CHIP_PROVINSI, kelasPeringkat, namaChipProvinsi, sepuluhPrioritas, susunPeringkatHotspot } from "../src/lib/peringkatHotspot.js";
 import { cariWilayahBatas, PROVINSI_TIDAK_DIKETAHUI, tampilBarisFwi, urutBarisFwi } from "../src/lib/kabProvinsi.js";
 import { kelasKepercayaan } from "../src/lib/warning.js";
@@ -1144,7 +1144,23 @@ assert.equal(jtwc[1].dampak, "-");
 assert.equal(jtwc[1].tekanan_hpa, 1009);
 const gagalUlang = pertahankanPemantau({ status: "gagal", sistem: [{ nama: "In-fa" }], galat: "HTTP 500" }, "HTTP 503");
 assert.equal(gagalUlang.galat, "HTTP 500");
-assert.equal(kalimatAgensiLain({ nama: "91B", agensi: "JTWC" }, [{ nama: "91B", agensi: "BMKG" }, { nama: "91B", agensi: "JTWC" }]), "Nama yang sama juga tercatat pada BMKG.");
+assert.equal(labelPetaSiklon({ nama: "91B", jenis: "bibit" }), "Bibit 91B");
+assert.equal(labelPetaSiklon({ nama: "Arnab", jenis: "siklon" }), "Arnab");
+const tampilan = daftarSistemSiklon({
+  sistem_halaman: [
+    { nama: "Arnab", jenis: "siklon", lintang: 16.4, bujur: 81.4, agensi: "BMKG" },
+    { nama: "91B", jenis: "bibit", lintang: 8.3, bujur: 96.6, agensi: "BMKG" },
+  ],
+  pemantau: {
+    jma: { sistem: [{ nama: "In-fa", jenis: "siklon", lintang: 15.9, bujur: 154.7, agensi: "JMA" }] },
+    jtwc: { sistem: [
+      { nama: "IN-FA", jenis: "siklon", lintang: 14.9, bujur: 159.9, agensi: "JTWC" },
+      { nama: "ARNAB", kode: "02B", jenis: "siklon", lintang: 16.4, bujur: 81.8, agensi: "JTWC" },
+      { nama: "91B", jenis: "bibit", lintang: 7.9, bujur: 97, agensi: "JTWC" },
+    ] },
+  },
+});
+assert.deepEqual(tampilan.map((item) => `${item.agensi}:${item.nama}`), ["BMKG:Arnab", "BMKG:91B", "JMA:In-fa"]);
 const sumberJma = SOURCES.find((item) => item.id === "jma_siklon");
 const sumberJtwc = SOURCES.find((item) => item.id === "jtwc_siklon");
 assert.equal(sumberJma.updateType, "Berkala (tiap 1 jam)");
