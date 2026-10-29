@@ -30,6 +30,10 @@ export const REFRESH_INTERVAL_HOURS = 3;
 export const SIKLON_CRON = "23 * * * *";
 export const SIKLON_INTERVAL_HOURS = 1;
 export const SIKLON_MAX_AGE_HOURS = 3;
+// Gunung api PVMBG/MAGMA. Menit 28, di luar slot 0, 7, 12, 17, 23, 32, 42, dan 47.
+export const GUNUNG_CRON = "28 * * * *";
+export const GUNUNG_INTERVAL_HOURS = 1;
+export const GUNUNG_MAX_AGE_HOURS = 3;
 export const REFRESH_MINUTE = 17;
 export const REFRESH_MINUTE_CADANGAN = 47;
 export const STALE_SNAPSHOT_HOURS = 4;

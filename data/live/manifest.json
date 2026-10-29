@@ -751,6 +751,32 @@
       "content_hash": "77c19279c02966e715b8ce1a7f723314026b733242b93184a8bde72fa0a6ae11",
       "kept_previous": false,
       "gagal_berturut": 0
+    },
+    "pvmbg_gunung": {
+      "id": "pvmbg_gunung",
+      "nama": "Tingkat aktivitas gunung api",
+      "instansi": "PVMBG / MAGMA Indonesia",
+      "source": "Tingkat aktivitas gunung api",
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas",
+      "license": "Sumber: PVMBG.",
+      "mode": "snapshot",
+      "update_type": "Berkala (tiap 1 jam)",
+      "access": "Halaman publik",
+      "frequency": "Berkala (tiap 1 jam)",
+      "limitation": "Sumber: PVMBG. Diambil dari halaman publik yang ditautkan PVMBG: Tingkat Aktivitas, Informasi Letusan, dan VONA. Bukan API JSON. /api, /docs, dan /rss pada magma.esdm.go.id mengembalikan HTTP 404 pada pemeriksaan 29 Oktober 2026. Koordinat tidak ada pada halaman Tingkat Aktivitas, jadi peta titik tidak digambar. Waktu pembaruan per gunung tidak tertulis di tabel itu. Berita letusan dan VONA hanya yang berumur sampai 72 jam pada halaman pertama. Tautan laporan bertanda tangan tidak disimpan. Bila satu halaman gagal, bagian itu memakai cuplikan sebelumnya dan bagian lain tetap diperbarui.",
+      "fungsi": "Tingkat aktivitas gunung api dan berita letusan atau VONA terbaru. Bukan peringatan karhutla.",
+      "expected_max_age_hours": 3,
+      "schedule_interval_hours": 1,
+      "fetched_at": "2026-10-29T02:26:17.027Z",
+      "observed_at": "2026-10-29T02:26:17.027Z",
+      "observed_label": "Halaman Tingkat Aktivitas: 69 gunung. Informasi letusan 15. VONA 15. Koordinat tidak ada pada halaman itu.",
+      "source_updated_at": "2026-10-29T02:26:17.027Z",
+      "record_count": 69,
+      "status": "ok",
+      "error": null,
+      "file": "data/live/gunung-api.json",
+      "content_hash": "f2cca39ff9b9ca353025e9effc0bbda6bd44aaff2444a859a7520a5217fe4f87",
+      "kept_previous": false
     }
   }
 }
