@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-10-29T02:26:17.027Z",
+  "fetched_at": "2026-10-29T10:13:00.247Z",
   "sumber": "PVMBG",
   "url_tingkat": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas",
   "url_letusan": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan",
@@ -641,11 +641,38 @@
     {
       "jenis": "informasi-letusan",
       "gunung": "Ibu",
+      "waktu": "2026-10-29T16:56:00+09:00",
+      "waktu_teks": "16:56 WIT 2026-10-29",
+      "teks": "Terjadi erupsi G. Ibu pada hari Kamis, 29 Oktober 2026, pukul 16:56 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 60 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/fb967bb7-d36d-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Dukono",
+      "waktu": "2026-10-29T12:40:00+09:00",
+      "waktu_teks": "12:40 WIT 2026-10-29",
+      "teks": "Terjadi erupsi G. Dukono pada hari Kamis, 29 Oktober 2026, pukul 12:40 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 20 mm dan durasi 36.23 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/e8dca267-d34c-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
       "waktu": "2026-10-29T11:08:00+09:00",
       "waktu_teks": "11:08 WIT 2026-10-29",
       "teks": "Terjadi erupsi G. Ibu pada hari Kamis, 29 Oktober 2026, pukul 11:08 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 42 detik.",
       "tinggi_kolom_m": null,
       "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/cd13dab5-d33e-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Semeru",
+      "waktu": "2026-10-29T11:06:00+07:00",
+      "waktu_teks": "11:06 WIB 2026-10-29",
+      "teks": "Terjadi erupsi G. Semeru pada hari Kamis, 29 Oktober 2026, pukul 11:06 WIB. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 22 mm dan durasi 175 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/5fba0d23-d34d-11f1-a61d-005056b54356/show"
     },
     {
       "jenis": "informasi-letusan",
@@ -745,36 +772,27 @@
       "teks": "Terjadi erupsi G. Anak Krakatau pada hari Rabu, 28 Oktober 2026, pukul 22:37 WIB. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 48 mm dan durasi 233 detik.",
       "tinggi_kolom_m": null,
       "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/b6178528-d2e6-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Ibu",
-      "waktu": "2026-10-28T22:31:00+09:00",
-      "waktu_teks": "22:31 WIT 2026-10-28",
-      "teks": "Terjadi erupsi G. Ibu pada hari Rabu, 28 Oktober 2026, pukul 22:31 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 37 detik.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/f376b8d1-d2d2-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Karangetang",
-      "waktu": "2026-10-28T21:57:00+08:00",
-      "waktu_teks": "21:57 WITA 2026-10-28",
-      "teks": "Terjadi erupsi G. Karangetang pada hari Rabu, 28 Oktober 2026, pukul 21:57 WITA. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/cd5a65eb-d2dc-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Ibu",
-      "waktu": "2026-10-28T21:39:00+09:00",
-      "waktu_teks": "21:39 WIT 2026-10-28",
-      "teks": "Terjadi erupsi G. Ibu pada hari Rabu, 28 Oktober 2026, pukul 21:39 WIT dengan tinggi kolom abu teramati ± 400 m di atas puncak (± 1725 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 43 detik.",
-      "tinggi_kolom_m": 400,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/1674062a-d2cc-11f1-a61d-005056b54356/show"
     }
   ],
   "vona": [
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-10-29T04:06:00Z",
+      "waktu_teks": "20261029/0406Z",
+      "teks": "Eruption at 0406 UTC (1106 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/fd582ff6-df13-4075-964d-3544a7de5896"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Sorikmarapi",
+      "waktu": "2026-10-29T03:21:00Z",
+      "waktu_teks": "20261029/0321Z",
+      "teks": "Increasing in volcanic activity. Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/a3ab079a-8a04-4cbe-94ad-b3e4750956fc"
+    },
     {
       "jenis": "vona",
       "gunung": "Semeru",
@@ -891,24 +909,6 @@
       "teks": "Eruption at 1301 UTC (2001 local). Ash-cloud is not observed.",
       "tinggi_kolom_m": null,
       "url": "https://magma.esdm.go.id/vona/71dd762f-7f0e-4291-9b1c-04a5f9a285f7"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Dukono",
-      "waktu": "2026-10-27T12:26:00Z",
-      "waktu_teks": "20261027/1226Z",
-      "teks": "Eruption at 1226 UTC (2126 local). Ash-cloud is not observed.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/vona/75029753-e238-4227-abee-6df9041ae560"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Semeru",
-      "waktu": "2026-10-27T09:58:00Z",
-      "waktu_teks": "20261027/0958Z",
-      "teks": "Eruption at 0958 UTC (1658 local). Ash-cloud is not observed.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/vona/f0202e49-e8e5-45c5-bc71-dbb64a03177a"
     }
   ]
 }
