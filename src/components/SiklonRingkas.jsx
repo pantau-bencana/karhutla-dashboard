@@ -158,7 +158,15 @@ function KartuSistem({ item }) {
         <Fakta label="Jarak ke Indonesia" nilai={hasil.jarak_km == null ? "—" : `${angkaPolos(hasil.jarak_km)} km`} />
         <Fakta label="Wilayah TCWC Jakarta" nilai={labelTcwc(item)} />
       </div>
-      <p className="siklon-dampak">{agensi === "BMKG" ? `Dampak BMKG: ${item.dampak || "—"}` : "Potensi dampak: -"}</p>
+      <p className="siklon-dampak">
+        {agensi === "BMKG" ? `Dampak BMKG: ${item.dampak || "—"}` : "Potensi dampak: -"}
+        {item.url_infografis ? (
+          <>
+            {" "}
+            <a href={item.url_infografis} target="_blank" rel="noopener noreferrer">Infografis BMKG</a>
+          </>
+        ) : null}
+      </p>
       <p className="siklon-dampak">Sumber: {agensi}</p>
       {dekat ? (
         <>
@@ -241,11 +249,19 @@ export function SiklonRingkas({ manifest = null }) {
                 <tbody>
                   {semuaSistem.map((item) => {
                     const hasil = analisisDampakIndonesia(item);
-                    const teks = item.dampak && item.dampak !== "-" ? item.dampak : "-";
+                    const teks = agensiSistem(item) === "BMKG" ? (item.dampak && item.dampak !== "-" ? item.dampak : "") : "";
+                    const tautan = item.url_infografis || "";
                     return (
                       <tr key={`tabel-${agensiSistem(item)}-${item.nama}`}>
                         <td>{item.nama}</td>
-                        <td>{teks}</td>
+                        <td>
+                          {teks || null}
+                          {teks && tautan ? " " : null}
+                          {tautan ? (
+                            <a href={tautan} target="_blank" rel="noopener noreferrer">Infografis BMKG</a>
+                          ) : null}
+                          {!teks && !tautan ? "-" : null}
+                        </td>
                         <td>{hasil.tingkat}</td>
                         <td>{agensiSistem(item)}</td>
                       </tr>
@@ -254,7 +270,7 @@ export function SiklonRingkas({ manifest = null }) {
                 </tbody>
               </table>
               <p className="siklon-catatan">
-                Pada halaman BMKG judul tabelnya Wilayah Terdampak, dengan kolom Cuaca Ekstrem, Gelombang Tinggi, dan Angin Kencang. Frasa potensi dampak tidak tertulis di halaman itu. JMA dan JTWC tidak menyebut wilayah di Indonesia, jadi selnya -.
+                Pada halaman BMKG judul tabelnya Wilayah Terdampak, dengan kolom Cuaca Ekstrem, Gelombang Tinggi, dan Angin Kencang. Frasa potensi dampak tidak tertulis di halaman itu. Sel BMKG diisi dari teks kolom itu, kalimat dampak langsung atau tidak langsung beserta batas waktunya, dan tautan berkas infografis bila BMKG menuliskannya. Tanda minus berarti isian itu kosong. Gambar tanpa teks atau tautan tidak dibaca. JMA dan JTWC tidak menyebut wilayah di Indonesia, jadi selnya -.
               </p>
             </div>
           ) : null}

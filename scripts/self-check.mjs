@@ -980,6 +980,9 @@ assert.match(siklonSumber, /Buka peta siklon BMKG/);
 assert.match(siklonSumber, /<summary>\{agensi === "BMKG" \? "Informasi BMKG"/);
 assert.match(siklonSumber, /Wilayah potensi terdampak/);
 assert.match(siklonSumber, /Potensi dampak/);
+assert.match(siklonSumber, /Infografis BMKG/);
+assert.match(siklonSumber, /Gambar tanpa teks atau tautan tidak dibaca/);
+assert.match(readFileSync("src/lib/sourceCatalog.js", "utf8"), /Gambar tidak dibaca/);
 assert.match(siklonSumber, /<th>Sumber<\/th>/);
 assert.equal(siklonSumber.includes("iframe"), false);
 assert.equal(siklonSumber.includes("SIKLON_PETA_URL"), false);
@@ -1026,6 +1029,67 @@ assert.match(bibit90.kalimat, /Teluk Benggala/);
 assert.equal(bibit90.di_dalam_tcwc, false);
 assert.equal(bibit90.dampak, "-");
 assert.equal(arnab.dampak, "-");
+assert.equal(bibit90.url_infografis, "");
+const nuxtDampak = [
+  { is_cyclone: 1, name: 2, is_current: 3, tc_code: 4, id: 5, is_aor: 6 },
+  false,
+  "BIBIT SIKLON TROPIS 91B",
+  true,
+  "91B",
+  "tc91",
+  false,
+  { tc_id: 5, description_id: 8, direct_impact: 9, extreme_weather: 9, ocean_gale: 9, gale: 9, warning_text: 9, infografis: 10 },
+  "Bibit Siklon Tropis 91B mulai terbentuk pada 29 Oktober 2026 pukul 01.00 WIB di Laut Andaman.",
+  null,
+  [],
+];
+const htmlDampak = `<script id="__NUXT_DATA__" type="application/json">${JSON.stringify(nuxtDampak)}</script>
+<p class="font-bold">Bibit Siklon Tropis 91B</p>
+<p>Dampak tidak langsung hingga 30 Oktober 2026 pukul 07.00 WIB. Bibit Siklon Tropis 91B mulai terbentuk pada 29 Oktober 2026 pukul 01.00 WIB di Laut Andaman.</p>
+<h2>Wilayah Terdampak Bibit Siklon Tropis 91B</h2>
+<table><tr>
+<td><p>Hujan sedang hingga lebat: Aceh</p><p>Sumatera Utara</p></td>
+<td><p>1,25-2,5 m, Selat Malaka bagian utara</p></td>
+<td><p>-</p></td>
+</tr></table>
+<p>Dampak tidak langsung terhadap kondisi cuaca dan perairan di wilayah Indonesia dalam 24 jam ke depan hingga 30 Oktober 2026 pukul 07.00 WIB.</p>
+<img src="/cuaca/berkas/91b.png" alt="Infografis 91B">`;
+const halamanDampak = bacaStatusHtml(htmlDampak);
+assert.equal(halamanDampak.sistem.length, 1);
+assert.equal(halamanDampak.sistem[0].nama, "91B");
+assert.equal(halamanDampak.sistem[0].dampak_status, "tidak langsung");
+assert.equal(halamanDampak.sistem[0].berlaku_hingga, "30 Oktober 2026 pukul 07.00 WIB");
+assert.equal(halamanDampak.sistem[0].cuaca_ekstrem, "Hujan sedang hingga lebat: Aceh; Sumatera Utara");
+assert.equal(halamanDampak.sistem[0].gelombang_tinggi, "1,25-2,5 m, Selat Malaka bagian utara");
+assert.equal(halamanDampak.sistem[0].angin_kencang, "");
+assert.equal(halamanDampak.sistem[0].url_infografis, "https://www.bmkg.go.id/cuaca/berkas/91b.png");
+assert.match(halamanDampak.sistem[0].dampak, /Dampak tidak langsung hingga 30 Oktober 2026 pukul 07\.00 WIB/);
+assert.match(halamanDampak.sistem[0].dampak, /Aceh/);
+assert.match(halamanDampak.sistem[0].dampak, /Selat Malaka bagian utara/);
+assert.equal(halamanDampak.sistem[0].dampak.includes("Angin kencang"), false);
+const nuxtIsi = [
+  { is_cyclone: 1, name: 2, is_current: 3, tc_code: 4, id: 5, is_aor: 6 },
+  false,
+  "BIBIT SIKLON TROPIS 91B",
+  true,
+  "91B",
+  "tc91b",
+  false,
+  { tc_id: 5, description_id: 8, direct_impact: 9, extreme_weather: 10, ocean_gale: 11, gale: 12, warning_text: 12, infografis: 13 },
+  "Bibit Siklon Tropis 91B mulai terbentuk pada 29 Oktober 2026 pukul 01.00 WIB di Laut Andaman.",
+  "Dampak tidak langsung hingga 30 Oktober 2026 07.00 WIB.",
+  "Hujan sedang hingga lebat di Aceh dan Sumatera Utara",
+  "Gelombang 1,25-2,5 m di Selat Malaka bagian utara",
+  null,
+  [15],
+  "https://www.bmkg.go.id/cuaca/berkas/91b-nuxt.jpg",
+  { url: 14 },
+];
+const dariNuxt = bacaStatusHtml(`<script id="__NUXT_DATA__">${JSON.stringify(nuxtIsi)}</script>`);
+assert.equal(dariNuxt.sistem[0].dampak_status, "tidak langsung");
+assert.equal(dariNuxt.sistem[0].berlaku_hingga, "30 Oktober 2026 07.00 WIB");
+assert.match(dariNuxt.sistem[0].dampak, /Sumatera Utara/);
+assert.equal(dariNuxt.sistem[0].url_infografis, "https://www.bmkg.go.id/cuaca/berkas/91b-nuxt.jpg");
 assert.equal(arnab.tekanan_hpa, 970);
 assert.equal(arnab.angin_knot, 80);
 assert.equal(arnab.kategori, "3");
