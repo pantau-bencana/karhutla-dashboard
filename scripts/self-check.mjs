@@ -57,7 +57,7 @@ import { analisisDampakIndonesia, bacaIkhtisar, bacaSiaranPers, bacaStatusHtml, 
 import { isiSiklonSama, pertahankanPemantau } from "../scripts/ambil-siklon.mjs";
 import { sistemDariPrakiraanJma } from "../src/lib/siklonJma.js";
 import { bacaTeksJtwc } from "../src/lib/siklonJtwc.js";
-import { kalimatAgensiLain } from "../src/lib/siklonTampil.js";
+import { daftarSistemSiklon, labelPetaSiklon } from "../src/lib/siklonTampil.js";
 import { batangTanggal, susunButir, susunUbin, ubahHari } from "../src/v2/susunRingkasan.js";
 import { bandingHitungan, bandingPeringkat, barisPeriodeAktif, chipProvinsi, JUMLAH_CHIP_PROVINSI, kelasPeringkat, namaChipProvinsi, sepuluhPrioritas, susunPeringkatHotspot } from "../src/lib/peringkatHotspot.js";
 import { cariWilayahBatas, PROVINSI_TIDAK_DIKETAHUI, tampilBarisFwi, urutBarisFwi } from "../src/lib/kabProvinsi.js";
@@ -1013,6 +1013,9 @@ assert.match(siklonSumber, /Buka peta siklon BMKG/);
 assert.match(siklonSumber, /<summary>\{agensi === "BMKG" \? "Informasi BMKG"/);
 assert.match(siklonSumber, /Wilayah potensi terdampak/);
 assert.match(siklonSumber, /Potensi dampak/);
+assert.match(siklonSumber, /Infografis BMKG/);
+assert.match(siklonSumber, /Gambar tanpa teks atau tautan tidak dibaca/);
+assert.match(readFileSync("src/lib/sourceCatalog.js", "utf8"), /Gambar tidak dibaca/);
 assert.match(siklonSumber, /<th>Sumber<\/th>/);
 assert.equal(siklonSumber.includes("iframe"), false);
 assert.equal(siklonSumber.includes("SIKLON_PETA_URL"), false);
@@ -1059,6 +1062,67 @@ assert.match(bibit90.kalimat, /Teluk Benggala/);
 assert.equal(bibit90.di_dalam_tcwc, false);
 assert.equal(bibit90.dampak, "-");
 assert.equal(arnab.dampak, "-");
+assert.equal(bibit90.url_infografis, "");
+const nuxtDampak = [
+  { is_cyclone: 1, name: 2, is_current: 3, tc_code: 4, id: 5, is_aor: 6 },
+  false,
+  "BIBIT SIKLON TROPIS 91B",
+  true,
+  "91B",
+  "tc91",
+  false,
+  { tc_id: 5, description_id: 8, direct_impact: 9, extreme_weather: 9, ocean_gale: 9, gale: 9, warning_text: 9, infografis: 10 },
+  "Bibit Siklon Tropis 91B mulai terbentuk pada 29 Oktober 2026 pukul 01.00 WIB di Laut Andaman.",
+  null,
+  [],
+];
+const htmlDampak = `<script id="__NUXT_DATA__" type="application/json">${JSON.stringify(nuxtDampak)}</script>
+<p class="font-bold">Bibit Siklon Tropis 91B</p>
+<p>Dampak tidak langsung hingga 30 Oktober 2026 pukul 07.00 WIB. Bibit Siklon Tropis 91B mulai terbentuk pada 29 Oktober 2026 pukul 01.00 WIB di Laut Andaman.</p>
+<h2>Wilayah Terdampak Bibit Siklon Tropis 91B</h2>
+<table><tr>
+<td><p>Hujan sedang hingga lebat: Aceh</p><p>Sumatera Utara</p></td>
+<td><p>1,25-2,5 m, Selat Malaka bagian utara</p></td>
+<td><p>-</p></td>
+</tr></table>
+<p>Dampak tidak langsung terhadap kondisi cuaca dan perairan di wilayah Indonesia dalam 24 jam ke depan hingga 30 Oktober 2026 pukul 07.00 WIB.</p>
+<img src="/cuaca/berkas/91b.png" alt="Infografis 91B">`;
+const halamanDampak = bacaStatusHtml(htmlDampak);
+assert.equal(halamanDampak.sistem.length, 1);
+assert.equal(halamanDampak.sistem[0].nama, "91B");
+assert.equal(halamanDampak.sistem[0].dampak_status, "tidak langsung");
+assert.equal(halamanDampak.sistem[0].berlaku_hingga, "30 Oktober 2026 pukul 07.00 WIB");
+assert.equal(halamanDampak.sistem[0].cuaca_ekstrem, "Hujan sedang hingga lebat: Aceh; Sumatera Utara");
+assert.equal(halamanDampak.sistem[0].gelombang_tinggi, "1,25-2,5 m, Selat Malaka bagian utara");
+assert.equal(halamanDampak.sistem[0].angin_kencang, "");
+assert.equal(halamanDampak.sistem[0].url_infografis, "https://www.bmkg.go.id/cuaca/berkas/91b.png");
+assert.match(halamanDampak.sistem[0].dampak, /Dampak tidak langsung hingga 30 Oktober 2026 pukul 07\.00 WIB/);
+assert.match(halamanDampak.sistem[0].dampak, /Aceh/);
+assert.match(halamanDampak.sistem[0].dampak, /Selat Malaka bagian utara/);
+assert.equal(halamanDampak.sistem[0].dampak.includes("Angin kencang"), false);
+const nuxtIsi = [
+  { is_cyclone: 1, name: 2, is_current: 3, tc_code: 4, id: 5, is_aor: 6 },
+  false,
+  "BIBIT SIKLON TROPIS 91B",
+  true,
+  "91B",
+  "tc91b",
+  false,
+  { tc_id: 5, description_id: 8, direct_impact: 9, extreme_weather: 10, ocean_gale: 11, gale: 12, warning_text: 12, infografis: 13 },
+  "Bibit Siklon Tropis 91B mulai terbentuk pada 29 Oktober 2026 pukul 01.00 WIB di Laut Andaman.",
+  "Dampak tidak langsung hingga 30 Oktober 2026 07.00 WIB.",
+  "Hujan sedang hingga lebat di Aceh dan Sumatera Utara",
+  "Gelombang 1,25-2,5 m di Selat Malaka bagian utara",
+  null,
+  [15],
+  "https://www.bmkg.go.id/cuaca/berkas/91b-nuxt.jpg",
+  { url: 14 },
+];
+const dariNuxt = bacaStatusHtml(`<script id="__NUXT_DATA__">${JSON.stringify(nuxtIsi)}</script>`);
+assert.equal(dariNuxt.sistem[0].dampak_status, "tidak langsung");
+assert.equal(dariNuxt.sistem[0].berlaku_hingga, "30 Oktober 2026 07.00 WIB");
+assert.match(dariNuxt.sistem[0].dampak, /Sumatera Utara/);
+assert.equal(dariNuxt.sistem[0].url_infografis, "https://www.bmkg.go.id/cuaca/berkas/91b-nuxt.jpg");
 assert.equal(arnab.tekanan_hpa, 970);
 assert.equal(arnab.angin_knot, 80);
 assert.equal(arnab.kategori, "3");
@@ -1177,7 +1241,23 @@ assert.equal(jtwc[1].dampak, "-");
 assert.equal(jtwc[1].tekanan_hpa, 1009);
 const gagalUlang = pertahankanPemantau({ status: "gagal", sistem: [{ nama: "In-fa" }], galat: "HTTP 500" }, "HTTP 503");
 assert.equal(gagalUlang.galat, "HTTP 500");
-assert.equal(kalimatAgensiLain({ nama: "91B", agensi: "JTWC" }, [{ nama: "91B", agensi: "BMKG" }, { nama: "91B", agensi: "JTWC" }]), "Nama yang sama juga tercatat pada BMKG.");
+assert.equal(labelPetaSiklon({ nama: "91B", jenis: "bibit" }), "Bibit 91B");
+assert.equal(labelPetaSiklon({ nama: "Arnab", jenis: "siklon" }), "Arnab");
+const tampilan = daftarSistemSiklon({
+  sistem_halaman: [
+    { nama: "Arnab", jenis: "siklon", lintang: 16.4, bujur: 81.4, agensi: "BMKG" },
+    { nama: "91B", jenis: "bibit", lintang: 8.3, bujur: 96.6, agensi: "BMKG" },
+  ],
+  pemantau: {
+    jma: { sistem: [{ nama: "In-fa", jenis: "siklon", lintang: 15.9, bujur: 154.7, agensi: "JMA" }] },
+    jtwc: { sistem: [
+      { nama: "IN-FA", jenis: "siklon", lintang: 14.9, bujur: 159.9, agensi: "JTWC" },
+      { nama: "ARNAB", kode: "02B", jenis: "siklon", lintang: 16.4, bujur: 81.8, agensi: "JTWC" },
+      { nama: "91B", jenis: "bibit", lintang: 7.9, bujur: 97, agensi: "JTWC" },
+    ] },
+  },
+});
+assert.deepEqual(tampilan.map((item) => `${item.agensi}:${item.nama}`), ["BMKG:Arnab", "BMKG:91B", "JMA:In-fa"]);
 const sumberJma = SOURCES.find((item) => item.id === "jma_siklon");
 const sumberJtwc = SOURCES.find((item) => item.id === "jtwc_siklon");
 assert.equal(sumberJma.updateType, "Berkala (tiap 1 jam)");
