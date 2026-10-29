@@ -12,14 +12,15 @@ import {
   SIKLON_JEJAK,
   SIKLON_TCWC_URL,
   analisisDampakIndonesia,
+  CATATAN_TINGKAT_BMKG,
   siklonUsang,
   terapkanKurasiDampak,
+  tingkatResmiBmkg,
 } from "../lib/siklonBmkg.js";
 import { agensiSistem, daftarSistemSiklon, labelPetaSiklon } from "../lib/siklonTampil.js";
 
 const BERKAS = "data/live/siklon-bmkg.json";
 const BERKAS_KURASI = "data/siklon-dampak-manual.json";
-const URUTAN_TINGKAT = ["Kecil", "Disebut BMKG", "Di wilayah pemantauan"];
 
 let cuplikanJanji = null;
 
@@ -95,9 +96,10 @@ function labelTcwc(item) {
 }
 
 function kelasTingkat(tingkat) {
-  if (tingkat === "Di wilayah pemantauan") return "pantau";
-  if (tingkat === "Disebut BMKG") return "disebut";
-  return "kecil";
+  if (tingkat === "Besar" || tingkat === "Tinggi") return "pantau";
+  if (tingkat === "Sedang") return "disebut";
+  if (tingkat === "Kecil" || tingkat === "Rendah") return "kecil";
+  return "";
 }
 
 function lokasiPendek(item) {
@@ -108,14 +110,10 @@ function lokasiPendek(item) {
 
 function kalimatStatus(sistem) {
   if (!sistem.length) return "Saat ini tidak ada sistem aktif pada halaman BMKG.";
-  const tingkat = sistem.map((item) => analisisDampakIndonesia(item).tingkat);
-  const utama = tingkat.reduce((terpilih, item) => (
-    URUTAN_TINGKAT.indexOf(item) > URUTAN_TINGKAT.indexOf(terpilih) ? item : terpilih
-  ), "Kecil");
   const tempat = sistem.map(lokasiPendek);
   const sama = tempat.every((item) => item && item === tempat[0]);
   const di = sama ? ` di ${tempat[0]}` : "";
-  return `Saat ini ${sistem.length} sistem aktif${di}. Dampak ke Indonesia: ${utama.toUpperCase()}.`;
+  return `Saat ini ${sistem.length} sistem aktif${di}.`;
 }
 
 function kutipanPendek(teks) {
@@ -157,7 +155,9 @@ function KartuSistem({ item }) {
         <h3>{item.nama}</h3>
         <span className={`siklon-lencana siklon-lencana-${item.jenis === "bibit" ? "bibit" : "siklon"}`}>{jenis}</span>
         <span className="siklon-lencana">{agensi}</span>
-        <span className={`siklon-chip siklon-chip-${kelasTingkat(hasil.tingkat)}`}>{hasil.tingkat}</span>
+        {tingkatResmiBmkg(item) ? (
+          <span className={`siklon-chip siklon-chip-${kelasTingkat(tingkatResmiBmkg(item))}`}>{tingkatResmiBmkg(item)}</span>
+        ) : null}
       </header>
       <div className="siklon-fakta-grid">
         <Fakta label="Posisi" nilai={teksPosisi(item)} />
@@ -212,11 +212,7 @@ export function SiklonRingkas({ manifest = null }) {
   const sistemHalaman = Array.isArray(data?.sistem_halaman) ? data.sistem_halaman : [];
   const semuaSistem = daftarSistemSiklon(data);
   const waktuBerhasil = entri?.fetched_at || data?.fetched_at;
-  const tingkatUtama = semuaSistem.length
-    ? semuaSistem.map((item) => analisisDampakIndonesia(item).tingkat).reduce((terpilih, item) => (
-      URUTAN_TINGKAT.indexOf(item) > URUTAN_TINGKAT.indexOf(terpilih) ? item : terpilih
-    ), "Kecil")
-    : "";
+  const tingkatUtama = semuaSistem.map((item) => tingkatResmiBmkg(item)).find(Boolean) || "";
   const daftarSiaran = Array.isArray(data?.siaran_pers?.daftar) ? data.siaran_pers.daftar : [];
 
   return (
@@ -237,7 +233,7 @@ export function SiklonRingkas({ manifest = null }) {
       {!data && !galat ? <p role="status">Memuat cuplikan siklon…</p> : null}
       {data ? (
         <>
-          <p className={`siklon-status siklon-status-${semuaSistem.length ? kelasTingkat(tingkatUtama) : "kosong"}`} role="status">
+          <p className={`siklon-status siklon-status-${semuaSistem.length ? (kelasTingkat(tingkatUtama) || "netral") : "kosong"}`} role="status">
             {kalimatStatus(semuaSistem)}
           </p>
           {semuaSistem.length ? <PetaPosisiSiklon sistem={semuaSistem} /> : null}
@@ -265,13 +261,13 @@ export function SiklonRingkas({ manifest = null }) {
                 </thead>
                 <tbody>
                   {semuaSistem.map((item) => {
-                    const hasil = analisisDampakIndonesia(item);
                     const teks = agensiSistem(item) === "BMKG" ? (item.dampak && item.dampak !== "-" ? item.dampak : "") : "";
                     const tautan = item.url_infografis || "";
+                    const resmi = tingkatResmiBmkg(item);
                     return (
                       <tr key={`tabel-${agensiSistem(item)}-${item.nama}`}>
-                        <td>{item.nama}</td>
-                        <td>
+                        <td data-label="Sistem">{item.nama}</td>
+                        <td data-label="Potensi dampak">
                           {teks || null}
                           {teks && tautan ? " " : null}
                           {tautan ? (
@@ -279,8 +275,12 @@ export function SiklonRingkas({ manifest = null }) {
                           ) : null}
                           {!teks && !tautan ? "-" : null}
                         </td>
-                        <td>{hasil.tingkat}</td>
-                        <td>
+                        <td data-label="Tingkat potensi dampak">
+                          {resmi || (
+                            <span title={CATATAN_TINGKAT_BMKG} aria-describedby="siklon-tingkat-catatan">-</span>
+                          )}
+                        </td>
+                        <td data-label="Sumber">
                           {agensiSistem(item)}
                           {(item.dampak_manual || item.dampak_otomatis) && item.sumber_manual?.url ? (
                             <>
@@ -294,8 +294,8 @@ export function SiklonRingkas({ manifest = null }) {
                   })}
                 </tbody>
               </table>
-              <p className="siklon-catatan">
-                Pada halaman BMKG judul tabelnya Wilayah Terdampak, dengan kolom Cuaca Ekstrem, Gelombang Tinggi, dan Angin Kencang. Frasa potensi dampak tidak tertulis di halaman itu. Sel BMKG diisi dari teks kolom itu, kalimat dampak langsung atau tidak langsung beserta batas waktunya, dan tautan berkas infografis bila BMKG menuliskannya. Tanda minus berarti isian itu kosong. Gambar tanpa teks atau tautan tidak dibaca. Bila sel BMKG hanya tanda minus, isian kurasi yang masih berlaku dapat mengisi teks itu sampai waktu berlakunya. Lewat waktu itu isian diabaikan. Teks halaman yang bukan tanda minus tetap dipakai. Sumber isian kurasi ditampilkan di kolom Sumber. JMA dan JTWC tidak menyebut wilayah di Indonesia, jadi selnya -.
+              <p className="siklon-catatan" id="siklon-tingkat-catatan">
+                Tabel BMKG berjudul Wilayah Terdampak, dengan kolom Cuaca Ekstrem, Gelombang Tinggi, dan Angin Kencang. Tingkat di kolom ini hanya kata yang BMKG tulis utuh. Tanda minus berarti {CATATAN_TINGKAT_BMKG}. Potensi dampak diisi dari teks kolom itu, atau dari kurasi dan bacaan infografis bila teks halaman kosong. Gambar tanpa teks atau tautan tidak dibaca. JMA dan JTWC tidak menyebut wilayah Indonesia, jadi selnya -.
               </p>
             </div>
           ) : null}
