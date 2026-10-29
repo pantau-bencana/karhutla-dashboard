@@ -15,6 +15,13 @@ export const SIKLON_API_URL = "https://tropicalcyclone.bmkg.go.id/cms/service-ap
 export const SIKLON_JEJAK =
   "Analisis jejak dan kerucut ketidakpastian terhadap wilayah Indonesia belum terintegrasi.";
 export const SIKLON_BELUM = "belum terintegrasi";
+export const TINGKAT_RESMI_BMKG = ["Kecil", "Sedang", "Besar", "Rendah", "Tinggi"];
+export const CATATAN_TINGKAT_BMKG = "tingkat tidak disebut BMKG";
+
+export function tingkatResmiBmkg(item) {
+  const mentah = String(item?.tingkat_bmkg || "").replace(/\s+/g, " ").trim();
+  return TINGKAT_RESMI_BMKG.find((nama) => nama.toLowerCase() === mentah.toLowerCase()) || "";
+}
 
 const BULAN = {
   januari: 1,
