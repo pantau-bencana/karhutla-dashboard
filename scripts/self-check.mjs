@@ -939,6 +939,9 @@ assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /FilterProv
 assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /Laporan singkat harian/);
 assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<h2>Karhutla<\/h2>/);
 assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<h2>Banjir<\/h2>/);
+assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<h2>Gunung Api<\/h2>/);
+assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /href="#\/gunung-api"/);
+assert.match(readFileSync("src/v2/KpiStrip.jsx", "utf8"), /ringkasKarhutla \|\| \(hazard === "gunung-api"/);
 assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /SiklonRingkas/);
 const siklonSumber = readFileSync("src/components/SiklonRingkas.jsx", "utf8");
 const siklonLib = readFileSync("src/lib/siklonBmkg.js", "utf8");

@@ -169,6 +169,17 @@ export function SummaryPage({
       </section>
       <BagianBanjir province={province} />
       <SiklonRingkas manifest={manifest} />
+      <section className="card" aria-label="Gunung Api">
+        <h2>Gunung Api</h2>
+        <p>
+          Belum terhubung / menunggu data. Ringkasan ini tidak memuat angka tingkat aktivitas, prakiraan, atau wilayah terdampak.
+          {" "}
+          <a href="#/gunung-api">Halaman Gunung Api</a>.
+        </p>
+        {import.meta.env && import.meta.env.VITE_EDITION === "v2" ? (
+          <p className="v2-more"><a href="#/gunung-api">Lihat selengkapnya</a></p>
+        ) : null}
+      </section>
     </main>
   );
 }
