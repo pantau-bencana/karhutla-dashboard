@@ -3065,9 +3065,9 @@
       "kode": "94.04",
       "kabupaten": "Mimika",
       "provinsi": "Papua Tengah",
-      "fwi_rata": 0.01,
+      "fwi_rata": 0,
       "fwi_maks": 0.06,
-      "n_sel": 15
+      "n_sel": 21
     },
     {
       "kode": "94.05",
@@ -3099,7 +3099,7 @@
       "provinsi": "Papua Tengah",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 1
+      "n_sel": 3
     },
     {
       "kode": "95.01",
