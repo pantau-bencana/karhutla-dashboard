@@ -5,6 +5,7 @@ import { useCuplikanSiklon } from "../components/SiklonRingkas.jsx";
 import { parseLocation } from "../lib/route.js";
 import { potensiDekatIndonesia } from "../lib/siklonBmkg.js";
 import { KpiStrip } from "./KpiStrip.jsx";
+import { RingkasanV2 } from "./RingkasanV2.jsx";
 
 const IKON = {
   karhutla: "M8 13.4s3.1-2 3.1-4.7A3.1 3.1 0 0 0 8 5.6a3.1 3.1 0 0 0-3.1 3.1c0 2.7 3.1 4.7 3.1 4.7z",
@@ -123,8 +124,10 @@ export function V2Shell({ children }) {
     hourCycle: "h23",
   }).format(jam);
 
+  const ringkas = location.page === "ringkasan" && location.hazard === "karhutla";
+
   return (
-    <div className="v2-app">
+    <div className={ringkas ? "v2-app v2-beranda" : "v2-app"}>
       <aside className={menu ? "v2-sidebar terbuka" : "v2-sidebar"} aria-label="Navigasi bencana">
         <a className="v2-brand" href="#/">
           <span className="v2-mark" aria-hidden="true">PB</span>
@@ -185,8 +188,10 @@ export function V2Shell({ children }) {
             <strong>Prototipe v0.2.</strong> Kompilasi data dari sumber publik. Bukan peringatan resmi — untuk keputusan operasional, rujuk BNPB, BMKG, PVMBG, dan KLH.
           </p>
         </div>
-        <KpiStrip location={location} />
-        <div className="v2-body">{children}</div>
+        {ringkas ? null : <KpiStrip location={location} />}
+        <div className="v2-body">
+          {ringkas ? <RingkasanV2 /> : children}
+        </div>
       </div>
     </div>
   );

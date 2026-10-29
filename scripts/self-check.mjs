@@ -54,11 +54,12 @@ import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { keadaanKategori, statusRingkasan, statusRingkasanSiap } from "../src/lib/ringkasanStatus.js";
 import { dekatDaratan } from "../src/lib/dekatDaratan.js";
 import { analisisDampakIndonesia, bacaIkhtisar, bacaSiaranPers, bacaStatusHtml, gabungSiaran, gagalSiklonBerturut, potensiDekatIndonesia, siklonPerluTanda, siklonUsang, susunCuplikan as susunCuplikanSiklon, SIKLON_JEJAK } from "../src/lib/siklonBmkg.js";
-import { batangTanggal, susunButir, susunStatusSumber } from "../src/v3/susunRingkasan.js";
+import { batangTanggal as batangTanggalV3, susunButir as susunButirV3, susunStatusSumber } from "../src/v3/susunRingkasan.js";
 import { isiSiklonSama, pertahankanPemantau } from "../scripts/ambil-siklon.mjs";
 import { sistemDariPrakiraanJma } from "../src/lib/siklonJma.js";
 import { bacaTeksJtwc } from "../src/lib/siklonJtwc.js";
 import { daftarSistemSiklon, labelPetaSiklon } from "../src/lib/siklonTampil.js";
+import { batangTanggal, susunButir, susunUbin, ubahHari } from "../src/v2/susunRingkasan.js";
 import { bandingHitungan, bandingPeringkat, barisPeriodeAktif, chipProvinsi, JUMLAH_CHIP_PROVINSI, kelasPeringkat, namaChipProvinsi, sepuluhPrioritas, susunPeringkatHotspot } from "../src/lib/peringkatHotspot.js";
 import { cariWilayahBatas, PROVINSI_TIDAK_DIKETAHUI, tampilBarisFwi, urutBarisFwi } from "../src/lib/kabProvinsi.js";
 import { kelasKepercayaan } from "../src/lib/warning.js";
@@ -420,7 +421,12 @@ assert.equal(/^(html|body|:root)\b/m.test(readFileSync("src/v3/theme.css", "utf8
 assert.equal(readFileSync("src/v3/pages/SummaryPage.jsx", "utf8").includes("Laporan singkat harian"), false);
 assert.match(readFileSync("vite.config.js", "utf8"), /emptyOutDir: false/);
 assert.match(readFileSync("vite.config.js", "utf8"), /nama === "v3"/);
-const butirV3 = susunButir({
+assert.match(readFileSync("src/v2/V2Shell.jsx", "utf8"), /RingkasanV2/);
+assert.match(readFileSync("src/v2/RingkasanV2.jsx", "utf8"), /Apa yang perlu diperhatikan di Indonesia hari ini/);
+assert.match(readFileSync("src/v2/RingkasanV2.jsx", "utf8"), /Deteksi satelit, bukan kebakaran terkonfirmasi/);
+assert.match(readFileSync("src/v2/RingkasanV2.jsx", "utf8"), /Analisis dasbor, bukan status resmi/);
+assert.equal(readFileSync("src/components/SummaryPage.jsx", "utf8").includes("v2o-kartu"), false);
+const butirV3 = susunButirV3({
   gunung: [
     { nama: "Semeru", lokasi: "Jawa Timur", tingkat: "Siaga", level: 3 },
     { nama: "Biasa", lokasi: "Bali", tingkat: "Waspada", level: 2 },
@@ -444,13 +450,40 @@ const butirV3 = susunButir({
   ],
 });
 assert.deepEqual(butirV3.map((item) => item.id), ["gunung-Lewotobi", "banjir-1", "gunung-Semeru", "banjir-2", "siklon-Contoh", "karhutla-Jambi", "karhutla-Riau"]);
-assert.equal(susunButir({ sistemBmkg: [{ nama: "91B", agensi: "BMKG", dampak: "Hujan: Aceh" }], wilayah: "Sumatera Utara" }).length, 0);
-assert.deepEqual(batangTanggal([{ tanggal: "2026-10-27" }, { tanggal: "2026-10-27" }, { tanggal: "2026-10-29" }]), [
+assert.equal(susunButirV3({ sistemBmkg: [{ nama: "91B", agensi: "BMKG", dampak: "Hujan: Aceh" }], wilayah: "Sumatera Utara" }).length, 0);
+assert.deepEqual(batangTanggalV3([{ tanggal: "2026-10-27" }, { tanggal: "2026-10-27" }, { tanggal: "2026-10-29" }]), [
   { hari: "2026-10-27", jumlah: 2 },
   { hari: "2026-10-29", jumlah: 1 },
 ]);
 assert.equal(susunStatusSumber({ hotspot: { status: "ok" } }).find((item) => item.id === "hotspot").siap, true);
 assert.equal(susunStatusSumber({}).find((item) => item.id === "bmkg_siklon").status, "Tidak ada cuplikan");
+const butirV2 = susunButir({
+  gunung: [
+    { nama: "Semeru", lokasi: "Jawa Timur", tingkat: "Siaga", level: 3 },
+    { nama: "Biasa", lokasi: "Bali", tingkat: "Waspada", level: 2 },
+    { nama: "Lewotobi", lokasi: "Nusa Tenggara Timur", tingkat: "Awas", level: 4 },
+  ],
+  banjirBaris: [
+    { kode: "1", kab_kota: "Aceh Besar", provinsi: "Aceh", status: "Awas" },
+    { kode: "2", kab_kota: "Pidie", provinsi: "Aceh", status: "Siaga" },
+    { kode: "3", kab_kota: "Bireuen", provinsi: "Aceh", status: "Waspada" },
+  ],
+  peringkatProvinsi: [
+    { nama: "Riau", merah: 4, total: 9 },
+    { nama: "Jambi", merah: 1, total: 2 },
+    { nama: "Belum terpetakan", merah: 9, total: 9 },
+    { nama: "Lampung", merah: 0, total: 4 },
+  ],
+  sistemBmkg: [
+    { nama: "91B", agensi: "BMKG", dampak: "-", di_dalam_tcwc: false },
+    { nama: "In-fa", agensi: "JMA", dampak: "Hujan di Aceh", di_dalam_tcwc: false },
+    { nama: "Dekat", agensi: "BMKG", dampak: "Menginduksi konvergensi di wilayah Aceh.", di_dalam_tcwc: false },
+  ],
+});
+assert.deepEqual(butirV2.map((item) => item.id), ["gunung-Lewotobi", "banjir-1", "gunung-Semeru", "banjir-2", "siklon-Dekat", "karhutla-Jambi", "karhutla-Riau"]);
+assert.equal(batangTanggal([{ tanggal: "2026-10-27" }, { tanggal: "2026-10-29" }, { tanggal: "2026-10-29" }]).some((item) => item.hari === "2026-10-28"), false);
+assert.equal(ubahHari([{ hari: "2026-10-29", jumlah: 4 }]), null);
+assert.equal(susunUbin({ adaHotspot: false }).find((item) => item.id === "karhutla").warna, "abu");
 
 const firmsArea = { west: 95, south: -11, east: 141, north: 6 };
 assert.equal(areaContains(INDONESIA_FRAME, firmsArea), true);
