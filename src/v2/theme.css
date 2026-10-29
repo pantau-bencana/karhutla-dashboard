@@ -312,3 +312,163 @@ button.v2-more, .v2-more button, p.v2-more button {
   .v2-muat { padding: 7px 8px; }
   .v2-subjudul { display: none; }
 }
+
+/* Ringkasan v0.2 saja. Halaman lain tidak memakai kelas ini. */
+.v2-beranda .v2-column {
+  background:
+    radial-gradient(980px 420px at 78% -12%, rgba(196, 181, 253, 0.45), transparent 62%),
+    #eef0f6;
+}
+.v2-beranda .v2-judul,
+.v2-beranda .v2-subjudul,
+.v2-beranda .v2-jam,
+.v2-beranda .v2-muat,
+.v2-beranda .laporan-teks,
+.v2-beranda .footer { display: none; }
+.v2o {
+  padding: 4px 16px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: Inter, "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  color: #1c1c1f;
+}
+.v2o-kepala { display: flex; justify-content: space-between; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+.v2o-kepala h1 { margin: 0; font-size: 34px; letter-spacing: -0.04em; }
+.v2o-kepala p { margin: 4px 0 0; color: #6b7280; }
+.v2o-diperbarui, .v2o-aksi, .v2o-tautan {
+  border: 1px solid #e6e8ef;
+  background: #fff;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+.v2o-diperbarui {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  color: #3f3f46;
+  transition: background 0.16s ease, border-color 0.16s ease;
+}
+.v2o-diperbarui:hover { background: #f4f5f8; }
+.v2o-kartu {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(30, 27, 75, 0.06);
+  padding: 16px;
+}
+.v2o-lembut { background: linear-gradient(180deg, #f6f4ff 0%, #fff 46%); }
+.v2o-kartu-kepala { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.v2o-kartu h2 { margin: 0; font-size: 16px; }
+.v2o-kartu h2 span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  margin-left: 6px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  font-size: 12px;
+}
+.v2o-tautan { color: #4338ca; text-decoration: none; border: 0; background: none; padding: 8px 0 0; display: inline-block; }
+.v2o-tautan:hover { text-decoration: underline; }
+.v2o-atas { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(250px, 0.85fr); gap: 16px; align-items: start; }
+.v2o-bawah { display: grid; grid-template-columns: 1.2fr 0.95fr 0.95fr 0.8fr; gap: 16px; align-items: start; }
+.v2o-daftar { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.v2o-baris {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  background: #f6f7fb;
+  border-radius: 14px;
+  padding: 10px 12px;
+  transition: background 0.16s ease;
+}
+.v2o-baris:hover { background: #eef0f6; }
+.v2o-judul { margin: 0; font-weight: 700; }
+.v2o-rinci, .v2o-samar, .v2o-kosong { margin: 2px 0 0; color: #6b7280; font-size: 12px; line-height: 1.4; }
+.v2o-pil { font-size: 12px; font-weight: 700; border-radius: 999px; padding: 4px 8px; width: fit-content; }
+.v2o-pil-kritis { color: #be123c; background: #ffe4e6; }
+.v2o-pil-peringatan { color: #b45309; background: #fef3c7; }
+.v2o-aksi {
+  text-decoration: none;
+  color: #1c1c1f;
+  padding: 8px 12px;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+.v2o-aksi:hover { background: #1c1c1f; color: #fff; }
+.v2o-ubin, .v2o-siklon, .v2o-hitung, .v2o-legenda { list-style: none; margin: 10px 0 0; padding: 0; }
+.v2o-ubin { display: flex; flex-direction: column; gap: 12px; }
+.v2o-ubin li { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.v2o-status { margin: 0; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; }
+.v2o-status i, .v2o-titik {
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  display: inline-block;
+  background: #9ca3af;
+}
+.v2o-status-merah, .v2o-titik-merah { color: #be123c; }
+.v2o-status-merah i, .v2o-titik-merah { background: #e11d48; }
+.v2o-status-oranye, .v2o-titik-oranye { color: #b45309; }
+.v2o-status-oranye i, .v2o-titik-oranye { background: #f59e0b; }
+.v2o-status-hijau, .v2o-titik-hijau { color: #047857; }
+.v2o-status-hijau i, .v2o-titik-hijau { background: #10b981; }
+.v2o-status-abu { color: #6b7280; }
+.v2o-angka { margin: 8px 0 0; font-size: 36px; letter-spacing: -0.04em; font-weight: 750; }
+.v2o-angka-kecil { font-size: 22px; }
+.v2o-delta { margin: 4px 0 8px; display: inline-block; border-radius: 999px; padding: 2px 8px; font-size: 12px; font-weight: 700; background: #f3f4f6; }
+.v2o-delta-naik { color: #be123c; background: #ffe4e6; }
+.v2o-delta-turun { color: #047857; background: #d1fae5; }
+.v2o-grafik { height: 132px; margin-top: 8px; }
+.v2o-tip-grafik {
+  background: #1c1c1f;
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.v2o-siklon li, .v2o-hitung li { display: flex; gap: 8px; align-items: flex-start; margin-top: 8px; }
+.v2o-siklon strong, .v2o-hitung strong { display: block; }
+.v2o-siklon span { color: #6b7280; font-size: 12px; }
+.v2o-titik-kuning { background: #facc15; }
+.v2o-batang { display: flex; height: 18px; gap: 4px; margin-top: 16px; }
+.v2o-seg { position: relative; border-radius: 6px; min-width: 12px; }
+.v2o-seg-awas { background: #e11d48; }
+.v2o-seg-siaga { background: #f97316; }
+.v2o-seg-waspada { background: #facc15; }
+.v2o-seg-normal { background: #d1d5db; }
+.v2o-tip {
+  display: none;
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 6px);
+  z-index: 3;
+  width: max-content;
+  max-width: 220px;
+  background: #1c1c1f;
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 12px;
+}
+.v2o-seg:hover .v2o-tip { display: block; }
+.v2o-legenda li, .v2o-hitung li { display: flex; align-items: center; gap: 8px; }
+.v2o-kotak { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.v2o-legenda strong { margin-left: auto; }
+@media (max-width: 1100px) {
+  .v2o-bawah { grid-template-columns: 1fr 1fr; }
+  .v2o-atas { grid-template-columns: 1fr; }
+}
+@media (max-width: 800px) {
+  .v2o { padding: 4px 12px 24px; }
+  .v2o-kepala h1 { font-size: 28px; }
+  .v2o-bawah, .v2o-baris { grid-template-columns: 1fr; }
+  .v2-beranda .v2-menu { display: inline-flex; }
+}
