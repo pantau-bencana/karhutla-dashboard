@@ -51,6 +51,9 @@ jobs:
       - name: Pasang pembaca PDF
         run: python3 -m pip install --user pypdf
 
+      - name: Pasang pembaca infografis
+        run: sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-ind tesseract-ocr-eng
+
       - name: Ambil siklon BMKG
         run: node scripts/ambil-siklon.mjs
 

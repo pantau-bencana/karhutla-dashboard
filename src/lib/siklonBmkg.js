@@ -247,6 +247,63 @@ function sistemDariNuxt(raw) {
   }).filter((item) => item.nama && item.kalimat);
 }
 
+const UUID_BERKAS = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+export const AWALAN_ASET_INFOGRAFIS = "https://tropicalcyclone.bmkg.go.id/cms/assets/";
+
+function kumpulkanBerkas(nilai, keluar = []) {
+  if (typeof nilai === "string") {
+    if (UUID_BERKAS.test(nilai) || /^https?:\/\//i.test(nilai)) keluar.push(nilai);
+    return keluar;
+  }
+  if (Array.isArray(nilai)) {
+    for (const item of nilai) kumpulkanBerkas(item, keluar);
+    return keluar;
+  }
+  if (nilai && typeof nilai === "object") {
+    if ("directus_files_id" in nilai) kumpulkanBerkas(nilai.directus_files_id, keluar);
+    else if ("id" in nilai) kumpulkanBerkas(nilai.id, keluar);
+    else if ("url" in nilai) kumpulkanBerkas(nilai.url, keluar);
+  }
+  return keluar;
+}
+
+export function urlAsetInfografis(id) {
+  if (typeof id === "string" && /^https?:\/\//i.test(id)) return id;
+  if (!UUID_BERKAS.test(String(id || ""))) return "";
+  return `${AWALAN_ASET_INFOGRAFIS}${id}`;
+}
+
+export function daftarInfografis(html) {
+  const cocok = String(html || "").match(/<script[^>]*id="__NUXT_DATA__"[^>]*>([\s\S]*?)<\/script>/i);
+  if (!cocok) return [];
+  let raw;
+  try {
+    raw = JSON.parse(cocok[1]);
+  } catch {
+    return [];
+  }
+  if (!Array.isArray(raw)) return [];
+  const siklon = [];
+  const rincian = new Map();
+  for (let i = 0; i < raw.length; i += 1) {
+    const slot = raw[i];
+    if (!slot || typeof slot !== "object" || Array.isArray(slot)) continue;
+    if ("is_cyclone" in slot && "name" in slot) {
+      const objek = nilaiNuxt(raw, i);
+      if (objek && objek.is_current !== false && rapikan(objek.name)) siklon.push(objek);
+    } else if ("description_id" in slot && "tc_id" in slot) {
+      const objek = nilaiNuxt(raw, i);
+      if (objek?.tc_id) rincian.set(objek.tc_id, objek);
+    }
+  }
+  return siklon.map((rekaman) => {
+    const namaMentah = rapikan(rekaman.name);
+    const jenis = /^bibit\b/i.test(namaMentah) || rekaman.is_cyclone === false ? "bibit" : "siklon";
+    const berkas = [...new Set(kumpulkanBerkas(rincian.get(rekaman.id)?.infografis))].map(urlAsetInfografis).filter(Boolean);
+    return { nama: namaPublik(namaMentah, rekaman.tc_code, jenis), berkas };
+  }).filter((item) => item.nama && item.berkas.length);
+}
+
 function urlBerkas(nilai) {
   if (!nilai) return "";
   if (typeof nilai === "string" && /^https?:\/\//i.test(nilai)) return nilai;
@@ -602,37 +659,70 @@ function kurasiBerlaku(entri, sekarang) {
   return { teks, label, url, berlaku_hingga: entri.berlaku_hingga, diperbarui: entri.diperbarui || "" };
 }
 
-export function gabungDampakManual(item, kurasi, sekarang = Date.now()) {
-  if (!item || agensiSistem(item) !== "BMKG") return item;
-  const dariHalaman = !dampakKosong(item.dampak) && item.dampak_manual !== true;
-  if (dariHalaman) {
-    if (!item.dampak_manual && !item.sumber_manual) return item;
-    return { ...item, dampak_manual: false, sumber_manual: null };
-  }
-  const kunci = kunciNamaSiklon(item.nama);
-  const entri = entriKurasi(kurasi)
+function ringkasanKolom(teks) {
+  const rata = rapikan(teks);
+  if (!rata || dampakKosong(rata)) return false;
+  if (/dampak\s+(?:tidak\s+)?langsung/i.test(rata)) return false;
+  if (/\d+(?:[.,]\d+)?\s*[-–—]\s*\d+(?:[.,]\d+)?\s*m/i.test(rata)) return false;
+  return /^(?:(?:Cuaca ekstrem|Gelombang tinggi|Angin kencang):\s*\S.*?\.\s*)+$/i.test(rata);
+}
+
+function halamanMenang(item) {
+  if (item?.dampak_manual === true || item?.dampak_otomatis === true) return false;
+  if (dampakKosong(item?.dampak) || ringkasanKolom(item?.dampak)) return false;
+  return true;
+}
+
+function cariKurasi(kurasi, nama, sekarang) {
+  const kunci = kunciNamaSiklon(nama);
+  return entriKurasi(kurasi)
     .map((calon) => (kunci && kunciNamaSiklon(calon?.sistem) === kunci ? kurasiBerlaku(calon, sekarang) : null))
-    .find(Boolean);
-  if (!entri) {
-    if (item.dampak_manual) return { ...item, dampak: "-", dampak_manual: false, sumber_manual: null };
-    return item;
+    .find(Boolean) || null;
+}
+
+export function gabungDampakManual(item, kurasi, sekarang = Date.now(), otomatis = null) {
+  if (!item || agensiSistem(item) !== "BMKG") return item;
+  if (halamanMenang(item)) {
+    if (!item.dampak_manual && !item.dampak_otomatis && !item.sumber_manual) return item;
+    return { ...item, dampak_manual: false, dampak_otomatis: false, sumber_manual: null };
   }
-  return {
-    ...item,
-    dampak: entri.teks,
-    dampak_manual: true,
-    sumber_manual: { label: entri.label, url: entri.url },
-    dampak_diperbarui: entri.diperbarui,
-    dampak_berlaku_hingga: entri.berlaku_hingga,
-  };
+  const manual = cariKurasi(kurasi, item.nama, sekarang);
+  if (manual) {
+    return {
+      ...item,
+      dampak: manual.teks,
+      dampak_manual: true,
+      dampak_otomatis: false,
+      sumber_manual: { label: manual.label, url: manual.url },
+      dampak_diperbarui: manual.diperbarui,
+      dampak_berlaku_hingga: manual.berlaku_hingga,
+    };
+  }
+  const auto = cariKurasi(otomatis, item.nama, sekarang);
+  if (auto) {
+    return {
+      ...item,
+      dampak: auto.teks,
+      dampak_manual: false,
+      dampak_otomatis: true,
+      sumber_manual: { label: auto.label, url: auto.url },
+      dampak_diperbarui: auto.diperbarui,
+      dampak_berlaku_hingga: auto.berlaku_hingga,
+    };
+  }
+  if (item.dampak_manual || item.dampak_otomatis) {
+    return { ...item, dampak: "-", dampak_manual: false, dampak_otomatis: false, sumber_manual: null };
+  }
+  return item;
 }
 
 export function terapkanKurasiDampak(cuplikan, kurasi, sekarang = Date.now()) {
   if (!cuplikan || typeof cuplikan !== "object") return cuplikan;
   const sistem = Array.isArray(cuplikan.sistem_halaman) ? cuplikan.sistem_halaman : [];
+  const otomatis = cuplikan.dampak_otomatis || null;
   return {
     ...cuplikan,
-    sistem_halaman: sistem.map((item) => gabungDampakManual(item, kurasi, sekarang)),
+    sistem_halaman: sistem.map((item) => gabungDampakManual(item, kurasi, sekarang, otomatis)),
   };
 }
 
