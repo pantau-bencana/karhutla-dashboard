@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { App } from "../App.jsx";
+import { GunungPage } from "./pages/GunungPage.jsx";
 import { SummaryPage } from "./pages/SummaryPage.jsx";
 import { V3Shell, lokasiDariHash } from "./V3Shell.jsx";
 
@@ -16,13 +17,14 @@ function useLokasi() {
 export function V3App() {
   const lokasi = useLokasi();
   const ringkas = lokasi.page === "ringkasan" && lokasi.hazard === "karhutla";
+  const halamanGunung = lokasi.hazard === "gunung-api"
+    && !["glosarium", "metode", "siklon", "irbi", "rekap"].includes(lokasi.page);
   const [wilayah, setWilayah] = useState("");
   const [jendela, setJendela] = useState("hari");
-  const [cari, setCari] = useState("");
   const [muat, setMuat] = useState(0);
 
   function onMuat() {
-    if (ringkas) {
+    if (ringkas || halamanGunung) {
       setMuat((nilai) => nilai + 1);
       return;
     }
@@ -37,11 +39,11 @@ export function V3App() {
           setWilayah={setWilayah}
           jendela={jendela}
           setJendela={setJendela}
-          cari={cari}
-          setCari={setCari}
           muat={muat}
           onMuat={onMuat}
         />
+      ) : halamanGunung ? (
+        <GunungPage muat={muat} />
       ) : (
         <App />
       )}

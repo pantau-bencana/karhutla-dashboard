@@ -1,6 +1,7 @@
 import { INDONESIA_FRAME } from "./geo.js";
 import { PROVINSI } from "./provinsi.js";
 import { REFRESH_INTERVAL_HOURS } from "./schedule.js";
+import { agensiSistem, kunciNamaSiklon } from "./siklonTampil.js";
 
 export const SIKLON_HTML_URL = "https://www.bmkg.go.id/cuaca/siklon-tropis";
 export const SIARAN_PERS_URL = "https://www.bmkg.go.id/siaran-pers";
@@ -582,6 +583,57 @@ export function jarakKeBingkaiIndonesia(lintang, bujur) {
 function dampakKosong(teks) {
   const rata = rapikan(teks);
   return !rata || /^[-–—.]+$/.test(rata);
+}
+
+function entriKurasi(kurasi) {
+  if (Array.isArray(kurasi?.entri)) return kurasi.entri;
+  if (Array.isArray(kurasi)) return kurasi;
+  return [];
+}
+
+function kurasiBerlaku(entri, sekarang) {
+  const teks = rapikan(entri?.potensi_dampak);
+  const label = rapikan(entri?.sumber?.label);
+  const url = rapikan(entri?.sumber?.url);
+  const batas = Date.parse(entri?.berlaku_hingga || "");
+  const kini = sekarang instanceof Date ? sekarang.getTime() : Number(sekarang);
+  if (!teks || !label || !url || !Number.isFinite(batas) || !Number.isFinite(kini)) return null;
+  if (kini > batas) return null;
+  return { teks, label, url, berlaku_hingga: entri.berlaku_hingga, diperbarui: entri.diperbarui || "" };
+}
+
+export function gabungDampakManual(item, kurasi, sekarang = Date.now()) {
+  if (!item || agensiSistem(item) !== "BMKG") return item;
+  const dariHalaman = !dampakKosong(item.dampak) && item.dampak_manual !== true;
+  if (dariHalaman) {
+    if (!item.dampak_manual && !item.sumber_manual) return item;
+    return { ...item, dampak_manual: false, sumber_manual: null };
+  }
+  const kunci = kunciNamaSiklon(item.nama);
+  const entri = entriKurasi(kurasi)
+    .map((calon) => (kunci && kunciNamaSiklon(calon?.sistem) === kunci ? kurasiBerlaku(calon, sekarang) : null))
+    .find(Boolean);
+  if (!entri) {
+    if (item.dampak_manual) return { ...item, dampak: "-", dampak_manual: false, sumber_manual: null };
+    return item;
+  }
+  return {
+    ...item,
+    dampak: entri.teks,
+    dampak_manual: true,
+    sumber_manual: { label: entri.label, url: entri.url },
+    dampak_diperbarui: entri.diperbarui,
+    dampak_berlaku_hingga: entri.berlaku_hingga,
+  };
+}
+
+export function terapkanKurasiDampak(cuplikan, kurasi, sekarang = Date.now()) {
+  if (!cuplikan || typeof cuplikan !== "object") return cuplikan;
+  const sistem = Array.isArray(cuplikan.sistem_halaman) ? cuplikan.sistem_halaman : [];
+  return {
+    ...cuplikan,
+    sistem_halaman: sistem.map((item) => gabungDampakManual(item, kurasi, sekarang)),
+  };
 }
 
 function wilayahPadaTeks(teks) {
