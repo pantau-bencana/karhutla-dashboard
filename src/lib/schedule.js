@@ -24,6 +24,12 @@ export const CAP_WATCH_MINUTES = 50;
 export const PRAKIRAAN_SLOT_GRACE_MS = 4 * 60 * 1000;
 export const REFRESH_CRONS = [REFRESH_CRON, REFRESH_CRON_CADANGAN];
 export const REFRESH_INTERVAL_HOURS = 3;
+// Siklon tropis BMKG. Halaman publik dapat berubah dalam satu jam.
+// Menit 23, di luar menit 0 dan di luar slot 7, 12, 17, 32, 42, serta 47.
+// GitHub dapat menunda atau menggugurkan satu slot. Jangan memindahkan cron lain.
+export const SIKLON_CRON = "23 * * * *";
+export const SIKLON_INTERVAL_HOURS = 1;
+export const SIKLON_MAX_AGE_HOURS = 3;
 export const REFRESH_MINUTE = 17;
 export const REFRESH_MINUTE_CADANGAN = 47;
 export const STALE_SNAPSHOT_HOURS = 4;

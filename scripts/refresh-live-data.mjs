@@ -13,8 +13,6 @@ import { assignKabupaten, geomFromAlerts, loadCapAlerts, writeCapKabFiles } from
 import { provinceCenters } from "../src/lib/geo.js";
 import { REFRESH_CRON, REFRESH_CRON_CADANGAN, REFRESH_INTERVAL_HOURS, nextScheduledRun } from "../src/lib/schedule.js";
 import { SMOKE_IMAGE_URL, SMOKE_URL, SOURCES } from "../src/lib/sourceCatalog.js";
-import { ambilSiklon } from "./ambil-siklon.mjs";
-import { gagalSiklonBerturut } from "../src/lib/siklonBmkg.js";
 import { kodeWilayah } from "../src/lib/floodMatrix.js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -1268,45 +1266,14 @@ async function main() {
   }
   datasets.sipongi = entriSipongi;
 
-  const siklonSource = SOURCES.find((source) => source.id === "bmkg_siklon");
-  const siklonEntry = baseEntry(siklonSource);
-  siklonEntry.license = "Sumber: BMKG.";
-  try {
-    const hasil = await jalankan("bmkg_siklon", 2 * 60 * 1000, async (deadlineAt) => {
-      lewatiBatas(deadlineAt, "bmkg_siklon");
-      return ambilSiklon();
-    });
-    const hash = sha(hasil.badan);
-    const sebelumnya = previousEntry(previous, "bmkg_siklon");
-    siklonEntry.observed_at = hasil.observedAt;
-    siklonEntry.observed_label = hasil.observedLabel;
-    siklonEntry.source_updated_at = hasil.sourceUpdatedAt;
-    siklonEntry.file = "data/live/siklon-bmkg.json";
-    siklonEntry.content_hash = hash;
-    siklonEntry.record_count = hasil.recordCount;
-    siklonEntry.status = "ok";
-    siklonEntry.error = null;
-    siklonEntry.kept_previous = false;
-    siklonEntry.gagal_berturut = 0;
-    if (sebelumnya?.content_hash === hash && existsSync(resolve(root, siklonEntry.file))) {
-      siklonEntry.fetched_at = sebelumnya.fetched_at || nowIso;
-      if (!siklonEntry.observed_at) siklonEntry.observed_at = sebelumnya.observed_at;
-    } else {
-      writeFileSync(resolve(root, siklonEntry.file), hasil.badan);
-      siklonEntry.fetched_at = nowIso;
-    }
-  } catch (error) {
-    const sebelumnya = previousEntry(previous, "bmkg_siklon");
-    Object.assign(siklonEntry, keepPrevious(siklonEntry, sebelumnya, error.message));
-    siklonEntry.gagal_berturut = gagalSiklonBerturut(sebelumnya);
-    if (siklonEntry.gagal_berturut > 1) {
-      console.log(`siklon: gagal ${siklonEntry.gagal_berturut} siklus berturut-turut. Cuplikan sebelumnya tetap dipakai.`);
-    }
+  // Siklon tropis punya jadwal sendiri di refresh-siklon.yml.
+  // Pembaruan umum tidak mengunduh halaman itu dan tidak menimpa cuplikannya.
+  if (previous.datasets?.bmkg_siklon) {
+    datasets.bmkg_siklon = previous.datasets.bmkg_siklon;
   }
-  datasets.bmkg_siklon = siklonEntry;
 
   for (const source of SOURCES) {
-    if (source.id === "prioritas_aplus") continue;
+    if (source.id === "prioritas_aplus" || source.id === "bmkg_siklon") continue;
     if (datasets[source.id]) continue;
     datasets[source.id] = tautanEntry(source);
   }

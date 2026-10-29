@@ -54,6 +54,7 @@ import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { keadaanKategori, statusRingkasan, statusRingkasanSiap } from "../src/lib/ringkasanStatus.js";
 import { dekatDaratan } from "../src/lib/dekatDaratan.js";
 import { analisisDampakIndonesia, bacaIkhtisar, bacaSiaranPers, bacaStatusHtml, gabungSiaran, gagalSiklonBerturut, potensiDekatIndonesia, siklonPerluTanda, siklonUsang, susunCuplikan as susunCuplikanSiklon, SIKLON_JEJAK } from "../src/lib/siklonBmkg.js";
+import { isiSiklonSama } from "../scripts/ambil-siklon.mjs";
 import { bandingHitungan, bandingPeringkat, barisPeriodeAktif, chipProvinsi, JUMLAH_CHIP_PROVINSI, kelasPeringkat, namaChipProvinsi, sepuluhPrioritas, susunPeringkatHotspot } from "../src/lib/peringkatHotspot.js";
 import { cariWilayahBatas, PROVINSI_TIDAK_DIKETAHUI, tampilBarisFwi, urutBarisFwi } from "../src/lib/kabProvinsi.js";
 import { kelasKepercayaan } from "../src/lib/warning.js";
@@ -71,7 +72,7 @@ import {
   susunPrioritas,
   tampilanPrioritas,
 } from "../src/lib/aplus.js";
-import { CAP_CRON, CAP_WATCH_MINUTES, PRAKIRAAN_CRON, PRAKIRAAN_SLOT_GRACE_MS, REFRESH_CRON, REFRESH_CRON_CADANGAN, nextScheduledRun, slotPrakiraanTerakhir } from "../src/lib/schedule.js";
+import { CAP_CRON, CAP_WATCH_MINUTES, PRAKIRAAN_CRON, PRAKIRAAN_SLOT_GRACE_MS, REFRESH_CRON, REFRESH_CRON_CADANGAN, SIKLON_CRON, SIKLON_MAX_AGE_HOURS, nextScheduledRun, slotPrakiraanTerakhir } from "../src/lib/schedule.js";
 import { ringkasHujanModel, susunPotensiTujuh } from "../src/lib/potensiTujuh.js";
 import {
   JARAK_ULANG_ANALISIS_MS,
@@ -1054,8 +1055,34 @@ assert.equal(sistemIkhtisar[0].nama, "Champi");
 assert.equal(sistemIkhtisar[0].tahap, "Siklon Tropis kategori 3");
 assert.match(sistemIkhtisar[0].dampak, /Kalimantan Utara/);
 assert.equal(/bibit/i.test(sistemIkhtisar[0].nama), false);
-assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /ambilSiklon/);
+assert.equal(readFileSync("scripts/refresh-live-data.mjs", "utf8").includes("ambilSiklon"), false);
+assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /jadwal sendiri/);
 assert.match(readFileSync(".github/workflows/refresh-data.yml", "utf8"), /pypdf/);
+const workflowSiklon = readFileSync(".github/workflows/refresh-siklon.yml", "utf8");
+assert.equal(workflowSiklon.includes(SIKLON_CRON), true);
+assert.equal(SIKLON_CRON, "23 * * * *");
+assert.match(workflowSiklon, /workflow_dispatch/);
+assert.match(workflowSiklon, /group: refresh-siklon/);
+assert.match(workflowSiklon, /cancel-in-progress: false/);
+assert.match(workflowSiklon, /ambil-siklon\.mjs/);
+assert.match(workflowSiklon, /pypdf/);
+const sumberSiklon = SOURCES.find((item) => item.id === "bmkg_siklon");
+assert.equal(sumberSiklon.updateType, "Berkala (tiap 1 jam)");
+assert.equal(sumberSiklon.expectedMaxAgeHours, SIKLON_MAX_AGE_HOURS);
+assert.equal(SIKLON_MAX_AGE_HOURS, 3);
+assert.equal(isiSiklonSama(
+  { status: "Ada", status_teks: "Ada Siklon", sistem_halaman: [{ nama: "91B" }], fetched_at: "2026-10-28T00:00:00.000Z", pdf_diubah: "lama", siaran_pers: { fetched_at: "a", daftar: [], status: "ok" } },
+  { status: "Ada", status_teks: "Ada Siklon", sistem_halaman: [{ nama: "91B" }], fetched_at: "2026-10-29T01:00:00.000Z", pdf_diubah: "baru", siaran_pers: { fetched_at: "b", daftar: [], status: "ok" } },
+), true);
+assert.equal(isiSiklonSama(
+  { status: "Ada", status_teks: "Ada Siklon", sistem_halaman: [{ nama: "90B" }] },
+  { status: "Ada", status_teks: "Ada Siklon", sistem_halaman: [{ nama: "91B" }] },
+), false);
+const manifesSiklon = JSON.parse(readFileSync("data/live/manifest.json", "utf8")).datasets.bmkg_siklon;
+assert.equal(manifesSiklon.update_type, "Berkala (tiap 1 jam)");
+assert.equal(manifesSiklon.frequency, "Berkala (tiap 1 jam)");
+assert.equal(manifesSiklon.expected_max_age_hours, 3);
+assert.equal(manifesSiklon.schedule_interval_hours, 1);
 assert.equal(readFileSync("data/live/siklon-bmkg.json", "utf8").includes("eyJ"), false);
 assert.equal(readFileSync("scripts/ambil-siklon.mjs", "utf8").includes("Authorization"), false);
 assert.equal(JSON.parse(readFileSync("data/live/siklon-bmkg.json", "utf8")).jejak, "belum terintegrasi");
@@ -1103,7 +1130,7 @@ assert.match(siklonSumber, /Data siklon tertunda/);
 assert.match(siklonSumber, /Waktu ambil terakhir yang berhasil/);
 assert.match(siklonSumber, /Periksa halaman Siklon Tropis BMKG/);
 assert.match(siklonSumber, /siklonUsang/);
-assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /gagal_berturut/);
+assert.match(readFileSync("scripts/ambil-siklon.mjs", "utf8"), /gagal_berturut/);
 assert.match(readFileSync("scripts/refresh-watchdog.mjs", "utf8"), /siklonPerluTanda/);
 assert.match(watchdog, /siklon_tanda/);
 assert.match(readFileSync("src/App.jsx", "utf8"), /page === "siklon"/);

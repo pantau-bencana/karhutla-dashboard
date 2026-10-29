@@ -1,0 +1,170 @@
+# Siklon tropis dan bibit siklon BMKG. Jadwal tiap jam, menit 23 UTC.
+# String cron harus sama dengan SIKLON_CRON di src/lib/schedule.js.
+# Menit 23 menghindari menit 0 dan slot workflow lain (7, 12, 17, 32, 42, 47).
+# GitHub dapat menunda atau menggugurkan satu slot. Itu bukan alasan memindahkan cron lain.
+# workflow_dispatch tetap ada. Push dari GITHUB_TOKEN tidak memicu pages.yml,
+# jadi deploy dilakukan di sini hanya bila isi siklon berubah dan ref-nya refs/heads/main.
+# Commit hanya bila isi cuplikan atau status sumber berubah. Cap waktu pengambilan
+# semata tidak menulis berkas. Bila unduhan gagal, berkas terakhir yang utuh tetap.
+# Grup concurrency terpisah supaya run ini tidak mengantri di belakang pembaruan data
+# dan tidak membatalkan workflow lain. cancel-in-progress false: run yang sedang
+# mendorong tidak dibatalkan. timeout-minutes melepas antrean bila run macet.
+# Sebelum push: git fetch, lalu git pull --rebase, diulang bila push ditolak.
+# Bila rebase bentrok, cuplikan yang sudah diambil dipasang ulang. Jangan force-push.
+name: Perbarui siklon BMKG
+
+on:
+  schedule:
+    - cron: "23 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: refresh-siklon
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Pasang pembaca PDF
+        run: python3 -m pip install --user pypdf
+
+      - name: Ambil siklon BMKG
+        run: node scripts/ambil-siklon.mjs
+
+      - name: Commit bila isi siklon berubah
+        id: commit
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          branch="${GITHUB_REF_NAME}"
+
+          commit_snapshot() {
+            git add data/live/siklon-bmkg.json data/live/manifest.json
+            if git diff --cached --quiet; then
+              return 1
+            fi
+            git commit -m "Perbarui cuplikan siklon BMKG"
+          }
+
+          if ! commit_snapshot; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Tidak ada perubahan isi siklon."
+            exit 0
+          fi
+
+          for attempt in 1 2 3 4; do
+            git fetch origin "$branch"
+            if git pull --rebase origin "$branch"; then
+              if git push origin "HEAD:${branch}"; then
+                echo "changed=true" >> "$GITHUB_OUTPUT"
+                echo "Siklon terdorong ke ${branch} (percobaan ${attempt})."
+                exit 0
+              fi
+              echo "Push ditolak (percobaan ${attempt}). Ambil ulang lalu coba lagi."
+            else
+              echo "Rebase bentrok (percobaan ${attempt}). Memasang cuplikan yang sudah diambil."
+              our=""
+              if git rev-parse --verify REBASE_HEAD >/dev/null 2>&1; then
+                our="$(git rev-parse REBASE_HEAD)"
+              fi
+              git rebase --abort || true
+              if [[ -z "${our}" ]]; then
+                our="$(git rev-parse HEAD)"
+              fi
+              git reset --hard "origin/${branch}"
+              npm ci
+              if node scripts/snapshot-rebase.mjs "${our}" HEAD; then
+                if commit_snapshot; then
+                  if git push origin "HEAD:${branch}"; then
+                    echo "changed=true" >> "$GITHUB_OUTPUT"
+                    echo "Siklon terdorong ke ${branch} setelah dipasang ulang (percobaan ${attempt})."
+                    exit 0
+                  fi
+                  echo "Push ditolak setelah pasang ulang (percobaan ${attempt})."
+                  continue
+                fi
+                echo "changed=false" >> "$GITHUB_OUTPUT"
+                echo "Tidak ada perubahan isi siklon setelah dipasang ulang."
+                exit 0
+              fi
+              echo "Pemasangan ulang gagal. Siklon diambil ulang."
+              node scripts/ambil-siklon.mjs || true
+              if ! commit_snapshot; then
+                echo "changed=false" >> "$GITHUB_OUTPUT"
+                echo "Tidak ada perubahan isi siklon setelah diambil ulang."
+                exit 0
+              fi
+            fi
+          done
+          echo "Gagal mendorong cuplikan siklon setelah 4 percobaan."
+          exit 1
+
+      - name: Setup Pages
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Build
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        env:
+          VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: |
+          set -euo pipefail
+          git fetch origin "${GITHUB_REF_NAME}"
+          tip="$(git rev-parse "origin/${GITHUB_REF_NAME}")"
+          if [ "$(git rev-parse HEAD)" != "$tip" ]; then
+            echo "HEAD bukan ujung main. Membangun ${tip}."
+            git checkout --detach "$tip"
+          fi
+          npm ci
+          npm run check && npm run build
+
+      - name: Verify Pages paths and public config
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        run: node scripts/verify-pages-build.mjs "${{ steps.pages.outputs.base_path }}"
+
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && steps.commit.outputs.changed == 'true'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && needs.refresh.outputs.changed == 'true'
+    needs: refresh
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

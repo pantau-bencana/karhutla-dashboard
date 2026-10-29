@@ -1,12 +1,12 @@
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { SOURCES } from "../src/lib/sourceCatalog.js";
-import { REFRESH_INTERVAL_HOURS } from "../src/lib/schedule.js";
-import { SIKLON_API_URL, SIKLON_HTML_URL, SIKLON_PDF_URL, SIARAN_PERS_URL, bacaSiaranPers, gabungSiaran, jumlahSistemSiklon, susunCuplikan } from "../src/lib/siklonBmkg.js";
+import { SIKLON_INTERVAL_HOURS } from "../src/lib/schedule.js";
+import { SIKLON_API_URL, SIKLON_HTML_URL, SIKLON_PDF_URL, SIARAN_PERS_URL, bacaSiaranPers, gabungSiaran, gagalSiklonBerturut, jumlahSistemSiklon, susunCuplikan } from "../src/lib/siklonBmkg.js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const berkas = resolve(root, "data/live/siklon-bmkg.json");
@@ -106,8 +106,8 @@ export async function ambilSiklon(now = new Date()) {
   return {
     badan,
     cuplikan,
-    observedAt: pdfDiubah ? new Date(pdfDiubah).toISOString() : terbit ? `${terbit}T00:00:00+07:00` : null,
-    sourceUpdatedAt: pdfDiubah ? new Date(pdfDiubah).toISOString() : null,
+    observedAt: fetchedAt,
+    sourceUpdatedAt: fetchedAt,
     observedLabel: [
       `Halaman Siklon Tropis: ${cuplikan.status_teks}`,
       namaHalaman ? `Disebut: ${namaHalaman}` : "",
@@ -120,12 +120,86 @@ export async function ambilSiklon(now = new Date()) {
   };
 }
 
-function tulisManifes(hasil) {
+export function intisariSiklon(cuplikan) {
+  if (!cuplikan || typeof cuplikan !== "object") return null;
+  const siaran = cuplikan.siaran_pers || {};
+  const ikhtisar = cuplikan.ikhtisar || {};
+  return {
+    status: cuplikan.status || "",
+    status_teks: cuplikan.status_teks || "",
+    sistem_halaman: Array.isArray(cuplikan.sistem_halaman) ? cuplikan.sistem_halaman : [],
+    ikhtisar: {
+      status: ikhtisar.status || "",
+      terbit: ikhtisar.terbit || "",
+      sistem: Array.isArray(ikhtisar.sistem) ? ikhtisar.sistem : [],
+    },
+    jejak: cuplikan.jejak || "",
+    siaran: {
+      status: siaran.status || "",
+      daftar: Array.isArray(siaran.daftar) ? siaran.daftar : [],
+      kept_previous: Boolean(siaran.kept_previous),
+    },
+  };
+}
+
+export function isiSiklonSama(lama, baru) {
+  return JSON.stringify(intisariSiklon(lama)) === JSON.stringify(intisariSiklon(baru));
+}
+
+function hashIsi(cuplikan) {
+  return createHash("sha256").update(JSON.stringify(intisariSiklon(cuplikan))).digest("hex");
+}
+
+function bacaJson(path) {
+  if (!existsSync(path)) return null;
+  try {
+    return JSON.parse(readFileSync(path, "utf8"));
+  } catch {
+    return null;
+  }
+}
+
+function cuplikanUtuh(cuplikan) {
+  if (!cuplikan || (cuplikan.status !== "Ada" && cuplikan.status !== "Tidak Ada")) return false;
+  if (!String(cuplikan.status_teks || "").trim()) return false;
+  if (cuplikan.status === "Ada" && !Array.isArray(cuplikan.sistem_halaman)) return false;
+  if (cuplikan.status === "Tidak Ada" && cuplikan.sistem_halaman?.length) return false;
+  return true;
+}
+
+function tulisTeks(path, teks) {
+  const sementara = `${path}.tmp`;
+  writeFileSync(sementara, teks);
+  renameSync(sementara, path);
+}
+
+function materiEntri(entri) {
+  return JSON.stringify({
+    status: entri?.status || "",
+    content_hash: entri?.content_hash || "",
+    record_count: entri?.record_count ?? null,
+    file: entri?.file || "",
+    kept_previous: Boolean(entri?.kept_previous),
+    mode: entri?.mode || "",
+    gagal_berturut: Number(entri?.gagal_berturut) || 0,
+    update_type: entri?.update_type || "",
+    frequency: entri?.frequency || "",
+    expected_max_age_hours: entri?.expected_max_age_hours ?? null,
+    schedule_interval_hours: entri?.schedule_interval_hours ?? null,
+    observed_at: entri?.observed_at || "",
+    observed_label: entri?.observed_label || "",
+    source_updated_at: entri?.source_updated_at || "",
+  });
+}
+
+function sumberSiklon() {
   const source = SOURCES.find((item) => item.id === "bmkg_siklon");
-  const previous = existsSync(manifes) ? JSON.parse(readFileSync(manifes, "utf8")) : { datasets: {} };
-  const hash = createHash("sha256").update(hasil.badan).digest("hex");
-  previous.datasets = previous.datasets || {};
-  previous.datasets.bmkg_siklon = {
+  if (!source) throw new Error("Katalog bmkg_siklon tidak ada.");
+  return source;
+}
+
+function dasarEntri(source) {
+  return {
     id: "bmkg_siklon",
     nama: source.nama,
     instansi: source.instansi,
@@ -139,11 +213,78 @@ function tulisManifes(hasil) {
     limitation: source.limitation,
     fungsi: source.fungsi,
     expected_max_age_hours: source.expectedMaxAgeHours,
-    schedule_interval_hours: REFRESH_INTERVAL_HOURS,
-    fetched_at: hasil.cuplikan.fetched_at,
-    observed_at: hasil.observedAt,
-    observed_label: hasil.observedLabel,
-    source_updated_at: hasil.sourceUpdatedAt,
+    schedule_interval_hours: SIKLON_INTERVAL_HOURS,
+  };
+}
+
+function simpanManifes(entri) {
+  const previous = bacaJson(manifes) || { datasets: {} };
+  previous.datasets = previous.datasets || {};
+  const lama = previous.datasets.bmkg_siklon || null;
+  if (materiEntri(lama) === materiEntri(entri)) return false;
+  previous.datasets.bmkg_siklon = entri;
+  tulisTeks(manifes, `${JSON.stringify(previous, null, 2)}\n`);
+  return true;
+}
+
+export function catatGagalSiklon(entriLama, pesan) {
+  const source = sumberSiklon();
+  const adaBerkas = Boolean(entriLama?.file && entriLama.content_hash && existsSync(resolve(root, entriLama.file)));
+  const gagal = Math.min(gagalSiklonBerturut(entriLama), 2);
+  const pesanAman = aman(pesan);
+  const entri = adaBerkas
+    ? {
+      ...dasarEntri(source),
+      fetched_at: entriLama.fetched_at,
+      observed_at: entriLama.observed_at,
+      observed_label: entriLama.observed_label,
+      source_updated_at: entriLama.source_updated_at,
+      record_count: entriLama.record_count,
+      status: "failed",
+      error: entriLama.status === "failed" && entriLama.error ? entriLama.error : pesanAman,
+      file: entriLama.file,
+      content_hash: entriLama.content_hash,
+      kept_previous: true,
+      gagal_berturut: gagal,
+      checked_at: new Date().toISOString(),
+    }
+    : {
+      ...dasarEntri(source),
+      fetched_at: null,
+      observed_at: null,
+      observed_label: "",
+      source_updated_at: null,
+      record_count: 0,
+      status: "failed",
+      error: pesanAman,
+      file: null,
+      content_hash: null,
+      kept_previous: false,
+      gagal_berturut: gagal,
+      checked_at: new Date().toISOString(),
+    };
+  return { berubah: simpanManifes(entri), isiBerubah: false, gagal: true };
+}
+
+export function terapkanHasilSiklon(hasil) {
+  const source = sumberSiklon();
+  const cuplikanLama = bacaJson(berkas);
+  const entriLama = bacaJson(manifes)?.datasets?.bmkg_siklon || null;
+  if (!cuplikanUtuh(hasil?.cuplikan) || !String(hasil?.badan || "").trim()) {
+    return catatGagalSiklon(entriLama, "Cuplikan siklon kosong atau tidak utuh.");
+  }
+  const hash = hashIsi(hasil.cuplikan);
+  const sama = Boolean(cuplikanLama) && isiSiklonSama(cuplikanLama, hasil.cuplikan);
+  if (!sama) {
+    const teks = hasil.badan.endsWith("\n") ? hasil.badan : `${hasil.badan}\n`;
+    tulisTeks(berkas, teks);
+  }
+  const entri = {
+    ...dasarEntri(source),
+    fetched_at: sama ? (entriLama?.fetched_at || cuplikanLama?.fetched_at || hasil.cuplikan.fetched_at) : hasil.cuplikan.fetched_at,
+    observed_at: sama ? (entriLama?.observed_at || hasil.observedAt) : hasil.observedAt,
+    observed_label: sama && entriLama?.observed_label ? entriLama.observed_label : hasil.observedLabel,
+    source_updated_at: sama ? (entriLama?.source_updated_at || hasil.sourceUpdatedAt) : hasil.sourceUpdatedAt,
     record_count: hasil.recordCount,
     status: "ok",
     error: null,
@@ -152,15 +293,29 @@ function tulisManifes(hasil) {
     kept_previous: false,
     gagal_berturut: 0,
   };
-  writeFileSync(manifes, `${JSON.stringify(previous, null, 2)}\n`);
+  const manifesBerubah = simpanManifes(entri);
+  return { berubah: !sama || manifesBerubah, isiBerubah: !sama, gagal: false };
 }
 
 const dipanggilLangsung = process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href;
 if (dipanggilLangsung) {
-  const hasil = await ambilSiklon();
-  writeFileSync(berkas, hasil.badan);
-  tulisManifes(hasil);
-  console.log(
-    `siklon: halaman ${hasil.cuplikan.status_teks}; ikhtisar ${hasil.cuplikan.ikhtisar.status}; api ${hasil.apiHttp}; sistem ${hasil.recordCount}`,
-  );
+  try {
+    const hasil = await ambilSiklon();
+    const simpan = terapkanHasilSiklon(hasil);
+    if (simpan.gagal) {
+      console.log("siklon: cuplikan tidak utuh. Berkas sebelumnya tidak ditimpa.");
+    } else if (simpan.berubah) {
+      console.log(
+        `siklon: berubah. halaman ${hasil.cuplikan.status_teks}; ikhtisar ${hasil.cuplikan.ikhtisar.status}; api ${hasil.apiHttp}; sistem ${hasil.recordCount}`,
+      );
+    } else {
+      console.log("siklon: isi tidak berubah. Cap waktu pengambilan diabaikan. Tidak ada commit.");
+    }
+  } catch (error) {
+    const entriLama = bacaJson(manifes)?.datasets?.bmkg_siklon || null;
+    const simpan = catatGagalSiklon(entriLama, error?.message || error);
+    console.log(
+      `siklon: gagal diambil (${aman(error?.message || error)}). Berkas sebelumnya tidak ditimpa.${simpan.berubah ? " Status manifes diperbarui." : ""}`,
+    );
+  }
 }
