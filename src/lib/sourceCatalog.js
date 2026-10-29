@@ -2,7 +2,7 @@
 // Status mengikuti yang benar-benar dapat diambil, bukan rencana.
 
 import { CATATAN_PENDUDUK, CATATAN_RUMAH, POTENSI_PENDUDUK, POTENSI_RUMAH } from "./pendudukKab.js";
-import { SIKLON_MAX_AGE_HOURS } from "./schedule.js";
+import { GUNUNG_MAX_AGE_HOURS, SIKLON_MAX_AGE_HOURS } from "./schedule.js";
 
 export const SMOKE_URL = "https://www.bmkg.go.id/cuaca/satelit/citra-sebaran-asap";
 export const SMOKE_IMAGE_URL = "https://inderaja.bmkg.go.id/Trajektori/Asap.png";
@@ -350,6 +350,28 @@ export const SOURCES = [
     file: "data/live/siklon-bmkg.json",
     limitation:
       "Bukan peringatan resmi untuk Indonesia. Otoritas resmi di Indonesia tetap BMKG. Yang diambil hanya teks ABPW dan ABIO. Keduanya menjawab HTTP 200 pada pemeriksaan 29 Oktober 2026. ABPW mencakup Pasifik barat dan Pasifik selatan. ABIO mencakup Samudra Hindia utara dan selatan, termasuk perairan di selatan Indonesia. abshweb.txt dan shpsweb.txt mengembalikan HTTP 403 pada pemeriksaan yang sama, jadi tidak dipakai. Posisi dibaca dari kalimat lokasi pada advisory, bukan dari KMZ. Wilayah potensi terdampak di Indonesia tidak ada pada teks itu, jadi ditulis -. Bila salah satu berkas gagal, seluruh cuplikan JTWC sebelumnya tetap. Kegagalan JTWC tidak menghapus informasi BMKG atau JMA. Sistem yang namanya sama dengan informasi BMKG tetap ditampilkan sebagai baris BMKG; baris JTWC terpisah dan menyebut sumbernya.",
+  },
+  {
+    id: "pvmbg_gunung",
+    nama: "Tingkat aktivitas gunung api",
+    instansi: "PVMBG / MAGMA Indonesia",
+    fungsi: "Tingkat aktivitas gunung api dan berita letusan atau VONA terbaru. Bukan peringatan karhutla.",
+    officialUrl: "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas",
+    officialLabel: "Tingkat Aktivitas MAGMA",
+    extraUrls: [
+      ["MAGMA Indonesia", "https://magma.esdm.go.id/"],
+      ["PVMBG", "https://vsi.esdm.go.id/"],
+      ["Informasi Letusan", "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan"],
+      ["VONA", "https://magma.esdm.go.id/vona"],
+    ],
+    access: "Halaman publik",
+    needsKey: false,
+    kind: "dinamis",
+    updateType: "Berkala (tiap 1 jam)",
+    expectedMaxAgeHours: GUNUNG_MAX_AGE_HOURS,
+    file: "data/live/gunung-api.json",
+    limitation:
+      "Sumber: PVMBG. Diambil dari halaman publik yang ditautkan PVMBG: Tingkat Aktivitas, Informasi Letusan, dan VONA. Bukan API JSON. /api, /docs, dan /rss pada magma.esdm.go.id mengembalikan HTTP 404 pada pemeriksaan 29 Oktober 2026. Koordinat tidak ada pada halaman Tingkat Aktivitas, jadi peta titik tidak digambar. Waktu pembaruan per gunung tidak tertulis di tabel itu. Berita letusan dan VONA hanya yang berumur sampai 72 jam pada halaman pertama. Tautan laporan bertanda tangan tidak disimpan. Bila satu halaman gagal, bagian itu memakai cuplikan sebelumnya dan bagian lain tetap diperbarui.",
   },
   {
     id: "chirps",

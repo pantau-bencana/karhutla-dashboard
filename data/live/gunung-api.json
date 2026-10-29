@@ -1,0 +1,914 @@
+{
+  "fetched_at": "2026-10-29T02:26:17.027Z",
+  "sumber": "PVMBG",
+  "url_tingkat": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas",
+  "url_letusan": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan",
+  "url_vona": "https://magma.esdm.go.id/vona",
+  "koordinat": "Halaman Tingkat Aktivitas tidak memuat koordinat.",
+  "status_tingkat": "ok",
+  "galat_tingkat": "",
+  "kept_tingkat": false,
+  "status_letusan": "ok",
+  "galat_letusan": "",
+  "kept_letusan": false,
+  "status_vona": "ok",
+  "galat_vona": "",
+  "kept_vona": false,
+  "gunung": [
+    {
+      "nama": "Anak Krakatau",
+      "lokasi": "Lampung",
+      "tingkat": "Siaga",
+      "level": 3,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Merapi",
+      "lokasi": "Daerah Istimewa Yogyakarta dan Jawa Tengah",
+      "tingkat": "Siaga",
+      "level": 3,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Semeru",
+      "lokasi": "Jawa Timur",
+      "tingkat": "Siaga",
+      "level": 3,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Anak Ranakah",
+      "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Awu",
+      "lokasi": "Sulawesi Utara",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Banda Api",
+      "lokasi": "Maluku",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Bromo",
+      "lokasi": "Jawa Timur",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Bur Ni Telong",
+      "lokasi": "Aceh",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Dempo",
+      "lokasi": "Sumatera Selatan",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Dukono",
+      "lokasi": "Maluku Utara",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Gamalama",
+      "lokasi": "Maluku Utara",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Ibu",
+      "lokasi": "Maluku Utara",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Ili Lewotolok",
+      "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Iya",
+      "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Karangetang",
+      "lokasi": "Sulawesi Utara",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Kerinci",
+      "lokasi": "Jambi, Sumatera Barat",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Lewotobi Laki-laki",
+      "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Lokon",
+      "lokasi": "Sulawesi Utara",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Marapi",
+      "lokasi": "Sumatera Barat",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Raung",
+      "lokasi": "Jawa Timur",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Rinjani",
+      "lokasi": "Nusa Tenggara Barat",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Sangeangapi",
+      "lokasi": "Nusa Tenggara Barat",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Sinabung",
+      "lokasi": "Sumatera Utara",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Slamet",
+      "lokasi": "Jawa Tengah",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Soputan",
+      "lokasi": "Sulawesi Utara",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Sorikmarapi",
+      "lokasi": "Sumatera Utara",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Tambora",
+      "lokasi": "Nusa Tenggara Barat",
+      "tingkat": "Waspada",
+      "level": 2,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Agung",
+      "lokasi": "Bali",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Ambang",
+      "lokasi": "Sulawesi Utara",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Arjuno Welirang",
+      "lokasi": "Jawa Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Batur",
+      "lokasi": "Bali",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Batutara",
+      "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Ciremai",
+      "lokasi": "Jawa Barat",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Colo",
+      "lokasi": "Sulawesi Tengah",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Dieng",
+      "lokasi": "Jawa Tengah",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Ebulobo",
+      "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Egon",
+      "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Galunggung",
+      "lokasi": "Jawa Barat",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Gamkonora",
+      "lokasi": "Maluku Utara",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Gede",
+      "lokasi": "Jawa Barat",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Guntur",
+      "lokasi": "Jawa Barat",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Hobal",
+      "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Ijen",
+      "lokasi": "Jawa Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Ile Werung",
+      "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Ili Boleng",
+      "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Inielika",
+      "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Inierie",
+      "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Kaba",
+      "lokasi": "Bengkulu",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Kelimutu",
+      "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Kelud",
+      "lokasi": "Jawa Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Kie Besi",
+      "lokasi": "Maluku Utara",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Lamongan",
+      "lokasi": "Jawa Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Lereboleng",
+      "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Lewotobi Perempuan",
+      "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Mahawu",
+      "lokasi": "Sulawesi Utara",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Papandayan",
+      "lokasi": "Jawa Barat",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Peut Sague",
+      "lokasi": "Daerah Istimewa Aceh",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Rokatenda",
+      "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Ruang",
+      "lokasi": "Sulawesi Utara",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Salak",
+      "lokasi": "Jawa Barat",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Seulawah Agam",
+      "lokasi": "Daerah Istimewa Aceh",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Sirung",
+      "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Sumbing",
+      "lokasi": "Jawa Tengah",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Sundoro",
+      "lokasi": "Jawa Tengah",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Talang",
+      "lokasi": "Sumatera Barat",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Tandikat",
+      "lokasi": "Sumatera Barat",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Tangkoko",
+      "lokasi": "Sulawesi Utara",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Tangkuban Parahu",
+      "lokasi": "Jawa Barat",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Wurlali",
+      "lokasi": "Maluku",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    }
+  ],
+  "letusan": [
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-10-29T11:08:00+09:00",
+      "waktu_teks": "11:08 WIT 2026-10-29",
+      "teks": "Terjadi erupsi G. Ibu pada hari Kamis, 29 Oktober 2026, pukul 11:08 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 42 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/cd13dab5-d33e-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-10-29T10:28:00+09:00",
+      "waktu_teks": "10:28 WIT 2026-10-29",
+      "teks": "Terjadi erupsi G. Ibu pada hari Kamis, 29 Oktober 2026, pukul 10:28 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 57 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/5d708711-d337-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-10-29T06:44:00+09:00",
+      "waktu_teks": "06:44 WIT 2026-10-29",
+      "teks": "Terjadi erupsi G. Ibu pada hari Kamis, 29 Oktober 2026, pukul 06:44 WIT dengan tinggi kolom abu teramati ± 500 m di atas puncak (± 1825 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat laut. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 45 detik.",
+      "tinggi_kolom_m": 500,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/5cfd08e3-d318-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Semeru",
+      "waktu": "2026-10-29T06:00:00+07:00",
+      "waktu_teks": "06:00 WIB 2026-10-29",
+      "teks": "Terjadi erupsi G. Semeru pada hari Kamis, 29 Oktober 2026, pukul 06:00 WIB dengan tinggi kolom abu teramati ± 300 m di atas puncak (± 3976 m di atas permukaan laut). Kolom abu teramati berwarna putih hingga kelabu dengan intensitas sedang ke arah barat. Saat laporan ini dibuat, erupsi masih berlangsung.",
+      "tinggi_kolom_m": 300,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/5eaccf46-d322-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Semeru",
+      "waktu": "2026-10-29T05:10:00+07:00",
+      "waktu_teks": "05:10 WIB 2026-10-29",
+      "teks": "Terjadi erupsi G. Semeru pada hari Kamis, 29 Oktober 2026, pukul 05:10 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/63a69cab-d31b-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-10-29T02:10:00+09:00",
+      "waktu_teks": "02:10 WIT 2026-10-29",
+      "teks": "Terjadi erupsi G. Ibu pada hari Kamis, 29 Oktober 2026, pukul 02:10 WIT dengan tinggi kolom abu teramati ± 300 m di atas puncak (± 1625 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat. Erupsi ini terekam di seismograf dengan amplitudo maksimum 19 mm dan durasi 43 detik.",
+      "tinggi_kolom_m": 300,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/a7b6539e-d2f1-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Semeru",
+      "waktu": "2026-10-29T00:14:00+07:00",
+      "waktu_teks": "00:14 WIB 2026-10-29",
+      "teks": "Terjadi erupsi G. Semeru pada hari Kamis, 29 Oktober 2026, pukul 00:14 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/419b44c4-d2f2-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Anak Krakatau",
+      "waktu": "2026-10-28T23:29:00+07:00",
+      "waktu_teks": "23:29 WIB 2026-10-28",
+      "teks": "Terjadi erupsi G. Anak Krakatau pada hari Rabu, 28 Oktober 2026, pukul 23:29 WIB. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 48 mm dan durasi 573 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/3ba78648-d2ed-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Semeru",
+      "waktu": "2026-10-28T23:03:00+07:00",
+      "waktu_teks": "23:03 WIB 2026-10-28",
+      "teks": "Terjadi erupsi G. Semeru pada hari Rabu, 28 Oktober 2026, pukul 23:03 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/0acc0eb1-d2e8-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-10-28T23:01:00+09:00",
+      "waktu_teks": "23:01 WIT 2026-10-28",
+      "teks": "Terjadi erupsi G. Ibu pada hari Rabu, 28 Oktober 2026, pukul 23:01 WIT dengan tinggi kolom abu teramati ± 400 m di atas puncak (± 1725 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 41 detik.",
+      "tinggi_kolom_m": 400,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/4c521b66-d2d7-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Anak Krakatau",
+      "waktu": "2026-10-28T22:42:00+07:00",
+      "waktu_teks": "22:42 WIB 2026-10-28",
+      "teks": "Terjadi erupsi G. Anak Krakatau pada hari Rabu, 28 Oktober 2026, pukul 22:42 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/d8a62fa9-d2e6-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Anak Krakatau",
+      "waktu": "2026-10-28T22:37:00+07:00",
+      "waktu_teks": "22:37 WIB 2026-10-28",
+      "teks": "Terjadi erupsi G. Anak Krakatau pada hari Rabu, 28 Oktober 2026, pukul 22:37 WIB. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 48 mm dan durasi 233 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/b6178528-d2e6-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-10-28T22:31:00+09:00",
+      "waktu_teks": "22:31 WIT 2026-10-28",
+      "teks": "Terjadi erupsi G. Ibu pada hari Rabu, 28 Oktober 2026, pukul 22:31 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 37 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/f376b8d1-d2d2-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Karangetang",
+      "waktu": "2026-10-28T21:57:00+08:00",
+      "waktu_teks": "21:57 WITA 2026-10-28",
+      "teks": "Terjadi erupsi G. Karangetang pada hari Rabu, 28 Oktober 2026, pukul 21:57 WITA. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/cd5a65eb-d2dc-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-10-28T21:39:00+09:00",
+      "waktu_teks": "21:39 WIT 2026-10-28",
+      "teks": "Terjadi erupsi G. Ibu pada hari Rabu, 28 Oktober 2026, pukul 21:39 WIT dengan tinggi kolom abu teramati ± 400 m di atas puncak (± 1725 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 43 detik.",
+      "tinggi_kolom_m": 400,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/1674062a-d2cc-11f1-a61d-005056b54356/show"
+    }
+  ],
+  "vona": [
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-10-28T23:00:00Z",
+      "waktu_teks": "20261028/2300Z",
+      "teks": "Eruption with volcanic ash cloud at 2300 UTC (0600 local). Best estimate of ash-cloud top is around 12723 FT (3976 M) above sea level or 960 FT (300 M) above summit. May be higher than what can be observed clearly. Source of height data: ground observer.",
+      "tinggi_kolom_m": 3976,
+      "url": "https://magma.esdm.go.id/vona/04503eb8-57de-4803-91aa-b1817e7ce646"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-10-28T22:10:00Z",
+      "waktu_teks": "20261028/2210Z",
+      "teks": "Eruption at 2210 UTC (0510 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/d3467476-3829-4666-8a6d-1118c1f363da"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-10-28T17:14:00Z",
+      "waktu_teks": "20261028/1714Z",
+      "teks": "Eruption at 1714 UTC (0014 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/fd66c634-ca7c-4ace-89a9-12e7e800cf53"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-10-28T16:03:00Z",
+      "waktu_teks": "20261028/1603Z",
+      "teks": "Eruption at 1603 UTC (2303 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/c544c62e-f2d0-42d6-8392-23b2e61b0cb3"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Anak Krakatau",
+      "waktu": "2026-10-28T15:42:00Z",
+      "waktu_teks": "20261028/1542Z",
+      "teks": "Eruption at 1542 UTC (2242 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/fe2d5aff-ae70-4691-8ed4-468e0dc01c27"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Ibu",
+      "waktu": "2026-10-28T14:01:00Z",
+      "waktu_teks": "20261028/1401Z",
+      "teks": "Eruption with volcanic ash cloud at 1401 UTC (2301 local). Best estimate of ash-cloud top is around 5520 FT (1725 M) above sea level or 1280 FT (400 M) above summit. May be higher than what can be observed clearly. Source of height data: ground observer.",
+      "tinggi_kolom_m": 1725,
+      "url": "https://magma.esdm.go.id/vona/581cda12-0c78-4af6-af97-4906d86987e8"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-10-28T11:51:00Z",
+      "waktu_teks": "20261028/1151Z",
+      "teks": "Eruption at 1151 UTC (1851 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/d5069ea8-4dec-4837-aa69-aa6db25957a5"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-10-28T03:32:00Z",
+      "waktu_teks": "20261028/0332Z",
+      "teks": "Eruption at 0332 UTC (1032 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/06d913dc-daf8-4da0-9e9a-5a4355f232d6"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-10-27T22:48:00Z",
+      "waktu_teks": "20261027/2248Z",
+      "teks": "Eruption at 2248 UTC (0548 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/35c81f25-8bbe-4bfd-820e-216d489532f3"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-10-27T22:22:00Z",
+      "waktu_teks": "20261027/2222Z",
+      "teks": "Eruption at 2222 UTC (0522 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/c7341735-c985-47ef-9401-595b406d383e"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-10-27T16:54:00Z",
+      "waktu_teks": "20261027/1654Z",
+      "teks": "Eruption at 1654 UTC (2354 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/a557761c-4b7f-43f2-80cd-5308bc1410ca"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-10-27T13:04:00Z",
+      "waktu_teks": "20261027/1304Z",
+      "teks": "Eruption at 1304 UTC (2004 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/857e74ae-d8bc-410d-bb17-576f5cc2ee70"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-10-27T13:01:00Z",
+      "waktu_teks": "20261027/1301Z",
+      "teks": "Eruption at 1301 UTC (2001 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/71dd762f-7f0e-4291-9b1c-04a5f9a285f7"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Dukono",
+      "waktu": "2026-10-27T12:26:00Z",
+      "waktu_teks": "20261027/1226Z",
+      "teks": "Eruption at 1226 UTC (2126 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/75029753-e238-4227-abee-6df9041ae560"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-10-27T09:58:00Z",
+      "waktu_teks": "20261027/0958Z",
+      "teks": "Eruption at 0958 UTC (1658 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/f0202e49-e8e5-45c5-bc71-dbb64a03177a"
+    }
+  ]
+}

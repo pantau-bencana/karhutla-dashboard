@@ -15,6 +15,7 @@ import {
 } from "../lib/laporanHarian.js";
 import { KELAS_BELUM, POTENSI_JENIS, susunPotensiTujuh } from "../lib/potensiTujuh.js";
 import { SiklonRingkas } from "./SiklonRingkas.jsx";
+import { RingkasGunung, useCuplikanGunung } from "./VolcanoPage.jsx";
 
 const KELAS_URUT = ["Sangat tinggi", "Tinggi", "Sedang", "Rendah", KELAS_BELUM];
 const RINGKASAN_BANJIR = "data/live/banjir-ringkasan.json";
@@ -169,18 +170,24 @@ export function SummaryPage({
       </section>
       <BagianBanjir province={province} />
       <SiklonRingkas manifest={manifest} />
-      <section className="card" aria-label="Gunung Api">
-        <h2>Gunung Api</h2>
-        <p>
-          Belum terhubung / menunggu data. Ringkasan ini tidak memuat angka tingkat aktivitas, prakiraan, atau wilayah terdampak.
-          {" "}
-          <a href="#/gunung-api">Halaman Gunung Api</a>.
-        </p>
-        {import.meta.env && import.meta.env.VITE_EDITION === "v2" ? (
-          <p className="v2-more"><a href="#/gunung-api">Lihat selengkapnya</a></p>
-        ) : null}
-      </section>
+      <BagianGunung />
     </main>
+  );
+}
+
+function BagianGunung() {
+  const { data, galat } = useCuplikanGunung();
+  return (
+    <section className="card" aria-label="Gunung Api">
+      <h2>Gunung Api</h2>
+      <RingkasGunung data={data} galat={galat} />
+      <p>
+        <a href="#/gunung-api">Halaman Gunung Api</a>.
+      </p>
+      {import.meta.env && import.meta.env.VITE_EDITION === "v2" ? (
+        <p className="v2-more"><a href="#/gunung-api">Lihat selengkapnya</a></p>
+      ) : null}
+    </section>
   );
 }
 

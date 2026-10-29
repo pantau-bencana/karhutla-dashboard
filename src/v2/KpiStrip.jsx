@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { FirmsAck } from "../components/Atribusi.jsx";
 import { useCuplikanSiklon } from "../components/SiklonRingkas.jsx";
+import { useCuplikanGunung } from "../components/VolcanoPage.jsx";
+import { ringkasTingkat } from "../lib/gunungApi.js";
 import { formatAngka, formatWib } from "../lib/format.js";
 import { CATATAN_PENDUDUK, CATATAN_RUMAH, KPI_PENDUDUK, KPI_RUMAH } from "../lib/pendudukKab.js";
 
@@ -39,6 +41,7 @@ export function KpiStrip({ location }) {
   const [banjirGalat, setBanjirGalat] = useState("");
   const [manifest, setManifest] = useState(null);
   const { data: siklon, galat: siklonGalat } = useCuplikanSiklon();
+  const { data: gunung, galat: gunungGalat } = useCuplikanGunung();
 
   const ringkasKarhutla = page === "ringkasan" && hazard === "karhutla";
   const tampilBanjir = hazard === "banjir" || ringkasKarhutla;
@@ -156,12 +159,19 @@ export function KpiStrip({ location }) {
   }
 
   if (tampilGunung) {
+    const daftar = Array.isArray(gunung?.gunung) ? gunung.gunung : [];
+    const { hitung, puncak, tingkatTertinggi } = ringkasTingkat(daftar);
+    const nama = puncak.map((item) => item.nama).join(", ");
     kartu.push(
       <Kartu
         key="gunung"
         label="Gunung api"
-        value="Belum terhubung"
-        note="Menunggu data resmi. Tidak ada angka tingkat aktivitas, penduduk terpapar, atau luas kawasan pada halaman ini."
+        value={gunungGalat && !daftar.length ? "Tidak termuat" : (daftar.length ? (tingkatTertinggi || "Normal") : "Memuat…")}
+        note={gunungGalat && !daftar.length
+          ? `${gunungGalat} Tingkat aktivitas tidak diisi.`
+          : daftar.length
+            ? `${hitung.Awas} Awas, ${hitung.Siaga} Siaga, ${hitung.Waspada} Waspada, ${hitung.Normal} Normal.${nama ? ` Tertinggi: ${nama}.` : ""} Sumber: PVMBG. Diambil ${formatWib(gunung?.fetched_at)}.`
+            : "Cuplikan tingkat aktivitas belum ada."}
         href="#/gunung-api"
       />,
     );

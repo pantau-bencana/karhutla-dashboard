@@ -75,7 +75,8 @@ import {
   susunPrioritas,
   tampilanPrioritas,
 } from "../src/lib/aplus.js";
-import { CAP_CRON, CAP_WATCH_MINUTES, PRAKIRAAN_CRON, PRAKIRAAN_SLOT_GRACE_MS, REFRESH_CRON, REFRESH_CRON_CADANGAN, SIKLON_CRON, SIKLON_MAX_AGE_HOURS, nextScheduledRun, slotPrakiraanTerakhir } from "../src/lib/schedule.js";
+import { CAP_CRON, CAP_WATCH_MINUTES, GUNUNG_CRON, PRAKIRAAN_CRON, PRAKIRAAN_SLOT_GRACE_MS, REFRESH_CRON, REFRESH_CRON_CADANGAN, SIKLON_CRON, SIKLON_MAX_AGE_HOURS, nextScheduledRun, slotPrakiraanTerakhir } from "../src/lib/schedule.js";
+import { bacaInformasiLetusan, bacaTingkatAktivitas, bacaVona, dalamJam, ringkasTingkat } from "../src/lib/gunungApi.js";
 import { ringkasHujanModel, susunPotensiTujuh } from "../src/lib/potensiTujuh.js";
 import {
   JARAK_ULANG_ANALISIS_MS,
@@ -942,6 +943,27 @@ assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<h2>Banjir
 assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /<h2>Gunung Api<\/h2>/);
 assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /href="#\/gunung-api"/);
 assert.match(readFileSync("src/v2/KpiStrip.jsx", "utf8"), /ringkasKarhutla \|\| \(hazard === "gunung-api"/);
+assert.match(readFileSync("src/components/VolcanoPage.jsx", "utf8"), /Sumber: PVMBG/);
+assert.equal(readFileSync(".github/workflows/refresh-gunung.yml", "utf8").includes(GUNUNG_CRON), true);
+assert.equal(GUNUNG_CRON, "28 * * * *");
+const tingkatHtml = `<table><tr><td>Level IV (Awas)</td><td>0</td><td>Tidak ada gunung api Level IV (Awas)</td></tr><tr><td>Level III (Siaga)</td><td>1</td></tr><tr><td>Merapi - Daerah Istimewa Yogyakarta Lihat laporan</td></tr><tr><td>Level I (Normal)</td><td>1</td></tr><tr><td>Agung - Bali Lihat laporan</td></tr></table>`;
+const tingkat = bacaTingkatAktivitas(tingkatHtml);
+assert.equal(tingkat.map((item) => `${item.level}:${item.nama}`).join(","), "3:Merapi,1:Agung");
+assert.equal(tingkat[0].lintang, null);
+const letusanHtml = `<div class="timeline-item timeline-day"><p class="timeline-date">Hari Ini, Kamis, 29 Oktober 2026</p></div><div class="timeline-item"><div class="timeline-time"><small>10:28 WIT </small></div><p class="timeline-title"><a href="#">Ibu</a></p><p class="timeline-text">tinggi kolom abu teramati ± 500 m di atas puncak.</p><a href="https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/abc/show">Details</a></div>`;
+const letusan = bacaInformasiLetusan(letusanHtml);
+assert.equal(letusan[0].gunung, "Ibu");
+assert.equal(letusan[0].tinggi_kolom_m, 500);
+assert.equal(letusan[0].waktu, "2026-10-29T10:28:00+09:00");
+assert.equal(dalamJam(letusan[0].waktu, new Date("2026-10-29T02:00:00Z"), 72), true);
+assert.equal(dalamJam(letusan[0].waktu, new Date("2026-11-02T00:00:00Z"), 72), false);
+const vonaHtml = `<div class="timeline-item"><p class="timeline-title"><a href="https://magma.esdm.go.id/vona?code=SMR">Semeru - 20261028/2300Z</a></p><p class="timeline-text">ash-cloud top is around 12723 FT (3976 M) above sea level.</p><a href="https://magma.esdm.go.id/vona/04503eb8-57de-4803-91aa-b1817e7ce646">View</a></div>`;
+const vona = bacaVona(vonaHtml);
+assert.equal(vona[0].gunung, "Semeru");
+assert.equal(vona[0].tinggi_kolom_m, 3976);
+assert.equal(vona[0].waktu, "2026-10-28T23:00:00Z");
+assert.equal(ringkasTingkat(tingkat).hitung.Siaga, 1);
+assert.equal(ringkasTingkat(tingkat).puncak[0].nama, "Merapi");
 assert.match(readFileSync("src/components/SummaryPage.jsx", "utf8"), /SiklonRingkas/);
 const siklonSumber = readFileSync("src/components/SiklonRingkas.jsx", "utf8");
 const siklonLib = readFileSync("src/lib/siklonBmkg.js", "utf8");
