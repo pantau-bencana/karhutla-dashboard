@@ -119,17 +119,123 @@ export function susunButir({
   return susun(butir);
 }
 
-export function batangTanggal(baris) {
+function hitungTanggal(baris) {
   const peta = new Map();
   for (const titik of baris || []) {
     const hari = String(titik?.tanggal || "").slice(0, 10);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(hari)) continue;
     peta.set(hari, (peta.get(hari) || 0) + 1);
   }
-  return [...peta.entries()]
+  return peta;
+}
+
+function geserHari(iso, hari) {
+  const [tahun, bulan, tanggal] = iso.split("-").map(Number);
+  const waktu = new Date(Date.UTC(tahun, bulan - 1, tanggal));
+  waktu.setUTCDate(waktu.getUTCDate() + hari);
+  return waktu.toISOString().slice(0, 10);
+}
+
+export function batangTanggal(baris) {
+  return [...hitungTanggal(baris).entries()]
     .sort((kiri, kanan) => kiri[0].localeCompare(kanan[0]))
     .slice(-7)
     .map(([hari, jumlah]) => ({ hari, jumlah }));
+}
+
+export function trenTujuhHari(baris) {
+  const peta = hitungTanggal(baris);
+  const tanggal = [...peta.keys()].sort();
+  if (!tanggal.length) {
+    return {
+      hari: [],
+      lengkap: false,
+      catatan: "Tidak ada tanggal pada cuplikan. Hari kosong tidak diisi nol.",
+    };
+  }
+  const akhir = tanggal.at(-1);
+  const awalData = tanggal[0];
+  const awalJendela = geserHari(akhir, -6);
+  const awal = awalData > awalJendela ? awalData : awalJendela;
+  const hari = [];
+  for (let iso = awal; iso <= akhir; iso = geserHari(iso, 1)) {
+    if (peta.has(iso)) hari.push({ hari: iso, jumlah: peta.get(iso), ada: true });
+    else hari.push({ hari: iso, jumlah: null, ada: false });
+  }
+  const lengkap = awal === awalJendela && hari.length === 7;
+  const catatan = lengkap
+    ? "Tujuh hari hingga hari terakhir cuplikan. Hari tanpa baris ditandai tidak ada, bukan nol."
+    : `Cuplikan memuat ${tanggal.length} hari, belum 7 hari. Yang tampil hanya rentang tanggal yang ada. Hari tanpa baris di antaranya ditandai tidak ada, bukan nol.`;
+  return { hari, lengkap, catatan };
+}
+
+const BULAN_LAPORAN = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+function angkaId(nilai) {
+  return new Intl.NumberFormat("id-ID").format(Number(nilai) || 0);
+}
+
+function tanggalId(iso) {
+  const [tahun, bulan, tanggal] = String(iso || "").split("-");
+  const nama = BULAN_LAPORAN[Number(bulan) - 1];
+  if (!nama || !tahun) return iso;
+  return `${Number(tanggal)} ${nama} ${tahun}`;
+}
+
+export function kalimatLaporanHariIni({
+  adaHotspot = false,
+  jumlahHotspot = 0,
+  hitungTanggalHotspot = new Map(),
+  jendelaLabel = "jendela ini",
+  wilayah = "",
+  banjirSiap = false,
+  banjirAwas = 0,
+  banjirSiaga = 0,
+  gunungSiap = false,
+  gunungAwas = [],
+  gunungSiaga = [],
+  siklonSiap = false,
+  sistem = [],
+  waktuLabel = "",
+} = {}) {
+  const kalimat = [];
+  const tempat = wilayah ? ` di ${wilayah}` : "";
+  if (adaHotspot) {
+    let kalimatHotspot = `Pada ${jendelaLabel}${tempat} tercatat ${angkaId(jumlahHotspot)} deteksi satelit, bukan kebakaran terkonfirmasi.`;
+    const tanggal = [...hitungTanggalHotspot.keys()].sort();
+    const kini = tanggal.at(-1);
+    const kemarin = kini ? geserHari(kini, -1) : "";
+    if (kini && hitungTanggalHotspot.has(kemarin)) {
+      const hariIni = hitungTanggalHotspot.get(kini);
+      const hariLalu = hitungTanggalHotspot.get(kemarin);
+      const selisih = hariIni - hariLalu;
+      const arah = selisih > 0 ? "naik" : selisih < 0 ? "turun" : "tetap";
+      const beda = selisih === 0 ? "" : ` ${angkaId(Math.abs(selisih))}`;
+      kalimatHotspot += ` Terhadap ${tanggalId(kemarin)} (${angkaId(hariLalu)} deteksi), ${tanggalId(kini)} (${angkaId(hariIni)} deteksi) ${arah}${beda}.`;
+    }
+    kalimat.push(kalimatHotspot);
+  }
+  if (banjirSiap) {
+    const cakupan = wilayah ? ` untuk ${wilayah}` : "";
+    kalimat.push(`Analisis dasbor${cakupan}, bukan status resmi: ${angkaId(banjirAwas)} kabupaten/kota berstatus Awas dan ${angkaId(banjirSiaga)} Siaga.`);
+  }
+  if (gunungSiap) {
+    const sebut = (daftar) => (daftar.length ? ` (${daftar.map((item) => item.nama).join(", ")})` : "");
+    const cakupan = wilayah ? ` untuk ${wilayah}` : "";
+    kalimat.push(`Sumber PVMBG${cakupan}: ${angkaId(gunungAwas.length)} gunung Awas${sebut(gunungAwas)} dan ${angkaId(gunungSiaga.length)} Siaga${sebut(gunungSiaga)}.`);
+  }
+  if (siklonSiap && (sistem.length || !wilayah)) {
+    if (!sistem.length) {
+      kalimat.push("Cuplikan BMKG tidak memuat sistem siklon.");
+    } else {
+      const bagian = sistem.map((item) => (
+        adaTeksDampak(item.dampak) ? `${item.nama} (potensi dampak: ${String(item.dampak).replace(/\s+/g, " ").trim()})` : item.nama
+      ));
+      kalimat.push(`BMKG mencatat ${bagian.join("; ")}.`);
+    }
+  }
+  if (waktuLabel) kalimat.push(`Waktu pembaruan data ${waktuLabel}.`);
+  return kalimat;
 }
 
 const SUMBER_TETAP = [

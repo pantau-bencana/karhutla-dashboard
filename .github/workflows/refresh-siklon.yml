@@ -63,6 +63,7 @@ jobs:
           branch="${GITHUB_REF_NAME}"
 
           commit_snapshot() {
+            # public/data/siklon-dampak-manual.json isian kurasi. Jangan ditimpa atau di-git-add.
             git add data/live/siklon-bmkg.json data/live/manifest.json
             if git diff --cached --quiet; then
               return 1

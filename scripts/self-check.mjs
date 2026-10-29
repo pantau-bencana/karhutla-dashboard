@@ -53,8 +53,8 @@ import { buildComparisonAttention, normalizePlaceName, placeFwiTable, PROTOTYPE_
 import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { keadaanKategori, statusRingkasan, statusRingkasanSiap } from "../src/lib/ringkasanStatus.js";
 import { dekatDaratan } from "../src/lib/dekatDaratan.js";
-import { analisisDampakIndonesia, bacaIkhtisar, bacaSiaranPers, bacaStatusHtml, gabungSiaran, gagalSiklonBerturut, potensiDekatIndonesia, siklonPerluTanda, siklonUsang, susunCuplikan as susunCuplikanSiklon, SIKLON_JEJAK } from "../src/lib/siklonBmkg.js";
-import { batangTanggal as batangTanggalV3, susunButir as susunButirV3, susunStatusSumber } from "../src/v3/susunRingkasan.js";
+import { analisisDampakIndonesia, bacaIkhtisar, bacaSiaranPers, bacaStatusHtml, gabungSiaran, gagalSiklonBerturut, potensiDekatIndonesia, siklonPerluTanda, siklonUsang, susunCuplikan as susunCuplikanSiklon, terapkanKurasiDampak, SIKLON_JEJAK } from "../src/lib/siklonBmkg.js";
+import { batangTanggal as batangTanggalV3, kalimatLaporanHariIni, susunButir as susunButirV3, susunStatusSumber, trenTujuhHari } from "../src/v3/susunRingkasan.js";
 import { isiSiklonSama, pertahankanPemantau } from "../scripts/ambil-siklon.mjs";
 import { sistemDariPrakiraanJma } from "../src/lib/siklonJma.js";
 import { bacaTeksJtwc } from "../src/lib/siklonJtwc.js";
@@ -457,6 +457,50 @@ assert.deepEqual(batangTanggalV3([{ tanggal: "2026-10-27" }, { tanggal: "2026-10
 ]);
 assert.equal(susunStatusSumber({ hotspot: { status: "ok" } }).find((item) => item.id === "hotspot").siap, true);
 assert.equal(susunStatusSumber({}).find((item) => item.id === "bmkg_siklon").status, "Tidak ada cuplikan");
+const trenPendek = trenTujuhHari([{ tanggal: "2026-10-25" }, { tanggal: "2026-10-26" }, { tanggal: "2026-10-28" }]);
+assert.equal(trenPendek.lengkap, false);
+assert.deepEqual(trenPendek.hari.map((item) => [item.hari, item.jumlah]), [
+  ["2026-10-25", 1],
+  ["2026-10-26", 1],
+  ["2026-10-27", null],
+  ["2026-10-28", 1],
+]);
+assert.match(trenPendek.catatan, /bukan nol/);
+assert.match(readFileSync("src/v3/V3Shell.jsx", "utf8"), /Kebakaran Hutan dan Lahan/);
+assert.match(readFileSync("src/v3/pages/GunungPage.jsx", "utf8"), /aria-expanded/);
+assert.match(readFileSync("src/v3/pages/GunungPage.jsx", "utf8"), /signal: sinyal/);
+assert.equal(readFileSync("src/v3/pages/SummaryPage.jsx", "utf8").includes("Perlu perhatian"), false);
+assert.equal(readFileSync("src/v3/pages/SummaryPage.jsx", "utf8").includes("Cari perhatian"), false);
+assert.match(readFileSync("src/v3/pages/SummaryPage.jsx", "utf8"), /Ringkasan Laporan Hari Ini/);
+assert.match(readFileSync("src/v3/pages/SummaryPage.jsx", "utf8"), /Tersalin/);
+const laporanAda = kalimatLaporanHariIni({
+  adaHotspot: true,
+  jumlahHotspot: 10,
+  hitungTanggalHotspot: new Map([["2026-10-27", 4], ["2026-10-28", 10]]),
+  jendelaLabel: "Hari cuplikan",
+  banjirSiap: true,
+  banjirAwas: 2,
+  banjirSiaga: 1,
+  gunungSiap: true,
+  gunungAwas: [],
+  gunungSiaga: [{ nama: "Semeru" }],
+  siklonSiap: true,
+  sistem: [{ nama: "91B", dampak: "-" }, { nama: "Dekat", dampak: "Hujan di Aceh" }],
+  waktuLabel: "29 Okt 2026, 10.09 WIB",
+});
+assert.equal(laporanAda.length, 5);
+assert.match(laporanAda[0], /naik 6/);
+assert.match(laporanAda[3], /potensi dampak: Hujan di Aceh/);
+assert.equal(laporanAda[3].includes("91B (potensi dampak"), false);
+const laporanKosong = kalimatLaporanHariIni({
+  adaHotspot: true,
+  jumlahHotspot: 3,
+  hitungTanggalHotspot: new Map([["2026-10-28", 3]]),
+  wilayah: "Aceh",
+  siklonSiap: true,
+  sistem: [],
+});
+assert.equal(laporanKosong.some((kalimat) => /hari sebelumnya|Analisis dasbor|PVMBG|BMKG mencatat|Waktu pembaruan/.test(kalimat)), false);
 const butirV2 = susunButir({
   gunung: [
     { nama: "Semeru", lokasi: "Jawa Timur", tingkat: "Siaga", level: 3 },
@@ -1234,6 +1278,53 @@ assert.match(workflowSiklon, /group: refresh-siklon/);
 assert.match(workflowSiklon, /cancel-in-progress: false/);
 assert.match(workflowSiklon, /ambil-siklon\.mjs/);
 assert.match(workflowSiklon, /pypdf/);
+assert.match(workflowSiklon, /siklon-dampak-manual\.json/);
+assert.equal(/git add[^\n]*siklon-dampak-manual/.test(workflowSiklon), false);
+const ambilSiklonSumber = readFileSync("scripts/ambil-siklon.mjs", "utf8");
+assert.match(ambilSiklonSumber, /terapkanKurasiDampak/);
+assert.equal(/writeFileSync\([\s\S]{0,120}siklon-dampak-manual/.test(ambilSiklonSumber), false);
+const kurasiDampak = JSON.parse(readFileSync("public/data/siklon-dampak-manual.json", "utf8"));
+const TEKS_DAMPAK_91B = "Dampak tidak langsung: hujan sedang–lebat di Aceh dan Sumatera Utara; gelombang tinggi 1,25–2,5 m (moderate sea) di Selat Malaka bagian utara.";
+assert.equal(kurasiDampak.entri.length, 1);
+assert.equal(kurasiDampak.entri[0].sistem, "91B");
+assert.equal(kurasiDampak.entri[0].potensi_dampak, TEKS_DAMPAK_91B);
+assert.equal(kurasiDampak.entri[0].sumber.label, "Infografis BMKG (Instagram @InfoBMKG)");
+assert.equal(kurasiDampak.entri[0].sumber.url, "https://www.instagram.com/p/DfD-j3DAb5Y/");
+assert.equal(kurasiDampak.entri[0].berlaku_hingga, "2026-10-30T00:00:00.000Z");
+assert.equal(kurasiDampak.entri[0].diperbarui, "2026-10-29T00:00:00.000Z");
+const saatBerlaku = Date.parse("2026-10-29T04:21:00.000Z");
+const saatTepat = Date.parse("2026-10-30T00:00:00.000Z");
+const saatLewat = Date.parse("2026-10-30T00:00:00.001Z");
+const kurasiTerpasang = terapkanKurasiDampak({
+  sistem_halaman: [
+    { nama: "91B", agensi: "BMKG", dampak: "-" },
+    { nama: "90B", agensi: "BMKG", dampak: "-" },
+    { nama: "In-fa", agensi: "JMA", dampak: "-" },
+    { nama: "Arnab", agensi: "BMKG", dampak: "Hujan di Jawa" },
+  ],
+}, kurasiDampak, saatBerlaku);
+assert.equal(kurasiTerpasang.sistem_halaman[0].dampak, TEKS_DAMPAK_91B);
+assert.equal(kurasiTerpasang.sistem_halaman[0].dampak_manual, true);
+assert.equal(kurasiTerpasang.sistem_halaman[0].sumber_manual.url, "https://www.instagram.com/p/DfD-j3DAb5Y/");
+assert.equal(kurasiTerpasang.sistem_halaman[1].dampak, "-");
+assert.equal(kurasiTerpasang.sistem_halaman[1].dampak_manual, undefined);
+assert.equal(kurasiTerpasang.sistem_halaman[2].dampak, "-");
+assert.equal(kurasiTerpasang.sistem_halaman[3].dampak, "Hujan di Jawa");
+assert.equal(kurasiTerpasang.sistem_halaman[3].dampak_manual, undefined);
+assert.equal(terapkanKurasiDampak({
+  sistem_halaman: [{ nama: "91b", dampak: "-" }],
+}, kurasiDampak, saatTepat).sistem_halaman[0].dampak, TEKS_DAMPAK_91B);
+assert.equal(terapkanKurasiDampak({
+  sistem_halaman: [{ nama: "91B", dampak: TEKS_DAMPAK_91B, dampak_manual: true, sumber_manual: { label: "lama", url: "https://example.invalid" } }],
+}, kurasiDampak, saatLewat).sistem_halaman[0].dampak, "-");
+assert.equal(terapkanKurasiDampak({
+  sistem_halaman: [{ nama: "91B", dampak: "Teks halaman BMKG" }],
+}, kurasiDampak, saatBerlaku).sistem_halaman[0].dampak, "Teks halaman BMKG");
+assert.equal(terapkanKurasiDampak({
+  sistem_halaman: [{ nama: "91B", dampak: "-" }],
+}, { entri: [{ sistem: "91B", potensi_dampak: "", sumber: { label: "a", url: "https://www.bmkg.go.id/" }, berlaku_hingga: "2026-10-30T00:00:00.000Z" }] }, saatBerlaku).sistem_halaman[0].dampak, "-");
+assert.match(siklonSumber, /sumber_manual/);
+assert.match(readFileSync("src/v3/pages/SummaryPage.jsx", "utf8"), /terapkanKurasiDampak/);
 const sumberSiklon = SOURCES.find((item) => item.id === "bmkg_siklon");
 assert.equal(sumberSiklon.updateType, "Berkala (tiap 1 jam)");
 assert.equal(sumberSiklon.expectedMaxAgeHours, SIKLON_MAX_AGE_HOURS);

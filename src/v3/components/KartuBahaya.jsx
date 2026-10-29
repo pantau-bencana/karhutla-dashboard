@@ -1,5 +1,16 @@
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
-import { formatAngka, formatTanggalPendek } from "../../lib/format.js";
+import { formatAngka, formatTanggal, formatTanggalPendek } from "../../lib/format.js";
+
+function TipTren({ active, payload, label }) {
+  if (!active || !payload?.length) return null;
+  const ada = payload[0].payload?.ada !== false && payload[0].value != null;
+  return (
+    <div className="v3-tip">
+      <strong>{formatTanggal(label)}</strong>
+      <span>{ada ? `${formatAngka(payload[0].value)} deteksi satelit` : "Tidak ada di cuplikan"}</span>
+    </div>
+  );
+}
 
 function Bingkai({ judul, catatan, href, aksi, lembut = false, children }) {
   return (
@@ -14,8 +25,9 @@ function Bingkai({ judul, catatan, href, aksi, lembut = false, children }) {
   );
 }
 
-export function KartuKarhutla({ feed, jumlah, hitung, batang, jendelaLabel }) {
+export function KartuKarhutla({ feed, jumlah, hitung, tren, jendelaLabel }) {
   const boleh = feed && !feed.contoh && (feed.status === "berhasil" || feed.status === "usang");
+  const hari = tren?.hari || [];
   return (
     <Bingkai judul="Karhutla" catatan={jendelaLabel} href="#/karhutla/peta" aksi="Buka peta" lembut>
       {boleh ? (
@@ -27,18 +39,20 @@ export function KartuKarhutla({ feed, jumlah, hitung, batang, jendelaLabel }) {
             <span>{formatAngka(hitung.oranye)} sedang</span>
             <span>{formatAngka(hitung.kuning)} rendah</span>
           </p>
-          {batang.length ? (
-            <div className="v3-grafik" aria-label="Jumlah deteksi pada tanggal yang ada di cuplikan">
-              <ResponsiveContainer width="100%" height={88}>
-                <BarChart data={batang} margin={{ top: 8, right: 0, left: 0, bottom: 0 }}>
+          {hari.length ? (
+            <div className="v3-grafik" aria-label="Tren deteksi satelit harian">
+              <ResponsiveContainer width="100%" height={96}>
+                <BarChart data={hari} margin={{ top: 8, right: 0, left: 0, bottom: 0 }}>
                   <XAxis dataKey="hari" tickFormatter={formatTanggalPendek} tick={{ fontSize: 10, fill: "#6b7280" }} axisLine={false} tickLine={false} />
-                  <Tooltip formatter={(nilai) => [formatAngka(nilai), "Deteksi"]} labelFormatter={formatTanggalPendek} />
-                  <Bar dataKey="jumlah" fill="#5b5bd6" radius={[4, 4, 0, 0]} barSize={28} isAnimationActive={false} />
+                  <Tooltip content={<TipTren />} cursor={{ fill: "rgba(91,91,214,0.08)" }} />
+                  <Bar dataKey="jumlah" fill="#5b5bd6" radius={[4, 4, 0, 0]} barSize={22} isAnimationActive={false} />
                 </BarChart>
               </ResponsiveContainer>
-              <p className="v3-grafik-catatan">Hanya tanggal yang ada pada cuplikan. Tanggal kosong tidak diisi.</p>
+              <p className="v3-grafik-catatan">{tren.catatan}</p>
             </div>
-          ) : null}
+          ) : (
+            <p className="v3-grafik-catatan">{tren?.catatan || "Tidak ada tanggal pada cuplikan."}</p>
+          )}
         </>
       ) : (
         <p className="v3-angka-catatan">{feed?.error || "Cuplikan titik panas tidak ditampilkan."} Tidak ada hitungan pada kartu ini.</p>
@@ -70,7 +84,7 @@ export function KartuGunung({ hitung, tingkat, galat, ada }) {
   return (
     <Bingkai judul="Gunung api" catatan="Tingkat aktivitas" href="#/gunung-api" aksi="Buka gunung api">
       <p className="v3-angka">{galat && !ada ? "Tidak termuat" : (tingkat || "Memuat…")}</p>
-      <p className="v3-angka-catatan">Sumber: PVMBG. Level IV Awas dan Level III Siaga masuk Perlu perhatian.</p>
+      <p className="v3-angka-catatan">Sumber: PVMBG.</p>
       {ada ? (
         <ul className="v3-hitung-daftar">
           <li><i className="v3-kotak v3-kotak-awas" /> Awas {formatAngka(hitung.Awas)}</li>

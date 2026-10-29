@@ -1,0 +1,15 @@
+{
+  "catatan": "Isian kurasi. Dipakai hanya bila teks dampak BMKG kosong atau tanda minus. Lewat berlaku_hingga diabaikan. Pembaruan tiap jam tidak menulis berkas ini.",
+  "entri": [
+    {
+      "sistem": "91B",
+      "potensi_dampak": "Dampak tidak langsung: hujan sedang–lebat di Aceh dan Sumatera Utara; gelombang tinggi 1,25–2,5 m (moderate sea) di Selat Malaka bagian utara.",
+      "sumber": {
+        "label": "Infografis BMKG (Instagram @InfoBMKG)",
+        "url": "https://www.instagram.com/p/DfD-j3DAb5Y/"
+      },
+      "berlaku_hingga": "2026-10-30T00:00:00.000Z",
+      "diperbarui": "2026-10-29T00:00:00.000Z"
+    }
+  ]
+}

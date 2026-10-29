@@ -44,11 +44,9 @@ export function V3Shell({ children, location, onMuat, ringkas }) {
 
   useEffect(() => {
     const terapkan = () => {
-      if (ringkas) {
-        document.title = "Ringkasan — Pantau Bencana v0.3";
-        return;
-      }
-      if (document.title.includes("v0.1")) document.title = document.title.replaceAll("v0.1", "v0.3");
+      const judul = ringkas ? "Ringkasan" : judulDalam(location);
+      const berikutnya = `${judul} — Pantau Bencana v0.3`;
+      if (document.title !== berikutnya) document.title = berikutnya;
     };
     terapkan();
     const node = document.querySelector("title");
@@ -99,19 +97,21 @@ export function V3Shell({ children, location, onMuat, ringkas }) {
   );
 }
 
-function judulDalam(location) {
+export function judulDalam(location) {
   if (location.page === "glosarium" || location.anchor === "glosarium") return "Glosarium";
+  if (location.page === "siklon") return "Siklon";
+  if (location.hazard === "banjir") return "Banjir";
+  if (location.hazard === "gunung-api") return "Gunung Api";
+  if (location.hazard === "karhutla" && location.page === "peta") return "Kebakaran Hutan dan Lahan";
   const nama = {
-    peta: "Peta dan Data",
     potensi: "Potensi 7 hari",
     ispu: "Kualitas Udara",
     logika: "Logika Pemantauan",
     sumber: "Sumber data",
     metode: "Info",
-    siklon: "Siklon",
     irbi: "IRBI",
     rekap: "Rekap harian",
-    ringkasan: location.hazard === "banjir" ? "Banjir" : location.hazard === "gunung-api" ? "Gunung Api" : "Ringkasan",
+    ringkasan: "Ringkasan",
   }[location.page];
   return nama || "Pantau Bencana";
 }

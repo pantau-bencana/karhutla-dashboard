@@ -13,21 +13,30 @@ import {
   SIKLON_TCWC_URL,
   analisisDampakIndonesia,
   siklonUsang,
+  terapkanKurasiDampak,
 } from "../lib/siklonBmkg.js";
 import { agensiSistem, daftarSistemSiklon, labelPetaSiklon } from "../lib/siklonTampil.js";
 
 const BERKAS = "data/live/siklon-bmkg.json";
+const BERKAS_KURASI = "data/siklon-dampak-manual.json";
 const URUTAN_TINGKAT = ["Kecil", "Disebut BMKG", "Di wilayah pemantauan"];
 
 let cuplikanJanji = null;
 
+function ambilJson(path) {
+  return fetch(new URL(path, document.baseURI).href, { cache: "no-store" }).then(async (response) => {
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return response.json();
+  });
+}
+
 function ambilCuplikanSiklon() {
   if (!cuplikanJanji) {
-    cuplikanJanji = fetch(new URL(BERKAS, document.baseURI).href, { cache: "no-store" })
-      .then((response) => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.json();
-      })
+    cuplikanJanji = Promise.all([
+      ambilJson(BERKAS),
+      ambilJson(BERKAS_KURASI).catch(() => ({ entri: [] })),
+    ])
+      .then(([json, kurasi]) => terapkanKurasiDampak(json, kurasi, Date.now()))
       .catch((error) => {
         cuplikanJanji = null;
         throw error;
@@ -167,7 +176,15 @@ function KartuSistem({ item }) {
           </>
         ) : null}
       </p>
-      <p className="siklon-dampak">Sumber: {agensi}</p>
+      <p className="siklon-dampak">
+        Sumber: {agensi}
+        {item.dampak_manual && item.sumber_manual?.url ? (
+          <>
+            {" · "}
+            <a href={item.sumber_manual.url} target="_blank" rel="noopener noreferrer">{item.sumber_manual.label}</a>
+          </>
+        ) : null}
+      </p>
       {dekat ? (
         <>
           <p className="siklon-dekat">Terdekat dengan: {dekat.negara}</p>
@@ -263,14 +280,22 @@ export function SiklonRingkas({ manifest = null }) {
                           {!teks && !tautan ? "-" : null}
                         </td>
                         <td>{hasil.tingkat}</td>
-                        <td>{agensiSistem(item)}</td>
+                        <td>
+                          {agensiSistem(item)}
+                          {item.dampak_manual && item.sumber_manual?.url ? (
+                            <>
+                              {" "}
+                              <a href={item.sumber_manual.url} target="_blank" rel="noopener noreferrer">{item.sumber_manual.label}</a>
+                            </>
+                          ) : null}
+                        </td>
                       </tr>
                     );
                   })}
                 </tbody>
               </table>
               <p className="siklon-catatan">
-                Pada halaman BMKG judul tabelnya Wilayah Terdampak, dengan kolom Cuaca Ekstrem, Gelombang Tinggi, dan Angin Kencang. Frasa potensi dampak tidak tertulis di halaman itu. Sel BMKG diisi dari teks kolom itu, kalimat dampak langsung atau tidak langsung beserta batas waktunya, dan tautan berkas infografis bila BMKG menuliskannya. Tanda minus berarti isian itu kosong. Gambar tanpa teks atau tautan tidak dibaca. JMA dan JTWC tidak menyebut wilayah di Indonesia, jadi selnya -.
+                Pada halaman BMKG judul tabelnya Wilayah Terdampak, dengan kolom Cuaca Ekstrem, Gelombang Tinggi, dan Angin Kencang. Frasa potensi dampak tidak tertulis di halaman itu. Sel BMKG diisi dari teks kolom itu, kalimat dampak langsung atau tidak langsung beserta batas waktunya, dan tautan berkas infografis bila BMKG menuliskannya. Tanda minus berarti isian itu kosong. Gambar tanpa teks atau tautan tidak dibaca. Bila sel BMKG hanya tanda minus, isian kurasi yang masih berlaku dapat mengisi teks itu sampai waktu berlakunya. Lewat waktu itu isian diabaikan. Teks halaman yang bukan tanda minus tetap dipakai. Sumber isian kurasi ditampilkan di kolom Sumber. JMA dan JTWC tidak menyebut wilayah di Indonesia, jadi selnya -.
               </p>
             </div>
           ) : null}

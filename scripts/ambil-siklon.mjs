@@ -6,13 +6,14 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { SOURCES } from "../src/lib/sourceCatalog.js";
 import { SIKLON_INTERVAL_HOURS } from "../src/lib/schedule.js";
-import { SIKLON_API_URL, SIKLON_HTML_URL, SIKLON_PDF_URL, SIARAN_PERS_URL, bacaSiaranPers, gabungSiaran, gagalSiklonBerturut, jumlahSistemSiklon, susunCuplikan } from "../src/lib/siklonBmkg.js";
+import { SIKLON_API_URL, SIKLON_HTML_URL, SIKLON_PDF_URL, SIARAN_PERS_URL, bacaSiaranPers, gabungSiaran, gagalSiklonBerturut, jumlahSistemSiklon, susunCuplikan, terapkanKurasiDampak } from "../src/lib/siklonBmkg.js";
 import { JMA_DAFTAR_URL, JMA_HALAMAN_URL, bacaTargetJma, sistemDariPrakiraanJma, urlPrakiraanJma } from "../src/lib/siklonJma.js";
 import { JTWC_ABIO_URL, JTWC_ABPW_URL, bacaTeksJtwc } from "../src/lib/siklonJtwc.js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const berkas = resolve(root, "data/live/siklon-bmkg.json");
 const manifes = resolve(root, "data/live/manifest.json");
+const berkasKurasi = resolve(root, "public/data/siklon-dampak-manual.json");
 
 function aman(teks) {
   return String(teks || "").replace(/eyJ[A-Za-z0-9_-]+/g, "[token]").replace(/\s+/g, " ").slice(0, 180);
@@ -414,8 +415,13 @@ function entriPemantau(id, blok) {
   };
 }
 
+function bacaKurasiDampak() {
+  const json = bacaJson(berkasKurasi);
+  return json && typeof json === "object" ? json : { entri: [] };
+}
+
 function denganPemantau(cuplikan, jma, jtwc) {
-  return {
+  const dasar = {
     ...cuplikan,
     sistem_halaman: (Array.isArray(cuplikan?.sistem_halaman) ? cuplikan.sistem_halaman : []).map((item) => ({
       ...item,
@@ -423,6 +429,7 @@ function denganPemantau(cuplikan, jma, jtwc) {
     })),
     pemantau: { jma, jtwc },
   };
+  return terapkanKurasiDampak(dasar, bacaKurasiDampak(), Date.now());
 }
 
 async function ambilBlok(nama, ambil, lama) {
