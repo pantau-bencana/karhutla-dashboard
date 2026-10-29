@@ -13,6 +13,7 @@
       "di_dalam_tcwc": false,
       "luar_tcwc": false,
       "sumber": "halaman",
+      "agensi": "BMKG",
       "lintang": 17.7,
       "bujur": 85.1,
       "tekanan_hpa": 1003,
@@ -30,6 +31,7 @@
       "di_dalam_tcwc": false,
       "luar_tcwc": true,
       "sumber": "halaman",
+      "agensi": "BMKG",
       "lintang": 16.4,
       "bujur": 81.4,
       "tekanan_hpa": 970,
@@ -47,6 +49,7 @@
       "di_dalam_tcwc": false,
       "luar_tcwc": false,
       "sumber": "halaman",
+      "agensi": "BMKG",
       "lintang": 8.3,
       "bujur": 96.6,
       "tekanan_hpa": 1009,
@@ -89,11 +92,109 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-10-29T01:11:15.917Z",
+    "fetched_at": "2026-10-29T02:09:09.744Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-10-29T01:11:15.917Z",
+  "fetched_at": "2026-10-29T02:09:09.744Z",
   "pdf_diubah": "Wed, 28 Oct 2026 07:10:33 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
-  "url_tcwc": "https://tropicalcyclone.bmkg.go.id/"
+  "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
+  "pemantau": {
+    "jma": {
+      "status": "ok",
+      "galat": "",
+      "fetched_at": "2026-10-29T02:09:14.454Z",
+      "kept_previous": false,
+      "url": "https://www.jma.go.jp/bosai/typhoon/",
+      "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
+      "sistem": [
+        {
+          "nama": "In-fa",
+          "kode": "2631",
+          "tahap": "Topan",
+          "jenis": "siklon",
+          "kalimat": "Analisis RSMC Tokyo untuk In-fa.",
+          "lokasi": "",
+          "dampak": "-",
+          "agensi": "JMA",
+          "di_dalam_tcwc": false,
+          "luar_tcwc": false,
+          "sumber": "jma",
+          "lintang": 15.9,
+          "bujur": 154.7,
+          "tekanan_hpa": null,
+          "angin_knot": null,
+          "kategori": "TY",
+          "waktu_analisis": "2026-10-29T00:00:00Z"
+        }
+      ]
+    },
+    "jtwc": {
+      "status": "ok",
+      "galat": "",
+      "fetched_at": "2026-10-29T02:09:14.515Z",
+      "kept_previous": false,
+      "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
+      "produk": "ABPW+ABIO",
+      "sistem": [
+        {
+          "nama": "IN-FA",
+          "kalimat": "Advisory JTWC ABPW menyebut IN-FA.",
+          "lokasi": "",
+          "dampak": "-",
+          "agensi": "JTWC",
+          "di_dalam_tcwc": false,
+          "luar_tcwc": false,
+          "sumber": "jtwc",
+          "lintang": 14.9,
+          "bujur": 159.9,
+          "tekanan_hpa": null,
+          "angin_knot": 120,
+          "kategori": "",
+          "waktu_analisis": "2026-10-28T00:00:00.000Z",
+          "kode": "30W",
+          "tahap": "Typhoon",
+          "jenis": "siklon"
+        },
+        {
+          "nama": "ARNAB",
+          "kalimat": "Advisory JTWC ABIO menyebut ARNAB.",
+          "lokasi": "",
+          "dampak": "-",
+          "agensi": "JTWC",
+          "di_dalam_tcwc": false,
+          "luar_tcwc": false,
+          "sumber": "jtwc",
+          "lintang": 16.4,
+          "bujur": 81.8,
+          "tekanan_hpa": null,
+          "angin_knot": 55,
+          "kategori": "",
+          "waktu_analisis": "2026-10-28T06:00:00.000Z",
+          "kode": "02B",
+          "tahap": "Siklon tropis",
+          "jenis": "siklon"
+        },
+        {
+          "nama": "91B",
+          "kalimat": "Advisory JTWC ABIO menyebut invest 91B.",
+          "lokasi": "",
+          "dampak": "-",
+          "agensi": "JTWC",
+          "di_dalam_tcwc": false,
+          "luar_tcwc": false,
+          "sumber": "jtwc",
+          "lintang": 7.9,
+          "bujur": 97,
+          "tekanan_hpa": null,
+          "angin_knot": null,
+          "kategori": "",
+          "waktu_analisis": "",
+          "kode": "91B",
+          "tahap": "Invest",
+          "jenis": "bibit"
+        }
+      ]
+    }
+  }
 }

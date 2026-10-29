@@ -109,6 +109,7 @@ function susunSistem({ nama, tahap, jenis, kalimat, dampak = "", isAor = null, t
     di_dalam_tcwc: Boolean(diDalam),
     luar_tcwc: Boolean(luar),
     sumber: "halaman",
+    agensi: "BMKG",
     lintang: titik?.lintang ?? null,
     bujur: titik?.bujur ?? null,
     tekanan_hpa: titik?.tekanan_hpa ?? null,

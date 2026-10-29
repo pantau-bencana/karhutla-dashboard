@@ -1,4 +1,4 @@
-# Siklon tropis dan bibit siklon BMKG. Jadwal tiap jam, menit 23 UTC.
+# Siklon tropis: informasi BMKG, plus JMA dan JTWC pada jadwal yang sama. Menit 23 UTC.
 # String cron harus sama dengan SIKLON_CRON di src/lib/schedule.js.
 # Menit 23 menghindari menit 0 dan slot workflow lain (7, 12, 17, 32, 42, 47).
 # GitHub dapat menunda atau menggugurkan satu slot. Itu bukan alasan memindahkan cron lain.

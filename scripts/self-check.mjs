@@ -54,7 +54,10 @@ import { karhutlaRankingPlan } from "../src/lib/ranking.js";
 import { keadaanKategori, statusRingkasan, statusRingkasanSiap } from "../src/lib/ringkasanStatus.js";
 import { dekatDaratan } from "../src/lib/dekatDaratan.js";
 import { analisisDampakIndonesia, bacaIkhtisar, bacaSiaranPers, bacaStatusHtml, gabungSiaran, gagalSiklonBerturut, potensiDekatIndonesia, siklonPerluTanda, siklonUsang, susunCuplikan as susunCuplikanSiklon, SIKLON_JEJAK } from "../src/lib/siklonBmkg.js";
-import { isiSiklonSama } from "../scripts/ambil-siklon.mjs";
+import { isiSiklonSama, pertahankanPemantau } from "../scripts/ambil-siklon.mjs";
+import { sistemDariPrakiraanJma } from "../src/lib/siklonJma.js";
+import { bacaTeksJtwc } from "../src/lib/siklonJtwc.js";
+import { kalimatAgensiLain } from "../src/lib/siklonTampil.js";
 import { bandingHitungan, bandingPeringkat, barisPeriodeAktif, chipProvinsi, JUMLAH_CHIP_PROVINSI, kelasPeringkat, namaChipProvinsi, sepuluhPrioritas, susunPeringkatHotspot } from "../src/lib/peringkatHotspot.js";
 import { cariWilayahBatas, PROVINSI_TIDAK_DIKETAHUI, tampilBarisFwi, urutBarisFwi } from "../src/lib/kabProvinsi.js";
 import { kelasKepercayaan } from "../src/lib/warning.js";
@@ -949,6 +952,10 @@ assert.match(siklonLib, /https:\/\/www\.bmkg\.go\.id\/cuaca\/siklon-tropis/);
 assert.match(siklonSumber, /target="_blank"/);
 assert.equal(/windy/i.test(siklonSumber + siklonLib), false);
 assert.match(siklonSumber, /Buka peta siklon BMKG/);
+assert.match(siklonSumber, /<summary>\{agensi === "BMKG" \? "Informasi BMKG"/);
+assert.match(siklonSumber, /Wilayah potensi terdampak/);
+assert.match(siklonSumber, /Potensi dampak/);
+assert.match(siklonSumber, /<th>Sumber<\/th>/);
 assert.equal(siklonSumber.includes("iframe"), false);
 assert.equal(siklonSumber.includes("SIKLON_PETA_URL"), false);
 assert.match(SIKLON_JEJAK, /belum terintegrasi/);
@@ -1083,6 +1090,43 @@ assert.equal(manifesSiklon.update_type, "Berkala (tiap 1 jam)");
 assert.equal(manifesSiklon.frequency, "Berkala (tiap 1 jam)");
 assert.equal(manifesSiklon.expected_max_age_hours, 3);
 assert.equal(manifesSiklon.schedule_interval_hours, 1);
+const jmaInfa = sistemDariPrakiraanJma(
+  { tropicalCyclone: "TC2637", typhoonNumber: "2631", category: "TY" },
+  [
+    { part: "title", typhoonNumber: "2631", name: { en: "In-fa" } },
+    { part: { en: "Analysis" }, advancedHours: 0, validtime: { UTC: "2026-10-29T00:00:00Z" }, center: [15.9, 154.7] },
+  ],
+);
+assert.equal(jmaInfa.agensi, "JMA");
+assert.equal(jmaInfa.nama, "In-fa");
+assert.equal(jmaInfa.lintang, 15.9);
+assert.equal(jmaInfa.bujur, 154.7);
+assert.equal(jmaInfa.dampak, "-");
+assert.equal(sistemDariPrakiraanJma({ tropicalCyclone: "TC1", category: "TY" }, [{ part: "title" }]), null);
+const teksJtwc = [
+  "AT 28OCT26 0600Z, TROPICAL CYCLONE 02B (ARNAB) WAS LOCATED NEAR 16.4N 81.8E.",
+  "MAXIMUM SUSTAINED SURFACE WINDS WERE ESTIMATED AT 55 KNOTS.",
+  "AN AREA OF CONVECTION (INVEST 91B) HAS PERSISTED NEAR 7.9N 97.0E.",
+  "MINIMUM SEA LEVEL PRESSURE IS ESTIMATED TO BE NEAR 1009 MB.",
+].join(" ");
+const jtwc = bacaTeksJtwc(teksJtwc, "ABIO");
+assert.equal(jtwc.map((item) => item.nama).join(","), "ARNAB,91B");
+assert.equal(jtwc[0].agensi, "JTWC");
+assert.equal(jtwc[0].lintang, 16.4);
+assert.equal(jtwc[0].angin_knot, 55);
+assert.equal(jtwc[1].jenis, "bibit");
+assert.equal(jtwc[1].dampak, "-");
+assert.equal(jtwc[1].tekanan_hpa, 1009);
+const gagalUlang = pertahankanPemantau({ status: "gagal", sistem: [{ nama: "In-fa" }], galat: "HTTP 500" }, "HTTP 503");
+assert.equal(gagalUlang.galat, "HTTP 500");
+assert.equal(kalimatAgensiLain({ nama: "91B", agensi: "JTWC" }, [{ nama: "91B", agensi: "BMKG" }, { nama: "91B", agensi: "JTWC" }]), "Nama yang sama juga tercatat pada BMKG.");
+const sumberJma = SOURCES.find((item) => item.id === "jma_siklon");
+const sumberJtwc = SOURCES.find((item) => item.id === "jtwc_siklon");
+assert.equal(sumberJma.updateType, "Berkala (tiap 1 jam)");
+assert.equal(sumberJtwc.updateType, "Berkala (tiap 1 jam)");
+assert.match(sumberJma.limitation, /Bukan peringatan resmi untuk Indonesia/);
+assert.match(sumberJtwc.limitation, /tetap BMKG/);
+assert.match(readFileSync("scripts/refresh-live-data.mjs", "utf8"), /jma_siklon/);
 assert.equal(readFileSync("data/live/siklon-bmkg.json", "utf8").includes("eyJ"), false);
 assert.equal(readFileSync("scripts/ambil-siklon.mjs", "utf8").includes("Authorization"), false);
 assert.equal(JSON.parse(readFileSync("data/live/siklon-bmkg.json", "utf8")).jejak, "belum terintegrasi");
