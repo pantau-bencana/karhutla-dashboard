@@ -1,4 +1,4 @@
-import { cpSync, createReadStream, existsSync, statSync } from "node:fs";
+import { cpSync, createReadStream, existsSync, readdirSync, rmSync, statSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
@@ -53,10 +53,26 @@ function siteBase() {
   return raw.endsWith("/") ? raw : `${raw}/`;
 }
 
+function kosongkanAkarDist() {
+  return {
+    name: "kosongkan-akar-dist",
+    apply: "build",
+    buildStart() {
+      const dist = path.join(root, "dist");
+      if (!existsSync(dist)) return;
+      for (const nama of readdirSync(dist)) {
+        if (nama === "v2" || nama === "v3") continue;
+        rmSync(path.join(dist, nama), { recursive: true, force: true });
+      }
+    },
+  };
+}
+
 export default defineConfig({
   base: siteBase(),
   plugins: [
     react(),
+    kosongkanAkarDist(),
     {
       name: "sample-data",
       configureServer(server) {
@@ -77,4 +93,7 @@ export default defineConfig({
       },
     },
   ],
+  build: {
+    emptyOutDir: false,
+  },
 });

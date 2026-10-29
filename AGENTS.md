@@ -39,7 +39,7 @@ Vite 6, React 18, Leaflet, Recharts. Situs statis. Rute hash. GitHub Pages lewat
 - Setiap angka menampilkan waktu ambil dalam WIB dan waktu observasi atau terbitan sumbernya.
 - Jangan mengisi tanggal kosong, citra yang hilang, atau peringkat yang belum ada datanya.
 - Peringkat 15–20 kabupaten/kota untuk 14 hari berstatus **menunggu data resmi BMKG (FDRS/potensi karhutla per kab/kota)** sampai ada produk resmi. Jangan menyusunnya dari citra prakiraan.
-- Kalimat identitas: `Pantau Bencana v0.1 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH.` Edisi v0.2 di `/v2/` memakai kalimat yang sama dengan `v0.2`. Akar situs tetap v0.1.
+- Kalimat identitas: `Pantau Bencana v0.1 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH.` Edisi v0.2 di `/v2/` memakai kalimat yang sama dengan `v0.2`. Edisi v0.3 di `/v3/` memakai kalimat yang sama dengan `v0.3`. Akar situs tetap v0.1. v0.2 dan v0.3 tidak saling menggantikan.
 
 ## Status sumber
 
