@@ -36,6 +36,23 @@
       "angin_knot": 80,
       "kategori": "3",
       "waktu_analisis": "2026-10-28T00:00:00.000Z"
+    },
+    {
+      "nama": "91B",
+      "tahap": "Bibit Siklon Tropis",
+      "jenis": "bibit",
+      "kalimat": "Bibit Siklon Tropis 91B mulai terbentuk pada 29 Oktober 2026 pukul 01.00 WIB di Laut Andaman",
+      "lokasi": "Laut Andaman",
+      "dampak": "-",
+      "di_dalam_tcwc": false,
+      "luar_tcwc": false,
+      "sumber": "halaman",
+      "lintang": 8.3,
+      "bujur": 96.6,
+      "tekanan_hpa": 1009,
+      "angin_knot": 15,
+      "kategori": "L",
+      "waktu_analisis": "2026-10-29T18:00:00.000Z"
     }
   ],
   "ikhtisar": {
@@ -72,10 +89,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-10-28T21:30:36.352Z",
+    "fetched_at": "2026-10-29T01:11:15.917Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-10-28T21:30:36.352Z",
+  "fetched_at": "2026-10-29T01:11:15.917Z",
   "pdf_diubah": "Wed, 28 Oct 2026 07:10:33 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/"
