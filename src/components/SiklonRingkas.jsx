@@ -14,6 +14,7 @@ import {
   analisisDampakIndonesia,
   siklonUsang,
 } from "../lib/siklonBmkg.js";
+import { agensiSistem, daftarSistemSiklon, kalimatAgensiLain } from "../lib/siklonTampil.js";
 
 const BERKAS = "data/live/siklon-bmkg.json";
 const URUTAN_TINGKAT = ["Kecil", "Disebut BMKG", "Di wilayah pemantauan"];
@@ -78,6 +79,7 @@ function teksPosisi(item) {
 }
 
 function labelTcwc(item) {
+  if (agensiSistem(item) !== "BMKG") return "Bukan produk TCWC";
   if (item.di_dalam_tcwc) return "Dalam TCWC Jakarta";
   if (item.luar_tcwc) return "Luar TCWC Jakarta";
   return "Tidak ditandai";
@@ -135,15 +137,18 @@ function kalimatDekat(item) {
   return dekatDaratan(item.lintang, item.bujur);
 }
 
-function KartuSistem({ item }) {
+function KartuSistem({ item, semua }) {
   const hasil = analisisDampakIndonesia(item);
   const dekat = teksDekat(kalimatDekat(item));
   const jenis = item.jenis === "bibit" ? "Bibit" : "Siklon";
+  const agensi = agensiSistem(item);
+  const catatan = kalimatAgensiLain(item, semua);
   return (
     <article className="siklon-kartu">
       <header>
         <h3>{item.nama}</h3>
         <span className={`siklon-lencana siklon-lencana-${item.jenis === "bibit" ? "bibit" : "siklon"}`}>{jenis}</span>
+        <span className="siklon-lencana">{agensi}</span>
         <span className={`siklon-chip siklon-chip-${kelasTingkat(hasil.tingkat)}`}>{hasil.tingkat}</span>
       </header>
       <div className="siklon-fakta-grid">
@@ -154,18 +159,20 @@ function KartuSistem({ item }) {
         <Fakta label="Jarak ke Indonesia" nilai={hasil.jarak_km == null ? "—" : `${angkaPolos(hasil.jarak_km)} km`} />
         <Fakta label="Wilayah TCWC Jakarta" nilai={labelTcwc(item)} />
       </div>
-      <p className="siklon-dampak">Dampak BMKG: {item.dampak || "—"}</p>
+      <p className="siklon-dampak">{agensi === "BMKG" ? `Dampak BMKG: ${item.dampak || "—"}` : "Potensi dampak: -"}</p>
+      <p className="siklon-dampak">Sumber: {agensi}</p>
+      {catatan ? <p className="siklon-catatan">{catatan}</p> : null}
       {dekat ? (
         <>
           <p className="siklon-dekat">Terdekat dengan: {dekat.negara}</p>
           <p className="siklon-dekat">Ke Indonesia: {dekat.indonesia}</p>
         </>
       ) : (
-        <p className="siklon-dekat">Terdekat dengan: tidak dihitung. Koordinat tidak ada pada halaman BMKG.</p>
+        <p className="siklon-dekat">Jarak tidak dihitung karena koordinat tidak ada.</p>
       )}
       {item.kalimat ? (
         <details>
-          <summary>Kalimat BMKG</summary>
+          <summary>{agensi === "BMKG" ? "Informasi BMKG" : `Kalimat ${agensi}`}</summary>
           <p>{item.kalimat}</p>
         </details>
       ) : null}
@@ -180,6 +187,7 @@ export function SiklonRingkas({ manifest = null }) {
   const ikhtisar = data?.ikhtisar;
   const sistemIkhtisar = Array.isArray(ikhtisar?.sistem) ? ikhtisar.sistem : [];
   const sistemHalaman = Array.isArray(data?.sistem_halaman) ? data.sistem_halaman : [];
+  const semuaSistem = daftarSistemSiklon(data);
   const waktuBerhasil = entri?.fetched_at || data?.fetched_at;
   const tingkatUtama = sistemHalaman.length
     ? sistemHalaman.map((item) => analisisDampakIndonesia(item).tingkat).reduce((terpilih, item) => (
@@ -209,39 +217,47 @@ export function SiklonRingkas({ manifest = null }) {
           <p className={`siklon-status siklon-status-${sistemHalaman.length ? kelasTingkat(tingkatUtama) : "kosong"}`} role="status">
             {kalimatStatus(sistemHalaman)}
           </p>
-          {sistemHalaman.length ? <PetaPosisiSiklon sistem={sistemHalaman} /> : null}
+          {semuaSistem.length ? <PetaPosisiSiklon sistem={semuaSistem} /> : null}
           <h3>Analisis Dampak ke Indonesia</h3>
-          {sistemHalaman.length ? (
+          {semuaSistem.length ? (
             <div className="siklon-kartu-daftar">
-              {sistemHalaman.map((item) => <KartuSistem key={`${item.jenis || "sistem"}-${item.nama}`} item={item} />)}
+              {semuaSistem.map((item) => (
+                <KartuSistem key={`${agensiSistem(item)}-${item.jenis || "sistem"}-${item.nama}`} item={item} semua={semuaSistem} />
+              ))}
             </div>
           ) : (
             <p>Tidak ada sistem aktif. Analisis dampak tidak disusun.</p>
           )}
-          {sistemHalaman.length ? (
+          {semuaSistem.length ? (
             <div className="siklon-tabel-bungkus">
               <table className="siklon-tabel">
-                <caption>Wilayah terdampak pada halaman BMKG</caption>
+                <caption>Wilayah potensi terdampak</caption>
                 <thead>
                   <tr>
                     <th>Sistem</th>
-                    <th>Dampak BMKG</th>
-                    <th>Tingkat dasbor</th>
+                    <th>Potensi dampak</th>
+                    <th>Tingkat potensi dampak</th>
+                    <th>Sumber</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {sistemHalaman.map((item) => {
+                  {semuaSistem.map((item) => {
                     const hasil = analisisDampakIndonesia(item);
+                    const teks = item.dampak && item.dampak !== "-" ? item.dampak : "-";
                     return (
-                      <tr key={`tabel-${item.nama}`}>
+                      <tr key={`tabel-${agensiSistem(item)}-${item.nama}`}>
                         <td>{item.nama}</td>
-                        <td>{item.dampak || "—"}</td>
+                        <td>{teks}</td>
                         <td>{hasil.tingkat}</td>
+                        <td>{agensiSistem(item)}</td>
                       </tr>
                     );
                   })}
                 </tbody>
               </table>
+              <p className="siklon-catatan">
+                Pada halaman BMKG judul tabelnya Wilayah Terdampak, dengan kolom Cuaca Ekstrem, Gelombang Tinggi, dan Angin Kencang. Frasa potensi dampak tidak tertulis di halaman itu. JMA dan JTWC tidak menyebut wilayah di Indonesia, jadi selnya -.
+              </p>
             </div>
           ) : null}
           <p className="siklon-catatan">Tabel prakiraan lintasan tidak ada pada cuplikan. Yang tersimpan hanya titik analisis.</p>
@@ -304,7 +320,7 @@ export function SiklonRingkas({ manifest = null }) {
               <p>{RUMUS_DAMPAK_SIKLON}</p>
             </details>
             <p>
-              Buletin IMD/RSMC New Delhi dan JTWC tidak diambil. Tidak ada angka dari kedua sumber itu.
+              Buletin IMD tidak diambil. JMA dan JTWC dipakai sebagai pembanding posisi, bukan sebagai peringatan resmi Indonesia.
               {" "}
               <a href={IMD_RSMC_URL} target="_blank" rel="noopener noreferrer">IMD / RSMC New Delhi</a>
               {" · "}

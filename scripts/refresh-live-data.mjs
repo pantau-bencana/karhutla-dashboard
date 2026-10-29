@@ -1266,14 +1266,14 @@ async function main() {
   }
   datasets.sipongi = entriSipongi;
 
-  // Siklon tropis punya jadwal sendiri di refresh-siklon.yml.
-  // Pembaruan umum tidak mengunduh halaman itu dan tidak menimpa cuplikannya.
-  if (previous.datasets?.bmkg_siklon) {
-    datasets.bmkg_siklon = previous.datasets.bmkg_siklon;
+  // Siklon tropis, JMA, dan JTWC punya jadwal sendiri di refresh-siklon.yml.
+  // Pembaruan umum tidak mengunduh sumber itu dan tidak menimpa cuplikannya.
+  for (const id of ["bmkg_siklon", "jma_siklon", "jtwc_siklon"]) {
+    if (previous.datasets?.[id]) datasets[id] = previous.datasets[id];
   }
 
   for (const source of SOURCES) {
-    if (source.id === "prioritas_aplus" || source.id === "bmkg_siklon") continue;
+    if (source.id === "prioritas_aplus" || source.id === "bmkg_siklon" || source.id === "jma_siklon" || source.id === "jtwc_siklon") continue;
     if (datasets[source.id]) continue;
     datasets[source.id] = tautanEntry(source);
   }

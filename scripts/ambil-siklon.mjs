@@ -7,6 +7,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { SOURCES } from "../src/lib/sourceCatalog.js";
 import { SIKLON_INTERVAL_HOURS } from "../src/lib/schedule.js";
 import { SIKLON_API_URL, SIKLON_HTML_URL, SIKLON_PDF_URL, SIARAN_PERS_URL, bacaSiaranPers, gabungSiaran, gagalSiklonBerturut, jumlahSistemSiklon, susunCuplikan } from "../src/lib/siklonBmkg.js";
+import { JMA_DAFTAR_URL, JMA_HALAMAN_URL, bacaTargetJma, sistemDariPrakiraanJma, urlPrakiraanJma } from "../src/lib/siklonJma.js";
+import { JTWC_ABIO_URL, JTWC_ABPW_URL, bacaTeksJtwc } from "../src/lib/siklonJtwc.js";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const berkas = resolve(root, "data/live/siklon-bmkg.json");
@@ -120,6 +122,15 @@ export async function ambilSiklon(now = new Date()) {
   };
 }
 
+function intisariBlok(blok) {
+  if (!blok || typeof blok !== "object") return null;
+  return {
+    status: blok.status || "",
+    kept_previous: Boolean(blok.kept_previous),
+    sistem: Array.isArray(blok.sistem) ? blok.sistem : [],
+  };
+}
+
 export function intisariSiklon(cuplikan) {
   if (!cuplikan || typeof cuplikan !== "object") return null;
   const siaran = cuplikan.siaran_pers || {};
@@ -138,6 +149,10 @@ export function intisariSiklon(cuplikan) {
       status: siaran.status || "",
       daftar: Array.isArray(siaran.daftar) ? siaran.daftar : [],
       kept_previous: Boolean(siaran.kept_previous),
+    },
+    pemantau: {
+      jma: intisariBlok(cuplikan.pemantau?.jma),
+      jtwc: intisariBlok(cuplikan.pemantau?.jtwc),
     },
   };
 }
@@ -200,12 +215,12 @@ function sumberSiklon() {
 
 function dasarEntri(source) {
   return {
-    id: "bmkg_siklon",
+    id: source.id,
     nama: source.nama,
     instansi: source.instansi,
     source: source.nama,
     url: source.officialUrl,
-    license: "Sumber: BMKG.",
+    license: source.id === "bmkg_siklon" ? "Sumber: BMKG." : "Bukan peringatan resmi Indonesia.",
     mode: "snapshot",
     update_type: source.updateType,
     access: source.access,
@@ -217,17 +232,26 @@ function dasarEntri(source) {
   };
 }
 
-function simpanManifes(entri) {
+function simpanSemua(entriMenurutId) {
   const previous = bacaJson(manifes) || { datasets: {} };
   previous.datasets = previous.datasets || {};
-  const lama = previous.datasets.bmkg_siklon || null;
-  if (materiEntri(lama) === materiEntri(entri)) return false;
-  previous.datasets.bmkg_siklon = entri;
+  let berubah = false;
+  for (const [id, entri] of Object.entries(entriMenurutId)) {
+    if (!entri) continue;
+    if (materiEntri(previous.datasets[id]) === materiEntri(entri)) continue;
+    previous.datasets[id] = entri;
+    berubah = true;
+  }
+  if (!berubah) return false;
   tulisTeks(manifes, `${JSON.stringify(previous, null, 2)}\n`);
   return true;
 }
 
-export function catatGagalSiklon(entriLama, pesan) {
+function simpanManifes(entri) {
+  return simpanSemua({ bmkg_siklon: entri });
+}
+
+export function catatGagalSiklon(entriLama, pesan, entriTambahan = {}) {
   const source = sumberSiklon();
   const adaBerkas = Boolean(entriLama?.file && entriLama.content_hash && existsSync(resolve(root, entriLama.file)));
   const gagal = Math.min(gagalSiklonBerturut(entriLama), 2);
@@ -263,10 +287,10 @@ export function catatGagalSiklon(entriLama, pesan) {
       gagal_berturut: gagal,
       checked_at: new Date().toISOString(),
     };
-  return { berubah: simpanManifes(entri), isiBerubah: false, gagal: true };
+  return { berubah: simpanSemua({ bmkg_siklon: entri, ...entriTambahan }), isiBerubah: false, gagal: true };
 }
 
-export function terapkanHasilSiklon(hasil) {
+export function terapkanHasilSiklon(hasil, entriTambahan = {}) {
   const source = sumberSiklon();
   const cuplikanLama = bacaJson(berkas);
   const entriLama = bacaJson(manifes)?.datasets?.bmkg_siklon || null;
@@ -293,29 +317,164 @@ export function terapkanHasilSiklon(hasil) {
     kept_previous: false,
     gagal_berturut: 0,
   };
-  const manifesBerubah = simpanManifes(entri);
+  const manifesBerubah = simpanSemua({ bmkg_siklon: entri, ...entriTambahan });
   return { berubah: !sama || manifesBerubah, isiBerubah: !sama, gagal: false };
+}
+
+async function ambilJsonPublik(url) {
+  const response = await ambilTeks(url, 20000);
+  const teks = await response.text();
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  return JSON.parse(teks);
+}
+
+export async function ambilJma(now = new Date()) {
+  const fetchedAt = now.toISOString();
+  const daftar = bacaTargetJma(await ambilJsonPublik(JMA_DAFTAR_URL));
+  const sistem = [];
+  for (const item of daftar) {
+    const url = urlPrakiraanJma(item.tropicalCyclone);
+    if (!url) throw new Error("Id sistem JMA tidak dikenali.");
+    const satu = sistemDariPrakiraanJma(item, await ambilJsonPublik(url));
+    if (!satu) throw new Error(`Prakiraan ${item.tropicalCyclone} tidak memuat pusat analisis.`);
+    sistem.push(satu);
+  }
+  return {
+    status: "ok",
+    galat: "",
+    fetched_at: fetchedAt,
+    kept_previous: false,
+    url: JMA_HALAMAN_URL,
+    produk: JMA_DAFTAR_URL,
+    sistem,
+  };
+}
+
+export async function ambilJtwc(now = new Date()) {
+  const fetchedAt = now.toISOString();
+  const sistem = [];
+  for (const [produk, url] of [["ABPW", JTWC_ABPW_URL], ["ABIO", JTWC_ABIO_URL]]) {
+    const response = await ambilTeks(url, 20000);
+    const teks = await response.text();
+    if (!response.ok) throw new Error(`${produk} HTTP ${response.status}`);
+    if (!/MSGID\/GENADMIN\/JOINT TYPHOON WRNCEN/i.test(teks)) throw new Error(`${produk} bukan advisory JTWC.`);
+    sistem.push(...bacaTeksJtwc(teks, produk));
+  }
+  return {
+    status: "ok",
+    galat: "",
+    fetched_at: fetchedAt,
+    kept_previous: false,
+    url: JTWC_ABPW_URL,
+    produk: "ABPW+ABIO",
+    sistem,
+  };
+}
+
+export function pertahankanPemantau(lama, pesan) {
+  const sistem = Array.isArray(lama?.sistem) ? lama.sistem : [];
+  if (lama?.status === "gagal" && JSON.stringify(lama.sistem || []) === JSON.stringify(sistem)) return lama;
+  return {
+    status: "gagal",
+    galat: aman(pesan),
+    fetched_at: lama?.fetched_at || "",
+    kept_previous: sistem.length > 0,
+    url: lama?.url || "",
+    produk: lama?.produk || "",
+    sistem,
+  };
+}
+
+function hashBlok(blok) {
+  return createHash("sha256").update(JSON.stringify(intisariBlok(blok))).digest("hex");
+}
+
+function entriPemantau(id, blok) {
+  const source = SOURCES.find((item) => item.id === id);
+  const entriLama = bacaJson(manifes)?.datasets?.[id] || null;
+  const ok = blok?.status === "ok";
+  const sistem = Array.isArray(blok?.sistem) ? blok.sistem : [];
+  const waktu = sistem.map((item) => item.waktu_analisis).filter(Boolean).sort().at(-1) || null;
+  const nama = sistem.map((item) => item.nama).filter(Boolean).join(", ");
+  return {
+    ...dasarEntri(source),
+    fetched_at: ok ? blok.fetched_at : (entriLama?.fetched_at || blok?.fetched_at || null),
+    observed_at: ok ? (waktu || blok.fetched_at) : (entriLama?.observed_at || waktu || null),
+    observed_label: ok
+      ? (nama ? `${source.nama}: ${nama}. Bukan peringatan resmi Indonesia.` : `${source.nama}: tidak ada sistem pada produk ini.`)
+      : (entriLama?.observed_label || ""),
+    source_updated_at: ok ? waktu : (entriLama?.source_updated_at || null),
+    record_count: sistem.length,
+    status: ok ? "ok" : "failed",
+    error: ok ? null : (blok?.galat || "Gagal diambil."),
+    file: sistem.length || ok ? "data/live/siklon-bmkg.json" : null,
+    content_hash: hashBlok(blok),
+    kept_previous: ok ? false : Boolean(blok?.kept_previous),
+    gagal_berturut: ok ? 0 : Math.min(gagalSiklonBerturut(entriLama), 2),
+  };
+}
+
+function denganPemantau(cuplikan, jma, jtwc) {
+  return {
+    ...cuplikan,
+    sistem_halaman: (Array.isArray(cuplikan?.sistem_halaman) ? cuplikan.sistem_halaman : []).map((item) => ({
+      ...item,
+      agensi: item.agensi || "BMKG",
+    })),
+    pemantau: { jma, jtwc },
+  };
+}
+
+async function ambilBlok(nama, ambil, lama) {
+  try {
+    return await ambil();
+  } catch (error) {
+    console.log(`${nama}: gagal diambil (${aman(error?.message || error)}). Cuplikan sebelumnya tetap.`);
+    return pertahankanPemantau(lama, error?.message || error);
+  }
 }
 
 const dipanggilLangsung = process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href;
 if (dipanggilLangsung) {
+  const lama = bacaJson(berkas);
+  let hasil = null;
+  let galatBmkg = "";
   try {
-    const hasil = await ambilSiklon();
-    const simpan = terapkanHasilSiklon(hasil);
-    if (simpan.gagal) {
-      console.log("siklon: cuplikan tidak utuh. Berkas sebelumnya tidak ditimpa.");
-    } else if (simpan.berubah) {
-      console.log(
-        `siklon: berubah. halaman ${hasil.cuplikan.status_teks}; ikhtisar ${hasil.cuplikan.ikhtisar.status}; api ${hasil.apiHttp}; sistem ${hasil.recordCount}`,
-      );
-    } else {
-      console.log("siklon: isi tidak berubah. Cap waktu pengambilan diabaikan. Tidak ada commit.");
-    }
+    hasil = await ambilSiklon();
   } catch (error) {
+    galatBmkg = aman(error?.message || error);
+    console.log(`bmkg: gagal diambil (${galatBmkg}). Cuplikan sebelumnya tetap.`);
+  }
+  const jma = await ambilBlok("jma", ambilJma, lama?.pemantau?.jma);
+  const jtwc = await ambilBlok("jtwc", ambilJtwc, lama?.pemantau?.jtwc);
+  const tambahan = {
+    jma_siklon: entriPemantau("jma_siklon", jma),
+    jtwc_siklon: entriPemantau("jtwc_siklon", jtwc),
+  };
+  if (hasil && cuplikanUtuh(hasil.cuplikan)) {
+    const cuplikan = denganPemantau(hasil.cuplikan, jma, jtwc);
+    const simpan = terapkanHasilSiklon({
+      ...hasil,
+      cuplikan,
+      badan: `${JSON.stringify(cuplikan, null, 2)}\n`,
+    }, tambahan);
+    if (simpan.gagal) console.log("siklon: cuplikan tidak utuh. Berkas sebelumnya tidak ditimpa.");
+    else if (simpan.berubah) {
+      console.log(
+        `siklon: berubah. halaman ${cuplikan.status_teks}; jma ${jma.status} ${jma.sistem.length}; jtwc ${jtwc.status} ${jtwc.sistem.length}`,
+      );
+    } else console.log("siklon: isi tidak berubah. Cap waktu pengambilan diabaikan. Tidak ada commit.");
+  } else if (cuplikanUtuh(lama)) {
+    const cuplikan = denganPemantau(lama, jma, jtwc);
+    const teks = `${JSON.stringify(cuplikan, null, 2)}\n`;
+    const sama = isiSiklonSama(lama, cuplikan);
+    if (!sama) tulisTeks(berkas, teks);
     const entriLama = bacaJson(manifes)?.datasets?.bmkg_siklon || null;
-    const simpan = catatGagalSiklon(entriLama, error?.message || error);
-    console.log(
-      `siklon: gagal diambil (${aman(error?.message || error)}). Berkas sebelumnya tidak ditimpa.${simpan.berubah ? " Status manifes diperbarui." : ""}`,
-    );
+    const simpan = catatGagalSiklon(entriLama, galatBmkg || "Cuplikan BMKG tidak utuh.", tambahan);
+    console.log(`bmkg: cuplikan sebelumnya tetap.${sama && !simpan.berubah ? "" : " Pemantau lain diperbarui bila isinya berubah."}`);
+  } else {
+    const entriLama = bacaJson(manifes)?.datasets?.bmkg_siklon || null;
+    catatGagalSiklon(entriLama, galatBmkg || "Cuplikan BMKG tidak utuh.", tambahan);
+    console.log("bmkg: tidak ada cuplikan utuh untuk dipertahankan.");
   }
 }
