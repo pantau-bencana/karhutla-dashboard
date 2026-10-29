@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-10-29T16:59:30.828Z",
+  "fetched_at": "2026-10-29T21:52:58.120Z",
   "sumber": "PVMBG",
   "url_tingkat": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas",
   "url_letusan": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan",
@@ -640,6 +640,24 @@
   "letusan": [
     {
       "jenis": "informasi-letusan",
+      "gunung": "Anak Krakatau",
+      "waktu": "2026-10-30T01:40:00+07:00",
+      "waktu_teks": "01:40 WIB 2026-10-30",
+      "teks": "Terjadi erupsi G. Anak Krakatau pada hari Jumat, 30 Oktober 2026, pukul 01:40 WIB. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 50 mm dan durasi 19 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/f872bfc5-d3c7-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Semeru",
+      "waktu": "2026-10-30T00:23:00+07:00",
+      "waktu_teks": "00:23 WIB 2026-10-30",
+      "teks": "Terjadi erupsi G. Semeru pada hari Jumat, 30 Oktober 2026, pukul 00:23 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/6bae9a86-d3bc-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
       "gunung": "Ibu",
       "waktu": "2026-10-29T23:35:00+09:00",
       "waktu_teks": "23:35 WIT 2026-10-29",
@@ -754,27 +772,18 @@
       "teks": "Terjadi erupsi G. Ibu pada hari Kamis, 29 Oktober 2026, pukul 06:44 WIT dengan tinggi kolom abu teramati ± 500 m di atas puncak (± 1825 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat laut. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 45 detik.",
       "tinggi_kolom_m": 500,
       "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/5cfd08e3-d318-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Semeru",
-      "waktu": "2026-10-29T06:00:00+07:00",
-      "waktu_teks": "06:00 WIB 2026-10-29",
-      "teks": "Terjadi erupsi G. Semeru pada hari Kamis, 29 Oktober 2026, pukul 06:00 WIB dengan tinggi kolom abu teramati ± 300 m di atas puncak (± 3976 m di atas permukaan laut). Kolom abu teramati berwarna putih hingga kelabu dengan intensitas sedang ke arah barat. Saat laporan ini dibuat, erupsi masih berlangsung.",
-      "tinggi_kolom_m": 300,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/5eaccf46-d322-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Semeru",
-      "waktu": "2026-10-29T05:10:00+07:00",
-      "waktu_teks": "05:10 WIB 2026-10-29",
-      "teks": "Terjadi erupsi G. Semeru pada hari Kamis, 29 Oktober 2026, pukul 05:10 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/63a69cab-d31b-11f1-a61d-005056b54356/show"
     }
   ],
   "vona": [
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-10-29T17:23:00Z",
+      "waktu_teks": "20261029/1723Z",
+      "teks": "Eruption at 1723 UTC (0023 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/70738722-a44b-4ca1-aca7-f5f25a552598"
+    },
     {
       "jenis": "vona",
       "gunung": "Semeru",
@@ -900,15 +909,6 @@
       "teks": "Eruption at 2222 UTC (0522 local). Ash-cloud is not observed.",
       "tinggi_kolom_m": null,
       "url": "https://magma.esdm.go.id/vona/c7341735-c985-47ef-9401-595b406d383e"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Semeru",
-      "waktu": "2026-10-27T16:54:00Z",
-      "waktu_teks": "20261027/1654Z",
-      "teks": "Eruption at 1654 UTC (2354 local). Ash-cloud is not observed.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/vona/a557761c-4b7f-43f2-80cd-5308bc1410ca"
     }
   ]
 }
