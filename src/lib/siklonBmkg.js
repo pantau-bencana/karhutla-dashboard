@@ -70,7 +70,7 @@ function dalamTcwc(kalimat) {
 
 function teksDampak(nilai) {
   if (typeof nilai === "string") {
-    const rata = rapikan(nilai);
+    const rata = teksPolos(nilai);
     if (!rata || /^[-–—.]+$/.test(rata)) return "";
     return rata;
   }
@@ -95,7 +95,21 @@ function namaPublik(namaMentah, kode, jenis) {
   return inti || rapikan(namaMentah);
 }
 
-function susunSistem({ nama, tahap, jenis, kalimat, dampak = "", isAor = null, titik = null }) {
+function susunSistem({
+  nama,
+  tahap,
+  jenis,
+  kalimat,
+  dampak = "",
+  cuaca_ekstrem = "",
+  gelombang_tinggi = "",
+  angin_kencang = "",
+  dampak_status = "",
+  berlaku_hingga = "",
+  url_infografis = "",
+  isAor = null,
+  titik = null,
+}) {
   const kalimatBersih = kalimatPertama(kalimat);
   const luar = luarTcwc(kalimatBersih);
   const diDalam = (!luar && dalamTcwc(kalimatBersih)) || (isAor === true && !luar);
@@ -106,6 +120,12 @@ function susunSistem({ nama, tahap, jenis, kalimat, dampak = "", isAor = null, t
     kalimat: kalimatBersih,
     lokasi: lokasiDari(kalimatBersih),
     dampak: rapikan(dampak),
+    cuaca_ekstrem: rapikan(cuaca_ekstrem),
+    gelombang_tinggi: rapikan(gelombang_tinggi),
+    angin_kencang: rapikan(angin_kencang),
+    dampak_status: rapikan(dampak_status),
+    berlaku_hingga: rapikan(berlaku_hingga),
+    url_infografis: url_infografis || "",
     di_dalam_tcwc: Boolean(diDalam),
     luar_tcwc: Boolean(luar),
     sumber: "halaman",
@@ -202,39 +222,141 @@ function sistemDariNuxt(raw) {
     const rinci = rincian.get(rekaman.id) || {};
     const namaMentah = rapikan(rekaman.name);
     const jenis = /^bibit\b/i.test(namaMentah) || rekaman.is_cyclone === false ? "bibit" : "siklon";
-    const dampak = teksDampak(rinci.direct_impact) || teksDampak(rinci.extreme_weather) || teksDampak(rinci.warning_text);
+    const dampakCuaca = teksDampak(rinci.extreme_weather);
+    const dampakGelombang = teksDampak(rinci.ocean_gale);
+    const dampakAngin = teksDampak(rinci.gale);
+    const dampakLangsung = teksDampak(rinci.direct_impact);
+    const peringatan = teksDampak(rinci.warning_text);
+    const statusNuxt = statusDariTeks(dampakLangsung);
     return susunSistem({
       nama: namaPublik(namaMentah, rekaman.tc_code, jenis),
       tahap: jenis === "bibit" ? "Bibit Siklon Tropis" : "Siklon Tropis",
       jenis,
       kalimat: rinci.description_id || "",
-      dampak,
+      dampak: [dampakLangsung, dampakCuaca, dampakGelombang, dampakAngin, peringatan].filter(Boolean).join(". "),
+      cuaca_ekstrem: dampakCuaca,
+      gelombang_tinggi: dampakGelombang,
+      angin_kencang: dampakAngin,
+      dampak_status: statusNuxt.dampak_status,
+      berlaku_hingga: statusNuxt.berlaku_hingga,
+      url_infografis: urlBerkas(rinci.infografis),
       isAor: rekaman.is_aor === true,
       titik: titikAnalisis(peta.get(rekaman.id)),
     });
   }).filter((item) => item.nama && item.kalimat);
 }
 
-function dampakDariTabel(html, nama) {
-  const aman = rapikan(nama).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  if (aman.length < 2) return "";
-  const pola = new RegExp(`Wilayah Terdampak[^<]{0,80}${aman}[\\s\\S]{0,5000}?<tbody[\\s\\S]*?</tbody>`, "i");
-  const cocok = String(html || "").match(pola);
-  if (!cocok) return "";
-  const sel = [...cocok[0].matchAll(/<p>([\s\S]*?)<\/p>/gi)]
-    .map((item) => rapikan(item[1].replace(/<[^>]+>/g, " ")))
-    .filter(Boolean);
-  const isi = sel.filter((teks) => !/^[-–—.]+$/.test(teks));
-  if (isi.length) return isi.join("; ");
-  if (sel.some((teks) => /^[-–—.]+$/.test(teks))) return "-";
+function urlBerkas(nilai) {
+  if (!nilai) return "";
+  if (typeof nilai === "string" && /^https?:\/\//i.test(nilai)) return nilai;
+  if (Array.isArray(nilai)) {
+    for (const item of nilai) {
+      const url = urlBerkas(item);
+      if (url) return url;
+    }
+    return "";
+  }
+  if (typeof nilai === "object") {
+    for (const kunci of ["url", "href", "src", "full_url"]) {
+      const url = urlBerkas(nilai[kunci]);
+      if (url) return url;
+    }
+  }
   return "";
+}
+
+function isiKolom(teks) {
+  const rata = rapikan(teks);
+  if (!rata || /^[-–—.]+$/.test(rata)) return "";
+  return rata;
+}
+
+function statusDariTeks(teks) {
+  const cocok = String(teks || "").match(/Dampak\s+(langsung|tidak langsung)([\s\S]{0,500})/i);
+  if (!cocok) return { dampak_status: "", berlaku_hingga: "" };
+  const hingga = cocok[2].match(/hingga\s+(\d{1,2}\s+[A-Za-z]+\s+20\d{2}(?:\s+(?:pukul\s+)?\d{1,2}[.:]\d{2}\s+WIB)?)/i);
+  return {
+    dampak_status: /tidak/i.test(cocok[1]) ? "tidak langsung" : "langsung",
+    berlaku_hingga: hingga ? rapikan(hingga[1]) : "",
+  };
+}
+
+function urlMutlakBmkg(nilai) {
+  const rata = rapikan(String(nilai || "").replace(/&amp;/gi, "&"));
+  if (/^https?:\/\//i.test(rata)) return rata;
+  if (rata.startsWith("/") && !rata.startsWith("//")) return `https://www.bmkg.go.id${rata}`;
+  return "";
+}
+
+function gambarDalam(html) {
+  for (const cocok of String(html || "").matchAll(/\b(?:src|href)="([^"]+)"/gi)) {
+    const url = urlMutlakBmkg(cocok[1]);
+    if (!/\.(?:png|jpe?g|webp)(?:\?|$)/i.test(url)) continue;
+    if (/\/images\/(?:icon|footer)\b/i.test(url)) continue;
+    return url;
+  }
+  return "";
+}
+
+function blokNama(html, nama) {
+  const kunci = String(nama || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  if (kunci.length < 2) return "";
+  const cocok = String(html || "").match(new RegExp(`<p\\b[^>]*font-bold[^>]*>[^<]*${kunci}[^<]*</p>([\\s\\S]{0,1500})`, "i"));
+  if (!cocok) return "";
+  return cocok[1].split(/<h2\b/i)[0].split(/<p\b[^>]*font-bold/i)[0];
+}
+
+function bacaKolomWilayah(html) {
+  const peta = [];
+  for (const blok of String(html || "").split(/<h2\b[^>]*>/i)) {
+    const judul = teksPolos(blok.slice(0, 500));
+    if (!/^Wilayah Terdampak\b/i.test(judul)) continue;
+    const namaBagian = judul.replace(/^Wilayah Terdampak\s*/i, "").split(/Wilayah Terdampak/i)[0];
+    const sel = [...blok.matchAll(/<td\b[\s\S]*?<\/td>/gi)].slice(0, 3).map((td) => {
+      const para = [...td[0].matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi)].map((item) => teksPolos(item[1])).filter(Boolean);
+      return isiKolom(para.join("; ") || teksPolos(td[0]));
+    });
+    const status = statusDariTeks(teksPolos(blok));
+    peta.push({
+      judul: namaBagian.toLowerCase(),
+      cuaca_ekstrem: sel[0] || "",
+      gelombang_tinggi: sel[1] || "",
+      angin_kencang: sel[2] || "",
+      dampak_status: status.dampak_status,
+      berlaku_hingga: status.berlaku_hingga,
+      url_infografis: gambarDalam(blok),
+    });
+  }
+  return peta;
+}
+
+function kolomUntuk(peta, nama) {
+  const kunci = String(nama || "").toLowerCase();
+  if (kunci.length < 2) return null;
+  return peta.find((item) => item.judul.includes(kunci)) || null;
+}
+
+export function susunTeksDampak(item) {
+  const bagian = [];
+  if (item?.dampak_status) {
+    bagian.push(`Dampak ${item.dampak_status}${item.berlaku_hingga ? ` hingga ${item.berlaku_hingga}` : ""}`);
+  }
+  for (const [label, nilai] of [
+    ["Cuaca ekstrem", item?.cuaca_ekstrem],
+    ["Gelombang tinggi", item?.gelombang_tinggi],
+    ["Angin kencang", item?.angin_kencang],
+  ]) {
+    if (nilai) bagian.push(`${label}: ${nilai}`);
+  }
+  if (bagian.length) return `${bagian.join(". ")}.`;
+  const lama = rapikan(item?.dampak);
+  if (!lama || /^[-–—.]+$/.test(lama)) return "-";
+  return lama;
 }
 
 function dampakHalaman(html, nama, kalimat) {
   const dariKalimat = dampakDari(`${kalimat} `);
   if (dariKalimat) return dariKalimat;
-  const tabel = dampakDariTabel(html, nama);
-  if (tabel) return tabel;
   const polos = teksPolos(html);
   const cuplikan = rapikan(kalimat).slice(0, 40).toLowerCase();
   const awal = cuplikan ? polos.toLowerCase().indexOf(cuplikan) : -1;
@@ -274,10 +396,26 @@ export function bacaSistemHalaman(html) {
   const sumber = String(html || "");
   const dariNuxt = bacaSistemNuxt(sumber);
   const sistem = dariNuxt.length ? dariNuxt : bacaSistemTeks(sumber);
+  const kolom = bacaKolomWilayah(sumber);
   return sistem.map((item) => {
-    if (item.dampak) return item;
-    const dampak = dampakHalaman(sumber, item.nama, item.kalimat);
-    return dampak ? { ...item, dampak } : item;
+    const isi = kolomUntuk(kolom, item.nama) || {};
+    const dekat = blokNama(sumber, item.nama);
+    const statusDekat = statusDariTeks(teksPolos(`${dekat} ${item.kalimat || ""}`));
+    const gabung = {
+      ...item,
+      cuaca_ekstrem: item.cuaca_ekstrem || isi.cuaca_ekstrem || "",
+      gelombang_tinggi: item.gelombang_tinggi || isi.gelombang_tinggi || "",
+      angin_kencang: item.angin_kencang || isi.angin_kencang || "",
+      dampak_status: item.dampak_status || isi.dampak_status || statusDekat.dampak_status || "",
+      berlaku_hingga: item.berlaku_hingga || isi.berlaku_hingga || statusDekat.berlaku_hingga || "",
+      url_infografis: item.url_infografis || isi.url_infografis || gambarDalam(dekat) || "",
+    };
+    if (!gabung.cuaca_ekstrem && !gabung.gelombang_tinggi && !gabung.angin_kencang && !gabung.dampak_status) {
+      const kalimat = dampakHalaman(sumber, item.nama, item.kalimat);
+      if (kalimat && kalimat !== "-") gabung.dampak = kalimat;
+    }
+    gabung.dampak = susunTeksDampak(gabung);
+    return gabung;
   });
 }
 
