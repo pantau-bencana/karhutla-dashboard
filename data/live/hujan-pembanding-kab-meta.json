@@ -1,16 +1,16 @@
 {
   "status": "ok",
-  "fetched_at": "2026-10-29T23:18:29.363Z",
+  "fetched_at": "2026-10-29T23:45:14.448Z",
   "observed_at": "2026-10-30T00:00:00+07:00",
   "tanggal": [
     "2026-10-30",
     "2026-10-31",
     "2026-11-01"
   ],
-  "kept_previous": true,
+  "kept_previous": false,
   "diminta": 514,
-  "berhasil": 494,
-  "gagal": 20,
+  "berhasil": 514,
+  "gagal": 0,
   "record_count": 1542,
   "jenis": "prakiraan model ECMWF (via Open-Meteo), bukan BMKG",
   "sumber": "Open-Meteo",
@@ -29,6 +29,6 @@
     "96.05"
   ],
   "titik_batas_catatan": "Kabupaten tanpa koordinat prakiraan BMKG memakai pusat poligon terbesar pada batas administrasi tersimpan, bukan titik kelurahan BMKG.",
-  "error": "20 kab/kota gagal; cuplikan sebelumnya dipertahankan bila ada.",
+  "error": null,
   "gpm": "NASA GPM IMERG tidak dipakai. Unduhan Early/Late di PPS mengembalikan HTTP 401 tanpa akun, dan jalur yang terdokumentasi memakai registrasi Earthdata atau PPS. Tidak ada berkas observasi yang diunduh."
 }
