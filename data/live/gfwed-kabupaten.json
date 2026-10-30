@@ -995,7 +995,7 @@
       "provinsi": "Jawa Barat",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 3
+      "n_sel": 1
     },
     {
       "kode": "32.04",
@@ -1003,7 +1003,7 @@
       "provinsi": "Jawa Barat",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 3
+      "n_sel": 1
     },
     {
       "kode": "32.05",
@@ -1062,43 +1062,11 @@
       "n_sel": 2
     },
     {
-      "kode": "32.13",
-      "kabupaten": "Subang",
-      "provinsi": "Jawa Barat",
-      "fwi_rata": 0.19,
-      "fwi_maks": 0.58,
-      "n_sel": 3
-    },
-    {
-      "kode": "32.14",
-      "kabupaten": "Purwakarta",
-      "provinsi": "Jawa Barat",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 1
-    },
-    {
       "kode": "32.15",
       "kabupaten": "Karawang",
       "provinsi": "Jawa Barat",
-      "fwi_rata": 0.14,
+      "fwi_rata": 0.28,
       "fwi_maks": 0.28,
-      "n_sel": 3
-    },
-    {
-      "kode": "32.16",
-      "kabupaten": "Bekasi",
-      "provinsi": "Jawa Barat",
-      "fwi_rata": 0.01,
-      "fwi_maks": 0.01,
-      "n_sel": 1
-    },
-    {
-      "kode": "32.17",
-      "kabupaten": "Bandung Barat",
-      "provinsi": "Jawa Barat",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
       "n_sel": 1
     },
     {
@@ -1758,22 +1726,6 @@
       "n_sel": 3
     },
     {
-      "kode": "53.09",
-      "kabupaten": "Ngada",
-      "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 3.64,
-      "fwi_maks": 6.41,
-      "n_sel": 2
-    },
-    {
-      "kode": "53.10",
-      "kabupaten": "Manggarai",
-      "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 1
-    },
-    {
       "kode": "53.11",
       "kabupaten": "Sumba Timur",
       "provinsi": "Nusa Tenggara Timur",
@@ -1809,9 +1761,9 @@
       "kode": "53.15",
       "kabupaten": "Manggarai Barat",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 2.24,
+      "fwi_rata": 8.82,
       "fwi_maks": 8.82,
-      "n_sel": 4
+      "n_sel": 1
     },
     {
       "kode": "53.16",
@@ -1838,12 +1790,12 @@
       "n_sel": 2
     },
     {
-      "kode": "53.19",
-      "kabupaten": "Manggarai Timur",
+      "kode": "53.21",
+      "kabupaten": "Malaka",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 0.41,
-      "fwi_maks": 0.82,
-      "n_sel": 2
+      "fwi_rata": 10.32,
+      "fwi_maks": 10.32,
+      "n_sel": 1
     },
     {
       "kode": "61.01",
