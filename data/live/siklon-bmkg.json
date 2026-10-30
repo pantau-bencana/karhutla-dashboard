@@ -7,8 +7,8 @@
       "nama": "IN-FA",
       "tahap": "Siklon Tropis",
       "jenis": "siklon",
-      "kalimat": "Siklon Tropis In-Fa merupakan siklon tropis yang berkembang di Samudra Pasifik Barat Laut, terutama di wilayah Laut Filipina dan Laut Cina Timur",
-      "lokasi": "Samudra Pasifik Barat Laut, terutama di wilayah Laut Filipina dan Laut Cina Timur",
+      "kalimat": "Siklon Tropis In-Fa saat ini terpantau berada di Laut Filipina dan bergerak ke arah barat laut menjauhi wilayah Indonesia.",
+      "lokasi": "Laut Filipina dan bergerak ke arah barat laut menjauhi wilayah Indonesia",
       "dampak": "-",
       "cuaca_ekstrem": "",
       "gelombang_tinggi": "",
@@ -20,19 +20,19 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 17.9,
-      "bujur": 147.8,
+      "lintang": 19.6,
+      "bujur": 144.6,
       "tekanan_hpa": 940,
       "angin_knot": 90,
       "kategori": "4",
-      "waktu_analisis": "2026-10-30T00:00:00.000Z"
+      "waktu_analisis": "2026-10-30T12:00:00.000Z"
     },
     {
       "nama": "91B",
       "tahap": "Bibit Siklon Tropis",
       "jenis": "bibit",
-      "kalimat": "Bibit Siklon Tropis 91B mulai terbentuk pada 29 Oktober 2026 pukul 01.00 WIB di Laut Andaman.",
-      "lokasi": "Laut Andaman",
+      "kalimat": "Bibit Siklon Tropis 91B saat ini terpantau berada di Laut Andaman dan bergerak ke arah barat laut menjauhi wilayah Indonesia.",
+      "lokasi": "Laut Andaman dan bergerak ke arah barat laut menjauhi wilayah Indonesia",
       "dampak": "Cuaca ekstrem: Aceh.",
       "cuaca_ekstrem": "Aceh",
       "gelombang_tinggi": "",
@@ -44,18 +44,18 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 8.2,
-      "bujur": 95.5,
-      "tekanan_hpa": 1010,
+      "lintang": 9.5,
+      "bujur": 93.2,
+      "tekanan_hpa": 1009,
       "angin_knot": 20,
       "kategori": "L",
-      "waktu_analisis": "2026-10-30T00:00:00.000Z"
+      "waktu_analisis": "2026-10-30T12:00:00.000Z"
     }
   ],
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-10-29",
+    "terbit": "2026-10-30",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
     "sistem": []
   },
@@ -86,11 +86,11 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-10-30T07:21:27.634Z",
+    "fetched_at": "2026-10-30T14:25:50.315Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-10-30T07:21:27.634Z",
-  "pdf_diubah": "Thu, 29 Oct 2026 11:22:09 GMT",
+  "fetched_at": "2026-10-30T14:25:50.315Z",
+  "pdf_diubah": "Fri, 30 Oct 2026 07:57:24 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
@@ -101,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-10-30T07:21:39.211Z",
+      "fetched_at": "2026-10-30T14:26:02.791Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -118,19 +118,19 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jma",
-          "lintang": 18.8,
-          "bujur": 146.2,
+          "lintang": 19.6,
+          "bujur": 144.6,
           "tekanan_hpa": null,
           "angin_knot": null,
           "kategori": "TY",
-          "waktu_analisis": "2026-10-30T06:00:00Z"
+          "waktu_analisis": "2026-10-30T12:00:00Z"
         }
       ]
     },
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-10-30T07:21:39.406Z",
+      "fetched_at": "2026-10-30T14:26:02.856Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
