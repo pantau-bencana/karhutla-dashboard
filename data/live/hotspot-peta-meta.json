@@ -2,23 +2,23 @@
   "sumber": "NASA FIRMS VIIRS_SNPP_NRT",
   "bbox_permintaan": "94.4,-11.5,141.6,6.5",
   "permintaan_hari": 5,
-  "baris_berkas": 10449,
+  "baris_berkas": 8843,
   "koordinat_tidak_valid": 0,
   "sensor_berkas": {
-    "N": 10449
+    "N": 8843
   },
   "duplikat_dibuang": 0,
   "di_luar_poligon": 0,
-  "di_darat": 10449,
-  "tanggal_mulai": "2026-10-25",
+  "di_darat": 8843,
+  "tanggal_mulai": "2026-10-26",
   "tanggal_selesai": "2026-10-29",
   "jam_24_sensor": {
     "N": 2518
   },
   "jam_24_kepercayaan": {
-    "rendah": 63,
     "nominal": 2370,
-    "tinggi": 85
+    "tinggi": 85,
+    "rendah": 63
   },
   "jam_24_jumlah": 2518,
   "catatan": "Hotspot = deteksi satelit, bukan kebakaran terkonfirmasi. Penyaring daratan dan nama wilayah datang dari kueri BIG pada saat pembaruan, bukan dari berkas batas di repositori. Koordinat FIRMS tidak diubah.",
