@@ -1,6 +1,6 @@
 {
   "hariWib": "2026-10-31",
-  "generated_at": "2026-10-30T18:15:01.975Z",
+  "generated_at": "2026-10-30T18:35:00.504Z",
   "sumber": {
     "sipongi": {
       "nama": "SiPongi+",
@@ -44,8 +44,8 @@
     "cap": {
       "nama": "Sumber: BMKG",
       "status": "Aktif",
-      "diambil": "2026-10-30T18:04:40.140Z",
-      "observasi": "2026-10-30T18:00:25.000Z",
+      "diambil": "2026-10-30T18:35:00.217Z",
+      "observasi": "2026-10-30T18:30:35.000Z",
       "label": "Nowcast BMKG, dasar waktu 0–3 jam.",
       "catatan": "Cakupan nasional. Tanpa peringatan bukan nol."
     },
@@ -17053,7 +17053,7 @@
         "2026-10-28": "Hujan Lebat dan Petir · Moderate",
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
-        "2026-10-31": "Tidak ada peringatan"
+        "2026-10-31": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "18.07": {
@@ -17747,7 +17747,7 @@
         "2026-10-28": "Hujan Lebat dan Petir · Moderate",
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
-        "2026-10-31": "Tidak ada peringatan"
+        "2026-10-31": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "18.71": {
