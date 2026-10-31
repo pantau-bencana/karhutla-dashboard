@@ -20,12 +20,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 21.5,
-      "bujur": 142.8,
-      "tekanan_hpa": 952,
-      "angin_knot": 115,
-      "kategori": "4",
-      "waktu_analisis": "2026-10-31T00:00:00.000Z"
+      "lintang": 22.7,
+      "bujur": 143.4,
+      "tekanan_hpa": 940,
+      "angin_knot": 90,
+      "kategori": "3",
+      "waktu_analisis": "2026-10-31T12:00:00.000Z"
     },
     {
       "nama": "91B",
@@ -45,17 +45,17 @@
       "sumber": "halaman",
       "agensi": "BMKG",
       "lintang": 9.9,
-      "bujur": 91.2,
-      "tekanan_hpa": 1010,
-      "angin_knot": 25,
+      "bujur": 89.7,
+      "tekanan_hpa": 1007,
+      "angin_knot": 30,
       "kategori": "L",
-      "waktu_analisis": "2026-10-31T00:00:00.000Z"
+      "waktu_analisis": "2026-10-31T06:00:00.000Z"
     }
   ],
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-10-30",
+    "terbit": "2026-10-31",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
     "sistem": []
   },
@@ -86,11 +86,11 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-10-31T05:59:57.432Z",
+    "fetched_at": "2026-10-31T12:52:16.536Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-10-31T05:59:57.432Z",
-  "pdf_diubah": "Fri, 30 Oct 2026 07:57:24 GMT",
+  "fetched_at": "2026-10-31T12:52:16.536Z",
+  "pdf_diubah": "Sat, 31 Oct 2026 07:59:20 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
@@ -101,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-10-31T06:00:08.344Z",
+      "fetched_at": "2026-10-31T12:52:27.781Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -118,19 +118,19 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jma",
-          "lintang": 21.7,
-          "bujur": 142.7,
+          "lintang": 22.7,
+          "bujur": 143.4,
           "tekanan_hpa": null,
           "angin_knot": null,
           "kategori": "TY",
-          "waktu_analisis": "2026-10-31T03:00:00Z"
+          "waktu_analisis": "2026-10-31T12:00:00Z"
         }
       ]
     },
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-10-31T06:00:08.624Z",
+      "fetched_at": "2026-10-31T12:52:28.801Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
