@@ -1425,9 +1425,9 @@
       "kode": "35.10",
       "kabupaten": "Banyuwangi",
       "provinsi": "Jawa Timur",
-      "fwi_rata": 0.16,
+      "fwi_rata": 0.65,
       "fwi_maks": 0.65,
-      "n_sel": 4
+      "n_sel": 1
     },
     {
       "kode": "35.11",
@@ -1596,14 +1596,6 @@
       "fwi_rata": 0.01,
       "fwi_maks": 0.03,
       "n_sel": 2
-    },
-    {
-      "kode": "51.01",
-      "kabupaten": "Jembrana",
-      "provinsi": "Bali",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 1
     },
     {
       "kode": "51.02",
