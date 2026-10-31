@@ -1,19 +1,19 @@
 {
-  "fetched_at": "2026-10-31T00:53:06.687Z",
+  "fetched_at": "2026-10-31T07:06:19.828Z",
   "sumber": "PVMBG",
   "url_tingkat": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas",
   "url_letusan": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan",
   "url_vona": "https://magma.esdm.go.id/vona",
   "koordinat": "Halaman Tingkat Aktivitas tidak memuat koordinat.",
-  "status_tingkat": "gagal",
-  "galat_tingkat": "HTTP 403",
-  "kept_tingkat": true,
-  "status_letusan": "gagal",
-  "galat_letusan": "HTTP 403",
-  "kept_letusan": true,
-  "status_vona": "gagal",
-  "galat_vona": "HTTP 403",
-  "kept_vona": true,
+  "status_tingkat": "ok",
+  "galat_tingkat": "",
+  "kept_tingkat": false,
+  "status_letusan": "ok",
+  "galat_letusan": "",
+  "kept_letusan": false,
+  "status_vona": "ok",
+  "galat_vona": "",
+  "kept_vona": false,
   "gunung": [
     {
       "nama": "Anak Krakatau",
@@ -641,6 +641,69 @@
     {
       "jenis": "informasi-letusan",
       "gunung": "Ibu",
+      "waktu": "2026-10-31T15:05:00+09:00",
+      "waktu_teks": "15:05 WIT 2026-10-31",
+      "teks": "Terjadi erupsi G. Ibu pada hari Sabtu, 31 Oktober 2026, pukul 15:05 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 20 mm dan durasi 59 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/5f62c702-d4f0-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-10-31T12:28:00+09:00",
+      "waktu_teks": "12:28 WIT 2026-10-31",
+      "teks": "Terjadi erupsi G. Ibu pada hari Sabtu, 31 Oktober 2026, pukul 12:28 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 20 mm dan durasi 36 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/6f312169-d4da-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-10-31T10:50:00+09:00",
+      "waktu_teks": "10:50 WIT 2026-10-31",
+      "teks": "Terjadi erupsi G. Ibu pada hari Sabtu, 31 Oktober 2026, pukul 10:50 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 20 mm dan durasi 61 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/aaccfd1f-d4cc-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-10-31T09:40:00+09:00",
+      "waktu_teks": "09:40 WIT 2026-10-31",
+      "teks": "Terjadi erupsi G. Ibu pada hari Sabtu, 31 Oktober 2026, pukul 09:40 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 37 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/0aa9bed9-d4c3-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Semeru",
+      "waktu": "2026-10-31T09:08:00+07:00",
+      "waktu_teks": "09:08 WIB 2026-10-31",
+      "teks": "Terjadi erupsi G. Semeru pada hari Sabtu, 31 Oktober 2026, pukul 09:08 WIB. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 25 mm dan durasi 122 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/2292062a-d4cf-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Dukono",
+      "waktu": "2026-10-31T07:15:00+09:00",
+      "waktu_teks": "07:15 WIT 2026-10-31",
+      "teks": "Terjadi erupsi G. Dukono pada hari Sabtu, 31 Oktober 2026, pukul 07:15 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 22 mm dan durasi 36.38 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/a67c5651-d4b7-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Semeru",
+      "waktu": "2026-10-31T05:39:00+07:00",
+      "waktu_teks": "05:39 WIB 2026-10-31",
+      "teks": "Terjadi erupsi G. Semeru pada hari Sabtu, 31 Oktober 2026, pukul 05:39 WIB. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 24 mm dan durasi 370 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/5b3f43fa-d4b3-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
       "waktu": "2026-10-31T00:29:00+09:00",
       "waktu_teks": "00:29 WIT 2026-10-31",
       "teks": "Terjadi erupsi G. Ibu pada hari Sabtu, 31 Oktober 2026, pukul 00:29 WIT dengan tinggi kolom abu teramati ± 500 m di atas puncak (± 1825 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas tebal ke arah barat laut. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 48 detik.",
@@ -709,72 +772,18 @@
       "teks": "Terjadi erupsi G. Ibu pada hari Jumat, 30 Oktober 2026, pukul 15:06 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 48 detik.",
       "tinggi_kolom_m": null,
       "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/47119eba-d427-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Ibu",
-      "waktu": "2026-10-30T13:23:00+09:00",
-      "waktu_teks": "13:23 WIT 2026-10-30",
-      "teks": "Terjadi erupsi G. Ibu pada hari Jumat, 30 Oktober 2026, pukul 13:23 WIT dengan tinggi kolom abu teramati ± 500 m di atas puncak (± 1825 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas tebal ke arah barat laut. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 80 detik.",
-      "tinggi_kolom_m": 500,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/02f2f2c8-d419-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Ibu",
-      "waktu": "2026-10-30T10:51:00+09:00",
-      "waktu_teks": "10:51 WIT 2026-10-30",
-      "teks": "Terjadi erupsi G. Ibu pada hari Jumat, 30 Oktober 2026, pukul 10:51 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 46 detik.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/e8c30104-d403-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Ibu",
-      "waktu": "2026-10-30T10:18:00+09:00",
-      "waktu_teks": "10:18 WIT 2026-10-30",
-      "teks": "Terjadi erupsi G. Ibu pada hari Jumat, 30 Oktober 2026, pukul 10:18 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 55 detik.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/5baa8c5c-d3ff-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Semeru",
-      "waktu": "2026-10-30T07:31:00+07:00",
-      "waktu_teks": "07:31 WIB 2026-10-30",
-      "teks": "Terjadi erupsi G. Semeru pada hari Jumat, 30 Oktober 2026, pukul 07:31 WIB dengan tinggi kolom abu teramati ± 500 m di atas puncak (± 4176 m di atas permukaan laut). Kolom abu teramati berwarna putih hingga kelabu dengan intensitas tebal ke arah barat. Erupsi ini terekam di seismograf dengan amplitudo maksimum 22 mm dan durasi 113 detik.",
-      "tinggi_kolom_m": 500,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/5c318734-d3f8-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Dukono",
-      "waktu": "2026-10-30T07:11:00+09:00",
-      "waktu_teks": "07:11 WIT 2026-10-30",
-      "teks": "Terjadi erupsi G. Dukono pada hari Jumat, 30 Oktober 2026, pukul 07:11 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 20 mm dan durasi 37.18 detik.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/e3fbb0b1-d3e5-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Semeru",
-      "waktu": "2026-10-30T05:43:00+07:00",
-      "waktu_teks": "05:43 WIB 2026-10-30",
-      "teks": "Terjadi erupsi G. Semeru pada hari Jumat, 30 Oktober 2026, pukul 05:43 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/2e6e0ca3-d3e9-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Anak Krakatau",
-      "waktu": "2026-10-30T01:40:00+07:00",
-      "waktu_teks": "01:40 WIB 2026-10-30",
-      "teks": "Terjadi erupsi G. Anak Krakatau pada hari Jumat, 30 Oktober 2026, pukul 01:40 WIB. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 50 mm dan durasi 19 detik.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/f872bfc5-d3c7-11f1-a61d-005056b54356/show"
     }
   ],
   "vona": [
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-10-31T02:08:00Z",
+      "waktu_teks": "20261031/0208Z",
+      "teks": "Eruption at 0208 UTC (0908 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/b717e478-b809-443d-8df5-dc2f029c955b"
+    },
     {
       "jenis": "vona",
       "gunung": "Marapi",
@@ -900,15 +909,6 @@
       "teks": "Eruption at 1714 UTC (0014 local). Ash-cloud is not observed.",
       "tinggi_kolom_m": null,
       "url": "https://magma.esdm.go.id/vona/fd66c634-ca7c-4ace-89a9-12e7e800cf53"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Semeru",
-      "waktu": "2026-10-28T16:03:00Z",
-      "waktu_teks": "20261028/1603Z",
-      "teks": "Eruption at 1603 UTC (2303 local). Ash-cloud is not observed.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/vona/c544c62e-f2d0-42d6-8392-23b2e61b0cb3"
     }
   ]
 }
