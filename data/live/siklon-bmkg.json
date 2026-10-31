@@ -44,12 +44,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 9.9,
-      "bujur": 89.7,
-      "tekanan_hpa": 1007,
-      "angin_knot": 30,
+      "lintang": 10.5,
+      "bujur": 88.4,
+      "tekanan_hpa": 1010,
+      "angin_knot": 33,
       "kategori": "L",
-      "waktu_analisis": "2026-10-31T06:00:00.000Z"
+      "waktu_analisis": "2026-10-31T12:00:00.000Z"
     }
   ],
   "ikhtisar": {
@@ -86,10 +86,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-10-31T12:52:16.536Z",
+    "fetched_at": "2026-10-31T17:50:25.939Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-10-31T12:52:16.536Z",
+  "fetched_at": "2026-10-31T17:50:25.939Z",
   "pdf_diubah": "Sat, 31 Oct 2026 07:59:20 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -101,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-10-31T12:52:27.781Z",
+      "fetched_at": "2026-10-31T17:50:39.147Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -118,19 +118,19 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jma",
-          "lintang": 22.7,
-          "bujur": 143.4,
+          "lintang": 23,
+          "bujur": 143.6,
           "tekanan_hpa": null,
           "angin_knot": null,
           "kategori": "TY",
-          "waktu_analisis": "2026-10-31T12:00:00Z"
+          "waktu_analisis": "2026-10-31T15:00:00Z"
         }
       ]
     },
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-10-31T12:52:28.801Z",
+      "fetched_at": "2026-10-31T17:50:39.724Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
