@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-10-31T18:39:06.685Z",
+  "fetched_at": "2026-10-31T22:37:04.862Z",
   "sumber": "PVMBG",
   "url_tingkat": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas",
   "url_letusan": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan",
@@ -640,6 +640,24 @@
   "letusan": [
     {
       "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-11-01T07:28:00+09:00",
+      "waktu_teks": "07:28 WIT 2026-11-01",
+      "teks": "Terjadi erupsi G. Ibu pada hari Minggu, 01 November 2026, pukul 07:28 WIT dengan tinggi kolom abu teramati ± 200 m di atas puncak (± 1525 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 46 detik.",
+      "tinggi_kolom_m": 200,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/a72b1831-d579-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-11-01T07:05:00+09:00",
+      "waktu_teks": "07:05 WIT 2026-11-01",
+      "teks": "Terjadi erupsi G. Ibu pada hari Minggu, 01 November 2026, pukul 07:05 WIT dengan tinggi kolom abu teramati ± 300 m di atas puncak (± 1625 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 50 detik.",
+      "tinggi_kolom_m": 300,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/6e21519c-d579-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
       "gunung": "Ili Lewotolok",
       "waktu": "2026-10-31T23:52:00+08:00",
       "waktu_teks": "23:52 WITA 2026-10-31",
@@ -754,27 +772,27 @@
       "teks": "Terjadi erupsi G. Anak Krakatau pada hari Sabtu, 31 Oktober 2026, pukul 19:42 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
       "tinggi_kolom_m": null,
       "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/352a41cc-d528-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Anak Krakatau",
-      "waktu": "2026-10-31T19:38:00+07:00",
-      "waktu_teks": "19:38 WIB 2026-10-31",
-      "teks": "Terjadi erupsi G. Anak Krakatau pada hari Sabtu, 31 Oktober 2026, pukul 19:38 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/410ce043-d527-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Anak Krakatau",
-      "waktu": "2026-10-31T19:32:00+07:00",
-      "waktu_teks": "19:32 WIB 2026-10-31",
-      "teks": "Terjadi erupsi G. Anak Krakatau pada hari Sabtu, 31 Oktober 2026, pukul 19:32 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/6aae0b7f-d526-11f1-a61d-005056b54356/show"
     }
   ],
   "vona": [
+    {
+      "jenis": "vona",
+      "gunung": "Ile Werung",
+      "waktu": "2026-10-31T21:19:00Z",
+      "waktu_teks": "20261031/2119Z",
+      "teks": "Ash-cloud is not observed. Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/3f45dde7-f1f8-48b6-a0a7-f566b95b55a4"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Lereboleng",
+      "waktu": "2026-10-31T20:05:00Z",
+      "waktu_teks": "20261031/2005Z",
+      "teks": "Ash-cloud is not observed. Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/b286ee59-64f9-46a8-a075-d03ff6985b94"
+    },
     {
       "jenis": "vona",
       "gunung": "Anak Krakatau",
@@ -891,24 +909,6 @@
       "teks": "Eruption at 0406 UTC (1106 local). Ash-cloud is not observed.",
       "tinggi_kolom_m": null,
       "url": "https://magma.esdm.go.id/vona/fd582ff6-df13-4075-964d-3544a7de5896"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Sorikmarapi",
-      "waktu": "2026-10-29T03:21:00Z",
-      "waktu_teks": "20261029/0321Z",
-      "teks": "Increasing in volcanic activity. Ash-cloud is not observed.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/vona/a3ab079a-8a04-4cbe-94ad-b3e4750956fc"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Semeru",
-      "waktu": "2026-10-28T23:00:00Z",
-      "waktu_teks": "20261028/2300Z",
-      "teks": "Eruption with volcanic ash cloud at 2300 UTC (0600 local). Best estimate of ash-cloud top is around 12723 FT (3976 M) above sea level or 960 FT (300 M) above summit. May be higher than what can be observed clearly. Source of height data: ground observer.",
-      "tinggi_kolom_m": 3976,
-      "url": "https://magma.esdm.go.id/vona/04503eb8-57de-4803-91aa-b1817e7ce646"
     }
   ]
 }
