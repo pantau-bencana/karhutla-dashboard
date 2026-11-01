@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-01T09:25:00.637Z",
+  "fetched_at": "2026-11-01T16:10:17.102Z",
   "sumber": "PVMBG",
   "url_tingkat": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas",
   "url_letusan": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan",
@@ -641,6 +641,60 @@
     {
       "jenis": "informasi-letusan",
       "gunung": "Ibu",
+      "waktu": "2026-11-02T00:01:00+09:00",
+      "waktu_teks": "00:01 WIT 2026-11-02",
+      "teks": "Terjadi erupsi G. Ibu pada hari Senin, 02 November 2026, pukul 00:01 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 15 mm dan durasi 50 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/140eca64-d605-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Karangetang",
+      "waktu": "2026-11-01T21:18:00+08:00",
+      "waktu_teks": "21:18 WITA 2026-11-01",
+      "teks": "Terjadi erupsi G. Karangetang pada hari Minggu, 01 November 2026, pukul 21:18 WITA. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/9a2488f1-d5f6-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Karangetang",
+      "waktu": "2026-11-01T19:38:00+08:00",
+      "waktu_teks": "19:38 WITA 2026-11-01",
+      "teks": "Terjadi erupsi G. Karangetang pada hari Minggu, 01 November 2026, pukul 19:38 WITA. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/1d5290bd-d5ea-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Karangetang",
+      "waktu": "2026-11-01T19:23:00+08:00",
+      "waktu_teks": "19:23 WITA 2026-11-01",
+      "teks": "Terjadi erupsi G. Karangetang pada hari Minggu, 01 November 2026, pukul 19:23 WITA. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/e4e87197-d5e6-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-11-01T19:19:00+09:00",
+      "waktu_teks": "19:19 WIT 2026-11-01",
+      "teks": "Terjadi erupsi G. Ibu pada hari Minggu, 01 November 2026, pukul 19:19 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 44 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/90f5c329-d5df-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Semeru",
+      "waktu": "2026-11-01T17:48:00+07:00",
+      "waktu_teks": "17:48 WIB 2026-11-01",
+      "teks": "Terjadi erupsi G. Semeru pada hari Minggu, 01 November 2026, pukul 17:48 WIB. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 23 mm dan durasi 127 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/0d4584cf-d5e1-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
       "waktu": "2026-11-01T16:06:00+09:00",
       "waktu_teks": "16:06 WIT 2026-11-01",
       "teks": "Terjadi erupsi G. Ibu pada hari Minggu, 01 November 2026, pukul 16:06 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 71 detik.",
@@ -718,63 +772,45 @@
       "teks": "Terjadi erupsi G. Anak Krakatau pada hari Sabtu, 31 Oktober 2026, pukul 20:50 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
       "tinggi_kolom_m": null,
       "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/dae02611-d531-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Anak Krakatau",
-      "waktu": "2026-10-31T20:39:00+07:00",
-      "waktu_teks": "20:39 WIB 2026-10-31",
-      "teks": "Terjadi erupsi G. Anak Krakatau pada hari Sabtu, 31 Oktober 2026, pukul 20:39 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/f81b680b-d52f-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Anak Krakatau",
-      "waktu": "2026-10-31T20:24:00+07:00",
-      "waktu_teks": "20:24 WIB 2026-10-31",
-      "teks": "Terjadi erupsi G. Anak Krakatau pada hari Sabtu, 31 Oktober 2026, pukul 20:24 WIB. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 54 mm dan durasi 271 detik.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/c17907f4-d530-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Anak Krakatau",
-      "waktu": "2026-10-31T20:18:00+07:00",
-      "waktu_teks": "20:18 WIB 2026-10-31",
-      "teks": "Terjadi erupsi G. Anak Krakatau pada hari Sabtu, 31 Oktober 2026, pukul 20:18 WIB. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 58 mm dan durasi 79 detik.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/0a48481f-d530-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Anak Krakatau",
-      "waktu": "2026-10-31T20:11:00+07:00",
-      "waktu_teks": "20:11 WIB 2026-10-31",
-      "teks": "Terjadi erupsi G. Anak Krakatau pada hari Sabtu, 31 Oktober 2026, pukul 20:11 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/aba47620-d52b-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Anak Krakatau",
-      "waktu": "2026-10-31T20:06:00+07:00",
-      "waktu_teks": "20:06 WIB 2026-10-31",
-      "teks": "Terjadi erupsi G. Anak Krakatau pada hari Sabtu, 31 Oktober 2026, pukul 20:06 WIB. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 51 mm dan durasi 156 detik.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/3c4512b4-d52b-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Anak Krakatau",
-      "waktu": "2026-10-31T20:02:00+07:00",
-      "waktu_teks": "20:02 WIB 2026-10-31",
-      "teks": "Terjadi erupsi G. Anak Krakatau pada hari Sabtu, 31 Oktober 2026, pukul 20:02 WIB. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 55 mm dan durasi 117 detik.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/a50458da-d52a-11f1-a61d-005056b54356/show"
     }
   ],
   "vona": [
+    {
+      "jenis": "vona",
+      "gunung": "Salak",
+      "waktu": "2026-11-01T11:55:00Z",
+      "waktu_teks": "20261101/1155Z",
+      "teks": "Ash-cloud is not observed. Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/f075b1be-319d-43f2-97b7-ef57bb25fa6e"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-11-01T10:48:00Z",
+      "waktu_teks": "20261101/1048Z",
+      "teks": "Eruption at 1048 UTC (1748 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/005a566b-14ac-4b29-b743-ce350dff6b94"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Bromo",
+      "waktu": "2026-11-01T10:11:00Z",
+      "waktu_teks": "20261101/1011Z",
+      "teks": "Increasing in volcanic activity. Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/b91c1d80-8fa7-44c5-9cec-9f5cce9f58bb"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Inierie",
+      "waktu": "2026-11-01T08:44:00Z",
+      "waktu_teks": "20261101/0844Z",
+      "teks": "Ash-cloud is not observed. Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/a110c3ab-6c31-41bb-b3c9-83cbb9a52f0b"
+    },
     {
       "jenis": "vona",
       "gunung": "Ebulobo",
@@ -873,42 +909,6 @@
       "teks": "Ash-cloud is not observed. Ash-cloud is not observed.",
       "tinggi_kolom_m": null,
       "url": "https://magma.esdm.go.id/vona/a0bbf10b-1e06-4a31-ad26-cb2182e0f154"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Inielika",
-      "waktu": "2026-11-01T00:22:00Z",
-      "waktu_teks": "20261101/0022Z",
-      "teks": "Ash-cloud is not observed. Ash-cloud is not observed.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/vona/19d090c9-f8fc-4494-a619-ad249ccc3b86"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Agung",
-      "waktu": "2026-11-01T00:21:00Z",
-      "waktu_teks": "20261101/0021Z",
-      "teks": "Ash-cloud is not observed. Ash-cloud is not observed.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/vona/16f73456-f06a-4401-9fd3-c48b2326d863"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Anak Ranakah",
-      "waktu": "2026-11-01T00:19:00Z",
-      "waktu_teks": "20261101/0019Z",
-      "teks": "Increasing in volcanic activity. Ash-cloud is not observed.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/vona/b73b7699-a3c3-4eec-9621-0d6a73e5a492"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Gede",
-      "waktu": "2026-11-01T00:03:00Z",
-      "waktu_teks": "20261101/0003Z",
-      "teks": "Ash-cloud is not observed. Ash-cloud is not observed.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/vona/35a06da4-aa6d-440a-8744-3f766ae17b05"
     }
   ]
 }
