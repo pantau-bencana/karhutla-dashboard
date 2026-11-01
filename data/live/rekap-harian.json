@@ -1,6 +1,6 @@
 {
   "hariWib": "2026-11-01",
-  "generated_at": "2026-11-01T05:56:43.670Z",
+  "generated_at": "2026-11-01T05:57:44.383Z",
   "sumber": {
     "sipongi": {
       "nama": "SiPongi+",
@@ -44,8 +44,8 @@
     "cap": {
       "nama": "Sumber: BMKG",
       "status": "Aktif",
-      "diambil": "2026-11-01T02:09:46.439Z",
-      "observasi": "2026-11-01T02:00:18.000Z",
+      "diambil": "2026-11-01T05:57:39.710Z",
+      "observasi": "2026-11-01T05:46:40.000Z",
       "label": "Nowcast BMKG, dasar waktu 0–3 jam.",
       "catatan": "Cakupan nasional. Tanpa peringatan bukan nol."
     },
@@ -6674,7 +6674,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "12.03": {
@@ -6780,7 +6780,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "12.04": {
@@ -6886,7 +6886,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "12.05": {
@@ -7306,7 +7306,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "12.09": {
@@ -7412,7 +7412,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "12.10": {
@@ -7516,7 +7516,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "12.11": {
@@ -7728,7 +7728,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "12.13": {
@@ -8466,7 +8466,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "12.20": {
@@ -8570,7 +8570,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "12.21": {
@@ -8780,7 +8780,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "12.23": {
@@ -8886,7 +8886,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "12.24": {
@@ -8990,7 +8990,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "12.25": {
@@ -9094,7 +9094,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "12.71": {
@@ -9514,7 +9514,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "12.75": {
@@ -9934,7 +9934,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "13.01": {
@@ -10040,7 +10040,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "13.02": {
@@ -10988,7 +10988,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "13.11": {
@@ -11094,7 +11094,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "13.12": {
@@ -12680,7 +12680,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "14.08": {
@@ -13524,7 +13524,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "15.04": {
@@ -13630,7 +13630,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "15.05": {
@@ -13736,7 +13736,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "15.06": {
@@ -13842,7 +13842,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "15.07": {
@@ -13948,7 +13948,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "15.08": {
@@ -14158,7 +14158,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "15.71": {
@@ -14264,7 +14264,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "15.72": {
@@ -14474,7 +14474,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "16.02": {
@@ -14580,7 +14580,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "16.03": {
@@ -14684,7 +14684,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "16.04": {
@@ -15106,7 +15106,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "16.08": {
@@ -15212,7 +15212,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "16.09": {
@@ -15424,7 +15424,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "16.11": {
@@ -15634,7 +15634,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "16.13": {
@@ -15740,7 +15740,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "16.71": {
@@ -16162,7 +16162,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "17.01": {
@@ -16792,7 +16792,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "17.07": {
@@ -17424,7 +17424,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "18.03": {
@@ -17528,7 +17528,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "18.04": {
@@ -17632,7 +17632,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "18.05": {
@@ -17738,7 +17738,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "18.06": {
@@ -17844,7 +17844,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "18.07": {
@@ -18052,7 +18052,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "18.09": {
@@ -18158,7 +18158,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "18.10": {
@@ -18264,7 +18264,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "18.11": {
@@ -18368,7 +18368,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "18.12": {
@@ -18474,7 +18474,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "18.13": {
@@ -18580,7 +18580,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "18.71": {
@@ -18790,7 +18790,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "19.01": {
@@ -19108,7 +19108,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "19.04": {
@@ -19214,7 +19214,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "19.05": {
@@ -19636,7 +19636,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "21.02": {
@@ -19846,7 +19846,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "21.04": {
@@ -19952,7 +19952,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "21.05": {
@@ -20058,7 +20058,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "21.71": {
@@ -20164,7 +20164,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "21.72": {
@@ -20270,7 +20270,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "31.01": {
@@ -20980,7 +20980,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "32.02": {
@@ -30610,7 +30610,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "35.27": {
@@ -30716,7 +30716,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "35.28": {
@@ -30822,7 +30822,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "35.29": {
@@ -31980,7 +31980,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "36.02": {
@@ -32084,7 +32084,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "36.03": {
@@ -32175,7 +32175,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "36.04": {
@@ -32281,7 +32281,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "36.71": {
@@ -32387,7 +32387,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "36.72": {
@@ -32599,7 +32599,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "36.74": {
@@ -33694,7 +33694,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "52.02": {
@@ -33794,7 +33794,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "52.03": {
@@ -33894,7 +33894,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "52.04": {
@@ -33994,7 +33994,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "52.05": {
@@ -34094,7 +34094,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "52.06": {
@@ -34194,7 +34194,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "52.07": {
@@ -34294,7 +34294,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "52.08": {
@@ -34396,7 +34396,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "52.71": {
@@ -34496,7 +34496,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "52.72": {
@@ -36096,7 +36096,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "53.16": {
@@ -38794,7 +38794,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "62.06": {
@@ -41137,7 +41137,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "64.02": {
@@ -41237,7 +41237,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "64.03": {
@@ -41437,7 +41437,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-01": "Tidak ada peringatan"
       }
     },
     "64.08": {
@@ -42641,7 +42641,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "71.02": {
@@ -43043,7 +43043,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "71.06": {
@@ -43143,7 +43143,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "71.07": {
@@ -43245,7 +43245,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "71.08": {
@@ -43345,7 +43345,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "71.09": {
@@ -43749,7 +43749,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "71.72": {
@@ -44149,7 +44149,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "72.02": {
@@ -44249,7 +44249,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "72.03": {
@@ -44349,7 +44349,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "72.04": {
@@ -44449,7 +44449,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "72.05": {
@@ -44549,7 +44549,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "72.06": {
@@ -44849,7 +44849,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "72.09": {
@@ -44949,7 +44949,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "72.10": {
@@ -45049,7 +45049,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "72.11": {
@@ -45351,7 +45351,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "73.01": {
@@ -49579,7 +49579,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "75.02": {
@@ -49679,7 +49679,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "75.03": {
@@ -49779,7 +49779,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "75.04": {
@@ -49879,7 +49879,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "75.05": {
@@ -49979,7 +49979,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "75.71": {
@@ -51887,7 +51887,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "82.02": {
@@ -51987,7 +51987,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "82.03": {
@@ -52087,7 +52087,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "82.04": {
@@ -52187,7 +52187,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "82.05": {
@@ -52387,7 +52387,7 @@
         "2026-10-29": "Hujan Lebat dan Petir · Moderate",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "82.07": {
@@ -52487,7 +52487,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "82.08": {
@@ -52587,7 +52587,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "82.71": {
@@ -52787,7 +52787,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "91.03": {
@@ -52887,7 +52887,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "91.05": {
@@ -53287,7 +53287,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "91.15": {
@@ -53687,7 +53687,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "92.02": {
@@ -56472,7 +56472,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "96.02": {
@@ -56624,7 +56624,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Hujan Lebat dan Petir · Moderate",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "96.04": {
@@ -56700,7 +56700,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "96.05": {
@@ -56776,7 +56776,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "96.71": {
@@ -56876,7 +56876,7 @@
         "2026-10-29": "Tidak ada peringatan",
         "2026-10-30": "Tidak ada peringatan",
         "2026-10-31": "Tidak ada peringatan",
-        "2026-11-01": "Tidak ada peringatan"
+        "2026-11-01": "Hujan Lebat dan Petir · Moderate"
       }
     }
   },
