@@ -1150,8 +1150,64 @@
       "n_sel": 1
     },
     {
+      "kode": "33.06",
+      "kabupaten": "Purworejo",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.07",
+      "kabupaten": "Wonosobo",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.08",
+      "kabupaten": "Magelang",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.09",
+      "kabupaten": "Boyolali",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.10",
+      "kabupaten": "Klaten",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.11",
+      "kabupaten": "Sukoharjo",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
       "kode": "33.12",
       "kabupaten": "Wonogiri",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 2
+    },
+    {
+      "kode": "33.13",
+      "kabupaten": "Karanganyar",
       "provinsi": "Jawa Tengah",
       "fwi_rata": 0,
       "fwi_maks": 0,
@@ -1163,7 +1219,7 @@
       "provinsi": "Jawa Tengah",
       "fwi_rata": 0,
       "fwi_maks": 0.01,
-      "n_sel": 2
+      "n_sel": 3
     },
     {
       "kode": "33.16",
@@ -1203,6 +1259,22 @@
       "provinsi": "Jawa Tengah",
       "fwi_rata": 0.05,
       "fwi_maks": 0.05,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.22",
+      "kabupaten": "Semarang",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 2
+    },
+    {
+      "kode": "33.23",
+      "kabupaten": "Temanggung",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
       "n_sel": 1
     },
     {
@@ -1249,6 +1321,30 @@
       "kode": "33.74",
       "kabupaten": "Kota Semarang",
       "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "34.02",
+      "kabupaten": "Bantul",
+      "provinsi": "Daerah Istimewa Yogyakarta",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "34.03",
+      "kabupaten": "Gunungkidul",
+      "provinsi": "Daerah Istimewa Yogyakarta",
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.01,
+      "n_sel": 1
+    },
+    {
+      "kode": "34.04",
+      "kabupaten": "Sleman",
+      "provinsi": "Daerah Istimewa Yogyakarta",
       "fwi_rata": 0,
       "fwi_maks": 0,
       "n_sel": 1
@@ -1662,6 +1758,22 @@
       "n_sel": 3
     },
     {
+      "kode": "53.09",
+      "kabupaten": "Ngada",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 1.18,
+      "fwi_maks": 2.08,
+      "n_sel": 2
+    },
+    {
+      "kode": "53.10",
+      "kabupaten": "Manggarai",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
       "kode": "53.11",
       "kabupaten": "Sumba Timur",
       "provinsi": "Nusa Tenggara Timur",
@@ -1697,9 +1809,9 @@
       "kode": "53.15",
       "kabupaten": "Manggarai Barat",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 8.77,
+      "fwi_rata": 2.23,
       "fwi_maks": 8.77,
-      "n_sel": 1
+      "n_sel": 4
     },
     {
       "kode": "53.16",
@@ -1723,6 +1835,14 @@
       "provinsi": "Nusa Tenggara Timur",
       "fwi_rata": 0.02,
       "fwi_maks": 0.04,
+      "n_sel": 2
+    },
+    {
+      "kode": "53.19",
+      "kabupaten": "Manggarai Timur",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
       "n_sel": 2
     },
     {
