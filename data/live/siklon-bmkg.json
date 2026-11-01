@@ -86,10 +86,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-10-31T21:46:26.071Z",
+    "fetched_at": "2026-11-01T01:22:10.833Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-10-31T21:46:26.071Z",
+  "fetched_at": "2026-11-01T01:22:10.833Z",
   "pdf_diubah": "Sat, 31 Oct 2026 07:59:20 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -101,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-10-31T21:46:39.602Z",
+      "fetched_at": "2026-11-01T01:22:22.717Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -119,18 +119,18 @@
           "luar_tcwc": false,
           "sumber": "jma",
           "lintang": 22.8,
-          "bujur": 144.1,
+          "bujur": 144.3,
           "tekanan_hpa": null,
           "angin_knot": null,
           "kategori": "TY",
-          "waktu_analisis": "2026-10-31T21:00:00Z"
+          "waktu_analisis": "2026-11-01T00:00:00Z"
         }
       ]
     },
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-10-31T21:46:39.651Z",
+      "fetched_at": "2026-11-01T01:22:22.958Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
