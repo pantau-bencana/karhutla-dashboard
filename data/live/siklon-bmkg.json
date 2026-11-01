@@ -86,10 +86,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-01T15:20:55.437Z",
+    "fetched_at": "2026-11-01T19:51:13.718Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-01T15:20:55.437Z",
+  "fetched_at": "2026-11-01T19:51:13.718Z",
   "pdf_diubah": "Sun, 01 Nov 2026 07:55:09 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -101,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-01T15:21:07.651Z",
+      "fetched_at": "2026-11-01T19:51:24.979Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -119,18 +119,18 @@
           "luar_tcwc": false,
           "sumber": "jma",
           "lintang": 22,
-          "bujur": 143.7,
+          "bujur": 142.9,
           "tekanan_hpa": null,
           "angin_knot": null,
           "kategori": "TY",
-          "waktu_analisis": "2026-11-01T12:00:00Z"
+          "waktu_analisis": "2026-11-01T18:00:00Z"
         }
       ]
     },
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-01T15:21:07.711Z",
+      "fetched_at": "2026-11-01T19:51:25.041Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
@@ -155,20 +155,20 @@
           "jenis": "siklon"
         },
         {
-          "nama": "FOUR",
-          "kalimat": "Advisory JTWC ABIO menyebut FOUR.",
+          "nama": "MURASU",
+          "kalimat": "Advisory JTWC ABIO menyebut MURASU.",
           "lokasi": "",
           "dampak": "-",
           "agensi": "JTWC",
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jtwc",
-          "lintang": 11.6,
-          "bujur": 86.6,
+          "lintang": 12.8,
+          "bujur": 83.8,
           "tekanan_hpa": null,
-          "angin_knot": 35,
+          "angin_knot": 50,
           "kategori": "",
-          "waktu_analisis": "2026-11-01T00:00:00.000Z",
+          "waktu_analisis": "2026-11-01T12:00:00.000Z",
           "kode": "04B",
           "tahap": "Siklon tropis",
           "jenis": "siklon"
