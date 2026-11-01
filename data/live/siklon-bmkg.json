@@ -28,13 +28,13 @@
       "waktu_analisis": "2026-11-01T00:00:00.000Z"
     },
     {
-      "nama": "91B",
-      "tahap": "Bibit Siklon Tropis",
-      "jenis": "bibit",
-      "kalimat": "Bibit Siklon Tropis 91B saat ini terpantau berada di Laut Andaman dan bergerak ke arah barat laut menjauhi wilayah Indonesia.",
-      "lokasi": "Laut Andaman dan bergerak ke arah barat laut menjauhi wilayah Indonesia",
-      "dampak": "Cuaca ekstrem: Aceh.",
-      "cuaca_ekstrem": "Aceh",
+      "nama": "TC MURASU",
+      "tahap": "Siklon Tropis",
+      "jenis": "siklon",
+      "kalimat": "Siklon Tropis Murasu berkembang dari Bibit Siklon Tropis 91B yang mencapai intensitas siklon tropis pada 1 November 2026 pukul 13.00 WIB di wilayah Monitoring (AoM) TCWC Jakarta.",
+      "lokasi": "wilayah Monitoring (AoM) TCWC Jakarta",
+      "dampak": "-",
+      "cuaca_ekstrem": "",
       "gelombang_tinggi": "",
       "angin_kencang": "",
       "dampak_status": "",
@@ -44,18 +44,18 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 11.5,
-      "bujur": 86.4,
-      "tekanan_hpa": 1007,
-      "angin_knot": 30,
-      "kategori": "L",
-      "waktu_analisis": "2026-11-01T00:00:00.000Z"
+      "lintang": 12.6,
+      "bujur": 84.3,
+      "tekanan_hpa": 1003,
+      "angin_knot": 45,
+      "kategori": "1",
+      "waktu_analisis": "2026-11-01T12:00:00.000Z"
     }
   ],
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-10-31",
+    "terbit": "2026-11-01",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
     "sistem": []
   },
@@ -86,11 +86,11 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-01T07:44:33.293Z",
+    "fetched_at": "2026-11-01T15:20:55.437Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-01T07:44:33.293Z",
-  "pdf_diubah": "Sat, 31 Oct 2026 07:59:20 GMT",
+  "fetched_at": "2026-11-01T15:20:55.437Z",
+  "pdf_diubah": "Sun, 01 Nov 2026 07:55:09 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
@@ -101,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-01T07:44:43.821Z",
+      "fetched_at": "2026-11-01T15:21:07.651Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -118,19 +118,19 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jma",
-          "lintang": 22.4,
-          "bujur": 144.2,
+          "lintang": 22,
+          "bujur": 143.7,
           "tekanan_hpa": null,
           "angin_knot": null,
           "kategori": "TY",
-          "waktu_analisis": "2026-11-01T06:00:00Z"
+          "waktu_analisis": "2026-11-01T12:00:00Z"
         }
       ]
     },
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-01T07:44:44.087Z",
+      "fetched_at": "2026-11-01T15:21:07.711Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
