@@ -20,12 +20,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 22.8,
-      "bujur": 144.3,
-      "tekanan_hpa": 940,
-      "angin_knot": 90,
+      "lintang": 22.3,
+      "bujur": 141.7,
+      "tekanan_hpa": 965,
+      "angin_knot": 70,
       "kategori": "3",
-      "waktu_analisis": "2026-11-01T00:00:00.000Z"
+      "waktu_analisis": "2026-11-02T00:00:00.000Z"
     },
     {
       "nama": "TC MURASU",
@@ -44,12 +44,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 12.6,
-      "bujur": 84.3,
-      "tekanan_hpa": 1003,
-      "angin_knot": 45,
-      "kategori": "1",
-      "waktu_analisis": "2026-11-01T12:00:00.000Z"
+      "lintang": 13.6,
+      "bujur": 81.8,
+      "tekanan_hpa": 998,
+      "angin_knot": 50,
+      "kategori": "2",
+      "waktu_analisis": "2026-11-02T00:00:00.000Z"
     }
   ],
   "ikhtisar": {
@@ -86,10 +86,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-01T23:43:45.655Z",
+    "fetched_at": "2026-11-02T06:31:11.500Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-01T23:43:45.655Z",
+  "fetched_at": "2026-11-02T06:31:11.500Z",
   "pdf_diubah": "Sun, 01 Nov 2026 07:55:09 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -101,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-01T23:43:54.196Z",
+      "fetched_at": "2026-11-02T06:31:21.415Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -118,19 +118,19 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jma",
-          "lintang": 22.1,
-          "bujur": 142.3,
+          "lintang": 22.4,
+          "bujur": 141.4,
           "tekanan_hpa": null,
           "angin_knot": null,
           "kategori": "TY",
-          "waktu_analisis": "2026-11-01T21:00:00Z"
+          "waktu_analisis": "2026-11-02T03:00:00Z"
         }
       ]
     },
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-01T23:43:54.438Z",
+      "fetched_at": "2026-11-02T06:31:21.470Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
@@ -144,12 +144,12 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jtwc",
-          "lintang": 22.8,
-          "bujur": 144.3,
+          "lintang": 22.3,
+          "bujur": 141.7,
           "tekanan_hpa": null,
-          "angin_knot": 95,
+          "angin_knot": 70,
           "kategori": "",
-          "waktu_analisis": "2026-11-01T00:00:00.000Z",
+          "waktu_analisis": "2026-11-02T00:00:00.000Z",
           "kode": "30W",
           "tahap": "Typhoon",
           "jenis": "siklon"
