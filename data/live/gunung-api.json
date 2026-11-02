@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-01T16:10:17.102Z",
+  "fetched_at": "2026-11-02T00:53:57.054Z",
   "sumber": "PVMBG",
   "url_tingkat": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas",
   "url_letusan": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan",
@@ -640,6 +640,33 @@
   "letusan": [
     {
       "jenis": "informasi-letusan",
+      "gunung": "Dukono",
+      "waktu": "2026-11-02T09:11:00+09:00",
+      "waktu_teks": "09:11 WIT 2026-11-02",
+      "teks": "Terjadi erupsi G. Dukono pada hari Senin, 02 November 2026, pukul 09:11 WIT dengan tinggi kolom abu teramati ± 950 m di atas puncak (± 2037 m di atas permukaan laut). Kolom abu teramati berwarna putih hingga kelabu dengan intensitas tebal ke arah barat. Erupsi ini terekam di seismograf dengan amplitudo maksimum 18 mm dan durasi 38.57 detik.",
+      "tinggi_kolom_m": 950,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/302a27b0-d652-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-11-02T05:57:00+09:00",
+      "waktu_teks": "05:57 WIT 2026-11-02",
+      "teks": "Terjadi erupsi G. Ibu pada hari Senin, 02 November 2026, pukul 05:57 WIT dengan tinggi kolom abu teramati ± 500 m di atas puncak (± 1825 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas tebal ke arah barat. Saat laporan ini dibuat, erupsi masih berlangsung.",
+      "tinggi_kolom_m": 500,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/c8b04b2b-d636-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Semeru",
+      "waktu": "2026-11-02T04:34:00+07:00",
+      "waktu_teks": "04:34 WIB 2026-11-02",
+      "teks": "Terjadi erupsi G. Semeru pada hari Senin, 02 November 2026, pukul 04:34 WIB. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 25 mm dan durasi 124 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/5bb6622f-d63b-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
       "gunung": "Ibu",
       "waktu": "2026-11-02T00:01:00+09:00",
       "waktu_teks": "00:01 WIT 2026-11-02",
@@ -745,36 +772,36 @@
       "teks": "Terjadi erupsi G. Ili Lewotolok pada hari Sabtu, 31 Oktober 2026, pukul 23:52 WITA dengan tinggi kolom abu teramati ± 500 m di atas puncak (± 1923 m di atas permukaan laut). Kolom abu teramati berwarna putih hingga kelabu dengan intensitas tipis hingga sedang ke arah utara. Erupsi ini terekam di seismograf dengan amplitudo maksimum 47 mm dan durasi 34 detik.",
       "tinggi_kolom_m": 500,
       "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/a910b9a8-d542-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Anak Krakatau",
-      "waktu": "2026-10-31T23:23:00+07:00",
-      "waktu_teks": "23:23 WIB 2026-10-31",
-      "teks": "Terjadi erupsi G. Anak Krakatau pada hari Sabtu, 31 Oktober 2026, pukul 23:23 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/2262d2ba-d549-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Ibu",
-      "waktu": "2026-10-31T22:27:00+09:00",
-      "waktu_teks": "22:27 WIT 2026-10-31",
-      "teks": "Terjadi erupsi G. Ibu pada hari Sabtu, 31 Oktober 2026, pukul 22:27 WIT dengan tinggi kolom abu teramati ± 400 m di atas puncak (± 1725 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat daya. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 37 detik.",
-      "tinggi_kolom_m": 400,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/259e9b69-d52e-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Anak Krakatau",
-      "waktu": "2026-10-31T20:50:00+07:00",
-      "waktu_teks": "20:50 WIB 2026-10-31",
-      "teks": "Terjadi erupsi G. Anak Krakatau pada hari Sabtu, 31 Oktober 2026, pukul 20:50 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/dae02611-d531-11f1-a61d-005056b54356/show"
     }
   ],
   "vona": [
+    {
+      "jenis": "vona",
+      "gunung": "Dukono",
+      "waktu": "2026-11-02T00:11:00Z",
+      "waktu_teks": "20261102/0011Z",
+      "teks": "Eruption with volcanic ash cloud at 0011 UTC (0911 local). Best estimate of ash-cloud top is around 6518 FT (2037 M) above sea level or 3040 FT (950 M) above summit. May be higher than what can be observed clearly. Source of height data: ground observer.",
+      "tinggi_kolom_m": 2037,
+      "url": "https://magma.esdm.go.id/vona/16144179-494b-4f2f-997f-68b115f44a18"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-11-01T21:34:00Z",
+      "waktu_teks": "20261101/2134Z",
+      "teks": "Eruption at 2134 UTC (0434 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/f8986080-2f0a-43ee-8f62-41adc194fcb7"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Ibu",
+      "waktu": "2026-11-01T20:57:00Z",
+      "waktu_teks": "20261101/2057Z",
+      "teks": "Eruption with volcanic ash cloud at 2057 UTC (0557 local). Best estimate of ash-cloud top is around 5840 FT (1825 M) above sea level or 1600 FT (500 M) above summit. May be higher than what can be observed clearly. Source of height data: ground observer.",
+      "tinggi_kolom_m": 1825,
+      "url": "https://magma.esdm.go.id/vona/b902a95e-fe2f-4473-abd1-e200ad515e86"
+    },
     {
       "jenis": "vona",
       "gunung": "Salak",
@@ -882,33 +909,6 @@
       "teks": "Increasing in volcanic activity. Ash-cloud is not observed.",
       "tinggi_kolom_m": null,
       "url": "https://magma.esdm.go.id/vona/11724837-d9a5-4914-9ecc-ee3596e08839"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Peut Sague",
-      "waktu": "2026-11-01T01:23:00Z",
-      "waktu_teks": "20261101/0123Z",
-      "teks": "Ash-cloud is not observed. Ash-cloud is not observed.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/vona/6e0a231e-a834-4af5-8dd9-89b0ff3f7b91"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Kaba",
-      "waktu": "2026-11-01T00:41:00Z",
-      "waktu_teks": "20261101/0041Z",
-      "teks": "Ash-cloud is not observed. Ash-cloud is not observed.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/vona/7cc85003-8e72-4cdf-849b-4ce8d4c0ddca"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Dieng",
-      "waktu": "2026-11-01T00:40:00Z",
-      "waktu_teks": "20261101/0040Z",
-      "teks": "Ash-cloud is not observed. Ash-cloud is not observed.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/vona/a0bbf10b-1e06-4a31-ad26-cb2182e0f154"
     }
   ]
 }
