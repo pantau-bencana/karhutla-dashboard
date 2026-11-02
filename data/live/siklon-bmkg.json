@@ -55,7 +55,7 @@
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-11-01",
+    "terbit": "2026-11-02",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
     "sistem": []
   },
@@ -86,11 +86,11 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-02T06:31:11.500Z",
+    "fetched_at": "2026-11-02T17:17:04.487Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-02T06:31:11.500Z",
-  "pdf_diubah": "Sun, 01 Nov 2026 07:55:09 GMT",
+  "fetched_at": "2026-11-02T17:17:04.487Z",
+  "pdf_diubah": "Mon, 02 Nov 2026 07:29:27 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
@@ -101,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-02T06:31:21.415Z",
+      "fetched_at": "2026-11-02T17:17:17.255Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -109,7 +109,7 @@
         {
           "nama": "In-fa",
           "kode": "2631",
-          "tahap": "Topan",
+          "tahap": "Badai tropis kuat",
           "jenis": "siklon",
           "kalimat": "Analisis RSMC Tokyo untuk In-fa.",
           "lokasi": "",
@@ -118,19 +118,19 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jma",
-          "lintang": 22.4,
-          "bujur": 141.4,
+          "lintang": 22.9,
+          "bujur": 140,
           "tekanan_hpa": null,
           "angin_knot": null,
-          "kategori": "TY",
-          "waktu_analisis": "2026-11-02T03:00:00Z"
+          "kategori": "STS",
+          "waktu_analisis": "2026-11-02T15:00:00Z"
         }
       ]
     },
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-02T06:31:21.470Z",
+      "fetched_at": "2026-11-02T17:17:17.354Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
