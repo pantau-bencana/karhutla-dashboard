@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-02T00:53:57.054Z",
+  "fetched_at": "2026-11-02T07:46:33.017Z",
   "sumber": "PVMBG",
   "url_tingkat": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas",
   "url_letusan": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan",
@@ -72,15 +72,6 @@
     {
       "nama": "Bromo",
       "lokasi": "Jawa Timur",
-      "tingkat": "Waspada",
-      "level": 2,
-      "lintang": null,
-      "bujur": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
-    },
-    {
-      "nama": "Bur Ni Telong",
-      "lokasi": "Aceh",
       "tingkat": "Waspada",
       "level": 2,
       "lintang": null,
@@ -297,6 +288,15 @@
     {
       "nama": "Batutara",
       "lokasi": "Nusa Tenggara Timur",
+      "tingkat": "Normal",
+      "level": 1,
+      "lintang": null,
+      "bujur": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas"
+    },
+    {
+      "nama": "Bur Ni Telong",
+      "lokasi": "Aceh",
       "tingkat": "Normal",
       "level": 1,
       "lintang": null,
@@ -640,6 +640,51 @@
   "letusan": [
     {
       "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-11-02T14:55:00+09:00",
+      "waktu_teks": "14:55 WIT 2026-11-02",
+      "teks": "Terjadi erupsi G. Ibu pada hari Senin, 02 November 2026, pukul 14:55 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 49 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/e4ce9886-d681-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Dukono",
+      "waktu": "2026-11-02T13:38:00+09:00",
+      "waktu_teks": "13:38 WIT 2026-11-02",
+      "teks": "Terjadi erupsi G. Dukono pada hari Senin, 02 November 2026, pukul 13:38 WIT dengan tinggi kolom abu teramati ± 400 m di atas puncak (± 1487 m di atas permukaan laut). Kolom abu teramati berwarna putih hingga kelabu dengan intensitas tebal ke arah barat laut. Erupsi ini terekam di seismograf dengan amplitudo maksimum 34 mm dan durasi 38.57 detik.",
+      "tinggi_kolom_m": 400,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/4ba75d8a-d677-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-11-02T12:27:00+09:00",
+      "waktu_teks": "12:27 WIT 2026-11-02",
+      "teks": "Terjadi erupsi G. Ibu pada hari Senin, 02 November 2026, pukul 12:27 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 44 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/d13541ac-d66c-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-11-02T10:30:00+09:00",
+      "waktu_teks": "10:30 WIT 2026-11-02",
+      "teks": "Terjadi erupsi G. Ibu pada hari Senin, 02 November 2026, pukul 10:30 WIT dengan tinggi kolom abu teramati ± 400 m di atas puncak (± 1725 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 46 detik.",
+      "tinggi_kolom_m": 400,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/56bb3c91-d65c-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Dukono",
+      "waktu": "2026-11-02T09:53:00+09:00",
+      "waktu_teks": "09:53 WIT 2026-11-02",
+      "teks": "Terjadi erupsi G. Dukono pada hari Senin, 02 November 2026, pukul 09:53 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 31 mm dan durasi 44.76 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/356bdc62-d658-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
       "gunung": "Dukono",
       "waktu": "2026-11-02T09:11:00+09:00",
       "waktu_teks": "09:11 WIT 2026-11-02",
@@ -727,54 +772,18 @@
       "teks": "Terjadi erupsi G. Ibu pada hari Minggu, 01 November 2026, pukul 16:06 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 71 detik.",
       "tinggi_kolom_m": null,
       "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/52e69ebc-d5c2-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Ibu",
-      "waktu": "2026-11-01T10:39:00+09:00",
-      "waktu_teks": "10:39 WIT 2026-11-01",
-      "teks": "Terjadi erupsi G. Ibu pada hari Minggu, 01 November 2026, pukul 10:39 WIT dengan tinggi kolom abu teramati ± 300 m di atas puncak (± 1625 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 68 detik.",
-      "tinggi_kolom_m": 300,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/4f92764b-d595-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Ibu",
-      "waktu": "2026-11-01T09:51:00+09:00",
-      "waktu_teks": "09:51 WIT 2026-11-01",
-      "teks": "Terjadi erupsi G. Ibu pada hari Minggu, 01 November 2026, pukul 09:51 WIT dengan tinggi kolom abu teramati ± 300 m di atas puncak (± 1625 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 48 detik.",
-      "tinggi_kolom_m": 300,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/a9b44771-d58e-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Ibu",
-      "waktu": "2026-11-01T07:28:00+09:00",
-      "waktu_teks": "07:28 WIT 2026-11-01",
-      "teks": "Terjadi erupsi G. Ibu pada hari Minggu, 01 November 2026, pukul 07:28 WIT dengan tinggi kolom abu teramati ± 200 m di atas puncak (± 1525 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 46 detik.",
-      "tinggi_kolom_m": 200,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/a72b1831-d579-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Ibu",
-      "waktu": "2026-11-01T07:05:00+09:00",
-      "waktu_teks": "07:05 WIT 2026-11-01",
-      "teks": "Terjadi erupsi G. Ibu pada hari Minggu, 01 November 2026, pukul 07:05 WIT dengan tinggi kolom abu teramati ± 300 m di atas puncak (± 1625 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 50 detik.",
-      "tinggi_kolom_m": 300,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/6e21519c-d579-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Ili Lewotolok",
-      "waktu": "2026-10-31T23:52:00+08:00",
-      "waktu_teks": "23:52 WITA 2026-10-31",
-      "teks": "Terjadi erupsi G. Ili Lewotolok pada hari Sabtu, 31 Oktober 2026, pukul 23:52 WITA dengan tinggi kolom abu teramati ± 500 m di atas puncak (± 1923 m di atas permukaan laut). Kolom abu teramati berwarna putih hingga kelabu dengan intensitas tipis hingga sedang ke arah utara. Erupsi ini terekam di seismograf dengan amplitudo maksimum 47 mm dan durasi 34 detik.",
-      "tinggi_kolom_m": 500,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/a910b9a8-d542-11f1-a61d-005056b54356/show"
     }
   ],
   "vona": [
+    {
+      "jenis": "vona",
+      "gunung": "Lamongan",
+      "waktu": "2026-11-02T03:04:00Z",
+      "waktu_teks": "20261102/0304Z",
+      "teks": "Ash-cloud is not observed. Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/8e0b7524-de4c-4c8b-8870-5393423caaa6"
+    },
     {
       "jenis": "vona",
       "gunung": "Dukono",
@@ -900,15 +909,6 @@
       "teks": "Increasing in volcanic activity. Ash-cloud is not observed.",
       "tinggi_kolom_m": null,
       "url": "https://magma.esdm.go.id/vona/8a0efb9d-eeaa-4ef8-9f59-7a774ec27d6d"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Marapi",
-      "waktu": "2026-11-01T01:35:00Z",
-      "waktu_teks": "20261101/0135Z",
-      "teks": "Increasing in volcanic activity. Ash-cloud is not observed.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/vona/11724837-d9a5-4914-9ecc-ee3596e08839"
     }
   ]
 }
