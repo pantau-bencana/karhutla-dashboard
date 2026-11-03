@@ -86,10 +86,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-03T07:02:35.320Z",
+    "fetched_at": "2026-11-03T15:23:05.570Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-03T07:02:35.320Z",
+  "fetched_at": "2026-11-03T15:23:05.570Z",
   "pdf_diubah": "Tue, 03 Nov 2026 06:09:53 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -101,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-03T07:02:46.208Z",
+      "fetched_at": "2026-11-03T15:23:17.773Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -109,7 +109,7 @@
         {
           "nama": "In-fa",
           "kode": "2631",
-          "tahap": "Badai tropis kuat",
+          "tahap": "Topan",
           "jenis": "siklon",
           "kalimat": "Analisis RSMC Tokyo untuk In-fa.",
           "lokasi": "",
@@ -118,19 +118,19 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jma",
-          "lintang": 23.1,
-          "bujur": 138.9,
+          "lintang": 23.2,
+          "bujur": 138.8,
           "tekanan_hpa": null,
           "angin_knot": null,
-          "kategori": "STS",
-          "waktu_analisis": "2026-11-03T06:00:00Z"
+          "kategori": "TY",
+          "waktu_analisis": "2026-11-03T12:00:00Z"
         }
       ]
     },
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-03T07:02:46.421Z",
+      "fetched_at": "2026-11-03T15:23:18.009Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
@@ -163,12 +163,12 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jtwc",
-          "lintang": 14.7,
-          "bujur": 80.7,
+          "lintang": 15.8,
+          "bujur": 80.2,
           "tekanan_hpa": null,
           "angin_knot": 65,
           "kategori": "",
-          "waktu_analisis": "2026-11-02T12:00:00.000Z",
+          "waktu_analisis": "2026-11-03T06:00:00.000Z",
           "kode": "04B",
           "tahap": "Siklon tropis",
           "jenis": "siklon"
