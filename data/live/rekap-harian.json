@@ -1,6 +1,6 @@
 {
   "hariWib": "2026-11-04",
-  "generated_at": "2026-11-03T20:22:57.258Z",
+  "generated_at": "2026-11-03T20:39:27.013Z",
   "sumber": {
     "sipongi": {
       "nama": "SiPongi+",
@@ -44,8 +44,8 @@
     "cap": {
       "nama": "Sumber: BMKG",
       "status": "Aktif",
-      "diambil": "2026-11-03T20:17:32.436Z",
-      "observasi": "2026-11-03T20:15:10.000Z",
+      "diambil": "2026-11-03T20:39:26.771Z",
+      "observasi": "2026-11-03T20:30:11.000Z",
       "label": "Nowcast BMKG, dasar waktu 0–3 jam.",
       "catatan": "Cakupan nasional. Tanpa peringatan bukan nol."
     },
@@ -42745,7 +42745,7 @@
         "2026-11-01": "Hujan Lebat dan Petir · Moderate",
         "2026-11-02": "Tidak ada peringatan",
         "2026-11-03": "Tidak ada peringatan",
-        "2026-11-04": "Tidak ada peringatan"
+        "2026-11-04": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "61.06": {
@@ -43354,7 +43354,7 @@
         "2026-11-01": "Hujan Lebat dan Petir · Moderate",
         "2026-11-02": "Tidak ada peringatan",
         "2026-11-03": "Tidak ada peringatan",
-        "2026-11-04": "Tidak ada peringatan"
+        "2026-11-04": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "61.11": {
@@ -44090,7 +44090,7 @@
         "2026-11-01": "Tidak ada peringatan",
         "2026-11-02": "Tidak ada peringatan",
         "2026-11-03": "Tidak ada peringatan",
-        "2026-11-04": "Tidak ada peringatan"
+        "2026-11-04": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "62.03": {
@@ -44578,7 +44578,7 @@
         "2026-11-01": "Tidak ada peringatan",
         "2026-11-02": "Tidak ada peringatan",
         "2026-11-03": "Tidak ada peringatan",
-        "2026-11-04": "Tidak ada peringatan"
+        "2026-11-04": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "62.07": {
@@ -45070,7 +45070,7 @@
         "2026-11-01": "Tidak ada peringatan",
         "2026-11-02": "Tidak ada peringatan",
         "2026-11-03": "Tidak ada peringatan",
-        "2026-11-04": "Tidak ada peringatan"
+        "2026-11-04": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "62.11": {
