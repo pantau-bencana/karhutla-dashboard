@@ -1638,6 +1638,30 @@
       "n_sel": 1
     },
     {
+      "kode": "52.01",
+      "kabupaten": "Lombok Barat",
+      "provinsi": "Nusa Tenggara Barat",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "52.02",
+      "kabupaten": "Lombok Tengah",
+      "provinsi": "Nusa Tenggara Barat",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "52.03",
+      "kabupaten": "Lombok Timur",
+      "provinsi": "Nusa Tenggara Barat",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
       "kode": "52.04",
       "kabupaten": "Sumbawa",
       "provinsi": "Nusa Tenggara Barat",
@@ -1660,6 +1684,14 @@
       "fwi_rata": 0,
       "fwi_maks": 0,
       "n_sel": 1
+    },
+    {
+      "kode": "52.07",
+      "kabupaten": "Sumbawa Barat",
+      "provinsi": "Nusa Tenggara Barat",
+      "fwi_rata": 0,
+      "fwi_maks": 0.01,
+      "n_sel": 3
     },
     {
       "kode": "52.72",
@@ -1750,6 +1782,14 @@
       "n_sel": 7
     },
     {
+      "kode": "53.12",
+      "kabupaten": "Sumba Barat",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
       "kode": "53.13",
       "kabupaten": "Lembata",
       "provinsi": "Nusa Tenggara Timur",
@@ -1779,6 +1819,22 @@
       "provinsi": "Nusa Tenggara Timur",
       "fwi_rata": 0.27,
       "fwi_maks": 0.54,
+      "n_sel": 2
+    },
+    {
+      "kode": "53.17",
+      "kabupaten": "Sumba Tengah",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 2
+    },
+    {
+      "kode": "53.18",
+      "kabupaten": "Sumba Barat Daya",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
       "n_sel": 2
     },
     {
