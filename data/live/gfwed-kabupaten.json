@@ -1665,17 +1665,17 @@
       "kode": "52.04",
       "kabupaten": "Sumbawa",
       "provinsi": "Nusa Tenggara Barat",
-      "fwi_rata": 0.1,
-      "fwi_maks": 0.67,
-      "n_sel": 9
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.01,
+      "n_sel": 1
     },
     {
       "kode": "52.05",
       "kabupaten": "Dompu",
       "provinsi": "Nusa Tenggara Barat",
-      "fwi_rata": 0.02,
+      "fwi_rata": 0.03,
       "fwi_maks": 0.05,
-      "n_sel": 3
+      "n_sel": 2
     },
     {
       "kode": "52.06",
@@ -1705,9 +1705,9 @@
       "kode": "53.01",
       "kabupaten": "Kupang",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 3.89,
+      "fwi_rata": 3.6,
       "fwi_maks": 5.8,
-      "n_sel": 6
+      "n_sel": 5
     },
     {
       "kode": "53.02",
@@ -1782,19 +1782,19 @@
       "n_sel": 7
     },
     {
+      "kode": "53.12",
+      "kabupaten": "Sumba Barat",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0.03,
+      "fwi_maks": 0.03,
+      "n_sel": 1
+    },
+    {
       "kode": "53.13",
       "kabupaten": "Lembata",
       "provinsi": "Nusa Tenggara Timur",
       "fwi_rata": 2.95,
       "fwi_maks": 2.95,
-      "n_sel": 1
-    },
-    {
-      "kode": "53.14",
-      "kabupaten": "Rote Ndao",
-      "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 15.82,
-      "fwi_maks": 15.82,
       "n_sel": 1
     },
     {
@@ -1811,6 +1811,22 @@
       "provinsi": "Nusa Tenggara Timur",
       "fwi_rata": 0.85,
       "fwi_maks": 1.7,
+      "n_sel": 2
+    },
+    {
+      "kode": "53.17",
+      "kabupaten": "Sumba Tengah",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 2
+    },
+    {
+      "kode": "53.18",
+      "kabupaten": "Sumba Barat Daya",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
       "n_sel": 2
     },
     {
