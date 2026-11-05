@@ -1,6 +1,6 @@
 {
   "hariWib": "2026-11-05",
-  "generated_at": "2026-11-05T01:34:31.048Z",
+  "generated_at": "2026-11-05T02:23:00.002Z",
   "sumber": {
     "sipongi": {
       "nama": "SiPongi+",
@@ -44,8 +44,8 @@
     "cap": {
       "nama": "Sumber: BMKG",
       "status": "Aktif",
-      "diambil": "2026-11-05T01:30:02.288Z",
-      "observasi": "2026-11-05T01:30:53.000Z",
+      "diambil": "2026-11-05T02:22:59.711Z",
+      "observasi": "2026-11-05T02:15:39.000Z",
       "label": "Nowcast BMKG, dasar waktu 0–3 jam.",
       "catatan": "Cakupan nasional. Tanpa peringatan bukan nol."
     },
@@ -5182,7 +5182,7 @@
         "2026-11-02": "Tidak ada peringatan",
         "2026-11-03": "Tidak ada peringatan",
         "2026-11-04": "Tidak ada peringatan",
-        "2026-11-05": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-05": "Tidak ada peringatan"
       }
     },
     "11.10": {
@@ -7066,7 +7066,7 @@
         "2026-11-02": "Hujan Lebat dan Petir · Moderate",
         "2026-11-03": "Hujan Lebat dan Petir · Moderate",
         "2026-11-04": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-05": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-05": "Tidak ada peringatan"
       }
     },
     "12.02": {
@@ -8822,7 +8822,7 @@
         "2026-11-02": "Hujan Lebat dan Petir · Moderate",
         "2026-11-03": "Hujan Lebat dan Petir · Moderate",
         "2026-11-04": "Tidak ada peringatan",
-        "2026-11-05": "Tidak ada peringatan"
+        "2026-11-05": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "12.16": {
@@ -8946,7 +8946,7 @@
         "2026-11-02": "Hujan Lebat dan Petir · Moderate",
         "2026-11-03": "Hujan Lebat dan Petir · Moderate",
         "2026-11-04": "Tidak ada peringatan",
-        "2026-11-05": "Tidak ada peringatan"
+        "2026-11-05": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "12.17": {
@@ -9072,7 +9072,7 @@
         "2026-11-02": "Hujan Lebat dan Petir · Moderate",
         "2026-11-03": "Hujan Lebat dan Petir · Moderate",
         "2026-11-04": "Tidak ada peringatan",
-        "2026-11-05": "Tidak ada peringatan"
+        "2026-11-05": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "12.18": {
@@ -9572,7 +9572,7 @@
         "2026-11-02": "Tidak ada peringatan",
         "2026-11-03": "Tidak ada peringatan",
         "2026-11-04": "Tidak ada peringatan",
-        "2026-11-05": "Hujan Lebat dan Petir · Moderate"
+        "2026-11-05": "Tidak ada peringatan"
       }
     },
     "12.22": {
@@ -9948,7 +9948,7 @@
         "2026-11-02": "Tidak ada peringatan",
         "2026-11-03": "Tidak ada peringatan",
         "2026-11-04": "Tidak ada peringatan",
-        "2026-11-05": "Tidak ada peringatan"
+        "2026-11-05": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "12.25": {
@@ -10072,7 +10072,7 @@
         "2026-11-02": "Tidak ada peringatan",
         "2026-11-03": "Tidak ada peringatan",
         "2026-11-04": "Tidak ada peringatan",
-        "2026-11-05": "Tidak ada peringatan"
+        "2026-11-05": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "12.71": {
@@ -10322,7 +10322,7 @@
         "2026-11-02": "Tidak ada peringatan",
         "2026-11-03": "Hujan Lebat dan Petir · Moderate",
         "2026-11-04": "Tidak ada peringatan",
-        "2026-11-05": "Tidak ada peringatan"
+        "2026-11-05": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "12.73": {
@@ -11072,7 +11072,7 @@
         "2026-11-02": "Tidak ada peringatan",
         "2026-11-03": "Tidak ada peringatan",
         "2026-11-04": "Tidak ada peringatan",
-        "2026-11-05": "Tidak ada peringatan"
+        "2026-11-05": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "13.01": {
@@ -62585,7 +62585,7 @@
         "2026-11-02": "Tidak ada peringatan",
         "2026-11-03": "Tidak ada peringatan",
         "2026-11-04": "Tidak ada peringatan",
-        "2026-11-05": "Tidak ada peringatan"
+        "2026-11-05": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "91.10": {
@@ -63065,7 +63065,7 @@
         "2026-11-02": "Tidak ada peringatan",
         "2026-11-03": "Tidak ada peringatan",
         "2026-11-04": "Tidak ada peringatan",
-        "2026-11-05": "Tidak ada peringatan"
+        "2026-11-05": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "91.20": {
