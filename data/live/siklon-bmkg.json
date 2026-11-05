@@ -134,10 +134,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-05T15:40:09.351Z",
+    "fetched_at": "2026-11-05T22:08:40.791Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-05T15:40:09.351Z",
+  "fetched_at": "2026-11-05T22:08:40.791Z",
   "pdf_diubah": "Thu, 05 Nov 2026 05:37:10 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -149,7 +149,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-05T15:40:14.425Z",
+      "fetched_at": "2026-11-05T22:08:45.827Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -166,19 +166,19 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jma",
-          "lintang": 31.3,
-          "bujur": 144.2,
+          "lintang": 35.9,
+          "bujur": 150,
           "tekanan_hpa": null,
           "angin_knot": null,
           "kategori": "STS",
-          "waktu_analisis": "2026-11-05T12:00:00Z"
+          "waktu_analisis": "2026-11-05T21:00:00Z"
         }
       ]
     },
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-05T15:40:14.519Z",
+      "fetched_at": "2026-11-05T22:08:46.582Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
@@ -201,25 +201,6 @@
           "kode": "30W",
           "tahap": "Badai tropis",
           "jenis": "siklon"
-        },
-        {
-          "nama": "94S",
-          "kalimat": "Advisory JTWC ABIO menyebut invest 94S.",
-          "lokasi": "",
-          "dampak": "-",
-          "agensi": "JTWC",
-          "di_dalam_tcwc": false,
-          "luar_tcwc": false,
-          "sumber": "jtwc",
-          "lintang": -10.2,
-          "bujur": 59.3,
-          "tekanan_hpa": null,
-          "angin_knot": null,
-          "kategori": "",
-          "waktu_analisis": "",
-          "kode": "94S",
-          "tahap": "Invest",
-          "jenis": "bibit"
         }
       ]
     }
