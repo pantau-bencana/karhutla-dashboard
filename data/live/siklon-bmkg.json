@@ -109,9 +109,9 @@
   },
   "api": {
     "url": "https://tropicalcyclone.bmkg.go.id/cms/service-api/cyclone/current",
-    "http": 522,
+    "http": 401,
     "dipakai": false,
-    "galat": "HTTP 522"
+    "galat": "HTTP 401"
   },
   "jejak": "belum terintegrasi",
   "siaran_pers": {
@@ -134,10 +134,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-06T18:08:59.845Z",
+    "fetched_at": "2026-11-06T23:19:52.861Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-06T18:08:59.845Z",
+  "fetched_at": "2026-11-06T23:19:52.861Z",
   "pdf_diubah": "Fri, 06 Nov 2026 09:30:16 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -149,7 +149,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-06T18:09:23.760Z",
+      "fetched_at": "2026-11-06T23:19:57.648Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -166,12 +166,12 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jma",
-          "lintang": 18.3,
-          "bujur": 147.1,
+          "lintang": 18.9,
+          "bujur": 145.4,
           "tekanan_hpa": null,
           "angin_knot": null,
           "kategori": "TD",
-          "waktu_analisis": "2026-11-06T15:00:00Z"
+          "waktu_analisis": "2026-11-06T21:00:00Z"
         },
         {
           "nama": "In-fa",
@@ -197,7 +197,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-06T18:09:25.260Z",
+      "fetched_at": "2026-11-06T23:19:57.769Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
