@@ -4,6 +4,30 @@
   "status_sumber": "halaman-siklon-tropis",
   "sistem_halaman": [
     {
+      "nama": "94L",
+      "tahap": "Bibit Siklon Tropis",
+      "jenis": "bibit",
+      "kalimat": "Bibit Siklon Tropis 94S terbentuk di sekitar Samudra Atlantik pada 06 November 2026 pukul 01.00 WIB di luar wilayah monitoring TCWC Jakarta",
+      "lokasi": "luar wilayah monitoring TCWC Jakarta",
+      "dampak": "-",
+      "cuaca_ekstrem": "",
+      "gelombang_tinggi": "",
+      "angin_kencang": "",
+      "dampak_status": "",
+      "berlaku_hingga": "",
+      "url_infografis": "",
+      "di_dalam_tcwc": false,
+      "luar_tcwc": true,
+      "sumber": "halaman",
+      "agensi": "BMKG",
+      "lintang": 26.3,
+      "bujur": -65.7,
+      "tekanan_hpa": 1002,
+      "angin_knot": 40,
+      "kategori": "L",
+      "waktu_analisis": "2026-11-06T00:00:00.000Z"
+    },
+    {
       "nama": "99W",
       "tahap": "Bibit Siklon Tropis",
       "jenis": "bibit",
@@ -20,12 +44,12 @@
       "luar_tcwc": true,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 15.6,
-      "bujur": 157.2,
-      "tekanan_hpa": 1010,
-      "angin_knot": 20,
+      "lintang": 16.9,
+      "bujur": 150.7,
+      "tekanan_hpa": 1011,
+      "angin_knot": 25,
       "kategori": "L",
-      "waktu_analisis": "2026-11-05T00:00:00.000Z"
+      "waktu_analisis": "2026-11-06T00:00:00.000Z"
     },
     {
       "nama": "IN-FA",
@@ -68,12 +92,12 @@
       "luar_tcwc": true,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": null,
-      "bujur": null,
-      "tekanan_hpa": null,
-      "angin_knot": null,
-      "kategori": "",
-      "waktu_analisis": ""
+      "lintang": 10.5,
+      "bujur": -146.7,
+      "tekanan_hpa": 1007,
+      "angin_knot": 30,
+      "kategori": "L",
+      "waktu_analisis": "2026-11-06T00:00:00.000Z"
     },
     {
       "nama": "94S",
@@ -92,18 +116,18 @@
       "luar_tcwc": true,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": -8.8,
-      "bujur": 60.6,
-      "tekanan_hpa": 1008,
+      "lintang": -12.5,
+      "bujur": 56.8,
+      "tekanan_hpa": 1007,
       "angin_knot": 25,
       "kategori": "L",
-      "waktu_analisis": "2026-11-05T00:00:00.000Z"
+      "waktu_analisis": "2026-11-06T00:00:00.000Z"
     }
   ],
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-11-05",
+    "terbit": "2026-11-06",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
     "sistem": []
   },
@@ -134,11 +158,11 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-06T02:37:56.888Z",
+    "fetched_at": "2026-11-06T11:14:20.228Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-06T02:37:56.888Z",
-  "pdf_diubah": "Thu, 05 Nov 2026 05:37:10 GMT",
+  "fetched_at": "2026-11-06T11:14:20.228Z",
+  "pdf_diubah": "Fri, 06 Nov 2026 09:30:16 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
@@ -149,7 +173,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-06T02:38:02.341Z",
+      "fetched_at": "2026-11-06T11:14:24.834Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -166,12 +190,12 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jma",
-          "lintang": 16.8,
-          "bujur": 150.2,
+          "lintang": 17.7,
+          "bujur": 148.6,
           "tekanan_hpa": null,
           "angin_knot": null,
           "kategori": "TD",
-          "waktu_analisis": "2026-11-06T00:00:00Z"
+          "waktu_analisis": "2026-11-06T09:00:00Z"
         },
         {
           "nama": "In-fa",
@@ -197,29 +221,29 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-06T02:38:02.637Z",
+      "fetched_at": "2026-11-06T11:14:25.081Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
       "sistem": [
         {
-          "nama": "IN-FA",
-          "kalimat": "Advisory JTWC ABPW menyebut IN-FA.",
+          "nama": "THIRTYONE",
+          "kalimat": "Advisory JTWC ABPW menyebut THIRTYONE.",
           "lokasi": "",
           "dampak": "-",
           "agensi": "JTWC",
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jtwc",
-          "lintang": 29.4,
-          "bujur": 141.5,
+          "lintang": 18,
+          "bujur": 149,
           "tekanan_hpa": null,
-          "angin_knot": 60,
+          "angin_knot": 25,
           "kategori": "",
-          "waktu_analisis": "2026-11-05T06:00:00.000Z",
-          "kode": "30W",
-          "tahap": "Badai tropis",
-          "jenis": "siklon"
+          "waktu_analisis": "2026-11-06T06:00:00.000Z",
+          "kode": "31W",
+          "tahap": "Depresi tropis",
+          "jenis": "bibit"
         }
       ]
     }
