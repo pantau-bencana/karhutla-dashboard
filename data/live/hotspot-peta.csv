@@ -4,8 +4,8 @@ lintang,bujur,tanggal,waktu,satelit,kepercayaan,provinsi,kabupaten,kecamatan,des
 -10.06356,124.02361,2026-11-02,459,N,n,Nusa Tenggara Timur,Kupang,Fatuleu,,,53.01.10,53.01,53,tanpa_desa,13.79,352.76
 -10.02195,124.39725,2026-11-02,459,N,n,Nusa Tenggara Timur,Timor Tengah Selatan,Kuanfatu,,,53.02.11,53.02,53,tanpa_desa,11.53,343.23
 -10.02092,124.40035,2026-11-02,459,N,n,Nusa Tenggara Timur,Timor Tengah Selatan,Kuanfatu,,,53.02.11,53.02,53,tanpa_desa,10.71,341.33
--10.13779,120.57484,2026-11-02,459,N,n,Nusa Tenggara Timur,Sumba Timur,Pahunga Lodu,,,53.11.10,53.11,53,tanpa_desa,4.72,330.65
 -10.1584,123.89976,2026-11-02,459,N,n,Nusa Tenggara Timur,Kupang,Amabi Oefeto,,,53.01.25,53.01,53,tanpa_desa,4.45,332.94
+-10.13779,120.57484,2026-11-02,459,N,n,Nusa Tenggara Timur,Sumba Timur,Pahunga Lodu,,,53.11.10,53.11,53,tanpa_desa,4.72,330.65
 -9.69894,120.04845,2026-11-02,459,N,n,Nusa Tenggara Timur,Sumba Timur,Nggaha Ori Angu,,,53.11.04,53.11,53,tanpa_desa,2.42,332.3
 -9.50921,120.1806,2026-11-02,459,N,n,Nusa Tenggara Timur,Sumba Timur,Kanatang,,,53.11.20,53.11,53,tanpa_desa,3.91,332.86
 -9.50869,120.18484,2026-11-02,459,N,n,Nusa Tenggara Timur,Sumba Timur,Kanatang,,,53.11.20,53.11,53,tanpa_desa,3.91,338.31
@@ -424,9 +424,6 @@ lintang,bujur,tanggal,waktu,satelit,kepercayaan,provinsi,kabupaten,kecamatan,des
 -5.18662,122.48302,2026-11-02,501,N,n,Sulawesi Tenggara,Muna,Tongkuno Selatan,,,74.03.32,74.03,74,tanpa_desa,4.76,335.84
 -3.93794,138.49458,2026-11-02,459,N,n,Papua Pegunungan,Lanny Jaya,Wiringgambut,,,95.07.19,95.07,95,tanpa_desa,6.43,337.7
 -3.73575,138.77563,2026-11-02,501,N,n,Papua Pegunungan,Mamberamo Tengah,Eragayam,,,95.05.03,95.05,95,tanpa_desa,1.88,331.24
--4.83847,120.28638,2026-11-02,501,N,n,Sulawesi Selatan,Bone,Mare,,,73.08.07,73.08,73,tanpa_desa,2.16,342.76
--4.83577,120.28426,2026-11-02,501,N,n,Sulawesi Selatan,Bone,Mare,,,73.08.07,73.08,73,tanpa_desa,4.29,341.47
--4.45323,120.12402,2026-11-02,501,N,n,Sulawesi Selatan,Bone,Ulaweng,,,73.08.14,73.08,73,tanpa_desa,5.22,331.32
 -4.97919,122.94936,2026-11-02,501,N,n,Sulawesi Tenggara,Buton Utara,Kambowa,,,74.10.02,74.10,74,tanpa_desa,11.12,341.25
 -4.97791,122.95255,2026-11-02,501,N,n,Sulawesi Tenggara,Buton Utara,Kambowa,,,74.10.02,74.10,74,tanpa_desa,6.91,339.84
 -4.83929,122.38399,2026-11-02,501,N,n,Sulawesi Tenggara,Muna Barat,Tiworo Tengah,,,74.13.07,74.13,74,tanpa_desa,6.89,332.14
@@ -438,6 +435,9 @@ lintang,bujur,tanggal,waktu,satelit,kepercayaan,provinsi,kabupaten,kecamatan,des
 -4.44754,122.95802,2026-11-02,501,N,n,Sulawesi Tenggara,Buton Utara,Wakorumba Utara,,,74.10.06,74.10,74,tanpa_desa,5.18,335.42
 -4.05056,122.3649,2026-11-02,501,N,n,Sulawesi Tenggara,Konawe Selatan,Ranomeeto Barat,,,74.05.22,74.05,74,tanpa_desa,12.33,348.99
 -4.03754,122.45391,2026-11-02,501,N,n,Sulawesi Tenggara,Konawe Selatan,Ranomeeto,,,74.05.08,74.05,74,tanpa_desa,4.04,333.56
+-4.83847,120.28638,2026-11-02,501,N,n,Sulawesi Selatan,Bone,Mare,,,73.08.07,73.08,73,tanpa_desa,2.16,342.76
+-4.83577,120.28426,2026-11-02,501,N,n,Sulawesi Selatan,Bone,Mare,,,73.08.07,73.08,73,tanpa_desa,4.29,341.47
+-4.45323,120.12402,2026-11-02,501,N,n,Sulawesi Selatan,Bone,Ulaweng,,,73.08.14,73.08,73,tanpa_desa,5.22,331.32
 -4.66347,123.01337,2026-11-02,501,N,n,Sulawesi Tenggara,Buton Utara,Kulisusu Barat,,,74.10.04,74.10,74,tanpa_desa,7.45,341.83
 -4.66146,123.01023,2026-11-02,501,N,n,Sulawesi Tenggara,Buton Utara,Kulisusu Barat,,,74.10.04,74.10,74,tanpa_desa,6.32,341.08
 -4.77779,121.74038,2026-11-02,501,N,n,Sulawesi Tenggara,Bombana,Poleang Timur,,,74.06.02,74.06,74,tanpa_desa,1.97,333.81
@@ -479,13 +479,13 @@ lintang,bujur,tanggal,waktu,satelit,kepercayaan,provinsi,kabupaten,kecamatan,des
 -3.6974,121.92145,2026-11-02,501,N,n,Sulawesi Tenggara,Konawe,Abuki,,,74.02.10,74.02,74,tanpa_desa,4.85,331.68
 -3.51725,121.44365,2026-11-02,501,N,l,Sulawesi Tenggara,Kolaka Timur,Ueesi,,,74.11.11,74.11,74,tanpa_desa,2.98,328.96
 -3.50906,121.42793,2026-11-02,501,N,n,Sulawesi Tenggara,Kolaka Timur,Ueesi,,,74.11.11,74.11,74,tanpa_desa,2.87,332.96
+-3.73204,134.0979,2026-11-02,501,N,n,Papua Barat,Kaimana,Kaimana,,,92.08.01,92.08,92,tanpa_desa,7.45,337.95
+-3.71205,134.07504,2026-11-02,501,N,n,Papua Barat,Kaimana,Kaimana,,,92.08.01,92.08,92,tanpa_desa,6.12,336.05
 -3.7333,120.41611,2026-11-02,501,N,n,Sulawesi Selatan,Wajo,Pitumpanua,,,73.13.10,73.13,73,tanpa_desa,1.7,330.23
 -3.20526,120.03832,2026-11-02,501,N,n,Sulawesi Selatan,Luwu,Basse Sangtempe,,,73.17.01,73.17,73,tanpa_desa,11.64,330.83
 -3.20483,120.04128,2026-11-02,501,N,h,Sulawesi Selatan,Luwu,Basse Sangtempe,,,73.17.01,73.17,73,tanpa_desa,11.64,367
 -3.19967,120.03742,2026-11-02,501,N,n,Sulawesi Selatan,Luwu,Basse Sangtempe,,,73.17.01,73.17,73,tanpa_desa,14.99,332.11
 -3.1992,120.04062,2026-11-02,501,N,h,Sulawesi Selatan,Luwu,Basse Sangtempe,,,73.17.01,73.17,73,tanpa_desa,14.99,367
--3.73204,134.0979,2026-11-02,501,N,n,Papua Barat,Kaimana,Kaimana,,,92.08.01,92.08,92,tanpa_desa,7.45,337.95
--3.71205,134.07504,2026-11-02,501,N,n,Papua Barat,Kaimana,Kaimana,,,92.08.01,92.08,92,tanpa_desa,6.12,336.05
 -3.58568,123.15048,2026-11-02,501,N,n,Sulawesi Tengah,Morowali,Menui Kepulauan,,,72.06.07,72.06,72,tanpa_desa,6.52,345.84
 -3.57348,123.13827,2026-11-02,501,N,n,Sulawesi Tengah,Morowali,Menui Kepulauan,,,72.06.07,72.06,72,tanpa_desa,4.17,329.93
 -3.67461,119.6581,2026-11-02,501,N,n,Sulawesi Selatan,Pinrang,Batulappa,,,73.15.12,73.15,73,tanpa_desa,2.94,330.57
@@ -539,18 +539,18 @@ lintang,bujur,tanggal,waktu,satelit,kepercayaan,provinsi,kabupaten,kecamatan,des
 -2.83132,122.17379,2026-11-02,501,N,n,Sulawesi Tengah,Morowali,Bahodopi,,,72.06.10,72.06,72,tanpa_desa,4.61,334.2
 -2.82693,122.17574,2026-11-02,501,N,n,Sulawesi Tengah,Morowali,Bahodopi,,,72.06.10,72.06,72,tanpa_desa,2.52,329.44
 -2.80263,122.10767,2026-11-02,501,N,n,Sulawesi Tengah,Morowali,Bahodopi,,,72.06.10,72.06,72,tanpa_desa,11.69,341.64
+-2.95612,133.53197,2026-11-02,501,N,n,Papua Barat,Teluk Bintuni,Fafurwar,,,92.06.08,92.06,92,tanpa_desa,11.18,348.42
+-2.95564,133.53291,2026-11-02,501,N,n,Papua Barat,Teluk Bintuni,Fafurwar,,,92.06.08,92.06,92,tanpa_desa,13.27,348.02
 -2.92956,129.24956,2026-11-02,501,N,n,Maluku,Maluku Tengah,Seram Utara,,,81.01.06,81.01,81,tanpa_desa,2.52,332.78
 -2.89463,129.32225,2026-11-02,501,N,n,Maluku,Maluku Tengah,Seram Utara,,,81.01.06,81.01,81,tanpa_desa,2.15,332.36
 -2.89153,129.78191,2026-11-02,501,N,n,Maluku,Maluku Tengah,Seram Utara Timur Kobi,,,81.01.25,81.01,81,tanpa_desa,4.72,339.46
 -2.87773,129.74368,2026-11-02,501,N,n,Maluku,Maluku Tengah,Seram Utara,,,81.01.06,81.01,81,tanpa_desa,5.79,340.67
 -2.80193,129.44194,2026-11-02,501,N,n,Maluku,Maluku Tengah,Seram Utara,,,81.01.06,81.01,81,tanpa_desa,12.73,330.78
 -2.8014,129.4454,2026-11-02,501,N,n,Maluku,Maluku Tengah,Seram Utara,,,81.01.06,81.01,81,tanpa_desa,12.73,342.52
--2.95612,133.53197,2026-11-02,501,N,n,Papua Barat,Teluk Bintuni,Fafurwar,,,92.06.08,92.06,92,tanpa_desa,11.18,348.42
--2.95564,133.53291,2026-11-02,501,N,n,Papua Barat,Teluk Bintuni,Fafurwar,,,92.06.08,92.06,92,tanpa_desa,13.27,348.02
--2.86142,128.89662,2026-11-02,501,N,n,Maluku,Maluku Tengah,Seram Utara Barat,,,81.01.20,81.01,81,tanpa_desa,2.47,332.7
 -2.89611,140.70775,2026-11-02,501,N,n,Papua,Keerom,Arso,,,91.11.02,91.11,91,tanpa_desa,2.17,328.16
 -2.66276,140.53342,2026-11-02,501,N,n,Papua,Jayapura,Ebungfao,,,91.03.12,91.03,91,tanpa_desa,11.43,356.49
 -2.6615,140.53032,2026-11-02,501,N,n,Papua,Jayapura,Ebungfao,,,91.03.12,91.03,91,tanpa_desa,9.47,351.69
+-2.86142,128.89662,2026-11-02,501,N,n,Maluku,Maluku Tengah,Seram Utara Barat,,,81.01.20,81.01,81,tanpa_desa,2.47,332.7
 -2.84548,121.10394,2026-11-02,501,N,n,Sulawesi Tenggara,Kolaka Utara,Tolala,,,74.08.15,74.08,74,tanpa_desa,4.65,343.02
 -2.82856,121.07476,2026-11-02,501,N,n,Sulawesi Tenggara,Kolaka Utara,Tolala,,,74.08.15,74.08,74,tanpa_desa,2.63,329.02
 -2.82806,121.07818,2026-11-02,501,N,n,Sulawesi Tenggara,Kolaka Utara,Tolala,,,74.08.15,74.08,74,tanpa_desa,2.63,338.84
@@ -598,49 +598,49 @@ lintang,bujur,tanggal,waktu,satelit,kepercayaan,provinsi,kabupaten,kecamatan,des
 -1.99474,120.82269,2026-11-02,501,N,n,Sulawesi Tengah,Poso,Pamona Tenggara,,,72.02.26,72.02,72,tanpa_desa,3.27,340.54
 -1.52836,120.36397,2026-11-02,501,N,n,Sulawesi Tengah,Poso,Lore Piore,,,72.02.25,72.02,72,tanpa_desa,4.27,331.04
 -1.52165,120.44527,2026-11-02,501,N,n,Sulawesi Tengah,Poso,Lore Timur,,,72.02.24,72.02,72,tanpa_desa,2.35,331.54
+-1.81923,136.74905,2026-11-02,501,N,n,Papua,Kepulauan Yapen,Yapen Timur,,,91.05.03,91.05,91,tanpa_desa,5.11,340.68
 -1.8146,125.90586,2026-11-02,501,N,n,Maluku Utara,Kepulauan Sula,Mangoli Tengah,,,82.05.11,82.05,82,tanpa_desa,4.17,331.14
 -1.81147,125.51982,2026-11-02,501,N,n,Maluku Utara,Kepulauan Sula,Mangoli Utara,,,82.05.13,82.05,82,tanpa_desa,10.24,332.89
--1.81923,136.74905,2026-11-02,501,N,n,Papua,Kepulauan Yapen,Yapen Timur,,,91.05.03,91.05,91,tanpa_desa,5.11,340.68
 -1.67894,127.98041,2026-11-02,501,N,n,Maluku Utara,Halmahera Selatan,Obi Timur,,,82.04.29,82.04,82,tanpa_desa,6.66,346.4
 -1.67336,127.99435,2026-11-02,501,N,n,Maluku Utara,Halmahera Selatan,Obi Timur,,,82.04.29,82.04,82,tanpa_desa,5.85,341.63
 -1.35282,127.62537,2026-11-02,501,N,n,Maluku Utara,Halmahera Selatan,Obi,,,82.04.06,82.04,82,tanpa_desa,3.53,335.55
--1.61291,134.04691,2026-11-02,501,N,n,Papua Barat,Manokwari Selatan,Momi Waren,,,92.11.05,92.11,92,tanpa_desa,5.77,333.4
 -1.61138,128.12378,2026-11-02,501,N,n,Maluku Utara,Halmahera Selatan,Obi Timur,,,82.04.29,82.04,82,tanpa_desa,3.7,348.68
 -1.61083,128.12733,2026-11-02,501,N,n,Maluku Utara,Halmahera Selatan,Obi Timur,,,82.04.29,82.04,82,tanpa_desa,3.7,330.7
 -1.608,128.12326,2026-11-02,501,N,n,Maluku Utara,Halmahera Selatan,Obi Timur,,,82.04.29,82.04,82,tanpa_desa,7.01,341.17
 -1.60745,128.12683,2026-11-02,501,N,n,Maluku Utara,Halmahera Selatan,Obi Timur,,,82.04.29,82.04,82,tanpa_desa,7.01,345.82
 -1.56151,128.04301,2026-11-02,501,N,n,Maluku Utara,Halmahera Selatan,Obi Timur,,,82.04.29,82.04,82,tanpa_desa,4.56,339.43
+-1.61291,134.04691,2026-11-02,501,N,n,Papua Barat,Manokwari Selatan,Momi Waren,,,92.11.05,92.11,92,tanpa_desa,5.77,333.4
 -1.36047,134.22665,2026-11-02,501,N,n,Papua Barat,Manokwari Selatan,Oransbari,,,92.11.02,92.11,92,tanpa_desa,9.14,335.13
--1.41781,116.51511,2026-11-02,501,N,n,Kalimantan Timur,Penajam Paser Utara,Waru,,,64.09.02,64.09,64,tanpa_desa,6.6,326.97
 -1.55716,132.14919,2026-11-02,501,N,n,Papua Barat Daya,Sorong Selatan,Wayer,,,92.04.12,92.04,92,tanpa_desa,31.25,338.19
+-1.41781,116.51511,2026-11-02,501,N,n,Kalimantan Timur,Penajam Paser Utara,Waru,,,64.09.02,64.09,64,tanpa_desa,6.6,326.97
+-1.27588,122.42491,2026-11-02,501,N,n,Sulawesi Tengah,Banggai,Batui,,,72.01.01,72.01,72,tanpa_desa,6.61,341.6
 -1.24917,123.46691,2026-11-02,501,N,n,Sulawesi Tengah,Banggai Kepulauan,Tinangkung Utara,,,72.07.19,72.07,72,tanpa_desa,11.81,349.53
 -1.24672,123.46629,2026-11-02,501,N,n,Sulawesi Tengah,Banggai Kepulauan,Tinangkung Utara,,,72.07.19,72.07,72,tanpa_desa,11.06,356.47
--1.27588,122.42491,2026-11-02,501,N,n,Sulawesi Tengah,Banggai,Batui,,,72.01.01,72.01,72,tanpa_desa,6.61,341.6
+-0.95687,121.67942,2026-11-02,501,N,n,Sulawesi Tengah,Tojo Una Una,Ampana Tete,,,72.09.04,72.09,72,tanpa_desa,17.83,344.49
 -1.17166,129.35794,2026-11-02,501,N,n,Papua Barat Daya,Raja Ampat,Kofiau,,,92.05.10,92.05,92,tanpa_desa,2.82,330.44
 -0.92853,123.33646,2026-11-02,501,N,n,Sulawesi Tengah,Banggai,Balantak Selatan,,,72.01.18,72.01,72,tanpa_desa,3.1,334.97
 -0.92342,123.28389,2026-11-02,501,N,n,Sulawesi Tengah,Banggai,Balantak Selatan,,,72.01.18,72.01,72,tanpa_desa,5.25,339.35
 -0.91912,123.28307,2026-11-02,501,N,n,Sulawesi Tengah,Banggai,Mantoh,,,72.01.22,72.01,72,tanpa_desa,5.74,332.75
 -0.8919,123.31631,2026-11-02,501,N,n,Sulawesi Tengah,Banggai,Balantak,,,72.01.06,72.01,72,tanpa_desa,3.9,337.77
--0.95687,121.67942,2026-11-02,501,N,n,Sulawesi Tengah,Tojo Una Una,Ampana Tete,,,72.09.04,72.09,72,tanpa_desa,17.83,344.49
 -0.89505,133.23883,2026-11-02,501,N,n,Papua Barat Daya,Tambrauw,Kebar Timur,,,92.09.23,92.09,92,tanpa_desa,11.39,332.58
--0.87485,133.1946,2026-11-02,501,N,n,Papua Barat Daya,Tambrauw,Kebar Timur,,,92.09.23,92.09,92,tanpa_desa,6.25,330.12
 -0.58441,127.54127,2026-11-02,501,N,n,Maluku Utara,Halmahera Selatan,Bacan Timur,,,82.04.07,82.04,82,tanpa_desa,2.4,335.14
 -0.07169,127.81648,2026-11-02,501,N,n,Maluku Utara,Halmahera Selatan,Gane Timur,,,82.04.03,82.04,82,tanpa_desa,4.47,334.03
+-0.87485,133.1946,2026-11-02,501,N,n,Papua Barat Daya,Tambrauw,Kebar Timur,,,92.09.23,92.09,92,tanpa_desa,6.25,330.12
 -0.59194,133.15541,2026-11-02,501,N,n,Papua Barat Daya,Tambrauw,Amberbaken,,,92.09.10,92.09,92,tanpa_desa,7.71,335.95
 -0.51905,133.026,2026-11-02,501,N,n,Papua Barat Daya,Tambrauw,Amberbaken Barat,,,92.09.27,92.09,92,tanpa_desa,13.74,345.45
 -0.36033,117.22742,2026-11-02,501,N,n,Kalimantan Timur,Kota Samarinda,Samarinda Utara,,,64.72.05,64.72,64,tanpa_desa,2.13,326.73
 -0.31194,115.53287,2026-11-02,501,N,n,Kalimantan Timur,Kutai Barat,Nyuatan,,,64.07.16,64.07,64,tanpa_desa,5.06,329.98
 0.27446,117.47756,2026-11-02,501,N,n,Kalimantan Timur,Kutai Timur,Teluk Pandan,,,64.08.13,64.08,64,tanpa_desa,3.45,327.69
 0.27763,117.47406,2026-11-02,501,N,n,Kalimantan Timur,Kutai Timur,Teluk Pandan,,,64.08.13,64.08,64,tanpa_desa,3.45,336.18
-0.28626,117.44786,2026-11-02,501,N,n,Kalimantan Timur,Kutai Timur,Teluk Pandan,,,64.08.13,64.08,64,tanpa_desa,11.95,352.02
 0.28716,116.20235,2026-11-02,501,N,n,Kalimantan Timur,Kutai Kartanegara,Kembang Janggut,Perdana,64.02.10.2010,64.02.10,64.02,64,desa,4.61,327.61
-0.28878,117.44542,2026-11-02,501,N,h,Kalimantan Timur,Kutai Timur,Teluk Pandan,,,64.08.13,64.08,64,tanpa_desa,20.26,367
+0.28626,117.44786,2026-11-02,501,N,n,Kalimantan Timur,Kutai Timur,Teluk Pandan,,,64.08.13,64.08,64,tanpa_desa,11.95,352.02
 0.34702,116.30259,2026-11-02,501,N,n,Kalimantan Timur,Kutai Kartanegara,Kembang Janggut,Kelekat,64.02.10.2005,64.02.10,64.02,64,desa,11.39,342.65
+0.28878,117.44542,2026-11-02,501,N,h,Kalimantan Timur,Kutai Timur,Teluk Pandan,,,64.08.13,64.08,64,tanpa_desa,20.26,367
 0.28953,117.45023,2026-11-02,501,N,n,Kalimantan Timur,Kutai Timur,Teluk Pandan,,,64.08.13,64.08,64,tanpa_desa,20.26,342.52
-0.29184,117.44248,2026-11-02,501,N,n,Kalimantan Timur,Kutai Timur,Teluk Pandan,,,64.08.13,64.08,64,tanpa_desa,14.46,348.64
-0.29257,117.44703,2026-11-02,501,N,l,Kalimantan Timur,Kutai Timur,Teluk Pandan,,,64.08.13,64.08,64,tanpa_desa,26.45,356.32
 0.44317,127.89226,2026-11-02,501,N,n,Maluku Utara,Halmahera Tengah,Weda Tengah,,,82.02.07,82.02,82,tanpa_desa,8.61,345.07
 0.51053,127.89581,2026-11-02,501,N,n,Maluku Utara,Halmahera Tengah,Weda Tengah,,,82.02.07,82.02,82,tanpa_desa,7.06,334.25
+0.29184,117.44248,2026-11-02,501,N,n,Kalimantan Timur,Kutai Timur,Teluk Pandan,,,64.08.13,64.08,64,tanpa_desa,14.46,348.64
+0.29257,117.44703,2026-11-02,501,N,l,Kalimantan Timur,Kutai Timur,Teluk Pandan,,,64.08.13,64.08,64,tanpa_desa,26.45,356.32
 0.4812,121.97454,2026-11-02,501,N,n,Gorontalo,Pohuwato,Marisa,,,75.04.04,75.04,75,tanpa_desa,15.73,339.66
 0.48198,121.97948,2026-11-02,501,N,n,Gorontalo,Pohuwato,Marisa,,,75.04.04,75.04,75,tanpa_desa,23.76,342.25
 0.52891,121.8839,2026-11-02,501,N,n,Gorontalo,Pohuwato,Patilanggio,,,75.04.06,75.04,75,tanpa_desa,4.59,336.32
@@ -661,6 +661,8 @@ lintang,bujur,tanggal,waktu,satelit,kepercayaan,provinsi,kabupaten,kecamatan,des
 0.66318,128.26648,2026-11-02,501,N,n,Maluku Utara,Halmahera Timur,Kota Maba,,,82.06.10,82.06,82,tanpa_desa,1.47,332.76
 0.68688,128.26985,2026-11-02,501,N,n,Maluku Utara,Halmahera Timur,Kota Maba,,,82.06.10,82.06,82,tanpa_desa,5.4,333.12
 0.98979,128.45644,2026-11-02,501,N,n,Maluku Utara,Halmahera Timur,Maba Tengah,,,82.06.08,82.06,82,tanpa_desa,10.15,344.46
+0.92828,120.27168,2026-11-02,501,N,n,Sulawesi Tengah,Toli Toli,Dampal Utara,,,72.04.02,72.04,72,tanpa_desa,3.71,341.32
+0.93005,120.27333,2026-11-02,501,N,n,Sulawesi Tengah,Toli Toli,Dampal Utara,,,72.04.02,72.04,72,tanpa_desa,5.23,343.15
 0.86295,123.38025,2026-11-02,501,N,n,Sulawesi Utara,Bolaang Mongondow Utara,Bolangitang Timur,,,71.08.03,71.08,71,tanpa_desa,2.68,331.2
 0.87484,123.12743,2026-11-02,501,N,n,Gorontalo,Gorontalo Utara,Atinggola,,,75.05.01,75.05,75,tanpa_desa,8.79,341.25
 0.87548,123.1314,2026-11-02,501,N,n,Gorontalo,Gorontalo Utara,Atinggola,,,75.05.01,75.05,75,tanpa_desa,8.79,340.96
@@ -668,8 +670,6 @@ lintang,bujur,tanggal,waktu,satelit,kepercayaan,provinsi,kabupaten,kecamatan,des
 0.89558,123.1485,2026-11-02,501,N,n,Sulawesi Utara,Bolaang Mongondow Utara,Pinogaluman,,,71.08.06,71.08,71,tanpa_desa,2.1,328.79
 0.90987,123.01614,2026-11-02,501,N,n,Gorontalo,Gorontalo Utara,Gentuma Raya,,,75.05.06,75.05,75,tanpa_desa,2.44,330.68
 0.93502,123.23447,2026-11-02,501,N,n,Sulawesi Utara,Bolaang Mongondow Utara,Kaidipang,,,71.08.05,71.08,71,tanpa_desa,2.15,329.75
-0.92828,120.27168,2026-11-02,501,N,n,Sulawesi Tengah,Toli Toli,Dampal Utara,,,72.04.02,72.04,72,tanpa_desa,3.71,341.32
-0.93005,120.27333,2026-11-02,501,N,n,Sulawesi Tengah,Toli Toli,Dampal Utara,,,72.04.02,72.04,72,tanpa_desa,5.23,343.15
 1.27415,127.86668,2026-11-02,501,N,n,Maluku Utara,Halmahera Utara,Kao,,,82.03.07,82.03,82,tanpa_desa,5.93,334.9
 1.31154,127.95406,2026-11-02,501,N,n,Maluku Utara,Halmahera Utara,Kao Utara,,,82.03.20,82.03,82,tanpa_desa,2.67,332.6
 1.39148,127.92694,2026-11-02,501,N,n,Maluku Utara,Halmahera Utara,Kao Utara,,,82.03.20,82.03,82,tanpa_desa,6.14,339.96
