@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-06T20:57:13.138Z",
+  "fetched_at": "2026-11-07T00:59:18.273Z",
   "sumber": "PVMBG",
   "url_tingkat": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas",
   "url_letusan": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan",
@@ -640,6 +640,15 @@
   "letusan": [
     {
       "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-11-07T07:41:00+09:00",
+      "waktu_teks": "07:41 WIT 2026-11-07",
+      "teks": "Terjadi erupsi G. Ibu pada hari Sabtu, 07 November 2026, pukul 07:41 WIT dengan tinggi kolom abu teramati ± 500 m di atas puncak (± 1825 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 56 detik.",
+      "tinggi_kolom_m": 500,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/3ac1505b-da33-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
       "gunung": "Semeru",
       "waktu": "2026-11-07T01:23:00+07:00",
       "waktu_teks": "01:23 WIB 2026-11-07",
@@ -763,15 +772,6 @@
       "teks": "Terjadi erupsi G. Ibu pada hari Jumat, 06 November 2026, pukul 09:09 WIT dengan tinggi kolom abu teramati ± 400 m di atas puncak (± 1725 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat daya. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 37 detik.",
       "tinggi_kolom_m": 400,
       "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/76ef532a-d975-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Ibu",
-      "waktu": "2026-11-06T08:40:00+09:00",
-      "waktu_teks": "08:40 WIT 2026-11-06",
-      "teks": "Terjadi erupsi G. Ibu pada hari Jumat, 06 November 2026, pukul 08:40 WIT dengan tinggi kolom abu teramati ± 400 m di atas puncak (± 1725 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat daya. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 55 detik.",
-      "tinggi_kolom_m": 400,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/6dc9b072-d971-11f1-a61d-005056b54356/show"
     }
   ],
   "vona": [
