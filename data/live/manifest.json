@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-07T00:58:25.440Z",
+  "generated_at": "2026-11-07T02:22:37.221Z",
   "schedule": {
     "cron": "17 */3 * * *",
     "cron_cadangan": "47 1-23/3 * * *",
@@ -7,7 +7,7 @@
     "timezone": "UTC",
     "display_timezone": "Asia/Jakarta"
   },
-  "next_run": "2026-11-07T01:47:00.000Z",
+  "next_run": "2026-11-07T03:17:00.000Z",
   "firms_key": "used",
   "datasets": {
     "bmkg_prakiraan": {
@@ -138,9 +138,9 @@
       "expected_max_age_hours": 12960,
       "schedule_interval_hours": 3,
       "fetched_at": "2026-10-21T08:53:13.316Z",
-      "observed_at": "2026-11-07T00:58:26.770Z",
+      "observed_at": "2026-11-07T02:22:38.837Z",
       "observed_label": "514 titik di dalam batas kabupaten/kota. Bukan ibu kota dan bukan koordinat BNPB.",
-      "source_updated_at": "2026-11-07T00:58:26.770Z",
+      "source_updated_at": "2026-11-07T02:22:38.837Z",
       "record_count": 514,
       "status": "ok",
       "error": null,
@@ -178,7 +178,7 @@
       "compares_to": "peluang_hujan",
       "official_url": "https://www.bmkg.go.id/cuaca/prakiraan-cuaca",
       "permintaan": 21,
-      "detik": 2.5
+      "detik": 3.7
     },
     "fwi_gwis_pembanding": {
       "id": "fwi_gwis_pembanding",
@@ -195,7 +195,7 @@
       "fungsi": "Angka FWI pada titik wakil kabupaten. Bukan FDRS BMKG dan bukan prakiraan 14 hari.",
       "expected_max_age_hours": 36,
       "schedule_interval_hours": 3,
-      "fetched_at": "2026-11-06T19:30:04.483Z",
+      "fetched_at": "2026-11-07T02:22:37.221Z",
       "observed_at": "2026-11-15T16:59:00.000Z",
       "observed_label": "FWI ECMWF 2026-11-07–2026-11-15 (9 hari yang dikembalikan layanan) pada titik di dalam batas. Bukan 14 hari dan bukan FDRS BMKG.",
       "source_updated_at": "2026-11-15T16:59:00.000Z",
@@ -203,16 +203,16 @@
       "status": "ok",
       "error": null,
       "file": "data/live/fwi_gwis_pembanding.csv",
-      "content_hash": "e2abdc6610d6bcda6b529a963f625cb1645a46e53bbc61873c71c1d935883b7b",
+      "content_hash": "f601979d3df8e34a7b58b8557f7c9c632554cba7375241a7a90aa15c2e379aff",
       "kept_previous": false,
       "provider": "GWIS",
       "method": "Angka titik wakil: GetFeatureInfo WMS lapisan ecmwf.query, format HTML, pada piksel tengah kotak 0,04 derajat. Overlay peta: GetMap lapisan ecmwf.fwi, parameter TIME, hanya di peramban; raster tidak disimpan. GetCapabilities menulis rentang 2018-01-01/2099-12-31 dengan default 2019-01-01 dan nearestValue 0, tetapi tanggal tanpa berkas mengembalikan PNG kosong. Pemeriksaan 18 Oktober 2026: piksel ada sampai 27 Oktober 2026 dan kosong mulai 28 Oktober 2026. Lapisan mf010.query hanya mencakup Eropa. Dataset musiman CEMS membutuhkan akun, jadi secret CDS tidak dipasang.",
       "compares_to": "fdrs",
       "official_url": "https://spartan.bmkg.go.id/",
-      "permintaan": 11,
-      "dari_cache": 4626,
+      "permintaan": 3049,
+      "dari_cache": 1588,
       "ditunda": 0,
-      "detik": 2.4
+      "detik": 72.5
     },
     "gfwed_kabupaten": {
       "id": "gfwed_kabupaten",
@@ -230,7 +230,7 @@
       "expected_max_age_hours": 144,
       "schedule_interval_hours": 3,
       "fetched_at": "2026-11-06T20:05:58.691Z",
-      "observed_at": "2026-11-07T00:59:39.223Z",
+      "observed_at": "2026-11-07T02:24:56.689Z",
       "observed_label": "Tanggal data 2026-11-05. 400 kabupaten/kota. Bukan kelas BMKG.",
       "source_updated_at": "2026-11-05T00:00:00.000Z",
       "record_count": 400,
@@ -262,7 +262,7 @@
       "fetched_at": "2026-11-07T00:58:25.440Z",
       "observed_at": null,
       "observed_label": "Tidak ada titik pada 5 hari terakhir",
-      "source_updated_at": "2026-11-07T00:58:25.440Z",
+      "source_updated_at": "2026-11-07T02:22:37.221Z",
       "record_count": 0,
       "status": "ok",
       "error": null,
@@ -350,15 +350,15 @@
       "fungsi": "Konteks nowcast sekitar 0–6 jam. Bukan prospek karhutla dan bukan prakiraan 14 hari.",
       "expected_max_age_hours": 8,
       "schedule_interval_hours": 3,
-      "fetched_at": "2026-11-07T00:58:25.440Z",
-      "observed_at": "2026-11-07T00:30:00.000Z",
-      "observed_label": "9 peringatan pada RSS nowcast. Bukan peringatan karhutla.",
-      "source_updated_at": "2026-11-07T00:30:00.000Z",
-      "record_count": 9,
+      "fetched_at": "2026-11-07T02:22:37.221Z",
+      "observed_at": "2026-11-07T01:30:00.000Z",
+      "observed_label": "6 peringatan pada RSS nowcast. Bukan peringatan karhutla.",
+      "source_updated_at": "2026-11-07T01:30:00.000Z",
+      "record_count": 6,
       "status": "ok",
       "error": null,
       "file": "data/live/bmkg-cap.csv",
-      "content_hash": "73a966cea09633ed821dee7c9042c747109047b8f553697dacd5d2f0f932dd4b",
+      "content_hash": "bdd60ebaf181f8a82824c97f5af4c341adff658f4a0d3187c4f8c52abcc26c88",
       "kept_previous": false
     },
     "dibi_karhutla": {
@@ -381,11 +381,12 @@
       "observed_label": "Nasional 2010–2024. Metadata paket 2026-04-16T07:32:00.853316.",
       "source_updated_at": "2026-04-16T07:32:00.853Z",
       "record_count": 15,
-      "status": "ok",
-      "error": null,
+      "status": "failed",
+      "error": "HTTP 521 {\"type\":\"https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/error-521/\",\"title\":\"Error 521: W",
       "file": "data/live/dibi-karhutla.csv",
       "content_hash": "a85300f4f2071c0dcb4d43a5ebc4448eda4f2d294ab7c151c7f63610bb48b738",
-      "kept_previous": false
+      "kept_previous": true,
+      "checked_at": "2026-11-07T02:22:37.221Z"
     },
     "dibi_banjir_2024": {
       "id": "dibi_banjir_2024",
@@ -407,11 +408,12 @@
       "observed_label": "Jumlah kejadian BANJIR tahun 2024 untuk kabupaten/kota Aceh dan Bengkulu yang tercantum. ODC-BY, BNPB Satu Data. Baris yang tidak ada tidak diisi nol. Koordinat tidak disimpan.",
       "source_updated_at": null,
       "record_count": 28,
-      "status": "ok",
-      "error": null,
+      "status": "failed",
+      "error": "HTTP 521 {\"type\":\"https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/error-521/\",\"title\":\"Error 521: W",
       "file": "data/live/dibi-banjir-2024.csv",
       "content_hash": "7402bd116d308873d84b2e21d573409066990d6768bbb68ff01013dfb338bfcc",
-      "kept_previous": false
+      "kept_previous": true,
+      "checked_at": "2026-11-07T02:22:37.221Z"
     },
     "prioritas_aplus": {
       "id": "prioritas_aplus",
@@ -767,7 +769,7 @@
       "limitation": "prakiraan model ECMWF (via Open-Meteo), bukan BMKG. NASA GPM IMERG tidak dipakai. Unduhan Early/Late di PPS mengembalikan HTTP 401 tanpa akun, dan jalur yang terdokumentasi memakai registrasi Earthdata atau PPS. Tidak ada berkas observasi yang diunduh.",
       "fungsi": "Jumlah hujan harian pada titik adm4. Tidak masuk matriks Awas/Siaga/Waspada.",
       "expected_max_age_hours": 36,
-      "fetched_at": "2026-11-07T01:00:50.729Z",
+      "fetched_at": "2026-11-07T02:25:49.976Z",
       "observed_at": "2026-11-07T00:00:00+07:00",
       "observed_label": "prakiraan model ECMWF (via Open-Meteo), bukan BMKG",
       "source_updated_at": "2026-11-07T00:00:00+07:00",
