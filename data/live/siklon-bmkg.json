@@ -134,10 +134,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-07T16:56:34.164Z",
+    "fetched_at": "2026-11-07T21:00:07.576Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-07T16:56:34.164Z",
+  "fetched_at": "2026-11-07T21:00:07.576Z",
   "pdf_diubah": "Sat, 07 Nov 2026 06:16:43 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -149,7 +149,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-07T16:56:39.386Z",
+      "fetched_at": "2026-11-07T21:00:12.517Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -157,7 +157,7 @@
         {
           "nama": "Cempaka",
           "kode": "2632",
-          "tahap": "Badai tropis",
+          "tahap": "Badai tropis kuat",
           "jenis": "siklon",
           "kalimat": "Analisis RSMC Tokyo untuk Cempaka.",
           "lokasi": "",
@@ -166,19 +166,19 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jma",
-          "lintang": 20.8,
-          "bujur": 141,
+          "lintang": 21.3,
+          "bujur": 140,
           "tekanan_hpa": null,
           "angin_knot": null,
-          "kategori": "TS",
-          "waktu_analisis": "2026-11-07T15:00:00Z"
+          "kategori": "STS",
+          "waktu_analisis": "2026-11-07T18:00:00Z"
         }
       ]
     },
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-07T16:56:39.694Z",
+      "fetched_at": "2026-11-07T21:00:13.190Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
@@ -200,6 +200,25 @@
           "waktu_analisis": "2026-11-07T00:00:00.000Z",
           "kode": "31W",
           "tahap": "Badai tropis",
+          "jenis": "siklon"
+        },
+        {
+          "nama": "THREE",
+          "kalimat": "Advisory JTWC ABIO menyebut THREE.",
+          "lokasi": "",
+          "dampak": "-",
+          "agensi": "JTWC",
+          "di_dalam_tcwc": false,
+          "luar_tcwc": false,
+          "sumber": "jtwc",
+          "lintang": -13.5,
+          "bujur": 52.6,
+          "tekanan_hpa": null,
+          "angin_knot": 35,
+          "kategori": "",
+          "waktu_analisis": "2026-11-07T18:00:00.000Z",
+          "kode": "03S",
+          "tahap": "Siklon tropis",
           "jenis": "siklon"
         }
       ]
