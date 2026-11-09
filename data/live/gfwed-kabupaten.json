@@ -995,7 +995,7 @@
       "provinsi": "Jawa Barat",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 3
+      "n_sel": 2
     },
     {
       "kode": "32.04",
@@ -1003,15 +1003,7 @@
       "provinsi": "Jawa Barat",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 3
-    },
-    {
-      "kode": "32.05",
-      "kabupaten": "Garut",
-      "provinsi": "Jawa Barat",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 3
+      "n_sel": 2
     },
     {
       "kode": "32.06",
@@ -1606,38 +1598,6 @@
       "n_sel": 1
     },
     {
-      "kode": "51.02",
-      "kabupaten": "Tabanan",
-      "provinsi": "Bali",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 1
-    },
-    {
-      "kode": "51.04",
-      "kabupaten": "Gianyar",
-      "provinsi": "Bali",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 1
-    },
-    {
-      "kode": "51.06",
-      "kabupaten": "Bangli",
-      "provinsi": "Bali",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 1
-    },
-    {
-      "kode": "51.08",
-      "kabupaten": "Buleleng",
-      "provinsi": "Bali",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 1
-    },
-    {
       "kode": "52.01",
       "kabupaten": "Lombok Barat",
       "provinsi": "Nusa Tenggara Barat",
@@ -1705,9 +1665,9 @@
       "kode": "53.01",
       "kabupaten": "Kupang",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 4.7,
+      "fwi_rata": 3.91,
       "fwi_maks": 8.33,
-      "n_sel": 4
+      "n_sel": 6
     },
     {
       "kode": "53.02",
@@ -1777,9 +1737,9 @@
       "kode": "53.11",
       "kabupaten": "Sumba Timur",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 2.97,
-      "fwi_maks": 5.94,
-      "n_sel": 7
+      "fwi_rata": 2.48,
+      "fwi_maks": 5.3,
+      "n_sel": 6
     },
     {
       "kode": "53.12",
