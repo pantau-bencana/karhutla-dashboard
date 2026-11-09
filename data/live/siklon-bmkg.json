@@ -44,12 +44,36 @@
       "luar_tcwc": true,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 11,
-      "bujur": -87.6,
-      "tekanan_hpa": 1010,
+      "lintang": 11.7,
+      "bujur": 87.8,
+      "tekanan_hpa": 1007,
       "angin_knot": 25,
       "kategori": "L",
-      "waktu_analisis": "2026-11-08T12:00:00.000Z"
+      "waktu_analisis": "2026-11-09T00:00:00.000Z"
+    },
+    {
+      "nama": "Pena",
+      "tahap": "Siklon Tropis",
+      "jenis": "siklon",
+      "kalimat": "Siklon Tropis PENA berkembang dari Bibit Siklon Tropis 95C di Samudra Pasifik Utara.",
+      "lokasi": "Samudra Pasifik Utara",
+      "dampak": "-",
+      "cuaca_ekstrem": "",
+      "gelombang_tinggi": "",
+      "angin_kencang": "",
+      "dampak_status": "",
+      "berlaku_hingga": "",
+      "url_infografis": "",
+      "di_dalam_tcwc": false,
+      "luar_tcwc": false,
+      "sumber": "halaman",
+      "agensi": "BMKG",
+      "lintang": 11.4,
+      "bujur": 157.2,
+      "tekanan_hpa": 1002,
+      "angin_knot": 40,
+      "kategori": "1",
+      "waktu_analisis": "2026-11-09T00:00:00.000Z"
     }
   ],
   "ikhtisar": {
@@ -86,10 +110,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-08T20:39:21.408Z",
+    "fetched_at": "2026-11-09T01:03:30.685Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-08T20:39:21.408Z",
+  "fetched_at": "2026-11-09T01:03:30.685Z",
   "pdf_diubah": "Sun, 08 Nov 2026 06:24:14 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -101,7 +125,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-08T20:39:24.634Z",
+      "fetched_at": "2026-11-09T01:03:35.532Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -118,19 +142,19 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jma",
-          "lintang": 23.2,
-          "bujur": 135.8,
+          "lintang": 23.7,
+          "bujur": 135.2,
           "tekanan_hpa": null,
           "angin_knot": null,
           "kategori": "TY",
-          "waktu_analisis": "2026-11-08T18:00:00Z"
+          "waktu_analisis": "2026-11-09T00:00:00Z"
         }
       ]
     },
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-08T20:39:25.007Z",
+      "fetched_at": "2026-11-09T01:03:35.715Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
