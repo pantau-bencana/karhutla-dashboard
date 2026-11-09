@@ -110,10 +110,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-09T01:03:30.685Z",
+    "fetched_at": "2026-11-09T08:12:06.368Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-09T01:03:30.685Z",
+  "fetched_at": "2026-11-09T08:12:06.368Z",
   "pdf_diubah": "Sun, 08 Nov 2026 06:24:14 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -125,7 +125,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-09T01:03:35.532Z",
+      "fetched_at": "2026-11-09T08:12:10.914Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -142,19 +142,19 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jma",
-          "lintang": 23.7,
-          "bujur": 135.2,
+          "lintang": 24,
+          "bujur": 135,
           "tekanan_hpa": null,
           "angin_knot": null,
           "kategori": "TY",
-          "waktu_analisis": "2026-11-09T00:00:00Z"
+          "waktu_analisis": "2026-11-09T06:00:00Z"
         }
       ]
     },
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-09T01:03:35.715Z",
+      "fetched_at": "2026-11-09T08:12:11.166Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
@@ -168,12 +168,12 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jtwc",
-          "lintang": 21.4,
-          "bujur": 138.7,
+          "lintang": 23.8,
+          "bujur": 135,
           "tekanan_hpa": null,
-          "angin_knot": 65,
+          "angin_knot": 75,
           "kategori": "",
-          "waktu_analisis": "2026-11-08T00:00:00.000Z",
+          "waktu_analisis": "2026-11-09T00:00:00.000Z",
           "kode": "31W",
           "tahap": "Typhoon",
           "jenis": "siklon"
