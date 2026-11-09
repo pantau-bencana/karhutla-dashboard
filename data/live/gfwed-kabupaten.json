@@ -1705,9 +1705,9 @@
       "kode": "53.01",
       "kabupaten": "Kupang",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 4.7,
+      "fwi_rata": 3.91,
       "fwi_maks": 8.33,
-      "n_sel": 4
+      "n_sel": 6
     },
     {
       "kode": "53.02",
@@ -1724,6 +1724,14 @@
       "fwi_rata": 3.83,
       "fwi_maks": 6.01,
       "n_sel": 3
+    },
+    {
+      "kode": "53.05",
+      "kabupaten": "Alor",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0.24,
+      "fwi_maks": 0.24,
+      "n_sel": 1
     },
     {
       "kode": "53.06",

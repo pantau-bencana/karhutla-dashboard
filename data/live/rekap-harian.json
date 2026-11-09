@@ -1,6 +1,6 @@
 {
   "hariWib": "2026-11-09",
-  "generated_at": "2026-11-09T06:17:09.628Z",
+  "generated_at": "2026-11-09T06:18:10.662Z",
   "sumber": {
     "sipongi": {
       "nama": "SiPongi+",
@@ -28,7 +28,7 @@
     "hujan": {
       "nama": "Curah hujan model ECMWF via Open-Meteo",
       "status": "Pembanding (data terbuka, bukan resmi)",
-      "diambil": "2026-11-09T01:58:41.579Z",
+      "diambil": "2026-11-09T06:13:37.095Z",
       "observasi": "2026-11-22T16:59:00.000Z",
       "label": "Prakiraan harian 2026-11-09–2026-11-22 (14 hari, zona Asia/Jakarta) pada titik di dalam batas kabupaten/kota",
       "catatan": "Curah hujan harian model ECMWF via Open-Meteo, dalam milimeter (precipitation_sum). Bukan peluang dalam persen. Sel bertanda ya bila milimeter lebih dari 20."
