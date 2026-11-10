@@ -995,7 +995,7 @@
       "provinsi": "Jawa Barat",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 1
+      "n_sel": 3
     },
     {
       "kode": "32.04",
@@ -1003,7 +1003,7 @@
       "provinsi": "Jawa Barat",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 1
+      "n_sel": 3
     },
     {
       "kode": "32.05",
@@ -1062,11 +1062,43 @@
       "n_sel": 2
     },
     {
+      "kode": "32.13",
+      "kabupaten": "Subang",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 0.07,
+      "fwi_maks": 0.18,
+      "n_sel": 3
+    },
+    {
+      "kode": "32.14",
+      "kabupaten": "Purwakarta",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
       "kode": "32.15",
       "kabupaten": "Karawang",
       "provinsi": "Jawa Barat",
-      "fwi_rata": 0.12,
+      "fwi_rata": 0.06,
       "fwi_maks": 0.12,
+      "n_sel": 3
+    },
+    {
+      "kode": "32.16",
+      "kabupaten": "Bekasi",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "32.17",
+      "kabupaten": "Bandung Barat",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
       "n_sel": 1
     },
     {
@@ -1718,6 +1750,14 @@
       "n_sel": 1
     },
     {
+      "kode": "53.08",
+      "kabupaten": "Ende",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0,
+      "fwi_maks": 0.01,
+      "n_sel": 3
+    },
+    {
       "kode": "53.09",
       "kabupaten": "Ngada",
       "provinsi": "Nusa Tenggara Timur",
@@ -1772,6 +1812,14 @@
       "fwi_rata": 0.04,
       "fwi_maks": 0.15,
       "n_sel": 4
+    },
+    {
+      "kode": "53.16",
+      "kabupaten": "Nagekeo",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.03,
+      "n_sel": 2
     },
     {
       "kode": "53.17",
