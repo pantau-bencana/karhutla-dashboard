@@ -26,36 +26,12 @@
       "angin_knot": 85,
       "kategori": "3",
       "waktu_analisis": "2026-11-10T00:00:00.000Z"
-    },
-    {
-      "nama": "Pena",
-      "tahap": "Siklon Tropis",
-      "jenis": "siklon",
-      "kalimat": "Siklon Tropis PENA berkembang dari Bibit Siklon Tropis 95C di Samudra Pasifik Utara.",
-      "lokasi": "Samudra Pasifik Utara",
-      "dampak": "-",
-      "cuaca_ekstrem": "",
-      "gelombang_tinggi": "",
-      "angin_kencang": "",
-      "dampak_status": "",
-      "berlaku_hingga": "",
-      "url_infografis": "",
-      "di_dalam_tcwc": false,
-      "luar_tcwc": false,
-      "sumber": "halaman",
-      "agensi": "BMKG",
-      "lintang": 11.7,
-      "bujur": 162.1,
-      "tekanan_hpa": 1004,
-      "angin_knot": 35,
-      "kategori": "1",
-      "waktu_analisis": "2026-11-10T00:00:00.000Z"
     }
   ],
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-11-09",
+    "terbit": "2026-11-10",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
     "sistem": []
   },
@@ -86,11 +62,11 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-10T02:19:02.619Z",
+    "fetched_at": "2026-11-10T10:09:04.070Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-10T02:19:02.619Z",
-  "pdf_diubah": "Mon, 09 Nov 2026 08:56:58 GMT",
+  "fetched_at": "2026-11-10T10:09:04.070Z",
+  "pdf_diubah": "Tue, 10 Nov 2026 06:35:04 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
@@ -101,7 +77,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-10T02:19:05.818Z",
+      "fetched_at": "2026-11-10T10:09:09.232Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -118,19 +94,19 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jma",
-          "lintang": 25.1,
-          "bujur": 138,
+          "lintang": 25.9,
+          "bujur": 140.9,
           "tekanan_hpa": null,
           "angin_knot": null,
           "kategori": "TY",
-          "waktu_analisis": "2026-11-10T00:00:00Z"
+          "waktu_analisis": "2026-11-10T09:00:00Z"
         }
       ]
     },
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-10T02:19:06.181Z",
+      "fetched_at": "2026-11-10T10:09:09.409Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
@@ -144,12 +120,12 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jtwc",
-          "lintang": 23.8,
-          "bujur": 135,
+          "lintang": 25,
+          "bujur": 138,
           "tekanan_hpa": null,
-          "angin_knot": 75,
+          "angin_knot": 95,
           "kategori": "",
-          "waktu_analisis": "2026-11-09T00:00:00.000Z",
+          "waktu_analisis": "2026-11-10T00:00:00.000Z",
           "kode": "31W",
           "tahap": "Typhoon",
           "jenis": "siklon"
