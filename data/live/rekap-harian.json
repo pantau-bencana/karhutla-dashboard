@@ -1,6 +1,6 @@
 {
   "hariWib": "2026-11-11",
-  "generated_at": "2026-11-10T18:18:26.329Z",
+  "generated_at": "2026-11-10T18:40:02.902Z",
   "sumber": {
     "sipongi": {
       "nama": "SiPongi+",
@@ -44,8 +44,8 @@
     "cap": {
       "nama": "Sumber: BMKG",
       "status": "Aktif",
-      "diambil": "2026-11-10T18:16:43.060Z",
-      "observasi": "2026-11-10T18:15:51.000Z",
+      "diambil": "2026-11-10T18:40:02.575Z",
+      "observasi": "2026-11-10T18:31:01.000Z",
       "label": "Nowcast BMKG, dasar waktu 0–3 jam.",
       "catatan": "Cakupan nasional. Tanpa peringatan bukan nol."
     },
@@ -41912,7 +41912,7 @@
         "2026-11-08": "Tidak ada peringatan",
         "2026-11-09": "Tidak ada peringatan",
         "2026-11-10": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-11": "Tidak ada peringatan"
+        "2026-11-11": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "35.15": {
@@ -43474,7 +43474,7 @@
         "2026-11-08": "Tidak ada peringatan",
         "2026-11-09": "Tidak ada peringatan",
         "2026-11-10": "Hujan Lebat dan Petir · Moderate",
-        "2026-11-11": "Tidak ada peringatan"
+        "2026-11-11": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "35.25": {
@@ -43788,7 +43788,7 @@
         "2026-11-08": "Tidak ada peringatan",
         "2026-11-09": "Tidak ada peringatan",
         "2026-11-10": "Tidak ada peringatan",
-        "2026-11-11": "Tidak ada peringatan"
+        "2026-11-11": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "35.27": {
@@ -45676,7 +45676,7 @@
         "2026-11-08": "Tidak ada peringatan",
         "2026-11-09": "Tidak ada peringatan",
         "2026-11-10": "Tidak ada peringatan",
-        "2026-11-11": "Tidak ada peringatan"
+        "2026-11-11": "Hujan Lebat dan Petir · Moderate"
       }
     },
     "36.01": {
