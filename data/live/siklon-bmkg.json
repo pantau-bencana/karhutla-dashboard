@@ -4,7 +4,7 @@
   "status_sumber": "halaman-siklon-tropis",
   "sistem_halaman": [
     {
-      "nama": "TC CEMPAKA",
+      "nama": "Cempaka",
       "tahap": "Siklon Tropis",
       "jenis": "siklon",
       "kalimat": "Siklon Tropis CEMPAKA berkembang dari Bibit Siklon Tropis 99W di Laut Filipina.",
@@ -20,41 +20,17 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 24.4,
-      "bujur": 135.4,
-      "tekanan_hpa": 980,
-      "angin_knot": 65,
+      "lintang": 25.1,
+      "bujur": 138,
+      "tekanan_hpa": 955,
+      "angin_knot": 85,
       "kategori": "3",
-      "waktu_analisis": "2026-11-09T12:00:00.000Z"
+      "waktu_analisis": "2026-11-10T00:00:00.000Z"
     },
     {
-      "nama": "96E",
-      "tahap": "Bibit Siklon Tropis",
-      "jenis": "bibit",
-      "kalimat": "Bibit Siklon Tropis 96E terbentuk di sekitar Samudra Pasifik Utara pada 08 November 2026 pukul 19.00 WIB di luar wilayah monitoring TCWC Jakarta",
-      "lokasi": "luar wilayah monitoring TCWC Jakarta",
-      "dampak": "-",
-      "cuaca_ekstrem": "",
-      "gelombang_tinggi": "",
-      "angin_kencang": "",
-      "dampak_status": "",
-      "berlaku_hingga": "",
-      "url_infografis": "",
-      "di_dalam_tcwc": false,
-      "luar_tcwc": true,
-      "sumber": "halaman",
-      "agensi": "BMKG",
-      "lintang": 11.1,
-      "bujur": 89,
-      "tekanan_hpa": 1006,
-      "angin_knot": 30,
-      "kategori": "L",
-      "waktu_analisis": "2026-11-09T12:00:00.000Z"
-    },
-    {
-      "nama": "04C",
-      "tahap": "Bibit Siklon Tropis",
-      "jenis": "bibit",
+      "nama": "Pena",
+      "tahap": "Siklon Tropis",
+      "jenis": "siklon",
       "kalimat": "Siklon Tropis PENA berkembang dari Bibit Siklon Tropis 95C di Samudra Pasifik Utara.",
       "lokasi": "Samudra Pasifik Utara",
       "dampak": "-",
@@ -68,12 +44,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 11.4,
-      "bujur": 159.1,
+      "lintang": 11.7,
+      "bujur": 162.1,
       "tekanan_hpa": 1004,
       "angin_knot": 35,
-      "kategori": "L",
-      "waktu_analisis": "2026-11-09T12:00:00.000Z"
+      "kategori": "1",
+      "waktu_analisis": "2026-11-10T00:00:00.000Z"
     }
   ],
   "ikhtisar": {
@@ -110,10 +86,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-09T18:58:16.484Z",
+    "fetched_at": "2026-11-10T02:19:02.619Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-09T18:58:16.484Z",
+  "fetched_at": "2026-11-10T02:19:02.619Z",
   "pdf_diubah": "Mon, 09 Nov 2026 08:56:58 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -125,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-09T18:58:21.935Z",
+      "fetched_at": "2026-11-10T02:19:05.818Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -142,19 +118,19 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jma",
-          "lintang": 24.9,
-          "bujur": 136.5,
+          "lintang": 25.1,
+          "bujur": 138,
           "tekanan_hpa": null,
           "angin_knot": null,
           "kategori": "TY",
-          "waktu_analisis": "2026-11-09T18:00:00Z"
+          "waktu_analisis": "2026-11-10T00:00:00Z"
         }
       ]
     },
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-09T18:58:22.207Z",
+      "fetched_at": "2026-11-10T02:19:06.181Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
