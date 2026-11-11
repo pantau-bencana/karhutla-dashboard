@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-10T23:29:19.474Z",
+  "generated_at": "2026-11-11T00:15:07.840Z",
   "schedule": {
     "cron": "17 */3 * * *",
     "cron_cadangan": "47 1-23/3 * * *",
@@ -7,7 +7,7 @@
     "timezone": "UTC",
     "display_timezone": "Asia/Jakarta"
   },
-  "next_run": "2026-11-11T00:17:00.000Z",
+  "next_run": "2026-11-11T01:47:00.000Z",
   "firms_key": "used",
   "datasets": {
     "bmkg_prakiraan": {
@@ -138,9 +138,9 @@
       "expected_max_age_hours": 12960,
       "schedule_interval_hours": 3,
       "fetched_at": "2026-10-21T08:53:13.316Z",
-      "observed_at": "2026-11-10T23:29:20.968Z",
+      "observed_at": "2026-11-11T00:15:09.215Z",
       "observed_label": "514 titik di dalam batas kabupaten/kota. Bukan ibu kota dan bukan koordinat BNPB.",
-      "source_updated_at": "2026-11-10T23:29:20.968Z",
+      "source_updated_at": "2026-11-11T00:15:09.215Z",
       "record_count": 514,
       "status": "ok",
       "error": null,
@@ -178,7 +178,7 @@
       "compares_to": "peluang_hujan",
       "official_url": "https://www.bmkg.go.id/cuaca/prakiraan-cuaca",
       "permintaan": 21,
-      "detik": 2.8
+      "detik": 2.9
     },
     "fwi_gwis_pembanding": {
       "id": "fwi_gwis_pembanding",
@@ -212,7 +212,7 @@
       "permintaan": 11,
       "dari_cache": 4626,
       "ditunda": 0,
-      "detik": 2.5
+      "detik": 2.3
     },
     "gfwed_kabupaten": {
       "id": "gfwed_kabupaten",
@@ -230,7 +230,7 @@
       "expected_max_age_hours": 144,
       "schedule_interval_hours": 3,
       "fetched_at": "2026-11-10T23:29:19.474Z",
-      "observed_at": "2026-11-10T23:30:23.912Z",
+      "observed_at": "2026-11-11T00:16:04.045Z",
       "observed_label": "Tanggal data 2026-11-09. 400 kabupaten/kota. Bukan kelas BMKG.",
       "source_updated_at": "2026-11-09T00:00:00.000Z",
       "record_count": 400,
@@ -262,7 +262,7 @@
       "fetched_at": "2026-11-07T00:58:25.440Z",
       "observed_at": null,
       "observed_label": "Tidak ada titik pada 5 hari terakhir",
-      "source_updated_at": "2026-11-10T23:29:19.474Z",
+      "source_updated_at": "2026-11-11T00:15:07.840Z",
       "record_count": 0,
       "status": "ok",
       "error": null,
@@ -350,15 +350,15 @@
       "fungsi": "Konteks nowcast sekitar 0–6 jam. Bukan prospek karhutla dan bukan prakiraan 14 hari.",
       "expected_max_age_hours": 8,
       "schedule_interval_hours": 3,
-      "fetched_at": "2026-11-10T23:14:23.463Z",
-      "observed_at": "2026-11-10T23:10:00.000Z",
-      "observed_label": "8 peringatan pada RSS nowcast. Bukan peringatan karhutla.",
-      "source_updated_at": "2026-11-10T23:10:00.000Z",
-      "record_count": 8,
+      "fetched_at": "2026-11-11T00:15:07.840Z",
+      "observed_at": "2026-11-11T00:20:00.000Z",
+      "observed_label": "7 peringatan pada RSS nowcast. Bukan peringatan karhutla.",
+      "source_updated_at": "2026-11-11T00:20:00.000Z",
+      "record_count": 7,
       "status": "ok",
       "error": null,
       "file": "data/live/bmkg-cap.csv",
-      "content_hash": "cd17aae96457c4221e4d5cccd847d35e2873db1a63eb586df4e875ab4ee74f14",
+      "content_hash": "f0e6dd3260e8d9e0847e0491ab9d065c4a4aa2bdecf66d78613e1f8c6f584797",
       "kept_previous": false
     },
     "dibi_karhutla": {
@@ -767,7 +767,7 @@
       "limitation": "prakiraan model ECMWF (via Open-Meteo), bukan BMKG. NASA GPM IMERG tidak dipakai. Unduhan Early/Late di PPS mengembalikan HTTP 401 tanpa akun, dan jalur yang terdokumentasi memakai registrasi Earthdata atau PPS. Tidak ada berkas observasi yang diunduh.",
       "fungsi": "Jumlah hujan harian pada titik adm4. Tidak masuk matriks Awas/Siaga/Waspada.",
       "expected_max_age_hours": 36,
-      "fetched_at": "2026-11-10T23:31:53.464Z",
+      "fetched_at": "2026-11-11T00:18:02.428Z",
       "observed_at": "2026-11-11T00:00:00+07:00",
       "observed_label": "prakiraan model ECMWF (via Open-Meteo), bukan BMKG",
       "source_updated_at": "2026-11-11T00:00:00+07:00",
