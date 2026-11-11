@@ -1,19 +1,20 @@
 {
   "status": "ok",
-  "fetched_at": "2026-11-11T05:59:45.661Z",
-  "observed_at": "2026-11-11T00:00:00Z",
-  "observed_label": "Analisis BMKG 11 Nov 2026, 07.00 WIB. Diambil 11 Nov 2026, 12.59 WIB. Tanggal pada cuplikan: 2026-11-11, 2026-11-12, 2026-11-13.",
+  "fetched_at": "2026-11-11T14:22:22.194Z",
+  "observed_at": "2026-11-11T12:00:00Z",
+  "observed_label": "Analisis BMKG 11 Nov 2026, 19.00 WIB. Diambil 11 Nov 2026, 21.22 WIB. Tanggal pada cuplikan: 2026-11-11, 2026-11-12, 2026-11-13, 2026-11-14.",
   "analisis_lebih_lama": false,
   "tanggal": [
     "2026-11-11",
     "2026-11-12",
-    "2026-11-13"
+    "2026-11-13",
+    "2026-11-14"
   ],
   "kept_previous": false,
   "diminta": 510,
   "berhasil": 510,
   "gagal": 0,
-  "record_count": 10141,
+  "record_count": 8708,
   "titik": "satu adm4 per kab/kota",
   "error": null
 }
