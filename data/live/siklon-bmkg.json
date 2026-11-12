@@ -50,12 +50,36 @@
       "angin_knot": 40,
       "kategori": "L",
       "waktu_analisis": "2026-11-12T00:00:00.000Z"
+    },
+    {
+      "nama": "92B",
+      "tahap": "Bibit Siklon Tropis",
+      "jenis": "bibit",
+      "kalimat": "Bibit Siklon Tropis 92B terbentuk di sekitar Teluk Benggala pada 12 November 2026 pukul 13.00 WIB di luar wilayah monitoring TCWC Jakarta",
+      "lokasi": "luar wilayah monitoring TCWC Jakarta",
+      "dampak": "-",
+      "cuaca_ekstrem": "",
+      "gelombang_tinggi": "",
+      "angin_kencang": "",
+      "dampak_status": "",
+      "berlaku_hingga": "",
+      "url_infografis": "",
+      "di_dalam_tcwc": false,
+      "luar_tcwc": true,
+      "sumber": "halaman",
+      "agensi": "BMKG",
+      "lintang": 7.4,
+      "bujur": 87.4,
+      "tekanan_hpa": 1009,
+      "angin_knot": 20,
+      "kategori": "L",
+      "waktu_analisis": "2026-11-12T06:00:00.000Z"
     }
   ],
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-11-11",
+    "terbit": "2026-11-12",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
     "sistem": []
   },
@@ -86,11 +110,11 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-12T03:56:50.232Z",
+    "fetched_at": "2026-11-12T13:00:21.053Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-12T03:56:50.232Z",
-  "pdf_diubah": "Wed, 11 Nov 2026 06:45:39 GMT",
+  "fetched_at": "2026-11-12T13:00:21.053Z",
+  "pdf_diubah": "Thu, 12 Nov 2026 09:16:05 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
@@ -101,36 +125,16 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-12T03:56:55.272Z",
+      "fetched_at": "2026-11-12T13:00:25.233Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
-      "sistem": [
-        {
-          "nama": "Cempaka",
-          "kode": "2632",
-          "tahap": "Kategori LOW",
-          "jenis": "siklon",
-          "kalimat": "Analisis RSMC Tokyo untuk Cempaka.",
-          "lokasi": "",
-          "dampak": "-",
-          "agensi": "JMA",
-          "di_dalam_tcwc": false,
-          "luar_tcwc": false,
-          "sumber": "jma",
-          "lintang": 30,
-          "bujur": 153,
-          "tekanan_hpa": null,
-          "angin_knot": null,
-          "kategori": "LOW",
-          "waktu_analisis": "2026-11-11T12:00:00Z"
-        }
-      ]
+      "sistem": []
     },
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-12T03:56:55.902Z",
+      "fetched_at": "2026-11-12T13:00:25.361Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
@@ -153,6 +157,25 @@
           "kode": "31W",
           "tahap": "Typhoon",
           "jenis": "siklon"
+        },
+        {
+          "nama": "95P",
+          "kalimat": "Advisory JTWC ABPW menyebut invest 95P.",
+          "lokasi": "",
+          "dampak": "-",
+          "agensi": "JTWC",
+          "di_dalam_tcwc": false,
+          "luar_tcwc": false,
+          "sumber": "jtwc",
+          "lintang": -7.4,
+          "bujur": -159.6,
+          "tekanan_hpa": null,
+          "angin_knot": null,
+          "kategori": "",
+          "waktu_analisis": "",
+          "kode": "95P",
+          "tahap": "Invest",
+          "jenis": "bibit"
         }
       ]
     }
