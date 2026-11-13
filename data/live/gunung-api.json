@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-12T20:09:17.143Z",
+  "fetched_at": "2026-11-13T01:13:48.635Z",
   "sumber": "PVMBG",
   "url_tingkat": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas",
   "url_letusan": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan",
@@ -640,6 +640,51 @@
   "letusan": [
     {
       "jenis": "informasi-letusan",
+      "gunung": "Dukono",
+      "waktu": "2026-11-13T07:50:00+09:00",
+      "waktu_teks": "07:50 WIT 2026-11-13",
+      "teks": "Terjadi erupsi G. Dukono pada hari Jumat, 13 November 2026, pukul 07:50 WIT dengan tinggi kolom abu teramati ± 400 m di atas puncak (± 1487 m di atas permukaan laut). Kolom abu teramati berwarna putih hingga kelabu dengan intensitas sedang hingga tebal ke arah barat dan barat laut. Saat laporan ini dibuat, erupsi masih berlangsung.",
+      "tinggi_kolom_m": 400,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/d9966adf-deea-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-11-13T07:40:00+09:00",
+      "waktu_teks": "07:40 WIT 2026-11-13",
+      "teks": "Terjadi erupsi G. Ibu pada hari Jumat, 13 November 2026, pukul 07:40 WIT dengan tinggi kolom abu teramati ± 600 m di atas puncak (± 1925 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat laut. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 46 detik.",
+      "tinggi_kolom_m": 600,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/83ea47f7-dee9-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Semeru",
+      "waktu": "2026-11-13T06:35:00+07:00",
+      "waktu_teks": "06:35 WIB 2026-11-13",
+      "teks": "Terjadi erupsi G. Semeru pada hari Jumat, 13 November 2026, pukul 06:35 WIB dengan tinggi kolom abu teramati ± 500 m di atas puncak (± 4176 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas tebal ke arah barat daya. Erupsi ini terekam di seismograf dengan amplitudo maksimum 24 mm dan durasi 161 detik.",
+      "tinggi_kolom_m": 500,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/0ecd472d-def1-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Semeru",
+      "waktu": "2026-11-13T05:57:00+07:00",
+      "waktu_teks": "05:57 WIB 2026-11-13",
+      "teks": "Terjadi erupsi G. Semeru pada hari Jumat, 13 November 2026, pukul 05:57 WIB dengan tinggi kolom abu teramati ± 800 m di atas puncak (± 4476 m di atas permukaan laut). Kolom abu teramati berwarna putih hingga kelabu dengan intensitas tebal ke arah barat daya dan barat. Erupsi ini terekam di seismograf dengan amplitudo maksimum 19 mm dan durasi 165 detik.",
+      "tinggi_kolom_m": 800,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/c4626a44-deeb-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Semeru",
+      "waktu": "2026-11-13T05:04:00+07:00",
+      "waktu_teks": "05:04 WIB 2026-11-13",
+      "teks": "Terjadi erupsi G. Semeru pada hari Jumat, 13 November 2026, pukul 05:04 WIB dengan tinggi kolom abu teramati ± 400 m di atas puncak (± 4076 m di atas permukaan laut). Kolom abu teramati berwarna putih hingga kelabu dengan intensitas tebal ke arah barat daya dan barat. Erupsi ini terekam di seismograf dengan amplitudo maksimum 14 mm dan durasi 108 detik.",
+      "tinggi_kolom_m": 400,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/7fd16bda-dee4-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
       "gunung": "Ibu",
       "waktu": "2026-11-13T01:41:00+09:00",
       "waktu_teks": "01:41 WIT 2026-11-13",
@@ -727,54 +772,36 @@
       "teks": "Terjadi erupsi G. Semeru pada hari Kamis, 12 November 2026, pukul 07:57 WIB dengan tinggi kolom abu teramati ± 1000 m di atas puncak (± 4676 m di atas permukaan laut). Kolom abu teramati berwarna putih hingga kelabu dengan intensitas sedang ke arah selatan. Saat laporan ini dibuat, erupsi masih berlangsung.",
       "tinggi_kolom_m": 1000,
       "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/1452620d-de35-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Semeru",
-      "waktu": "2026-11-12T07:39:00+07:00",
-      "waktu_teks": "07:39 WIB 2026-11-12",
-      "teks": "Terjadi erupsi G. Semeru pada hari Kamis, 12 November 2026, pukul 07:39 WIB dengan tinggi kolom abu teramati ± 400 m di atas puncak (± 4076 m di atas permukaan laut). Kolom abu teramati berwarna putih hingga kelabu dengan intensitas sedang ke arah selatan. Saat laporan ini dibuat, erupsi masih berlangsung.",
-      "tinggi_kolom_m": 400,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/8fe2c8c7-de30-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Semeru",
-      "waktu": "2026-11-12T07:29:00+07:00",
-      "waktu_teks": "07:29 WIB 2026-11-12",
-      "teks": "Terjadi erupsi G. Semeru pada hari Kamis, 12 November 2026, pukul 07:29 WIB dengan tinggi kolom abu teramati ± 900 m di atas puncak (± 4576 m di atas permukaan laut). Kolom abu teramati berwarna putih hingga kelabu dengan intensitas sedang ke arah selatan. Saat laporan ini dibuat, erupsi masih berlangsung.",
-      "tinggi_kolom_m": 900,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/34e3e184-de2f-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Semeru",
-      "waktu": "2026-11-12T06:30:00+07:00",
-      "waktu_teks": "06:30 WIB 2026-11-12",
-      "teks": "Terjadi erupsi G. Semeru pada hari Kamis, 12 November 2026, pukul 06:30 WIB dengan tinggi kolom abu teramati ± 600 m di atas puncak (± 4276 m di atas permukaan laut). Kolom abu teramati berwarna putih hingga kelabu dengan intensitas sedang ke arah selatan. Saat laporan ini dibuat, erupsi masih berlangsung.",
-      "tinggi_kolom_m": 600,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/d6f36fb7-de26-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Semeru",
-      "waktu": "2026-11-12T06:09:00+07:00",
-      "waktu_teks": "06:09 WIB 2026-11-12",
-      "teks": "Terjadi erupsi G. Semeru pada hari Kamis, 12 November 2026, pukul 06:09 WIB dengan tinggi kolom abu teramati ± 700 m di atas puncak (± 4376 m di atas permukaan laut). Kolom abu teramati berwarna putih hingga kelabu dengan intensitas sedang ke arah selatan. Saat laporan ini dibuat, erupsi masih berlangsung.",
-      "tinggi_kolom_m": 700,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/120cc0ed-de24-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Marapi",
-      "waktu": "2026-11-12T05:04:00+07:00",
-      "waktu_teks": "05:04 WIB 2026-11-12",
-      "teks": "Terjadi erupsi G. Marapi pada hari Kamis, 12 November 2026, pukul 05:04 WIB. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 5.4 mm dan durasi 29 detik.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/e6840834-de1c-11f1-a61d-005056b54356/show"
     }
   ],
   "vona": [
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-11-12T23:35:00Z",
+      "waktu_teks": "20261112/2335Z",
+      "teks": "Eruption with volcanic ash cloud at 2335 UTC (0635 local). Best estimate of ash-cloud top is around 13363 FT (4176 M) above sea level or 1600 FT (500 M) above summit. May be higher than what can be observed clearly. Source of height data: ground observer.",
+      "tinggi_kolom_m": 4176,
+      "url": "https://magma.esdm.go.id/vona/d7b4802f-dbe9-4cbe-a7f4-5c47af891421"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-11-12T22:57:00Z",
+      "waktu_teks": "20261112/2257Z",
+      "teks": "Eruption with volcanic ash cloud at 2257 UTC (0557 local). Best estimate of ash-cloud top is around 14323 FT (4476 M) above sea level or 2560 FT (800 M) above summit. May be higher than what can be observed clearly. Source of height data: ground observer.",
+      "tinggi_kolom_m": 4476,
+      "url": "https://magma.esdm.go.id/vona/1e9f4359-4d0d-4906-af02-bd6003fdada6"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-11-12T22:04:00Z",
+      "waktu_teks": "20261112/2204Z",
+      "teks": "Eruption with volcanic ash cloud at 2204 UTC (0504 local). Best estimate of ash-cloud top is around 13043 FT (4076 M) above sea level or 1280 FT (400 M) above summit. May be higher than what can be observed clearly. Source of height data: ground observer.",
+      "tinggi_kolom_m": 4076,
+      "url": "https://magma.esdm.go.id/vona/ba8f1bef-96b7-4aed-a46f-7d9c482329a7"
+    },
     {
       "jenis": "vona",
       "gunung": "Semeru",
@@ -882,33 +909,6 @@
       "teks": "Eruption with volcanic ash cloud at 1232 UTC (1932 local). Best estimate of ash-cloud top is around 12723 FT (3976 M) above sea level or 960 FT (300 M) above summit. May be higher than what can be observed clearly. Source of height data: ground observer.",
       "tinggi_kolom_m": 3976,
       "url": "https://magma.esdm.go.id/vona/0536e288-a6a6-4b2b-897f-1b082c1b3a6a"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Semeru",
-      "waktu": "2026-11-11T12:26:00Z",
-      "waktu_teks": "20261111/1226Z",
-      "teks": "Eruption with volcanic ash cloud at 1226 UTC (1926 local). Best estimate of ash-cloud top is around 14323 FT (4476 M) above sea level or 2560 FT (800 M) above summit. May be higher than what can be observed clearly. Source of height data: ground observer.",
-      "tinggi_kolom_m": 4476,
-      "url": "https://magma.esdm.go.id/vona/493296e7-adce-4fd0-adce-4f0a80776947"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Semeru",
-      "waktu": "2026-11-11T11:30:00Z",
-      "waktu_teks": "20261111/1130Z",
-      "teks": "Eruption at 1130 UTC (1830 local). Ash-cloud is not observed.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/vona/beffbdc4-bad2-422d-b203-cd98cea097a4"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Ibu",
-      "waktu": "2026-11-11T11:13:00Z",
-      "waktu_teks": "20261111/1113Z",
-      "teks": "Eruption with volcanic ash cloud at 1113 UTC (2013 local). Best estimate of ash-cloud top is around 5840 FT (1825 M) above sea level or 1600 FT (500 M) above summit. May be higher than what can be observed clearly. Source of height data: ground observer.",
-      "tinggi_kolom_m": 1825,
-      "url": "https://magma.esdm.go.id/vona/0319e024-2ce3-45e8-84ac-4f2791b90a88"
     }
   ]
 }
