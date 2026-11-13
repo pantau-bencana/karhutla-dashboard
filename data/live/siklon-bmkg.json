@@ -9,9 +9,9 @@
       "jenis": "bibit",
       "kalimat": "Bibit Siklon Tropis 92B terbentuk di sekitar Teluk Benggala pada 12 November 2026 pukul 13.00 WIB di luar wilayah monitoring TCWC Jakarta",
       "lokasi": "luar wilayah monitoring TCWC Jakarta",
-      "dampak": "-",
-      "cuaca_ekstrem": "",
-      "gelombang_tinggi": "",
+      "dampak": "Cuaca ekstrem: Aceh. Gelombang tinggi: (A.08. Samudera Hindia barat Aceh).",
+      "cuaca_ekstrem": "Aceh",
+      "gelombang_tinggi": "(A.08. Samudera Hindia barat Aceh)",
       "angin_kencang": "",
       "dampak_status": "",
       "berlaku_hingga": "",
@@ -20,18 +20,18 @@
       "luar_tcwc": true,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 7.8,
-      "bujur": 87.4,
+      "lintang": 6,
+      "bujur": 88.8,
       "tekanan_hpa": 1009,
-      "angin_knot": 20,
+      "angin_knot": 25,
       "kategori": "L",
-      "waktu_analisis": "2026-11-12T12:00:00.000Z"
+      "waktu_analisis": "2026-11-13T00:00:00.000Z"
     }
   ],
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-11-12",
+    "terbit": "2026-11-13",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
     "sistem": []
   },
@@ -62,11 +62,11 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-13T01:59:30.230Z",
+    "fetched_at": "2026-11-13T09:47:55.419Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-13T01:59:30.230Z",
-  "pdf_diubah": "Thu, 12 Nov 2026 09:16:05 GMT",
+  "fetched_at": "2026-11-13T09:47:55.419Z",
+  "pdf_diubah": "Fri, 13 Nov 2026 07:13:22 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
@@ -77,7 +77,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-13T01:59:35.047Z",
+      "fetched_at": "2026-11-13T09:47:59.897Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -86,30 +86,11 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-13T01:59:35.145Z",
+      "fetched_at": "2026-11-13T09:48:00.053Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
       "sistem": [
-        {
-          "nama": "95P",
-          "kalimat": "Advisory JTWC ABPW menyebut invest 95P.",
-          "lokasi": "",
-          "dampak": "-",
-          "agensi": "JTWC",
-          "di_dalam_tcwc": false,
-          "luar_tcwc": false,
-          "sumber": "jtwc",
-          "lintang": -7.4,
-          "bujur": -159.6,
-          "tekanan_hpa": null,
-          "angin_knot": null,
-          "kategori": "",
-          "waktu_analisis": "",
-          "kode": "95P",
-          "tahap": "Invest",
-          "jenis": "bibit"
-        },
         {
           "nama": "92B",
           "kalimat": "Advisory JTWC ABIO menyebut invest 92B.",
