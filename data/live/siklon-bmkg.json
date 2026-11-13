@@ -4,30 +4,6 @@
   "status_sumber": "halaman-siklon-tropis",
   "sistem_halaman": [
     {
-      "nama": "95P",
-      "tahap": "Bibit Siklon Tropis",
-      "jenis": "bibit",
-      "kalimat": "Bibit Siklon Tropis 96p terbentuk di sekitar Samudra Pasifik Selatan pada 11 November 2026 pukul 01.00 WIB di luar wilayah monitoring TCWC Jakarta",
-      "lokasi": "luar wilayah monitoring TCWC Jakarta",
-      "dampak": "-",
-      "cuaca_ekstrem": "",
-      "gelombang_tinggi": "",
-      "angin_kencang": "",
-      "dampak_status": "",
-      "berlaku_hingga": "",
-      "url_infografis": "",
-      "di_dalam_tcwc": false,
-      "luar_tcwc": true,
-      "sumber": "halaman",
-      "agensi": "BMKG",
-      "lintang": -9.6,
-      "bujur": -158.4,
-      "tekanan_hpa": 25,
-      "angin_knot": 106,
-      "kategori": "L",
-      "waktu_analisis": "2026-11-13T12:00:00.000Z"
-    },
-    {
       "nama": "92B",
       "tahap": "Bibit Siklon Tropis",
       "jenis": "bibit",
@@ -118,10 +94,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-13T17:55:46.023Z",
+    "fetched_at": "2026-11-13T23:45:08.873Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-13T17:55:46.023Z",
+  "fetched_at": "2026-11-13T23:45:08.873Z",
   "pdf_diubah": "Fri, 13 Nov 2026 07:13:22 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -144,7 +120,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-13T17:55:56.351Z",
+      "fetched_at": "2026-11-13T23:45:20.118Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -153,7 +129,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-13T17:55:56.568Z",
+      "fetched_at": "2026-11-13T23:45:20.220Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
