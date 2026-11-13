@@ -1150,8 +1150,64 @@
       "n_sel": 1
     },
     {
+      "kode": "33.06",
+      "kabupaten": "Purworejo",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.07",
+      "kabupaten": "Wonosobo",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.08",
+      "kabupaten": "Magelang",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.09",
+      "kabupaten": "Boyolali",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.10",
+      "kabupaten": "Klaten",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.11",
+      "kabupaten": "Sukoharjo",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
       "kode": "33.12",
       "kabupaten": "Wonogiri",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 2
+    },
+    {
+      "kode": "33.13",
+      "kabupaten": "Karanganyar",
       "provinsi": "Jawa Tengah",
       "fwi_rata": 0,
       "fwi_maks": 0,
@@ -1163,7 +1219,7 @@
       "provinsi": "Jawa Tengah",
       "fwi_rata": 0,
       "fwi_maks": 0.01,
-      "n_sel": 2
+      "n_sel": 3
     },
     {
       "kode": "33.16",
@@ -1203,6 +1259,22 @@
       "provinsi": "Jawa Tengah",
       "fwi_rata": 0.03,
       "fwi_maks": 0.03,
+      "n_sel": 1
+    },
+    {
+      "kode": "33.22",
+      "kabupaten": "Semarang",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 2
+    },
+    {
+      "kode": "33.23",
+      "kabupaten": "Temanggung",
+      "provinsi": "Jawa Tengah",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
       "n_sel": 1
     },
     {
@@ -1251,6 +1323,30 @@
       "provinsi": "Jawa Tengah",
       "fwi_rata": 0.01,
       "fwi_maks": 0.01,
+      "n_sel": 1
+    },
+    {
+      "kode": "34.02",
+      "kabupaten": "Bantul",
+      "provinsi": "Daerah Istimewa Yogyakarta",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "34.03",
+      "kabupaten": "Gunungkidul",
+      "provinsi": "Daerah Istimewa Yogyakarta",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "34.04",
+      "kabupaten": "Sleman",
+      "provinsi": "Daerah Istimewa Yogyakarta",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
       "n_sel": 1
     },
     {

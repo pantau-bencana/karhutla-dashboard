@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-13T00:42:01.963Z",
+  "generated_at": "2026-11-13T01:55:19.285Z",
   "schedule": {
     "cron": "17 */3 * * *",
     "cron_cadangan": "47 1-23/3 * * *",
@@ -7,7 +7,7 @@
     "timezone": "UTC",
     "display_timezone": "Asia/Jakarta"
   },
-  "next_run": "2026-11-13T01:47:00.000Z",
+  "next_run": "2026-11-13T03:17:00.000Z",
   "firms_key": "used",
   "datasets": {
     "bmkg_prakiraan": {
@@ -91,7 +91,7 @@
       "method": "Nilai harian pada titik tengah kasar enam provinsi prioritas: hujan akumulasi, suhu maksimum, kelembapan rata-rata, angin maksimum, 14 hari ke belakang dan 1 hari berjalan. Hari tanpa hujan dihitung bila hujan harian di bawah 1 mm. Bukan titik kabupaten dan tidak dihitung menjadi FWI.",
       "compares_to": "fdrs",
       "official_url": "https://spartan.bmkg.go.id/",
-      "checked_at": "2026-11-13T00:42:01.963Z"
+      "checked_at": "2026-11-13T01:55:19.285Z"
     },
     "ispu_pembanding": {
       "id": "ispu_pembanding",
@@ -139,9 +139,9 @@
       "expected_max_age_hours": 12960,
       "schedule_interval_hours": 3,
       "fetched_at": "2026-10-21T08:53:13.316Z",
-      "observed_at": "2026-11-13T00:42:13.417Z",
+      "observed_at": "2026-11-13T01:55:30.826Z",
       "observed_label": "514 titik di dalam batas kabupaten/kota. Bukan ibu kota dan bukan koordinat BNPB.",
-      "source_updated_at": "2026-11-13T00:42:13.417Z",
+      "source_updated_at": "2026-11-13T01:55:30.826Z",
       "record_count": 514,
       "status": "ok",
       "error": null,
@@ -180,7 +180,7 @@
       "official_url": "https://www.bmkg.go.id/cuaca/prakiraan-cuaca",
       "permintaan": 21,
       "detik": 3.5,
-      "checked_at": "2026-11-13T00:42:01.963Z"
+      "checked_at": "2026-11-13T01:55:19.285Z"
     },
     "fwi_gwis_pembanding": {
       "id": "fwi_gwis_pembanding",
@@ -215,7 +215,7 @@
       "dari_cache": 4626,
       "ditunda": 0,
       "detik": 2.3,
-      "checked_at": "2026-11-13T00:42:01.963Z"
+      "checked_at": "2026-11-13T01:55:19.285Z"
     },
     "gfwed_kabupaten": {
       "id": "gfwed_kabupaten",
@@ -232,15 +232,15 @@
       "fungsi": "Rata-rata dan maksimum FWI sel yang pusatnya jatuh di dalam kabupaten/kota.",
       "expected_max_age_hours": 144,
       "schedule_interval_hours": 3,
-      "fetched_at": "2026-11-13T00:42:01.963Z",
-      "observed_at": "2026-11-13T00:43:43.456Z",
-      "observed_label": "Tanggal data 2026-11-11. 388 kabupaten/kota. Bukan kelas BMKG.",
+      "fetched_at": "2026-11-13T01:55:19.285Z",
+      "observed_at": "2026-11-13T01:57:10.624Z",
+      "observed_label": "Tanggal data 2026-11-11. 400 kabupaten/kota. Bukan kelas BMKG.",
       "source_updated_at": "2026-11-11T00:00:00.000Z",
-      "record_count": 388,
+      "record_count": 400,
       "status": "ok",
       "error": null,
       "file": "data/live/gfwed-kabupaten.csv",
-      "content_hash": "e9cac0b10cb96443245f02bfd4aae72734dfe58177f8ca0dbedc02492ce1ebde",
+      "content_hash": "c9796d4ad4317cf1719264e831c95e140059e464e81fdca88396c54170607e15",
       "kept_previous": false,
       "provider": "NASA GFWED",
       "compares_to": "fdrs",
@@ -267,11 +267,11 @@
       "observed_label": "Tidak ada titik pada 5 hari terakhir",
       "source_updated_at": "2026-11-13T00:42:01.963Z",
       "record_count": 0,
-      "status": "ok",
-      "error": null,
+      "status": "failed",
+      "error": "fetch failed",
       "file": "data/live/hotspot.csv",
       "content_hash": "4875f29d7d8eadb3637024a181b20590545b71843627a29ec9701574fafbc431",
-      "kept_previous": false,
+      "kept_previous": true,
       "records_before_boundary": 0,
       "records_after_boundary": 0,
       "dropped_outside_indonesia": 0,
@@ -284,7 +284,8 @@
       "boundary": "BIG – Batas Administrasi Desa/Kelurahan",
       "boundary_edition": "Mei 2021 untuk desa; layer kecamatan revisi 27 Desember 2022 menurut deskripsi layanan",
       "boundary_note": "Layer desa (MapServer/4) berjudul Peta Batas Administrasi Desa, edisi Mei 2021, 1.419 wilayah, dan layanan ini tidak mengirim geometrinya. Layer kecamatan (MapServer/3) pada layanan yang sama memuat nama kecamatan, kabupaten/kota, dan provinsi; deskripsi layanannya menyebut revisi 27 Desember 2022. Padanan adalah pencocokan koordinat pada batas peta, bukan verifikasi lapangan. Cakupan dan batas edisi Mei 2021 tidak lengkap untuk seluruh desa di Indonesia.",
-      "crs": "EPSG:4326. Geometri batas tidak disimpan di repositori."
+      "crs": "EPSG:4326. Geometri batas tidak disimpan di repositori.",
+      "checked_at": "2026-11-13T01:55:19.285Z"
     },
     "irbi": {
       "id": "irbi",
@@ -353,15 +354,15 @@
       "fungsi": "Konteks nowcast sekitar 0–6 jam. Bukan prospek karhutla dan bukan prakiraan 14 hari.",
       "expected_max_age_hours": 8,
       "schedule_interval_hours": 3,
-      "fetched_at": "2026-11-13T00:15:57.656Z",
-      "observed_at": "2026-11-12T22:45:00.000Z",
-      "observed_label": "10 peringatan pada RSS nowcast. Bukan peringatan karhutla.",
-      "source_updated_at": "2026-11-12T22:45:00.000Z",
-      "record_count": 10,
+      "fetched_at": "2026-11-13T01:55:19.285Z",
+      "observed_at": "2026-11-13T00:52:00.000Z",
+      "observed_label": "12 peringatan pada RSS nowcast. Bukan peringatan karhutla.",
+      "source_updated_at": "2026-11-13T00:52:00.000Z",
+      "record_count": 12,
       "status": "ok",
       "error": null,
       "file": "data/live/bmkg-cap.csv",
-      "content_hash": "761c9376be3df513de5aea518c63690225b598c05c141cd22b871d2610c7eba7",
+      "content_hash": "13c2efe8ee3e39020c7bf6737394010638433fb187374102004475850381c949",
       "kept_previous": false
     },
     "dibi_karhutla": {
@@ -770,13 +771,13 @@
       "limitation": "prakiraan model ECMWF (via Open-Meteo), bukan BMKG. NASA GPM IMERG tidak dipakai. Unduhan Early/Late di PPS mengembalikan HTTP 401 tanpa akun, dan jalur yang terdokumentasi memakai registrasi Earthdata atau PPS. Tidak ada berkas observasi yang diunduh.",
       "fungsi": "Jumlah hujan harian pada titik adm4. Tidak masuk matriks Awas/Siaga/Waspada.",
       "expected_max_age_hours": 36,
-      "fetched_at": "2026-11-13T00:49:07.463Z",
+      "fetched_at": "2026-11-13T01:59:27.643Z",
       "observed_at": "2026-11-13T00:00:00+07:00",
       "observed_label": "prakiraan model ECMWF (via Open-Meteo), bukan BMKG",
       "source_updated_at": "2026-11-13T00:00:00+07:00",
       "record_count": 1542,
       "status": "ok",
-      "error": "460 kab/kota gagal; cuplikan sebelumnya dipertahankan bila ada.",
+      "error": "120 kab/kota gagal; cuplikan sebelumnya dipertahankan bila ada.",
       "file": "data/live/hujan-pembanding-kab.csv",
       "kept_previous": true,
       "content_hash": null
