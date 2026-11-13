@@ -1891,7 +1891,7 @@
       "provinsi": "Kalimantan Barat",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 18
+      "n_sel": 21
     },
     {
       "kode": "61.06",
@@ -1899,7 +1899,7 @@
       "provinsi": "Kalimantan Barat",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 25
+      "n_sel": 34
     },
     {
       "kode": "61.07",
@@ -2329,9 +2329,9 @@
       "kode": "72.01",
       "kabupaten": "Banggai",
       "provinsi": "Sulawesi Tengah",
-      "fwi_rata": 0.02,
-      "fwi_maks": 0.06,
-      "n_sel": 6
+      "fwi_rata": 0.06,
+      "fwi_maks": 0.39,
+      "n_sel": 8
     },
     {
       "kode": "72.02",
