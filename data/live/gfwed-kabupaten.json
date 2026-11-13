@@ -1030,38 +1030,6 @@
       "n_sel": 2
     },
     {
-      "kode": "32.08",
-      "kabupaten": "Kuningan",
-      "provinsi": "Jawa Barat",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 2
-    },
-    {
-      "kode": "32.09",
-      "kabupaten": "Cirebon",
-      "provinsi": "Jawa Barat",
-      "fwi_rata": 0.02,
-      "fwi_maks": 0.02,
-      "n_sel": 1
-    },
-    {
-      "kode": "32.11",
-      "kabupaten": "Sumedang",
-      "provinsi": "Jawa Barat",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 2
-    },
-    {
-      "kode": "32.12",
-      "kabupaten": "Indramayu",
-      "provinsi": "Jawa Barat",
-      "fwi_rata": 0.17,
-      "fwi_maks": 0.3,
-      "n_sel": 2
-    },
-    {
       "kode": "32.13",
       "kabupaten": "Subang",
       "provinsi": "Jawa Barat",
@@ -1665,9 +1633,9 @@
       "kode": "52.04",
       "kabupaten": "Sumbawa",
       "provinsi": "Nusa Tenggara Barat",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 1
+      "fwi_rata": 0.05,
+      "fwi_maks": 0.32,
+      "n_sel": 9
     },
     {
       "kode": "52.05",
@@ -1675,7 +1643,7 @@
       "provinsi": "Nusa Tenggara Barat",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 2
+      "n_sel": 3
     },
     {
       "kode": "52.06",
@@ -1882,8 +1850,8 @@
       "kabupaten": "Ketapang",
       "provinsi": "Kalimantan Barat",
       "fwi_rata": 0,
-      "fwi_maks": 0.03,
-      "n_sel": 21
+      "fwi_maks": 0.11,
+      "n_sel": 31
     },
     {
       "kode": "61.05",
@@ -1963,7 +1931,7 @@
       "provinsi": "Kalimantan Tengah",
       "fwi_rata": 0.01,
       "fwi_maks": 0.05,
-      "n_sel": 9
+      "n_sel": 10
     },
     {
       "kode": "62.02",
@@ -2011,7 +1979,7 @@
       "provinsi": "Kalimantan Tengah",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 15
+      "n_sel": 16
     },
     {
       "kode": "62.08",
@@ -2019,7 +1987,7 @@
       "provinsi": "Kalimantan Tengah",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 3
+      "n_sel": 4
     },
     {
       "kode": "62.09",
@@ -3009,9 +2977,9 @@
       "kode": "93.01",
       "kabupaten": "Merauke",
       "provinsi": "Papua Selatan",
-      "fwi_rata": 0.04,
-      "fwi_maks": 2.01,
-      "n_sel": 49
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 41
     },
     {
       "kode": "93.02",
