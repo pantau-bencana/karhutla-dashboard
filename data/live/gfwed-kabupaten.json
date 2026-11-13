@@ -1665,9 +1665,9 @@
       "kode": "52.04",
       "kabupaten": "Sumbawa",
       "provinsi": "Nusa Tenggara Barat",
-      "fwi_rata": 0.05,
-      "fwi_maks": 0.32,
-      "n_sel": 9
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
     },
     {
       "kode": "52.05",
@@ -1675,7 +1675,7 @@
       "provinsi": "Nusa Tenggara Barat",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 3
+      "n_sel": 2
     },
     {
       "kode": "52.06",
@@ -1846,6 +1846,14 @@
       "n_sel": 2
     },
     {
+      "kode": "53.21",
+      "kabupaten": "Malaka",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 10.74,
+      "fwi_maks": 10.74,
+      "n_sel": 1
+    },
+    {
       "kode": "61.01",
       "kabupaten": "Sambas",
       "provinsi": "Kalimantan Barat",
@@ -1874,8 +1882,8 @@
       "kabupaten": "Ketapang",
       "provinsi": "Kalimantan Barat",
       "fwi_rata": 0,
-      "fwi_maks": 0.11,
-      "n_sel": 31
+      "fwi_maks": 0.03,
+      "n_sel": 21
     },
     {
       "kode": "61.05",
@@ -1955,7 +1963,7 @@
       "provinsi": "Kalimantan Tengah",
       "fwi_rata": 0.01,
       "fwi_maks": 0.05,
-      "n_sel": 10
+      "n_sel": 9
     },
     {
       "kode": "62.02",
@@ -2003,7 +2011,7 @@
       "provinsi": "Kalimantan Tengah",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 16
+      "n_sel": 15
     },
     {
       "kode": "62.08",
@@ -2011,7 +2019,7 @@
       "provinsi": "Kalimantan Tengah",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 4
+      "n_sel": 3
     },
     {
       "kode": "62.09",
@@ -3001,9 +3009,9 @@
       "kode": "93.01",
       "kabupaten": "Merauke",
       "provinsi": "Papua Selatan",
-      "fwi_rata": 0.05,
+      "fwi_rata": 0.04,
       "fwi_maks": 2.01,
-      "n_sel": 39
+      "n_sel": 49
     },
     {
       "kode": "93.02",
@@ -3019,7 +3027,7 @@
       "provinsi": "Papua Selatan",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 26
+      "n_sel": 28
     },
     {
       "kode": "93.04",
