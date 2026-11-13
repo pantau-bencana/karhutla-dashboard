@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-13T00:15:57.656Z",
+  "generated_at": "2026-11-13T00:42:01.963Z",
   "schedule": {
     "cron": "17 */3 * * *",
     "cron_cadangan": "47 1-23/3 * * *",
@@ -91,7 +91,7 @@
       "method": "Nilai harian pada titik tengah kasar enam provinsi prioritas: hujan akumulasi, suhu maksimum, kelembapan rata-rata, angin maksimum, 14 hari ke belakang dan 1 hari berjalan. Hari tanpa hujan dihitung bila hujan harian di bawah 1 mm. Bukan titik kabupaten dan tidak dihitung menjadi FWI.",
       "compares_to": "fdrs",
       "official_url": "https://spartan.bmkg.go.id/",
-      "checked_at": "2026-11-13T00:15:57.656Z"
+      "checked_at": "2026-11-13T00:42:01.963Z"
     },
     "ispu_pembanding": {
       "id": "ispu_pembanding",
@@ -139,9 +139,9 @@
       "expected_max_age_hours": 12960,
       "schedule_interval_hours": 3,
       "fetched_at": "2026-10-21T08:53:13.316Z",
-      "observed_at": "2026-11-13T00:16:09.210Z",
+      "observed_at": "2026-11-13T00:42:13.417Z",
       "observed_label": "514 titik di dalam batas kabupaten/kota. Bukan ibu kota dan bukan koordinat BNPB.",
-      "source_updated_at": "2026-11-13T00:16:09.210Z",
+      "source_updated_at": "2026-11-13T00:42:13.417Z",
       "record_count": 514,
       "status": "ok",
       "error": null,
@@ -180,7 +180,7 @@
       "official_url": "https://www.bmkg.go.id/cuaca/prakiraan-cuaca",
       "permintaan": 21,
       "detik": 3.5,
-      "checked_at": "2026-11-13T00:15:57.656Z"
+      "checked_at": "2026-11-13T00:42:01.963Z"
     },
     "fwi_gwis_pembanding": {
       "id": "fwi_gwis_pembanding",
@@ -215,14 +215,14 @@
       "dari_cache": 4626,
       "ditunda": 0,
       "detik": 2.3,
-      "checked_at": "2026-11-13T00:15:57.656Z"
+      "checked_at": "2026-11-13T00:42:01.963Z"
     },
     "gfwed_kabupaten": {
       "id": "gfwed_kabupaten",
       "nama": "FWI GFWED per kabupaten/kota",
       "instansi": "NASA GFWED (GEOS-5)",
       "source": "FWI GFWED per kabupaten/kota",
-      "url": "https://portal.nccs.nasa.gov/datashare/GlobalFWI/v2.0/fwiCalcs.GEOS-5/Default/GEOS-5/2026/FWI.GEOS-5.Daily.Default.20261110.nc",
+      "url": "https://portal.nccs.nasa.gov/datashare/GlobalFWI/v2.0/fwiCalcs.GEOS-5/Default/GEOS-5/2026/FWI.GEOS-5.Daily.Default.20261111.nc",
       "license": "Berkas publik NASA NCCS Datashare, tanpa login. Kutipan Field et al. 2015, doi:10.5194/nhess-15-1407-2015.",
       "mode": "pembanding",
       "update_type": "Harian, tertunda",
@@ -232,21 +232,20 @@
       "fungsi": "Rata-rata dan maksimum FWI sel yang pusatnya jatuh di dalam kabupaten/kota.",
       "expected_max_age_hours": 144,
       "schedule_interval_hours": 3,
-      "fetched_at": "2026-11-12T20:04:13.471Z",
-      "observed_at": "2026-11-12T20:05:25.849Z",
-      "observed_label": "Tanggal data 2026-11-10. 397 kabupaten/kota. Bukan kelas BMKG.",
-      "source_updated_at": "2026-11-10T00:00:00.000Z",
-      "record_count": 397,
-      "status": "failed",
-      "error": "fetch failed",
+      "fetched_at": "2026-11-13T00:42:01.963Z",
+      "observed_at": "2026-11-13T00:43:43.456Z",
+      "observed_label": "Tanggal data 2026-11-11. 388 kabupaten/kota. Bukan kelas BMKG.",
+      "source_updated_at": "2026-11-11T00:00:00.000Z",
+      "record_count": 388,
+      "status": "ok",
+      "error": null,
       "file": "data/live/gfwed-kabupaten.csv",
-      "content_hash": "c28c5fd0fe6c85c4688b1d547ad3d3bcdf7733ea5f89032c64557198d1beef1b",
-      "kept_previous": true,
+      "content_hash": "e9cac0b10cb96443245f02bfd4aae72734dfe58177f8ca0dbedc02492ce1ebde",
+      "kept_previous": false,
       "provider": "NASA GFWED",
       "compares_to": "fdrs",
       "official_url": "https://portal.nccs.nasa.gov/datashare/GlobalFWI/",
-      "method": "Rata-rata dan maksimum sel GEOS-5_FWI yang pusatnya jatuh di dalam kabupaten/kota. Geometri BIG tidak disimpan.",
-      "checked_at": "2026-11-13T00:15:57.656Z"
+      "method": "Rata-rata dan maksimum sel GEOS-5_FWI yang pusatnya jatuh di dalam kabupaten/kota. Geometri BIG tidak disimpan."
     },
     "hotspot": {
       "id": "hotspot",
@@ -266,7 +265,7 @@
       "fetched_at": "2026-11-07T00:58:25.440Z",
       "observed_at": null,
       "observed_label": "Tidak ada titik pada 5 hari terakhir",
-      "source_updated_at": "2026-11-13T00:15:57.656Z",
+      "source_updated_at": "2026-11-13T00:42:01.963Z",
       "record_count": 0,
       "status": "ok",
       "error": null,
@@ -771,13 +770,13 @@
       "limitation": "prakiraan model ECMWF (via Open-Meteo), bukan BMKG. NASA GPM IMERG tidak dipakai. Unduhan Early/Late di PPS mengembalikan HTTP 401 tanpa akun, dan jalur yang terdokumentasi memakai registrasi Earthdata atau PPS. Tidak ada berkas observasi yang diunduh.",
       "fungsi": "Jumlah hujan harian pada titik adm4. Tidak masuk matriks Awas/Siaga/Waspada.",
       "expected_max_age_hours": 36,
-      "fetched_at": "2026-11-13T00:19:29.460Z",
+      "fetched_at": "2026-11-13T00:49:07.463Z",
       "observed_at": "2026-11-13T00:00:00+07:00",
       "observed_label": "prakiraan model ECMWF (via Open-Meteo), bukan BMKG",
       "source_updated_at": "2026-11-13T00:00:00+07:00",
       "record_count": 1542,
       "status": "ok",
-      "error": "200 kab/kota gagal; cuplikan sebelumnya dipertahankan bila ada.",
+      "error": "460 kab/kota gagal; cuplikan sebelumnya dipertahankan bila ada.",
       "file": "data/live/hujan-pembanding-kab.csv",
       "kept_previous": true,
       "content_hash": null
