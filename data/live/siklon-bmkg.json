@@ -4,12 +4,36 @@
   "status_sumber": "halaman-siklon-tropis",
   "sistem_halaman": [
     {
+      "nama": "95P",
+      "tahap": "Bibit Siklon Tropis",
+      "jenis": "bibit",
+      "kalimat": "Bibit Siklon Tropis 96p terbentuk di sekitar Samudra Pasifik Selatan pada 11 November 2026 pukul 01.00 WIB di luar wilayah monitoring TCWC Jakarta",
+      "lokasi": "luar wilayah monitoring TCWC Jakarta",
+      "dampak": "-",
+      "cuaca_ekstrem": "",
+      "gelombang_tinggi": "",
+      "angin_kencang": "",
+      "dampak_status": "",
+      "berlaku_hingga": "",
+      "url_infografis": "",
+      "di_dalam_tcwc": false,
+      "luar_tcwc": true,
+      "sumber": "halaman",
+      "agensi": "BMKG",
+      "lintang": -9.6,
+      "bujur": -158.4,
+      "tekanan_hpa": 25,
+      "angin_knot": 106,
+      "kategori": "L",
+      "waktu_analisis": "2026-11-13T12:00:00.000Z"
+    },
+    {
       "nama": "92B",
       "tahap": "Bibit Siklon Tropis",
       "jenis": "bibit",
       "kalimat": "Bibit Siklon Tropis 92B terbentuk di sekitar Teluk Benggala pada 12 November 2026 pukul 13.00 WIB di luar wilayah monitoring TCWC Jakarta",
       "lokasi": "luar wilayah monitoring TCWC Jakarta",
-      "dampak": "Cuaca ekstrem: Aceh. Gelombang tinggi: (A.08. Samudera Hindia barat Aceh).",
+      "dampak": "Dampak tidak langsung: hujan sedang–lebat di Aceh; gelombang tinggi 1.25–2.5 m (moderate sea) di Samudra Hindia barat Aceh.",
       "cuaca_ekstrem": "Aceh",
       "gelombang_tinggi": "(A.08. Samudera Hindia barat Aceh)",
       "angin_kencang": "",
@@ -20,12 +44,44 @@
       "luar_tcwc": true,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 6,
-      "bujur": 88.8,
+      "lintang": 6.5,
+      "bujur": 87.9,
+      "tekanan_hpa": 1008,
+      "angin_knot": 25,
+      "kategori": "L",
+      "waktu_analisis": "2026-11-13T12:00:00.000Z",
+      "dampak_manual": false,
+      "dampak_otomatis": true,
+      "sumber_manual": {
+        "label": "dibaca otomatis dari infografis BMKG",
+        "url": "https://tropicalcyclone.bmkg.go.id/cms/assets/74f157f3-7e9b-4cd9-bf5e-cbc6657ff9c8"
+      },
+      "dampak_diperbarui": "2026-11-13T00:00:00.000Z",
+      "dampak_berlaku_hingga": "2026-11-14T00:00:00.000Z"
+    },
+    {
+      "nama": "96S",
+      "tahap": "Bibit Siklon Tropis",
+      "jenis": "bibit",
+      "kalimat": "Bibit Siklon Tropis 96S terbentuk di sekitar Samudra Hindia barat Sumatra pada 13 November 2026 pukul 13.00 WIB di dalam wilayah monitoring TCWC Jakarta.",
+      "lokasi": "dalam wilayah monitoring TCWC Jakarta",
+      "dampak": "-",
+      "cuaca_ekstrem": "",
+      "gelombang_tinggi": "",
+      "angin_kencang": "",
+      "dampak_status": "",
+      "berlaku_hingga": "",
+      "url_infografis": "",
+      "di_dalam_tcwc": true,
+      "luar_tcwc": false,
+      "sumber": "halaman",
+      "agensi": "BMKG",
+      "lintang": -2.1,
+      "bujur": 86.7,
       "tekanan_hpa": 1009,
       "angin_knot": 25,
       "kategori": "L",
-      "waktu_analisis": "2026-11-13T00:00:00.000Z"
+      "waktu_analisis": "2026-11-13T12:00:00.000Z"
     }
   ],
   "ikhtisar": {
@@ -62,22 +118,33 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-13T09:47:55.419Z",
+    "fetched_at": "2026-11-13T17:55:46.023Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-13T09:47:55.419Z",
+  "fetched_at": "2026-11-13T17:55:46.023Z",
   "pdf_diubah": "Fri, 13 Nov 2026 07:13:22 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
     "catatan": "dibaca otomatis dari infografis BMKG",
-    "entri": []
+    "entri": [
+      {
+        "sistem": "92B",
+        "potensi_dampak": "Dampak tidak langsung: hujan sedang–lebat di Aceh; gelombang tinggi 1.25–2.5 m (moderate sea) di Samudra Hindia barat Aceh.",
+        "sumber": {
+          "label": "dibaca otomatis dari infografis BMKG",
+          "url": "https://tropicalcyclone.bmkg.go.id/cms/assets/74f157f3-7e9b-4cd9-bf5e-cbc6657ff9c8"
+        },
+        "berlaku_hingga": "2026-11-14T00:00:00.000Z",
+        "diperbarui": "2026-11-13T00:00:00.000Z"
+      }
+    ]
   },
   "pemantau": {
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-13T09:47:59.897Z",
+      "fetched_at": "2026-11-13T17:55:56.351Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -86,31 +153,11 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-13T09:48:00.053Z",
+      "fetched_at": "2026-11-13T17:55:56.568Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
-      "sistem": [
-        {
-          "nama": "92B",
-          "kalimat": "Advisory JTWC ABIO menyebut invest 92B.",
-          "lokasi": "",
-          "dampak": "-",
-          "agensi": "JTWC",
-          "di_dalam_tcwc": false,
-          "luar_tcwc": false,
-          "sumber": "jtwc",
-          "lintang": 8.3,
-          "bujur": 87.6,
-          "tekanan_hpa": null,
-          "angin_knot": null,
-          "kategori": "",
-          "waktu_analisis": "",
-          "kode": "92B",
-          "tahap": "Invest",
-          "jenis": "bibit"
-        }
-      ]
+      "sistem": []
     }
   }
 }
