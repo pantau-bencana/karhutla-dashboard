@@ -9,7 +9,7 @@
       "jenis": "bibit",
       "kalimat": "Bibit Siklon Tropis 92B terbentuk di sekitar Teluk Benggala pada 12 November 2026 pukul 13.00 WIB di luar wilayah monitoring TCWC Jakarta",
       "lokasi": "luar wilayah monitoring TCWC Jakarta",
-      "dampak": "Dampak tidak langsung: hujan sedang–lebat di Aceh; gelombang tinggi 1.25–2.5 m (moderate sea) di Samudra Hindia barat Aceh.",
+      "dampak": "Dampak tidak langsung: hujan sedang–lebat di Aceh; gelombang tinggi 1.25–2.5 m (moderate sea) di Selat Malaka bagian utara.",
       "cuaca_ekstrem": "Aceh",
       "gelombang_tinggi": "(A.08. Samudera Hindia barat Aceh)",
       "angin_kencang": "",
@@ -20,20 +20,20 @@
       "luar_tcwc": true,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 6.5,
-      "bujur": 87.9,
+      "lintang": 7.3,
+      "bujur": 87.6,
       "tekanan_hpa": 1008,
       "angin_knot": 25,
       "kategori": "L",
-      "waktu_analisis": "2026-11-13T12:00:00.000Z",
+      "waktu_analisis": "2026-11-14T00:00:00.000Z",
       "dampak_manual": false,
       "dampak_otomatis": true,
       "sumber_manual": {
         "label": "dibaca otomatis dari infografis BMKG",
-        "url": "https://tropicalcyclone.bmkg.go.id/cms/assets/74f157f3-7e9b-4cd9-bf5e-cbc6657ff9c8"
+        "url": "https://tropicalcyclone.bmkg.go.id/cms/assets/fcd81dda-37df-499e-8ec4-e1f0c7fa70c7"
       },
-      "dampak_diperbarui": "2026-11-13T00:00:00.000Z",
-      "dampak_berlaku_hingga": "2026-11-14T00:00:00.000Z"
+      "dampak_diperbarui": "",
+      "dampak_berlaku_hingga": "2026-11-15T00:00:00.000Z"
     },
     {
       "nama": "96S",
@@ -41,9 +41,9 @@
       "jenis": "bibit",
       "kalimat": "Bibit Siklon Tropis 96S terbentuk di sekitar Samudra Hindia barat Sumatra pada 13 November 2026 pukul 13.00 WIB di dalam wilayah monitoring TCWC Jakarta.",
       "lokasi": "dalam wilayah monitoring TCWC Jakarta",
-      "dampak": "-",
-      "cuaca_ekstrem": "",
-      "gelombang_tinggi": "",
+      "dampak": "Cuaca ekstrem: Aceh; Sumatera Utara; Sumatera Barat. Gelombang tinggi: (A.02. Selat Malaka bagian utara); (A.04. Perairan Lhokseumawe); (A.08. Samudera Hindia barat Aceh).",
+      "cuaca_ekstrem": "Aceh; Sumatera Utara; Sumatera Barat",
+      "gelombang_tinggi": "(A.02. Selat Malaka bagian utara); (A.04. Perairan Lhokseumawe); (A.08. Samudera Hindia barat Aceh)",
       "angin_kencang": "",
       "dampak_status": "",
       "berlaku_hingga": "",
@@ -52,12 +52,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": -2.1,
-      "bujur": 86.7,
+      "lintang": -2.5,
+      "bujur": 88.8,
       "tekanan_hpa": 1009,
       "angin_knot": 25,
       "kategori": "L",
-      "waktu_analisis": "2026-11-13T12:00:00.000Z"
+      "waktu_analisis": "2026-11-14T00:00:00.000Z"
     }
   ],
   "ikhtisar": {
@@ -94,10 +94,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-13T23:45:08.873Z",
+    "fetched_at": "2026-11-14T06:48:20.983Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-13T23:45:08.873Z",
+  "fetched_at": "2026-11-14T06:48:20.983Z",
   "pdf_diubah": "Fri, 13 Nov 2026 07:13:22 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -106,13 +106,13 @@
     "entri": [
       {
         "sistem": "92B",
-        "potensi_dampak": "Dampak tidak langsung: hujan sedang–lebat di Aceh; gelombang tinggi 1.25–2.5 m (moderate sea) di Samudra Hindia barat Aceh.",
+        "potensi_dampak": "Dampak tidak langsung: hujan sedang–lebat di Aceh; gelombang tinggi 1.25–2.5 m (moderate sea) di Selat Malaka bagian utara.",
         "sumber": {
           "label": "dibaca otomatis dari infografis BMKG",
-          "url": "https://tropicalcyclone.bmkg.go.id/cms/assets/74f157f3-7e9b-4cd9-bf5e-cbc6657ff9c8"
+          "url": "https://tropicalcyclone.bmkg.go.id/cms/assets/fcd81dda-37df-499e-8ec4-e1f0c7fa70c7"
         },
-        "berlaku_hingga": "2026-11-14T00:00:00.000Z",
-        "diperbarui": "2026-11-13T00:00:00.000Z"
+        "berlaku_hingga": "2026-11-15T00:00:00.000Z",
+        "diperbarui": ""
       }
     ]
   },
@@ -120,7 +120,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-13T23:45:20.118Z",
+      "fetched_at": "2026-11-14T06:48:36.399Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -129,7 +129,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-13T23:45:20.220Z",
+      "fetched_at": "2026-11-14T06:48:36.621Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
