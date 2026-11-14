@@ -1030,6 +1030,38 @@
       "n_sel": 2
     },
     {
+      "kode": "32.08",
+      "kabupaten": "Kuningan",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 2
+    },
+    {
+      "kode": "32.09",
+      "kabupaten": "Cirebon",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 0.02,
+      "fwi_maks": 0.02,
+      "n_sel": 1
+    },
+    {
+      "kode": "32.11",
+      "kabupaten": "Sumedang",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 2
+    },
+    {
+      "kode": "32.12",
+      "kabupaten": "Indramayu",
+      "provinsi": "Jawa Barat",
+      "fwi_rata": 0.17,
+      "fwi_maks": 0.3,
+      "n_sel": 2
+    },
+    {
       "kode": "32.13",
       "kabupaten": "Subang",
       "provinsi": "Jawa Barat",
@@ -2977,9 +3009,9 @@
       "kode": "93.01",
       "kabupaten": "Merauke",
       "provinsi": "Papua Selatan",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 41
+      "fwi_rata": 0.04,
+      "fwi_maks": 2.01,
+      "n_sel": 49
     },
     {
       "kode": "93.02",
