@@ -1,13 +1,13 @@
 {
   "status": "ok",
-  "fetched_at": "2026-11-14T09:19:07.473Z",
-  "rss_published": "2026-11-14T08:48:56.000Z",
+  "fetched_at": "2026-11-14T10:37:47.626Z",
+  "rss_published": "2026-11-14T10:32:37.000Z",
   "sumber": "BMKG",
   "dasar": "Nowcast BMKG, dasar waktu 0–3 jam.",
   "cakupan": "nasional",
-  "jumlah_alert": 37,
-  "jumlah_prov": 36,
-  "baris": 344,
+  "jumlah_alert": 33,
+  "jumlah_prov": 31,
+  "baris": 277,
   "penempatan": "batas-tersimpan",
   "catatan": "Kueri BIG gagal. Kabupaten/kota dipadankan pada batas tersimpan, bukan kotak koordinat.",
   "error": null
