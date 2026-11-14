@@ -12,8 +12,8 @@ tanggal,provinsi,curah_hujan_mm,suhu_c,kelembapan_pct,kec_angin_kmj,hari_tanpa_h
 2026-11-11,Riau,11.8,31.8,89,6.9,0
 2026-11-12,Riau,11.2,30.7,90,9,0
 2026-11-13,Riau,20.5,31.8,92,7.2,0
-2026-11-14,Riau,18.9,30,94,8,0
-2026-11-15,Riau,19.5,28.4,96,8.6,0
+2026-11-14,Riau,18.5,30,94,8,0
+2026-11-15,Riau,30.5,27.4,98,7.6,0
 2026-11-01,Jambi,7.6,31.9,86,11.4,0
 2026-11-02,Jambi,3.7,32.2,86,13,0
 2026-11-03,Jambi,4.7,32.3,86,9,0
@@ -28,7 +28,7 @@ tanggal,provinsi,curah_hujan_mm,suhu_c,kelembapan_pct,kec_angin_kmj,hari_tanpa_h
 2026-11-12,Jambi,13.5,31.1,90,7.9,0
 2026-11-13,Jambi,4.7,31.9,89,13.1,0
 2026-11-14,Jambi,25.1,29.2,97,11.3,0
-2026-11-15,Jambi,12.1,30.6,94,8.8,0
+2026-11-15,Jambi,11.8,30.9,93,6.9,0
 2026-11-01,Sumatera Selatan,9.9,31.8,89,9.8,0
 2026-11-02,Sumatera Selatan,6.3,33.3,85,11.8,0
 2026-11-03,Sumatera Selatan,4.9,32.6,85,13.6,0
@@ -42,8 +42,8 @@ tanggal,provinsi,curah_hujan_mm,suhu_c,kelembapan_pct,kec_angin_kmj,hari_tanpa_h
 2026-11-11,Sumatera Selatan,11.5,33.4,83,11,0
 2026-11-12,Sumatera Selatan,11.6,31.6,92,8.6,0
 2026-11-13,Sumatera Selatan,11.8,32.6,90,12.2,0
-2026-11-14,Sumatera Selatan,8.6,31.1,93,9.8,0
-2026-11-15,Sumatera Selatan,16.6,31,91,11,0
+2026-11-14,Sumatera Selatan,8.6,31.1,92,9.8,0
+2026-11-15,Sumatera Selatan,18.5,31.3,94,7.7,0
 2026-11-01,Kalimantan Barat,6.1,31.7,85,10,0
 2026-11-02,Kalimantan Barat,13.7,31.1,92,13.6,0
 2026-11-03,Kalimantan Barat,2.8,31.5,84,10.2,0
@@ -57,8 +57,8 @@ tanggal,provinsi,curah_hujan_mm,suhu_c,kelembapan_pct,kec_angin_kmj,hari_tanpa_h
 2026-11-11,Kalimantan Barat,12.9,29.7,91,9.9,0
 2026-11-12,Kalimantan Barat,13.2,30.5,92,10.3,0
 2026-11-13,Kalimantan Barat,6.4,31.7,86,14.2,0
-2026-11-14,Kalimantan Barat,7.8,32.2,91,14.8,0
-2026-11-15,Kalimantan Barat,9.5,30.5,93,9.4,0
+2026-11-14,Kalimantan Barat,8.5,32.2,91,14.8,0
+2026-11-15,Kalimantan Barat,8.6,30.8,93,10.8,0
 2026-11-01,Kalimantan Tengah,0.3,33.2,81,8.8,1
 2026-11-02,Kalimantan Tengah,15.5,33,82,13,0
 2026-11-03,Kalimantan Tengah,2.3,32.3,85,10.8,0
@@ -72,8 +72,8 @@ tanggal,provinsi,curah_hujan_mm,suhu_c,kelembapan_pct,kec_angin_kmj,hari_tanpa_h
 2026-11-11,Kalimantan Tengah,15.1,31.5,88,10.9,0
 2026-11-12,Kalimantan Tengah,12.3,33,91,13.1,0
 2026-11-13,Kalimantan Tengah,8.9,33.9,86,8.3,0
-2026-11-14,Kalimantan Tengah,9.2,34.3,87,10.3,0
-2026-11-15,Kalimantan Tengah,14.4,30.7,91,9.1,0
+2026-11-14,Kalimantan Tengah,7.3,34.3,85,10.3,0
+2026-11-15,Kalimantan Tengah,34.5,31.4,92,10.5,0
 2026-11-01,Kalimantan Selatan,0.3,33.6,76,14.7,1
 2026-11-02,Kalimantan Selatan,2.8,33.5,78,13.9,0
 2026-11-03,Kalimantan Selatan,4,31.3,78,14.9,0
@@ -88,4 +88,4 @@ tanggal,provinsi,curah_hujan_mm,suhu_c,kelembapan_pct,kec_angin_kmj,hari_tanpa_h
 2026-11-12,Kalimantan Selatan,2.8,32.2,80,9.4,0
 2026-11-13,Kalimantan Selatan,7.3,33.3,80,13,0
 2026-11-14,Kalimantan Selatan,6.4,34.9,80,13.8,0
-2026-11-15,Kalimantan Selatan,6.4,31.9,87,16.8,0
+2026-11-15,Kalimantan Selatan,18.3,30.5,90,11.9,0

@@ -1705,8 +1705,24 @@
       "kode": "53.01",
       "kabupaten": "Kupang",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 1.39,
+      "fwi_rata": 1.2,
       "fwi_maks": 3.49,
+      "n_sel": 6
+    },
+    {
+      "kode": "53.02",
+      "kabupaten": "Timor Tengah Selatan",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 5.26,
+      "fwi_maks": 8.03,
+      "n_sel": 3
+    },
+    {
+      "kode": "53.03",
+      "kabupaten": "Timor Tengah Utara",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 2.73,
+      "fwi_maks": 6.62,
       "n_sel": 3
     },
     {
@@ -1732,6 +1748,14 @@
       "fwi_rata": 0.04,
       "fwi_maks": 0.04,
       "n_sel": 1
+    },
+    {
+      "kode": "53.08",
+      "kabupaten": "Ende",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.01,
+      "n_sel": 3
     },
     {
       "kode": "53.09",
@@ -1788,6 +1812,14 @@
       "fwi_rata": 0.04,
       "fwi_maks": 0.16,
       "n_sel": 4
+    },
+    {
+      "kode": "53.16",
+      "kabupaten": "Nagekeo",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0.22,
+      "fwi_maks": 0.43,
+      "n_sel": 2
     },
     {
       "kode": "53.17",
