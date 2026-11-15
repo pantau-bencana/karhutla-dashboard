@@ -1227,15 +1227,7 @@
       "provinsi": "Jawa Tengah",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 3
-    },
-    {
-      "kode": "33.17",
-      "kabupaten": "Rembang",
-      "provinsi": "Jawa Tengah",
-      "fwi_rata": 0.02,
-      "fwi_maks": 0.02,
-      "n_sel": 2
+      "n_sel": 1
     },
     {
       "kode": "33.18",
@@ -1355,19 +1347,11 @@
       "provinsi": "Jawa Timur",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 2
+      "n_sel": 1
     },
     {
       "kode": "35.02",
       "kabupaten": "Ponorogo",
-      "provinsi": "Jawa Timur",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 1
-    },
-    {
-      "kode": "35.03",
-      "kabupaten": "Trenggalek",
       "provinsi": "Jawa Timur",
       "fwi_rata": 0,
       "fwi_maks": 0,
@@ -1379,7 +1363,7 @@
       "provinsi": "Jawa Timur",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 2
+      "n_sel": 1
     },
     {
       "kode": "35.05",
@@ -1521,9 +1505,9 @@
       "kode": "35.23",
       "kabupaten": "Tuban",
       "provinsi": "Jawa Timur",
-      "fwi_rata": 0.05,
+      "fwi_rata": 0.1,
       "fwi_maks": 0.1,
-      "n_sel": 2
+      "n_sel": 1
     },
     {
       "kode": "35.24",
