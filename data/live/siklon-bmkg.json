@@ -9,9 +9,9 @@
       "jenis": "bibit",
       "kalimat": "Bibit Siklon Tropis 92B terbentuk di sekitar Teluk Benggala pada 12 November 2026 pukul 13.00 WIB di dalam wilayah monitoring TCWC Jakarta",
       "lokasi": "dalam wilayah monitoring TCWC Jakarta",
-      "dampak": "Dampak tidak langsung: hujan sedang–lebat di Aceh; gelombang tinggi 1.25–2.5 m (moderate sea) di Selat Malaka bagian utara.",
+      "dampak": "Cuaca ekstrem: Aceh.",
       "cuaca_ekstrem": "Aceh",
-      "gelombang_tinggi": "(A.08. Samudera Hindia barat Aceh); (A.02. Selat Malaka bagian utara); (A.10. Samudera Hindia barat Kep. Nias)",
+      "gelombang_tinggi": "",
       "angin_kencang": "",
       "dampak_status": "",
       "berlaku_hingga": "",
@@ -20,20 +20,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 9.5,
-      "bujur": 87.1,
-      "tekanan_hpa": 1007,
-      "angin_knot": 25,
+      "lintang": 11.1,
+      "bujur": 87.2,
+      "tekanan_hpa": 1006,
+      "angin_knot": 30,
       "kategori": "L",
-      "waktu_analisis": "2026-11-15T00:00:00.000Z",
-      "dampak_manual": false,
-      "dampak_otomatis": true,
-      "sumber_manual": {
-        "label": "dibaca otomatis dari infografis BMKG",
-        "url": "https://tropicalcyclone.bmkg.go.id/cms/assets/77baccd9-115f-4261-aecc-990c6b9c8797"
-      },
-      "dampak_diperbarui": "",
-      "dampak_berlaku_hingga": "2026-11-15T12:00:00.000Z"
+      "waktu_analisis": "2026-11-15T12:00:00.000Z"
     },
     {
       "nama": "96S",
@@ -41,9 +33,9 @@
       "jenis": "bibit",
       "kalimat": "Bibit Siklon Tropis 96S terbentuk di sekitar Samudra Hindia barat Sumatra pada 13 November 2026 pukul 13.00 WIB di dalam wilayah monitoring TCWC Jakarta.",
       "lokasi": "dalam wilayah monitoring TCWC Jakarta",
-      "dampak": "Cuaca ekstrem: Aceh; Sumatera Utara; Sumatera Barat. Gelombang tinggi: (A.02. Selat Malaka bagian utara); (A.04. Perairan Lhokseumawe); (A.10. Samudera Hindia barat Kep. Nias); (A.08. Samudera Hindia barat Aceh).",
-      "cuaca_ekstrem": "Aceh; Sumatera Utara; Sumatera Barat",
-      "gelombang_tinggi": "(A.02. Selat Malaka bagian utara); (A.04. Perairan Lhokseumawe); (A.10. Samudera Hindia barat Kep. Nias); (A.08. Samudera Hindia barat Aceh)",
+      "dampak": "Cuaca ekstrem: Aceh; Sumatera Utara; Sumatera Barat; Bengkulu; Lampung. Gelombang tinggi: (A.02. Selat Malaka bagian utara); (A.10. Samudera Hindia barat Kep. Nias); (A.08. Samudera Hindia barat Aceh); (B.09. Samudera Hindia barat Kep. Mentawai); (A.01. Perairan utara Sabang).",
+      "cuaca_ekstrem": "Aceh; Sumatera Utara; Sumatera Barat; Bengkulu; Lampung",
+      "gelombang_tinggi": "(A.02. Selat Malaka bagian utara); (A.10. Samudera Hindia barat Kep. Nias); (A.08. Samudera Hindia barat Aceh); (B.09. Samudera Hindia barat Kep. Mentawai); (A.01. Perairan utara Sabang)",
       "angin_kencang": "",
       "dampak_status": "",
       "berlaku_hingga": "",
@@ -52,12 +44,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": -1,
-      "bujur": 91.6,
+      "lintang": -0.9,
+      "bujur": 92.9,
       "tekanan_hpa": 1008,
       "angin_knot": 25,
       "kategori": "L",
-      "waktu_analisis": "2026-11-15T00:00:00.000Z"
+      "waktu_analisis": "2026-11-15T12:00:00.000Z"
     }
   ],
   "ikhtisar": {
@@ -94,33 +86,22 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-15T11:18:20.857Z",
+    "fetched_at": "2026-11-15T17:53:18.625Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-15T11:18:20.857Z",
+  "fetched_at": "2026-11-15T17:53:18.625Z",
   "pdf_diubah": "Sun, 15 Nov 2026 07:34:07 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
     "catatan": "dibaca otomatis dari infografis BMKG",
-    "entri": [
-      {
-        "sistem": "92B",
-        "potensi_dampak": "Dampak tidak langsung: hujan sedang–lebat di Aceh; gelombang tinggi 1.25–2.5 m (moderate sea) di Selat Malaka bagian utara.",
-        "sumber": {
-          "label": "dibaca otomatis dari infografis BMKG",
-          "url": "https://tropicalcyclone.bmkg.go.id/cms/assets/77baccd9-115f-4261-aecc-990c6b9c8797"
-        },
-        "berlaku_hingga": "2026-11-15T12:00:00.000Z",
-        "diperbarui": ""
-      }
-    ]
+    "entri": []
   },
   "pemantau": {
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-15T11:18:39.261Z",
+      "fetched_at": "2026-11-15T17:53:35.412Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -129,7 +110,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-15T11:18:39.347Z",
+      "fetched_at": "2026-11-15T17:53:35.493Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
