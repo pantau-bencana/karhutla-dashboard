@@ -419,6 +419,14 @@
       "provinsi": "Sumatera Barat",
       "fwi_rata": 0,
       "fwi_maks": 0,
+      "n_sel": 4
+    },
+    {
+      "kode": "13.11",
+      "kabupaten": "Solok Selatan",
+      "provinsi": "Sumatera Barat",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
       "n_sel": 2
     },
     {
@@ -539,7 +547,7 @@
       "provinsi": "Jambi",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 1
+      "n_sel": 4
     },
     {
       "kode": "15.02",
@@ -547,7 +555,7 @@
       "provinsi": "Jambi",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 7
+      "n_sel": 8
     },
     {
       "kode": "15.03",
@@ -595,7 +603,7 @@
       "provinsi": "Jambi",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 2
+      "n_sel": 6
     },
     {
       "kode": "15.09",
@@ -1210,8 +1218,8 @@
       "kabupaten": "Grobogan",
       "provinsi": "Jawa Tengah",
       "fwi_rata": 0,
-      "fwi_maks": 0.01,
-      "n_sel": 3
+      "fwi_maks": 0,
+      "n_sel": 1
     },
     {
       "kode": "33.16",
@@ -1230,30 +1238,6 @@
       "n_sel": 2
     },
     {
-      "kode": "33.18",
-      "kabupaten": "Pati",
-      "provinsi": "Jawa Tengah",
-      "fwi_rata": 0.21,
-      "fwi_maks": 0.21,
-      "n_sel": 1
-    },
-    {
-      "kode": "33.19",
-      "kabupaten": "Kudus",
-      "provinsi": "Jawa Tengah",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 1
-    },
-    {
-      "kode": "33.21",
-      "kabupaten": "Demak",
-      "provinsi": "Jawa Tengah",
-      "fwi_rata": 0.07,
-      "fwi_maks": 0.07,
-      "n_sel": 1
-    },
-    {
       "kode": "33.22",
       "kabupaten": "Semarang",
       "provinsi": "Jawa Tengah",
@@ -1264,14 +1248,6 @@
     {
       "kode": "33.23",
       "kabupaten": "Temanggung",
-      "provinsi": "Jawa Tengah",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 1
-    },
-    {
-      "kode": "33.25",
-      "kabupaten": "Batang",
       "provinsi": "Jawa Tengah",
       "fwi_rata": 0,
       "fwi_maks": 0,
@@ -1304,14 +1280,6 @@
     {
       "kode": "33.29",
       "kabupaten": "Brebes",
-      "provinsi": "Jawa Tengah",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 1
-    },
-    {
-      "kode": "33.74",
-      "kabupaten": "Kota Semarang",
       "provinsi": "Jawa Tengah",
       "fwi_rata": 0,
       "fwi_maks": 0,
@@ -1657,9 +1625,9 @@
       "kode": "52.04",
       "kabupaten": "Sumbawa",
       "provinsi": "Nusa Tenggara Barat",
-      "fwi_rata": 0.05,
-      "fwi_maks": 0.32,
-      "n_sel": 9
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
     },
     {
       "kode": "52.05",
@@ -1667,7 +1635,7 @@
       "provinsi": "Nusa Tenggara Barat",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 3
+      "n_sel": 2
     },
     {
       "kode": "52.06",
@@ -2875,7 +2843,7 @@
       "provinsi": "Papua",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 16
+      "n_sel": 8
     },
     {
       "kode": "91.05",
@@ -2907,7 +2875,7 @@
       "provinsi": "Papua",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 9
+      "n_sel": 7
     },
     {
       "kode": "91.15",
@@ -2932,14 +2900,6 @@
       "fwi_rata": 0,
       "fwi_maks": 0,
       "n_sel": 30
-    },
-    {
-      "kode": "91.71",
-      "kabupaten": "Kota Jayapura",
-      "provinsi": "Papua",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 1
     },
     {
       "kode": "92.02",
