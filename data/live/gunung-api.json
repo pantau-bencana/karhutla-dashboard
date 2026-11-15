@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-15T17:16:55.926Z",
+  "fetched_at": "2026-11-15T21:54:19.637Z",
   "sumber": "PVMBG",
   "url_tingkat": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas",
   "url_letusan": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan",
@@ -778,6 +778,15 @@
     {
       "jenis": "vona",
       "gunung": "Semeru",
+      "waktu": "2026-11-15T21:20:00Z",
+      "waktu_teks": "20261115/2120Z",
+      "teks": "Eruption with volcanic ash cloud at 2120 UTC (0420 local). Best estimate of ash-cloud top is around 12083 FT (3776 M) above sea level or 320 FT (100 M) above summit. May be higher than what can be observed clearly. Source of height data: ground observer.",
+      "tinggi_kolom_m": 3776,
+      "url": "https://magma.esdm.go.id/vona/e598a2b5-2cf0-4af7-9b8d-335db409e88a"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
       "waktu": "2026-11-15T13:29:00Z",
       "waktu_teks": "20261115/1329Z",
       "teks": "Eruption with volcanic ash cloud at 1329 UTC (2029 local). Best estimate of ash-cloud top is around 12403 FT (3876 M) above sea level or 640 FT (200 M) above summit. May be higher than what can be observed clearly. Source of height data: ground observer.",
@@ -900,15 +909,6 @@
       "teks": "Eruption with volcanic ash cloud at 2338 UTC (0638 local). Best estimate of ash-cloud top is around 12403 FT (3876 M) above sea level or 640 FT (200 M) above summit. May be higher than what can be observed clearly. Source of height data: ground observer.",
       "tinggi_kolom_m": 3876,
       "url": "https://magma.esdm.go.id/vona/bc3fd954-f3a6-449f-ae65-9b4903304221"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Semeru",
-      "waktu": "2026-11-13T22:23:00Z",
-      "waktu_teks": "20261113/2223Z",
-      "teks": "Eruption with volcanic ash cloud at 2223 UTC (0523 local). Best estimate of ash-cloud top is around 12723 FT (3976 M) above sea level or 960 FT (300 M) above summit. May be higher than what can be observed clearly. Source of height data: ground observer.",
-      "tinggi_kolom_m": 3976,
-      "url": "https://magma.esdm.go.id/vona/cb5ccbd9-4b50-4784-980d-b57fd0acaa43"
     }
   ]
 }
