@@ -11,7 +11,7 @@
       "lokasi": "dalam wilayah monitoring TCWC Jakarta",
       "dampak": "Dampak tidak langsung: hujan sedang–lebat di Aceh; gelombang tinggi 1.25–2.5 m (moderate sea) di Selat Malaka bagian utara.",
       "cuaca_ekstrem": "Aceh",
-      "gelombang_tinggi": "(A.08. Samudera Hindia barat Aceh)",
+      "gelombang_tinggi": "(A.08. Samudera Hindia barat Aceh); (A.02. Selat Malaka bagian utara); (A.10. Samudera Hindia barat Kep. Nias)",
       "angin_kencang": "",
       "dampak_status": "",
       "berlaku_hingga": "",
@@ -41,9 +41,9 @@
       "jenis": "bibit",
       "kalimat": "Bibit Siklon Tropis 96S terbentuk di sekitar Samudra Hindia barat Sumatra pada 13 November 2026 pukul 13.00 WIB di dalam wilayah monitoring TCWC Jakarta.",
       "lokasi": "dalam wilayah monitoring TCWC Jakarta",
-      "dampak": "Cuaca ekstrem: Aceh; Sumatera Utara; Sumatera Barat. Gelombang tinggi: (A.02. Selat Malaka bagian utara); (A.04. Perairan Lhokseumawe); (A.08. Samudera Hindia barat Aceh).",
+      "dampak": "Cuaca ekstrem: Aceh; Sumatera Utara; Sumatera Barat. Gelombang tinggi: (A.02. Selat Malaka bagian utara); (A.04. Perairan Lhokseumawe); (A.10. Samudera Hindia barat Kep. Nias); (A.08. Samudera Hindia barat Aceh).",
       "cuaca_ekstrem": "Aceh; Sumatera Utara; Sumatera Barat",
-      "gelombang_tinggi": "(A.02. Selat Malaka bagian utara); (A.04. Perairan Lhokseumawe); (A.08. Samudera Hindia barat Aceh)",
+      "gelombang_tinggi": "(A.02. Selat Malaka bagian utara); (A.04. Perairan Lhokseumawe); (A.10. Samudera Hindia barat Kep. Nias); (A.08. Samudera Hindia barat Aceh)",
       "angin_kencang": "",
       "dampak_status": "",
       "berlaku_hingga": "",
@@ -63,7 +63,7 @@
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-11-14",
+    "terbit": "2026-11-15",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
     "sistem": []
   },
@@ -94,11 +94,11 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-15T02:53:29.857Z",
+    "fetched_at": "2026-11-15T11:18:20.857Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-15T02:53:29.857Z",
-  "pdf_diubah": "Sat, 14 Nov 2026 07:09:11 GMT",
+  "fetched_at": "2026-11-15T11:18:20.857Z",
+  "pdf_diubah": "Sun, 15 Nov 2026 07:34:07 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
@@ -120,7 +120,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-15T02:53:48.811Z",
+      "fetched_at": "2026-11-15T11:18:39.261Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -129,11 +129,31 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-15T02:53:48.929Z",
+      "fetched_at": "2026-11-15T11:18:39.347Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
-      "sistem": []
+      "sistem": [
+        {
+          "nama": "FOUR",
+          "kalimat": "Advisory JTWC ABPW menyebut FOUR.",
+          "lokasi": "",
+          "dampak": "-",
+          "agensi": "JTWC",
+          "di_dalam_tcwc": false,
+          "luar_tcwc": false,
+          "sumber": "jtwc",
+          "lintang": -8.4,
+          "bujur": -158.9,
+          "tekanan_hpa": null,
+          "angin_knot": 35,
+          "kategori": "",
+          "waktu_analisis": "2026-11-15T06:00:00.000Z",
+          "kode": "04P",
+          "tahap": "Siklon tropis",
+          "jenis": "siklon"
+        }
+      ]
     }
   }
 }
