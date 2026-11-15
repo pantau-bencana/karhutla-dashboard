@@ -40,7 +40,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Aceh,Aceh Timur,11.03,4.70243,97.62959,4.6,89,8
 2026-11-26,Aceh,Aceh Timur,11.03,4.70243,97.62959,12,86,6.5
 2026-11-27,Aceh,Aceh Timur,11.03,4.70243,97.62959,6.8,88,5.8
-2026-11-28,Aceh,Aceh Timur,11.03,4.70243,97.62959,10.8,90,5.5
+2026-11-28,Aceh,Aceh Timur,11.03,4.70243,97.62959,10.8,89,5.5
 2026-11-15,Aceh,Aceh Tengah,11.04,4.56473,96.81292,15,97,8.7
 2026-11-16,Aceh,Aceh Tengah,11.04,4.56473,96.81292,11.3,86,7.3
 2026-11-17,Aceh,Aceh Tengah,11.04,4.56473,96.81292,29.4,96,9
@@ -54,7 +54,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Aceh,Aceh Tengah,11.04,4.56473,96.81292,19.4,94,6.6
 2026-11-26,Aceh,Aceh Tengah,11.04,4.56473,96.81292,15,96,10
 2026-11-27,Aceh,Aceh Tengah,11.04,4.56473,96.81292,16.8,92,9
-2026-11-28,Aceh,Aceh Tengah,11.04,4.56473,96.81292,10.2,97,6
+2026-11-28,Aceh,Aceh Tengah,11.04,4.56473,96.81292,10.2,95,6
 2026-11-15,Aceh,Aceh Barat,11.05,4.42857,96.1862,20.3,98,11.7
 2026-11-16,Aceh,Aceh Barat,11.05,4.42857,96.1862,3,88,8.5
 2026-11-17,Aceh,Aceh Barat,11.05,4.42857,96.1862,13,93,9.2
@@ -110,7 +110,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Aceh,Aceh Utara,11.08,4.99987,97.15161,13,78,5.2
 2026-11-26,Aceh,Aceh Utara,11.08,4.99987,97.15161,13.6,90,4.4
 2026-11-27,Aceh,Aceh Utara,11.08,4.99987,97.15161,10.2,86,7.8
-2026-11-28,Aceh,Aceh Utara,11.08,4.99987,97.15161,4.2,96,7.5
+2026-11-28,Aceh,Aceh Utara,11.08,4.99987,97.15161,4.2,92,7.5
 2026-11-15,Aceh,Simeulue,11.09,2.62922,96.09548,16.7,77,16.1
 2026-11-16,Aceh,Simeulue,11.09,2.62922,96.09548,10.8,75,13.7
 2026-11-17,Aceh,Simeulue,11.09,2.62922,96.09548,16.1,69,11.9
@@ -138,7 +138,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Aceh,Aceh Singkil,11.10,2.37577,97.93098,33,98,6.5
 2026-11-26,Aceh,Aceh Singkil,11.10,2.37577,97.93098,32,97,10.4
 2026-11-27,Aceh,Aceh Singkil,11.10,2.37577,97.93098,25,100,8.9
-2026-11-28,Aceh,Aceh Singkil,11.10,2.37577,97.93098,49.2,91,7.6
+2026-11-28,Aceh,Aceh Singkil,11.10,2.37577,97.93098,49.2,90,7.6
 2026-11-15,Aceh,Bireuen,11.11,5.08282,96.62619,11.4,93,5.8
 2026-11-16,Aceh,Bireuen,11.11,5.08282,96.62619,0.2,61,5.5
 2026-11-17,Aceh,Bireuen,11.11,5.08282,96.62619,7.5,76,7.5
@@ -166,7 +166,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Aceh,Aceh Barat Daya,11.12,3.83428,96.86956,19,88,9.4
 2026-11-26,Aceh,Aceh Barat Daya,11.12,3.83428,96.86956,9.8,85,10.6
 2026-11-27,Aceh,Aceh Barat Daya,11.12,3.83428,96.86956,22.6,76,13
-2026-11-28,Aceh,Aceh Barat Daya,11.12,3.83428,96.86956,28.8,88,7.9
+2026-11-28,Aceh,Aceh Barat Daya,11.12,3.83428,96.86956,28.8,87,7.9
 2026-11-15,Aceh,Gayo Lues,11.13,3.9777,97.319,13.9,93,4.5
 2026-11-16,Aceh,Gayo Lues,11.13,3.9777,97.319,10.2,92,5.7
 2026-11-17,Aceh,Gayo Lues,11.13,3.9777,97.319,6.4,76,4.7
@@ -222,7 +222,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Aceh,Aceh Tamiang,11.16,4.20595,98.00788,5.6,90,9.3
 2026-11-26,Aceh,Aceh Tamiang,11.16,4.20595,98.00788,14.2,84,5.1
 2026-11-27,Aceh,Aceh Tamiang,11.16,4.20595,98.00788,16.8,90,3.7
-2026-11-28,Aceh,Aceh Tamiang,11.16,4.20595,98.00788,6,97,6.7
+2026-11-28,Aceh,Aceh Tamiang,11.16,4.20595,98.00788,6,96,6.7
 2026-11-15,Aceh,Bener Meriah,11.17,4.77564,96.95084,10.2,100,5.9
 2026-11-16,Aceh,Bener Meriah,11.17,4.77564,96.95084,6,90,9.1
 2026-11-17,Aceh,Bener Meriah,11.17,4.77564,96.95084,6.7,96,8.3
@@ -236,7 +236,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Aceh,Bener Meriah,11.17,4.77564,96.95084,11.4,99,8
 2026-11-26,Aceh,Bener Meriah,11.17,4.77564,96.95084,12.6,91,6.8
 2026-11-27,Aceh,Bener Meriah,11.17,4.77564,96.95084,9.2,88,8.1
-2026-11-28,Aceh,Bener Meriah,11.17,4.77564,96.95084,9.6,94,6.6
+2026-11-28,Aceh,Bener Meriah,11.17,4.77564,96.95084,9.6,91,6.6
 2026-11-15,Aceh,Pidie Jaya,11.18,5.10332,96.19265,18.4,98,4.4
 2026-11-16,Aceh,Pidie Jaya,11.18,5.10332,96.19265,0.3,92,6.4
 2026-11-17,Aceh,Pidie Jaya,11.18,5.10332,96.19265,2,100,6.8
@@ -292,7 +292,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Aceh,Kota Lhokseumawe,11.73,5.16107,97.10257,12.4,61,9.2
 2026-11-26,Aceh,Kota Lhokseumawe,11.73,5.16107,97.10257,23,48,10.8
 2026-11-27,Aceh,Kota Lhokseumawe,11.73,5.16107,97.10257,8.4,67,11.6
-2026-11-28,Aceh,Kota Lhokseumawe,11.73,5.16107,97.10257,5.8,80,10
+2026-11-28,Aceh,Kota Lhokseumawe,11.73,5.16107,97.10257,5.8,70,10
 2026-11-15,Aceh,Kota Langsa,11.74,4.48127,97.97588,24.2,90,10.2
 2026-11-16,Aceh,Kota Langsa,11.74,4.48127,97.97588,6.4,69,6.5
 2026-11-17,Aceh,Kota Langsa,11.74,4.48127,97.97588,4.5,71,9.3
@@ -390,7 +390,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Utara,Langkat,12.05,3.76064,98.23214,14.2,86,9.4
 2026-11-26,Sumatera Utara,Langkat,12.05,3.76064,98.23214,29.8,88,8.9
 2026-11-27,Sumatera Utara,Langkat,12.05,3.76064,98.23214,11.6,90,6.9
-2026-11-28,Sumatera Utara,Langkat,12.05,3.76064,98.23214,13.8,92,7.6
+2026-11-28,Sumatera Utara,Langkat,12.05,3.76064,98.23214,13.8,91,7.6
 2026-11-15,Sumatera Utara,Karo,12.06,3.08042,98.26713,3.7,94,8.7
 2026-11-16,Sumatera Utara,Karo,12.06,3.08042,98.26713,6.5,67,4.9
 2026-11-17,Sumatera Utara,Karo,12.06,3.08042,98.26713,2.2,75,11.1
@@ -404,7 +404,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Utara,Karo,12.06,3.08042,98.26713,17,98,7.4
 2026-11-26,Sumatera Utara,Karo,12.06,3.08042,98.26713,15.2,94,6.9
 2026-11-27,Sumatera Utara,Karo,12.06,3.08042,98.26713,23.4,90,5.2
-2026-11-28,Sumatera Utara,Karo,12.06,3.08042,98.26713,6.4,96,7
+2026-11-28,Sumatera Utara,Karo,12.06,3.08042,98.26713,6.4,95,7
 2026-11-15,Sumatera Utara,Deli Serdang,12.07,3.47456,98.70667,34.3,94,9.5
 2026-11-16,Sumatera Utara,Deli Serdang,12.07,3.47456,98.70667,27.3,88,7.1
 2026-11-17,Sumatera Utara,Deli Serdang,12.07,3.47456,98.70667,9.4,82,6.7
@@ -418,7 +418,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Utara,Deli Serdang,12.07,3.47456,98.70667,11,90,8.5
 2026-11-26,Sumatera Utara,Deli Serdang,12.07,3.47456,98.70667,22,94,6.2
 2026-11-27,Sumatera Utara,Deli Serdang,12.07,3.47456,98.70667,19.2,94,2.9
-2026-11-28,Sumatera Utara,Deli Serdang,12.07,3.47456,98.70667,24.4,91,5.2
+2026-11-28,Sumatera Utara,Deli Serdang,12.07,3.47456,98.70667,24.4,92,5.2
 2026-11-15,Sumatera Utara,Simalungun,12.08,2.87208,99.05019,24.9,96,7.4
 2026-11-16,Sumatera Utara,Simalungun,12.08,2.87208,99.05019,17.2,80,8.3
 2026-11-17,Sumatera Utara,Simalungun,12.08,2.87208,99.05019,10.8,76,11.3
@@ -432,7 +432,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Utara,Simalungun,12.08,2.87208,99.05019,15.4,92,5.5
 2026-11-26,Sumatera Utara,Simalungun,12.08,2.87208,99.05019,10.4,96,6.4
 2026-11-27,Sumatera Utara,Simalungun,12.08,2.87208,99.05019,15.4,94,8.9
-2026-11-28,Sumatera Utara,Simalungun,12.08,2.87208,99.05019,17,96,4.7
+2026-11-28,Sumatera Utara,Simalungun,12.08,2.87208,99.05019,17,95,4.7
 2026-11-15,Sumatera Utara,Asahan,12.09,2.852,99.5337,29.9,96,10.2
 2026-11-16,Sumatera Utara,Asahan,12.09,2.852,99.5337,22.2,84,14.4
 2026-11-17,Sumatera Utara,Asahan,12.09,2.852,99.5337,14.3,71,8
@@ -460,7 +460,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Utara,Labuhanbatu,12.10,2.15938,99.99672,13.4,88,4.6
 2026-11-26,Sumatera Utara,Labuhanbatu,12.10,2.15938,99.99672,18,94,5.3
 2026-11-27,Sumatera Utara,Labuhanbatu,12.10,2.15938,99.99672,12.8,85,5.8
-2026-11-28,Sumatera Utara,Labuhanbatu,12.10,2.15938,99.99672,13.8,87,4.5
+2026-11-28,Sumatera Utara,Labuhanbatu,12.10,2.15938,99.99672,13.8,85,4.5
 2026-11-15,Sumatera Utara,Dairi,12.11,2.82911,98.27957,9.7,100,8.7
 2026-11-16,Sumatera Utara,Dairi,12.11,2.82911,98.27957,7.8,78,6.7
 2026-11-17,Sumatera Utara,Dairi,12.11,2.82911,98.27957,7.8,80,11.5
@@ -474,7 +474,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Utara,Dairi,12.11,2.82911,98.27957,11,100,6.6
 2026-11-26,Sumatera Utara,Dairi,12.11,2.82911,98.27957,14.2,96,8.4
 2026-11-27,Sumatera Utara,Dairi,12.11,2.82911,98.27957,20.4,98,5.8
-2026-11-28,Sumatera Utara,Dairi,12.11,2.82911,98.27957,18,97,7.5
+2026-11-28,Sumatera Utara,Dairi,12.11,2.82911,98.27957,18,96,7.5
 2026-11-15,Sumatera Utara,Toba,12.12,2.38397,99.2406,10.5,98,7.2
 2026-11-16,Sumatera Utara,Toba,12.12,2.38397,99.2406,3.2,85,11.4
 2026-11-17,Sumatera Utara,Toba,12.12,2.38397,99.2406,5.1,81,10.1
@@ -558,7 +558,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Utara,Samosir,12.17,2.57728,98.72002,11.4,100,4
 2026-11-26,Sumatera Utara,Samosir,12.17,2.57728,98.72002,18.2,98,4.8
 2026-11-27,Sumatera Utara,Samosir,12.17,2.57728,98.72002,15,96,7.6
-2026-11-28,Sumatera Utara,Samosir,12.17,2.57728,98.72002,14.4,95,8.3
+2026-11-28,Sumatera Utara,Samosir,12.17,2.57728,98.72002,14.4,92,8.3
 2026-11-15,Sumatera Utara,Serdang Bedagai,12.18,3.34831,99.0274,29.7,94,9.8
 2026-11-16,Sumatera Utara,Serdang Bedagai,12.18,3.34831,99.0274,24,90,10.7
 2026-11-17,Sumatera Utara,Serdang Bedagai,12.18,3.34831,99.0274,13,78,6.4
@@ -586,7 +586,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Utara,Batu Bara,12.19,3.22385,99.47269,9,71,11.4
 2026-11-26,Sumatera Utara,Batu Bara,12.19,3.22385,99.47269,18.8,59,6.8
 2026-11-27,Sumatera Utara,Batu Bara,12.19,3.22385,99.47269,11.2,73,7.4
-2026-11-28,Sumatera Utara,Batu Bara,12.19,3.22385,99.47269,6.8,76,7.7
+2026-11-28,Sumatera Utara,Batu Bara,12.19,3.22385,99.47269,6.8,80,7.7
 2026-11-15,Sumatera Utara,Padang Lawas Utara,12.20,1.62969,99.85028,22.6,97,9.6
 2026-11-16,Sumatera Utara,Padang Lawas Utara,12.20,1.62969,99.85028,11.9,90,13.4
 2026-11-17,Sumatera Utara,Padang Lawas Utara,12.20,1.62969,99.85028,10.8,81,9.1
@@ -600,7 +600,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Utara,Padang Lawas Utara,12.20,1.62969,99.85028,10.6,97,6.5
 2026-11-26,Sumatera Utara,Padang Lawas Utara,12.20,1.62969,99.85028,7.4,98,6.3
 2026-11-27,Sumatera Utara,Padang Lawas Utara,12.20,1.62969,99.85028,6.2,99,4.6
-2026-11-28,Sumatera Utara,Padang Lawas Utara,12.20,1.62969,99.85028,12,90,6.8
+2026-11-28,Sumatera Utara,Padang Lawas Utara,12.20,1.62969,99.85028,12,87,6.8
 2026-11-15,Sumatera Utara,Padang Lawas,12.21,1.1538,99.80239,19.6,95,5.1
 2026-11-16,Sumatera Utara,Padang Lawas,12.21,1.1538,99.80239,18.8,94,7.1
 2026-11-17,Sumatera Utara,Padang Lawas,12.21,1.1538,99.80239,15.4,88,10.4
@@ -614,7 +614,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Utara,Padang Lawas,12.21,1.1538,99.80239,4.4,98,2
 2026-11-26,Sumatera Utara,Padang Lawas,12.21,1.1538,99.80239,6.2,96,5
 2026-11-27,Sumatera Utara,Padang Lawas,12.21,1.1538,99.80239,1.4,98,8.6
-2026-11-28,Sumatera Utara,Padang Lawas,12.21,1.1538,99.80239,8.4,95,6
+2026-11-28,Sumatera Utara,Padang Lawas,12.21,1.1538,99.80239,8.4,92,6
 2026-11-15,Sumatera Utara,Labuhanbatu Selatan,12.22,1.84786,100.0552,28.5,91,10.9
 2026-11-16,Sumatera Utara,Labuhanbatu Selatan,12.22,1.84786,100.0552,26.8,84,13.5
 2026-11-17,Sumatera Utara,Labuhanbatu Selatan,12.22,1.84786,100.0552,9,77,12.2
@@ -628,7 +628,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Utara,Labuhanbatu Selatan,12.22,1.84786,100.0552,7.4,95,8
 2026-11-26,Sumatera Utara,Labuhanbatu Selatan,12.22,1.84786,100.0552,17,94,6.3
 2026-11-27,Sumatera Utara,Labuhanbatu Selatan,12.22,1.84786,100.0552,10.2,94,2.4
-2026-11-28,Sumatera Utara,Labuhanbatu Selatan,12.22,1.84786,100.0552,8.4,85,4.4
+2026-11-28,Sumatera Utara,Labuhanbatu Selatan,12.22,1.84786,100.0552,8.4,83,4.4
 2026-11-15,Sumatera Utara,Labuhanbatu Utara,12.23,2.42583,99.73033,18.1,93,12.6
 2026-11-16,Sumatera Utara,Labuhanbatu Utara,12.23,2.42583,99.73033,18.1,84,13.8
 2026-11-17,Sumatera Utara,Labuhanbatu Utara,12.23,2.42583,99.73033,13.9,76,9.4
@@ -642,7 +642,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Utara,Labuhanbatu Utara,12.23,2.42583,99.73033,17.8,86,6
 2026-11-26,Sumatera Utara,Labuhanbatu Utara,12.23,2.42583,99.73033,31.8,92,4.7
 2026-11-27,Sumatera Utara,Labuhanbatu Utara,12.23,2.42583,99.73033,23,88,9.9
-2026-11-28,Sumatera Utara,Labuhanbatu Utara,12.23,2.42583,99.73033,10.2,92,7.5
+2026-11-28,Sumatera Utara,Labuhanbatu Utara,12.23,2.42583,99.73033,10.2,93,7.5
 2026-11-15,Sumatera Utara,Nias Utara,12.24,1.31251,97.29827,17.4,78,14.7
 2026-11-16,Sumatera Utara,Nias Utara,12.24,1.31251,97.29827,25.2,80,11.1
 2026-11-17,Sumatera Utara,Nias Utara,12.24,1.31251,97.29827,16,70,10.5
@@ -684,7 +684,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Utara,Kota Medan,12.71,3.64071,98.6696,8.4,68,8.7
 2026-11-26,Sumatera Utara,Kota Medan,12.71,3.64071,98.6696,12,54,6.9
 2026-11-27,Sumatera Utara,Kota Medan,12.71,3.64071,98.6696,12.4,59,6.9
-2026-11-28,Sumatera Utara,Kota Medan,12.71,3.64071,98.6696,6.6,78,6.2
+2026-11-28,Sumatera Utara,Kota Medan,12.71,3.64071,98.6696,6.6,77,6.2
 2026-11-15,Sumatera Utara,Kota Pematangsiantar,12.72,2.95545,99.05756,28.2,96,10.2
 2026-11-16,Sumatera Utara,Kota Pematangsiantar,12.72,2.95545,99.05756,20.5,80,13.8
 2026-11-17,Sumatera Utara,Kota Pematangsiantar,12.72,2.95545,99.05756,7.4,76,12.1
@@ -698,7 +698,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Utara,Kota Pematangsiantar,12.72,2.95545,99.05756,9,92,7.6
 2026-11-26,Sumatera Utara,Kota Pematangsiantar,12.72,2.95545,99.05756,20,96,7.4
 2026-11-27,Sumatera Utara,Kota Pematangsiantar,12.72,2.95545,99.05756,32,94,8.4
-2026-11-28,Sumatera Utara,Kota Pematangsiantar,12.72,2.95545,99.05756,12.2,96,8.4
+2026-11-28,Sumatera Utara,Kota Pematangsiantar,12.72,2.95545,99.05756,12.2,95,8.4
 2026-11-15,Sumatera Utara,Kota Sibolga,12.73,1.73988,98.79002,13,100,7.9
 2026-11-16,Sumatera Utara,Kota Sibolga,12.73,1.73988,98.79002,7.5,83,8.5
 2026-11-17,Sumatera Utara,Kota Sibolga,12.73,1.73988,98.79002,14.3,82,6.8
@@ -740,7 +740,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Utara,Kota Binjai,12.75,3.60031,98.49024,10,90,10.3
 2026-11-26,Sumatera Utara,Kota Binjai,12.75,3.60031,98.49024,14.6,86,6.3
 2026-11-27,Sumatera Utara,Kota Binjai,12.75,3.60031,98.49024,17.2,92,5.2
-2026-11-28,Sumatera Utara,Kota Binjai,12.75,3.60031,98.49024,24,88,6.2
+2026-11-28,Sumatera Utara,Kota Binjai,12.75,3.60031,98.49024,24,90,6.2
 2026-11-15,Sumatera Utara,Kota Tebing Tinggi,12.76,3.32601,99.15403,33.9,94,11.2
 2026-11-16,Sumatera Utara,Kota Tebing Tinggi,12.76,3.32601,99.15403,21.2,92,11
 2026-11-17,Sumatera Utara,Kota Tebing Tinggi,12.76,3.32601,99.15403,14.3,77,9.3
@@ -796,7 +796,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Barat,Pesisir Selatan,13.01,-1.71872,100.82444,26.4,90,5.2
 2026-11-26,Sumatera Barat,Pesisir Selatan,13.01,-1.71872,100.82444,15.2,86,9
 2026-11-27,Sumatera Barat,Pesisir Selatan,13.01,-1.71872,100.82444,5.8,88,5.3
-2026-11-28,Sumatera Barat,Pesisir Selatan,13.01,-1.71872,100.82444,6.2,92,6.7
+2026-11-28,Sumatera Barat,Pesisir Selatan,13.01,-1.71872,100.82444,6.2,95,6.7
 2026-11-15,Sumatera Barat,Solok,13.02,-0.93061,100.84424,18.2,100,7.5
 2026-11-16,Sumatera Barat,Solok,13.02,-0.93061,100.84424,17,99,5.5
 2026-11-17,Sumatera Barat,Solok,13.02,-0.93061,100.84424,8.8,91,7.5
@@ -922,7 +922,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Barat,Dharmasraya,13.10,-1.25846,101.5177,7.8,90,5.6
 2026-11-26,Sumatera Barat,Dharmasraya,13.10,-1.25846,101.5177,12.2,100,4.8
 2026-11-27,Sumatera Barat,Dharmasraya,13.10,-1.25846,101.5177,10.4,95,5
-2026-11-28,Sumatera Barat,Dharmasraya,13.10,-1.25846,101.5177,17.8,96,6.5
+2026-11-28,Sumatera Barat,Dharmasraya,13.10,-1.25846,101.5177,17.8,98,6.5
 2026-11-15,Sumatera Barat,Solok Selatan,13.11,-1.36481,101.28032,10.8,94,7.2
 2026-11-16,Sumatera Barat,Solok Selatan,13.11,-1.36481,101.28032,15.6,94,8
 2026-11-17,Sumatera Barat,Solok Selatan,13.11,-1.36481,101.28032,30.3,88,8.3
@@ -992,7 +992,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Barat,Kota Sawahlunto,13.73,-0.66024,100.7503,8.6,100,3.9
 2026-11-26,Sumatera Barat,Kota Sawahlunto,13.73,-0.66024,100.7503,27.6,98,6.1
 2026-11-27,Sumatera Barat,Kota Sawahlunto,13.73,-0.66024,100.7503,9,100,4.1
-2026-11-28,Sumatera Barat,Kota Sawahlunto,13.73,-0.66024,100.7503,20.6,96,4.4
+2026-11-28,Sumatera Barat,Kota Sawahlunto,13.73,-0.66024,100.7503,20.6,95,4.4
 2026-11-15,Sumatera Barat,Kota Padang Panjang,13.74,-0.47035,100.40126,34.9,100,6
 2026-11-16,Sumatera Barat,Kota Padang Panjang,13.74,-0.47035,100.40126,42.8,100,6
 2026-11-17,Sumatera Barat,Kota Padang Panjang,13.74,-0.47035,100.40126,32.2,98,8.5
@@ -1034,7 +1034,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Barat,Kota Payakumbuh,13.76,-0.23057,100.63403,12.6,94,3.9
 2026-11-26,Sumatera Barat,Kota Payakumbuh,13.76,-0.23057,100.63403,7.6,100,8.2
 2026-11-27,Sumatera Barat,Kota Payakumbuh,13.76,-0.23057,100.63403,13.8,97,4.8
-2026-11-28,Sumatera Barat,Kota Payakumbuh,13.76,-0.23057,100.63403,15.6,97,6.2
+2026-11-28,Sumatera Barat,Kota Payakumbuh,13.76,-0.23057,100.63403,15.6,96,6.2
 2026-11-15,Sumatera Barat,Kota Pariaman,13.77,-0.61292,100.13924,12.8,100,7.2
 2026-11-16,Sumatera Barat,Kota Pariaman,13.77,-0.61292,100.13924,16.3,100,7.3
 2026-11-17,Sumatera Barat,Kota Pariaman,13.77,-0.61292,100.13924,19.7,100,8.8
@@ -1076,7 +1076,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Riau,Indragiri Hulu,14.02,-0.50794,102.2478,17,90,4.8
 2026-11-26,Riau,Indragiri Hulu,14.02,-0.50794,102.2478,9.8,90,5.6
 2026-11-27,Riau,Indragiri Hulu,14.02,-0.50794,102.2478,13.2,86,6.2
-2026-11-28,Riau,Indragiri Hulu,14.02,-0.50794,102.2478,14.4,87,7.1
+2026-11-28,Riau,Indragiri Hulu,14.02,-0.50794,102.2478,14.4,89,7.1
 2026-11-15,Riau,Bengkalis,14.03,1.29637,101.56836,26,98,7.6
 2026-11-16,Riau,Bengkalis,14.03,1.29637,101.56836,19.7,98,9.3
 2026-11-17,Riau,Bengkalis,14.03,1.29637,101.56836,12.3,94,6.4
@@ -1118,7 +1118,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Riau,Pelalawan,14.05,0.16084,102.42371,9,84,7.8
 2026-11-26,Riau,Pelalawan,14.05,0.16084,102.42371,8.2,92,4.9
 2026-11-27,Riau,Pelalawan,14.05,0.16084,102.42371,7.4,86,6.2
-2026-11-28,Riau,Pelalawan,14.05,0.16084,102.42371,18.6,88,4.7
+2026-11-28,Riau,Pelalawan,14.05,0.16084,102.42371,18.6,89,4.7
 2026-11-15,Riau,Rokan Hulu,14.06,0.90521,100.52467,18.7,95,7.9
 2026-11-16,Riau,Rokan Hulu,14.06,0.90521,100.52467,25.5,88,13
 2026-11-17,Riau,Rokan Hulu,14.06,0.90521,100.52467,8.4,82,11
@@ -1132,7 +1132,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Riau,Rokan Hulu,14.06,0.90521,100.52467,5,98,6.4
 2026-11-26,Riau,Rokan Hulu,14.06,0.90521,100.52467,12.6,91,4.2
 2026-11-27,Riau,Rokan Hulu,14.06,0.90521,100.52467,10.6,96,5.1
-2026-11-28,Riau,Rokan Hulu,14.06,0.90521,100.52467,9.2,79,4.8
+2026-11-28,Riau,Rokan Hulu,14.06,0.90521,100.52467,9.2,80,4.8
 2026-11-15,Riau,Rokan Hilir,14.07,1.88826,100.80349,34.7,97,12.5
 2026-11-16,Riau,Rokan Hilir,14.07,1.88826,100.80349,30.8,97,11.2
 2026-11-17,Riau,Rokan Hilir,14.07,1.88826,100.80349,15.8,89,11.9
@@ -1174,7 +1174,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Riau,Kuantan Singingi,14.09,-0.48692,101.47948,9,96,5.1
 2026-11-26,Riau,Kuantan Singingi,14.09,-0.48692,101.47948,9,94,6.8
 2026-11-27,Riau,Kuantan Singingi,14.09,-0.48692,101.47948,12.2,88,5.8
-2026-11-28,Riau,Kuantan Singingi,14.09,-0.48692,101.47948,11.6,87,6.5
+2026-11-28,Riau,Kuantan Singingi,14.09,-0.48692,101.47948,11.6,88,6.5
 2026-11-15,Riau,Kepulauan Meranti,14.10,0.85396,102.732,55.9,97,8.3
 2026-11-16,Riau,Kepulauan Meranti,14.10,0.85396,102.732,16.6,100,10.1
 2026-11-17,Riau,Kepulauan Meranti,14.10,0.85396,102.732,18.5,96,6.6
@@ -1244,7 +1244,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jambi,Merangin,15.02,-2.2093,102.08479,17,100,6.8
 2026-11-26,Jambi,Merangin,15.02,-2.2093,102.08479,13.4,99,7.6
 2026-11-27,Jambi,Merangin,15.02,-2.2093,102.08479,13.6,97,6.5
-2026-11-28,Jambi,Merangin,15.02,-2.2093,102.08479,8.4,93,8.5
+2026-11-28,Jambi,Merangin,15.02,-2.2093,102.08479,8.4,99,8.5
 2026-11-15,Jambi,Sarolangun,15.03,-2.33077,102.64727,20.6,86,6.5
 2026-11-16,Jambi,Sarolangun,15.03,-2.33077,102.64727,14.9,80,8.1
 2026-11-17,Jambi,Sarolangun,15.03,-2.33077,102.64727,16.7,69,10.2
@@ -1258,7 +1258,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jambi,Sarolangun,15.03,-2.33077,102.64727,14.4,93,5.1
 2026-11-26,Jambi,Sarolangun,15.03,-2.33077,102.64727,26,93,4.3
 2026-11-27,Jambi,Sarolangun,15.03,-2.33077,102.64727,22.4,80,5.4
-2026-11-28,Jambi,Sarolangun,15.03,-2.33077,102.64727,22.4,83,5
+2026-11-28,Jambi,Sarolangun,15.03,-2.33077,102.64727,22.4,94,5
 2026-11-15,Jambi,Batanghari,15.04,-1.8536,102.9756,13.1,91,14.7
 2026-11-16,Jambi,Batanghari,15.04,-1.8536,102.9756,8.5,86,7.5
 2026-11-17,Jambi,Batanghari,15.04,-1.8536,102.9756,21.6,77,7.3
@@ -1314,7 +1314,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jambi,Tanjung Jabung Timur,15.07,-1.32603,103.91039,5.4,84,8
 2026-11-26,Jambi,Tanjung Jabung Timur,15.07,-1.32603,103.91039,6.6,92,5
 2026-11-27,Jambi,Tanjung Jabung Timur,15.07,-1.32603,103.91039,17,86,5.9
-2026-11-28,Jambi,Tanjung Jabung Timur,15.07,-1.32603,103.91039,21.4,86,5.3
+2026-11-28,Jambi,Tanjung Jabung Timur,15.07,-1.32603,103.91039,21.4,87,5.3
 2026-11-15,Jambi,Bungo,15.08,-1.5155,101.97543,12.6,96,8.2
 2026-11-16,Jambi,Bungo,15.08,-1.5155,101.97543,21.2,82,14.3
 2026-11-17,Jambi,Bungo,15.08,-1.5155,101.97543,9.9,76,8.6
@@ -1328,7 +1328,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jambi,Bungo,15.08,-1.5155,101.97543,12.2,90,7.7
 2026-11-26,Jambi,Bungo,15.08,-1.5155,101.97543,18.2,96,5.4
 2026-11-27,Jambi,Bungo,15.08,-1.5155,101.97543,21.2,90,4.3
-2026-11-28,Jambi,Bungo,15.08,-1.5155,101.97543,15.6,87,5.3
+2026-11-28,Jambi,Bungo,15.08,-1.5155,101.97543,15.6,97,5.3
 2026-11-15,Jambi,Tebo,15.09,-1.38924,102.31964,8.6,92,8.9
 2026-11-16,Jambi,Tebo,15.09,-1.38924,102.31964,15.3,76,13.2
 2026-11-17,Jambi,Tebo,15.09,-1.38924,102.31964,13.3,71,9.3
@@ -1342,7 +1342,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jambi,Tebo,15.09,-1.38924,102.31964,13.6,88,4.3
 2026-11-26,Jambi,Tebo,15.09,-1.38924,102.31964,13.2,92,5.4
 2026-11-27,Jambi,Tebo,15.09,-1.38924,102.31964,17,84,6.2
-2026-11-28,Jambi,Tebo,15.09,-1.38924,102.31964,28.4,80,6.3
+2026-11-28,Jambi,Tebo,15.09,-1.38924,102.31964,28.4,85,6.3
 2026-11-15,Jambi,Kota Jambi,15.71,-1.62142,103.60255,4,95,11.2
 2026-11-16,Jambi,Kota Jambi,15.71,-1.62142,103.60255,4.7,82,8.1
 2026-11-17,Jambi,Kota Jambi,15.71,-1.62142,103.60255,20.8,82,11.4
@@ -1356,7 +1356,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jambi,Kota Jambi,15.71,-1.62142,103.60255,14.8,80,4.8
 2026-11-26,Jambi,Kota Jambi,15.71,-1.62142,103.60255,13.2,88,5.3
 2026-11-27,Jambi,Kota Jambi,15.71,-1.62142,103.60255,15.4,90,6.4
-2026-11-28,Jambi,Kota Jambi,15.71,-1.62142,103.60255,20.4,88,3
+2026-11-28,Jambi,Kota Jambi,15.71,-1.62142,103.60255,20.4,89,3
 2026-11-15,Jambi,Kota Sungai Penuh,15.72,-2.13874,101.34663,37.9,100,6.8
 2026-11-16,Jambi,Kota Sungai Penuh,15.72,-2.13874,101.34663,21.3,98,5.1
 2026-11-17,Jambi,Kota Sungai Penuh,15.72,-2.13874,101.34663,17.8,94,8.1
@@ -1384,7 +1384,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Selatan,Ogan Komering Ulu,16.01,-4.10415,104.09412,7.2,96,6
 2026-11-26,Sumatera Selatan,Ogan Komering Ulu,16.01,-4.10415,104.09412,11,90,7.5
 2026-11-27,Sumatera Selatan,Ogan Komering Ulu,16.01,-4.10415,104.09412,22,96,5.9
-2026-11-28,Sumatera Selatan,Ogan Komering Ulu,16.01,-4.10415,104.09412,6.8,85,7
+2026-11-28,Sumatera Selatan,Ogan Komering Ulu,16.01,-4.10415,104.09412,6.8,87,7
 2026-11-15,Sumatera Selatan,Ogan Komering Ilir,16.02,-3.32894,105.36391,5.4,91,8.9
 2026-11-16,Sumatera Selatan,Ogan Komering Ilir,16.02,-3.32894,105.36391,6.9,86,8.6
 2026-11-17,Sumatera Selatan,Ogan Komering Ilir,16.02,-3.32894,105.36391,10.8,86,7.2
@@ -1426,7 +1426,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Selatan,Lahat,16.04,-3.87898,103.34353,10.8,100,5.1
 2026-11-26,Sumatera Selatan,Lahat,16.04,-3.87898,103.34353,26.4,100,3.6
 2026-11-27,Sumatera Selatan,Lahat,16.04,-3.87898,103.34353,25.2,100,6.5
-2026-11-28,Sumatera Selatan,Lahat,16.04,-3.87898,103.34353,19,94,5.8
+2026-11-28,Sumatera Selatan,Lahat,16.04,-3.87898,103.34353,19,96,5.8
 2026-11-15,Sumatera Selatan,Musi Rawas,16.05,-3.17595,103.06678,17,82,11.5
 2026-11-16,Sumatera Selatan,Musi Rawas,16.05,-3.17595,103.06678,13.6,82,6.5
 2026-11-17,Sumatera Selatan,Musi Rawas,16.05,-3.17595,103.06678,15.6,88,7.4
@@ -1496,7 +1496,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Selatan,Ogan Komering Ulu Selatan,16.09,-4.57347,103.88759,16.4,94,4.3
 2026-11-26,Sumatera Selatan,Ogan Komering Ulu Selatan,16.09,-4.57347,103.88759,19,92,5.4
 2026-11-27,Sumatera Selatan,Ogan Komering Ulu Selatan,16.09,-4.57347,103.88759,27,100,4.4
-2026-11-28,Sumatera Selatan,Ogan Komering Ulu Selatan,16.09,-4.57347,103.88759,22.4,91,7.4
+2026-11-28,Sumatera Selatan,Ogan Komering Ulu Selatan,16.09,-4.57347,103.88759,22.4,93,7.4
 2026-11-15,Sumatera Selatan,Ogan Ilir,16.10,-3.41915,104.57049,12,88,11.4
 2026-11-16,Sumatera Selatan,Ogan Ilir,16.10,-3.41915,104.57049,14.9,74,8.4
 2026-11-17,Sumatera Selatan,Ogan Ilir,16.10,-3.41915,104.57049,6.6,76,8.4
@@ -1524,7 +1524,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Selatan,Empat Lawang,16.11,-3.71659,102.91113,12,94,12
 2026-11-26,Sumatera Selatan,Empat Lawang,16.11,-3.71659,102.91113,6,85,11.2
 2026-11-27,Sumatera Selatan,Empat Lawang,16.11,-3.71659,102.91113,14.4,96,5.5
-2026-11-28,Sumatera Selatan,Empat Lawang,16.11,-3.71659,102.91113,8.8,97,5.8
+2026-11-28,Sumatera Selatan,Empat Lawang,16.11,-3.71659,102.91113,8.8,100,5.8
 2026-11-15,Sumatera Selatan,Penukal Abab Lematang Ilir,16.12,-3.20807,103.93157,9.8,83,7.9
 2026-11-16,Sumatera Selatan,Penukal Abab Lematang Ilir,16.12,-3.20807,103.93157,16.6,76,12.2
 2026-11-17,Sumatera Selatan,Penukal Abab Lematang Ilir,16.12,-3.20807,103.93157,13.9,76,7.2
@@ -1552,7 +1552,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Selatan,Musi Rawas Utara,16.13,-2.71219,102.71266,10.4,100,4.2
 2026-11-26,Sumatera Selatan,Musi Rawas Utara,16.13,-2.71219,102.71266,30.6,99,5.5
 2026-11-27,Sumatera Selatan,Musi Rawas Utara,16.13,-2.71219,102.71266,24.8,91,3.4
-2026-11-28,Sumatera Selatan,Musi Rawas Utara,16.13,-2.71219,102.71266,13.8,88,5.9
+2026-11-28,Sumatera Selatan,Musi Rawas Utara,16.13,-2.71219,102.71266,13.8,94,5.9
 2026-11-15,Sumatera Selatan,Kota Palembang,16.71,-2.97819,104.73857,5.2,84,11.5
 2026-11-16,Sumatera Selatan,Kota Palembang,16.71,-2.97819,104.73857,9.5,71,14.2
 2026-11-17,Sumatera Selatan,Kota Palembang,16.71,-2.97819,104.73857,5.2,75,9.6
@@ -1580,7 +1580,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Selatan,Kota Pagar Alam,16.72,-4.12636,103.26732,2,100,5.4
 2026-11-26,Sumatera Selatan,Kota Pagar Alam,16.72,-4.12636,103.26732,21,100,4.1
 2026-11-27,Sumatera Selatan,Kota Pagar Alam,16.72,-4.12636,103.26732,52.2,100,6
-2026-11-28,Sumatera Selatan,Kota Pagar Alam,16.72,-4.12636,103.26732,36,94,4.4
+2026-11-28,Sumatera Selatan,Kota Pagar Alam,16.72,-4.12636,103.26732,36,96,4.4
 2026-11-15,Sumatera Selatan,Kota Lubuk Linggau,16.73,-3.25437,102.86485,19,86,5.9
 2026-11-16,Sumatera Selatan,Kota Lubuk Linggau,16.73,-3.25437,102.86485,10,88,8.4
 2026-11-17,Sumatera Selatan,Kota Lubuk Linggau,16.73,-3.25437,102.86485,14.5,93,6.5
@@ -1594,7 +1594,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sumatera Selatan,Kota Lubuk Linggau,16.73,-3.25437,102.86485,10.6,94,6.7
 2026-11-26,Sumatera Selatan,Kota Lubuk Linggau,16.73,-3.25437,102.86485,9.8,99,3.8
 2026-11-27,Sumatera Selatan,Kota Lubuk Linggau,16.73,-3.25437,102.86485,8.2,94,5.9
-2026-11-28,Sumatera Selatan,Kota Lubuk Linggau,16.73,-3.25437,102.86485,20.2,96,4.5
+2026-11-28,Sumatera Selatan,Kota Lubuk Linggau,16.73,-3.25437,102.86485,20.2,99,4.5
 2026-11-15,Sumatera Selatan,Kota Prabumulih,16.74,-3.4493,104.23825,8.4,83,10
 2026-11-16,Sumatera Selatan,Kota Prabumulih,16.74,-3.4493,104.23825,11.2,76,8.3
 2026-11-17,Sumatera Selatan,Kota Prabumulih,16.74,-3.4493,104.23825,9.1,71,12.2
@@ -1748,7 +1748,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Bengkulu,Kota Bengkulu,17.71,-3.86078,102.30928,8.2,94,7.7
 2026-11-26,Bengkulu,Kota Bengkulu,17.71,-3.86078,102.30928,14.6,92,9.2
 2026-11-27,Bengkulu,Kota Bengkulu,17.71,-3.86078,102.30928,17.4,90,12
-2026-11-28,Bengkulu,Kota Bengkulu,17.71,-3.86078,102.30928,9.6,95,11.7
+2026-11-28,Bengkulu,Kota Bengkulu,17.71,-3.86078,102.30928,9.6,97,11.7
 2026-11-15,Lampung,Lampung Selatan,18.01,-5.54139,105.47074,2.2,100,13.5
 2026-11-16,Lampung,Lampung Selatan,18.01,-5.54139,105.47074,9.6,97,11.4
 2026-11-17,Lampung,Lampung Selatan,18.01,-5.54139,105.47074,4.8,90,16.7
@@ -1776,7 +1776,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Lampung,Lampung Tengah,18.02,-4.87381,105.18432,3.8,94,11.4
 2026-11-26,Lampung,Lampung Tengah,18.02,-4.87381,105.18432,8.4,94,8.6
 2026-11-27,Lampung,Lampung Tengah,18.02,-4.87381,105.18432,12.6,96,7.6
-2026-11-28,Lampung,Lampung Tengah,18.02,-4.87381,105.18432,4.2,90,6.2
+2026-11-28,Lampung,Lampung Tengah,18.02,-4.87381,105.18432,4.2,91,6.2
 2026-11-15,Lampung,Lampung Utara,18.03,-4.79676,104.81041,5.5,90,20
 2026-11-16,Lampung,Lampung Utara,18.03,-4.79676,104.81041,13.9,72,14.4
 2026-11-17,Lampung,Lampung Utara,18.03,-4.79676,104.81041,6.7,89,14.9
@@ -1790,7 +1790,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Lampung,Lampung Utara,18.03,-4.79676,104.81041,12.6,98,8.1
 2026-11-26,Lampung,Lampung Utara,18.03,-4.79676,104.81041,15.8,94,7.3
 2026-11-27,Lampung,Lampung Utara,18.03,-4.79676,104.81041,11.2,98,10.2
-2026-11-28,Lampung,Lampung Utara,18.03,-4.79676,104.81041,15.8,89,8.1
+2026-11-28,Lampung,Lampung Utara,18.03,-4.79676,104.81041,15.8,91,8.1
 2026-11-15,Lampung,Lampung Barat,18.04,-5.1048,104.20141,7.8,100,9.8
 2026-11-16,Lampung,Lampung Barat,18.04,-5.1048,104.20141,23.6,95,6
 2026-11-17,Lampung,Lampung Barat,18.04,-5.1048,104.20141,11.2,100,9.4
@@ -1860,7 +1860,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Lampung,Way Kanan,18.08,-4.56689,104.67848,10.8,96,10.4
 2026-11-26,Lampung,Way Kanan,18.08,-4.56689,104.67848,13.6,96,7.7
 2026-11-27,Lampung,Way Kanan,18.08,-4.56689,104.67848,15.8,94,5.4
-2026-11-28,Lampung,Way Kanan,18.08,-4.56689,104.67848,25.8,89,6.4
+2026-11-28,Lampung,Way Kanan,18.08,-4.56689,104.67848,25.8,92,6.4
 2026-11-15,Lampung,Pesawaran,18.09,-5.45588,105.10051,4.8,100,6.8
 2026-11-16,Lampung,Pesawaran,18.09,-5.45588,105.10051,11.9,94,7
 2026-11-17,Lampung,Pesawaran,18.09,-5.45588,105.10051,8.4,97,5.2
@@ -1888,7 +1888,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Lampung,Pringsewu,18.10,-5.36653,104.93474,1.2,89,15.4
 2026-11-26,Lampung,Pringsewu,18.10,-5.36653,104.93474,3.6,95,13.9
 2026-11-27,Lampung,Pringsewu,18.10,-5.36653,104.93474,13.2,85,12.5
-2026-11-28,Lampung,Pringsewu,18.10,-5.36653,104.93474,12.6,87,5.7
+2026-11-28,Lampung,Pringsewu,18.10,-5.36653,104.93474,12.6,90,5.7
 2026-11-15,Lampung,Mesuji,18.11,-3.97533,105.40489,12.5,92,11.5
 2026-11-16,Lampung,Mesuji,18.11,-3.97533,105.40489,10.4,69,9.4
 2026-11-17,Lampung,Mesuji,18.11,-3.97533,105.40489,7.8,82,15.3
@@ -2224,7 +2224,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,DKI Jakarta,Kota Adm. Jakarta Selatan,31.74,-6.28363,106.80178,16.2,96,7.1
 2026-11-26,DKI Jakarta,Kota Adm. Jakarta Selatan,31.74,-6.28363,106.80178,11.4,96,5.2
 2026-11-27,DKI Jakarta,Kota Adm. Jakarta Selatan,31.74,-6.28363,106.80178,17.8,94,3.9
-2026-11-28,DKI Jakarta,Kota Adm. Jakarta Selatan,31.74,-6.28363,106.80178,6.8,94,7.5
+2026-11-28,DKI Jakarta,Kota Adm. Jakarta Selatan,31.74,-6.28363,106.80178,6.8,97,7.5
 2026-11-15,DKI Jakarta,Kota Adm. Jakarta Timur,31.75,-6.28711,106.90561,9.9,100,9.2
 2026-11-16,DKI Jakarta,Kota Adm. Jakarta Timur,31.75,-6.28711,106.90561,9.3,98,10.7
 2026-11-17,DKI Jakarta,Kota Adm. Jakarta Timur,31.75,-6.28711,106.90561,5.8,92,8.8
@@ -2238,7 +2238,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,DKI Jakarta,Kota Adm. Jakarta Timur,31.75,-6.28711,106.90561,10.2,94,7
 2026-11-26,DKI Jakarta,Kota Adm. Jakarta Timur,31.75,-6.28711,106.90561,13.4,98,5.1
 2026-11-27,DKI Jakarta,Kota Adm. Jakarta Timur,31.75,-6.28711,106.90561,21.8,96,4
-2026-11-28,DKI Jakarta,Kota Adm. Jakarta Timur,31.75,-6.28711,106.90561,6.2,92,7.6
+2026-11-28,DKI Jakarta,Kota Adm. Jakarta Timur,31.75,-6.28711,106.90561,6.2,95,7.6
 2026-11-15,Jawa Barat,Bogor,32.01,-6.54528,106.7226,9.4,100,9.2
 2026-11-16,Jawa Barat,Bogor,32.01,-6.54528,106.7226,9.7,96,9.8
 2026-11-17,Jawa Barat,Bogor,32.01,-6.54528,106.7226,3.4,96,7
@@ -2252,7 +2252,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Barat,Bogor,32.01,-6.54528,106.7226,6,96,6.1
 2026-11-26,Jawa Barat,Bogor,32.01,-6.54528,106.7226,8.6,98,3.7
 2026-11-27,Jawa Barat,Bogor,32.01,-6.54528,106.7226,30.4,98,4.6
-2026-11-28,Jawa Barat,Bogor,32.01,-6.54528,106.7226,5.8,97,4.4
+2026-11-28,Jawa Barat,Bogor,32.01,-6.54528,106.7226,5.8,98,4.4
 2026-11-15,Jawa Barat,Sukabumi,32.02,-7.07644,106.71705,23.8,100,13.7
 2026-11-16,Jawa Barat,Sukabumi,32.02,-7.07644,106.71705,11.1,100,9.9
 2026-11-17,Jawa Barat,Sukabumi,32.02,-7.07644,106.71705,6.6,95,8
@@ -2294,7 +2294,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Barat,Bandung,32.04,-7.06132,107.59473,47.6,92,9.9
 2026-11-26,Jawa Barat,Bandung,32.04,-7.06132,107.59473,8.4,88,4.4
 2026-11-27,Jawa Barat,Bandung,32.04,-7.06132,107.59473,7.6,94,5.6
-2026-11-28,Jawa Barat,Bandung,32.04,-7.06132,107.59473,7.6,96,7.2
+2026-11-28,Jawa Barat,Bandung,32.04,-7.06132,107.59473,7.6,93,7.2
 2026-11-15,Jawa Barat,Garut,32.05,-7.34296,107.77823,11.6,98,8.7
 2026-11-16,Jawa Barat,Garut,32.05,-7.34296,107.77823,9.6,100,6
 2026-11-17,Jawa Barat,Garut,32.05,-7.34296,107.77823,8.7,100,5.7
@@ -2364,7 +2364,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Barat,Cirebon,32.09,-6.76123,108.58524,5.2,100,14.9
 2026-11-26,Jawa Barat,Cirebon,32.09,-6.76123,108.58524,2.8,97,15.5
 2026-11-27,Jawa Barat,Cirebon,32.09,-6.76123,108.58524,7.6,85,17.2
-2026-11-28,Jawa Barat,Cirebon,32.09,-6.76123,108.58524,1.2,78,16.4
+2026-11-28,Jawa Barat,Cirebon,32.09,-6.76123,108.58524,1.2,79,16.4
 2026-11-15,Jawa Barat,Majalengka,32.10,-6.8071,108.22491,4.5,81,8.3
 2026-11-16,Jawa Barat,Majalengka,32.10,-6.8071,108.22491,5,94,14.9
 2026-11-17,Jawa Barat,Majalengka,32.10,-6.8071,108.22491,4.4,98,8.9
@@ -2378,7 +2378,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Barat,Majalengka,32.10,-6.8071,108.22491,5.4,100,5.6
 2026-11-26,Jawa Barat,Majalengka,32.10,-6.8071,108.22491,11.6,96,6.6
 2026-11-27,Jawa Barat,Majalengka,32.10,-6.8071,108.22491,22.4,90,8.6
-2026-11-28,Jawa Barat,Majalengka,32.10,-6.8071,108.22491,20.8,86,6.1
+2026-11-28,Jawa Barat,Majalengka,32.10,-6.8071,108.22491,20.8,84,6.1
 2026-11-15,Jawa Barat,Sumedang,32.11,-6.81009,107.98062,7,88,10.7
 2026-11-16,Jawa Barat,Sumedang,32.11,-6.81009,107.98062,7.8,98,9.4
 2026-11-17,Jawa Barat,Sumedang,32.11,-6.81009,107.98062,4.1,100,9.7
@@ -2392,7 +2392,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Barat,Sumedang,32.11,-6.81009,107.98062,11,98,4
 2026-11-26,Jawa Barat,Sumedang,32.11,-6.81009,107.98062,9.2,98,5.9
 2026-11-27,Jawa Barat,Sumedang,32.11,-6.81009,107.98062,10.2,100,8.5
-2026-11-28,Jawa Barat,Sumedang,32.11,-6.81009,107.98062,5.6,93,5.6
+2026-11-28,Jawa Barat,Sumedang,32.11,-6.81009,107.98062,5.6,92,5.6
 2026-11-15,Jawa Barat,Indramayu,32.12,-6.44277,108.19682,4.5,69,13
 2026-11-16,Jawa Barat,Indramayu,32.12,-6.44277,108.19682,5.1,100,13.1
 2026-11-17,Jawa Barat,Indramayu,32.12,-6.44277,108.19682,6.4,100,12.4
@@ -2406,7 +2406,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Barat,Indramayu,32.12,-6.44277,108.19682,12.2,100,7.5
 2026-11-26,Jawa Barat,Indramayu,32.12,-6.44277,108.19682,8.4,96,7.7
 2026-11-27,Jawa Barat,Indramayu,32.12,-6.44277,108.19682,5.8,90,7
-2026-11-28,Jawa Barat,Indramayu,32.12,-6.44277,108.19682,1.8,77,6.5
+2026-11-28,Jawa Barat,Indramayu,32.12,-6.44277,108.19682,1.8,78,6.5
 2026-11-15,Jawa Barat,Subang,32.13,-6.49821,107.72574,4.8,90,15.1
 2026-11-16,Jawa Barat,Subang,32.13,-6.49821,107.72574,7.5,96,15.1
 2026-11-17,Jawa Barat,Subang,32.13,-6.49821,107.72574,1.5,98,14.6
@@ -2420,7 +2420,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Barat,Subang,32.13,-6.49821,107.72574,7,96,13.1
 2026-11-26,Jawa Barat,Subang,32.13,-6.49821,107.72574,11.8,96,9.6
 2026-11-27,Jawa Barat,Subang,32.13,-6.49821,107.72574,10.6,96,7.9
-2026-11-28,Jawa Barat,Subang,32.13,-6.49821,107.72574,6.6,85,10
+2026-11-28,Jawa Barat,Subang,32.13,-6.49821,107.72574,6.6,90,10
 2026-11-15,Jawa Barat,Purwakarta,32.14,-6.59141,107.40985,4.8,98,14.7
 2026-11-16,Jawa Barat,Purwakarta,32.14,-6.59141,107.40985,5.9,94,15.4
 2026-11-17,Jawa Barat,Purwakarta,32.14,-6.59141,107.40985,3.2,96,9.8
@@ -2434,7 +2434,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Barat,Purwakarta,32.14,-6.59141,107.40985,7.2,96,6.8
 2026-11-26,Jawa Barat,Purwakarta,32.14,-6.59141,107.40985,3.6,94,7.3
 2026-11-27,Jawa Barat,Purwakarta,32.14,-6.59141,107.40985,7.8,94,5.5
-2026-11-28,Jawa Barat,Purwakarta,32.14,-6.59141,107.40985,6.2,86,6.2
+2026-11-28,Jawa Barat,Purwakarta,32.14,-6.59141,107.40985,6.2,91,6.2
 2026-11-15,Jawa Barat,Karawang,32.15,-6.26535,107.3638,6.7,99,16.9
 2026-11-16,Jawa Barat,Karawang,32.15,-6.26535,107.3638,5.8,97,14.8
 2026-11-17,Jawa Barat,Karawang,32.15,-6.26535,107.3638,3.8,100,12
@@ -2448,7 +2448,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Barat,Karawang,32.15,-6.26535,107.3638,11,94,7.9
 2026-11-26,Jawa Barat,Karawang,32.15,-6.26535,107.3638,17,98,7.6
 2026-11-27,Jawa Barat,Karawang,32.15,-6.26535,107.3638,15.4,96,3.5
-2026-11-28,Jawa Barat,Karawang,32.15,-6.26535,107.3638,6,90,6.6
+2026-11-28,Jawa Barat,Karawang,32.15,-6.26535,107.3638,6,92,6.6
 2026-11-15,Jawa Barat,Bekasi,32.16,-6.20222,107.13309,6.8,99,15.9
 2026-11-16,Jawa Barat,Bekasi,32.16,-6.20222,107.13309,5.9,97,14
 2026-11-17,Jawa Barat,Bekasi,32.16,-6.20222,107.13309,5.6,100,11.8
@@ -2476,7 +2476,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Barat,Bandung Barat,32.17,-6.89791,107.46418,19,92,8.8
 2026-11-26,Jawa Barat,Bandung Barat,32.17,-6.89791,107.46418,4.4,88,5
 2026-11-27,Jawa Barat,Bandung Barat,32.17,-6.89791,107.46418,1.8,94,3.6
-2026-11-28,Jawa Barat,Bandung Barat,32.17,-6.89791,107.46418,9.6,96,6.1
+2026-11-28,Jawa Barat,Bandung Barat,32.17,-6.89791,107.46418,9.6,93,6.1
 2026-11-15,Jawa Barat,Pangandaran,32.18,-7.64091,108.55669,4.8,83,13.8
 2026-11-16,Jawa Barat,Pangandaran,32.18,-7.64091,108.55669,2.9,90,12
 2026-11-17,Jawa Barat,Pangandaran,32.18,-7.64091,108.55669,2.3,53,10.5
@@ -2490,7 +2490,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Barat,Pangandaran,32.18,-7.64091,108.55669,6.8,82,12.1
 2026-11-26,Jawa Barat,Pangandaran,32.18,-7.64091,108.55669,4.6,72,10.8
 2026-11-27,Jawa Barat,Pangandaran,32.18,-7.64091,108.55669,3.8,68,12.5
-2026-11-28,Jawa Barat,Pangandaran,32.18,-7.64091,108.55669,4,67,9
+2026-11-28,Jawa Barat,Pangandaran,32.18,-7.64091,108.55669,4,73,9
 2026-11-15,Jawa Barat,Kota Bogor,32.71,-6.59782,106.79187,7.4,100,9.7
 2026-11-16,Jawa Barat,Kota Bogor,32.71,-6.59782,106.79187,9.3,96,10.9
 2026-11-17,Jawa Barat,Kota Bogor,32.71,-6.59782,106.79187,2.6,96,7.3
@@ -2504,7 +2504,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Barat,Kota Bogor,32.71,-6.59782,106.79187,3,96,7.5
 2026-11-26,Jawa Barat,Kota Bogor,32.71,-6.59782,106.79187,2.4,98,5.1
 2026-11-27,Jawa Barat,Kota Bogor,32.71,-6.59782,106.79187,36,98,4.6
-2026-11-28,Jawa Barat,Kota Bogor,32.71,-6.59782,106.79187,4.8,94,4.2
+2026-11-28,Jawa Barat,Kota Bogor,32.71,-6.59782,106.79187,4.8,97,4.2
 2026-11-15,Jawa Barat,Kota Sukabumi,32.72,-6.93566,106.91598,11.7,100,8.9
 2026-11-16,Jawa Barat,Kota Sukabumi,32.72,-6.93566,106.91598,19.9,100,8
 2026-11-17,Jawa Barat,Kota Sukabumi,32.72,-6.93566,106.91598,9.1,100,7.5
@@ -2518,7 +2518,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Barat,Kota Sukabumi,32.72,-6.93566,106.91598,18.2,100,5.1
 2026-11-26,Jawa Barat,Kota Sukabumi,32.72,-6.93566,106.91598,11.4,100,7.4
 2026-11-27,Jawa Barat,Kota Sukabumi,32.72,-6.93566,106.91598,8.2,100,6.6
-2026-11-28,Jawa Barat,Kota Sukabumi,32.72,-6.93566,106.91598,8.6,98,2.7
+2026-11-28,Jawa Barat,Kota Sukabumi,32.72,-6.93566,106.91598,8.6,97,2.7
 2026-11-15,Jawa Barat,Kota Bandung,32.73,-6.9032,107.64239,6.3,98,7.7
 2026-11-16,Jawa Barat,Kota Bandung,32.73,-6.9032,107.64239,14.3,100,7.5
 2026-11-17,Jawa Barat,Kota Bandung,32.73,-6.9032,107.64239,6.9,100,8
@@ -2532,7 +2532,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Barat,Kota Bandung,32.73,-6.9032,107.64239,11.6,94,9.8
 2026-11-26,Jawa Barat,Kota Bandung,32.73,-6.9032,107.64239,7.6,93,8
 2026-11-27,Jawa Barat,Kota Bandung,32.73,-6.9032,107.64239,8.4,96,7.8
-2026-11-28,Jawa Barat,Kota Bandung,32.73,-6.9032,107.64239,12,96,9.9
+2026-11-28,Jawa Barat,Kota Bandung,32.73,-6.9032,107.64239,12,94,9.9
 2026-11-15,Jawa Barat,Kota Cirebon,32.74,-6.74389,108.55461,1.8,76,17
 2026-11-16,Jawa Barat,Kota Cirebon,32.74,-6.74389,108.55461,0.8,73,16.3
 2026-11-17,Jawa Barat,Kota Cirebon,32.74,-6.74389,108.55461,2.7,99,14.4
@@ -2560,7 +2560,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Barat,Kota Bekasi,32.75,-6.28542,106.97031,7.2,94,6.3
 2026-11-26,Jawa Barat,Kota Bekasi,32.75,-6.28542,106.97031,13.6,98,5.5
 2026-11-27,Jawa Barat,Kota Bekasi,32.75,-6.28542,106.97031,21,96,4.4
-2026-11-28,Jawa Barat,Kota Bekasi,32.75,-6.28542,106.97031,5,92,8.2
+2026-11-28,Jawa Barat,Kota Bekasi,32.75,-6.28542,106.97031,5,95,8.2
 2026-11-15,Jawa Barat,Kota Depok,32.76,-6.38836,106.81766,10.8,100,11.9
 2026-11-16,Jawa Barat,Kota Depok,32.76,-6.38836,106.81766,9,96,10.3
 2026-11-17,Jawa Barat,Kota Depok,32.76,-6.38836,106.81766,3.3,96,8.5
@@ -2574,7 +2574,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Barat,Kota Depok,32.76,-6.38836,106.81766,18,96,9.3
 2026-11-26,Jawa Barat,Kota Depok,32.76,-6.38836,106.81766,9.6,98,6.4
 2026-11-27,Jawa Barat,Kota Depok,32.76,-6.38836,106.81766,19,98,5.5
-2026-11-28,Jawa Barat,Kota Depok,32.76,-6.38836,106.81766,8,94,9.4
+2026-11-28,Jawa Barat,Kota Depok,32.76,-6.38836,106.81766,8,97,9.4
 2026-11-15,Jawa Barat,Kota Cimahi,32.77,-6.88014,107.54362,11.9,100,7.9
 2026-11-16,Jawa Barat,Kota Cimahi,32.77,-6.88014,107.54362,7.2,100,7.5
 2026-11-17,Jawa Barat,Kota Cimahi,32.77,-6.88014,107.54362,7.6,91,6.8
@@ -2588,7 +2588,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Barat,Kota Cimahi,32.77,-6.88014,107.54362,9.8,92,6.5
 2026-11-26,Jawa Barat,Kota Cimahi,32.77,-6.88014,107.54362,9.4,88,4.3
 2026-11-27,Jawa Barat,Kota Cimahi,32.77,-6.88014,107.54362,20.4,94,6.2
-2026-11-28,Jawa Barat,Kota Cimahi,32.77,-6.88014,107.54362,24,96,6.4
+2026-11-28,Jawa Barat,Kota Cimahi,32.77,-6.88014,107.54362,24,93,6.4
 2026-11-15,Jawa Barat,Kota Tasikmalaya,32.78,-7.35987,108.23089,8.2,100,8.4
 2026-11-16,Jawa Barat,Kota Tasikmalaya,32.78,-7.35987,108.23089,16.2,100,14.4
 2026-11-17,Jawa Barat,Kota Tasikmalaya,32.78,-7.35987,108.23089,11.8,100,12.6
@@ -2742,7 +2742,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Tengah,Boyolali,33.09,-7.38371,110.67134,1.8,90,19
 2026-11-26,Jawa Tengah,Boyolali,33.09,-7.38371,110.67134,1.2,83,15.5
 2026-11-27,Jawa Tengah,Boyolali,33.09,-7.38371,110.67134,13.8,94,14.3
-2026-11-28,Jawa Tengah,Boyolali,33.09,-7.38371,110.67134,6,93,13.5
+2026-11-28,Jawa Tengah,Boyolali,33.09,-7.38371,110.67134,6,94,13.5
 2026-11-15,Jawa Tengah,Klaten,33.10,-7.67389,110.62219,5.6,100,14.4
 2026-11-16,Jawa Tengah,Klaten,33.10,-7.67389,110.62219,27.1,100,9.8
 2026-11-17,Jawa Tengah,Klaten,33.10,-7.67389,110.62219,8,100,13.6
@@ -2756,7 +2756,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Tengah,Klaten,33.10,-7.67389,110.62219,10.8,100,12
 2026-11-26,Jawa Tengah,Klaten,33.10,-7.67389,110.62219,4.8,92,10.8
 2026-11-27,Jawa Tengah,Klaten,33.10,-7.67389,110.62219,16.8,98,10.8
-2026-11-28,Jawa Tengah,Klaten,33.10,-7.67389,110.62219,11.4,87,11
+2026-11-28,Jawa Tengah,Klaten,33.10,-7.67389,110.62219,11.4,88,11
 2026-11-15,Jawa Tengah,Sukoharjo,33.11,-7.68192,110.83148,4.2,100,14.5
 2026-11-16,Jawa Tengah,Sukoharjo,33.11,-7.68192,110.83148,13.8,100,9.6
 2026-11-17,Jawa Tengah,Sukoharjo,33.11,-7.68192,110.83148,18.9,98,7.9
@@ -2798,7 +2798,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Tengah,Karanganyar,33.13,-7.61956,111.00071,9.6,85,16.7
 2026-11-26,Jawa Tengah,Karanganyar,33.13,-7.61956,111.00071,19.2,78,12.3
 2026-11-27,Jawa Tengah,Karanganyar,33.13,-7.61956,111.00071,26.2,80,11.4
-2026-11-28,Jawa Tengah,Karanganyar,33.13,-7.61956,111.00071,6.8,79,9.4
+2026-11-28,Jawa Tengah,Karanganyar,33.13,-7.61956,111.00071,6.8,82,9.4
 2026-11-15,Jawa Tengah,Sragen,33.14,-7.39233,110.96226,1.6,90,20.8
 2026-11-16,Jawa Tengah,Sragen,33.14,-7.39233,110.96226,10.6,96,10.4
 2026-11-17,Jawa Tengah,Sragen,33.14,-7.39233,110.96226,1.3,95,16
@@ -2812,7 +2812,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Tengah,Sragen,33.14,-7.39233,110.96226,4.8,85,17.1
 2026-11-26,Jawa Tengah,Sragen,33.14,-7.39233,110.96226,3,78,14.7
 2026-11-27,Jawa Tengah,Sragen,33.14,-7.39233,110.96226,2.6,80,17.7
-2026-11-28,Jawa Tengah,Sragen,33.14,-7.39233,110.96226,2.8,79,11.7
+2026-11-28,Jawa Tengah,Sragen,33.14,-7.39233,110.96226,2.8,82,11.7
 2026-11-15,Jawa Tengah,Grobogan,33.15,-7.10642,110.89296,2.4,92,11.8
 2026-11-16,Jawa Tengah,Grobogan,33.15,-7.10642,110.89296,7.7,96,11.4
 2026-11-17,Jawa Tengah,Grobogan,33.15,-7.10642,110.89296,2.4,94,13.4
@@ -2910,7 +2910,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Tengah,Demak,33.21,-6.92823,110.65558,10.2,98,10.8
 2026-11-26,Jawa Tengah,Demak,33.21,-6.92823,110.65558,9,86,11
 2026-11-27,Jawa Tengah,Demak,33.21,-6.92823,110.65558,7.2,88,12.6
-2026-11-28,Jawa Tengah,Demak,33.21,-6.92823,110.65558,6.6,85,8.5
+2026-11-28,Jawa Tengah,Demak,33.21,-6.92823,110.65558,6.6,86,8.5
 2026-11-15,Jawa Tengah,Semarang,33.22,-7.28709,110.45504,1.8,83,10.5
 2026-11-16,Jawa Tengah,Semarang,33.22,-7.28709,110.45504,6.8,87,11
 2026-11-17,Jawa Tengah,Semarang,33.22,-7.28709,110.45504,4.3,96,10.6
@@ -2924,7 +2924,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Tengah,Semarang,33.22,-7.28709,110.45504,24.6,100,10.2
 2026-11-26,Jawa Tengah,Semarang,33.22,-7.28709,110.45504,11.4,90,3.6
 2026-11-27,Jawa Tengah,Semarang,33.22,-7.28709,110.45504,15,86,10
-2026-11-28,Jawa Tengah,Semarang,33.22,-7.28709,110.45504,7.2,87,5.2
+2026-11-28,Jawa Tengah,Semarang,33.22,-7.28709,110.45504,7.2,88,5.2
 2026-11-15,Jawa Tengah,Temanggung,33.23,-7.24071,110.13408,3.7,100,10.8
 2026-11-16,Jawa Tengah,Temanggung,33.23,-7.24071,110.13408,6.8,100,10.9
 2026-11-17,Jawa Tengah,Temanggung,33.23,-7.24071,110.13408,2.6,100,7.3
@@ -2952,7 +2952,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Tengah,Kendal,33.24,-7.0175,110.14444,5.6,96,10.3
 2026-11-26,Jawa Tengah,Kendal,33.24,-7.0175,110.14444,2.8,95,7.5
 2026-11-27,Jawa Tengah,Kendal,33.24,-7.0175,110.14444,11.4,96,4.8
-2026-11-28,Jawa Tengah,Kendal,33.24,-7.0175,110.14444,1.8,90,6.7
+2026-11-28,Jawa Tengah,Kendal,33.24,-7.0175,110.14444,1.8,91,6.7
 2026-11-15,Jawa Tengah,Batang,33.25,-7.03142,109.86354,8.8,92,11.7
 2026-11-16,Jawa Tengah,Batang,33.25,-7.03142,109.86354,7.7,88,8.1
 2026-11-17,Jawa Tengah,Batang,33.25,-7.03142,109.86354,2.5,97,7.6
@@ -2966,7 +2966,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Tengah,Batang,33.25,-7.03142,109.86354,34,95,7
 2026-11-26,Jawa Tengah,Batang,33.25,-7.03142,109.86354,8.8,97,6.7
 2026-11-27,Jawa Tengah,Batang,33.25,-7.03142,109.86354,9.4,96,6.8
-2026-11-28,Jawa Tengah,Batang,33.25,-7.03142,109.86354,3.6,92,6.8
+2026-11-28,Jawa Tengah,Batang,33.25,-7.03142,109.86354,3.6,89,6.8
 2026-11-15,Jawa Tengah,Pekalongan,33.26,-7.04253,109.64113,7.3,92,7.3
 2026-11-16,Jawa Tengah,Pekalongan,33.26,-7.04253,109.64113,8.4,88,9.1
 2026-11-17,Jawa Tengah,Pekalongan,33.26,-7.04253,109.64113,27.4,97,8.5
@@ -2980,7 +2980,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Tengah,Pekalongan,33.26,-7.04253,109.64113,10.6,95,5.5
 2026-11-26,Jawa Tengah,Pekalongan,33.26,-7.04253,109.64113,7.8,97,4.4
 2026-11-27,Jawa Tengah,Pekalongan,33.26,-7.04253,109.64113,8,96,5.2
-2026-11-28,Jawa Tengah,Pekalongan,33.26,-7.04253,109.64113,3,92,5.3
+2026-11-28,Jawa Tengah,Pekalongan,33.26,-7.04253,109.64113,3,89,5.3
 2026-11-15,Jawa Tengah,Pemalang,33.27,-7.01041,109.39132,9.8,100,15.3
 2026-11-16,Jawa Tengah,Pemalang,33.27,-7.01041,109.39132,4.6,90,7.4
 2026-11-17,Jawa Tengah,Pemalang,33.27,-7.01041,109.39132,5,96,15.5
@@ -2994,7 +2994,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Tengah,Pemalang,33.27,-7.01041,109.39132,7.2,96,6
 2026-11-26,Jawa Tengah,Pemalang,33.27,-7.01041,109.39132,4.2,93,4.5
 2026-11-27,Jawa Tengah,Pemalang,33.27,-7.01041,109.39132,3.6,96,6.2
-2026-11-28,Jawa Tengah,Pemalang,33.27,-7.01041,109.39132,3.4,92,8.1
+2026-11-28,Jawa Tengah,Pemalang,33.27,-7.01041,109.39132,3.4,89,8.1
 2026-11-15,Jawa Tengah,Tegal,33.28,-7.04714,109.15578,7.2,94,10.4
 2026-11-16,Jawa Tengah,Tegal,33.28,-7.04714,109.15578,9.7,88,9.1
 2026-11-17,Jawa Tengah,Tegal,33.28,-7.04714,109.15578,10.7,94,7.5
@@ -3050,7 +3050,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Tengah,Kota Surakarta,33.72,-7.55857,110.81905,5.4,90,16.7
 2026-11-26,Jawa Tengah,Kota Surakarta,33.72,-7.55857,110.81905,10.8,83,11.9
 2026-11-27,Jawa Tengah,Kota Surakarta,33.72,-7.55857,110.81905,14.2,94,10.4
-2026-11-28,Jawa Tengah,Kota Surakarta,33.72,-7.55857,110.81905,3.8,92,11.4
+2026-11-28,Jawa Tengah,Kota Surakarta,33.72,-7.55857,110.81905,3.8,93,11.4
 2026-11-15,Jawa Tengah,Kota Salatiga,33.73,-7.33835,110.50086,1.4,83,12.3
 2026-11-16,Jawa Tengah,Kota Salatiga,33.73,-7.33835,110.50086,7.9,87,10
 2026-11-17,Jawa Tengah,Kota Salatiga,33.73,-7.33835,110.50086,8.2,96,10
@@ -3064,7 +3064,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Tengah,Kota Salatiga,33.73,-7.33835,110.50086,37.6,100,9.9
 2026-11-26,Jawa Tengah,Kota Salatiga,33.73,-7.33835,110.50086,31,90,2.6
 2026-11-27,Jawa Tengah,Kota Salatiga,33.73,-7.33835,110.50086,9,86,11.4
-2026-11-28,Jawa Tengah,Kota Salatiga,33.73,-7.33835,110.50086,6.6,87,6.4
+2026-11-28,Jawa Tengah,Kota Salatiga,33.73,-7.33835,110.50086,6.6,88,6.4
 2026-11-15,Jawa Tengah,Kota Semarang,33.74,-7.02484,110.38735,3.9,97,10.6
 2026-11-16,Jawa Tengah,Kota Semarang,33.74,-7.02484,110.38735,5,84,13.2
 2026-11-17,Jawa Tengah,Kota Semarang,33.74,-7.02484,110.38735,1,92,12.4
@@ -3078,7 +3078,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Tengah,Kota Semarang,33.74,-7.02484,110.38735,8,96,9.9
 2026-11-26,Jawa Tengah,Kota Semarang,33.74,-7.02484,110.38735,2.2,87,11.4
 2026-11-27,Jawa Tengah,Kota Semarang,33.74,-7.02484,110.38735,2.4,90,9.3
-2026-11-28,Jawa Tengah,Kota Semarang,33.74,-7.02484,110.38735,3.6,85,11.3
+2026-11-28,Jawa Tengah,Kota Semarang,33.74,-7.02484,110.38735,3.6,86,11.3
 2026-11-15,Jawa Tengah,Kota Pekalongan,33.75,-6.89372,109.67682,3.5,92,9.2
 2026-11-16,Jawa Tengah,Kota Pekalongan,33.75,-6.89372,109.67682,2.2,88,10.3
 2026-11-17,Jawa Tengah,Kota Pekalongan,33.75,-6.89372,109.67682,10.7,97,10.6
@@ -3092,7 +3092,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Tengah,Kota Pekalongan,33.75,-6.89372,109.67682,3.2,95,9.5
 2026-11-26,Jawa Tengah,Kota Pekalongan,33.75,-6.89372,109.67682,5.8,97,5.3
 2026-11-27,Jawa Tengah,Kota Pekalongan,33.75,-6.89372,109.67682,1.4,96,6.4
-2026-11-28,Jawa Tengah,Kota Pekalongan,33.75,-6.89372,109.67682,0.6,92,5.7
+2026-11-28,Jawa Tengah,Kota Pekalongan,33.75,-6.89372,109.67682,0.6,89,5.7
 2026-11-15,Jawa Tengah,Kota Tegal,33.76,-6.86972,109.11848,10.2,96,12.5
 2026-11-16,Jawa Tengah,Kota Tegal,33.76,-6.86972,109.11848,3.6,96,12.3
 2026-11-17,Jawa Tengah,Kota Tegal,33.76,-6.86972,109.11848,5,90,12.5
@@ -3134,7 +3134,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Daerah Istimewa Yogyakarta,Bantul,34.02,-7.89812,110.36639,8.6,73,14.4
 2026-11-26,Daerah Istimewa Yogyakarta,Bantul,34.02,-7.89812,110.36639,5.8,69,8.6
 2026-11-27,Daerah Istimewa Yogyakarta,Bantul,34.02,-7.89812,110.36639,15,73,9.9
-2026-11-28,Daerah Istimewa Yogyakarta,Bantul,34.02,-7.89812,110.36639,15,59,4.1
+2026-11-28,Daerah Istimewa Yogyakarta,Bantul,34.02,-7.89812,110.36639,15,74,4.1
 2026-11-15,Daerah Istimewa Yogyakarta,Gunungkidul,34.03,-7.99303,110.58489,12.6,100,16.9
 2026-11-16,Daerah Istimewa Yogyakarta,Gunungkidul,34.03,-7.99303,110.58489,14,100,15.3
 2026-11-17,Daerah Istimewa Yogyakarta,Gunungkidul,34.03,-7.99303,110.58489,6.5,93,13.5
@@ -3162,7 +3162,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Daerah Istimewa Yogyakarta,Sleman,34.04,-7.68884,110.38136,8.4,100,5.2
 2026-11-26,Daerah Istimewa Yogyakarta,Sleman,34.04,-7.68884,110.38136,7.8,92,4.1
 2026-11-27,Daerah Istimewa Yogyakarta,Sleman,34.04,-7.68884,110.38136,10.8,98,8.2
-2026-11-28,Daerah Istimewa Yogyakarta,Sleman,34.04,-7.68884,110.38136,12.6,87,5
+2026-11-28,Daerah Istimewa Yogyakarta,Sleman,34.04,-7.68884,110.38136,12.6,88,5
 2026-11-15,Daerah Istimewa Yogyakarta,Kota Yogyakarta,34.71,-7.8033,110.37491,7,100,12.1
 2026-11-16,Daerah Istimewa Yogyakarta,Kota Yogyakarta,34.71,-7.8033,110.37491,14.9,100,11.4
 2026-11-17,Daerah Istimewa Yogyakarta,Kota Yogyakarta,34.71,-7.8033,110.37491,8,100,12.1
@@ -3260,7 +3260,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Timur,Kediri,35.06,-7.80288,112.10726,2.4,64,19.3
 2026-11-26,Jawa Timur,Kediri,35.06,-7.80288,112.10726,10.2,65,16.5
 2026-11-27,Jawa Timur,Kediri,35.06,-7.80288,112.10726,25.2,76,17.2
-2026-11-28,Jawa Timur,Kediri,35.06,-7.80288,112.10726,10.8,86,13.9
+2026-11-28,Jawa Timur,Kediri,35.06,-7.80288,112.10726,10.8,89,13.9
 2026-11-15,Jawa Timur,Malang,35.07,-8.10519,112.6184,2,100,14.2
 2026-11-16,Jawa Timur,Malang,35.07,-8.10519,112.6184,8.2,100,14.5
 2026-11-17,Jawa Timur,Malang,35.07,-8.10519,112.6184,13.8,100,10.1
@@ -3274,7 +3274,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Timur,Malang,35.07,-8.10519,112.6184,9,100,6.6
 2026-11-26,Jawa Timur,Malang,35.07,-8.10519,112.6184,13.2,100,6.5
 2026-11-27,Jawa Timur,Malang,35.07,-8.10519,112.6184,25.8,100,6.3
-2026-11-28,Jawa Timur,Malang,35.07,-8.10519,112.6184,2.4,94,3.1
+2026-11-28,Jawa Timur,Malang,35.07,-8.10519,112.6184,2.4,95,3.1
 2026-11-15,Jawa Timur,Lumajang,35.08,-8.12595,113.13967,6.2,100,11.4
 2026-11-16,Jawa Timur,Lumajang,35.08,-8.12595,113.13967,12.8,100,8.4
 2026-11-17,Jawa Timur,Lumajang,35.08,-8.12595,113.13967,14.8,93,10.3
@@ -3288,7 +3288,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Timur,Lumajang,35.08,-8.12595,113.13967,3.6,72,8.8
 2026-11-26,Jawa Timur,Lumajang,35.08,-8.12595,113.13967,3,87,9.3
 2026-11-27,Jawa Timur,Lumajang,35.08,-8.12595,113.13967,15.4,88,6
-2026-11-28,Jawa Timur,Lumajang,35.08,-8.12595,113.13967,15.6,87,7.6
+2026-11-28,Jawa Timur,Lumajang,35.08,-8.12595,113.13967,15.6,89,7.6
 2026-11-15,Jawa Timur,Jember,35.09,-8.26237,113.67498,11,100,9.3
 2026-11-16,Jawa Timur,Jember,35.09,-8.26237,113.67498,14.3,100,10.2
 2026-11-17,Jawa Timur,Jember,35.09,-8.26237,113.67498,9.6,100,12.5
@@ -3344,7 +3344,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Timur,Situbondo,35.12,-7.79886,114.11925,1.2,100,13.9
 2026-11-26,Jawa Timur,Situbondo,35.12,-7.79886,114.11925,1.8,99,4.6
 2026-11-27,Jawa Timur,Situbondo,35.12,-7.79886,114.11925,6,96,9.3
-2026-11-28,Jawa Timur,Situbondo,35.12,-7.79886,114.11925,2.4,79,14.4
+2026-11-28,Jawa Timur,Situbondo,35.12,-7.79886,114.11925,2.4,80,14.4
 2026-11-15,Jawa Timur,Probolinggo,35.13,-7.86301,113.28495,2.3,69,19.4
 2026-11-16,Jawa Timur,Probolinggo,35.13,-7.86301,113.28495,9.7,76,11.4
 2026-11-17,Jawa Timur,Probolinggo,35.13,-7.86301,113.28495,4.5,76,10.6
@@ -3358,7 +3358,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Timur,Probolinggo,35.13,-7.86301,113.28495,9.6,73,13.1
 2026-11-26,Jawa Timur,Probolinggo,35.13,-7.86301,113.28495,14.4,62,9.8
 2026-11-27,Jawa Timur,Probolinggo,35.13,-7.86301,113.28495,13.8,56,9.2
-2026-11-28,Jawa Timur,Probolinggo,35.13,-7.86301,113.28495,6.6,67,11.3
+2026-11-28,Jawa Timur,Probolinggo,35.13,-7.86301,113.28495,6.6,74,11.3
 2026-11-15,Jawa Timur,Pasuruan,35.14,-7.75085,112.83759,0,88,13.5
 2026-11-16,Jawa Timur,Pasuruan,35.14,-7.75085,112.83759,3.4,93,13.5
 2026-11-17,Jawa Timur,Pasuruan,35.14,-7.75085,112.83759,6.1,95,11
@@ -3372,7 +3372,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Timur,Pasuruan,35.14,-7.75085,112.83759,16.2,100,12.7
 2026-11-26,Jawa Timur,Pasuruan,35.14,-7.75085,112.83759,1.2,81,10.2
 2026-11-27,Jawa Timur,Pasuruan,35.14,-7.75085,112.83759,0.6,76,6.8
-2026-11-28,Jawa Timur,Pasuruan,35.14,-7.75085,112.83759,0.6,72,8
+2026-11-28,Jawa Timur,Pasuruan,35.14,-7.75085,112.83759,0.6,78,8
 2026-11-15,Jawa Timur,Sidoarjo,35.15,-7.45392,112.66721,0.3,49,14.2
 2026-11-16,Jawa Timur,Sidoarjo,35.15,-7.45392,112.66721,5.2,75,11.5
 2026-11-17,Jawa Timur,Sidoarjo,35.15,-7.45392,112.66721,9.3,75,9.8
@@ -3386,7 +3386,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Timur,Sidoarjo,35.15,-7.45392,112.66721,10.8,88,11.9
 2026-11-26,Jawa Timur,Sidoarjo,35.15,-7.45392,112.66721,16.8,73,14.7
 2026-11-27,Jawa Timur,Sidoarjo,35.15,-7.45392,112.66721,1.8,55,8.9
-2026-11-28,Jawa Timur,Sidoarjo,35.15,-7.45392,112.66721,1.6,47,11.8
+2026-11-28,Jawa Timur,Sidoarjo,35.15,-7.45392,112.66721,1.6,65,11.8
 2026-11-15,Jawa Timur,Mojokerto,35.16,-7.54114,112.49775,1.1,78,12.7
 2026-11-16,Jawa Timur,Mojokerto,35.16,-7.54114,112.49775,6.7,94,13
 2026-11-17,Jawa Timur,Mojokerto,35.16,-7.54114,112.49775,6.3,96,10.2
@@ -3400,7 +3400,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Timur,Mojokerto,35.16,-7.54114,112.49775,3.4,92,12.6
 2026-11-26,Jawa Timur,Mojokerto,35.16,-7.54114,112.49775,15.6,88,6.7
 2026-11-27,Jawa Timur,Mojokerto,35.16,-7.54114,112.49775,5,76,6.7
-2026-11-28,Jawa Timur,Mojokerto,35.16,-7.54114,112.49775,0.6,65,6.2
+2026-11-28,Jawa Timur,Mojokerto,35.16,-7.54114,112.49775,0.6,73,6.2
 2026-11-15,Jawa Timur,Jombang,35.17,-7.56147,112.25922,0.4,86,17
 2026-11-16,Jawa Timur,Jombang,35.17,-7.56147,112.25922,3.7,98,16.5
 2026-11-17,Jawa Timur,Jombang,35.17,-7.56147,112.25922,12.3,98,8.7
@@ -3414,7 +3414,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Timur,Jombang,35.17,-7.56147,112.25922,8.4,96,12.3
 2026-11-26,Jawa Timur,Jombang,35.17,-7.56147,112.25922,49.8,96,9.8
 2026-11-27,Jawa Timur,Jombang,35.17,-7.56147,112.25922,9,92,9.6
-2026-11-28,Jawa Timur,Jombang,35.17,-7.56147,112.25922,3.6,86,7.2
+2026-11-28,Jawa Timur,Jombang,35.17,-7.56147,112.25922,3.6,87,7.2
 2026-11-15,Jawa Timur,Nganjuk,35.18,-7.6152,111.94678,1.7,90,24.5
 2026-11-16,Jawa Timur,Nganjuk,35.18,-7.6152,111.94678,6.5,100,13.9
 2026-11-17,Jawa Timur,Nganjuk,35.18,-7.6152,111.94678,1.3,94,18.4
@@ -3428,7 +3428,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Timur,Nganjuk,35.18,-7.6152,111.94678,1.2,79,13
 2026-11-26,Jawa Timur,Nganjuk,35.18,-7.6152,111.94678,2.4,75,8.9
 2026-11-27,Jawa Timur,Nganjuk,35.18,-7.6152,111.94678,14.4,82,16.7
-2026-11-28,Jawa Timur,Nganjuk,35.18,-7.6152,111.94678,4.2,80,12
+2026-11-28,Jawa Timur,Nganjuk,35.18,-7.6152,111.94678,4.2,81,12
 2026-11-15,Jawa Timur,Madiun,35.19,-7.61093,111.64977,0,92,10.4
 2026-11-16,Jawa Timur,Madiun,35.19,-7.61093,111.64977,4.6,100,10.6
 2026-11-17,Jawa Timur,Madiun,35.19,-7.61093,111.64977,0.3,96,12.2
@@ -3596,7 +3596,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Timur,Kota Kediri,35.71,-7.82363,112.01885,3.6,64,19.5
 2026-11-26,Jawa Timur,Kota Kediri,35.71,-7.82363,112.01885,1.2,65,14.9
 2026-11-27,Jawa Timur,Kota Kediri,35.71,-7.82363,112.01885,20.8,76,16.1
-2026-11-28,Jawa Timur,Kota Kediri,35.71,-7.82363,112.01885,8.6,86,13.7
+2026-11-28,Jawa Timur,Kota Kediri,35.71,-7.82363,112.01885,8.6,89,13.7
 2026-11-15,Jawa Timur,Kota Blitar,35.72,-8.09605,112.1662,4.5,100,14.4
 2026-11-16,Jawa Timur,Kota Blitar,35.72,-8.09605,112.1662,9.2,100,12.6
 2026-11-17,Jawa Timur,Kota Blitar,35.72,-8.09605,112.1662,8.7,100,14.1
@@ -3638,7 +3638,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Timur,Kota Probolinggo,35.74,-7.77127,113.20276,6.6,73,12.1
 2026-11-26,Jawa Timur,Kota Probolinggo,35.74,-7.77127,113.20276,7.8,62,8.8
 2026-11-27,Jawa Timur,Kota Probolinggo,35.74,-7.77127,113.20276,3,56,8.6
-2026-11-28,Jawa Timur,Kota Probolinggo,35.74,-7.77127,113.20276,1.2,65,11.3
+2026-11-28,Jawa Timur,Kota Probolinggo,35.74,-7.77127,113.20276,1.2,72,11.3
 2026-11-15,Jawa Timur,Kota Pasuruan,35.75,-7.65159,112.91219,0,82,17
 2026-11-16,Jawa Timur,Kota Pasuruan,35.75,-7.65159,112.91219,7.8,76,17.5
 2026-11-17,Jawa Timur,Kota Pasuruan,35.75,-7.65159,112.91219,4,83,19.3
@@ -3666,7 +3666,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Timur,Kota Mojokerto,35.76,-7.47101,112.4372,1.8,92,15.1
 2026-11-26,Jawa Timur,Kota Mojokerto,35.76,-7.47101,112.4372,10.2,88,9.9
 2026-11-27,Jawa Timur,Kota Mojokerto,35.76,-7.47101,112.4372,4.8,76,15.2
-2026-11-28,Jawa Timur,Kota Mojokerto,35.76,-7.47101,112.4372,1.8,65,9.4
+2026-11-28,Jawa Timur,Kota Mojokerto,35.76,-7.47101,112.4372,1.8,73,9.4
 2026-11-15,Jawa Timur,Kota Madiun,35.77,-7.62964,111.52728,1.3,99,17.3
 2026-11-16,Jawa Timur,Kota Madiun,35.77,-7.62964,111.52728,5.5,89,12.3
 2026-11-17,Jawa Timur,Kota Madiun,35.77,-7.62964,111.52728,7.3,90,16.3
@@ -3694,7 +3694,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Jawa Timur,Kota Surabaya,35.78,-7.27086,112.71878,3,86,5
 2026-11-26,Jawa Timur,Kota Surabaya,35.78,-7.27086,112.71878,12,82,8.4
 2026-11-27,Jawa Timur,Kota Surabaya,35.78,-7.27086,112.71878,3.6,75,9.1
-2026-11-28,Jawa Timur,Kota Surabaya,35.78,-7.27086,112.71878,2.8,73,7.1
+2026-11-28,Jawa Timur,Kota Surabaya,35.78,-7.27086,112.71878,2.8,76,7.1
 2026-11-15,Jawa Timur,Kota Batu,35.79,-7.83602,112.53505,0,100,14.3
 2026-11-16,Jawa Timur,Kota Batu,35.79,-7.83602,112.53505,5.3,100,10.4
 2026-11-17,Jawa Timur,Kota Batu,35.79,-7.83602,112.53505,5.9,100,9.1
@@ -3820,7 +3820,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Banten,Kota Tangerang Selatan,36.74,-6.29593,106.7083,12,96,6.7
 2026-11-26,Banten,Kota Tangerang Selatan,36.74,-6.29593,106.7083,6.8,96,6.7
 2026-11-27,Banten,Kota Tangerang Selatan,36.74,-6.29593,106.7083,18.8,94,6.1
-2026-11-28,Banten,Kota Tangerang Selatan,36.74,-6.29593,106.7083,3.8,97,8.2
+2026-11-28,Banten,Kota Tangerang Selatan,36.74,-6.29593,106.7083,3.8,98,8.2
 2026-11-15,Bali,Jembrana,51.01,-8.31388,114.68437,12,99,12.5
 2026-11-16,Bali,Jembrana,51.01,-8.31388,114.68437,17.9,98,7.4
 2026-11-17,Bali,Jembrana,51.01,-8.31388,114.68437,17.8,91,10
@@ -3890,7 +3890,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Bali,Klungkung,51.05,-8.74586,115.53765,4.4,62,12.2
 2026-11-26,Bali,Klungkung,51.05,-8.74586,115.53765,2,56,11.4
 2026-11-27,Bali,Klungkung,51.05,-8.74586,115.53765,2.2,63,9.3
-2026-11-28,Bali,Klungkung,51.05,-8.74586,115.53765,3.6,66,10.2
+2026-11-28,Bali,Klungkung,51.05,-8.74586,115.53765,3.6,68,10.2
 2026-11-15,Bali,Bangli,51.06,-8.33361,115.34563,8.4,100,8.9
 2026-11-16,Bali,Bangli,51.06,-8.33361,115.34563,6,100,7.2
 2026-11-17,Bali,Bangli,51.06,-8.33361,115.34563,15,98,6.9
@@ -4254,7 +4254,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Nusa Tenggara Timur,Sumba Barat,53.12,-9.63338,119.34333,8.4,84,7.8
 2026-11-26,Nusa Tenggara Timur,Sumba Barat,53.12,-9.63338,119.34333,13.8,92,12.1
 2026-11-27,Nusa Tenggara Timur,Sumba Barat,53.12,-9.63338,119.34333,7.2,76,5.4
-2026-11-28,Nusa Tenggara Timur,Sumba Barat,53.12,-9.63338,119.34333,8.4,61,5.9
+2026-11-28,Nusa Tenggara Timur,Sumba Barat,53.12,-9.63338,119.34333,8.4,66,5.9
 2026-11-15,Nusa Tenggara Timur,Lembata,53.13,-8.37837,123.56483,0.5,43,8.6
 2026-11-16,Nusa Tenggara Timur,Lembata,53.13,-8.37837,123.56483,6.4,97,9.3
 2026-11-17,Nusa Tenggara Timur,Lembata,53.13,-8.37837,123.56483,9.1,100,7.2
@@ -4408,7 +4408,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Kalimantan Barat,Sambas,61.01,1.52017,109.32823,14.4,98,7.9
 2026-11-26,Kalimantan Barat,Sambas,61.01,1.52017,109.32823,7.4,95,8
 2026-11-27,Kalimantan Barat,Sambas,61.01,1.52017,109.32823,16.4,94,11.7
-2026-11-28,Kalimantan Barat,Sambas,61.01,1.52017,109.32823,21.2,91,6.7
+2026-11-28,Kalimantan Barat,Sambas,61.01,1.52017,109.32823,21.2,93,6.7
 2026-11-15,Kalimantan Barat,Mempawah,61.02,0.3439,109.14404,24.4,100,9.2
 2026-11-16,Kalimantan Barat,Mempawah,61.02,0.3439,109.14404,13.6,100,7.7
 2026-11-17,Kalimantan Barat,Mempawah,61.02,0.3439,109.14404,14.1,98,8.1
@@ -4436,7 +4436,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Kalimantan Barat,Sanggau,61.03,0.35022,110.42764,7.6,100,6.1
 2026-11-26,Kalimantan Barat,Sanggau,61.03,0.35022,110.42764,9.2,96,8.4
 2026-11-27,Kalimantan Barat,Sanggau,61.03,0.35022,110.42764,7.2,98,5.4
-2026-11-28,Kalimantan Barat,Sanggau,61.03,0.35022,110.42764,8.4,85,5
+2026-11-28,Kalimantan Barat,Sanggau,61.03,0.35022,110.42764,8.4,88,5
 2026-11-15,Kalimantan Barat,Ketapang,61.04,-1.68207,110.57499,11.8,99,9.4
 2026-11-16,Kalimantan Barat,Ketapang,61.04,-1.68207,110.57499,9.2,92,6.3
 2026-11-17,Kalimantan Barat,Ketapang,61.04,-1.68207,110.57499,11.4,100,8
@@ -4506,7 +4506,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Kalimantan Barat,Landak,61.08,0.50364,109.70606,9.4,100,8.1
 2026-11-26,Kalimantan Barat,Landak,61.08,0.50364,109.70606,20.6,98,8.6
 2026-11-27,Kalimantan Barat,Landak,61.08,0.50364,109.70606,10.8,98,9.1
-2026-11-28,Kalimantan Barat,Landak,61.08,0.50364,109.70606,7.2,96,4.8
+2026-11-28,Kalimantan Barat,Landak,61.08,0.50364,109.70606,7.2,95,4.8
 2026-11-15,Kalimantan Barat,Sekadau,61.09,0.02929,110.92427,15,90,10.1
 2026-11-16,Kalimantan Barat,Sekadau,61.09,0.02929,110.92427,8.8,86,12.3
 2026-11-17,Kalimantan Barat,Sekadau,61.09,0.02929,110.92427,12.1,98,7.5
@@ -4562,7 +4562,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Kalimantan Barat,Kubu Raya,61.12,-0.33265,109.52969,15,99,9.9
 2026-11-26,Kalimantan Barat,Kubu Raya,61.12,-0.33265,109.52969,18.2,99,7.5
 2026-11-27,Kalimantan Barat,Kubu Raya,61.12,-0.33265,109.52969,16.8,99,12.9
-2026-11-28,Kalimantan Barat,Kubu Raya,61.12,-0.33265,109.52969,17.6,95,6.5
+2026-11-28,Kalimantan Barat,Kubu Raya,61.12,-0.33265,109.52969,17.6,96,6.5
 2026-11-15,Kalimantan Barat,Kota Pontianak,61.71,-0.03008,109.32961,10.7,100,9.9
 2026-11-16,Kalimantan Barat,Kota Pontianak,61.71,-0.03008,109.32961,8.9,98,9.4
 2026-11-17,Kalimantan Barat,Kota Pontianak,61.71,-0.03008,109.32961,13,99,11.5
@@ -4730,7 +4730,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Kalimantan Tengah,Gunung Mas,62.10,-0.97289,113.58266,8.4,84,7.5
 2026-11-26,Kalimantan Tengah,Gunung Mas,62.10,-0.97289,113.58266,4.8,87,5.8
 2026-11-27,Kalimantan Tengah,Gunung Mas,62.10,-0.97289,113.58266,15.2,90,8.6
-2026-11-28,Kalimantan Tengah,Gunung Mas,62.10,-0.97289,113.58266,18.6,77,5.4
+2026-11-28,Kalimantan Tengah,Gunung Mas,62.10,-0.97289,113.58266,18.6,75,5.4
 2026-11-15,Kalimantan Tengah,Pulang Pisau,62.11,-2.49496,113.96509,32,96,8.9
 2026-11-16,Kalimantan Tengah,Pulang Pisau,62.11,-2.49496,113.96509,10.8,86,8.7
 2026-11-17,Kalimantan Tengah,Pulang Pisau,62.11,-2.49496,113.96509,16.8,94,8.4
@@ -4814,7 +4814,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Kalimantan Selatan,Kotabaru,63.02,-2.79479,116.03336,8.4,88,2.6
 2026-11-26,Kalimantan Selatan,Kotabaru,63.02,-2.79479,116.03336,12,99,4
 2026-11-27,Kalimantan Selatan,Kotabaru,63.02,-2.79479,116.03336,8.4,92,5.4
-2026-11-28,Kalimantan Selatan,Kotabaru,63.02,-2.79479,116.03336,6.6,85,6.1
+2026-11-28,Kalimantan Selatan,Kotabaru,63.02,-2.79479,116.03336,6.6,86,6.1
 2026-11-15,Kalimantan Selatan,Banjar,63.03,-3.27965,115.04723,11.7,98,11.9
 2026-11-16,Kalimantan Selatan,Banjar,63.03,-3.27965,115.04723,10.5,98,9.2
 2026-11-17,Kalimantan Selatan,Banjar,63.03,-3.27965,115.04723,20.4,96,7.8
@@ -4870,7 +4870,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Kalimantan Selatan,Hulu Sungai Selatan,63.06,-2.71817,115.23119,16.8,94,11.1
 2026-11-26,Kalimantan Selatan,Hulu Sungai Selatan,63.06,-2.71817,115.23119,14.8,94,4
 2026-11-27,Kalimantan Selatan,Hulu Sungai Selatan,63.06,-2.71817,115.23119,7.2,92,12.7
-2026-11-28,Kalimantan Selatan,Hulu Sungai Selatan,63.06,-2.71817,115.23119,8.6,78,7.4
+2026-11-28,Kalimantan Selatan,Hulu Sungai Selatan,63.06,-2.71817,115.23119,8.6,79,7.4
 2026-11-15,Kalimantan Selatan,Hulu Sungai Tengah,63.07,-2.61745,115.48815,10.1,92,6
 2026-11-16,Kalimantan Selatan,Hulu Sungai Tengah,63.07,-2.61745,115.48815,7.6,88,6.7
 2026-11-17,Kalimantan Selatan,Hulu Sungai Tengah,63.07,-2.61745,115.48815,9.4,91,7.4
@@ -4912,7 +4912,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Kalimantan Selatan,Tabalong,63.09,-1.83609,115.4421,21.2,90,4.5
 2026-11-26,Kalimantan Selatan,Tabalong,63.09,-1.83609,115.4421,14.4,92,5.9
 2026-11-27,Kalimantan Selatan,Tabalong,63.09,-1.83609,115.4421,14,92,7.9
-2026-11-28,Kalimantan Selatan,Tabalong,63.09,-1.83609,115.4421,11.6,87,6.7
+2026-11-28,Kalimantan Selatan,Tabalong,63.09,-1.83609,115.4421,11.6,88,6.7
 2026-11-15,Kalimantan Selatan,Tanah Bumbu,63.10,-3.43316,115.6675,9.8,100,11.4
 2026-11-16,Kalimantan Selatan,Tanah Bumbu,63.10,-3.43316,115.6675,10.6,98,10.3
 2026-11-17,Kalimantan Selatan,Tanah Bumbu,63.10,-3.43316,115.6675,16,100,9.6
@@ -4982,7 +4982,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Kalimantan Timur,Paser,64.01,-1.68805,116.10704,14.6,94,3.8
 2026-11-26,Kalimantan Timur,Paser,64.01,-1.68805,116.10704,9.8,100,3.1
 2026-11-27,Kalimantan Timur,Paser,64.01,-1.68805,116.10704,7,100,3.2
-2026-11-28,Kalimantan Timur,Paser,64.01,-1.68805,116.10704,5.2,83,4
+2026-11-28,Kalimantan Timur,Paser,64.01,-1.68805,116.10704,5.2,85,4
 2026-11-15,Kalimantan Timur,Kutai Kartanegara,64.02,0.19527,116.3755,26.8,92,12.3
 2026-11-16,Kalimantan Timur,Kutai Kartanegara,64.02,0.19527,116.3755,7,80,9.8
 2026-11-17,Kalimantan Timur,Kutai Kartanegara,64.02,0.19527,116.3755,15.4,88,19.6
@@ -5038,7 +5038,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Kalimantan Timur,Kutai Timur,64.08,0.94528,117.47836,9.6,90,6
 2026-11-26,Kalimantan Timur,Kutai Timur,64.08,0.94528,117.47836,9,89,7.8
 2026-11-27,Kalimantan Timur,Kutai Timur,64.08,0.94528,117.47836,6.4,87,5.7
-2026-11-28,Kalimantan Timur,Kutai Timur,64.08,0.94528,117.47836,6.2,86,6
+2026-11-28,Kalimantan Timur,Kutai Timur,64.08,0.94528,117.47836,6.2,88,6
 2026-11-15,Kalimantan Timur,Penajam Paser Utara,64.09,-1.19721,116.63959,11.2,98,12.4
 2026-11-16,Kalimantan Timur,Penajam Paser Utara,64.09,-1.19721,116.63959,5.2,95,7.8
 2026-11-17,Kalimantan Timur,Penajam Paser Utara,64.09,-1.19721,116.63959,9.2,99,9.1
@@ -5066,7 +5066,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Kalimantan Timur,Mahakam Ulu,64.11,0.62366,115.01651,11.2,84,6
 2026-11-26,Kalimantan Timur,Mahakam Ulu,64.11,0.62366,115.01651,4.6,90,5.7
 2026-11-27,Kalimantan Timur,Mahakam Ulu,64.11,0.62366,115.01651,18.2,92,5.8
-2026-11-28,Kalimantan Timur,Mahakam Ulu,64.11,0.62366,115.01651,17,88,6
+2026-11-28,Kalimantan Timur,Mahakam Ulu,64.11,0.62366,115.01651,17,93,6
 2026-11-15,Kalimantan Timur,Kota Balikpapan,64.71,-1.14818,116.87582,10.7,98,8.4
 2026-11-16,Kalimantan Timur,Kota Balikpapan,64.71,-1.14818,116.87582,11.9,95,9.2
 2026-11-17,Kalimantan Timur,Kota Balikpapan,64.71,-1.14818,116.87582,8.8,99,11.7
@@ -5122,7 +5122,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Kalimantan Utara,Bulungan,65.01,2.76197,116.98818,11,81,4.5
 2026-11-26,Kalimantan Utara,Bulungan,65.01,2.76197,116.98818,20.2,87,4.9
 2026-11-27,Kalimantan Utara,Bulungan,65.01,2.76197,116.98818,11.8,78,6
-2026-11-28,Kalimantan Utara,Bulungan,65.01,2.76197,116.98818,6.8,85,6.8
+2026-11-28,Kalimantan Utara,Bulungan,65.01,2.76197,116.98818,6.8,86,6.8
 2026-11-15,Kalimantan Utara,Malinau,65.02,2.61863,115.67971,9.2,92,8.5
 2026-11-16,Kalimantan Utara,Malinau,65.02,2.61863,115.67971,0.9,69,5.7
 2026-11-17,Kalimantan Utara,Malinau,65.02,2.61863,115.67971,5.6,94,10.2
@@ -5136,7 +5136,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Kalimantan Utara,Malinau,65.02,2.61863,115.67971,8.2,94,6.6
 2026-11-26,Kalimantan Utara,Malinau,65.02,2.61863,115.67971,19,94,6.9
 2026-11-27,Kalimantan Utara,Malinau,65.02,2.61863,115.67971,10,88,5.8
-2026-11-28,Kalimantan Utara,Malinau,65.02,2.61863,115.67971,11.2,92,4.9
+2026-11-28,Kalimantan Utara,Malinau,65.02,2.61863,115.67971,11.2,94,4.9
 2026-11-15,Kalimantan Utara,Nunukan,65.03,3.90791,116.67528,10.6,90,9.3
 2026-11-16,Kalimantan Utara,Nunukan,65.03,3.90791,116.67528,5.6,82,9.4
 2026-11-17,Kalimantan Utara,Nunukan,65.03,3.90791,116.67528,8,100,10.5
@@ -5150,7 +5150,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Kalimantan Utara,Nunukan,65.03,3.90791,116.67528,11.6,94,7.3
 2026-11-26,Kalimantan Utara,Nunukan,65.03,3.90791,116.67528,16.4,94,4.2
 2026-11-27,Kalimantan Utara,Nunukan,65.03,3.90791,116.67528,22.4,87,9.6
-2026-11-28,Kalimantan Utara,Nunukan,65.03,3.90791,116.67528,10.6,90,11.4
+2026-11-28,Kalimantan Utara,Nunukan,65.03,3.90791,116.67528,10.6,92,11.4
 2026-11-15,Kalimantan Utara,Tana Tidung,65.04,3.54111,117.08603,5.9,85,10.6
 2026-11-16,Kalimantan Utara,Tana Tidung,65.04,3.54111,117.08603,5,81,11.6
 2026-11-17,Kalimantan Utara,Tana Tidung,65.04,3.54111,117.08603,8,95,7.4
@@ -5164,7 +5164,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Kalimantan Utara,Tana Tidung,65.04,3.54111,117.08603,15,88,5.3
 2026-11-26,Kalimantan Utara,Tana Tidung,65.04,3.54111,117.08603,12,90,5.1
 2026-11-27,Kalimantan Utara,Tana Tidung,65.04,3.54111,117.08603,15.6,81,4.5
-2026-11-28,Kalimantan Utara,Tana Tidung,65.04,3.54111,117.08603,6,81,5.6
+2026-11-28,Kalimantan Utara,Tana Tidung,65.04,3.54111,117.08603,6,82,5.6
 2026-11-15,Kalimantan Utara,Kota Tarakan,65.71,3.34096,117.59164,8,95,11.3
 2026-11-16,Kalimantan Utara,Kota Tarakan,65.71,3.34096,117.59164,1.2,93,13.1
 2026-11-17,Kalimantan Utara,Kota Tarakan,65.71,3.34096,117.59164,10.8,95,10.4
@@ -5416,7 +5416,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sulawesi Tengah,Poso,72.02,-1.6749,120.52263,14,97,5.6
 2026-11-26,Sulawesi Tengah,Poso,72.02,-1.6749,120.52263,14.2,94,3.8
 2026-11-27,Sulawesi Tengah,Poso,72.02,-1.6749,120.52263,4.6,92,8.1
-2026-11-28,Sulawesi Tengah,Poso,72.02,-1.6749,120.52263,9.8,88,9.1
+2026-11-28,Sulawesi Tengah,Poso,72.02,-1.6749,120.52263,9.8,91,9.1
 2026-11-15,Sulawesi Tengah,Donggala,72.03,-0.03076,119.9042,8.1,96,7.8
 2026-11-16,Sulawesi Tengah,Donggala,72.03,-0.03076,119.9042,9.4,100,9.4
 2026-11-17,Sulawesi Tengah,Donggala,72.03,-0.03076,119.9042,14.6,95,10.6
@@ -5528,7 +5528,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sulawesi Tengah,Sigi,72.10,-1.45579,120.00804,13.6,94,5.9
 2026-11-26,Sulawesi Tengah,Sigi,72.10,-1.45579,120.00804,12,91,5.9
 2026-11-27,Sulawesi Tengah,Sigi,72.10,-1.45579,120.00804,10.4,99,4.5
-2026-11-28,Sulawesi Tengah,Sigi,72.10,-1.45579,120.00804,5.6,93,6.8
+2026-11-28,Sulawesi Tengah,Sigi,72.10,-1.45579,120.00804,5.6,95,6.8
 2026-11-15,Sulawesi Tengah,Banggai Laut,72.11,-1.60237,123.54779,5.1,78,11.6
 2026-11-16,Sulawesi Tengah,Banggai Laut,72.11,-1.60237,123.54779,4.1,51,15.5
 2026-11-17,Sulawesi Tengah,Banggai Laut,72.11,-1.60237,123.54779,5.6,75,14.3
@@ -5738,7 +5738,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sulawesi Selatan,Soppeng,73.12,-4.32189,119.90167,8.4,75,9.2
 2026-11-26,Sulawesi Selatan,Soppeng,73.12,-4.32189,119.90167,2.4,63,6
 2026-11-27,Sulawesi Selatan,Soppeng,73.12,-4.32189,119.90167,2.2,57,5.8
-2026-11-28,Sulawesi Selatan,Soppeng,73.12,-4.32189,119.90167,0.8,43,6.7
+2026-11-28,Sulawesi Selatan,Soppeng,73.12,-4.32189,119.90167,0.8,45,6.7
 2026-11-15,Sulawesi Selatan,Wajo,73.13,-3.96474,120.16138,8.6,90,13.6
 2026-11-16,Sulawesi Selatan,Wajo,73.13,-3.96474,120.16138,2.7,80,11.7
 2026-11-17,Sulawesi Selatan,Wajo,73.13,-3.96474,120.16138,11.4,78,12.9
@@ -5822,7 +5822,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sulawesi Selatan,Tana Toraja,73.18,-3.0643,119.70688,6.6,96,5.2
 2026-11-26,Sulawesi Selatan,Tana Toraja,73.18,-3.0643,119.70688,17.4,83,4.8
 2026-11-27,Sulawesi Selatan,Tana Toraja,73.18,-3.0643,119.70688,4.8,85,8.4
-2026-11-28,Sulawesi Selatan,Tana Toraja,73.18,-3.0643,119.70688,1.2,84,8.5
+2026-11-28,Sulawesi Selatan,Tana Toraja,73.18,-3.0643,119.70688,1.2,85,8.5
 2026-11-15,Sulawesi Selatan,Luwu Utara,73.22,-2.43209,120.16622,11.2,100,8
 2026-11-16,Sulawesi Selatan,Luwu Utara,73.22,-2.43209,120.16622,8.5,100,7.3
 2026-11-17,Sulawesi Selatan,Luwu Utara,73.22,-2.43209,120.16622,16.9,100,7.3
@@ -5836,7 +5836,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sulawesi Selatan,Luwu Utara,73.22,-2.43209,120.16622,7.8,86,4.7
 2026-11-26,Sulawesi Selatan,Luwu Utara,73.22,-2.43209,120.16622,4,94,6.3
 2026-11-27,Sulawesi Selatan,Luwu Utara,73.22,-2.43209,120.16622,7.4,91,6.3
-2026-11-28,Sulawesi Selatan,Luwu Utara,73.22,-2.43209,120.16622,22,81,5.5
+2026-11-28,Sulawesi Selatan,Luwu Utara,73.22,-2.43209,120.16622,22,86,5.5
 2026-11-15,Sulawesi Selatan,Luwu Timur,73.24,-2.51785,121.12702,7.6,100,6.7
 2026-11-16,Sulawesi Selatan,Luwu Timur,73.24,-2.51785,121.12702,3.4,100,3
 2026-11-17,Sulawesi Selatan,Luwu Timur,73.24,-2.51785,121.12702,5,100,4.8
@@ -5864,7 +5864,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sulawesi Selatan,Toraja Utara,73.26,-2.88466,119.88049,13.8,100,5.5
 2026-11-26,Sulawesi Selatan,Toraja Utara,73.26,-2.88466,119.88049,9.6,82,6
 2026-11-27,Sulawesi Selatan,Toraja Utara,73.26,-2.88466,119.88049,8.4,79,9.4
-2026-11-28,Sulawesi Selatan,Toraja Utara,73.26,-2.88466,119.88049,2.4,66,8.9
+2026-11-28,Sulawesi Selatan,Toraja Utara,73.26,-2.88466,119.88049,2.4,67,8.9
 2026-11-15,Sulawesi Selatan,Kota Makassar,73.71,-5.14614,119.46122,1.3,100,12.4
 2026-11-16,Sulawesi Selatan,Kota Makassar,73.71,-5.14614,119.46122,4.5,100,11.5
 2026-11-17,Sulawesi Selatan,Kota Makassar,73.71,-5.14614,119.46122,12,100,9.7
@@ -5906,7 +5906,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Sulawesi Selatan,Kota Palopo,73.73,-2.97742,120.13951,9.6,100,5.9
 2026-11-26,Sulawesi Selatan,Kota Palopo,73.73,-2.97742,120.13951,5.8,82,7.2
 2026-11-27,Sulawesi Selatan,Kota Palopo,73.73,-2.97742,120.13951,1.8,79,7.3
-2026-11-28,Sulawesi Selatan,Kota Palopo,73.73,-2.97742,120.13951,1.8,66,6.8
+2026-11-28,Sulawesi Selatan,Kota Palopo,73.73,-2.97742,120.13951,1.8,67,6.8
 2026-11-15,Sulawesi Tenggara,Kolaka,74.01,-4.01188,121.5357,5.1,100,9
 2026-11-16,Sulawesi Tenggara,Kolaka,74.01,-4.01188,121.5357,1.8,100,10.6
 2026-11-17,Sulawesi Tenggara,Kolaka,74.01,-4.01188,121.5357,7.2,100,7.3
@@ -6228,7 +6228,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Gorontalo,Kota Gorontalo,75.71,0.53491,123.04748,3.2,64,6.5
 2026-11-26,Gorontalo,Kota Gorontalo,75.71,0.53491,123.04748,9.4,68,6.7
 2026-11-27,Gorontalo,Kota Gorontalo,75.71,0.53491,123.04748,6,79,6.8
-2026-11-28,Gorontalo,Kota Gorontalo,75.71,0.53491,123.04748,3.6,74,7.3
+2026-11-28,Gorontalo,Kota Gorontalo,75.71,0.53491,123.04748,3.6,75,7.3
 2026-11-15,Sulawesi Barat,Pasangkayu,76.01,-1.45595,119.57634,27,100,9.5
 2026-11-16,Sulawesi Barat,Pasangkayu,76.01,-1.45595,119.57634,15.2,100,7.5
 2026-11-17,Sulawesi Barat,Pasangkayu,76.01,-1.45595,119.57634,17.1,100,12.5
@@ -6592,7 +6592,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Maluku Utara,Kota Ternate,82.71,0.81048,127.34197,0,22,12
 2026-11-26,Maluku Utara,Kota Ternate,82.71,0.81048,127.34197,0.6,29,13.1
 2026-11-27,Maluku Utara,Kota Ternate,82.71,0.81048,127.34197,1.8,31,10.5
-2026-11-28,Maluku Utara,Kota Ternate,82.71,0.81048,127.34197,1.8,36,8.1
+2026-11-28,Maluku Utara,Kota Ternate,82.71,0.81048,127.34197,1.8,47,8.1
 2026-11-15,Maluku Utara,Kota Tidore Kepulauan,82.72,0.38243,127.67927,20.6,100,12.5
 2026-11-16,Maluku Utara,Kota Tidore Kepulauan,82.72,0.38243,127.67927,2.9,100,10.3
 2026-11-17,Maluku Utara,Kota Tidore Kepulauan,82.72,0.38243,127.67927,6.3,100,11
@@ -6620,7 +6620,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Papua,Jayapura,91.03,-3.03688,140.0067,7.8,85,5.9
 2026-11-26,Papua,Jayapura,91.03,-3.03688,140.0067,13.8,94,4
 2026-11-27,Papua,Jayapura,91.03,-3.03688,140.0067,3,99,7.5
-2026-11-28,Papua,Jayapura,91.03,-3.03688,140.0067,4.2,81,4.5
+2026-11-28,Papua,Jayapura,91.03,-3.03688,140.0067,4.2,82,4.5
 2026-11-15,Papua,Kepulauan Yapen,91.05,-1.75579,136.15681,20.4,100,5.4
 2026-11-16,Papua,Kepulauan Yapen,91.05,-1.75579,136.15681,4.2,100,6.2
 2026-11-17,Papua,Kepulauan Yapen,91.05,-1.75579,136.15681,15.9,99,7.3
@@ -6676,7 +6676,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Papua,Keerom,91.11,-3.41334,140.65921,7.8,96,13.5
 2026-11-26,Papua,Keerom,91.11,-3.41334,140.65921,5.4,94,7.5
 2026-11-27,Papua,Keerom,91.11,-3.41334,140.65921,3,92,7.8
-2026-11-28,Papua,Keerom,91.11,-3.41334,140.65921,5.8,88,7.6
+2026-11-28,Papua,Keerom,91.11,-3.41334,140.65921,5.8,89,7.6
 2026-11-15,Papua,Waropen,91.15,-2.73363,136.78146,27.2,100,6.6
 2026-11-16,Papua,Waropen,91.15,-2.73363,136.78146,15,100,10
 2026-11-17,Papua,Waropen,91.15,-2.73363,136.78146,18.4,100,8
@@ -6844,7 +6844,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Papua Selatan,Merauke,93.01,-7.87045,139.84346,2.4,33,10.3
 2026-11-26,Papua Selatan,Merauke,93.01,-7.87045,139.84346,0,28,10.3
 2026-11-27,Papua Selatan,Merauke,93.01,-7.87045,139.84346,1.8,39,13.3
-2026-11-28,Papua Selatan,Merauke,93.01,-7.87045,139.84346,1.8,44,13
+2026-11-28,Papua Selatan,Merauke,93.01,-7.87045,139.84346,1.8,52,13
 2026-11-15,Papua Selatan,Boven Digoel,93.02,-6.1197,140.35414,19.1,91,7.2
 2026-11-16,Papua Selatan,Boven Digoel,93.02,-6.1197,140.35414,15.6,82,10.3
 2026-11-17,Papua Selatan,Boven Digoel,93.02,-6.1197,140.35414,26.3,90,9.7
@@ -7012,7 +7012,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Papua Pegunungan,Jayawijaya,95.01,-4.11492,138.90223,4.4,80,3.7
 2026-11-26,Papua Pegunungan,Jayawijaya,95.01,-4.11492,138.90223,0.6,91,4.2
 2026-11-27,Papua Pegunungan,Jayawijaya,95.01,-4.11492,138.90223,0,87,8.6
-2026-11-28,Papua Pegunungan,Jayawijaya,95.01,-4.11492,138.90223,2,94,4.5
+2026-11-28,Papua Pegunungan,Jayawijaya,95.01,-4.11492,138.90223,2,92,4.5
 2026-11-15,Papua Pegunungan,Pegunungan Bintang,95.02,-4.46728,140.54685,8.1,99,3.8
 2026-11-16,Papua Pegunungan,Pegunungan Bintang,95.02,-4.46728,140.54685,5.7,98,5.5
 2026-11-17,Papua Pegunungan,Pegunungan Bintang,95.02,-4.46728,140.54685,13.2,92,5.4
@@ -7082,7 +7082,7 @@ tanggal,provinsi,kabupaten,kode,lintang,bujur,curah_hujan_mm,peluang_hujan_maks,
 2026-11-25,Papua Pegunungan,Yalimo,95.06,-3.74717,139.53931,11.4,99,1.9
 2026-11-26,Papua Pegunungan,Yalimo,95.06,-3.74717,139.53931,7.8,100,4.7
 2026-11-27,Papua Pegunungan,Yalimo,95.06,-3.74717,139.53931,1.2,100,3.6
-2026-11-28,Papua Pegunungan,Yalimo,95.06,-3.74717,139.53931,10.2,97,4.4
+2026-11-28,Papua Pegunungan,Yalimo,95.06,-3.74717,139.53931,10.2,98,4.4
 2026-11-15,Papua Pegunungan,Lanny Jaya,95.07,-3.99678,138.34619,15.3,100,9
 2026-11-16,Papua Pegunungan,Lanny Jaya,95.07,-3.99678,138.34619,16.9,100,11.4
 2026-11-17,Papua Pegunungan,Lanny Jaya,95.07,-3.99678,138.34619,9.7,97,10
