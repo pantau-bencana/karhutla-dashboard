@@ -9,8 +9,8 @@
       "jenis": "bibit",
       "kalimat": "Bibit Siklon Tropis 92B terbentuk di sekitar Teluk Benggala pada 12 November 2026 pukul 13.00 WIB di dalam wilayah monitoring TCWC Jakarta",
       "lokasi": "dalam wilayah monitoring TCWC Jakarta",
-      "dampak": "Cuaca ekstrem: Aceh.",
-      "cuaca_ekstrem": "Aceh",
+      "dampak": "-",
+      "cuaca_ekstrem": "",
       "gelombang_tinggi": "",
       "angin_kencang": "",
       "dampak_status": "",
@@ -20,12 +20,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 11,
-      "bujur": 86.1,
-      "tekanan_hpa": 1005,
+      "lintang": 11.6,
+      "bujur": 85.9,
+      "tekanan_hpa": 1003,
       "angin_knot": 30,
       "kategori": "L",
-      "waktu_analisis": "2026-11-16T00:00:00.000Z"
+      "waktu_analisis": "2026-11-16T12:00:00.000Z"
     },
     {
       "nama": "96S",
@@ -33,9 +33,9 @@
       "jenis": "bibit",
       "kalimat": "Bibit Siklon Tropis 96S terbentuk di sekitar Samudra Hindia barat Sumatra pada 13 November 2026 pukul 13.00 WIB di dalam wilayah monitoring TCWC Jakarta.",
       "lokasi": "dalam wilayah monitoring TCWC Jakarta",
-      "dampak": "Cuaca ekstrem: Aceh; Sumatera Utara; Sumatera Barat; Bengkulu; Lampung. Gelombang tinggi: (A.02. Selat Malaka bagian utara); (A.10. Samudera Hindia barat Kep. Nias); (A.08. Samudera Hindia barat Aceh); (B.09. Samudera Hindia barat Kep. Mentawai); (A.01. Perairan utara Sabang); (A.03. Perairan Sabang - Banda Aceh).",
-      "cuaca_ekstrem": "Aceh; Sumatera Utara; Sumatera Barat; Bengkulu; Lampung",
-      "gelombang_tinggi": "(A.02. Selat Malaka bagian utara); (A.10. Samudera Hindia barat Kep. Nias); (A.08. Samudera Hindia barat Aceh); (B.09. Samudera Hindia barat Kep. Mentawai); (A.01. Perairan utara Sabang); (A.03. Perairan Sabang - Banda Aceh)",
+      "dampak": "Cuaca ekstrem: Aceh; Sumatera Utara; Sumatera Barat. Gelombang tinggi: (A.02. Selat Malaka bagian utara); (A.10. Samudera Hindia barat Kep. Nias); (A.08. Samudera Hindia barat Aceh); (B.09. Samudera Hindia barat Kep. Mentawai); (A.03. Perairan Sabang - Banda Aceh).",
+      "cuaca_ekstrem": "Aceh; Sumatera Utara; Sumatera Barat",
+      "gelombang_tinggi": "(A.02. Selat Malaka bagian utara); (A.10. Samudera Hindia barat Kep. Nias); (A.08. Samudera Hindia barat Aceh); (B.09. Samudera Hindia barat Kep. Mentawai); (A.03. Perairan Sabang - Banda Aceh)",
       "angin_kencang": "",
       "dampak_status": "",
       "berlaku_hingga": "",
@@ -44,12 +44,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": -1.5,
-      "bujur": 91.8,
-      "tekanan_hpa": 1008,
-      "angin_knot": 25,
+      "lintang": -1.1,
+      "bujur": 91.7,
+      "tekanan_hpa": 1007,
+      "angin_knot": 30,
       "kategori": "L",
-      "waktu_analisis": "2026-11-16T00:00:00.000Z"
+      "waktu_analisis": "2026-11-16T12:00:00.000Z"
     }
   ],
   "ikhtisar": {
@@ -86,10 +86,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-16T11:49:22.585Z",
+    "fetched_at": "2026-11-16T22:23:23.936Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-16T11:49:22.585Z",
+  "fetched_at": "2026-11-16T22:23:23.936Z",
   "pdf_diubah": "Mon, 16 Nov 2026 05:41:20 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -101,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-16T11:49:39.068Z",
+      "fetched_at": "2026-11-16T22:23:40.040Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -110,7 +110,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-16T11:49:39.281Z",
+      "fetched_at": "2026-11-16T22:23:40.093Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
@@ -131,6 +131,25 @@
           "kategori": "",
           "waktu_analisis": "2026-11-15T18:00:00.000Z",
           "kode": "04P",
+          "tahap": "Siklon tropis",
+          "jenis": "siklon"
+        },
+        {
+          "nama": "AKVAN",
+          "kalimat": "Advisory JTWC ABIO menyebut AKVAN.",
+          "lokasi": "",
+          "dampak": "-",
+          "agensi": "JTWC",
+          "di_dalam_tcwc": false,
+          "luar_tcwc": false,
+          "sumber": "jtwc",
+          "lintang": 11.3,
+          "bujur": 86.7,
+          "tekanan_hpa": null,
+          "angin_knot": 35,
+          "kategori": "",
+          "waktu_analisis": "2026-11-16T18:00:00.000Z",
+          "kode": "05B",
           "tahap": "Siklon tropis",
           "jenis": "siklon"
         }
