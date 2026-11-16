@@ -55,7 +55,7 @@
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-11-15",
+    "terbit": "2026-11-16",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
     "sistem": []
   },
@@ -86,11 +86,11 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-16T02:55:02.694Z",
+    "fetched_at": "2026-11-16T11:49:22.585Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-16T02:55:02.694Z",
-  "pdf_diubah": "Sun, 15 Nov 2026 07:34:07 GMT",
+  "fetched_at": "2026-11-16T11:49:22.585Z",
+  "pdf_diubah": "Mon, 16 Nov 2026 05:41:20 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
@@ -101,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-16T02:55:18.735Z",
+      "fetched_at": "2026-11-16T11:49:39.068Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -110,26 +110,26 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-16T02:55:18.775Z",
+      "fetched_at": "2026-11-16T11:49:39.281Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
       "sistem": [
         {
-          "nama": "FOUR",
-          "kalimat": "Advisory JTWC ABPW menyebut FOUR.",
+          "nama": "XAVIER",
+          "kalimat": "Advisory JTWC ABPW menyebut XAVIER.",
           "lokasi": "",
           "dampak": "-",
           "agensi": "JTWC",
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jtwc",
-          "lintang": -8.4,
-          "bujur": -158.9,
+          "lintang": -8.1,
+          "bujur": -160.1,
           "tekanan_hpa": null,
-          "angin_knot": 35,
+          "angin_knot": 40,
           "kategori": "",
-          "waktu_analisis": "2026-11-15T06:00:00.000Z",
+          "waktu_analisis": "2026-11-15T18:00:00.000Z",
           "kode": "04P",
           "tahap": "Siklon tropis",
           "jenis": "siklon"
