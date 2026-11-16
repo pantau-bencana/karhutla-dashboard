@@ -20,12 +20,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 11.1,
-      "bujur": 87.2,
-      "tekanan_hpa": 1006,
+      "lintang": 11,
+      "bujur": 86.1,
+      "tekanan_hpa": 1005,
       "angin_knot": 30,
       "kategori": "L",
-      "waktu_analisis": "2026-11-15T12:00:00.000Z"
+      "waktu_analisis": "2026-11-16T00:00:00.000Z"
     },
     {
       "nama": "96S",
@@ -33,9 +33,9 @@
       "jenis": "bibit",
       "kalimat": "Bibit Siklon Tropis 96S terbentuk di sekitar Samudra Hindia barat Sumatra pada 13 November 2026 pukul 13.00 WIB di dalam wilayah monitoring TCWC Jakarta.",
       "lokasi": "dalam wilayah monitoring TCWC Jakarta",
-      "dampak": "Cuaca ekstrem: Aceh; Sumatera Utara; Sumatera Barat; Bengkulu; Lampung. Gelombang tinggi: (A.02. Selat Malaka bagian utara); (A.10. Samudera Hindia barat Kep. Nias); (A.08. Samudera Hindia barat Aceh); (B.09. Samudera Hindia barat Kep. Mentawai); (A.01. Perairan utara Sabang).",
+      "dampak": "Cuaca ekstrem: Aceh; Sumatera Utara; Sumatera Barat; Bengkulu; Lampung. Gelombang tinggi: (A.02. Selat Malaka bagian utara); (A.10. Samudera Hindia barat Kep. Nias); (A.08. Samudera Hindia barat Aceh); (B.09. Samudera Hindia barat Kep. Mentawai); (A.01. Perairan utara Sabang); (A.03. Perairan Sabang - Banda Aceh).",
       "cuaca_ekstrem": "Aceh; Sumatera Utara; Sumatera Barat; Bengkulu; Lampung",
-      "gelombang_tinggi": "(A.02. Selat Malaka bagian utara); (A.10. Samudera Hindia barat Kep. Nias); (A.08. Samudera Hindia barat Aceh); (B.09. Samudera Hindia barat Kep. Mentawai); (A.01. Perairan utara Sabang)",
+      "gelombang_tinggi": "(A.02. Selat Malaka bagian utara); (A.10. Samudera Hindia barat Kep. Nias); (A.08. Samudera Hindia barat Aceh); (B.09. Samudera Hindia barat Kep. Mentawai); (A.01. Perairan utara Sabang); (A.03. Perairan Sabang - Banda Aceh)",
       "angin_kencang": "",
       "dampak_status": "",
       "berlaku_hingga": "",
@@ -44,12 +44,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": -0.9,
-      "bujur": 92.9,
+      "lintang": -1.5,
+      "bujur": 91.8,
       "tekanan_hpa": 1008,
       "angin_knot": 25,
       "kategori": "L",
-      "waktu_analisis": "2026-11-15T12:00:00.000Z"
+      "waktu_analisis": "2026-11-16T00:00:00.000Z"
     }
   ],
   "ikhtisar": {
@@ -86,10 +86,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-15T17:53:18.625Z",
+    "fetched_at": "2026-11-16T02:55:02.694Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-15T17:53:18.625Z",
+  "fetched_at": "2026-11-16T02:55:02.694Z",
   "pdf_diubah": "Sun, 15 Nov 2026 07:34:07 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -101,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-15T17:53:35.412Z",
+      "fetched_at": "2026-11-16T02:55:18.735Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -110,7 +110,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-15T17:53:35.493Z",
+      "fetched_at": "2026-11-16T02:55:18.775Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
