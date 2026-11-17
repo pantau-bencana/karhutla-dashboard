@@ -55,9 +55,17 @@
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-11-16",
+    "terbit": "2026-11-17",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
-    "sistem": []
+    "sistem": [
+      {
+        "nama": "Avkan",
+        "tahap": "Siklon Tropis kategori 1",
+        "lokasi": "Teluk Benggala",
+        "dampak": "Menginduksi konvergensi dan konfluensi di Laut Andaman, Teluk Benggala, Perairan utara Aceh serta di sekitar siklon tropis tersebut.",
+        "sumber": "ikhtisar"
+      }
+    ]
   },
   "api": {
     "url": "https://tropicalcyclone.bmkg.go.id/cms/service-api/cyclone/current",
@@ -86,11 +94,11 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-17T04:42:40.127Z",
+    "fetched_at": "2026-11-17T14:43:24.876Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-17T04:42:40.127Z",
-  "pdf_diubah": "Mon, 16 Nov 2026 09:31:12 GMT",
+  "fetched_at": "2026-11-17T14:43:24.876Z",
+  "pdf_diubah": "Tue, 17 Nov 2026 07:39:56 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
@@ -101,7 +109,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-17T04:42:52.669Z",
+      "fetched_at": "2026-11-17T14:43:40.700Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -110,7 +118,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-17T04:42:52.854Z",
+      "fetched_at": "2026-11-17T14:43:40.882Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
@@ -124,12 +132,12 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jtwc",
-          "lintang": -8.1,
-          "bujur": -160.1,
+          "lintang": -8.9,
+          "bujur": -162.6,
           "tekanan_hpa": null,
-          "angin_knot": 40,
+          "angin_knot": 85,
           "kategori": "",
-          "waktu_analisis": "2026-11-15T18:00:00.000Z",
+          "waktu_analisis": "2026-11-16T18:00:00.000Z",
           "kode": "04P",
           "tahap": "Siklon tropis",
           "jenis": "siklon"
