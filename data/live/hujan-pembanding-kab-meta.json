@@ -7,7 +7,7 @@
     "2026-11-18",
     "2026-11-19"
   ],
-  "kept_previous": false,
+  "kept_previous": true,
   "diminta": 514,
   "berhasil": 514,
   "gagal": 0,
@@ -30,5 +30,7 @@
   ],
   "titik_batas_catatan": "Kabupaten tanpa koordinat prakiraan BMKG memakai pusat poligon terbesar pada batas administrasi tersimpan, bukan titik kelurahan BMKG.",
   "error": null,
-  "gpm": "NASA GPM IMERG tidak dipakai. Unduhan Early/Late di PPS mengembalikan HTTP 401 tanpa akun, dan jalur yang terdokumentasi memakai registrasi Earthdata atau PPS. Tidak ada berkas observasi yang diunduh."
+  "gpm": "NASA GPM IMERG tidak dipakai. Unduhan Early/Late di PPS mengembalikan HTTP 401 tanpa akun, dan jalur yang terdokumentasi memakai registrasi Earthdata atau PPS. Tidak ada berkas observasi yang diunduh.",
+  "last_error": "514 kelompok gagal dan tidak ada baris baru.",
+  "last_attempt_at": "2026-11-17T14:03:18.420Z"
 }
