@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-17T13:53:45.423Z",
+  "generated_at": "2026-11-17T16:12:02.081Z",
   "schedule": {
     "cron": "17 */3 * * *",
     "cron_cadangan": "47 1-23/3 * * *",
@@ -7,7 +7,7 @@
     "timezone": "UTC",
     "display_timezone": "Asia/Jakarta"
   },
-  "next_run": "2026-11-17T15:17:00.000Z",
+  "next_run": "2026-11-17T16:47:00.000Z",
   "firms_key": "used",
   "datasets": {
     "bmkg_prakiraan": {
@@ -91,7 +91,7 @@
       "method": "Nilai harian pada titik tengah kasar enam provinsi prioritas: hujan akumulasi, suhu maksimum, kelembapan rata-rata, angin maksimum, 14 hari ke belakang dan 1 hari berjalan. Hari tanpa hujan dihitung bila hujan harian di bawah 1 mm. Bukan titik kabupaten dan tidak dihitung menjadi FWI.",
       "compares_to": "fdrs",
       "official_url": "https://spartan.bmkg.go.id/",
-      "checked_at": "2026-11-17T13:53:45.423Z"
+      "checked_at": "2026-11-17T16:12:02.081Z"
     },
     "ispu_pembanding": {
       "id": "ispu_pembanding",
@@ -139,9 +139,9 @@
       "expected_max_age_hours": 12960,
       "schedule_interval_hours": 3,
       "fetched_at": "2026-10-21T08:53:13.316Z",
-      "observed_at": "2026-11-17T13:53:56.999Z",
+      "observed_at": "2026-11-17T16:12:13.525Z",
       "observed_label": "514 titik di dalam batas kabupaten/kota. Bukan ibu kota dan bukan koordinat BNPB.",
-      "source_updated_at": "2026-11-17T13:53:56.999Z",
+      "source_updated_at": "2026-11-17T16:12:13.525Z",
       "record_count": 514,
       "status": "ok",
       "error": null,
@@ -180,7 +180,7 @@
       "official_url": "https://www.bmkg.go.id/cuaca/prakiraan-cuaca",
       "permintaan": 21,
       "detik": 6.9,
-      "checked_at": "2026-11-17T13:53:45.423Z"
+      "checked_at": "2026-11-17T16:12:02.081Z"
     },
     "fwi_gwis_pembanding": {
       "id": "fwi_gwis_pembanding",
@@ -211,10 +211,10 @@
       "method": "Angka titik wakil: GetFeatureInfo WMS lapisan ecmwf.query, format HTML, pada piksel tengah kotak 0,04 derajat. Overlay peta: GetMap lapisan ecmwf.fwi, parameter TIME, hanya di peramban; raster tidak disimpan. GetCapabilities menulis rentang 2018-01-01/2099-12-31 dengan default 2019-01-01 dan nearestValue 0, tetapi tanggal tanpa berkas mengembalikan PNG kosong. Pemeriksaan 18 Oktober 2026: piksel ada sampai 27 Oktober 2026 dan kosong mulai 28 Oktober 2026. Lapisan mf010.query hanya mencakup Eropa. Dataset musiman CEMS membutuhkan akun, jadi secret CDS tidak dipasang.",
       "compares_to": "fdrs",
       "official_url": "https://spartan.bmkg.go.id/",
-      "permintaan": 3610,
-      "dari_cache": 1542,
+      "permintaan": 12,
+      "dari_cache": 5140,
       "ditunda": 0,
-      "detik": 84.8
+      "detik": 3.2
     },
     "gfwed_kabupaten": {
       "id": "gfwed_kabupaten",
@@ -231,15 +231,15 @@
       "fungsi": "Rata-rata dan maksimum FWI sel yang pusatnya jatuh di dalam kabupaten/kota.",
       "expected_max_age_hours": 144,
       "schedule_interval_hours": 3,
-      "fetched_at": "2026-11-17T13:53:45.423Z",
-      "observed_at": "2026-11-17T13:56:44.949Z",
-      "observed_label": "Tanggal data 2026-11-15. 399 kabupaten/kota. Bukan kelas BMKG.",
+      "fetched_at": "2026-11-17T16:12:02.081Z",
+      "observed_at": "2026-11-17T16:13:09.316Z",
+      "observed_label": "Tanggal data 2026-11-15. 400 kabupaten/kota. Bukan kelas BMKG.",
       "source_updated_at": "2026-11-15T00:00:00.000Z",
-      "record_count": 399,
+      "record_count": 400,
       "status": "ok",
       "error": null,
       "file": "data/live/gfwed-kabupaten.csv",
-      "content_hash": "571ece8e792f3dc8b345769e33504e4d7ff71f9555c10e50fcf9577e0f516de3",
+      "content_hash": "c19ef2e6e534b0f904865dcaf1bb36af7cf83a89939cf270082af4b2b5a462c5",
       "kept_previous": false,
       "provider": "NASA GFWED",
       "compares_to": "fdrs",
@@ -264,7 +264,7 @@
       "fetched_at": "2026-11-07T00:58:25.440Z",
       "observed_at": null,
       "observed_label": "Tidak ada titik pada 5 hari terakhir",
-      "source_updated_at": "2026-11-17T13:53:45.423Z",
+      "source_updated_at": "2026-11-17T16:12:02.081Z",
       "record_count": 0,
       "status": "ok",
       "error": null,
@@ -352,15 +352,15 @@
       "fungsi": "Konteks nowcast sekitar 0–6 jam. Bukan prospek karhutla dan bukan prakiraan 14 hari.",
       "expected_max_age_hours": 8,
       "schedule_interval_hours": 3,
-      "fetched_at": "2026-11-17T13:53:45.423Z",
-      "observed_at": "2026-11-17T13:00:00.000Z",
-      "observed_label": "26 peringatan pada RSS nowcast. Bukan peringatan karhutla.",
-      "source_updated_at": "2026-11-17T13:00:00.000Z",
-      "record_count": 26,
+      "fetched_at": "2026-11-17T16:12:02.081Z",
+      "observed_at": "2026-11-17T15:00:00.000Z",
+      "observed_label": "16 peringatan pada RSS nowcast. Bukan peringatan karhutla.",
+      "source_updated_at": "2026-11-17T15:00:00.000Z",
+      "record_count": 16,
       "status": "ok",
       "error": null,
       "file": "data/live/bmkg-cap.csv",
-      "content_hash": "63d4847ab4df394cca09f63c6469f5fa0ab37bb3587a174b3fcb3f87f1a93c37",
+      "content_hash": "01308680d796a23428340e7f7eaac6c728c59e697c9369ba285086aef4d7a7b0",
       "kept_previous": false
     },
     "dibi_karhutla": {
@@ -769,13 +769,13 @@
       "limitation": "prakiraan model ECMWF (via Open-Meteo), bukan BMKG. NASA GPM IMERG tidak dipakai. Unduhan Early/Late di PPS mengembalikan HTTP 401 tanpa akun, dan jalur yang terdokumentasi memakai registrasi Earthdata atau PPS. Tidak ada berkas observasi yang diunduh.",
       "fungsi": "Jumlah hujan harian pada titik adm4. Tidak masuk matriks Awas/Siaga/Waspada.",
       "expected_max_age_hours": 36,
-      "fetched_at": "2026-11-17T13:18:12.917Z",
+      "fetched_at": "2026-11-17T16:15:32.349Z",
       "observed_at": "2026-11-17T00:00:00+07:00",
       "observed_label": "prakiraan model ECMWF (via Open-Meteo), bukan BMKG",
       "source_updated_at": "2026-11-17T00:00:00+07:00",
       "record_count": 1542,
       "status": "ok",
-      "error": "514 kelompok gagal dan tidak ada baris baru.",
+      "error": "60 kab/kota gagal; cuplikan sebelumnya dipertahankan bila ada.",
       "file": "data/live/hujan-pembanding-kab.csv",
       "kept_previous": true,
       "content_hash": null
