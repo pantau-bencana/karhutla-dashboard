@@ -20,12 +20,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 11.6,
-      "bujur": 87.2,
+      "lintang": 12.2,
+      "bujur": 87.3,
       "tekanan_hpa": 1001,
-      "angin_knot": 40,
+      "angin_knot": 45,
       "kategori": "1",
-      "waktu_analisis": "2026-11-17T00:00:00.000Z"
+      "waktu_analisis": "2026-11-17T12:00:00.000Z"
     },
     {
       "nama": "96S",
@@ -33,9 +33,9 @@
       "jenis": "bibit",
       "kalimat": "Bibit Siklon Tropis 96S terbentuk di sekitar Samudra Hindia barat Sumatra pada 13 November 2026 pukul 13.00 WIB di dalam wilayah monitoring TCWC Jakarta.",
       "lokasi": "dalam wilayah monitoring TCWC Jakarta",
-      "dampak": "Cuaca ekstrem: Aceh; Sumatera Utara; Sumatera Barat. Gelombang tinggi: (A.02. Selat Malaka bagian utara); (A.10. Samudera Hindia barat Kep. Nias); (A.08. Samudera Hindia barat Aceh); (B.09. Samudera Hindia barat Kep. Mentawai); (A.03. Perairan Sabang - Banda Aceh).",
-      "cuaca_ekstrem": "Aceh; Sumatera Utara; Sumatera Barat",
-      "gelombang_tinggi": "(A.02. Selat Malaka bagian utara); (A.10. Samudera Hindia barat Kep. Nias); (A.08. Samudera Hindia barat Aceh); (B.09. Samudera Hindia barat Kep. Mentawai); (A.03. Perairan Sabang - Banda Aceh)",
+      "dampak": "Cuaca ekstrem: Sumatera Utara; Sumatera Barat. Gelombang tinggi: (A.02. Selat Malaka bagian utara); (A.10. Samudera Hindia barat Kep. Nias); (B.09. Samudera Hindia barat Kep. Mentawai); (A.03. Perairan Sabang - Banda Aceh); (A.01. Perairan utara Sabang); (A.07. Perairan Meulaboh - Kep. Sinabang); (A.08. Samudera Hindia barat Aceh).",
+      "cuaca_ekstrem": "Sumatera Utara; Sumatera Barat",
+      "gelombang_tinggi": "(A.02. Selat Malaka bagian utara); (A.10. Samudera Hindia barat Kep. Nias); (B.09. Samudera Hindia barat Kep. Mentawai); (A.03. Perairan Sabang - Banda Aceh); (A.01. Perairan utara Sabang); (A.07. Perairan Meulaboh - Kep. Sinabang); (A.08. Samudera Hindia barat Aceh)",
       "angin_kencang": "",
       "dampak_status": "",
       "berlaku_hingga": "",
@@ -44,12 +44,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": -3.6,
-      "bujur": 90.6,
+      "lintang": -5.3,
+      "bujur": 90,
       "tekanan_hpa": 1006,
       "angin_knot": 30,
       "kategori": "L",
-      "waktu_analisis": "2026-11-17T00:00:00.000Z"
+      "waktu_analisis": "2026-11-17T12:00:00.000Z"
     }
   ],
   "ikhtisar": {
@@ -94,10 +94,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-17T14:43:24.876Z",
+    "fetched_at": "2026-11-17T23:03:57.524Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-17T14:43:24.876Z",
+  "fetched_at": "2026-11-17T23:03:57.524Z",
   "pdf_diubah": "Tue, 17 Nov 2026 07:39:56 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -109,7 +109,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-17T14:43:40.700Z",
+      "fetched_at": "2026-11-17T23:04:15.258Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -118,7 +118,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-17T14:43:40.882Z",
+      "fetched_at": "2026-11-17T23:04:15.321Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
@@ -151,12 +151,12 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jtwc",
-          "lintang": 11.3,
-          "bujur": 86.7,
+          "lintang": 12.2,
+          "bujur": 87.3,
           "tekanan_hpa": null,
-          "angin_knot": 35,
+          "angin_knot": 40,
           "kategori": "",
-          "waktu_analisis": "2026-11-16T18:00:00.000Z",
+          "waktu_analisis": "2026-11-17T12:00:00.000Z",
           "kode": "05B",
           "tahap": "Siklon tropis",
           "jenis": "siklon"
