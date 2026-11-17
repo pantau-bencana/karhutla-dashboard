@@ -4,11 +4,11 @@
   "status_sumber": "halaman-siklon-tropis",
   "sistem_halaman": [
     {
-      "nama": "92B",
-      "tahap": "Bibit Siklon Tropis",
-      "jenis": "bibit",
-      "kalimat": "Bibit Siklon Tropis 92B terbentuk di sekitar Teluk Benggala pada 12 November 2026 pukul 13.00 WIB di dalam wilayah monitoring TCWC Jakarta",
-      "lokasi": "dalam wilayah monitoring TCWC Jakarta",
+      "nama": "Akvan",
+      "tahap": "Siklon Tropis",
+      "jenis": "siklon",
+      "kalimat": "Siklon Tropis AKVAN tumbuh dari bibit siklon tropis 92B pada tanggal 17 November 2026 pukul 01.00 WIB di Teluk Benggala, timur India.",
+      "lokasi": "Teluk Benggala, timur India",
       "dampak": "-",
       "cuaca_ekstrem": "",
       "gelombang_tinggi": "",
@@ -16,16 +16,16 @@
       "dampak_status": "",
       "berlaku_hingga": "",
       "url_infografis": "",
-      "di_dalam_tcwc": true,
+      "di_dalam_tcwc": false,
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
       "lintang": 11.6,
-      "bujur": 85.9,
-      "tekanan_hpa": 1003,
-      "angin_knot": 30,
-      "kategori": "L",
-      "waktu_analisis": "2026-11-16T12:00:00.000Z"
+      "bujur": 87.2,
+      "tekanan_hpa": 1001,
+      "angin_knot": 40,
+      "kategori": "1",
+      "waktu_analisis": "2026-11-17T00:00:00.000Z"
     },
     {
       "nama": "96S",
@@ -44,12 +44,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": -1.1,
-      "bujur": 91.7,
-      "tekanan_hpa": 1007,
+      "lintang": -3.6,
+      "bujur": 90.6,
+      "tekanan_hpa": 1006,
       "angin_knot": 30,
       "kategori": "L",
-      "waktu_analisis": "2026-11-16T12:00:00.000Z"
+      "waktu_analisis": "2026-11-17T00:00:00.000Z"
     }
   ],
   "ikhtisar": {
@@ -86,11 +86,11 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-16T22:23:23.936Z",
+    "fetched_at": "2026-11-17T04:42:40.127Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-16T22:23:23.936Z",
-  "pdf_diubah": "Mon, 16 Nov 2026 05:41:20 GMT",
+  "fetched_at": "2026-11-17T04:42:40.127Z",
+  "pdf_diubah": "Mon, 16 Nov 2026 09:31:12 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
@@ -101,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-16T22:23:40.040Z",
+      "fetched_at": "2026-11-17T04:42:52.669Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -110,7 +110,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-16T22:23:40.093Z",
+      "fetched_at": "2026-11-17T04:42:52.854Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
