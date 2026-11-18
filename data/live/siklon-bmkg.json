@@ -20,12 +20,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 12.7,
-      "bujur": 85.5,
+      "lintang": 13.6,
+      "bujur": 86.5,
       "tekanan_hpa": 1000,
-      "angin_knot": 50,
-      "kategori": "2",
-      "waktu_analisis": "2026-11-18T00:00:00.000Z"
+      "angin_knot": 40,
+      "kategori": "1",
+      "waktu_analisis": "2026-11-18T12:00:00.000Z"
     },
     {
       "nama": "96S",
@@ -44,28 +44,20 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 6.6,
-      "bujur": 89.6,
-      "tekanan_hpa": 1006,
-      "angin_knot": 30,
+      "lintang": 7.3,
+      "bujur": 88.6,
+      "tekanan_hpa": 1007,
+      "angin_knot": 25,
       "kategori": "L",
-      "waktu_analisis": "2026-11-18T00:00:00.000Z"
+      "waktu_analisis": "2026-11-18T12:00:00.000Z"
     }
   ],
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-11-17",
+    "terbit": "2026-11-18",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
-    "sistem": [
-      {
-        "nama": "Avkan",
-        "tahap": "Siklon Tropis kategori 1",
-        "lokasi": "Teluk Benggala",
-        "dampak": "Menginduksi konvergensi dan konfluensi di Laut Andaman, Teluk Benggala, Perairan utara Aceh serta di sekitar siklon tropis tersebut.",
-        "sumber": "ikhtisar"
-      }
-    ]
+    "sistem": []
   },
   "api": {
     "url": "https://tropicalcyclone.bmkg.go.id/cms/service-api/cyclone/current",
@@ -90,15 +82,15 @@
         "slug": "siklon-tropis-arnab-di-laut-andaman-bergerak-menjauh-waspadai-pembentukan-sirkulasi-siklonik-baru",
         "url": "https://www.bmkg.go.id/siaran-pers/siklon-tropis-arnab-di-laut-andaman-bergerak-menjauh-waspadai-pembentukan-sirkulasi-siklonik-baru",
         "terbit": "2026-10-27 07:58:25",
-        "kutipan": "Jakarta, 27 Oktober 2026 — Badan Meteorologi, Klimatologi, dan Geofisika (BMKG) mengonfirmasi adanya perkembangan sistem siklonik 98B di Laut Andaman sejak 19 Oktober 2026 dengan sirkulasi lemah. Sistem ini berkembang menjadi Siklon Tropis ARNAB di Teluk Benggala dengan pergerakan menjauhi Indonesia."
+        "kutipan": "Badan Meteorologi, Klimatologi, dan Geofisika (BMKG) mengonfirmasi adanya perkembangan sistem siklonik 98B di Laut Andaman sejak 19 Oktober 2026 dengan sirkulasi lemah."
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-18T04:36:40.037Z",
+    "fetched_at": "2026-11-18T14:22:50.669Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-18T04:36:40.037Z",
-  "pdf_diubah": "Tue, 17 Nov 2026 07:39:56 GMT",
+  "fetched_at": "2026-11-18T14:22:50.669Z",
+  "pdf_diubah": "Wed, 18 Nov 2026 07:36:27 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
@@ -109,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-18T04:36:59.429Z",
+      "fetched_at": "2026-11-18T14:23:10.006Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -118,7 +110,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-18T04:36:59.643Z",
+      "fetched_at": "2026-11-18T14:23:10.177Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
@@ -132,12 +124,12 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jtwc",
-          "lintang": -8.9,
-          "bujur": -162.6,
+          "lintang": -9.6,
+          "bujur": -163.8,
           "tekanan_hpa": null,
-          "angin_knot": 85,
+          "angin_knot": 130,
           "kategori": "",
-          "waktu_analisis": "2026-11-16T18:00:00.000Z",
+          "waktu_analisis": "2026-11-17T18:00:00.000Z",
           "kode": "04P",
           "tahap": "Siklon tropis",
           "jenis": "siklon"
