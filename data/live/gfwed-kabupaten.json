@@ -1777,9 +1777,17 @@
       "kode": "53.11",
       "kabupaten": "Sumba Timur",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 0.6,
+      "fwi_rata": 0.62,
       "fwi_maks": 2.6,
-      "n_sel": 6
+      "n_sel": 7
+    },
+    {
+      "kode": "53.12",
+      "kabupaten": "Sumba Barat",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
     },
     {
       "kode": "53.13",
@@ -1808,6 +1816,22 @@
     {
       "kode": "53.16",
       "kabupaten": "Nagekeo",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 2
+    },
+    {
+      "kode": "53.17",
+      "kabupaten": "Sumba Tengah",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 2
+    },
+    {
+      "kode": "53.18",
+      "kabupaten": "Sumba Barat Daya",
       "provinsi": "Nusa Tenggara Timur",
       "fwi_rata": 0,
       "fwi_maks": 0,
