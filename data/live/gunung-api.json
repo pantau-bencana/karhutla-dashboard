@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-17T22:29:42.999Z",
+  "fetched_at": "2026-11-18T04:34:43.094Z",
   "sumber": "PVMBG",
   "url_tingkat": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas",
   "url_letusan": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan",
@@ -640,6 +640,24 @@
   "letusan": [
     {
       "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-11-18T10:56:00+09:00",
+      "waktu_teks": "10:56 WIT 2026-11-18",
+      "teks": "Terjadi erupsi G. Ibu pada hari Rabu, 18 November 2026, pukul 10:56 WIT dengan tinggi kolom abu teramati ± 500 m di atas puncak (± 1825 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat daya. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 60 detik.",
+      "tinggi_kolom_m": 500,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/6a7a47fe-e2f2-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-11-18T09:29:00+09:00",
+      "waktu_teks": "09:29 WIT 2026-11-18",
+      "teks": "Terjadi erupsi G. Ibu pada hari Rabu, 18 November 2026, pukul 09:29 WIT dengan tinggi kolom abu teramati ± 500 m di atas puncak (± 1825 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas sedang ke arah barat daya. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 43 detik.",
+      "tinggi_kolom_m": 500,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/617c2019-e2e6-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
       "gunung": "Semeru",
       "waktu": "2026-11-18T04:55:00+07:00",
       "waktu_teks": "04:55 WIB 2026-11-18",
@@ -754,24 +772,6 @@
       "teks": "Terjadi erupsi G. Ibu pada hari Selasa, 17 November 2026, pukul 15:50 WIT dengan tinggi kolom abu teramati ± 500 m di atas puncak (± 1825 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas tebal ke arah barat. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 69 detik.",
       "tinggi_kolom_m": 500,
       "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/a82e91d4-e252-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Ibu",
-      "waktu": "2026-11-17T15:28:00+09:00",
-      "waktu_teks": "15:28 WIT 2026-11-17",
-      "teks": "Terjadi erupsi G. Ibu pada hari Selasa, 17 November 2026, pukul 15:28 WIT dengan tinggi kolom abu teramati ± 500 m di atas puncak (± 1825 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas tebal ke arah barat daya. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 54 detik.",
-      "tinggi_kolom_m": 500,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/33b73a0c-e24f-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Karangetang",
-      "waktu": "2026-11-17T13:39:00+08:00",
-      "waktu_teks": "13:39 WITA 2026-11-17",
-      "teks": "Terjadi erupsi G. Karangetang pada hari Selasa, 17 November 2026, pukul 13:39 WITA dengan tinggi kolom abu teramati ± 800 m di atas puncak (± 2584 m di atas permukaan laut). Kolom abu teramati berwarna putih, kelabu hingga coklat dengan intensitas tebal ke arah barat daya dan barat. Saat laporan ini dibuat, erupsi masih berlangsung.",
-      "tinggi_kolom_m": 800,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/b1f1cc9a-e249-11f1-a61d-005056b54356/show"
     }
   ],
   "vona": [
