@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-18T14:19:10.935Z",
+  "fetched_at": "2026-11-18T22:09:31.231Z",
   "sumber": "PVMBG",
   "url_tingkat": "https://magma.esdm.go.id/v1/gunung-api/tingkat-aktivitas",
   "url_letusan": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan",
@@ -640,6 +640,33 @@
   "letusan": [
     {
       "jenis": "informasi-letusan",
+      "gunung": "Semeru",
+      "waktu": "2026-11-19T01:41:00+07:00",
+      "waktu_teks": "01:41 WIB 2026-11-19",
+      "teks": "Terjadi erupsi G. Semeru pada hari Kamis, 19 November 2026, pukul 01:41 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/93e4a55f-e37e-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Ibu",
+      "waktu": "2026-11-19T01:22:00+09:00",
+      "waktu_teks": "01:22 WIT 2026-11-19",
+      "teks": "Terjadi erupsi G. Ibu pada hari Kamis, 19 November 2026, pukul 01:22 WIT. Visual letusan tidak teramati. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 43 detik.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/57f34ebd-e36b-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
+      "gunung": "Semeru",
+      "waktu": "2026-11-19T00:59:00+07:00",
+      "waktu_teks": "00:59 WIB 2026-11-19",
+      "teks": "Terjadi erupsi G. Semeru pada hari Kamis, 19 November 2026, pukul 00:59 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/9e877579-e378-11f1-a61d-005056b54356/show"
+    },
+    {
+      "jenis": "informasi-letusan",
       "gunung": "Ibu",
       "waktu": "2026-11-18T21:11:00+09:00",
       "waktu_teks": "21:11 WIT 2026-11-18",
@@ -745,36 +772,27 @@
       "teks": "Terjadi erupsi G. Semeru pada hari Rabu, 18 November 2026, pukul 04:55 WIB. Visual letusan tidak teramati. Saat laporan ini dibuat, erupsi masih berlangsung.",
       "tinggi_kolom_m": null,
       "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/7de8340a-e2d0-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Ibu",
-      "waktu": "2026-11-18T00:26:00+09:00",
-      "waktu_teks": "00:26 WIT 2026-11-18",
-      "teks": "Terjadi erupsi G. Ibu pada hari Rabu, 18 November 2026, pukul 00:26 WIT dengan tinggi kolom abu teramati ± 500 m di atas puncak (± 1825 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas tebal ke arah barat daya. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 69 detik.",
-      "tinggi_kolom_m": 500,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/912c387e-e29a-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Ibu",
-      "waktu": "2026-11-17T23:02:00+09:00",
-      "waktu_teks": "23:02 WIT 2026-11-17",
-      "teks": "Terjadi erupsi G. Ibu pada hari Selasa, 17 November 2026, pukul 23:02 WIT dengan tinggi kolom abu teramati ± 300 m di atas puncak (± 1625 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas tebal ke arah barat daya. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 70 detik.",
-      "tinggi_kolom_m": 300,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/bfab5f7e-e290-11f1-a61d-005056b54356/show"
-    },
-    {
-      "jenis": "informasi-letusan",
-      "gunung": "Ibu",
-      "waktu": "2026-11-17T22:10:00+09:00",
-      "waktu_teks": "22:10 WIT 2026-11-17",
-      "teks": "Terjadi erupsi G. Ibu pada hari Selasa, 17 November 2026, pukul 22:10 WIT dengan tinggi kolom abu teramati ± 400 m di atas puncak (± 1725 m di atas permukaan laut). Kolom abu teramati berwarna kelabu dengan intensitas tebal ke arah barat daya. Erupsi ini terekam di seismograf dengan amplitudo maksimum 28 mm dan durasi 62 detik.",
-      "tinggi_kolom_m": 400,
-      "url": "https://magma.esdm.go.id/v1/gunung-api/informasi-letusan/d2a9fa43-e287-11f1-a61d-005056b54356/show"
     }
   ],
   "vona": [
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-11-18T18:41:00Z",
+      "waktu_teks": "20261118/1841Z",
+      "teks": "Eruption at 1841 UTC (0141 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/c6b37f9f-9e6a-4a0b-93d8-56d11eeec232"
+    },
+    {
+      "jenis": "vona",
+      "gunung": "Semeru",
+      "waktu": "2026-11-18T17:59:00Z",
+      "waktu_teks": "20261118/1759Z",
+      "teks": "Eruption at 1759 UTC (0059 local). Ash-cloud is not observed.",
+      "tinggi_kolom_m": null,
+      "url": "https://magma.esdm.go.id/vona/0b89af8c-6354-4cc9-a8c8-8d6d00fef905"
+    },
     {
       "jenis": "vona",
       "gunung": "Semeru",
@@ -891,24 +909,6 @@
       "teks": "Eruption at 0534 UTC (1234 local). Ash-cloud is not observed.",
       "tinggi_kolom_m": null,
       "url": "https://magma.esdm.go.id/vona/59dde52d-ef4f-4c14-984e-856b92b72906"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Raung",
-      "waktu": "2026-11-16T05:11:00Z",
-      "waktu_teks": "20261116/0511Z",
-      "teks": "Increasing in volcanic activity. Ash-cloud is not observed.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/vona/b81cfc4b-d8ae-4ffa-8f39-fa4fa5c00b5f"
-    },
-    {
-      "jenis": "vona",
-      "gunung": "Gamalama",
-      "waktu": "2026-11-16T05:11:00Z",
-      "waktu_teks": "20261116/0511Z",
-      "teks": "Increasing in volcanic activity. Ash-cloud is not observed.",
-      "tinggi_kolom_m": null,
-      "url": "https://magma.esdm.go.id/vona/bfff4f4e-35e9-4cd1-a846-a8e5d4e722d1"
     }
   ]
 }
