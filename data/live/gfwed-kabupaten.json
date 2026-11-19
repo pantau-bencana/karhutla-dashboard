@@ -1665,9 +1665,9 @@
       "kode": "52.04",
       "kabupaten": "Sumbawa",
       "provinsi": "Nusa Tenggara Barat",
-      "fwi_rata": 0.02,
-      "fwi_maks": 0.17,
-      "n_sel": 9
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
     },
     {
       "kode": "52.05",
@@ -1675,7 +1675,7 @@
       "provinsi": "Nusa Tenggara Barat",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 3
+      "n_sel": 2
     },
     {
       "kode": "52.06",
@@ -1750,6 +1750,14 @@
       "n_sel": 1
     },
     {
+      "kode": "53.08",
+      "kabupaten": "Ende",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 3
+    },
+    {
       "kode": "53.09",
       "kabupaten": "Ngada",
       "provinsi": "Nusa Tenggara Timur",
@@ -1769,9 +1777,9 @@
       "kode": "53.11",
       "kabupaten": "Sumba Timur",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 0.44,
+      "fwi_rata": 0.09,
       "fwi_maks": 0.44,
-      "n_sel": 1
+      "n_sel": 7
     },
     {
       "kode": "53.12",
@@ -1804,6 +1812,14 @@
       "fwi_rata": 0.01,
       "fwi_maks": 0.05,
       "n_sel": 4
+    },
+    {
+      "kode": "53.16",
+      "kabupaten": "Nagekeo",
+      "provinsi": "Nusa Tenggara Timur",
+      "fwi_rata": 0.03,
+      "fwi_maks": 0.06,
+      "n_sel": 2
     },
     {
       "kode": "53.17",
