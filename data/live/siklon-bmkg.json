@@ -44,12 +44,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": -7.3,
-      "bujur": 88.6,
+      "lintang": -8.1,
+      "bujur": 88.3,
       "tekanan_hpa": 1007,
       "angin_knot": 25,
       "kategori": "L",
-      "waktu_analisis": "2026-11-18T12:00:00.000Z"
+      "waktu_analisis": "2026-11-19T00:00:00.000Z"
     }
   ],
   "ikhtisar": {
@@ -86,10 +86,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-18T22:17:34.576Z",
+    "fetched_at": "2026-11-19T03:43:24.709Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-18T22:17:34.576Z",
+  "fetched_at": "2026-11-19T03:43:24.709Z",
   "pdf_diubah": "Wed, 18 Nov 2026 07:36:27 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -101,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-18T22:18:33.427Z",
+      "fetched_at": "2026-11-19T03:43:39.574Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -110,7 +110,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-18T22:18:33.495Z",
+      "fetched_at": "2026-11-19T03:43:40.172Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
