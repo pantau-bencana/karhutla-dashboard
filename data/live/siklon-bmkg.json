@@ -55,7 +55,7 @@
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-11-19",
+    "terbit": "2026-11-20",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
     "sistem": []
   },
@@ -86,11 +86,11 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-20T03:37:43.389Z",
+    "fetched_at": "2026-11-20T13:18:00.494Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-20T03:37:43.389Z",
-  "pdf_diubah": "Thu, 19 Nov 2026 05:06:15 GMT",
+  "fetched_at": "2026-11-20T13:18:00.494Z",
+  "pdf_diubah": "Fri, 20 Nov 2026 07:53:47 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
@@ -101,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-20T03:38:01.299Z",
+      "fetched_at": "2026-11-20T13:18:18.918Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -110,7 +110,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-20T03:38:01.369Z",
+      "fetched_at": "2026-11-20T13:18:19.298Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
@@ -124,12 +124,12 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jtwc",
-          "lintang": -10.3,
-          "bujur": -163.8,
+          "lintang": -11.1,
+          "bujur": -162.6,
           "tekanan_hpa": null,
-          "angin_knot": 100,
+          "angin_knot": 90,
           "kategori": "",
-          "waktu_analisis": "2026-11-18T18:00:00.000Z",
+          "waktu_analisis": "2026-11-20T00:00:00.000Z",
           "kode": "04P",
           "tahap": "Siklon tropis",
           "jenis": "siklon"
