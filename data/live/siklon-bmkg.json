@@ -4,6 +4,54 @@
   "status_sumber": "halaman-siklon-tropis",
   "sistem_halaman": [
     {
+      "nama": "98S",
+      "tahap": "Bibit Siklon Tropis",
+      "jenis": "bibit",
+      "kalimat": "Bibit Siklon Tropis 98S terbentuk di sekitar Samudra Hindia bagian barat pada 20 November 2026 pukul 19.00 WIB di dalam wilayah monitoring TCWC Jakarta.",
+      "lokasi": "dalam wilayah monitoring TCWC Jakarta",
+      "dampak": "-",
+      "cuaca_ekstrem": "",
+      "gelombang_tinggi": "",
+      "angin_kencang": "",
+      "dampak_status": "",
+      "berlaku_hingga": "",
+      "url_infografis": "",
+      "di_dalam_tcwc": true,
+      "luar_tcwc": false,
+      "sumber": "halaman",
+      "agensi": "BMKG",
+      "lintang": -7.3,
+      "bujur": 76.4,
+      "tekanan_hpa": 1009,
+      "angin_knot": 15,
+      "kategori": "L",
+      "waktu_analisis": "2026-11-20T12:00:00.000Z"
+    },
+    {
+      "nama": "97S",
+      "tahap": "Bibit Siklon Tropis",
+      "jenis": "bibit",
+      "kalimat": "Bibit Siklon Tropis 97S terbentuk di sekitar Samudra Hindia bagian tengah pada 20 November 2026 pukul 07.00 WIB di dalam wilayah monitoring TCWC Jakarta.",
+      "lokasi": "dalam wilayah monitoring TCWC Jakarta",
+      "dampak": "-",
+      "cuaca_ekstrem": "",
+      "gelombang_tinggi": "",
+      "angin_kencang": "",
+      "dampak_status": "",
+      "berlaku_hingga": "",
+      "url_infografis": "",
+      "di_dalam_tcwc": true,
+      "luar_tcwc": false,
+      "sumber": "halaman",
+      "agensi": "BMKG",
+      "lintang": -6.7,
+      "bujur": 66.3,
+      "tekanan_hpa": 1009,
+      "angin_knot": 20,
+      "kategori": "L",
+      "waktu_analisis": "2026-11-20T12:00:00.000Z"
+    },
+    {
       "nama": "Akvan",
       "tahap": "Siklon Tropis",
       "jenis": "siklon",
@@ -20,12 +68,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 18.4,
-      "bujur": 84,
-      "tekanan_hpa": 1007,
-      "angin_knot": 30,
+      "lintang": 19.3,
+      "bujur": 83.5,
+      "tekanan_hpa": 1012,
+      "angin_knot": 20,
       "kategori": "L",
-      "waktu_analisis": "2026-11-20T00:00:00.000Z"
+      "waktu_analisis": "2026-11-20T12:00:00.000Z"
     },
     {
       "nama": "96S",
@@ -44,12 +92,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": -9.5,
-      "bujur": 89.4,
-      "tekanan_hpa": 1007,
-      "angin_knot": 25,
+      "lintang": -10.3,
+      "bujur": 90,
+      "tekanan_hpa": 1005,
+      "angin_knot": 30,
       "kategori": "L",
-      "waktu_analisis": "2026-11-20T00:00:00.000Z"
+      "waktu_analisis": "2026-11-20T12:00:00.000Z"
     }
   ],
   "ikhtisar": {
@@ -86,10 +134,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-20T13:18:00.494Z",
+    "fetched_at": "2026-11-20T21:22:09.380Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-20T13:18:00.494Z",
+  "fetched_at": "2026-11-20T21:22:09.380Z",
   "pdf_diubah": "Fri, 20 Nov 2026 07:53:47 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -101,7 +149,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-20T13:18:18.918Z",
+      "fetched_at": "2026-11-20T21:22:21.361Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -110,7 +158,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-20T13:18:19.298Z",
+      "fetched_at": "2026-11-20T21:22:21.864Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
@@ -135,23 +183,23 @@
           "jenis": "siklon"
         },
         {
-          "nama": "AKVAN",
-          "kalimat": "Advisory JTWC ABIO menyebut AKVAN.",
+          "nama": "98S",
+          "kalimat": "Advisory JTWC ABIO menyebut invest 98S.",
           "lokasi": "",
           "dampak": "-",
           "agensi": "JTWC",
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jtwc",
-          "lintang": 17.2,
-          "bujur": 84.7,
+          "lintang": -7.7,
+          "bujur": 75.5,
           "tekanan_hpa": null,
-          "angin_knot": 30,
+          "angin_knot": null,
           "kategori": "",
-          "waktu_analisis": "2026-11-19T18:00:00.000Z",
-          "kode": "05B",
-          "tahap": "Siklon tropis",
-          "jenis": "siklon"
+          "waktu_analisis": "",
+          "kode": "98S",
+          "tahap": "Invest",
+          "jenis": "bibit"
         }
       ]
     }
