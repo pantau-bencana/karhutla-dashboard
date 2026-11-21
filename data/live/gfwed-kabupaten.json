@@ -1658,8 +1658,8 @@
       "kabupaten": "Sumbawa",
       "provinsi": "Nusa Tenggara Barat",
       "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 1
+      "fwi_maks": 0.03,
+      "n_sel": 9
     },
     {
       "kode": "52.05",
@@ -1667,7 +1667,7 @@
       "provinsi": "Nusa Tenggara Barat",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 2
+      "n_sel": 3
     },
     {
       "kode": "52.06",
