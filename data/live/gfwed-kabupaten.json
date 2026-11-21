@@ -1355,11 +1355,19 @@
       "provinsi": "Jawa Timur",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 1
+      "n_sel": 2
     },
     {
       "kode": "35.02",
       "kabupaten": "Ponorogo",
+      "provinsi": "Jawa Timur",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 1
+    },
+    {
+      "kode": "35.03",
+      "kabupaten": "Trenggalek",
       "provinsi": "Jawa Timur",
       "fwi_rata": 0,
       "fwi_maks": 0,
@@ -1371,7 +1379,7 @@
       "provinsi": "Jawa Timur",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 1
+      "n_sel": 2
     },
     {
       "kode": "35.05",
@@ -1379,7 +1387,7 @@
       "provinsi": "Jawa Timur",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 2
+      "n_sel": 1
     },
     {
       "kode": "35.06",
@@ -1395,7 +1403,7 @@
       "provinsi": "Jawa Timur",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 4
+      "n_sel": 2
     },
     {
       "kode": "35.08",
@@ -1742,14 +1750,6 @@
       "n_sel": 1
     },
     {
-      "kode": "53.08",
-      "kabupaten": "Ende",
-      "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
-      "n_sel": 3
-    },
-    {
       "kode": "53.09",
       "kabupaten": "Ngada",
       "provinsi": "Nusa Tenggara Timur",
@@ -1804,14 +1804,6 @@
       "fwi_rata": 0.01,
       "fwi_maks": 0.04,
       "n_sel": 4
-    },
-    {
-      "kode": "53.16",
-      "kabupaten": "Nagekeo",
-      "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 0,
-      "fwi_maks": 0.01,
-      "n_sel": 2
     },
     {
       "kode": "53.17",
