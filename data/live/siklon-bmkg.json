@@ -20,12 +20,12 @@
       "luar_tcwc": true,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": -6.8,
-      "bujur": 74.9,
+      "lintang": 7.4,
+      "bujur": 75.6,
       "tekanan_hpa": 1009,
       "angin_knot": 20,
       "kategori": "L",
-      "waktu_analisis": "2026-11-21T12:00:00.000Z"
+      "waktu_analisis": "2026-11-22T00:00:00.000Z"
     },
     {
       "nama": "97S",
@@ -44,12 +44,12 @@
       "luar_tcwc": true,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": -6.5,
-      "bujur": 64.8,
-      "tekanan_hpa": 1010,
+      "lintang": 6.9,
+      "bujur": 67.1,
+      "tekanan_hpa": 1009,
       "angin_knot": 20,
       "kategori": "L",
-      "waktu_analisis": "2026-11-21T12:00:00.000Z"
+      "waktu_analisis": "2026-11-22T00:00:00.000Z"
     },
     {
       "nama": "96S",
@@ -68,18 +68,18 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": -11.7,
-      "bujur": 90.7,
-      "tekanan_hpa": 1004,
-      "angin_knot": 30,
+      "lintang": -12.4,
+      "bujur": 90.2,
+      "tekanan_hpa": 1007,
+      "angin_knot": 20,
       "kategori": "L",
-      "waktu_analisis": "2026-11-21T12:00:00.000Z"
+      "waktu_analisis": "2026-11-22T00:00:00.000Z"
     }
   ],
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-11-21",
+    "terbit": "2026-11-22",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
     "sistem": []
   },
@@ -110,11 +110,11 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-21T19:34:39.009Z",
+    "fetched_at": "2026-11-22T08:17:58.261Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-21T19:34:39.009Z",
-  "pdf_diubah": "Sat, 21 Nov 2026 05:27:28 GMT",
+  "fetched_at": "2026-11-22T08:17:58.261Z",
+  "pdf_diubah": "Sun, 22 Nov 2026 04:57:08 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
@@ -125,7 +125,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-21T19:34:49.622Z",
+      "fetched_at": "2026-11-22T08:18:07.497Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -134,7 +134,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-21T19:34:50.004Z",
+      "fetched_at": "2026-11-22T08:18:07.593Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
@@ -148,12 +148,12 @@
           "di_dalam_tcwc": false,
           "luar_tcwc": false,
           "sumber": "jtwc",
-          "lintang": -11.5,
-          "bujur": -164.2,
+          "lintang": -11.9,
+          "bujur": -166.8,
           "tekanan_hpa": null,
           "angin_knot": 45,
           "kategori": "",
-          "waktu_analisis": "2026-11-21T00:00:00.000Z",
+          "waktu_analisis": "2026-11-22T00:00:00.000Z",
           "kode": "04P",
           "tahap": "Siklon tropis",
           "jenis": "siklon"
