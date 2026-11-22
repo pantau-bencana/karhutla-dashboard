@@ -20,12 +20,12 @@
       "luar_tcwc": true,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 7.4,
-      "bujur": 75.6,
-      "tekanan_hpa": 1009,
-      "angin_knot": 20,
+      "lintang": -6.9,
+      "bujur": 76.7,
+      "tekanan_hpa": 1008,
+      "angin_knot": 25,
       "kategori": "L",
-      "waktu_analisis": "2026-11-22T00:00:00.000Z"
+      "waktu_analisis": "2026-11-22T12:00:00.000Z"
     },
     {
       "nama": "97S",
@@ -44,12 +44,12 @@
       "luar_tcwc": true,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": 6.9,
-      "bujur": 67.1,
+      "lintang": -6.9,
+      "bujur": 67.2,
       "tekanan_hpa": 1009,
       "angin_knot": 20,
       "kategori": "L",
-      "waktu_analisis": "2026-11-22T00:00:00.000Z"
+      "waktu_analisis": "2026-11-22T12:00:00.000Z"
     },
     {
       "nama": "96S",
@@ -68,12 +68,12 @@
       "luar_tcwc": false,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": -12.4,
-      "bujur": 90.2,
-      "tekanan_hpa": 1007,
-      "angin_knot": 20,
+      "lintang": -13.8,
+      "bujur": 88.6,
+      "tekanan_hpa": 1009,
+      "angin_knot": 25,
       "kategori": "L",
-      "waktu_analisis": "2026-11-22T00:00:00.000Z"
+      "waktu_analisis": "2026-11-22T12:00:00.000Z"
     }
   ],
   "ikhtisar": {
@@ -110,10 +110,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-22T08:17:58.261Z",
+    "fetched_at": "2026-11-22T16:29:19.270Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-22T08:17:58.261Z",
+  "fetched_at": "2026-11-22T16:29:19.270Z",
   "pdf_diubah": "Sun, 22 Nov 2026 04:57:08 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -125,7 +125,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-22T08:18:07.497Z",
+      "fetched_at": "2026-11-22T16:29:30.136Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -134,7 +134,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-22T08:18:07.593Z",
+      "fetched_at": "2026-11-22T16:29:30.182Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
