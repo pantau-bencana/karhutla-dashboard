@@ -1,6 +1,6 @@
 {
   "hariWib": "2026-11-24",
-  "generated_at": "2026-11-24T10:55:04.484Z",
+  "generated_at": "2026-11-24T10:57:29.608Z",
   "sumber": {
     "sipongi": {
       "nama": "SiPongi+",
@@ -20,9 +20,9 @@
     "fwi": {
       "nama": "FWI model ECMWF via Copernicus GWIS",
       "status": "Pembanding (data terbuka, bukan resmi)",
-      "diambil": "2026-11-23T22:14:29.032Z",
-      "observasi": "2026-12-02T16:59:00.000Z",
-      "label": "FWI ECMWF 2026-11-24–2026-12-02 (9 hari yang dikembalikan layanan) pada titik di dalam batas. Bukan 14 hari dan bukan FDRS BMKG.",
+      "diambil": "2026-11-24T10:52:36.529Z",
+      "observasi": "2026-12-03T16:59:00.000Z",
+      "label": "FWI ECMWF 2026-11-24–2026-12-03 (10 hari yang dikembalikan layanan) pada titik di dalam batas. Bukan 14 hari dan bukan FDRS BMKG.",
       "catatan": "Kelas mengikuti tabel FWI GWIS/EFFIS: Rendah < 11,2; Sedang 11,2–< 21,3; Tinggi 21,3–< 38; Sangat tinggi 38–< 50; Ekstrem 50–70; Sangat ekstrem > 70. Batas bawah inklusif. Diterapkan pada angka FWI model ECMWF (GetFeatureInfo GWIS). Bukan kelas FDRS BMKG. Angka di bawah 0, termasuk −9999, tidak dikelaskan."
     },
     "hujan": {
