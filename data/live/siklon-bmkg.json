@@ -20,12 +20,12 @@
       "luar_tcwc": true,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": -10.9,
-      "bujur": 78.2,
-      "tekanan_hpa": 1006,
+      "lintang": -11.3,
+      "bujur": 78,
+      "tekanan_hpa": 1009,
       "angin_knot": 25,
       "kategori": "L",
-      "waktu_analisis": "2026-11-25T00:00:00.000Z"
+      "waktu_analisis": "2026-11-25T12:00:00.000Z"
     },
     {
       "nama": "97S",
@@ -44,12 +44,12 @@
       "luar_tcwc": true,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": -8.3,
-      "bujur": 68.7,
+      "lintang": -9.5,
+      "bujur": 69.2,
       "tekanan_hpa": 1008,
       "angin_knot": 25,
       "kategori": "L",
-      "waktu_analisis": "2026-11-25T00:00:00.000Z"
+      "waktu_analisis": "2026-11-25T12:00:00.000Z"
     }
   ],
   "ikhtisar": {
@@ -86,10 +86,10 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-25T08:55:00.981Z",
+    "fetched_at": "2026-11-25T19:29:02.410Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-25T08:55:00.981Z",
+  "fetched_at": "2026-11-25T19:29:02.410Z",
   "pdf_diubah": "Wed, 25 Nov 2026 07:51:52 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
@@ -101,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-25T08:55:04.691Z",
+      "fetched_at": "2026-11-25T19:29:07.198Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -110,7 +110,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-25T08:55:04.792Z",
+      "fetched_at": "2026-11-25T19:29:07.724Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
