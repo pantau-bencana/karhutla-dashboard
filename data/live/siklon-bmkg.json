@@ -55,7 +55,7 @@
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-11-25",
+    "terbit": "2026-11-26",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
     "sistem": []
   },
@@ -86,11 +86,11 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-26T02:56:45.605Z",
+    "fetched_at": "2026-11-26T12:56:04.775Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-26T02:56:45.605Z",
-  "pdf_diubah": "Wed, 25 Nov 2026 07:51:52 GMT",
+  "fetched_at": "2026-11-26T12:56:04.775Z",
+  "pdf_diubah": "Thu, 26 Nov 2026 05:50:26 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
@@ -101,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-26T02:56:50.546Z",
+      "fetched_at": "2026-11-26T12:56:09.273Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -110,7 +110,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-26T02:56:51.090Z",
+      "fetched_at": "2026-11-26T12:56:09.317Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
