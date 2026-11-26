@@ -1,6 +1,6 @@
 {
   "hariWib": "2026-11-27",
-  "generated_at": "2026-11-26T19:48:55.803Z",
+  "generated_at": "2026-11-26T19:53:09.711Z",
   "sumber": {
     "sipongi": {
       "nama": "SiPongi+",
@@ -20,7 +20,7 @@
     "fwi": {
       "nama": "FWI model ECMWF via Copernicus GWIS",
       "status": "Pembanding (data terbuka, bukan resmi)",
-      "diambil": "2026-11-26T17:02:45.434Z",
+      "diambil": "2026-11-26T19:50:24.157Z",
       "observasi": "2026-12-05T16:59:00.000Z",
       "label": "FWI ECMWF 2026-11-27–2026-12-05 (9 hari yang dikembalikan layanan) pada titik di dalam batas. Bukan 14 hari dan bukan FDRS BMKG.",
       "catatan": "Kelas mengikuti tabel FWI GWIS/EFFIS: Rendah < 11,2; Sedang 11,2–< 21,3; Tinggi 21,3–< 38; Sangat tinggi 38–< 50; Ekstrem 50–70; Sangat ekstrem > 70. Batas bawah inklusif. Diterapkan pada angka FWI model ECMWF (GetFeatureInfo GWIS). Bukan kelas FDRS BMKG. Angka di bawah 0, termasuk −9999, tidak dikelaskan."
@@ -44,8 +44,8 @@
     "cap": {
       "nama": "Sumber: BMKG",
       "status": "Aktif",
-      "diambil": "2026-11-26T19:36:33.002Z",
-      "observasi": "2026-11-26T19:31:09.000Z",
+      "diambil": "2026-11-26T19:50:24.157Z",
+      "observasi": "2026-11-26T19:46:07.000Z",
       "label": "Nowcast BMKG, dasar waktu 0–3 jam.",
       "catatan": "Cakupan nasional. Tanpa peringatan bukan nol."
     },
