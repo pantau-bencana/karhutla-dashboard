@@ -2971,7 +2971,7 @@
       "provinsi": "Papua Barat",
       "fwi_rata": 0,
       "fwi_maks": 0,
-      "n_sel": 15
+      "n_sel": 17
     },
     {
       "kode": "92.07",
@@ -3169,9 +3169,9 @@
       "kode": "96.01",
       "kabupaten": "Sorong",
       "provinsi": "Papua Barat Daya",
-      "fwi_rata": 0.01,
-      "fwi_maks": 0.06,
-      "n_sel": 6
+      "fwi_rata": 0.02,
+      "fwi_maks": 0.09,
+      "n_sel": 7
     },
     {
       "kode": "96.02",
@@ -3179,15 +3179,15 @@
       "provinsi": "Papua Barat Daya",
       "fwi_rata": 0,
       "fwi_maks": 0.01,
-      "n_sel": 2
+      "n_sel": 6
     },
     {
       "kode": "96.03",
       "kabupaten": "Raja Ampat",
       "provinsi": "Papua Barat Daya",
-      "fwi_rata": 0.02,
-      "fwi_maks": 0.04,
-      "n_sel": 4
+      "fwi_rata": 0.03,
+      "fwi_maks": 0.12,
+      "n_sel": 6
     },
     {
       "kode": "96.04",
@@ -3196,6 +3196,14 @@
       "fwi_rata": 0,
       "fwi_maks": 0,
       "n_sel": 14
+    },
+    {
+      "kode": "96.05",
+      "kabupaten": "Maybrat",
+      "provinsi": "Papua Barat Daya",
+      "fwi_rata": 0,
+      "fwi_maks": 0,
+      "n_sel": 6
     }
   ]
 }
