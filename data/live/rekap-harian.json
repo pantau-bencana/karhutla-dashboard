@@ -1,6 +1,6 @@
 {
   "hariWib": "2026-11-26",
-  "generated_at": "2026-11-26T00:20:14.392Z",
+  "generated_at": "2026-11-26T00:23:12.836Z",
   "sumber": {
     "sipongi": {
       "nama": "SiPongi+",
@@ -20,7 +20,7 @@
     "fwi": {
       "nama": "FWI model ECMWF via Copernicus GWIS",
       "status": "Pembanding (data terbuka, bukan resmi)",
-      "diambil": "2026-11-25T19:24:01.430Z",
+      "diambil": "2026-11-26T00:16:42.615Z",
       "observasi": "2026-12-04T16:59:00.000Z",
       "label": "FWI ECMWF 2026-11-26–2026-12-04 (9 hari yang dikembalikan layanan) pada titik di dalam batas. Bukan 14 hari dan bukan FDRS BMKG.",
       "catatan": "Kelas mengikuti tabel FWI GWIS/EFFIS: Rendah < 11,2; Sedang 11,2–< 21,3; Tinggi 21,3–< 38; Sangat tinggi 38–< 50; Ekstrem 50–70; Sangat ekstrem > 70. Batas bawah inklusif. Diterapkan pada angka FWI model ECMWF (GetFeatureInfo GWIS). Bukan kelas FDRS BMKG. Angka di bawah 0, termasuk −9999, tidak dikelaskan."
@@ -28,7 +28,7 @@
     "hujan": {
       "nama": "Curah hujan model ECMWF via Open-Meteo",
       "status": "Pembanding (data terbuka, bukan resmi)",
-      "diambil": "2026-11-25T19:24:01.430Z",
+      "diambil": "2026-11-26T00:16:42.615Z",
       "observasi": "2026-12-09T16:59:00.000Z",
       "label": "Prakiraan harian 2026-11-26–2026-12-09 (14 hari, zona Asia/Jakarta) pada titik di dalam batas kabupaten/kota",
       "catatan": "Curah hujan harian model ECMWF via Open-Meteo, dalam milimeter (precipitation_sum). Bukan peluang dalam persen. Sel bertanda ya bila milimeter lebih dari 20."
