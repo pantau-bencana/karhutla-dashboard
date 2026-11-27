@@ -1,4 +1,4 @@
-import { cpSync, createReadStream, existsSync, readdirSync, rmSync, statSync } from "node:fs";
+import { cpSync, createReadStream, existsSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
@@ -61,7 +61,7 @@ function kosongkanAkarDist() {
       const dist = path.join(root, "dist");
       if (!existsSync(dist)) return;
       for (const nama of readdirSync(dist)) {
-        if (nama === "v2" || nama === "v3") continue;
+        if (nama === "v1" || nama === "v2" || nama === "v3" || nama === "teknis") continue;
         rmSync(path.join(dist, nama), { recursive: true, force: true });
       }
     },
@@ -79,9 +79,37 @@ export default defineConfig({
         server.middlewares.use("/data", dataMiddleware());
       },
       configurePreviewServer(server) {
+        server.middlewares.use((req, res, next) => {
+          const [pathname, search = ""] = (req.url || "/").split("?");
+          const found = pathname.match(/^(?:\/karhutla-dashboard)?\/(teknis|v1|v2|v3)$/);
+          if (found && req.method === "GET") {
+            res.statusCode = 302;
+            res.setHeader("Location", `${pathname}/${search ? `?${search}` : ""}`);
+            res.end();
+            return;
+          }
+          next();
+        });
         server.middlewares.use("/data", dataMiddleware());
       },
       closeBundle() {
+        writeFileSync(
+          path.join(root, "dist", "teknis.html"),
+          `<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="refresh" content="0; url=./teknis/" />
+    <link rel="canonical" href="./teknis/" />
+    <title>Pantau Bencana — Mode Teknis</title>
+    <script>location.replace(new URL("teknis/", window.location.href).href);</script>
+  </head>
+  <body>
+    <p><a href="./teknis/">Lanjut ke Mode Teknis</a></p>
+  </body>
+</html>
+`,
+        );
         cpSync(dataDir, path.join(root, "dist", "data"), {
           recursive: true,
           filter(source) {

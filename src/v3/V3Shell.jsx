@@ -25,15 +25,18 @@ function aktif(id, location) {
 
 function tautanEdisi(edisi) {
   const url = new URL(window.location.href);
+  const port = { v1: "5177", v2: "5174", umum: "5173" }[edisi] || "5173";
   if (url.port === "5175") {
-    url.port = edisi === "v2" ? "5174" : "5173";
+    url.port = port;
     url.hash = "";
     url.pathname = "/";
     return url.toString();
   }
-  const path = url.pathname.replace(/\/v3\/index\.html$/, "/").replace(/\/v3\/?$/, "/");
-  const tujuan = edisi === "v2" ? `${path.replace(/\/$/, "")}/v2/` : path;
-  return `${url.origin}${tujuan}`;
+  let path = url.pathname.replace(/\/v3\/index\.html$/, "/").replace(/\/v3\/?$/, "/");
+  if (!path.endsWith("/")) path += "/";
+  if (edisi === "v2") return `${url.origin}${path}v2/`;
+  if (edisi === "v1") return `${url.origin}${path}v1/`;
+  return `${url.origin}${path}`;
 }
 
 export function V3Shell({ children, location, onMuat, ringkas }) {
@@ -78,6 +81,7 @@ export function V3Shell({ children, location, onMuat, ringkas }) {
           </nav>
         ))}
         <div className="v3-kaki">
+          <a href={tautanEdisi("umum")}>Mode Umum</a>
           <a href={tautanEdisi("v1")}>Buka edisi v0.1</a>
           <a href={tautanEdisi("v2")}>Buka edisi v0.2</a>
           <p>Pantau Bencana v0.3 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH.</p>

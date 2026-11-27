@@ -1,0 +1,331 @@
+:root {
+  --umum-ink: #0f172a;
+  --umum-muted: #475569;
+  --umum-line: #dbe3ea;
+  --umum-paper: #f3f6f4;
+  --umum-card: #ffffff;
+  --umum-pine: #0f766e;
+  --umum-pine-2: #115e59;
+  --umum-awas: #dc2626;
+  --umum-siaga: #ea580c;
+  --umum-waspada: #d97706;
+  color: var(--umum-ink);
+  background: var(--umum-paper);
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+.umum {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.15rem 6.5rem;
+}
+
+.umum-kepala h1 {
+  margin: 0.35rem 0 0.6rem;
+  font-size: clamp(1.55rem, 5vw, 2.15rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.umum-merek {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--umum-pine-2);
+}
+
+.umum-lead,
+.umum-ringkas p,
+.umum-catatan,
+.umum-update {
+  color: var(--umum-muted);
+}
+
+.umum-pencarian {
+  display: grid;
+  gap: 0.7rem;
+  margin: 1.25rem 0 1rem;
+}
+
+.umum-cari {
+  position: relative;
+}
+
+.umum-cari label {
+  display: block;
+  font-size: 0.86rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.umum-cari input {
+  width: 100%;
+  border: 1px solid var(--umum-line);
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  font: inherit;
+  font-size: 1rem;
+  background: var(--umum-card);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+.umum-cari input:focus {
+  outline: 3px solid rgba(15, 118, 110, 0.28);
+  border-color: var(--umum-pine);
+}
+
+.umum-hasil {
+  position: absolute;
+  z-index: 8;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  margin: 0;
+  padding: 0.3rem;
+  list-style: none;
+  background: var(--umum-card);
+  border: 1px solid var(--umum-line);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+  max-height: 16rem;
+  overflow: auto;
+}
+
+.umum-hasil button {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.05rem;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font: inherit;
+  padding: 0.6rem 0.7rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.umum-hasil button.aktif,
+.umum-hasil button:hover {
+  background: #ecfdf8;
+}
+
+.umum-hasil span {
+  color: var(--umum-muted);
+  font-size: 0.85rem;
+}
+
+.umum-lokasi-btn,
+.umum-ganti {
+  border: 1px solid var(--umum-pine);
+  background: var(--umum-pine);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.75rem 1.1rem;
+  cursor: pointer;
+  justify-self: start;
+}
+
+.umum-lokasi-btn:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.umum-ganti {
+  background: #fff;
+  color: var(--umum-pine-2);
+  margin-top: 1rem;
+}
+
+.umum-kartu,
+.umum-ringkas,
+.umum-disclaimer {
+  background: var(--umum-card);
+  border: 1px solid var(--umum-line);
+  border-radius: 20px;
+  padding: 1.2rem 1.15rem 1.25rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+.umum-kartu {
+  border-width: 2px;
+}
+
+.umum-wilayah {
+  margin: 0 0 0.65rem;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.umum-wilayah span {
+  font-weight: 500;
+  color: var(--umum-muted);
+}
+
+.umum-pesan {
+  margin: 0.85rem 0 1.1rem;
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.umum-badge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid;
+  border-radius: 999px;
+  padding: 0.12rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.umum-badge.besar {
+  font-size: 0.95rem;
+  padding: 0.25rem 0.75rem;
+}
+
+.umum-tiga {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+}
+
+@media (min-width: 640px) {
+  .umum-tiga { grid-template-columns: repeat(3, 1fr); }
+}
+
+.umum-waktu {
+  border: 1px solid;
+  border-radius: 14px;
+  padding: 0.7rem 0.75rem;
+  background: #fff;
+}
+
+.umum-waktu-label {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--umum-muted);
+  font-weight: 600;
+}
+
+.umum-waktu-status {
+  margin: 0.15rem 0 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.umum-ringkas h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.2rem;
+}
+
+.umum-angka {
+  margin: 0.9rem 0;
+  color: var(--umum-ink) !important;
+}
+
+.n-awas { color: var(--umum-awas); }
+.n-siaga { color: var(--umum-siaga); }
+.n-waspada { color: var(--umum-waspada); }
+
+.umum-chips p { margin: 0 0 0.55rem; }
+
+.umum-chips ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  max-height: 16rem;
+  overflow: auto;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--umum-line);
+  background: #fff;
+  border-radius: 999px;
+  padding: 0.35rem 0.55rem 0.35rem 0.7rem;
+  font: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.chip.awas { border-color: #fecaca; background: #fef2f2; }
+.chip.siaga { border-color: #fdba74; background: #fff7ed; }
+
+.umum-update {
+  margin: 0.9rem 0;
+  font-size: 0.88rem;
+}
+
+.umum-disclaimer {
+  margin-top: 0.4rem;
+  background: #f8fafc;
+}
+
+.umum-disclaimer p { margin: 0 0 0.6rem; }
+.umum-disclaimer p:last-child { margin-bottom: 0; }
+
+.umum-disclaimer a {
+  color: var(--umum-pine-2);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.umum-galat {
+  color: #9f1239;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  padding: 0.75rem 0.9rem;
+}
+
+.umum-teknis {
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 20;
+  background: #0f172a;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.92rem;
+  border-radius: 999px;
+  padding: 0.7rem 1.05rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.25);
+}
+
+.umum-teknis:focus,
+.umum-teknis:hover {
+  background: #1e293b;
+  outline: 3px solid rgba(15, 118, 110, 0.45);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .umum { padding-bottom: 6.5rem; }
+  .umum-chips ul { max-height: 5rem; }
+  .umum-teknis { left: 0.75rem; bottom: 0.75rem; }
+}
