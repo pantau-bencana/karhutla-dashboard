@@ -189,6 +189,7 @@ import { monitoringSources } from "../src/lib/sourceStatus.js";
 import { aggregateCells, gfwedCsv, latestDailyStamp } from "./gfwed-kabupaten.mjs";
 import { GFWED_LABEL, GFWED_UNAVAILABLE } from "../src/lib/gfwed.js";
 import { GWIS_FWI_LAYER, GWIS_LABEL, GWIS_UNAVAILABLE, gwisLayerReady, gwisProbeUrl, tanggalJakarta } from "../src/lib/gwisFwi.js";
+import { capSudahLewat, kabTerdekat, kodeDariHash, normalisasiStatus, prioritasStatus, statusBarisAktif, statusKabupaten } from "../src/umum/statusUmum.js";
 const DISCLAIMER = "Pantau Bencana v0.1 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH.";
 assert.equal(readFileSync("src/lib/warning.js", "utf8").includes("statusProvinsi"), false);
 assert.equal(readFileSync("src/lib/warning.js", "utf8").includes("Waspada"), false);
@@ -218,7 +219,9 @@ assert.equal(config.catatan, DISCLAIMER);
 assert.equal(String(config.firms?.mapKey ?? "").trim(), "", "Jangan commit MAP_KEY FIRMS");
 assert.equal(config.judul, "Prototipe Pemantauan Karhutla");
 assert.equal(config.peringatan, undefined);
-assert.equal(readFileSync("index.html", "utf8").includes("Prototipe Pemantauan Karhutla"), true);
+assert.equal(readFileSync("index-v1.html", "utf8").includes("Prototipe Pemantauan Karhutla"), true);
+assert.match(readFileSync("index.html", "utf8"), /Cek Potensi Banjir di Wilayah Anda/);
+assert.match(readFileSync("index.html", "utf8"), /src\/umum\/main\.jsx/);
 assert.deepEqual(
   config.datasets.map((dataset) => dataset.id),
   ["hotspot", "sipongi", "irbi", "ispu"],
@@ -417,6 +420,8 @@ for (const file of ["README.md", "src/components/Footer.jsx", "public/config.jso
 }
 assert.match(readFileSync("src/lib/identitas.js", "utf8"), /Pantau Bencana v0\.3 — proyek data terbuka komunitas, bukan produk BNPB, BMKG, PVMBG, atau KLH\./);
 assert.match(readFileSync("package.json", "utf8"), /build:v3/);
+assert.match(readFileSync("package.json", "utf8"), /build:teknis/);
+assert.match(readFileSync("package.json", "utf8"), /build:v1/);
 assert.match(readFileSync("index-v3.html", "utf8"), /Pantau Bencana v0\.3/);
 assert.equal(/^(html|body|:root)\b/m.test(readFileSync("src/v3/theme.css", "utf8")), false);
 assert.equal(readFileSync("src/v3/pages/SummaryPage.jsx", "utf8").includes("Laporan singkat harian"), false);
@@ -3520,5 +3525,43 @@ const potensiBasi = susunPotensiTujuh({
 assert.equal(potensiBasi.tersedia, false);
 assert.match(potensiBasi.alasan.join(" "), /FWI pembanding lebih dari 36 jam/);
 assert.match(readFileSync("src/components/PriorityIndicators.jsx", "utf8"), /menunggu data resmi|Tautan saja|belum/);
+
+
+assert.equal(normalisasiStatus("Awas"), "Awas");
+assert.equal(normalisasiStatus("Siaga"), "Siaga");
+assert.equal(normalisasiStatus("Waspada"), "Waspada");
+assert.equal(normalisasiStatus("Tidak ada peringatan"), "Aman");
+assert.equal(normalisasiStatus("Tidak ada status"), "Aman");
+assert.equal(normalisasiStatus("13,5 mm. prakiraan model ECMWF (via Open-Meteo), bukan BMKG."), "Aman");
+assert.equal(normalisasiStatus(""), "Aman");
+const nowCap = Date.parse("2026-11-27T10:00:00+07:00");
+assert.equal(statusBarisAktif({ status: "Siaga", lampau: true, berlaku_sampai: "2099-01-01T00:00:00+07:00" }, nowCap, { cap: true }), "Aman");
+assert.equal(statusBarisAktif({ status: "Siaga", lampau: false, berlaku_sampai: "2026-11-27T09:00:00+07:00" }, nowCap, { cap: true }), "Aman");
+assert.equal(statusBarisAktif({ status: "Siaga", lampau: false, berlaku_sampai: "2026-11-27T11:00:00+07:00" }, nowCap, { cap: true }), "Siaga");
+assert.equal(statusBarisAktif({ status: "Awas", berlaku_sampai: "2026-11-27T09:00:00+07:00" }, nowCap, { cap: false }), "Awas");
+assert.equal(capSudahLewat({ status: "Siaga", lampau: false, berlaku_sampai: "" }, nowCap), false);
+assert.equal(prioritasStatus("Aman", "Waspada", "Awas"), "Awas");
+assert.equal(kodeDariHash("#/kab/13.10"), "13.10");
+assert.equal(kodeDariHash("#/"), "");
+const statusContoh = statusKabupaten({
+  cap: { kedaluwarsa: false },
+  tabs: [
+    { id: "0-3-jam", kedaluwarsa: false, rows: [{ kode: "13.10", kab_kota: "Dharmasraya", provinsi: "Sumatera Barat", status: "Siaga", lampau: false, berlaku_sampai: "2026-11-27T09:00:00+07:00" }] },
+    { id: "hari-ini", rows: [{ kode: "13.10", kab_kota: "Dharmasraya", provinsi: "Sumatera Barat", status: "Awas" }] },
+    { id: "besok", rows: [{ kode: "13.10", kab_kota: "Dharmasraya", provinsi: "Sumatera Barat", status: "Waspada" }] },
+  ],
+}, "13.10", nowCap);
+assert.equal(statusContoh.sekarang, "Aman");
+assert.equal(statusContoh.hariIni, "Awas");
+assert.equal(statusContoh.besok, "Waspada");
+assert.equal(statusContoh.utama, "Awas");
+assert.equal(kabTerdekat([{ kode: "11.01", nama: "Aceh Selatan", lintang: 3.06821, bujur: 97.4256 }, { kode: "31.71", nama: "Kota Jakarta Pusat", lintang: -6.175, bujur: 106.827 }], 3.07, 97.43).kode, "11.01");
+assert.match(readFileSync("src/umum/UmumApp.jsx", "utf8"), /Gunakan lokasi saya/);
+assert.match(readFileSync("src/umum/UmumApp.jsx", "utf8"), /Mode Teknis/);
+assert.match(readFileSync("src/umum/UmumApp.jsx", "utf8"), /Bukan sumber resmi/);
+assert.match(readFileSync("src/umum/UmumApp.jsx", "utf8"), /tel:112/);
+assert.match(readFileSync("src/v2/V2Shell.jsx", "utf8"), /tautanModeUmum/);
+assert.equal(readFileSync("src/umum/UmumApp.jsx", "utf8").includes("IRBI"), false);
+assert.equal(readFileSync("src/umum/theme.css", "utf8").includes("position: fixed"), true);
 
 console.log("Pemeriksaan prototipe lulus.");

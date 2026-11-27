@@ -65,10 +65,36 @@ function judulHalaman(location) {
   return nama;
 }
 
-function tautanV1() {
+function jalurEdisi(segmen, portDev) {
   const url = new URL(window.location.href);
-  const path = url.pathname.replace(/\/v2\/index\.html$/, "/").replace(/\/v2\/?$/, "/");
-  return `${url.origin}${path || "/"}`;
+  if (url.port === "5174" || url.port === "5176") {
+    url.port = portDev;
+    url.pathname = "/";
+    url.hash = "";
+    return url.toString();
+  }
+  let path = url.pathname.replace(/\/index\.html$/, "/");
+  path = path.replace(/\/(v2|teknis)\/?$/, "/");
+  if (!path.endsWith("/")) path += "/";
+  return `${url.origin}${path}${segmen}/`;
+}
+
+function tautanV1() {
+  return jalurEdisi("v1", "5177");
+}
+
+function tautanModeUmum() {
+  const url = new URL(window.location.href);
+  if (url.port === "5174" || url.port === "5176") {
+    url.port = "5173";
+    url.pathname = "/";
+    url.hash = "";
+    return url.toString();
+  }
+  let path = url.pathname.replace(/\/index\.html$/, "/");
+  path = path.replace(/\/(v2|teknis)\/?$/, "/");
+  if (!path.endsWith("/")) path += "/";
+  return `${url.origin}${path}`;
 }
 
 function muatUlang() {
@@ -163,6 +189,7 @@ export function V2Shell({ children }) {
         ) : null}
         <div className="v2-foot">
           <a href="#/sumber-metode/glosarium" aria-current={glosarium ? "page" : undefined}>Glosarium</a>
+          <a href={tautanModeUmum()}>Mode Umum</a>
           <a href={tautanV1()}>Buka tampilan v0.1</a>
           <p>Proyek data terbuka komunitas. Bukan produk BNPB, BMKG, PVMBG, atau KLH.</p>
         </div>
@@ -182,6 +209,7 @@ export function V2Shell({ children }) {
               <span>{tanggal}</span>
               <strong>{pukul} WIB</strong>
             </div>
+            <a className="v2-muat v2-mode-umum" href={tautanModeUmum()}>Mode Umum</a>
             <button type="button" className="v2-muat" onClick={muatUlang}>Muat ulang</button>
           </header>
           <p className="v2-notice">

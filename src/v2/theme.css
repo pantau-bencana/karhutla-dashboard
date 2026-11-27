@@ -325,6 +325,7 @@ button.v2-more, .v2-more button, p.v2-more button {
 .v2-beranda .v2-muat,
 .v2-beranda .laporan-teks,
 .v2-beranda .footer { display: none; }
+.v2-beranda .v2-mode-umum { display: inline-flex; margin-left: auto; }
 .v2o {
   padding: 4px 16px 28px;
   display: flex;
@@ -471,4 +472,10 @@ button.v2-more, .v2-more button, p.v2-more button {
   .v2o-kepala h1 { font-size: 28px; }
   .v2o-bawah, .v2o-baris { grid-template-columns: 1fr; }
   .v2-beranda .v2-menu { display: inline-flex; }
+}
+
+a.v2-muat {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
 }
