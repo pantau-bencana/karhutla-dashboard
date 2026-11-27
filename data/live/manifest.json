@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T04:32:51.124Z",
+  "generated_at": "2026-11-27T12:05:51.431Z",
   "schedule": {
     "cron": "17 */3 * * *",
     "cron_cadangan": "47 1-23/3 * * *",
@@ -7,7 +7,7 @@
     "timezone": "UTC",
     "display_timezone": "Asia/Jakarta"
   },
-  "next_run": "2026-11-27T04:47:00.000Z",
+  "next_run": "2026-11-27T12:17:00.000Z",
   "firms_key": "used",
   "datasets": {
     "bmkg_prakiraan": {
@@ -107,7 +107,7 @@
       "fungsi": "Konsentrasi model dalam µg/m³. Bukan pengukuran stasiun dan bukan ISPU KemenLH.",
       "expected_max_age_hours": 36,
       "schedule_interval_hours": 3,
-      "fetched_at": "2026-11-27T01:47:29.176Z",
+      "fetched_at": "2026-11-27T12:05:51.431Z",
       "observed_at": "2026-12-01T16:59:00.000Z",
       "observed_label": "Rata-rata harian PM2.5 2026-11-20–2026-12-01. Hari ini dan sesudahnya prakiraan CAMS lewat Open-Meteo, bukan 14 hari.",
       "source_updated_at": "2026-12-01T16:59:00.000Z",
@@ -115,7 +115,7 @@
       "status": "ok",
       "error": null,
       "file": "data/live/ispu_pembanding.csv",
-      "content_hash": "230968e6671fbf40f268880600d1b1d908e43c975f7f23e0cfe040ebf192e240",
+      "content_hash": "e1fe48620813df8e271cbc7d26943327bf83b3732c1dc3f8b8d6096345f5262d",
       "kept_previous": false,
       "provider": "Open-Meteo Air Quality",
       "method": "Rata-rata harian PM2.5 dan PM10 dalam µg/m³ pada titik tengah kasar provinsi, 7 hari ke belakang dan hingga 5 hari yang API isi. Domain global CAMS sekitar 0,4°. Bukan sel grid pada peta, bukan pengukuran stasiun, dan bukan ISPU.",
@@ -350,15 +350,15 @@
       "fungsi": "Konteks nowcast sekitar 0–6 jam. Bukan prospek karhutla dan bukan prakiraan 14 hari.",
       "expected_max_age_hours": 8,
       "schedule_interval_hours": 3,
-      "fetched_at": "2026-11-27T04:32:51.124Z",
-      "observed_at": "2026-11-27T03:35:00.000Z",
+      "fetched_at": "2026-11-27T12:05:51.431Z",
+      "observed_at": "2026-11-27T12:00:00.000Z",
       "observed_label": "22 peringatan pada RSS nowcast. Bukan peringatan karhutla.",
-      "source_updated_at": "2026-11-27T03:35:00.000Z",
+      "source_updated_at": "2026-11-27T12:00:00.000Z",
       "record_count": 22,
       "status": "ok",
       "error": null,
       "file": "data/live/bmkg-cap.csv",
-      "content_hash": "eb67512d102c9f873d763346172242ab6b97e776b44cf74a09101fbab5059007",
+      "content_hash": "a7bf2df75db7e9a71b24949319d53cb1af830131207734cbfd284f9192c7ae29",
       "kept_previous": false
     },
     "dibi_karhutla": {
@@ -767,15 +767,15 @@
       "limitation": "prakiraan model ECMWF (via Open-Meteo), bukan BMKG. NASA GPM IMERG tidak dipakai. Unduhan Early/Late di PPS mengembalikan HTTP 401 tanpa akun, dan jalur yang terdokumentasi memakai registrasi Earthdata atau PPS. Tidak ada berkas observasi yang diunduh.",
       "fungsi": "Jumlah hujan harian pada titik adm4. Tidak masuk matriks Awas/Siaga/Waspada.",
       "expected_max_age_hours": 36,
-      "fetched_at": "2026-11-27T04:37:51.830Z",
+      "fetched_at": "2026-11-27T12:10:19.762Z",
       "observed_at": "2026-11-27T00:00:00+07:00",
       "observed_label": "prakiraan model ECMWF (via Open-Meteo), bukan BMKG",
       "source_updated_at": "2026-11-27T00:00:00+07:00",
       "record_count": 1542,
       "status": "ok",
-      "error": null,
+      "error": "80 kab/kota gagal; cuplikan sebelumnya dipertahankan bila ada.",
       "file": "data/live/hujan-pembanding-kab.csv",
-      "kept_previous": false,
+      "kept_previous": true,
       "content_hash": null
     }
   }
