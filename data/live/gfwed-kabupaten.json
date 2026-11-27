@@ -1,6 +1,6 @@
 {
-  "tanggal": "2026-11-24",
-  "sumber": "https://portal.nccs.nasa.gov/datashare/GlobalFWI/v2.0/fwiCalcs.GEOS-5/Default/GEOS-5/2026/FWI.GEOS-5.Daily.Default.20261124.nc variabel GEOS-5_FWI. Field, R.D., et al., Development of a Global Fire Weather Database, Natural Hazards and Earth System Sciences, 15, 1407-1423, doi:10.5194/nhess-15-1407-2015, 2015.",
+  "tanggal": "2026-11-26",
+  "sumber": "https://portal.nccs.nasa.gov/datashare/GlobalFWI/v2.0/fwiCalcs.GEOS-5/Default/GEOS-5/2026/FWI.GEOS-5.Daily.Default.20261126.nc variabel GEOS-5_FWI. Field, R.D., et al., Development of a Global Fire Weather Database, Natural Hazards and Earth System Sciences, 15, 1407-1423, doi:10.5194/nhess-15-1407-2015, 2015.",
   "variabel": "GEOS-5_FWI",
   "label": "Pembanding model NASA GFWED (GEOS-5, analisis), bukan BMKG",
   "metode": "Rata-rata dan maksimum sel yang pusatnya jatuh di dalam kabupaten/kota.",
@@ -586,7 +586,7 @@
       "kabupaten": "Tanjung Jabung Barat",
       "provinsi": "Jambi",
       "fwi_rata": 0,
-      "fwi_maks": 0.01,
+      "fwi_maks": 0,
       "n_sel": 7
     },
     {
@@ -594,7 +594,7 @@
       "kabupaten": "Tanjung Jabung Timur",
       "provinsi": "Jambi",
       "fwi_rata": 0,
-      "fwi_maks": 0.01,
+      "fwi_maks": 0,
       "n_sel": 5
     },
     {
@@ -626,7 +626,7 @@
       "kabupaten": "Ogan Komering Ilir",
       "provinsi": "Sumatera Selatan",
       "fwi_rata": 0,
-      "fwi_maks": 0.02,
+      "fwi_maks": 0,
       "n_sel": 18
     },
     {
@@ -665,8 +665,8 @@
       "kode": "16.07",
       "kabupaten": "Banyuasin",
       "provinsi": "Sumatera Selatan",
-      "fwi_rata": 0.01,
-      "fwi_maks": 0.04,
+      "fwi_rata": 0,
+      "fwi_maks": 0,
       "n_sel": 12
     },
     {
@@ -793,8 +793,8 @@
       "kode": "18.01",
       "kabupaten": "Lampung Selatan",
       "provinsi": "Lampung",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
+      "fwi_rata": 0.02,
+      "fwi_maks": 0.05,
       "n_sel": 3
     },
     {
@@ -913,8 +913,8 @@
       "kode": "19.03",
       "kabupaten": "Bangka Selatan",
       "provinsi": "Kepulauan Bangka Belitung",
-      "fwi_rata": 0.01,
-      "fwi_maks": 0.03,
+      "fwi_rata": 0,
+      "fwi_maks": 0,
       "n_sel": 4
     },
     {
@@ -922,7 +922,7 @@
       "kabupaten": "Bangka Tengah",
       "provinsi": "Kepulauan Bangka Belitung",
       "fwi_rata": 0,
-      "fwi_maks": 0.01,
+      "fwi_maks": 0,
       "n_sel": 3
     },
     {
@@ -930,7 +930,7 @@
       "kabupaten": "Bangka Barat",
       "provinsi": "Kepulauan Bangka Belitung",
       "fwi_rata": 0,
-      "fwi_maks": 0.01,
+      "fwi_maks": 0,
       "n_sel": 3
     },
     {
@@ -945,16 +945,16 @@
       "kode": "21.02",
       "kabupaten": "Karimun",
       "provinsi": "Kepulauan Riau",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
+      "fwi_rata": 0.03,
+      "fwi_maks": 0.03,
       "n_sel": 1
     },
     {
       "kode": "21.03",
       "kabupaten": "Natuna",
       "provinsi": "Kepulauan Riau",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.01,
       "n_sel": 1
     },
     {
@@ -1058,15 +1058,15 @@
       "kabupaten": "Indramayu",
       "provinsi": "Jawa Barat",
       "fwi_rata": 0,
-      "fwi_maks": 0.01,
+      "fwi_maks": 0,
       "n_sel": 2
     },
     {
       "kode": "32.13",
       "kabupaten": "Subang",
       "provinsi": "Jawa Barat",
-      "fwi_rata": 0.01,
-      "fwi_maks": 0.02,
+      "fwi_rata": 0,
+      "fwi_maks": 0,
       "n_sel": 3
     },
     {
@@ -1082,7 +1082,7 @@
       "kabupaten": "Karawang",
       "provinsi": "Jawa Barat",
       "fwi_rata": 0.01,
-      "fwi_maks": 0.04,
+      "fwi_maks": 0.03,
       "n_sel": 3
     },
     {
@@ -1329,8 +1329,8 @@
       "kode": "34.02",
       "kabupaten": "Bantul",
       "provinsi": "Daerah Istimewa Yogyakarta",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
+      "fwi_rata": 0.09,
+      "fwi_maks": 0.09,
       "n_sel": 1
     },
     {
@@ -1426,7 +1426,7 @@
       "kabupaten": "Banyuwangi",
       "provinsi": "Jawa Timur",
       "fwi_rata": 0,
-      "fwi_maks": 0,
+      "fwi_maks": 0.02,
       "n_sel": 4
     },
     {
@@ -1441,16 +1441,16 @@
       "kode": "35.12",
       "kabupaten": "Situbondo",
       "provinsi": "Jawa Timur",
-      "fwi_rata": 0.01,
-      "fwi_maks": 0.02,
+      "fwi_rata": 0.02,
+      "fwi_maks": 0.03,
       "n_sel": 2
     },
     {
       "kode": "35.13",
       "kabupaten": "Probolinggo",
       "provinsi": "Jawa Timur",
-      "fwi_rata": 0.01,
-      "fwi_maks": 0.01,
+      "fwi_rata": 0.04,
+      "fwi_maks": 0.1,
       "n_sel": 3
     },
     {
@@ -1465,8 +1465,8 @@
       "kode": "35.15",
       "kabupaten": "Sidoarjo",
       "provinsi": "Jawa Timur",
-      "fwi_rata": 0.17,
-      "fwi_maks": 0.17,
+      "fwi_rata": 0.11,
+      "fwi_maks": 0.11,
       "n_sel": 1
     },
     {
@@ -1666,7 +1666,7 @@
       "kabupaten": "Sumbawa",
       "provinsi": "Nusa Tenggara Barat",
       "fwi_rata": 0,
-      "fwi_maks": 0.01,
+      "fwi_maks": 0.02,
       "n_sel": 9
     },
     {
@@ -1705,24 +1705,24 @@
       "kode": "53.01",
       "kabupaten": "Kupang",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 0.04,
-      "fwi_maks": 0.15,
+      "fwi_rata": 0,
+      "fwi_maks": 0,
       "n_sel": 6
     },
     {
       "kode": "53.02",
       "kabupaten": "Timor Tengah Selatan",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 3.39,
-      "fwi_maks": 4.92,
+      "fwi_rata": 0.06,
+      "fwi_maks": 0.18,
       "n_sel": 3
     },
     {
       "kode": "53.03",
       "kabupaten": "Timor Tengah Utara",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 1.8,
-      "fwi_maks": 5.15,
+      "fwi_rata": 0.13,
+      "fwi_maks": 0.39,
       "n_sel": 3
     },
     {
@@ -1737,8 +1737,8 @@
       "kode": "53.06",
       "kabupaten": "Flores Timur",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 0.01,
-      "fwi_maks": 0.01,
+      "fwi_rata": 0,
+      "fwi_maks": 0,
       "n_sel": 1
     },
     {
@@ -1777,16 +1777,16 @@
       "kode": "53.11",
       "kabupaten": "Sumba Timur",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 0.08,
-      "fwi_maks": 0.47,
+      "fwi_rata": 0.05,
+      "fwi_maks": 0.37,
       "n_sel": 7
     },
     {
       "kode": "53.12",
       "kabupaten": "Sumba Barat",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 0.01,
-      "fwi_maks": 0.01,
+      "fwi_rata": 0,
+      "fwi_maks": 0,
       "n_sel": 1
     },
     {
@@ -1801,8 +1801,8 @@
       "kode": "53.14",
       "kabupaten": "Rote Ndao",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 2.04,
-      "fwi_maks": 2.04,
+      "fwi_rata": 0.09,
+      "fwi_maks": 0.09,
       "n_sel": 1
     },
     {
@@ -1849,16 +1849,16 @@
       "kode": "53.21",
       "kabupaten": "Malaka",
       "provinsi": "Nusa Tenggara Timur",
-      "fwi_rata": 6.35,
-      "fwi_maks": 6.35,
+      "fwi_rata": 0.38,
+      "fwi_maks": 0.38,
       "n_sel": 1
     },
     {
       "kode": "61.01",
       "kabupaten": "Sambas",
       "provinsi": "Kalimantan Barat",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.05,
       "n_sel": 7
     },
     {
@@ -1882,7 +1882,7 @@
       "kabupaten": "Ketapang",
       "provinsi": "Kalimantan Barat",
       "fwi_rata": 0,
-      "fwi_maks": 0.04,
+      "fwi_maks": 0.01,
       "n_sel": 31
     },
     {
@@ -1962,7 +1962,7 @@
       "kabupaten": "Kotawaringin Barat",
       "provinsi": "Kalimantan Tengah",
       "fwi_rata": 0,
-      "fwi_maks": 0.01,
+      "fwi_maks": 0,
       "n_sel": 10
     },
     {
@@ -2010,7 +2010,7 @@
       "kabupaten": "Seruyan",
       "provinsi": "Kalimantan Tengah",
       "fwi_rata": 0,
-      "fwi_maks": 0,
+      "fwi_maks": 0.02,
       "n_sel": 16
     },
     {
@@ -2073,8 +2073,8 @@
       "kode": "63.01",
       "kabupaten": "Tanah Laut",
       "provinsi": "Kalimantan Selatan",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.07,
       "n_sel": 5
     },
     {
@@ -2138,7 +2138,7 @@
       "kabupaten": "Tanah Bumbu",
       "provinsi": "Kalimantan Selatan",
       "fwi_rata": 0.01,
-      "fwi_maks": 0.03,
+      "fwi_maks": 0.04,
       "n_sel": 5
     },
     {
@@ -2217,8 +2217,8 @@
       "kode": "64.71",
       "kabupaten": "Kota Balikpapan",
       "provinsi": "Kalimantan Timur",
-      "fwi_rata": 0.01,
-      "fwi_maks": 0.01,
+      "fwi_rata": 0,
+      "fwi_maks": 0,
       "n_sel": 1
     },
     {
@@ -2329,8 +2329,8 @@
       "kode": "72.01",
       "kabupaten": "Banggai",
       "provinsi": "Sulawesi Tengah",
-      "fwi_rata": 0.02,
-      "fwi_maks": 0.07,
+      "fwi_rata": 0,
+      "fwi_maks": 0.01,
       "n_sel": 8
     },
     {
@@ -2345,8 +2345,8 @@
       "kode": "72.03",
       "kabupaten": "Donggala",
       "provinsi": "Sulawesi Tengah",
-      "fwi_rata": 0.07,
-      "fwi_maks": 0.26,
+      "fwi_rata": 0.02,
+      "fwi_maks": 0.09,
       "n_sel": 5
     },
     {
@@ -2377,16 +2377,16 @@
       "kode": "72.07",
       "kabupaten": "Banggai Kepulauan",
       "provinsi": "Sulawesi Tengah",
-      "fwi_rata": 0.03,
-      "fwi_maks": 0.05,
+      "fwi_rata": 0,
+      "fwi_maks": 0.01,
       "n_sel": 2
     },
     {
       "kode": "72.08",
       "kabupaten": "Parigi Moutong",
       "provinsi": "Sulawesi Tengah",
-      "fwi_rata": 0.02,
-      "fwi_maks": 0.16,
+      "fwi_rata": 0,
+      "fwi_maks": 0.01,
       "n_sel": 7
     },
     {
@@ -2417,8 +2417,8 @@
       "kode": "73.02",
       "kabupaten": "Bulukumba",
       "provinsi": "Sulawesi Selatan",
-      "fwi_rata": 1.95,
-      "fwi_maks": 1.95,
+      "fwi_rata": 0.89,
+      "fwi_maks": 0.89,
       "n_sel": 1
     },
     {
@@ -2441,16 +2441,16 @@
       "kode": "73.07",
       "kabupaten": "Sinjai",
       "provinsi": "Sulawesi Selatan",
-      "fwi_rata": 1.42,
-      "fwi_maks": 2.85,
+      "fwi_rata": 1.14,
+      "fwi_maks": 2.27,
       "n_sel": 2
     },
     {
       "kode": "73.08",
       "kabupaten": "Bone",
       "provinsi": "Sulawesi Selatan",
-      "fwi_rata": 0.01,
-      "fwi_maks": 0.07,
+      "fwi_rata": 0.07,
+      "fwi_maks": 0.25,
       "n_sel": 5
     },
     {
@@ -2489,8 +2489,8 @@
       "kode": "73.13",
       "kabupaten": "Wajo",
       "provinsi": "Sulawesi Selatan",
-      "fwi_rata": 0,
-      "fwi_maks": 0.01,
+      "fwi_rata": 0.04,
+      "fwi_maks": 0.14,
       "n_sel": 4
     },
     {
@@ -2546,7 +2546,7 @@
       "kabupaten": "Luwu Timur",
       "provinsi": "Sulawesi Selatan",
       "fwi_rata": 0,
-      "fwi_maks": 0,
+      "fwi_maks": 0.01,
       "n_sel": 7
     },
     {
@@ -2569,40 +2569,40 @@
       "kode": "74.02",
       "kabupaten": "Konawe",
       "provinsi": "Sulawesi Tenggara",
-      "fwi_rata": 0,
-      "fwi_maks": 0.01,
+      "fwi_rata": 0.02,
+      "fwi_maks": 0.1,
       "n_sel": 6
     },
     {
       "kode": "74.03",
       "kabupaten": "Muna",
       "provinsi": "Sulawesi Tenggara",
-      "fwi_rata": 1.34,
-      "fwi_maks": 2.54,
+      "fwi_rata": 2.12,
+      "fwi_maks": 4.14,
       "n_sel": 2
     },
     {
       "kode": "74.04",
       "kabupaten": "Buton",
       "provinsi": "Sulawesi Tenggara",
-      "fwi_rata": 2.36,
-      "fwi_maks": 3.82,
+      "fwi_rata": 3.1,
+      "fwi_maks": 6.44,
       "n_sel": 3
     },
     {
       "kode": "74.05",
       "kabupaten": "Konawe Selatan",
       "provinsi": "Sulawesi Tenggara",
-      "fwi_rata": 0.11,
-      "fwi_maks": 0.35,
+      "fwi_rata": 0.28,
+      "fwi_maks": 0.7,
       "n_sel": 4
     },
     {
       "kode": "74.06",
       "kabupaten": "Bombana",
       "provinsi": "Sulawesi Tenggara",
-      "fwi_rata": 0.08,
-      "fwi_maks": 0.15,
+      "fwi_rata": 0.1,
+      "fwi_maks": 0.23,
       "n_sel": 3
     },
     {
@@ -2617,16 +2617,16 @@
       "kode": "74.09",
       "kabupaten": "Konawe Utara",
       "provinsi": "Sulawesi Tenggara",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.06,
       "n_sel": 5
     },
     {
       "kode": "74.10",
       "kabupaten": "Buton Utara",
       "provinsi": "Sulawesi Tenggara",
-      "fwi_rata": 1.29,
-      "fwi_maks": 1.29,
+      "fwi_rata": 3.86,
+      "fwi_maks": 3.86,
       "n_sel": 1
     },
     {
@@ -2634,47 +2634,47 @@
       "kabupaten": "Kolaka Timur",
       "provinsi": "Sulawesi Tenggara",
       "fwi_rata": 0,
-      "fwi_maks": 0,
+      "fwi_maks": 0.01,
       "n_sel": 5
     },
     {
       "kode": "74.12",
       "kabupaten": "Konawe Kepulauan",
       "provinsi": "Sulawesi Tenggara",
-      "fwi_rata": 2.38,
-      "fwi_maks": 2.38,
+      "fwi_rata": 3.57,
+      "fwi_maks": 3.57,
       "n_sel": 1
     },
     {
       "kode": "74.13",
       "kabupaten": "Muna Barat",
       "provinsi": "Sulawesi Tenggara",
-      "fwi_rata": 0.12,
-      "fwi_maks": 0.12,
+      "fwi_rata": 0.2,
+      "fwi_maks": 0.2,
       "n_sel": 1
     },
     {
       "kode": "74.14",
       "kabupaten": "Buton Tengah",
       "provinsi": "Sulawesi Tenggara",
-      "fwi_rata": 0.72,
-      "fwi_maks": 0.72,
+      "fwi_rata": 0.39,
+      "fwi_maks": 0.39,
       "n_sel": 1
     },
     {
       "kode": "74.71",
       "kabupaten": "Kota Kendari",
       "provinsi": "Sulawesi Tenggara",
-      "fwi_rata": 0,
-      "fwi_maks": 0,
+      "fwi_rata": 0.21,
+      "fwi_maks": 0.21,
       "n_sel": 1
     },
     {
       "kode": "75.01",
       "kabupaten": "Gorontalo",
       "provinsi": "Gorontalo",
-      "fwi_rata": 0.01,
-      "fwi_maks": 0.02,
+      "fwi_rata": 0,
+      "fwi_maks": 0,
       "n_sel": 3
     },
     {
@@ -2714,7 +2714,7 @@
       "kabupaten": "Pasangkayu",
       "provinsi": "Sulawesi Barat",
       "fwi_rata": 0,
-      "fwi_maks": 0.02,
+      "fwi_maks": 0,
       "n_sel": 4
     },
     {
@@ -2762,15 +2762,15 @@
       "kabupaten": "Maluku Tengah",
       "provinsi": "Maluku",
       "fwi_rata": 0,
-      "fwi_maks": 0,
+      "fwi_maks": 0.01,
       "n_sel": 7
     },
     {
       "kode": "81.03",
       "kabupaten": "Kepulauan Tanimbar",
       "provinsi": "Maluku",
-      "fwi_rata": 0.37,
-      "fwi_maks": 0.67,
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.04,
       "n_sel": 4
     },
     {
@@ -2785,16 +2785,16 @@
       "kode": "81.05",
       "kabupaten": "Seram Bagian Timur",
       "provinsi": "Maluku",
-      "fwi_rata": 0.09,
-      "fwi_maks": 0.5,
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.04,
       "n_sel": 7
     },
     {
       "kode": "81.06",
       "kabupaten": "Seram Bagian Barat",
       "provinsi": "Maluku",
-      "fwi_rata": 0.04,
-      "fwi_maks": 0.2,
+      "fwi_rata": 0.05,
+      "fwi_maks": 0.23,
       "n_sel": 5
     },
     {
@@ -2802,39 +2802,39 @@
       "kabupaten": "Kepulauan Aru",
       "provinsi": "Maluku",
       "fwi_rata": 0.02,
-      "fwi_maks": 0.1,
+      "fwi_maks": 0.07,
       "n_sel": 11
     },
     {
       "kode": "81.08",
       "kabupaten": "Maluku Barat Daya",
       "provinsi": "Maluku",
-      "fwi_rata": 2.26,
-      "fwi_maks": 4.51,
+      "fwi_rata": 2.68,
+      "fwi_maks": 5.37,
       "n_sel": 2
     },
     {
       "kode": "81.09",
       "kabupaten": "Buru Selatan",
       "provinsi": "Maluku",
-      "fwi_rata": 0.02,
-      "fwi_maks": 0.09,
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.02,
       "n_sel": 4
     },
     {
       "kode": "82.01",
       "kabupaten": "Halmahera Barat",
       "provinsi": "Maluku Utara",
-      "fwi_rata": 0.1,
-      "fwi_maks": 0.19,
+      "fwi_rata": 0.05,
+      "fwi_maks": 0.09,
       "n_sel": 2
     },
     {
       "kode": "82.02",
       "kabupaten": "Halmahera Tengah",
       "provinsi": "Maluku Utara",
-      "fwi_rata": 0.08,
-      "fwi_maks": 0.16,
+      "fwi_rata": 0,
+      "fwi_maks": 0,
       "n_sel": 3
     },
     {
@@ -2849,16 +2849,16 @@
       "kode": "82.04",
       "kabupaten": "Halmahera Selatan",
       "provinsi": "Maluku Utara",
-      "fwi_rata": 0.07,
-      "fwi_maks": 0.3,
+      "fwi_rata": 0.02,
+      "fwi_maks": 0.11,
       "n_sel": 8
     },
     {
       "kode": "82.06",
       "kabupaten": "Halmahera Timur",
       "provinsi": "Maluku Utara",
-      "fwi_rata": 0.04,
-      "fwi_maks": 0.28,
+      "fwi_rata": 0.03,
+      "fwi_maks": 0.2,
       "n_sel": 8
     },
     {
@@ -2873,8 +2873,8 @@
       "kode": "82.08",
       "kabupaten": "Pulau Taliabu",
       "provinsi": "Maluku Utara",
-      "fwi_rata": 0.12,
-      "fwi_maks": 0.33,
+      "fwi_rata": 0.13,
+      "fwi_maks": 0.37,
       "n_sel": 3
     },
     {
@@ -2961,8 +2961,8 @@
       "kode": "92.03",
       "kabupaten": "Fak Fak",
       "provinsi": "Papua Barat",
-      "fwi_rata": 0.02,
-      "fwi_maks": 0.14,
+      "fwi_rata": 0,
+      "fwi_maks": 0.01,
       "n_sel": 10
     },
     {
@@ -2985,8 +2985,8 @@
       "kode": "92.08",
       "kabupaten": "Kaimana",
       "provinsi": "Papua Barat",
-      "fwi_rata": 0.01,
-      "fwi_maks": 0.19,
+      "fwi_rata": 0.03,
+      "fwi_maks": 0.45,
       "n_sel": 18
     },
     {
@@ -3009,15 +3009,15 @@
       "kode": "93.01",
       "kabupaten": "Merauke",
       "provinsi": "Papua Selatan",
-      "fwi_rata": 0.05,
-      "fwi_maks": 0.8,
+      "fwi_rata": 0.17,
+      "fwi_maks": 2.46,
       "n_sel": 49
     },
     {
       "kode": "93.02",
       "kabupaten": "Boven Digoel",
       "provinsi": "Papua Selatan",
-      "fwi_rata": 0,
+      "fwi_rata": 0.01,
       "fwi_maks": 0.07,
       "n_sel": 24
     },
@@ -3026,7 +3026,7 @@
       "kabupaten": "Mappi",
       "provinsi": "Papua Selatan",
       "fwi_rata": 0,
-      "fwi_maks": 0,
+      "fwi_maks": 0.09,
       "n_sel": 28
     },
     {
@@ -3065,8 +3065,8 @@
       "kode": "94.04",
       "kabupaten": "Mimika",
       "provinsi": "Papua Tengah",
-      "fwi_rata": 0.02,
-      "fwi_maks": 0.25,
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.23,
       "n_sel": 21
     },
     {
@@ -3114,7 +3114,7 @@
       "kabupaten": "Pegunungan Bintang",
       "provinsi": "Papua Pegunungan",
       "fwi_rata": 0,
-      "fwi_maks": 0,
+      "fwi_maks": 0.07,
       "n_sel": 16
     },
     {
@@ -3122,7 +3122,7 @@
       "kabupaten": "Yahukimo",
       "provinsi": "Papua Pegunungan",
       "fwi_rata": 0,
-      "fwi_maks": 0,
+      "fwi_maks": 0.01,
       "n_sel": 17
     },
     {
@@ -3169,8 +3169,8 @@
       "kode": "96.01",
       "kabupaten": "Sorong",
       "provinsi": "Papua Barat Daya",
-      "fwi_rata": 0.02,
-      "fwi_maks": 0.09,
+      "fwi_rata": 0,
+      "fwi_maks": 0.01,
       "n_sel": 7
     },
     {
@@ -3178,15 +3178,15 @@
       "kabupaten": "Sorong Selatan",
       "provinsi": "Papua Barat Daya",
       "fwi_rata": 0,
-      "fwi_maks": 0.01,
+      "fwi_maks": 0,
       "n_sel": 6
     },
     {
       "kode": "96.03",
       "kabupaten": "Raja Ampat",
       "provinsi": "Papua Barat Daya",
-      "fwi_rata": 0.03,
-      "fwi_maks": 0.12,
+      "fwi_rata": 0.01,
+      "fwi_maks": 0.03,
       "n_sel": 6
     },
     {
