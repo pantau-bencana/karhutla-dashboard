@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T21:13:29.850Z",
+  "generated_at": "2026-11-27T23:31:38.271Z",
   "schedule": {
     "cron": "17 */3 * * *",
     "cron_cadangan": "47 1-23/3 * * *",
@@ -7,7 +7,7 @@
     "timezone": "UTC",
     "display_timezone": "Asia/Jakarta"
   },
-  "next_run": "2026-11-27T21:17:00.000Z",
+  "next_run": "2026-11-28T00:17:00.000Z",
   "firms_key": "used",
   "datasets": {
     "bmkg_prakiraan": {
@@ -107,7 +107,7 @@
       "fungsi": "Konsentrasi model dalam µg/m³. Bukan pengukuran stasiun dan bukan ISPU KemenLH.",
       "expected_max_age_hours": 36,
       "schedule_interval_hours": 3,
-      "fetched_at": "2026-11-27T21:13:29.850Z",
+      "fetched_at": "2026-11-27T23:31:38.271Z",
       "observed_at": "2026-12-02T16:59:00.000Z",
       "observed_label": "Rata-rata harian PM2.5 2026-11-21–2026-12-02. Hari ini dan sesudahnya prakiraan CAMS lewat Open-Meteo, bukan 14 hari.",
       "source_updated_at": "2026-12-02T16:59:00.000Z",
@@ -115,7 +115,7 @@
       "status": "ok",
       "error": null,
       "file": "data/live/ispu_pembanding.csv",
-      "content_hash": "fff94d2c6ce53b60b3b6b3123db723e6f914766424d9c687f8e1099c46b3368f",
+      "content_hash": "7f5e4087c5f32b4cfc9319dd60f7dab3f7d2c203f5fb6bce2fb3cdc2357da5f5",
       "kept_previous": false,
       "provider": "Open-Meteo Air Quality",
       "method": "Rata-rata harian PM2.5 dan PM10 dalam µg/m³ pada titik tengah kasar provinsi, 7 hari ke belakang dan hingga 5 hari yang API isi. Domain global CAMS sekitar 0,4°. Bukan sel grid pada peta, bukan pengukuran stasiun, dan bukan ISPU.",
@@ -138,9 +138,9 @@
       "expected_max_age_hours": 12960,
       "schedule_interval_hours": 3,
       "fetched_at": "2026-10-21T08:53:13.316Z",
-      "observed_at": "2026-11-27T14:21:38.236Z",
+      "observed_at": "2026-11-27T23:31:39.103Z",
       "observed_label": "514 titik di dalam batas kabupaten/kota. Bukan ibu kota dan bukan koordinat BNPB.",
-      "source_updated_at": "2026-11-27T14:21:38.236Z",
+      "source_updated_at": "2026-11-27T23:31:39.103Z",
       "record_count": 514,
       "status": "ok",
       "error": null,
@@ -163,7 +163,7 @@
       "fungsi": "Jumlah hujan, peluang hujan, dan angin maksimum 14 hari pada titik wakil kabupaten prioritas. Bukan prakiraan BMKG.",
       "expected_max_age_hours": 36,
       "schedule_interval_hours": 3,
-      "fetched_at": "2026-11-27T21:13:29.850Z",
+      "fetched_at": "2026-11-27T23:31:38.271Z",
       "observed_at": "2026-12-11T16:59:00.000Z",
       "observed_label": "Prakiraan harian 2026-11-28–2026-12-11 (14 hari, zona Asia/Jakarta) pada titik di dalam batas kabupaten/kota",
       "source_updated_at": "2026-12-11T16:59:00.000Z",
@@ -171,14 +171,14 @@
       "status": "ok",
       "error": null,
       "file": "data/live/hujan_14_pembanding.csv",
-      "content_hash": "2517928e5996de8c0ff016b7c7a9be7a1967369d021cc5b1da33763599cd3948",
+      "content_hash": "6340bcc3bc6fbf9b25fbcd5067d7b0166b290d3653c40dc1ca1534c1581f7952",
       "kept_previous": false,
       "provider": "Open-Meteo",
       "method": "forecast_days 14 pada API prakiraan, zona Asia/Jakarta untuk semua titik termasuk Kalimantan Selatan. curah hujan adalah precipitation_sum (mm). Peluang adalah precipitation_probability_max: peluang ensemble hujan di atas 0,1 mm, nilai maksimum pada hari itu, dalam persen. Angin adalah wind_speed_10m_max (km/jam). Titik adalah lintang/bujur pada baris kabupaten Satu Data BNPB, bukan batas administrasi dan bukan kotak perkiraan. Jumlah kejadian bencana pada tabel itu tidak dibaca.",
       "compares_to": "peluang_hujan",
       "official_url": "https://www.bmkg.go.id/cuaca/prakiraan-cuaca",
       "permintaan": 21,
-      "detik": 4.8
+      "detik": 0.7
     },
     "fwi_gwis_pembanding": {
       "id": "fwi_gwis_pembanding",
@@ -209,10 +209,10 @@
       "method": "Angka titik wakil: GetFeatureInfo WMS lapisan ecmwf.query, format HTML, pada piksel tengah kotak 0,04 derajat. Overlay peta: GetMap lapisan ecmwf.fwi, parameter TIME, hanya di peramban; raster tidak disimpan. GetCapabilities menulis rentang 2018-01-01/2099-12-31 dengan default 2019-01-01 dan nearestValue 0, tetapi tanggal tanpa berkas mengembalikan PNG kosong. Pemeriksaan 18 Oktober 2026: piksel ada sampai 27 Oktober 2026 dan kosong mulai 28 Oktober 2026. Lapisan mf010.query hanya mencakup Eropa. Dataset musiman CEMS membutuhkan akun, jadi secret CDS tidak dipasang.",
       "compares_to": "fdrs",
       "official_url": "https://spartan.bmkg.go.id/",
-      "permintaan": 1038,
-      "dari_cache": 3084,
+      "permintaan": 2066,
+      "dari_cache": 2056,
       "ditunda": 0,
-      "detik": 26.6
+      "detik": 43.1
     },
     "gfwed_kabupaten": {
       "id": "gfwed_kabupaten",
@@ -229,15 +229,15 @@
       "fungsi": "Rata-rata dan maksimum FWI sel yang pusatnya jatuh di dalam kabupaten/kota.",
       "expected_max_age_hours": 144,
       "schedule_interval_hours": 3,
-      "fetched_at": "2026-11-27T21:13:29.850Z",
-      "observed_at": "2026-11-27T21:15:34.676Z",
-      "observed_label": "Tanggal data 2026-11-26. 400 kabupaten/kota. Bukan kelas BMKG.",
+      "fetched_at": "2026-11-27T23:31:38.271Z",
+      "observed_at": "2026-11-27T23:34:22.429Z",
+      "observed_label": "Tanggal data 2026-11-26. 398 kabupaten/kota. Bukan kelas BMKG.",
       "source_updated_at": "2026-11-26T00:00:00.000Z",
-      "record_count": 400,
+      "record_count": 398,
       "status": "ok",
       "error": null,
       "file": "data/live/gfwed-kabupaten.csv",
-      "content_hash": "5bfa5b260ea711428d3db978abf8e48b1c4ab63b5b1b07072be55fd4629a1b8b",
+      "content_hash": "bbab1aed5dd7497a909e6f770135e4dfd15e68aaa1f512518e1e75f9131b1c64",
       "kept_previous": false,
       "provider": "NASA GFWED",
       "compares_to": "fdrs",
@@ -262,7 +262,7 @@
       "fetched_at": "2026-11-07T00:58:25.440Z",
       "observed_at": null,
       "observed_label": "Tidak ada titik pada 5 hari terakhir",
-      "source_updated_at": "2026-11-27T14:21:37.375Z",
+      "source_updated_at": "2026-11-27T23:31:38.271Z",
       "record_count": 0,
       "status": "ok",
       "error": null,
@@ -350,15 +350,15 @@
       "fungsi": "Konteks nowcast sekitar 0–6 jam. Bukan prospek karhutla dan bukan prakiraan 14 hari.",
       "expected_max_age_hours": 8,
       "schedule_interval_hours": 3,
-      "fetched_at": "2026-11-27T21:13:29.850Z",
-      "observed_at": "2026-11-27T20:23:00.000Z",
+      "fetched_at": "2026-11-27T23:31:38.271Z",
+      "observed_at": "2026-11-27T23:20:00.000Z",
       "observed_label": "8 peringatan pada RSS nowcast. Bukan peringatan karhutla.",
-      "source_updated_at": "2026-11-27T20:23:00.000Z",
+      "source_updated_at": "2026-11-27T23:20:00.000Z",
       "record_count": 8,
       "status": "ok",
       "error": null,
       "file": "data/live/bmkg-cap.csv",
-      "content_hash": "b2f8896f22cd6f6173c13de9ea18c9e48b6bc184904ab0c8db6607d539fcda1d",
+      "content_hash": "0ef2acf7bbd538fbe622c4cdb23c5043eba24f196e902b14d8055a07dc1c1e0c",
       "kept_previous": false
     },
     "dibi_karhutla": {
@@ -386,7 +386,7 @@
       "file": "data/live/dibi-karhutla.csv",
       "content_hash": "a85300f4f2071c0dcb4d43a5ebc4448eda4f2d294ab7c151c7f63610bb48b738",
       "kept_previous": true,
-      "checked_at": "2026-11-27T14:21:37.375Z"
+      "checked_at": "2026-11-27T23:31:38.271Z"
     },
     "dibi_banjir_2024": {
       "id": "dibi_banjir_2024",
@@ -413,7 +413,7 @@
       "file": "data/live/dibi-banjir-2024.csv",
       "content_hash": "7402bd116d308873d84b2e21d573409066990d6768bbb68ff01013dfb338bfcc",
       "kept_previous": true,
-      "checked_at": "2026-11-27T14:21:37.375Z"
+      "checked_at": "2026-11-27T23:31:38.271Z"
     },
     "prioritas_aplus": {
       "id": "prioritas_aplus",
@@ -769,7 +769,7 @@
       "limitation": "prakiraan model ECMWF (via Open-Meteo), bukan BMKG. NASA GPM IMERG tidak dipakai. Unduhan Early/Late di PPS mengembalikan HTTP 401 tanpa akun, dan jalur yang terdokumentasi memakai registrasi Earthdata atau PPS. Tidak ada berkas observasi yang diunduh.",
       "fungsi": "Jumlah hujan harian pada titik adm4. Tidak masuk matriks Awas/Siaga/Waspada.",
       "expected_max_age_hours": 36,
-      "fetched_at": "2026-11-27T21:17:09.942Z",
+      "fetched_at": "2026-11-27T23:36:21.921Z",
       "observed_at": "2026-11-28T00:00:00+07:00",
       "observed_label": "prakiraan model ECMWF (via Open-Meteo), bukan BMKG",
       "source_updated_at": "2026-11-28T00:00:00+07:00",
