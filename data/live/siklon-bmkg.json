@@ -20,18 +20,42 @@
       "luar_tcwc": true,
       "sumber": "halaman",
       "agensi": "BMKG",
-      "lintang": -10,
-      "bujur": 66.1,
-      "tekanan_hpa": 1011,
+      "lintang": -10.8,
+      "bujur": 66.8,
+      "tekanan_hpa": 1010,
+      "angin_knot": 15,
+      "kategori": "L",
+      "waktu_analisis": "2026-11-28T00:00:00.000Z"
+    },
+    {
+      "nama": "90S",
+      "tahap": "Bibit Siklon Tropis",
+      "jenis": "bibit",
+      "kalimat": "Bibit Siklon Tropis 90S terbentuk di Samudra Hindia barat Bengkulu pada 28 November 2026 pukul 07.00 WIB di dalam wilayah tanggung jawab TCWC Jakarta.",
+      "lokasi": "dalam wilayah tanggung jawab TCWC Jakarta",
+      "dampak": "Cuaca ekstrem: Bengkulu; Sumatera Barat. Gelombang tinggi: (B.12. Samudera Hindia barat Bengkulu); (B.10. Perairan barat Bengkulu); (B.11. Perairan timur P. Enggano); (C.01. Perairan barat Lampung); (C.05. Samudera Hindia barat Lampung).",
+      "cuaca_ekstrem": "Bengkulu; Sumatera Barat",
+      "gelombang_tinggi": "(B.12. Samudera Hindia barat Bengkulu); (B.10. Perairan barat Bengkulu); (B.11. Perairan timur P. Enggano); (C.01. Perairan barat Lampung); (C.05. Samudera Hindia barat Lampung)",
+      "angin_kencang": "",
+      "dampak_status": "",
+      "berlaku_hingga": "",
+      "url_infografis": "",
+      "di_dalam_tcwc": true,
+      "luar_tcwc": false,
+      "sumber": "halaman",
+      "agensi": "BMKG",
+      "lintang": -4.6,
+      "bujur": 100.6,
+      "tekanan_hpa": 1009,
       "angin_knot": 20,
       "kategori": "L",
-      "waktu_analisis": "2026-11-27T12:00:00.000Z"
+      "waktu_analisis": "2026-11-28T00:00:00.000Z"
     }
   ],
   "ikhtisar": {
     "status": "ok",
     "galat": "",
-    "terbit": "2026-11-27",
+    "terbit": "2026-11-28",
     "url": "https://dataweb.bmkg.go.id/cuaca/dokumen/ikhtisar-cuaca-harian.pdf",
     "sistem": []
   },
@@ -62,11 +86,11 @@
       }
     ],
     "url": "https://www.bmkg.go.id/siaran-pers",
-    "fetched_at": "2026-11-27T15:24:20.335Z",
+    "fetched_at": "2026-11-28T08:10:36.435Z",
     "kept_previous": false
   },
-  "fetched_at": "2026-11-27T15:24:20.335Z",
-  "pdf_diubah": "Fri, 27 Nov 2026 05:47:04 GMT",
+  "fetched_at": "2026-11-28T08:10:36.435Z",
+  "pdf_diubah": "Sat, 28 Nov 2026 06:27:14 GMT",
   "url_halaman": "https://www.bmkg.go.id/cuaca/siklon-tropis",
   "url_tcwc": "https://tropicalcyclone.bmkg.go.id/",
   "dampak_otomatis": {
@@ -77,7 +101,7 @@
     "jma": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-27T15:24:25.210Z",
+      "fetched_at": "2026-11-28T08:10:45.388Z",
       "kept_previous": false,
       "url": "https://www.jma.go.jp/bosai/typhoon/",
       "produk": "https://www.jma.go.jp/bosai/typhoon/data/targetTc.json",
@@ -86,7 +110,7 @@
     "jtwc": {
       "status": "ok",
       "galat": "",
-      "fetched_at": "2026-11-27T15:24:25.261Z",
+      "fetched_at": "2026-11-28T08:10:46.082Z",
       "kept_previous": false,
       "url": "https://www.metoc.navy.mil/jtwc/products/abpwweb.txt",
       "produk": "ABPW+ABIO",
